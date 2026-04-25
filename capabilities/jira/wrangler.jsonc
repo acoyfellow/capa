@@ -1,0 +1,19 @@
+{
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "capa-jira",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-04-25",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": false,
+	"observability": { "enabled": true }
+	// Required secrets (set after deploy):
+	//   wrangler secret put JIRA_API_KEY
+	//
+	// Optional (for Jira Server / Data Center, e.g. cfdata internal):
+	//   wrangler secret put JIRA_BASE_URL_OVERRIDE   # e.g. https://jira.cfdata.org
+	//
+	// Bind from a caller Worker:
+	//   "services": [
+	//     { "binding": "JIRA_PROOF", "service": "capa-jira", "entrypoint": "JiraCapability" }
+	//   ]
+}
