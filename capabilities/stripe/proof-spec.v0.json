@@ -1,0 +1,57 @@
+{
+	"$schema": "https://capa.coey.dev/proof-spec.v0.json",
+	"version": "v0",
+	"capability": "stripe",
+	"upstream": "https://api.stripe.com",
+	"methods": {
+		"charge": {
+			"description": "Create a charge against a card source.",
+			"input": {
+				"amount": "number (smallest currency unit, e.g. cents)",
+				"currency": "string (ISO 4217)",
+				"source": "string (token, e.g. tok_visa)",
+				"description": "string (optional)"
+			},
+			"observe": [
+				{ "kind": "httpReachable", "url": "https://api.stripe.com/v1/charges" }
+			],
+			"act": {
+				"kind": "httpRequest",
+				"method": "POST",
+				"path": "/v1/charges",
+				"auth": "bearer:STRIPE_SECRET_KEY"
+			},
+			"assert": [
+				{ "kind": "httpStatus", "value": 200 },
+				{ "kind": "responseField", "path": "id", "matches": "^ch_" },
+				{ "kind": "responseField", "path": "status", "equals": "succeeded" },
+				{ "kind": "responseField", "path": "paid", "equals": true }
+			],
+			"risk": "high",
+			"sideEffects": "money-moves"
+		},
+		"refund": {
+			"description": "Refund a previous charge.",
+			"input": {
+				"chargeId": "string (e.g. ch_...)",
+				"amount": "number (optional, partial refund)"
+			},
+			"observe": [
+				{ "kind": "httpResource", "path": "/v1/charges/{chargeId}", "assert": { "paid": true } }
+			],
+			"act": {
+				"kind": "httpRequest",
+				"method": "POST",
+				"path": "/v1/refunds",
+				"auth": "bearer:STRIPE_SECRET_KEY"
+			},
+			"assert": [
+				{ "kind": "httpStatus", "value": 200 },
+				{ "kind": "responseField", "path": "id", "matches": "^re_" },
+				{ "kind": "responseField", "path": "status", "equals": "succeeded" }
+			],
+			"risk": "high",
+			"sideEffects": "money-moves"
+		}
+	}
+}

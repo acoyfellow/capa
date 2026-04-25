@@ -1,0 +1,10 @@
+{
+	"name": "capa",
+	"version": "0.0.1",
+	"private": true,
+	"description": "Third-party APIs as proof-carrying Cloudflare service bindings.",
+	"workspaces": ["capabilities/*"],
+	"scripts": {
+		"deploy:stripe": "cd capabilities/stripe && wrangler deploy"
+	}
+}
