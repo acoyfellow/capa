@@ -1,69 +1,89 @@
 # capa-stripe
 
-`env.STRIPE_PROOF.charge({ amount, currency, source })` — Stripe wrapped as a JSRPC capability with `observe / act / assert` baked in.
+Stripe wrapped as a JSRPC capability with `observe / act / assert` baked in.
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/stripe)
 
-## What you get
+---
 
-```ts
-import { WorkerEntrypoint } from "cloudflare:workers";
+## How-to
 
-export default {
-  async fetch(request, env) {
-    const { result, evidence } = await env.STRIPE_PROOF.charge({
-      amount: 1000,
-      currency: "usd",
-      source: "tok_visa",
-    });
+### Install
 
-    if (evidence.verdict === "fail") {
-      // every assertion is itemised in evidence.assert[]
-      return Response.json({ error: "claim verification failed", evidence }, { status: 502 });
-    }
+Click the Deploy button above.
 
-    return Response.json({ chargeId: result.id, evidence });
-  },
-};
-```
-
-`evidence` is a `proof-spec.v0` evidence bundle. Persist it to R2 / Artifacts / your audit log of choice.
-
-## After deploy
-
-One secret:
+### Set the API key
 
 ```bash
 wrangler secret put STRIPE_SECRET_KEY
 ```
 
-Then bind from your caller Worker:
+### Bind from a caller Worker
 
 ```jsonc
 {
-	"services": [
-		{
-			"binding": "STRIPE_PROOF",
-			"service": "capa-stripe",
-			"entrypoint": "StripeCapability"
-		}
-	]
+  "services": [
+    { "binding": "STRIPE_PROOF", "service": "capa-stripe", "entrypoint": "StripeCapability" }
+  ]
 }
 ```
 
-## Methods
+### Charge a card
 
-| Method | Side effects | Asserts |
+```ts
+const { result, evidence } = await env.STRIPE_PROOF.charge({
+  amount: 1000,
+  currency: "usd",
+  source: "tok_visa",
+});
+```
+
+### Refund a charge
+
+```ts
+const { result, evidence } = await env.STRIPE_PROOF.refund({
+  chargeId: "ch_...",
+  amount: 500, // optional partial refund
+});
+```
+
+---
+
+## Reference
+
+### Methods
+
+| Method | Input | Asserts |
 |---|---|---|
-| `charge({amount, currency, source, description?})` | money moves | `status==succeeded`, `paid==true`, `id ~ ^ch_` |
-| `refund({chargeId, amount?})` | money moves | `status==succeeded`, `id ~ ^re_`, observe-step verifies the charge was paid first |
-| `spec()` | none | returns the `proof-spec.v0.json` for tooling |
+| `charge` | `{ amount, currency, source, description? }` | `httpStatus==200`, `id ~ ^ch_`, `status==succeeded`, `paid==true` |
+| `refund` | `{ chargeId, amount? }` | `httpStatus==200`, `id ~ ^re_`, `status==succeeded` |
+| `spec` | `()` | n/a — returns the capability's `proof-spec.v0.json` |
 
-## What changes in production
+### Side effects
 
-`fetch()` returns 404 by design. The Worker is JSRPC-only — there is no public route. Bind it; do not expose it.
+| Method | Side effect |
+|---|---|
+| `charge` | money-moves |
+| `refund` | money-moves |
+| `spec` | none |
+
+### Required secrets
+
+| Secret | Source |
+|---|---|
+| `STRIPE_SECRET_KEY` | Stripe dashboard → Developers → API keys |
+
+### Risk
+
+`high` — every method moves money.
+
+### Public HTTP route
+
+`fetch()` returns 404. The Worker is JSRPC-only.
+
+---
 
 ## See also
 
-- `proof-spec.v0.json` — the contract
-- `../../README.md` — the `capa` thesis
+- [`proof-spec.v0.json`](proof-spec.v0.json) — the capability's contract
+- [`../../README.md`](../../README.md) — the `capa` thesis

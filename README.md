@@ -1,6 +1,6 @@
 # capa
 
-> Third-party APIs as proof-carrying Cloudflare service bindings.
+Third-party APIs as proof-carrying Cloudflare service bindings.
 
 ```ts
 const { result, evidence } = await env.STRIPE_PROOF.charge({
@@ -8,21 +8,168 @@ const { result, evidence } = await env.STRIPE_PROOF.charge({
 });
 ```
 
-Every call returns the result **and** an evidence bundle: `observe + act + assert + verdict`. Persist it, audit it, hash it, ignore it. It exists.
+Each call returns the result and an evidence bundle: `observe + act + assert + verdict`.
 
-## Why
+---
 
-> "The cloudflare 'bindings instead of env vars' thing is so good that I sometimes wonder why they don't have wrappers for popular third party APIs. `env.STRIPE` — that sort of thing."
-> — [@jonas](https://x.com/jonas)
+## Tutorial
 
-Two answers exist:
+A worked example — caller Worker that uses `capa-stripe` end-to-end.
 
-1. **The naive answer.** Write a wrapper Worker, bind it. Two-day project.
-2. **The interesting answer.** A wrapper that doesn't return `{ result }` but `{ result, evidence }` is a different primitive. The evidence is the contract — the proof that the third-party call landed the way the caller asked.
+1. Click the Deploy button in [capabilities/stripe/README.md](capabilities/stripe/README.md). Cloudflare clones the repo into your GitHub and deploys `capa-stripe` to your account.
 
-`capa` is the second answer.
+2. Set the upstream key on the deployed Worker:
 
-## How it works
+    ```bash
+    cd capa/capabilities/stripe
+    wrangler secret put STRIPE_SECRET_KEY
+    ```
+
+3. In a separate caller Worker, declare the binding:
+
+    ```jsonc
+    // your-app/wrangler.jsonc
+    {
+      "services": [
+        { "binding": "STRIPE_PROOF", "service": "capa-stripe", "entrypoint": "StripeCapability" }
+      ]
+    }
+    ```
+
+4. Call it:
+
+    ```ts
+    // your-app/src/index.ts
+    export default {
+      async fetch(request, env) {
+        const { result, evidence } = await env.STRIPE_PROOF.charge({
+          amount: 1000, currency: "usd", source: "tok_visa",
+        });
+
+        if (evidence.verdict === "fail") {
+          return Response.json({ error: "verification failed", evidence }, { status: 502 });
+        }
+
+        return Response.json({ chargeId: result.id, evidence });
+      },
+    };
+    ```
+
+5. Deploy your caller. `evidence.verdict` is `"pass"` when every assertion passed.
+
+---
+
+## How-to
+
+Specific tasks against an installed capability.
+
+### Install a capability
+
+Click the Deploy to Cloudflare button in the capability's `README.md`. Cloudflare clones the repo, provisions the Worker, runs Workers Builds.
+
+### Set the upstream API key
+
+```bash
+cd capabilities/<capability>
+wrangler secret put <SECRET_NAME>
+```
+
+The required secret name is documented in each capability's `README.md`.
+
+### Bind a capability into a caller Worker
+
+```jsonc
+{
+  "services": [
+    {
+      "binding": "<BINDING_NAME>",
+      "service": "<capa-capability>",
+      "entrypoint": "<EntrypointClassName>"
+    }
+  ]
+}
+```
+
+### Persist an evidence bundle
+
+```ts
+const { result, evidence } = await env.STRIPE_PROOF.charge(input);
+await env.AUDIT_BUCKET.put(`${evidence.startedAt}.json`, JSON.stringify(evidence));
+```
+
+### Handle a failed verdict
+
+```ts
+if (evidence.verdict === "fail") {
+  const failed = evidence.assert.filter(a => !a.passed);
+  // failed[] contains { kind, expected, actual, passed: false }
+}
+```
+
+---
+
+## Reference
+
+### Available capabilities
+
+| Capability | Methods | Side effects |
+|---|---|---|
+| [stripe](capabilities/stripe) | `charge`, `refund`, `spec` | money-moves |
+
+### Evidence bundle shape
+
+```ts
+{
+  capability:  string;
+  version:     string;
+  method:      string;
+  startedAt:   string;        // ISO 8601
+  durationMs:  number;
+  observe:     Array<{ kind: string; passed: boolean; detail?: unknown }>;
+  act:         { request: { method: string; url: string }; status: number };
+  assert:      Array<{ kind: string; expected: unknown; actual: unknown; passed: boolean }>;
+  verdict:     "pass" | "fail";
+}
+```
+
+### Method return shape
+
+```ts
+{ result: T | null; evidence: Evidence }
+```
+
+`result` is `null` when `verdict === "fail"`.
+
+### Capability invariants
+
+| Property | Value |
+|---|---|
+| Public HTTP route | `fetch()` returns 404 |
+| Side effects per method | Exactly one upstream HTTP request |
+| Evidence type | Plain JSON, no streams or handles |
+| Auth | `wrangler secret put` |
+| Billing | Caller-pays (the deploying account is billed) |
+
+### Repo layout
+
+| Path | Purpose |
+|---|---|
+| `proof-spec.v0.md` | Schema contract |
+| `capabilities/<name>/wrangler.jsonc` | Worker config |
+| `capabilities/<name>/proof-spec.v0.json` | Capability's contract |
+| `capabilities/<name>/src/index.ts` | `WorkerEntrypoint` implementation |
+
+---
+
+## Explanation
+
+### Why this exists
+
+> "The cloudflare 'bindings instead of env vars' thing is so good that I sometimes wonder why they don't have wrappers for popular third party APIs. `env.STRIPE` — that sort of thing." — [@jonas](https://x.com/jonas)
+
+A wrapper Worker that returns `{ result }` is a two-day project. A wrapper that returns `{ result, evidence }` is a different primitive: the call carries its own proof of correctness. Caller decides whether to trust, persist, or audit.
+
+### How the loop works
 
 ```
 ┌──────────────┐         ┌────────────────────┐         ┌────────────┐
@@ -34,71 +181,30 @@ Two answers exist:
        └────── { result, evidence } ◀─────────────┘
 ```
 
-Each capability is its own deployable Worker that:
+`observe` reads the world before the call. `act` performs the single side effect. `assert` checks itemized postconditions on the response. The verdict is the AND of every assertion.
 
-1. Runs `observe` — fast, idempotent reads of the world before the call.
-2. Runs `act` — the single side-effecting upstream call.
-3. Runs `assert` — itemized postconditions on the response.
-4. Returns `{ result, evidence }` over JSRPC.
+### Why one Worker per capability
 
-The schema lives in `proof-spec.v0.md`.
+Independent versioning, independent secrets, independent blast radius. A single capability per Worker is also what makes `WorkerEntrypoint` named-class binding clean — the binding name maps 1:1 to a capability surface.
 
-## Available capabilities
+### Why no registry
 
-| Capability | Methods | Risk |
-|---|---|---|
-| [stripe](capabilities/stripe) | `charge`, `refund`, `spec` | high (money moves) |
+A capability is a Git repo. Forks are install. A central index would add a new control point that adds no value the user couldn't get from a GitHub topic search.
 
-## Install one
+### Why JSRPC, not HTTP
 
-Click the Deploy button in the capability's README. Cloudflare clones the repo into your GitHub, provisions the Worker on your account, runs Workers Builds. Then set the upstream API key:
+Public Workers with bindings are an incident pattern. Capabilities have no public route by design. Bind them; do not expose them.
 
-```bash
-wrangler secret put STRIPE_SECRET_KEY
-```
+### Related
 
-Bind from your caller Worker:
+| Project | Relationship |
+|---|---|
+| [unsurf](https://github.com/acoyfellow/unsurf) | Same loop at the DOM altitude |
+| [gateproof](https://github.com/acoyfellow/gateproof) | Same loop at the HTTP altitude |
+| Cramer's [vitest-evals RFC #39](https://github.com/getsentry/sentry/discussions) | Externally convergent shape |
 
-```jsonc
-{
-	"services": [
-		{ "binding": "STRIPE_PROOF", "service": "capa-stripe", "entrypoint": "StripeCapability" }
-	]
-}
-```
-
-`env.STRIPE_PROOF.charge(...)` — done.
-
-## What changes in production
-
-| | dev | prod |
-|---|---|---|
-| Public HTTP route | `fetch()` returns 404 | same — JSRPC-only |
-| Auth to upstream | secret in `.dev.vars` | `wrangler secret put` |
-| Caller-pays | n/a | the deployed Worker bills the deploying account |
-| Audit | `console.log(evidence)` | persist `evidence` to R2 / Artifacts / your sink |
-
-## Properties this needs
-
-- **One side effect per call.** `act` is exactly one upstream HTTP request. No batching, no fan-out. If you need both, ship two methods.
-- **Evidence is a value.** The bundle is plain JSON. No file handles, no streams, no hidden state. It can be JSON-stringified into a `git note`, an R2 object, or a response body.
-- **Failure returns `result: null`.** A failed `assert` is a real failure. Callers must handle it.
-- **JSRPC-only.** Capabilities have no public HTTP surface. They are bound, not browsed.
-
-## Design choices
-
-- **One Worker per capability.** Not one Worker with many capabilities. Independent versioning, independent secrets, independent blast radius.
-- **`WorkerEntrypoint` named class.** Deliberately uses [Cloudflare's stable JSRPC pattern](https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/rpc/). No new protocol invented.
-- **Spec lives next to code.** `proof-spec.v0.json` and `src/index.ts` ship together. The spec is the JSON projection of the code, and tooling (cloudeval scorers, vitest-evals harnesses) reads the spec, not the code.
-- **No registry.** A capability is a Git repo. Forks are install. There is no central index because there does not need to be one.
-
-## Related
-
-- [proof-spec.v0.md](proof-spec.v0.md) — the contract
-- [unsurf](https://github.com/acoyfellow/unsurf) — the DOM-altitude version of this loop
-- [gateproof](https://github.com/acoyfellow/gateproof) — the HTTP-altitude version of this loop
-- Cramer's [vitest-evals RFC #39](https://github.com/vitest-dev/vitest/discussions/) — externally convergent shape
+---
 
 ## Status
 
-`v0`. Liquid. The shape will change when two external adopters have real pain. Ship the thinnest correct thing, see what hurts.
+`v0`. Liquid. The schema will change when two external adopters have real pain. Until then, ship the thinnest correct thing.
