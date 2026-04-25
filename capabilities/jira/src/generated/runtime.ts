@@ -6,9 +6,10 @@ export type Verdict = "pass" | "fail";
 export type AuthShape = "bearer" | "private-token" | "basic";
 export type ContentType = "form" | "json";
 
-// ─── codegen replaces these four constants per-capability ────────
+// ─── codegen replaces these five constants per-capability ────────
 const CAPABILITY_NAME = "jira";
 const BASE_URL = "https://your-domain.atlassian.net";
+const PREFIX = "/rest/api/3";
 const AUTH_SHAPE: AuthShape = "basic";
 const CONTENT_TYPE: ContentType = "json";
 // ─────────────────────────────────────────────────────────────────
@@ -45,6 +46,15 @@ export interface MethodOverride {
 	asserts?: Array<(body: unknown) => AssertResult>;
 }
 
+export interface RuntimeConfig {
+	/** Override the upstream base URL (e.g. self-managed GitLab). */
+	baseUrl?: string;
+	/** Extra headers sent on every request (e.g. Cloudflare Access tokens). */
+	extraHeaders?: Record<string, string>;
+	/** Replace the API prefix in paths (e.g. /rest/api/3 → /rest/api/2). */
+	prefixOverride?: string;
+}
+
 export interface FetchProofArgs {
 	operationId: string;
 	namespace: string;
@@ -58,6 +68,8 @@ export interface FetchProofArgs {
 	baseUrl?: string;
 	/** Optional extra request headers (e.g. CF-Access-Jwt-Assertion for cfdata). */
 	extraHeaders?: Record<string, string>;
+	/** Optional prefix replacement (e.g. /rest/api/3 → /rest/api/2). */
+	prefixOverride?: string;
 }
 
 function formEncode(body: Record<string, unknown>): string {
@@ -103,7 +115,11 @@ export async function fetchProof(
 	const startedAt = new Date().toISOString();
 	const t0 = Date.now();
 	const baseUrl = args.baseUrl || BASE_URL;
-	const url = `${baseUrl}${args.path}`;
+	let path = args.path;
+	if (args.prefixOverride && PREFIX) {
+		path = path.replace(PREFIX, args.prefixOverride);
+	}
+	const url = `${baseUrl}${path}`;
 	const assertions: AssertResult[] = [];
 	const auth = authHeader(apiKey);
 

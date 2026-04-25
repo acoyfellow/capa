@@ -37,6 +37,11 @@ export class JiraCapability extends GeneratedJiraCapability {
 	constructor(ctx: ExecutionContext, env: Env) {
 		super(ctx, env);
 		this.overrides = overrides;
+
+		this.runtimeConfig = {
+			baseUrl: env.JIRA_BASE_URL_OVERRIDE,
+			prefixOverride: env.JIRA_BASE_URL_OVERRIDE ? "/rest/api/2" : undefined,
+		};
 	}
 }
 

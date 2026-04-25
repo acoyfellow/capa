@@ -39,12 +39,17 @@ export class GitlabCapability extends GeneratedGitlabCapability {
 	constructor(ctx: ExecutionContext, env: Env) {
 		super(ctx, env);
 		this.overrides = overrides;
-		// The generated runtime supports baseUrl + extraHeaders per call.
-		// Populating them from env requires editing the generated layer or
-		// extending the generated namespace classes — for now, the upstream
-		// override flow lives in the runtime template and the caller can
-		// pass per-call overrides. Self-managed cfdata routing is a TODO
-		// when the first real internal user shows up (see README).
+
+		const extraHeaders: Record<string, string> = {};
+		if (env.CF_ACCESS_CLIENT_ID && env.CF_ACCESS_CLIENT_SECRET) {
+			extraHeaders["CF-Access-Client-Id"] = env.CF_ACCESS_CLIENT_ID;
+			extraHeaders["CF-Access-Client-Secret"] = env.CF_ACCESS_CLIENT_SECRET;
+		}
+
+		this.runtimeConfig = {
+			baseUrl: env.GITLAB_BASE_URL_OVERRIDE,
+			extraHeaders: Object.keys(extraHeaders).length > 0 ? extraHeaders : undefined,
+		};
 	}
 }
 

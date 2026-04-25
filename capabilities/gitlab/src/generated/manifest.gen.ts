@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitLab API vv4
-// Generated:   2026-04-25T14:15:51.929Z
+// Generated:   2026-04-25T14:45:55.405Z
 // Operations:  1050
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";

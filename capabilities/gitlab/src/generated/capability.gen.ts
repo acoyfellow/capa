@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitLab API vv4
-// Generated:   2026-04-25T14:15:51.929Z
+// Generated:   2026-04-25T14:45:55.405Z
 // Operations:  1050
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
@@ -14,6 +14,7 @@ export class GroupsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -33,6 +34,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAccessRequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -51,6 +55,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createAccessRequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -69,6 +76,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["accessRequestsApprove"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -87,6 +97,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteAccessRequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -105,6 +118,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["awardEmoji_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -123,6 +139,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["awardEmoji_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -141,6 +160,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["awardEmojiRetrieveAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -159,6 +181,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["awardEmojiDeleteAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -177,6 +202,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getNotesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -195,6 +223,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postNotesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -213,6 +244,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["notesawardEmojiRetrieveAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -231,6 +265,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["notesawardEmojiDeleteAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -249,6 +286,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listBadges"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -267,6 +307,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createBadge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -285,6 +328,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["render"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -303,6 +349,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveBadge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -321,6 +370,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["badges"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -339,6 +391,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteBadge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -357,6 +412,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCustomAttributes"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -375,6 +433,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCustomAttribute"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -393,6 +454,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["customAttributes"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -411,6 +475,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCustomAttribute"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -429,6 +496,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -447,6 +517,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -465,6 +538,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -483,6 +559,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -501,6 +580,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -519,6 +601,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createArchive"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -537,6 +622,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createUnarchive"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -555,6 +643,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createRestore"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -573,6 +664,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["groupsShared"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -591,6 +685,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listInvitedGroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -609,6 +706,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProjects"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -627,6 +727,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["projectsShared"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -645,6 +748,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSubgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -663,6 +769,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDescendantGroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -681,6 +790,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["updateProject"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -699,6 +811,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTransferLocations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -717,6 +832,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createTransfer"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -735,6 +853,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createTransferToOrganization"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -753,6 +874,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createShare"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -771,6 +895,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteShare"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -789,6 +916,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createLdapSync"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -807,6 +937,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAuditEvents"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -825,6 +958,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAuditEvent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -843,6 +979,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSamlUsers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -861,6 +1000,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProvisionedUsers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -879,6 +1021,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSshCertificates"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -897,6 +1042,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createSshCertificate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -915,6 +1063,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteSshCertificate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -933,6 +1084,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRunners"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -951,6 +1105,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["resetRegistrationToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -969,6 +1126,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePool"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -987,6 +1147,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["cache"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1005,6 +1168,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDeployTokens"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1023,6 +1189,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createDeployToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1041,6 +1210,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDeployToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1059,6 +1231,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDeployToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1077,6 +1252,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAvatar"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1095,6 +1273,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listClusters"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1113,6 +1294,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCluster"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1131,6 +1315,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["clusters"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1149,6 +1336,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCluster"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1167,6 +1357,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["user"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1185,6 +1378,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repositories"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1203,6 +1399,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["debianDistributions_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1221,6 +1420,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["debianDistributions_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1239,6 +1441,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDebianDistribution"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1257,6 +1462,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["debianDistributions_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1275,6 +1483,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDebianDistribution"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1293,6 +1504,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["keyAsc"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1311,6 +1525,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["exportDownload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1329,6 +1546,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createExport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1347,6 +1567,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createExportRelation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1365,6 +1588,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["exportRelationsDownload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1383,6 +1609,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["status"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1401,6 +1630,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["importAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1419,6 +1651,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createImport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1437,6 +1672,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPackages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1456,6 +1694,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPlaceholderReassignments"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1474,6 +1715,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createPlaceholderReassignment"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1493,6 +1737,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["placeholderReassignmentsAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1511,6 +1758,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listVariables"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1529,6 +1779,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1547,6 +1800,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1565,6 +1821,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["variables"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1583,6 +1842,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1601,6 +1863,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIntegrations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1619,6 +1884,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["appleAppStore"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1637,6 +1905,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["asana"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1655,6 +1926,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["assembla"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1673,6 +1947,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["bamboo"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1691,6 +1968,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["bugzilla"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1709,6 +1989,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["buildkite"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1727,6 +2010,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["campfire"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1745,6 +2031,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["confluence"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1763,6 +2052,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["customIssueTracker"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1781,6 +2073,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["datadog"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1799,6 +2094,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["diffblueCover"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1817,6 +2115,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["discord"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1835,6 +2136,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["droneCi"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1853,6 +2157,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["emailsOnPush"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1871,6 +2178,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["externalWiki"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1889,6 +2199,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["gitlabSlackApplication"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1907,6 +2220,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["googlePlay"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1925,6 +2241,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["hangoutsChat"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1943,6 +2262,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["harbor"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1961,6 +2283,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["irker"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1979,6 +2304,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["jenkins"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -1997,6 +2325,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["jira"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2015,6 +2346,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["jiraCloudApp"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2033,6 +2367,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["linear"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2051,6 +2388,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["matrix"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2069,6 +2409,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["mattermostSlashCommands"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2087,6 +2430,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["slackSlashCommands"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2105,6 +2451,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["packagist"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2123,6 +2472,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["phorge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2141,6 +2493,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["pipelinesEmail"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2159,6 +2514,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["pivotaltracker"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2177,6 +2535,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["pumble"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2195,6 +2556,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["pushover"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2213,6 +2577,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["redmine"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2231,6 +2598,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["ewm"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2249,6 +2619,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["youtrack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2267,6 +2640,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["clickup"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2285,6 +2661,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["slack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2303,6 +2682,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["microsoftTeams"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2321,6 +2703,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["mattermost"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2339,6 +2724,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["teamcity"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2357,6 +2745,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["telegram"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2375,6 +2766,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["unifyCircuit"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2393,6 +2787,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["webexTeams"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2411,6 +2808,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["zentao"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2429,6 +2829,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["squashTm"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2447,6 +2850,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["github"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2465,6 +2871,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["gitGuardian"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2483,6 +2892,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["googleCloudPlatformArtifactRegistry"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2501,6 +2913,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["googleCloudPlatformWorkloadIdentityFederation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2519,6 +2934,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["mockCi"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2537,6 +2955,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["mockMonitoring"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2555,6 +2976,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveIntegration"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2573,6 +2997,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteIntegration"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2591,6 +3018,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listInvitations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2609,6 +3039,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createInvitation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2627,6 +3060,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["invitations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2645,6 +3081,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteInvitation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2663,6 +3102,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIssues"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2681,6 +3123,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIssuesStatistics"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2699,6 +3144,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listUploads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2717,6 +3165,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveUpload_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2735,6 +3186,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUpload_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2753,6 +3207,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveUpload_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2771,6 +3228,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUpload_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2790,6 +3250,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMembers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2808,6 +3271,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMember"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2827,6 +3293,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["all"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2845,6 +3314,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMember"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2863,6 +3335,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["members"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2881,6 +3356,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMember"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2899,6 +3377,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAll"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2917,6 +3398,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["override_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2935,6 +3419,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["override_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2953,6 +3440,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["membersApprove"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2971,6 +3461,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["approveAll"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -2989,6 +3482,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPendingMembers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3007,6 +3503,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listBillableMembers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3025,6 +3524,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["state"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3043,6 +3545,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["memberships"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3061,6 +3566,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["indirect"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3079,6 +3587,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteBillableMember"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3097,6 +3608,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMergeRequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3115,6 +3629,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["bulk"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3133,6 +3650,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["quick"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3151,6 +3671,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["index"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3169,6 +3692,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["v2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3187,6 +3713,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Metadata"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3205,6 +3734,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["query"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3223,6 +3755,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["simple"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3241,6 +3776,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listReleases"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3259,6 +3797,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["rotate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3277,6 +3818,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Search"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3295,6 +3839,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listWikis"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3313,6 +3860,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createWiki"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3331,6 +3881,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveWiki"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3349,6 +3902,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["wikis"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3367,6 +3923,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteWiki"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3385,6 +3944,9 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["attachments"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -3393,6 +3955,7 @@ export class ProjectsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -3412,6 +3975,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAccessRequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3430,6 +3996,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createAccessRequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3448,6 +4017,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["accessRequestsApprove"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3466,6 +4038,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteAccessRequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3484,6 +4059,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["alertManagementAlertsmetricImagesAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3502,6 +4080,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getAlertManagementAlertsMetricImages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3520,6 +4101,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["postAlertManagementAlertsMetricImages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3538,6 +4122,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["putAlertManagementAlertsMetricImages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3556,6 +4143,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["alertManagementAlertsmetricImagesDeleteMetricImage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3574,6 +4164,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getIssuesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3592,6 +4185,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postIssuesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3610,6 +4206,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesawardEmojiRetrieveAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3628,6 +4227,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesawardEmojiDeleteAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3646,6 +4248,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getIssuesnotesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3664,6 +4269,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postIssuesnotesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3682,6 +4290,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesnotesawardEmojiRetrieveAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3700,6 +4311,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesnotesawardEmojiDeleteAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3718,6 +4332,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getMergeRequestsAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3736,6 +4353,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postMergeRequestsAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3754,6 +4374,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsawardEmojiRetrieveAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3772,6 +4395,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsawardEmojiDeleteAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3790,6 +4416,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getMergeRequestsnotesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3808,6 +4437,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postMergeRequestsnotesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3826,6 +4458,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsnotesawardEmojiRetrieveAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3844,6 +4479,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsnotesawardEmojiDeleteAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3862,6 +4500,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getSnippetsAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3880,6 +4521,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postSnippetsAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3898,6 +4542,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["snippetsawardEmojiRetrieveAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3916,6 +4563,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["snippetsawardEmojiDeleteAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3934,6 +4584,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getSnippetsnotesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3952,6 +4605,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postSnippetsnotesAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3970,6 +4626,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["snippetsnotesawardEmojiRetrieveAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -3988,6 +4647,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["snippetsnotesawardEmojiDeleteAwardEmoji"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4006,6 +4668,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listBadges"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4024,6 +4689,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createBadge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4042,6 +4710,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["render"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4060,6 +4731,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveBadge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4078,6 +4752,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["badges"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4096,6 +4773,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteBadge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4114,6 +4794,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["branches_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4132,6 +4815,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["branches_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4150,6 +4836,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveBranche"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4168,6 +4857,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteBranche"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4186,6 +4878,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["protect"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4204,6 +4899,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["unprotect"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4222,6 +4920,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergedBranches"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4240,6 +4941,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["catalogPublish"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4258,6 +4962,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["jobsartifactsDownload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4276,6 +4983,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getJobsArtifacts"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4294,6 +5004,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteJobsArtifacts"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4312,6 +5025,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["jobsartifactsTree"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4330,6 +5046,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["keep"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4348,6 +5067,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["artifacts_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4366,6 +5088,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listJobs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4384,6 +5109,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveJob"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4402,6 +5130,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["trace"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4420,6 +5151,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["jobsCancel"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4438,6 +5172,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["jobsRetry"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4456,6 +5193,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["erase"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4474,6 +5214,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["jobsPlay"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4492,6 +5235,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listResourceGroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4510,6 +5256,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveResourceGroup"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4528,6 +5277,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["resourceGroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4546,6 +5298,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["currentJob"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4564,6 +5319,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["upcomingJobs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4582,6 +5340,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRunners"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4600,6 +5361,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createRunner"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4618,6 +5382,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteRunner"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4636,6 +5403,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["resetRegistrationToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4654,6 +5424,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSecureFiles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4672,6 +5445,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createSecureFile"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4690,6 +5466,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveSecureFile"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4708,6 +5487,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteSecureFile"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4726,6 +5508,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["secureFilesDownload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4744,6 +5529,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPipelines"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4762,6 +5550,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createPipeline"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4780,6 +5571,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pipelinesLatest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4798,6 +5592,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePipeline"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4816,6 +5613,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deletePipeline"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4834,6 +5634,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["jobs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4852,6 +5655,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["bridges"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4870,6 +5676,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pipelinesVariables"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4888,6 +5697,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["testReport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4906,6 +5718,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["testReportSummary"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4924,6 +5739,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["metadata"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4942,6 +5760,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pipelinesRetry"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4960,6 +5781,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pipelinesCancel"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4978,6 +5802,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPipelineSchedules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -4996,6 +5823,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createPipelineSchedule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5014,6 +5844,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePipelineSchedule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5032,6 +5865,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["pipelineSchedules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5050,6 +5886,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deletePipelineSchedule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5068,6 +5907,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pipelineSchedulesPipelines"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5086,6 +5928,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["takeOwnership"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5104,6 +5949,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pipelineSchedulesPlay"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5122,6 +5970,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postPipelineSchedulesVariables"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5140,6 +5991,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pipelineSchedulesvariablesRetrieveVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5158,6 +6012,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["putPipelineSchedulesVariables"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5176,6 +6033,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pipelineSchedulesvariablesDeleteVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5194,6 +6054,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["pipeline"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5212,6 +6075,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTriggers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5230,6 +6096,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createTrigger"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5248,6 +6117,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTrigger"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5266,6 +6138,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["triggers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5284,6 +6159,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteTrigger"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5302,6 +6180,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listVariables"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5320,6 +6201,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5338,6 +6222,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["variablesRetrieveVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5356,6 +6243,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["variables_3"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5374,6 +6264,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["variablesDeleteVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5392,6 +6285,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["tokens_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5410,6 +6306,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["tokens_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5428,6 +6327,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5446,6 +6348,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5464,6 +6369,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listClusterAgents"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5482,6 +6390,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createClusterAgent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5500,6 +6411,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveClusterAgent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5518,6 +6432,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteClusterAgent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5536,6 +6453,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["configJson"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5554,6 +6474,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getRepositoryCommits"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5572,6 +6495,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postRepositoryCommits"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5590,6 +6516,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCommit"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5608,6 +6537,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["diff"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5626,6 +6558,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["comments_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5644,6 +6579,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["comments_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5662,6 +6600,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["sequence"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5680,6 +6621,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["cherryPick"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5698,6 +6642,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["revert"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5716,6 +6663,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["refs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5734,6 +6684,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repositorycommitsMergeRequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5752,6 +6705,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["commitsSignature"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5770,6 +6726,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["statuses"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5788,6 +6747,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5806,6 +6768,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["composer"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5824,6 +6789,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["v1usersAuthenticate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5842,6 +6810,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["v1usersCheckCredentials"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5860,6 +6831,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["getV1conansSearch"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5878,6 +6852,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["getV1conansSearch_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5896,6 +6873,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["ping"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5914,6 +6894,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["conanv1conanspackagesRetrievePackage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5932,6 +6915,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveConan"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5950,6 +6936,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteConan"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5968,6 +6957,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesDigest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -5986,6 +6978,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["digest_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6004,6 +6999,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesDownloadUrls"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6022,6 +7020,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["downloadUrls_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6040,6 +7041,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesUploadUrls"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6058,6 +7062,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["uploadUrls_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6076,6 +7083,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveExport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6094,6 +7104,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["export"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6112,6 +7125,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesconanv1filesexportAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6130,6 +7146,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["conanv1filespackageRetrievePackage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6148,6 +7167,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["package"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6166,6 +7188,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesconanv1filespackageAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6184,6 +7209,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["v2usersAuthenticate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6202,6 +7230,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["v2usersCheckCredentials"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6220,6 +7251,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["getV2conansSearch"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6238,6 +7272,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["getV2conansSearch_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6256,6 +7293,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesconanv2conansLatest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6274,6 +7314,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["revisions_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6292,6 +7335,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteRevision_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6310,6 +7356,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getPackagesconanv2conansrevisionsFiles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6328,6 +7377,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesconanv2conansrevisionsfilesRetrieveFile"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6346,6 +7398,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["putPackagesconanv2conansrevisionsFiles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6364,6 +7419,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesconanv2conansrevisionsfilesAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6382,6 +7440,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["v2conansrevisionsSearch"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6400,6 +7461,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesconanv2conansrevisionspackagesLatest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6418,6 +7482,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesRevisions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6436,6 +7503,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesrevisionsDeleteRevision"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6454,6 +7524,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getPackagesconanv2conansrevisionspackagesrevisionsFiles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6472,6 +7545,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesconanv2conansrevisionspackagesrevisionsfilesRetrieveFile"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6490,6 +7566,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["putPackagesconanv2conansrevisionspackagesrevisionsFiles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6508,6 +7587,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesconanv2conansrevisionspackagesrevisionsfilesAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6526,6 +7608,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePool"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6544,6 +7629,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["debian"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6562,6 +7650,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["packagesdebianAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6580,6 +7671,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDeployKeys"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6598,6 +7692,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createDeployKey"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6616,6 +7713,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDeployKey"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6634,6 +7734,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["deployKeys"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6652,6 +7755,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDeployKey"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6670,6 +7776,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["enable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6688,6 +7797,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDeployTokens"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6706,6 +7818,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createDeployToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6724,6 +7839,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDeployToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6742,6 +7860,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDeployToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6760,6 +7881,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDeployments"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6778,6 +7902,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createDeployment"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6796,6 +7923,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDeployment"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6814,6 +7944,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["deployments"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6832,6 +7965,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDeployment"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6850,6 +7986,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deploymentsMergeRequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6868,6 +8007,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["approval"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6886,6 +8028,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["draftNotes_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6904,6 +8049,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["draftNotes_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6922,6 +8070,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDraftNote"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6940,6 +8091,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["draftNotes_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6958,6 +8112,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDraftNote"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6976,6 +8133,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsdraftNotesPublish"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -6994,6 +8154,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["bulkPublish"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7012,6 +8175,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEnvironments"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7030,6 +8196,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createEnvironment"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7048,6 +8217,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveEnvironment"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7066,6 +8238,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["environments"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7084,6 +8259,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteEnvironment"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7102,6 +8280,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["reviewApps"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7120,6 +8301,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["stop"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7138,6 +8322,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["stopStale"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7156,6 +8343,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["clientKeys_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7174,6 +8364,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["clientKeys_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7192,6 +8385,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteClientKey"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7210,6 +8406,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["settings_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7228,6 +8427,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["settings_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7246,6 +8448,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["settings_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7264,6 +8469,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listFeatureFlags"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7282,6 +8490,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createFeatureFlag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7300,6 +8511,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveFeatureFlag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7318,6 +8532,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["featureFlags"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7336,6 +8553,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteFeatureFlag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7354,6 +8574,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listFeatureFlagsUserLists"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7372,6 +8595,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createFeatureFlagsUserList"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7390,6 +8616,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveFeatureFlagsUserList"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7408,6 +8637,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["featureFlagsUserLists"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7426,6 +8658,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteFeatureFlagsUserList"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7444,6 +8679,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["blame"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7462,6 +8700,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repositoryfilesRaw"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7480,6 +8721,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repositoryfilesRetrieveFile"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7498,6 +8742,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateFile"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7516,6 +8763,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["repositoryFiles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7534,6 +8784,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteFile"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7552,6 +8805,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listFreezePeriods"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7570,6 +8826,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createFreezePeriod"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7588,6 +8847,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveFreezePeriod"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7606,6 +8868,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["freezePeriods"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7624,6 +8889,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteFreezePeriod"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7642,6 +8910,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["indexYaml"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7660,6 +8931,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveChart"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7678,6 +8952,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packageshelmapichartsAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7696,6 +8973,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["charts"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7714,6 +8994,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listServices"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7732,6 +9015,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesAppleAppStore"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7750,6 +9036,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesAsana"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7768,6 +9057,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesAssembla"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7786,6 +9078,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesBamboo"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7804,6 +9099,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesBugzilla"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7822,6 +9120,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesBuildkite"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7840,6 +9141,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesCampfire"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7858,6 +9162,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesConfluence"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7876,6 +9183,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesCustomIssueTracker"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7894,6 +9204,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesDatadog"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7912,6 +9225,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesDiffblueCover"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7930,6 +9246,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesDiscord"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7948,6 +9267,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesDroneCi"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7966,6 +9288,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesEmailsOnPush"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -7984,6 +9309,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesExternalWiki"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8002,6 +9330,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesGitlabSlackApplication"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8020,6 +9351,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesGooglePlay"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8038,6 +9372,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesHangoutsChat"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8056,6 +9393,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesHarbor"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8074,6 +9414,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesIrker"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8092,6 +9435,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesJenkins"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8110,6 +9456,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesJira"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8128,6 +9477,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesJiraCloudApp"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8146,6 +9498,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesLinear"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8164,6 +9519,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesMatrix"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8182,6 +9540,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesMattermostSlashCommands"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8200,6 +9561,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesSlackSlashCommands"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8218,6 +9582,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesPackagist"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8236,6 +9603,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesPhorge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8254,6 +9624,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesPipelinesEmail"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8272,6 +9645,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesPivotaltracker"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8290,6 +9666,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesPumble"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8308,6 +9687,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesPushover"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8326,6 +9708,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesRedmine"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8344,6 +9729,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesEwm"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8362,6 +9750,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesYoutrack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8380,6 +9771,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesClickup"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8398,6 +9792,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesSlack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8416,6 +9813,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesMicrosoftTeams"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8434,6 +9834,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesMattermost"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8452,6 +9855,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesTeamcity"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8470,6 +9876,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesTelegram"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8488,6 +9897,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesUnifyCircuit"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8506,6 +9918,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesWebexTeams"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8524,6 +9939,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesZentao"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8542,6 +9960,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesSquashTm"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8560,6 +9981,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesGithub"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8578,6 +10002,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesGitGuardian"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8596,6 +10023,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesGoogleCloudPlatformArtifactRegistry"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8614,6 +10044,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesGoogleCloudPlatformWorkloadIdentityFederation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8632,6 +10065,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesMockCi"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8650,6 +10086,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesMockMonitoring"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8668,6 +10107,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveService"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8686,6 +10128,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteService"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8704,6 +10149,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesmattermostSlashCommandsTrigger"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8722,6 +10170,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["servicesslackSlashCommandsTrigger"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8740,6 +10191,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIntegrations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8758,6 +10212,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsAppleAppStore"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8776,6 +10233,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsAsana"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8794,6 +10254,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsAssembla"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8812,6 +10275,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsBamboo"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8830,6 +10296,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsBugzilla"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8848,6 +10317,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsBuildkite"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8866,6 +10338,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsCampfire"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8884,6 +10359,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsConfluence"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8902,6 +10380,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsCustomIssueTracker"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8920,6 +10401,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsDatadog"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8938,6 +10422,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsDiffblueCover"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8956,6 +10443,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsDiscord"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8974,6 +10464,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsDroneCi"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -8992,6 +10485,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsEmailsOnPush"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9010,6 +10506,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsExternalWiki"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9028,6 +10527,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsGitlabSlackApplication"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9046,6 +10548,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsGooglePlay"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9064,6 +10569,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsHangoutsChat"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9082,6 +10590,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsHarbor"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9100,6 +10611,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsIrker"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9118,6 +10632,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsJenkins"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9136,6 +10653,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsJira"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9154,6 +10674,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsJiraCloudApp"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9172,6 +10695,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsLinear"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9190,6 +10716,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsMatrix"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9208,6 +10737,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsMattermostSlashCommands"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9226,6 +10758,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsSlackSlashCommands"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9244,6 +10779,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsPackagist"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9262,6 +10800,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsPhorge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9280,6 +10821,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsPipelinesEmail"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9298,6 +10842,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsPivotaltracker"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9316,6 +10863,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsPumble"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9334,6 +10884,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsPushover"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9352,6 +10905,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsRedmine"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9370,6 +10926,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsEwm"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9388,6 +10947,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsYoutrack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9406,6 +10968,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsClickup"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9424,6 +10989,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsSlack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9442,6 +11010,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsMicrosoftTeams"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9460,6 +11031,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsMattermost"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9478,6 +11052,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsTeamcity"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9496,6 +11073,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsTelegram"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9514,6 +11094,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsUnifyCircuit"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9532,6 +11115,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsWebexTeams"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9550,6 +11136,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsZentao"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9568,6 +11157,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsSquashTm"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9586,6 +11178,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsGithub"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9604,6 +11199,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsGitGuardian"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9622,6 +11220,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsGoogleCloudPlatformArtifactRegistry"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9640,6 +11241,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsGoogleCloudPlatformWorkloadIdentityFederation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9658,6 +11262,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsMockCi"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9676,6 +11283,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsMockMonitoring"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9694,6 +11304,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveIntegration"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9712,6 +11325,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteIntegration"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9730,6 +11346,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsmattermostSlashCommandsTrigger"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9748,6 +11367,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsslackSlashCommandsTrigger"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9766,6 +11388,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listInvitations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9784,6 +11409,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createInvitation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9802,6 +11430,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["invitations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9820,6 +11451,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteInvitation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9838,6 +11472,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getIssuesLinks"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9856,6 +11493,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postIssuesLinks"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9874,6 +11514,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issueslinksRetrieveLink"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9892,6 +11535,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issueslinksDeleteLink"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9910,6 +11556,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["issuesTimeEstimate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9928,6 +11577,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesResetTimeEstimate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9946,6 +11598,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["issuesAddSpentTime"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9964,6 +11619,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesResetSpentTime"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -9982,6 +11640,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesTimeStats"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10000,6 +11661,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIssues"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10018,6 +11682,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createIssue"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10036,6 +11703,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIssuesStatistics"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10054,6 +11724,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveIssue"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10072,6 +11745,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["issues"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10090,6 +11766,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteIssue"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10108,6 +11787,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["reorder"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10126,6 +11808,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["move"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10144,6 +11829,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["clone"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10162,6 +11850,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["relatedMergeRequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10180,6 +11871,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["closedBy"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10198,6 +11892,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesParticipants"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10216,6 +11913,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesUserAgentDetail"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10234,6 +11934,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesmetricImagesAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10252,6 +11955,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getIssuesMetricImages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10270,6 +11976,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postIssuesMetricImages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10288,6 +11997,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["putIssuesMetricImages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10306,6 +12018,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesmetricImagesDeleteMetricImage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10325,6 +12040,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["lint_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10343,6 +12061,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["lint_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10361,6 +12082,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["uploadsAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10379,6 +12103,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listUploads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10397,6 +12124,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createUpload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10415,6 +12145,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveUpload_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10433,6 +12166,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUpload_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10451,6 +12187,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveUpload_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10469,6 +12208,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUpload_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10488,6 +12230,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMembers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10506,6 +12251,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMember"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10525,6 +12273,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["all"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10543,6 +12294,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMember"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10561,6 +12315,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["members"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10579,6 +12336,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMember"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10597,6 +12357,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAll"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10615,6 +12378,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createCreateCiConfig"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10633,6 +12399,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["mergeRequestsTimeEstimate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10651,6 +12420,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsResetTimeEstimate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10669,6 +12441,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["mergeRequestsAddSpentTime"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10687,6 +12462,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsResetSpentTime"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10705,6 +12483,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsTimeStats"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10723,6 +12504,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMergeRequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10741,6 +12525,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMergeRequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10759,6 +12546,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMergeRequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10777,6 +12567,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["mergeRequests_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10795,6 +12588,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMergeRequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10813,6 +12609,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsParticipants"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10831,6 +12630,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["reviewers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10849,6 +12651,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsCommits"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10867,6 +12672,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["contextCommits_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10885,6 +12693,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["contextCommits_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10903,6 +12714,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["contextCommits_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10921,6 +12735,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["changes"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10939,6 +12756,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["diffs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10957,6 +12777,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["rawDiffs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10975,6 +12798,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getMergeRequestsPipelines"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -10993,6 +12819,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postMergeRequestsPipelines"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11011,6 +12840,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["merge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11029,6 +12861,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRef"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11047,6 +12882,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["cancelMergeWhenPipelineSucceeds"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11065,6 +12903,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["rebase"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11083,6 +12924,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["closesIssues"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11101,6 +12945,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["relatedIssues"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11119,6 +12966,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["approvals_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11137,6 +12987,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["approvals_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11155,6 +13008,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["mergeRequestsApprove"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11173,6 +13029,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["unapprove"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11191,6 +13050,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["resetApprovals"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11209,6 +13071,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["approvalState"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11227,6 +13092,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["versions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11245,6 +13113,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsversionsRetrieveVersion"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11263,6 +13134,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["bulk"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11281,6 +13155,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["quick"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11299,6 +13176,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["npm"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11317,6 +13197,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["index"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11335,6 +13218,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["v2_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11353,6 +13239,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["v2_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11371,6 +13260,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Metadata"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11389,6 +13281,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["query"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11407,6 +13302,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["nuget"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11425,6 +13323,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesnugetAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11443,6 +13344,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["symbolpackage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11461,6 +13365,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesnugetsymbolpackageAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11479,6 +13386,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesnugetv2Authorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11497,6 +13407,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["FindPackagesById"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11515,6 +13428,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Packages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11533,6 +13449,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packageFiles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11551,6 +13470,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deletePackageFile"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11569,6 +13491,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagespackageFilesDownload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11587,6 +13512,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11605,6 +13533,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["pages_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11623,6 +13554,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pages_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11641,6 +13575,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["domains_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11659,6 +13596,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["domains_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11677,6 +13617,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDomain"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11695,6 +13638,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["domains_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11713,6 +13659,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDomain"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11731,6 +13680,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["verify"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11749,6 +13701,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAvatar"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11767,6 +13722,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listClusters"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11785,6 +13743,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCluster"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11803,6 +13764,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["clusters"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11821,6 +13785,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCluster"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11839,6 +13806,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["user"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11857,6 +13827,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repositories"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11875,6 +13848,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteRepository"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11893,6 +13869,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getRegistryrepositoriesTags"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11911,6 +13890,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteRegistryrepositoriesTags"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11929,6 +13911,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["registryrepositoriestagsRetrieveTag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11947,6 +13932,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["registryrepositoriestagsDeleteTag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11965,6 +13953,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getRegistryprotectionrepositoryRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -11983,6 +13974,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postRegistryprotectionrepositoryRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12001,6 +13995,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["patchRegistryprotectionrepositoryRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12019,6 +14016,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["registryprotectionrepositoryrulesDeleteRule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12037,6 +14037,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getRegistryprotectiontagRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12055,6 +14058,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postRegistryprotectiontagRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12073,6 +14079,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["patchRegistryprotectiontagRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12091,6 +14100,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["registryprotectiontagrulesDeleteRule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12109,6 +14121,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDebianDistributions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12127,6 +14142,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createDebianDistribution"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12145,6 +14163,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDebianDistribution"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12163,6 +14184,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["debianDistributions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12181,6 +14205,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDebianDistribution"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12199,6 +14226,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["keyAsc"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12217,6 +14247,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEvents"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12235,6 +14268,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listExport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12253,6 +14289,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createExport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12271,6 +14310,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["exportDownload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12289,6 +14331,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createExportRelation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12307,6 +14352,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["exportRelationsDownload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12325,6 +14373,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["status"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12343,6 +14394,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["urlVariables"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12361,6 +14415,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUrlVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12379,6 +14436,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["customHeaders"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12397,6 +14457,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCustomHeader"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12415,6 +14478,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listHooks"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12433,6 +14499,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createHook"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12451,6 +14520,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveHook"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12469,6 +14541,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["hooks"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12487,6 +14562,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteHook"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12505,6 +14583,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["events"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12523,6 +14604,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["updateTest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12541,6 +14625,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["resend"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12559,6 +14646,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["importAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12577,6 +14667,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createImport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12595,6 +14688,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listImport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12613,6 +14709,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["git"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12631,6 +14730,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createRemoteImport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12649,6 +14751,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["importRelationAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12667,6 +14772,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createImportRelation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12685,6 +14793,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRelationImports"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12703,6 +14814,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createRemoteImportS3"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12721,6 +14835,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listJobTokenScope"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12739,6 +14856,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["jobTokenScope"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12757,6 +14877,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["allowlist_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12775,6 +14898,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["allowlist_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12793,6 +14919,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["groupsAllowlist_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12811,6 +14940,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["groupsAllowlist_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12829,6 +14961,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteGroupsAllowlist"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12847,6 +14982,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteAllowlist"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12865,6 +15003,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPackages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12883,6 +15024,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePackage_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12901,6 +15045,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deletePackage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12919,6 +15066,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesPipelines"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12937,6 +15087,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getPackagesprotectionRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12955,6 +15108,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postPackagesprotectionRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12973,6 +15129,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["patchPackagesprotectionRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -12991,6 +15150,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesprotectionrulesDeleteRule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13009,6 +15171,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSnapshot"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13027,6 +15192,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSnippets"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13045,6 +15213,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createSnippet"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13063,6 +15234,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveSnippet"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13081,6 +15255,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["snippets"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13099,6 +15276,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteSnippet"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13117,6 +15297,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["snippetsRaw"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13135,6 +15318,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["snippetsfilesRaw"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13153,6 +15339,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["snippetsUserAgentDetail"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13171,6 +15360,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStatistics"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13189,6 +15381,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTemplate_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13207,6 +15402,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTemplate_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13225,6 +15423,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCustomAttributes"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13243,6 +15444,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCustomAttribute"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13261,6 +15465,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["customAttributes"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13279,6 +15486,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCustomAttribute"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13297,6 +15507,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createRestore"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13315,6 +15528,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13333,6 +15549,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13351,6 +15570,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateUser"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13369,6 +15591,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listShareLocations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13387,6 +15612,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13405,6 +15633,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13423,6 +15654,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13441,6 +15675,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createFork"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13459,6 +15696,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["fork"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13477,6 +15717,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listForks"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13495,6 +15738,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPagesAccess"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13513,6 +15759,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createArchive"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13531,6 +15780,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createUnarchive"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13549,6 +15801,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createStar"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13567,6 +15822,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createUnstar"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13585,6 +15843,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStarrers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13603,6 +15864,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listLanguages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13621,6 +15885,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["updateFork"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13639,6 +15906,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createShare"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13657,6 +15927,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteShare"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13675,6 +15948,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["updateImportProjectMember"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13693,6 +15969,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listUsers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13711,6 +15990,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listGroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13729,6 +16011,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listInvitedGroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13747,6 +16032,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createHousekeeping"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13765,6 +16053,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createRepositorySize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13783,6 +16074,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["transfer"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13801,6 +16095,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTransferLocations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13819,6 +16116,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStorage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13837,6 +16137,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAuditEvents"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13855,6 +16158,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAuditEvent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13873,6 +16179,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProtectedBranches"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13891,6 +16200,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createProtectedBranche"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13909,6 +16221,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveProtectedBranche"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13927,6 +16242,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["protectedBranches"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13945,6 +16263,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteProtectedBranche"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13963,6 +16284,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProtectedTags"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13981,6 +16305,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createProtectedTag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -13999,6 +16326,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveProtectedTag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14017,6 +16347,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteProtectedTag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14035,6 +16368,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["simple"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14053,6 +16389,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["pypi"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14071,6 +16410,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagespypiAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14089,6 +16431,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listReleases"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14107,6 +16452,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createReleas"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14125,6 +16473,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveReleas"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14143,6 +16494,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["releases"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14161,6 +16515,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteReleas"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14179,6 +16536,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["evidence"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14197,6 +16557,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getReleasesassetsLinks"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14215,6 +16578,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postReleasesassetsLinks"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14233,6 +16599,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["releasesassetslinksRetrieveLink"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14251,6 +16620,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["putReleasesassetsLinks"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14269,6 +16641,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["releasesassetslinksDeleteLink"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14287,6 +16662,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRemoteMirrors"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14305,6 +16683,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createRemoteMirror"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14323,6 +16704,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveRemoteMirror"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14341,6 +16725,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["remoteMirrors"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14359,6 +16746,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteRemoteMirror"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14377,6 +16767,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["sync"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14395,6 +16788,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["publicKey"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14413,6 +16809,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repositoryTree"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14431,6 +16830,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repositoryblobsRaw"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14449,6 +16851,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveBlob"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14467,6 +16872,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["archive"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14485,6 +16893,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["compare"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14503,6 +16914,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["health"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14521,6 +16935,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["contributors"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14539,6 +16956,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeBase"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14557,6 +16977,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["changelog_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14575,6 +16998,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["changelog_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14593,6 +17019,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["rotate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14611,6 +17040,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesResourceMilestoneEvents"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14629,6 +17061,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesresourceMilestoneEventsRetrieveResourceMilestoneEvent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14647,6 +17082,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsResourceMilestoneEvents"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14665,6 +17103,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["mergeRequestsresourceMilestoneEventsRetrieveResourceMilestoneEvent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14683,6 +17124,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["rpm"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14701,6 +17145,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesrpmAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14719,6 +17166,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveRubygem"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14737,6 +17187,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMarshal48"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14755,6 +17208,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveGem"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14773,6 +17229,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesrubygemsapiv1gemsAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14791,6 +17250,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["gems"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14809,6 +17271,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["dependencies"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14827,6 +17292,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Search"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14845,6 +17313,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["submodules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14863,6 +17334,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAttestation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14881,6 +17355,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["attestationsDownload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14899,6 +17376,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getRepositoryTags"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14917,6 +17397,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["postRepositoryTags"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14935,6 +17418,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repositorytagsRetrieveTag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14953,6 +17439,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repositorytagsDeleteTag"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14971,6 +17460,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["tagsSignature"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -14989,6 +17481,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveModule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15007,6 +17502,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveState"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15025,6 +17523,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateState"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15043,6 +17544,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteState"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15061,6 +17565,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["terraformstateAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15079,6 +17586,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["lock_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15097,6 +17607,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["lock_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15115,6 +17628,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["stateProtectionRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15133,6 +17649,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["terraformstateversionsRetrieveVersion"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15151,6 +17670,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteVersion"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15169,6 +17691,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listWikis"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15187,6 +17712,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createWiki"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15205,6 +17733,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveWiki"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15223,6 +17754,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["wikis"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15241,6 +17775,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteWiki"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15259,6 +17796,9 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["attachments"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -15267,6 +17807,7 @@ export class AdminResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -15286,6 +17827,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveBatchedBackgroundMigration"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15304,6 +17848,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["resume"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15322,6 +17869,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["pause"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15340,6 +17890,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listBatchedBackgroundMigrations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15358,6 +17911,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["variables_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15376,6 +17932,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["variables_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15394,6 +17953,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15412,6 +17974,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["variables_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15430,6 +17995,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15448,6 +18016,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15466,6 +18037,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listClusters"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15484,6 +18058,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCluster"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15502,6 +18079,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["clusters"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15520,6 +18100,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCluster"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15538,6 +18121,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["add"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15556,6 +18142,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pending"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15574,6 +18163,9 @@ export class AdminResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["mark"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -15582,6 +18174,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -15601,6 +18194,9 @@ export class BroadcastMessagesResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15619,6 +18215,9 @@ export class BroadcastMessagesResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15637,6 +18236,9 @@ export class BroadcastMessagesResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15655,6 +18257,9 @@ export class BroadcastMessagesResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15673,6 +18278,9 @@ export class BroadcastMessagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -15681,6 +18289,7 @@ export class ApplicationsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -15700,6 +18309,9 @@ export class ApplicationsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15718,6 +18330,9 @@ export class ApplicationsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15736,6 +18351,9 @@ export class ApplicationsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15754,6 +18372,9 @@ export class ApplicationsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createRenewSecret"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -15762,6 +18383,7 @@ export class AvatarResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -15781,6 +18403,9 @@ export class AvatarResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -15789,6 +18414,7 @@ export class BulkImportsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -15808,6 +18434,9 @@ export class BulkImportsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15826,6 +18455,9 @@ export class BulkImportsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15844,6 +18476,9 @@ export class BulkImportsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEntities_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15862,6 +18497,9 @@ export class BulkImportsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15880,6 +18518,9 @@ export class BulkImportsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEntities_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15898,6 +18539,9 @@ export class BulkImportsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveEntity"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15916,6 +18560,9 @@ export class BulkImportsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["failures"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15934,6 +18581,9 @@ export class BulkImportsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["cancel"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -15942,6 +18592,7 @@ export class JobResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -15961,6 +18612,9 @@ export class JobResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -15979,6 +18633,9 @@ export class JobResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAllowedAgents"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -15987,6 +18644,7 @@ export class RunnersResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -16006,6 +18664,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16024,6 +18685,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16042,6 +18706,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["delete"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16060,6 +18727,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["managers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16078,6 +18748,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createVerify"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16096,6 +18769,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createResetAuthenticationToken_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16114,6 +18790,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["discovery"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16132,6 +18811,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAll"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16150,6 +18832,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16168,6 +18853,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16186,6 +18874,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16204,6 +18895,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listManagers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16222,6 +18916,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProjects"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16240,6 +18937,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listJobs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16258,6 +18958,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createResetAuthenticationToken_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16276,6 +18979,9 @@ export class RunnersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createResetRegistrationToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -16284,6 +18990,7 @@ export class JobsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -16303,6 +19010,9 @@ export class JobsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createRequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16321,6 +19031,9 @@ export class JobsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16339,6 +19052,9 @@ export class JobsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["trace"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16357,6 +19073,9 @@ export class JobsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["authorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16375,6 +19094,9 @@ export class JobsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listArtifacts"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16393,6 +19115,9 @@ export class JobsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createArtifact"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -16401,6 +19126,7 @@ export class ChaosResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -16423,6 +19149,9 @@ a 300ms delay. Returns 200 OK otherwise.
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -16431,6 +19160,7 @@ export class GroupResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -16450,6 +19180,9 @@ export class GroupResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packages"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16468,6 +19201,9 @@ export class GroupResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveP"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -16476,6 +19212,7 @@ export class PackagesResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -16495,6 +19232,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["authenticate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16513,6 +19253,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["checkCredentials"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16531,6 +19274,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["search_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16549,6 +19295,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["search_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16567,6 +19316,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["ping"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16585,6 +19337,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["conanspackagesRetrievePackage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16603,6 +19358,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveConan"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16621,6 +19379,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteConan"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16639,6 +19400,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesDigest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16657,6 +19421,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["digest_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16675,6 +19442,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesDownloadUrls"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16693,6 +19463,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["downloadUrls_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16711,6 +19484,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packagesUploadUrls"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16729,6 +19505,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["uploadUrls_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16747,6 +19526,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveExport"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16765,6 +19547,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["export"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16783,6 +19568,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["exportAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16801,6 +19589,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["filespackageRetrievePackage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16819,6 +19610,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["package"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16837,6 +19631,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["packageAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16855,6 +19652,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["bulk"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16873,6 +19673,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["quick"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16891,6 +19694,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["versions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16909,6 +19715,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["download"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -16927,6 +19736,9 @@ export class PackagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveV1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -16935,6 +19747,7 @@ export class ContainerRegistryEventResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -16954,6 +19767,9 @@ export class ContainerRegistryEventResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createEvent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -16962,6 +19778,7 @@ export class RegistryResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -16981,6 +19798,9 @@ export class RegistryResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveRepository"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -16989,6 +19809,7 @@ export class DatabasesResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17008,6 +19829,9 @@ export class DatabasesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["tables"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17016,6 +19840,7 @@ export class EventsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17035,6 +19860,9 @@ export class EventsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17043,6 +19871,7 @@ export class UsersResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17062,6 +19891,9 @@ export class UsersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEvents"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17080,6 +19912,9 @@ export class UsersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProjects"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17098,6 +19933,9 @@ export class UsersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listContributedProjects"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17116,6 +19954,9 @@ export class UsersResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStarredProjects"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17124,6 +19965,7 @@ export class FeaturesResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17143,6 +19985,9 @@ export class FeaturesResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17161,6 +20006,9 @@ export class FeaturesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDefinitions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17179,6 +20027,9 @@ export class FeaturesResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17197,6 +20048,9 @@ export class FeaturesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17205,6 +20059,7 @@ export class GeoResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17224,6 +20079,9 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProxy"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17242,6 +20100,9 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveRetrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17260,6 +20121,9 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["pipelineRefs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17278,6 +20142,9 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createStatu"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17297,6 +20164,9 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["infoRefsUploadPack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17316,6 +20186,9 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["uploadPack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17335,6 +20208,9 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["infoRefsReceivePack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17354,6 +20230,9 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["receivePack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17372,6 +20251,9 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["graphql"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17380,6 +20262,7 @@ export class GlqlResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17399,6 +20282,9 @@ export class GlqlResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17407,6 +20293,7 @@ export class IntegrationsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17426,6 +20313,9 @@ export class IntegrationsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["events"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17444,6 +20334,9 @@ export class IntegrationsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["interactions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17462,6 +20355,9 @@ export class IntegrationsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["options"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17480,6 +20376,9 @@ export class IntegrationsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["subscriptions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17488,6 +20387,7 @@ export class IssuesResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17507,6 +20407,9 @@ export class IssuesResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17525,6 +20428,9 @@ export class IssuesResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17533,6 +20439,7 @@ export class KeysResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17553,6 +20460,9 @@ export class KeysResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17572,6 +20482,9 @@ export class KeysResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17580,6 +20493,7 @@ export class MarkdownResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17599,6 +20513,9 @@ export class MarkdownResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17607,6 +20524,7 @@ export class MergeRequestsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17626,6 +20544,9 @@ export class MergeRequestsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17634,6 +20555,7 @@ export class NamespacesResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17653,6 +20575,9 @@ export class NamespacesResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17671,6 +20596,9 @@ export class NamespacesResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17689,6 +20617,9 @@ export class NamespacesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listGitlabSubscription"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17707,6 +20638,9 @@ export class NamespacesResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["limitExclusion_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17725,6 +20659,9 @@ export class NamespacesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["limitExclusion_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17743,6 +20680,9 @@ export class NamespacesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["limitExclusions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17761,6 +20701,9 @@ export class NamespacesResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17779,6 +20722,9 @@ export class NamespacesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listExists"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17787,6 +20733,7 @@ export class OfflineExportsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17806,6 +20753,9 @@ export class OfflineExportsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17824,6 +20774,9 @@ export class OfflineExportsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17842,6 +20795,9 @@ export class OfflineExportsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17850,6 +20806,7 @@ export class OfflineImportsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17869,6 +20826,9 @@ export class OfflineImportsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17877,6 +20837,7 @@ export class OrganizationsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17898,6 +20859,9 @@ export class OrganizationsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17906,6 +20870,7 @@ export class PagesResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17925,6 +20890,9 @@ export class PagesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDomains"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -17933,6 +20901,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -17952,6 +20921,9 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSelf"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17970,6 +20942,9 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["self"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -17988,6 +20963,9 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["associations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18006,6 +20984,9 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["rotate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18024,6 +21005,9 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18042,6 +21026,9 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18060,6 +21047,9 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18078,6 +21068,9 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createRotate"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18086,6 +21079,7 @@ export class SearchResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18105,6 +21099,9 @@ export class SearchResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18113,6 +21110,7 @@ export class SnippetsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18132,6 +21130,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18150,6 +21151,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18168,6 +21172,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPublic"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18186,6 +21193,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAll"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18204,6 +21214,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18222,6 +21235,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18240,6 +21256,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18258,6 +21277,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRaw"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18276,6 +21298,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["raw"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18294,6 +21319,9 @@ export class SnippetsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listUserAgentDetail"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18302,6 +21330,7 @@ export class SuggestionsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18321,6 +21350,9 @@ export class SuggestionsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["apply"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18339,6 +21371,9 @@ export class SuggestionsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["batchApply"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18347,6 +21382,7 @@ export class HooksResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18366,6 +21402,9 @@ export class HooksResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["urlVariables"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18384,6 +21423,9 @@ export class HooksResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUrlVariable"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18402,6 +21444,9 @@ export class HooksResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["customHeaders"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18420,6 +21465,9 @@ export class HooksResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCustomHeader"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18438,6 +21486,9 @@ export class HooksResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18456,6 +21507,9 @@ export class HooksResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18474,6 +21528,9 @@ export class HooksResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18492,6 +21549,9 @@ export class HooksResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["update"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18510,6 +21570,9 @@ export class HooksResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18528,6 +21591,9 @@ export class HooksResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18536,6 +21602,7 @@ export class FeatureFlagsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18555,6 +21622,9 @@ export class FeatureFlagsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveUnleash"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18573,6 +21643,9 @@ export class FeatureFlagsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["features_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18591,6 +21664,9 @@ export class FeatureFlagsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["clientFeatures"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18609,6 +21685,9 @@ export class FeatureFlagsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["register"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18627,6 +21706,9 @@ export class FeatureFlagsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["metrics"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18635,6 +21717,7 @@ export class UsageDataResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18654,6 +21737,9 @@ export class UsageDataResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createIncrementCounter"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18672,6 +21758,9 @@ export class UsageDataResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createIncrementUniqueUser"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18690,6 +21779,9 @@ export class UsageDataResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["trackEventsCreateTrackEvent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18708,6 +21800,9 @@ export class UsageDataResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMetricDefinitions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18726,6 +21821,9 @@ export class UsageDataResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listServicePing"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18744,6 +21842,9 @@ export class UsageDataResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["trackEventCreateTrackEvent"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18762,6 +21863,9 @@ export class UsageDataResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listNonSqlMetrics"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18780,6 +21884,9 @@ export class UsageDataResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listQueries"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18788,6 +21895,7 @@ export class UserCountsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18807,6 +21915,9 @@ export class UserCountsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18815,6 +21926,7 @@ export class UserResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18834,6 +21946,9 @@ export class UserResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createRunner"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18842,6 +21957,7 @@ export class ApplicationResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18861,6 +21977,9 @@ export class ApplicationResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPlanLimits"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18879,6 +21998,9 @@ export class ApplicationResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["planLimits"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18897,6 +22019,9 @@ export class ApplicationResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAppearance"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18915,6 +22040,9 @@ export class ApplicationResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["appearance"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -18933,6 +22061,9 @@ export class ApplicationResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStatistics"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18941,6 +22072,7 @@ export class DiscoverCertBasedClustersResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18960,6 +22092,9 @@ export class DiscoverCertBasedClustersResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -18968,6 +22103,7 @@ export class DeployKeysResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -18987,6 +22123,9 @@ export class DeployKeysResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19005,6 +22144,9 @@ export class DeployKeysResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -19013,6 +22155,7 @@ export class DeployTokensResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -19032,6 +22175,9 @@ export class DeployTokensResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -19040,6 +22186,7 @@ export class Import_Resource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -19059,6 +22206,9 @@ export class Import_Resource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createBitbucket"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19077,6 +22227,9 @@ export class Import_Resource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createBitbucketServer"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19095,6 +22248,9 @@ export class Import_Resource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createGithub"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19113,6 +22269,9 @@ export class Import_Resource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["cancel"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19131,6 +22290,9 @@ export class Import_Resource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["gists"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -19139,6 +22301,7 @@ export class SlackResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -19158,6 +22321,9 @@ export class SlackResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createTrigger"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -19166,6 +22332,7 @@ export class IssuesStatisticsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -19185,6 +22352,9 @@ export class IssuesStatisticsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -19193,6 +22363,7 @@ export class MetadataResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -19212,6 +22383,9 @@ export class MetadataResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -19220,6 +22394,7 @@ export class VersionResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -19239,6 +22414,9 @@ export class VersionResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -19247,6 +22425,7 @@ export class TopicsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -19266,6 +22445,9 @@ export class TopicsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["list"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19284,6 +22466,9 @@ export class TopicsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["create"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19302,6 +22487,9 @@ export class TopicsResource extends RpcTarget {
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19320,6 +22508,9 @@ export class TopicsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19338,6 +22529,9 @@ export class TopicsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 
@@ -19356,6 +22550,9 @@ export class TopicsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMerge"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -19364,6 +22561,7 @@ export class WebCommitsResource extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -19383,6 +22581,9 @@ export class WebCommitsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPublicKey"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}
 }
@@ -19393,208 +22594,209 @@ interface Env {
 
 export class GitlabCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
+	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
 	get groups(): GroupsResource {
-		return new GroupsResource(this.env.GITLAB_API_KEY, this.overrides["groups"] || {});
+		return new GroupsResource(this.env.GITLAB_API_KEY, this.overrides["groups"] || {}, this.runtimeConfig);
 	}
 
 	get projects(): ProjectsResource {
-		return new ProjectsResource(this.env.GITLAB_API_KEY, this.overrides["projects"] || {});
+		return new ProjectsResource(this.env.GITLAB_API_KEY, this.overrides["projects"] || {}, this.runtimeConfig);
 	}
 
 	get admin(): AdminResource {
-		return new AdminResource(this.env.GITLAB_API_KEY, this.overrides["admin"] || {});
+		return new AdminResource(this.env.GITLAB_API_KEY, this.overrides["admin"] || {}, this.runtimeConfig);
 	}
 
 	get broadcastMessages(): BroadcastMessagesResource {
-		return new BroadcastMessagesResource(this.env.GITLAB_API_KEY, this.overrides["broadcast_messages"] || {});
+		return new BroadcastMessagesResource(this.env.GITLAB_API_KEY, this.overrides["broadcast_messages"] || {}, this.runtimeConfig);
 	}
 
 	get applications(): ApplicationsResource {
-		return new ApplicationsResource(this.env.GITLAB_API_KEY, this.overrides["applications"] || {});
+		return new ApplicationsResource(this.env.GITLAB_API_KEY, this.overrides["applications"] || {}, this.runtimeConfig);
 	}
 
 	get avatar(): AvatarResource {
-		return new AvatarResource(this.env.GITLAB_API_KEY, this.overrides["avatar"] || {});
+		return new AvatarResource(this.env.GITLAB_API_KEY, this.overrides["avatar"] || {}, this.runtimeConfig);
 	}
 
 	get bulkImports(): BulkImportsResource {
-		return new BulkImportsResource(this.env.GITLAB_API_KEY, this.overrides["bulk_imports"] || {});
+		return new BulkImportsResource(this.env.GITLAB_API_KEY, this.overrides["bulk_imports"] || {}, this.runtimeConfig);
 	}
 
 	get job(): JobResource {
-		return new JobResource(this.env.GITLAB_API_KEY, this.overrides["job"] || {});
+		return new JobResource(this.env.GITLAB_API_KEY, this.overrides["job"] || {}, this.runtimeConfig);
 	}
 
 	get runners(): RunnersResource {
-		return new RunnersResource(this.env.GITLAB_API_KEY, this.overrides["runners"] || {});
+		return new RunnersResource(this.env.GITLAB_API_KEY, this.overrides["runners"] || {}, this.runtimeConfig);
 	}
 
 	get jobs(): JobsResource {
-		return new JobsResource(this.env.GITLAB_API_KEY, this.overrides["jobs"] || {});
+		return new JobsResource(this.env.GITLAB_API_KEY, this.overrides["jobs"] || {}, this.runtimeConfig);
 	}
 
 	get chaos(): ChaosResource {
-		return new ChaosResource(this.env.GITLAB_API_KEY, this.overrides["chaos"] || {});
+		return new ChaosResource(this.env.GITLAB_API_KEY, this.overrides["chaos"] || {}, this.runtimeConfig);
 	}
 
 	get group(): GroupResource {
-		return new GroupResource(this.env.GITLAB_API_KEY, this.overrides["group"] || {});
+		return new GroupResource(this.env.GITLAB_API_KEY, this.overrides["group"] || {}, this.runtimeConfig);
 	}
 
 	get packages(): PackagesResource {
-		return new PackagesResource(this.env.GITLAB_API_KEY, this.overrides["packages"] || {});
+		return new PackagesResource(this.env.GITLAB_API_KEY, this.overrides["packages"] || {}, this.runtimeConfig);
 	}
 
 	get containerRegistryEvent(): ContainerRegistryEventResource {
-		return new ContainerRegistryEventResource(this.env.GITLAB_API_KEY, this.overrides["container_registry_event"] || {});
+		return new ContainerRegistryEventResource(this.env.GITLAB_API_KEY, this.overrides["container_registry_event"] || {}, this.runtimeConfig);
 	}
 
 	get registry(): RegistryResource {
-		return new RegistryResource(this.env.GITLAB_API_KEY, this.overrides["registry"] || {});
+		return new RegistryResource(this.env.GITLAB_API_KEY, this.overrides["registry"] || {}, this.runtimeConfig);
 	}
 
 	get databases(): DatabasesResource {
-		return new DatabasesResource(this.env.GITLAB_API_KEY, this.overrides["databases"] || {});
+		return new DatabasesResource(this.env.GITLAB_API_KEY, this.overrides["databases"] || {}, this.runtimeConfig);
 	}
 
 	get events(): EventsResource {
-		return new EventsResource(this.env.GITLAB_API_KEY, this.overrides["events"] || {});
+		return new EventsResource(this.env.GITLAB_API_KEY, this.overrides["events"] || {}, this.runtimeConfig);
 	}
 
 	get users(): UsersResource {
-		return new UsersResource(this.env.GITLAB_API_KEY, this.overrides["users"] || {});
+		return new UsersResource(this.env.GITLAB_API_KEY, this.overrides["users"] || {}, this.runtimeConfig);
 	}
 
 	get features(): FeaturesResource {
-		return new FeaturesResource(this.env.GITLAB_API_KEY, this.overrides["features"] || {});
+		return new FeaturesResource(this.env.GITLAB_API_KEY, this.overrides["features"] || {}, this.runtimeConfig);
 	}
 
 	get geo(): GeoResource {
-		return new GeoResource(this.env.GITLAB_API_KEY, this.overrides["geo"] || {});
+		return new GeoResource(this.env.GITLAB_API_KEY, this.overrides["geo"] || {}, this.runtimeConfig);
 	}
 
 	get glql(): GlqlResource {
-		return new GlqlResource(this.env.GITLAB_API_KEY, this.overrides["glql"] || {});
+		return new GlqlResource(this.env.GITLAB_API_KEY, this.overrides["glql"] || {}, this.runtimeConfig);
 	}
 
 	get integrations(): IntegrationsResource {
-		return new IntegrationsResource(this.env.GITLAB_API_KEY, this.overrides["integrations"] || {});
+		return new IntegrationsResource(this.env.GITLAB_API_KEY, this.overrides["integrations"] || {}, this.runtimeConfig);
 	}
 
 	get issues(): IssuesResource {
-		return new IssuesResource(this.env.GITLAB_API_KEY, this.overrides["issues"] || {});
+		return new IssuesResource(this.env.GITLAB_API_KEY, this.overrides["issues"] || {}, this.runtimeConfig);
 	}
 
 	get keys(): KeysResource {
-		return new KeysResource(this.env.GITLAB_API_KEY, this.overrides["keys"] || {});
+		return new KeysResource(this.env.GITLAB_API_KEY, this.overrides["keys"] || {}, this.runtimeConfig);
 	}
 
 	get markdown(): MarkdownResource {
-		return new MarkdownResource(this.env.GITLAB_API_KEY, this.overrides["markdown"] || {});
+		return new MarkdownResource(this.env.GITLAB_API_KEY, this.overrides["markdown"] || {}, this.runtimeConfig);
 	}
 
 	get mergeRequests(): MergeRequestsResource {
-		return new MergeRequestsResource(this.env.GITLAB_API_KEY, this.overrides["merge_requests"] || {});
+		return new MergeRequestsResource(this.env.GITLAB_API_KEY, this.overrides["merge_requests"] || {}, this.runtimeConfig);
 	}
 
 	get namespaces(): NamespacesResource {
-		return new NamespacesResource(this.env.GITLAB_API_KEY, this.overrides["namespaces"] || {});
+		return new NamespacesResource(this.env.GITLAB_API_KEY, this.overrides["namespaces"] || {}, this.runtimeConfig);
 	}
 
 	get offlineExports(): OfflineExportsResource {
-		return new OfflineExportsResource(this.env.GITLAB_API_KEY, this.overrides["offline_exports"] || {});
+		return new OfflineExportsResource(this.env.GITLAB_API_KEY, this.overrides["offline_exports"] || {}, this.runtimeConfig);
 	}
 
 	get offlineImports(): OfflineImportsResource {
-		return new OfflineImportsResource(this.env.GITLAB_API_KEY, this.overrides["offline_imports"] || {});
+		return new OfflineImportsResource(this.env.GITLAB_API_KEY, this.overrides["offline_imports"] || {}, this.runtimeConfig);
 	}
 
 	get organizations(): OrganizationsResource {
-		return new OrganizationsResource(this.env.GITLAB_API_KEY, this.overrides["organizations"] || {});
+		return new OrganizationsResource(this.env.GITLAB_API_KEY, this.overrides["organizations"] || {}, this.runtimeConfig);
 	}
 
 	get pages(): PagesResource {
-		return new PagesResource(this.env.GITLAB_API_KEY, this.overrides["pages"] || {});
+		return new PagesResource(this.env.GITLAB_API_KEY, this.overrides["pages"] || {}, this.runtimeConfig);
 	}
 
 	get personalAccessTokens(): PersonalAccessTokensResource {
-		return new PersonalAccessTokensResource(this.env.GITLAB_API_KEY, this.overrides["personal_access_tokens"] || {});
+		return new PersonalAccessTokensResource(this.env.GITLAB_API_KEY, this.overrides["personal_access_tokens"] || {}, this.runtimeConfig);
 	}
 
 	get search(): SearchResource {
-		return new SearchResource(this.env.GITLAB_API_KEY, this.overrides["search"] || {});
+		return new SearchResource(this.env.GITLAB_API_KEY, this.overrides["search"] || {}, this.runtimeConfig);
 	}
 
 	get snippets(): SnippetsResource {
-		return new SnippetsResource(this.env.GITLAB_API_KEY, this.overrides["snippets"] || {});
+		return new SnippetsResource(this.env.GITLAB_API_KEY, this.overrides["snippets"] || {}, this.runtimeConfig);
 	}
 
 	get suggestions(): SuggestionsResource {
-		return new SuggestionsResource(this.env.GITLAB_API_KEY, this.overrides["suggestions"] || {});
+		return new SuggestionsResource(this.env.GITLAB_API_KEY, this.overrides["suggestions"] || {}, this.runtimeConfig);
 	}
 
 	get hooks(): HooksResource {
-		return new HooksResource(this.env.GITLAB_API_KEY, this.overrides["hooks"] || {});
+		return new HooksResource(this.env.GITLAB_API_KEY, this.overrides["hooks"] || {}, this.runtimeConfig);
 	}
 
 	get featureFlags(): FeatureFlagsResource {
-		return new FeatureFlagsResource(this.env.GITLAB_API_KEY, this.overrides["feature_flags"] || {});
+		return new FeatureFlagsResource(this.env.GITLAB_API_KEY, this.overrides["feature_flags"] || {}, this.runtimeConfig);
 	}
 
 	get usageData(): UsageDataResource {
-		return new UsageDataResource(this.env.GITLAB_API_KEY, this.overrides["usage_data"] || {});
+		return new UsageDataResource(this.env.GITLAB_API_KEY, this.overrides["usage_data"] || {}, this.runtimeConfig);
 	}
 
 	get userCounts(): UserCountsResource {
-		return new UserCountsResource(this.env.GITLAB_API_KEY, this.overrides["user_counts"] || {});
+		return new UserCountsResource(this.env.GITLAB_API_KEY, this.overrides["user_counts"] || {}, this.runtimeConfig);
 	}
 
 	get user(): UserResource {
-		return new UserResource(this.env.GITLAB_API_KEY, this.overrides["user"] || {});
+		return new UserResource(this.env.GITLAB_API_KEY, this.overrides["user"] || {}, this.runtimeConfig);
 	}
 
 	get application(): ApplicationResource {
-		return new ApplicationResource(this.env.GITLAB_API_KEY, this.overrides["application"] || {});
+		return new ApplicationResource(this.env.GITLAB_API_KEY, this.overrides["application"] || {}, this.runtimeConfig);
 	}
 
 	get discoverCertBasedClusters(): DiscoverCertBasedClustersResource {
-		return new DiscoverCertBasedClustersResource(this.env.GITLAB_API_KEY, this.overrides["discover-cert-based-clusters"] || {});
+		return new DiscoverCertBasedClustersResource(this.env.GITLAB_API_KEY, this.overrides["discover-cert-based-clusters"] || {}, this.runtimeConfig);
 	}
 
 	get deployKeys(): DeployKeysResource {
-		return new DeployKeysResource(this.env.GITLAB_API_KEY, this.overrides["deploy_keys"] || {});
+		return new DeployKeysResource(this.env.GITLAB_API_KEY, this.overrides["deploy_keys"] || {}, this.runtimeConfig);
 	}
 
 	get deployTokens(): DeployTokensResource {
-		return new DeployTokensResource(this.env.GITLAB_API_KEY, this.overrides["deploy_tokens"] || {});
+		return new DeployTokensResource(this.env.GITLAB_API_KEY, this.overrides["deploy_tokens"] || {}, this.runtimeConfig);
 	}
 
 	get import_(): Import_Resource {
-		return new Import_Resource(this.env.GITLAB_API_KEY, this.overrides["import"] || {});
+		return new Import_Resource(this.env.GITLAB_API_KEY, this.overrides["import"] || {}, this.runtimeConfig);
 	}
 
 	get slack(): SlackResource {
-		return new SlackResource(this.env.GITLAB_API_KEY, this.overrides["slack"] || {});
+		return new SlackResource(this.env.GITLAB_API_KEY, this.overrides["slack"] || {}, this.runtimeConfig);
 	}
 
 	get issuesStatistics(): IssuesStatisticsResource {
-		return new IssuesStatisticsResource(this.env.GITLAB_API_KEY, this.overrides["issues_statistics"] || {});
+		return new IssuesStatisticsResource(this.env.GITLAB_API_KEY, this.overrides["issues_statistics"] || {}, this.runtimeConfig);
 	}
 
 	get metadata(): MetadataResource {
-		return new MetadataResource(this.env.GITLAB_API_KEY, this.overrides["metadata"] || {});
+		return new MetadataResource(this.env.GITLAB_API_KEY, this.overrides["metadata"] || {}, this.runtimeConfig);
 	}
 
 	get version(): VersionResource {
-		return new VersionResource(this.env.GITLAB_API_KEY, this.overrides["version"] || {});
+		return new VersionResource(this.env.GITLAB_API_KEY, this.overrides["version"] || {}, this.runtimeConfig);
 	}
 
 	get topics(): TopicsResource {
-		return new TopicsResource(this.env.GITLAB_API_KEY, this.overrides["topics"] || {});
+		return new TopicsResource(this.env.GITLAB_API_KEY, this.overrides["topics"] || {}, this.runtimeConfig);
 	}
 
 	get webCommits(): WebCommitsResource {
-		return new WebCommitsResource(this.env.GITLAB_API_KEY, this.overrides["web_commits"] || {});
+		return new WebCommitsResource(this.env.GITLAB_API_KEY, this.overrides["web_commits"] || {}, this.runtimeConfig);
 	}
 }

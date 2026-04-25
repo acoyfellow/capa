@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: The Jira Cloud platform REST API v1001.0.0-SNAPSHOT-339bca99031b7c334bd2d48643bc048f33ccb0cf
-// Generated:   2026-04-25T14:20:36.092Z
+// Generated:   2026-04-25T14:45:56.862Z
 // Operations:  603
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";

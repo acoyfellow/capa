@@ -63,7 +63,7 @@ const { result: transition } = await env.JIRA.issueTransitions.doTransition({
 wrangler secret put JIRA_BASE_URL_OVERRIDE   # e.g. https://jira.cfdata.org
 ```
 
-The runtime will use `/rest/api/2` automatically when the base URL is overridden (Jira Server) vs `/rest/api/3` (Jira Cloud). The generated types target Cloud, but the REST shapes are backward-compatible for the endpoints used.
+When `JIRA_BASE_URL_OVERRIDE` is set, the runtime automatically switches API paths from `/rest/api/3` to `/rest/api/2` (Jira Server / Data Center convention). If you need a different prefix, edit `src/index.ts`.
 
 ### Add a custom evidence override
 
