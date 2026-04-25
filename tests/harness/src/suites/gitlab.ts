@@ -3,7 +3,7 @@ import type { TypedSmokeTest, CapaBinding, ProofResult } from "../types.ts";
 interface GitlabBinding extends CapaBinding {
 	groups: { list: () => Promise<ProofResult> };
 	projects: { list: () => Promise<ProofResult> };
-	user_counts: { list: () => Promise<ProofResult> };
+	userCounts: { list: () => Promise<ProofResult> };
 }
 
 export const gitlabSuite: TypedSmokeTest<GitlabBinding>[] = [
@@ -35,7 +35,7 @@ export const gitlabSuite: TypedSmokeTest<GitlabBinding>[] = [
 		name: "user-counts",
 		description: "GET /api/v4/user_counts — low-risk user metadata",
 		run: async (target) => {
-			const { result, evidence } = await target.user_counts.list();
+			const { result, evidence } = await target.userCounts.list();
 			return {
 				passed: evidence.verdict === "pass" && result !== null,
 				evidence,
