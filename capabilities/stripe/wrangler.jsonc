@@ -5,13 +5,9 @@
 	"compatibility_date": "2026-04-25",
 	"compatibility_flags": ["nodejs_compat"],
 	"workers_dev": false,
-	"observability": { "enabled": true },
-	"vars": {
-		"CAPA_VERSION": "v0",
-		"CAPA_NAME": "stripe"
-	}
+	"observability": { "enabled": true }
 	// Required secrets (set after deploy):
-	//   wrangler secret put STRIPE_SECRET_KEY
+	//   wrangler secret put STRIPE_API_KEY
 	//
 	// Bind from a caller Worker:
 	//   "services": [

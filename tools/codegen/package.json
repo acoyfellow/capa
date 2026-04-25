@@ -1,0 +1,19 @@
+{
+	"name": "@capa/codegen",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"bin": {
+		"capa-codegen": "./src/cli.ts"
+	},
+	"scripts": {
+		"start": "bun src/cli.ts"
+	},
+	"dependencies": {
+		"openapi-typescript": "^7.13.0"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.1.0",
+		"typescript": "^5.6.0"
+	}
+}

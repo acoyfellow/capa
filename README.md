@@ -3,12 +3,12 @@
 Third-party APIs as Cloudflare service bindings that return their own receipts.
 
 ```ts
-const { result, evidence } = await env.STRIPE_PROOF.charge({
+const { result, evidence } = await env.STRIPE_PROOF.charges.create({
   amount: 1000, currency: "usd", source: "tok_visa",
 });
 ```
 
-Each call returns the result and an evidence bundle: what was checked before, what call was made, which postconditions passed.
+Each call returns the result and an evidence bundle. Capabilities are generated from OpenAPI specs — not hand-written wrappers.
 
 ---
 
@@ -16,13 +16,13 @@ Each call returns the result and an evidence bundle: what was checked before, wh
 
 A worked example — caller Worker that uses `capa-stripe` end-to-end.
 
-1. Click the Deploy button in [capabilities/stripe/README.md](capabilities/stripe/README.md). Cloudflare clones the repo into your GitHub and deploys `capa-stripe` to your account.
+1. Click the Deploy button in [capabilities/stripe/README.md](capabilities/stripe/README.md). Cloudflare clones the repo into your GitHub and deploys `capa-stripe` to your account. The deployed Worker exposes the entire Stripe API (534 operations) as a JSRPC binding.
 
 2. Set the upstream key on the deployed Worker:
 
     ```bash
     cd capa/capabilities/stripe
-    wrangler secret put STRIPE_SECRET_KEY
+    wrangler secret put STRIPE_API_KEY
     ```
 
 3. In a separate caller Worker, declare the binding:
@@ -36,13 +36,13 @@ A worked example — caller Worker that uses `capa-stripe` end-to-end.
     }
     ```
 
-4. Call it:
+4. Call any Stripe endpoint:
 
     ```ts
     // your-app/src/index.ts
     export default {
       async fetch(request, env) {
-        const { result, evidence } = await env.STRIPE_PROOF.charge({
+        const { result, evidence } = await env.STRIPE_PROOF.charges.create({
           amount: 1000, currency: "usd", source: "tok_visa",
         });
 
@@ -60,8 +60,6 @@ A worked example — caller Worker that uses `capa-stripe` end-to-end.
 ---
 
 ## How-to
-
-Specific tasks against an installed capability.
 
 ### Install a capability
 
@@ -90,10 +88,20 @@ The required secret name is documented in each capability's `README.md`.
 }
 ```
 
+### Generate a new capability from an OpenAPI spec
+
+```bash
+cd tools/codegen
+bun src/cli.ts \
+  --spec <url-or-path-to-openapi-spec> \
+  --out  ../../capabilities/<name> \
+  --name <name>
+```
+
 ### Persist an evidence bundle
 
 ```ts
-const { result, evidence } = await env.STRIPE_PROOF.charge(input);
+const { result, evidence } = await env.STRIPE_PROOF.charges.create(input);
 await env.AUDIT_BUCKET.put(`${evidence.startedAt}.json`, JSON.stringify(evidence));
 ```
 
@@ -110,32 +118,45 @@ if (evidence.verdict === "fail") {
 
 ## Reference
 
+### Repo layout
+
+| Path | Purpose |
+|---|---|
+| `tools/codegen/` | OpenAPI → capability generator |
+| `capabilities/<name>/src/generated/` | Generated code (do not edit) |
+| `capabilities/<name>/src/index.ts` | Worker entry |
+| `capabilities/<name>/src/overrides.ts` | Per-method evidence overrides |
+| `capabilities/<name>/wrangler.jsonc` | Deployment config |
+
 ### Available capabilities
 
-| Capability | Methods | Side effects |
-|---|---|---|
-| [stripe](capabilities/stripe) | `charge`, `refund` | money-moves |
+| Capability | Operations | Namespaces | Bundle (gz) |
+|---|---|---|---|
+| [stripe](capabilities/stripe) | 534 | 73 | 36 KiB |
 
 ### Evidence bundle shape
 
 ```ts
 {
-  capability:  string;
-  version:     string;
-  method:      string;
-  startedAt:   string;        // ISO 8601
-  durationMs:  number;
-  observe:     Array<{ kind: string; passed: boolean; detail?: unknown }>;
-  act:         { request: { method: string; url: string }; status: number };
-  assert:      Array<{ kind: string; expected: unknown; actual: unknown; passed: boolean }>;
-  verdict:     "pass" | "fail";
+  capability:   string;
+  operationId:  string;        // e.g. "PostCharges"
+  namespace:    string;        // e.g. "charges"
+  method:       string;        // e.g. "create"
+  http:         string;        // "get" | "post" | "put" | "patch" | "delete"
+  path:         string;        // "/v1/charges"
+  risk:         "low" | "medium" | "high";
+  startedAt:    string;        // ISO 8601
+  durationMs:   number;
+  act:          { request: { method: string; url: string }; status: number };
+  assert:       Array<{ kind: string; expected: unknown; actual: unknown; passed: boolean }>;
+  verdict:      "pass" | "fail";
 }
 ```
 
 ### Method return shape
 
 ```ts
-{ result: T | null; evidence: Evidence }
+{ result: T | null; evidence: EvidenceBundle }
 ```
 
 `result` is `null` when `verdict === "fail"`.
@@ -145,17 +166,10 @@ if (evidence.verdict === "fail") {
 | Property | Value |
 |---|---|
 | Public HTTP route | `fetch()` returns 404 |
-| Side effects per method | Exactly one upstream HTTP request |
+| Side effects per method | One upstream HTTP request |
 | Evidence type | Plain JSON, no streams or handles |
 | Auth | `wrangler secret put` |
-| Billing | Caller-pays (the deploying account is billed) |
-
-### Repo layout
-
-| Path | Purpose |
-|---|---|
-| `capabilities/<name>/wrangler.jsonc` | Worker config |
-| `capabilities/<name>/src/index.ts` | `WorkerEntrypoint` implementation |
+| Billing | Caller-pays |
 
 ---
 
@@ -163,7 +177,29 @@ if (evidence.verdict === "fail") {
 
 ### Why this exists
 
-A wrapper Worker that returns `{ result }` is a two-day project. A wrapper that returns `{ result, evidence }` is a different shape: the call carries its own record of what was checked and what happened. Caller decides whether to trust, persist, or audit.
+A wrapper Worker that returns `{ result }` is a two-day project. A wrapper that returns `{ result, evidence }` is a different shape — the call carries its own record of what was checked and what happened. Caller decides whether to trust, persist, or audit.
+
+### How capabilities are built
+
+Capabilities are not hand-coded. Each one is generated from the upstream API's OpenAPI spec.
+
+```
+spec.openapi.json
+       │
+       ▼
+   capa-codegen ──▶ src/generated/schema.gen.ts        (types from openapi-typescript)
+                ──▶ src/generated/capability.gen.ts    (RpcTarget classes per namespace)
+                ──▶ src/generated/manifest.gen.ts      (operationId → metadata)
+                ──▶ src/generated/runtime.ts           (evidence-aware fetch)
+       │
+       ▼
+   src/index.ts (hand-written: ~30 LOC, applies per-method overrides)
+       │
+       ▼
+   deployed Worker
+```
+
+The hand-written layer is thin. The per-method overrides for richer evidence are the only thing that grows with API surface — and only for the methods you care to assert against.
 
 ### How the loop works
 
@@ -171,17 +207,17 @@ A wrapper Worker that returns `{ result }` is a two-day project. A wrapper that 
 ┌──────────────┐         ┌────────────────────┐         ┌────────────┐
 │ caller       │  RPC    │ capa-{capability}  │  HTTP   │  upstream  │
 │ Worker       ├────────▶│  WorkerEntrypoint  ├────────▶│  third API │
-└──────────────┘         │  observe ─ act ─ assert ─┐   └────────────┘
-       ▲                 └────────────────────┘   │
+└──────────────┘         │     act ─ assert ─┐│         └────────────┘
+       ▲                 └────────────────────┘
        │                                          │
        └────── { result, evidence } ◀─────────────┘
 ```
 
-`observe` reads the world before the call. `act` performs the single side effect. `assert` checks itemized postconditions on the response. The verdict is the AND of every assertion.
+`act` performs the upstream call. `assert` checks itemized postconditions on the response — generic HTTP-status by default, richer per-method overrides where defined. The verdict is the AND of every assertion.
 
 ### Why one Worker per capability
 
-Independent versioning, independent secrets, independent blast radius. A single capability per Worker keeps the `WorkerEntrypoint` named-class binding clean — the binding name maps 1:1 to a capability surface.
+Independent versioning, independent secrets, independent blast radius. A single capability per Worker keeps the `WorkerEntrypoint` class binding clean — the binding name maps 1:1 to a capability surface.
 
 ### Why no registry
 
