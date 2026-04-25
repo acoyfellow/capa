@@ -1,0 +1,88 @@
+---
+title: capa
+description: Third-party APIs as proof-carrying Cloudflare service bindings.
+template: splash
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Third-party APIs as proof-carrying service bindings
+
+Every call returns `{ result, evidence }`. The evidence is a plain JSON bundle you can persist, audit, or hash.
+
+```ts
+const { result, evidence } = await env.STRIPE.charges.create({
+  amount: 1000,
+  currency: "usd",
+  source: "tok_visa",
+});
+
+if (evidence.verdict === "fail") {
+  return Response.json({ error: "verification failed", evidence }, { status: 502 });
+}
+```
+
+## Architecture
+
+```
+ caller Worker        JSRPC        capa capability        HTTP        upstream API
+┌─────────────┐    ───────▶    ┌────────────────┐    ───────▶    ┌────────────┐
+│  env.STRIPE │               │ WorkerEntrypoint │               │  Stripe /  │
+│   .charges  │◀──────────────│  fetchProof()    │◀──────────────│  GitLab /  │
+│   .create() │   {result,    │  act + assert    │               │  Jira      │
+└─────────────┘    evidence}  └────────────────┘               └────────────┘
+```
+
+`fetchProof` performs the upstream HTTP call (`act`), then runs generic + per-method assertions (`assert`). The verdict is the AND of every assertion.
+
+## Quick start
+
+### 1. Deploy a capability
+
+Click a Deploy button below. Cloudflare clones the repo and deploys the Worker.
+
+### 2. Set the API key
+
+```bash
+cd capabilities/stripe
+wrangler secret put STRIPE_API_KEY
+```
+
+### 3. Bind and call
+
+```jsonc
+// wrangler.jsonc
+{ "services": [
+  { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
+]}
+```
+
+```ts
+const { result, evidence } = await env.STRIPE.charges.create({
+  amount: 1000, currency: "usd", source: "tok_visa",
+});
+```
+
+## Capabilities
+
+| Capability | Operations | Namespaces | Bundle (gz) | Auth | Body |
+|---|---|---|---|---|---|
+| **stripe** | 534 | 73 | 38 KiB | Bearer | Form |
+| **gitlab** | 1,050 | 51 | 54 KiB | Private-Token | JSON |
+| **jira** | 603 | 76 | 48 KiB | Basic | JSON |
+
+<CardGrid>
+  <Card title="Tutorial" icon="open-book">
+    [Charge a card end-to-end](/tutorial)
+  </Card>
+  <Card title="How It Works" icon="information">
+    [The loop, JSRPC, and evidence](/how-it-works)
+  </Card>
+  <Card title="Reference" icon="document">
+    [Capabilities, codegen, overrides](/reference)
+  </Card>
+</CardGrid>
+
+## Status
+
+`v0`. Liquid. Ship the thinnest correct thing.

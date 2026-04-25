@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"description": "Third-party APIs as proof-carrying Cloudflare service bindings.",
-	"workspaces": ["capabilities/*", "tests/harness"],
+	"workspaces": ["capabilities/*", "tests/harness", "docs"],
 	"scripts": {
 		"typecheck": "cd capabilities/stripe && tsc --noEmit && cd ../gitlab && tsc --noEmit && cd ../jira && tsc --noEmit && cd ../../tests/harness && tsc --noEmit",
 		"deploy:stripe": "cd capabilities/stripe && wrangler deploy",
