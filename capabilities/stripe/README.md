@@ -57,7 +57,6 @@ const { result, evidence } = await env.STRIPE_PROOF.refund({
 |---|---|---|
 | `charge` | `{ amount, currency, source, description? }` | `httpStatus==200`, `id ~ ^ch_`, `status==succeeded`, `paid==true` |
 | `refund` | `{ chargeId, amount? }` | `httpStatus==200`, `id ~ ^re_`, `status==succeeded` |
-| `spec` | `()` | n/a — returns the capability's `proof-spec.v0.json` |
 
 ### Side effects
 
@@ -65,7 +64,6 @@ const { result, evidence } = await env.STRIPE_PROOF.refund({
 |---|---|
 | `charge` | money-moves |
 | `refund` | money-moves |
-| `spec` | none |
 
 ### Required secrets
 
@@ -80,10 +78,3 @@ const { result, evidence } = await env.STRIPE_PROOF.refund({
 ### Public HTTP route
 
 `fetch()` returns 404. The Worker is JSRPC-only.
-
----
-
-## See also
-
-- [`proof-spec.v0.json`](proof-spec.v0.json) — the capability's contract
-- [`../../README.md`](../../README.md) — the `capa` thesis

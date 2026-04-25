@@ -1,6 +1,6 @@
 # capa
 
-Third-party APIs as proof-carrying Cloudflare service bindings.
+Third-party APIs as Cloudflare service bindings that return their own receipts.
 
 ```ts
 const { result, evidence } = await env.STRIPE_PROOF.charge({
@@ -8,7 +8,7 @@ const { result, evidence } = await env.STRIPE_PROOF.charge({
 });
 ```
 
-Each call returns the result and an evidence bundle: `observe + act + assert + verdict`.
+Each call returns the result and an evidence bundle: what was checked before, what call was made, which postconditions passed.
 
 ---
 
@@ -114,7 +114,7 @@ if (evidence.verdict === "fail") {
 
 | Capability | Methods | Side effects |
 |---|---|---|
-| [stripe](capabilities/stripe) | `charge`, `refund`, `spec` | money-moves |
+| [stripe](capabilities/stripe) | `charge`, `refund` | money-moves |
 
 ### Evidence bundle shape
 
@@ -154,9 +154,7 @@ if (evidence.verdict === "fail") {
 
 | Path | Purpose |
 |---|---|
-| `proof-spec.v0.md` | Schema contract |
 | `capabilities/<name>/wrangler.jsonc` | Worker config |
-| `capabilities/<name>/proof-spec.v0.json` | Capability's contract |
 | `capabilities/<name>/src/index.ts` | `WorkerEntrypoint` implementation |
 
 ---
@@ -165,9 +163,7 @@ if (evidence.verdict === "fail") {
 
 ### Why this exists
 
-> "The cloudflare 'bindings instead of env vars' thing is so good that I sometimes wonder why they don't have wrappers for popular third party APIs. `env.STRIPE` — that sort of thing." — [@jonas](https://x.com/jonas)
-
-A wrapper Worker that returns `{ result }` is a two-day project. A wrapper that returns `{ result, evidence }` is a different primitive: the call carries its own proof of correctness. Caller decides whether to trust, persist, or audit.
+A wrapper Worker that returns `{ result }` is a two-day project. A wrapper that returns `{ result, evidence }` is a different shape: the call carries its own record of what was checked and what happened. Caller decides whether to trust, persist, or audit.
 
 ### How the loop works
 
@@ -185,7 +181,7 @@ A wrapper Worker that returns `{ result }` is a two-day project. A wrapper that 
 
 ### Why one Worker per capability
 
-Independent versioning, independent secrets, independent blast radius. A single capability per Worker is also what makes `WorkerEntrypoint` named-class binding clean — the binding name maps 1:1 to a capability surface.
+Independent versioning, independent secrets, independent blast radius. A single capability per Worker keeps the `WorkerEntrypoint` named-class binding clean — the binding name maps 1:1 to a capability surface.
 
 ### Why no registry
 
@@ -195,16 +191,8 @@ A capability is a Git repo. Forks are install. A central index would add a new c
 
 Public Workers with bindings are an incident pattern. Capabilities have no public route by design. Bind them; do not expose them.
 
-### Related
-
-| Project | Relationship |
-|---|---|
-| [unsurf](https://github.com/acoyfellow/unsurf) | Same loop at the DOM altitude |
-| [gateproof](https://github.com/acoyfellow/gateproof) | Same loop at the HTTP altitude |
-| Cramer's [vitest-evals RFC #39](https://github.com/getsentry/sentry/discussions) | Externally convergent shape |
-
 ---
 
 ## Status
 
-`v0`. Liquid. The schema will change when two external adopters have real pain. Until then, ship the thinnest correct thing.
+`v0`. Liquid. Ship the thinnest correct thing.

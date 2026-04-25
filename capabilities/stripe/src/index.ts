@@ -1,5 +1,4 @@
 import { WorkerEntrypoint } from "cloudflare:workers";
-import proofSpec from "../proof-spec.v0.json";
 
 interface Env {
 	STRIPE_SECRET_KEY: string;
@@ -62,15 +61,16 @@ async function fetchJson(
 }
 
 /**
- * StripeCapability — a `capa` proof-carrying wrapper around Stripe's API.
+ * StripeCapability — Stripe wrapped as a JSRPC capability.
  *
  * Bind from a caller Worker:
  *   "services": [{ "binding": "STRIPE_PROOF", "service": "capa-stripe",
  *                  "entrypoint": "StripeCapability" }]
  *
- * Each method returns `{ result, evidence }`. The evidence is what makes
- * the call verifiable: observe + act + assert + verdict, suitable for
- * persisting (R2, Artifacts git note, etc.) or auditing in real time.
+ * Each method returns { result, evidence }. The evidence records what was
+ * checked before the call, what call was made, and which postconditions
+ * passed — so callers can audit, persist, or hash the result of any
+ * money-moving operation without trusting the wrapper to be correct.
  */
 export class StripeCapability extends WorkerEntrypoint<Env> {
 	async charge(input: ChargeInput): Promise<ProofResult<any>> {
@@ -197,15 +197,6 @@ export class StripeCapability extends WorkerEntrypoint<Env> {
 				verdict,
 			},
 		};
-	}
-
-	/**
-	 * Return the proof-spec this capability claims to honor.
-	 * Callers can fetch it once at boot to wire assertion-aware tooling
-	 * (cloudeval scorers, AGW PEP, vitest-evals harnesses).
-	 */
-	async spec(): Promise<unknown> {
-		return proofSpec;
 	}
 
 	private async probe(url: string): Promise<boolean> {

@@ -13,9 +13,8 @@
 	// Required secrets (set after deploy):
 	//   wrangler secret put STRIPE_SECRET_KEY
 	//
-	// This Worker exposes JSRPC entrypoints. Bind from a caller Worker:
+	// Bind from a caller Worker:
 	//   "services": [
 	//     { "binding": "STRIPE_PROOF", "service": "capa-stripe", "entrypoint": "StripeCapability" }
 	//   ]
-	// Then: const { result, evidence } = await env.STRIPE_PROOF.charge({ amount, currency, source });
 }
