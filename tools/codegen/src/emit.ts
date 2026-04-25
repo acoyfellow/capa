@@ -48,6 +48,9 @@ function emitMethod(op: Operation): string {
 			risk: ${JSON.stringify(op.risk)},
 			body${op.hasBody ? "" : ": undefined"},
 			overrides: this.overrides[${JSON.stringify(op.method)}],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
 		});
 	}`;
 }
@@ -60,6 +63,7 @@ export class ${className} extends RpcTarget {
 	constructor(
 		private apiKey: string,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
 		super();
 	}
@@ -71,25 +75,13 @@ function emitWorkerEntrypoint(
 	namespaces: Record<string, Operation[]>,
 	capabilityName: string,
 ): string {
-	const classNames = Object.keys(namespaces).map(toPascalCase);
 	const getterDecls = Object.keys(namespaces).map(ns => {
 		const className = toPascalCase(ns) + "Resource";
 		const safeNs = toJsName(ns);
-		return `	get ${safeNs}(): ${className} {
-		return new ${className}(this.env.${capabilityName.toUpperCase()}_API_KEY, this.overrides[${JSON.stringify(ns)}] || {});
-	}`;
+		return `\tget ${safeNs}(): ${className} {\n\t\treturn new ${className}(this.env.${capabilityName.toUpperCase()}_API_KEY, this.overrides[${JSON.stringify(ns)}] || {}, this.runtimeConfig);\n\t}`;
 	});
 
-	return `
-interface Env {
-	${capabilityName.toUpperCase()}_API_KEY: string;
-}
-
-export class ${toPascalCase(capabilityName)}Capability extends WorkerEntrypoint<Env> {
-	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
-
-${getterDecls.join("\n\n")}
-}`;
+	return `\ninterface Env {\n\t${capabilityName.toUpperCase()}_API_KEY: string;\n}\n\nexport class ${toPascalCase(capabilityName)}Capability extends WorkerEntrypoint<Env> {\n\tprotected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};\n\tprotected runtimeConfig?: import("./runtime.ts").RuntimeConfig;\n\n${getterDecls.join("\n\n")}\n}`;
 }
 
 function emitManifest(namespaces: Record<string, Operation[]>): string {

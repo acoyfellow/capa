@@ -163,6 +163,11 @@ function renderRuntime(args: CliArgs): string {
 		`const CAPABILITY_NAME = ${JSON.stringify(args.name)};`,
 	);
 
+	template = template.replace(
+		/^const PREFIX = .*$/m,
+		`const PREFIX = ${JSON.stringify(args.prefix)};`,
+	);
+
 	return template;
 }
 
