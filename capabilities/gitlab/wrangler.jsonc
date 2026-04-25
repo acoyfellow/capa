@@ -1,0 +1,21 @@
+{
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "capa-gitlab",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-04-25",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": false,
+	"observability": { "enabled": true }
+	// Required secrets (set after deploy):
+	//   wrangler secret put GITLAB_API_KEY
+	//
+	// Optional (for self-managed cfdata behind Cloudflare Access):
+	//   wrangler secret put GITLAB_BASE_URL_OVERRIDE   # e.g. https://gitlab.cfdata.org
+	//   wrangler secret put CF_ACCESS_CLIENT_ID
+	//   wrangler secret put CF_ACCESS_CLIENT_SECRET
+	//
+	// Bind from a caller Worker:
+	//   "services": [
+	//     { "binding": "GITLAB_PROOF", "service": "capa-gitlab", "entrypoint": "GitlabCapability" }
+	//   ]
+}
