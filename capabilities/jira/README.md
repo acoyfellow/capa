@@ -26,7 +26,7 @@ wrangler secret put JIRA_API_KEY
 ```jsonc
 {
   "services": [
-    { "binding": "JIRA_PROOF", "service": "capa-jira", "entrypoint": "JiraCapability" }
+    { "binding": "JIRA", "service": "capa-jira", "entrypoint": "JiraCapability" }
   ]
 }
 ```
@@ -34,7 +34,7 @@ wrangler secret put JIRA_API_KEY
 ### Call any Jira endpoint
 
 ```ts
-const { result, evidence } = await env.JIRA_PROOF.issues.createIssue({
+const { result, evidence } = await env.JIRA.issues.createIssue({
   fields: {
     project: { key: "DEVTOOLS" },
     summary: "Add capa-jira",
@@ -42,7 +42,7 @@ const { result, evidence } = await env.JIRA_PROOF.issues.createIssue({
   },
 });
 
-const { result: comment } = await env.JIRA_PROOF.issueComments.addComment({
+const { result: comment } = await env.JIRA.issueComments.addComment({
   issueIdOrKey: "DEVTOOLS-123",
   body: {
     type: "doc",
@@ -51,7 +51,7 @@ const { result: comment } = await env.JIRA_PROOF.issueComments.addComment({
   },
 });
 
-const { result: transition } = await env.JIRA_PROOF.issueTransitions.doTransition({
+const { result: transition } = await env.JIRA.issueTransitions.doTransition({
   issueIdOrKey: "DEVTOOLS-123",
   transition: { id: "31" },
 });

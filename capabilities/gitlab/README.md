@@ -23,7 +23,7 @@ wrangler secret put GITLAB_API_KEY
 ```jsonc
 {
   "services": [
-    { "binding": "GITLAB_PROOF", "service": "capa-gitlab", "entrypoint": "GitlabCapability" }
+    { "binding": "GITLAB", "service": "capa-gitlab", "entrypoint": "GitlabCapability" }
   ]
 }
 ```
@@ -31,19 +31,19 @@ wrangler secret put GITLAB_API_KEY
 ### Call any GitLab endpoint
 
 ```ts
-const { result, evidence } = await env.GITLAB_PROOF.mergeRequests.createNote({
+const { result, evidence } = await env.GITLAB.mergeRequests.createNote({
   id: "cloudflare/ai-agents/lee",
   mergeRequestIid: 4172,
   body: "LGTM",
 });
 
-const { result: issue } = await env.GITLAB_PROOF.issues.create({
+const { result: issue } = await env.GITLAB.issues.create({
   id: "cloudflare/ai-agents/lee",
   title: "Add capa-jira",
   description: "See parent epic.",
 });
 
-const { result: pipeline } = await env.GITLAB_PROOF.pipelines.retry({
+const { result: pipeline } = await env.GITLAB.pipelines.retry({
   id: "cloudflare/ai-agents/lee",
   pipeline_id: 12345,
 });

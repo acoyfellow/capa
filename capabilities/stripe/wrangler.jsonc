@@ -11,6 +11,6 @@
 	//
 	// Bind from a caller Worker:
 	//   "services": [
-	//     { "binding": "STRIPE_PROOF", "service": "capa-stripe", "entrypoint": "StripeCapability" }
+	//     { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
 	//   ]
 }

@@ -3,7 +3,7 @@
 Third-party APIs as Cloudflare service bindings that return their own receipts.
 
 ```ts
-const { result, evidence } = await env.STRIPE_PROOF.charges.create({
+const { result, evidence } = await env.STRIPE.charges.create({
   amount: 1000, currency: "usd", source: "tok_visa",
 });
 ```
@@ -31,7 +31,7 @@ A worked example — caller Worker that uses `capa-stripe` end-to-end.
     // your-app/wrangler.jsonc
     {
       "services": [
-        { "binding": "STRIPE_PROOF", "service": "capa-stripe", "entrypoint": "StripeCapability" }
+        { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
       ]
     }
     ```
@@ -42,7 +42,7 @@ A worked example — caller Worker that uses `capa-stripe` end-to-end.
     // your-app/src/index.ts
     export default {
       async fetch(request, env) {
-        const { result, evidence } = await env.STRIPE_PROOF.charges.create({
+        const { result, evidence } = await env.STRIPE.charges.create({
           amount: 1000, currency: "usd", source: "tok_visa",
         });
 
@@ -101,7 +101,7 @@ bun src/cli.ts \
 ### Persist an evidence bundle
 
 ```ts
-const { result, evidence } = await env.STRIPE_PROOF.charges.create(input);
+const { result, evidence } = await env.STRIPE.charges.create(input);
 await env.AUDIT_BUCKET.put(`${evidence.startedAt}.json`, JSON.stringify(evidence));
 ```
 

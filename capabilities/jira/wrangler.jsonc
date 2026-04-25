@@ -14,6 +14,6 @@
 	//
 	// Bind from a caller Worker:
 	//   "services": [
-	//     { "binding": "JIRA_PROOF", "service": "capa-jira", "entrypoint": "JiraCapability" }
+	//     { "binding": "JIRA", "service": "capa-jira", "entrypoint": "JiraCapability" }
 	//   ]
 }

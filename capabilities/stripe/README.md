@@ -23,7 +23,7 @@ wrangler secret put STRIPE_API_KEY
 ```jsonc
 {
   "services": [
-    { "binding": "STRIPE_PROOF", "service": "capa-stripe", "entrypoint": "StripeCapability" }
+    { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
   ]
 }
 ```
@@ -31,17 +31,17 @@ wrangler secret put STRIPE_API_KEY
 ### Call any Stripe endpoint
 
 ```ts
-const { result, evidence } = await env.STRIPE_PROOF.charges.create({
+const { result, evidence } = await env.STRIPE.charges.create({
   amount: 1000,
   currency: "usd",
   source: "tok_visa",
 });
 
-const { result: customer } = await env.STRIPE_PROOF.customers.create({
+const { result: customer } = await env.STRIPE.customers.create({
   email: "user@example.com",
 });
 
-const { result: refund } = await env.STRIPE_PROOF.refunds.create({
+const { result: refund } = await env.STRIPE.refunds.create({
   charge: "ch_...",
   amount: 500,
 });

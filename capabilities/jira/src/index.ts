@@ -6,13 +6,13 @@
  *
  * Bind from a caller Worker:
  *   "services": [{
- *     "binding": "JIRA_PROOF",
+ *     "binding": "JIRA",
  *     "service": "capa-jira",
  *     "entrypoint": "JiraCapability"
  *   }]
  *
  * Then:
- *   const { result, evidence } = await env.JIRA_PROOF.issues.createIssue({
+ *   const { result, evidence } = await env.JIRA.issues.createIssue({
  *     fields: {
  *       project: { key: "DEVTOOLS" },
  *       summary: "Fix codegen dedup",

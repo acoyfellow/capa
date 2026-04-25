@@ -6,13 +6,13 @@
  *
  * Bind from a caller Worker:
  *   "services": [{
- *     "binding": "STRIPE_PROOF",
+ *     "binding": "STRIPE",
  *     "service": "capa-stripe",
  *     "entrypoint": "StripeCapability"
  *   }]
  *
  * Then:
- *   const { result, evidence } = await env.STRIPE_PROOF.charges.create({
+ *   const { result, evidence } = await env.STRIPE.charges.create({
  *     amount: 1000, currency: "usd", source: "tok_visa",
  *   });
  *

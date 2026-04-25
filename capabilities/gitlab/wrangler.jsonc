@@ -16,6 +16,6 @@
 	//
 	// Bind from a caller Worker:
 	//   "services": [
-	//     { "binding": "GITLAB_PROOF", "service": "capa-gitlab", "entrypoint": "GitlabCapability" }
+	//     { "binding": "GITLAB", "service": "capa-gitlab", "entrypoint": "GitlabCapability" }
 	//   ]
 }

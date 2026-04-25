@@ -6,13 +6,13 @@
  *
  * Bind from a caller Worker:
  *   "services": [{
- *     "binding": "GITLAB_PROOF",
+ *     "binding": "GITLAB",
  *     "service": "capa-gitlab",
  *     "entrypoint": "GitlabCapability"
  *   }]
  *
  * Then:
- *   const { result, evidence } = await env.GITLAB_PROOF.mergeRequests.createNote({
+ *   const { result, evidence } = await env.GITLAB.mergeRequests.createNote({
  *     id: "cloudflare/ai-agents/lee",
  *     mergeRequestIid: 4172,
  *     body: "LGTM",
