@@ -1,8 +1,17 @@
 // AUTO-GENERATED runtime helpers for capa-* capabilities.
-// This file is copied into each capability by @capa/codegen.
+// This file is rendered into each capability by @capa/codegen.
 // Edit the template at tools/codegen/src/runtime.template.ts and regenerate.
 
 export type Verdict = "pass" | "fail";
+export type AuthShape = "bearer" | "private-token" | "basic";
+export type ContentType = "form" | "json";
+
+// ─── codegen replaces these four constants per-capability ────────
+const CAPABILITY_NAME = "stripe";
+const BASE_URL = "https://api.stripe.com";
+const AUTH_SHAPE: AuthShape = "bearer";
+const CONTENT_TYPE: ContentType = "form";
+// ─────────────────────────────────────────────────────────────────
 
 export interface AssertResult {
 	kind: string;
@@ -45,16 +54,18 @@ export interface FetchProofArgs {
 	risk: "low" | "medium" | "high";
 	body?: unknown;
 	overrides?: MethodOverride;
+	/** Optional override for the BASE_URL (e.g. self-hosted GitLab). */
+	baseUrl?: string;
+	/** Optional extra request headers (e.g. CF-Access-Jwt-Assertion for cfdata). */
+	extraHeaders?: Record<string, string>;
 }
 
-const BASE_URL = "https://api.stripe.com"; // overridden per capability via env if needed
-
-function form(body: Record<string, unknown>, prefix = ""): string {
+function formEncode(body: Record<string, unknown>): string {
 	const params = new URLSearchParams();
-	const walk = (obj: Record<string, unknown>, p: string) => {
+	const walk = (obj: Record<string, unknown>, prefix: string) => {
 		for (const [k, v] of Object.entries(obj)) {
 			if (v === undefined || v === null) continue;
-			const key = p ? `${p}[${k}]` : k;
+			const key = prefix ? `${prefix}[${k}]` : k;
 			if (typeof v === "object" && !Array.isArray(v)) {
 				walk(v as Record<string, unknown>, key);
 			} else if (Array.isArray(v)) {
@@ -70,8 +81,19 @@ function form(body: Record<string, unknown>, prefix = ""): string {
 			}
 		}
 	};
-	walk(body, prefix);
+	walk(body, "");
 	return params.toString();
+}
+
+function authHeader(secret: string): { name: string; value: string } {
+	switch (AUTH_SHAPE) {
+		case "bearer":
+			return { name: "Authorization", value: `Bearer ${secret}` };
+		case "private-token":
+			return { name: "PRIVATE-TOKEN", value: secret };
+		case "basic":
+			return { name: "Authorization", value: `Basic ${btoa(secret)}` };
+	}
 }
 
 export async function fetchProof(
@@ -80,27 +102,67 @@ export async function fetchProof(
 ): Promise<ProofResult<unknown>> {
 	const startedAt = new Date().toISOString();
 	const t0 = Date.now();
-	const url = `${BASE_URL}${args.path}`;
+	const baseUrl = args.baseUrl || BASE_URL;
+	const url = `${baseUrl}${args.path}`;
 	const assertions: AssertResult[] = [];
+	const auth = authHeader(apiKey);
+
+	const headers: Record<string, string> = {
+		[auth.name]: auth.value,
+		...(args.extraHeaders || {}),
+	};
 
 	const init: RequestInit = {
 		method: args.http.toUpperCase(),
-		headers: {
-			Authorization: `Bearer ${apiKey}`,
-			"Content-Type": "application/x-www-form-urlencoded",
-		},
+		headers,
 	};
-	if (args.body !== undefined && args.http !== "get") {
-		init.body = form(args.body as Record<string, unknown>);
+
+	const hasBody = args.body !== undefined && args.http.toLowerCase() !== "get";
+	if (hasBody) {
+		if (CONTENT_TYPE === "form") {
+			headers["Content-Type"] = "application/x-www-form-urlencoded";
+			init.body = formEncode(args.body as Record<string, unknown>);
+		} else {
+			headers["Content-Type"] = "application/json";
+			init.body = JSON.stringify(args.body);
+		}
 	}
 
-	const res = await fetch(url, init);
-	const text = await res.text();
-	let body: unknown = text;
+	let res: Response;
+	let body: unknown;
 	try {
-		body = JSON.parse(text);
-	} catch {
-		// not JSON, leave as text
+		res = await fetch(url, init);
+		const text = await res.text();
+		try {
+			body = JSON.parse(text);
+		} catch {
+			body = text;
+		}
+	} catch (e) {
+		// Network-level failure → record as a fail with a synthetic 0 status
+		assertions.push({
+			kind: "fetch:throw",
+			expected: "no-throw",
+			actual: String(e),
+			passed: false,
+		});
+		return {
+			result: null,
+			evidence: {
+				capability: CAPABILITY_NAME,
+				operationId: args.operationId,
+				namespace: args.namespace,
+				method: args.method,
+				http: args.http,
+				path: args.path,
+				risk: args.risk,
+				startedAt,
+				durationMs: Date.now() - t0,
+				act: { request: { method: args.http.toUpperCase(), url }, status: 0 },
+				assert: assertions,
+				verdict: "fail",
+			},
+		};
 	}
 
 	// Generic HTTP-level assertion
@@ -111,7 +173,7 @@ export async function fetchProof(
 		passed: res.status >= 200 && res.status < 300,
 	});
 
-	// Apply overrides if provided
+	// Per-method overrides
 	if (args.overrides?.asserts) {
 		for (const fn of args.overrides.asserts) {
 			try {
@@ -132,7 +194,7 @@ export async function fetchProof(
 	return {
 		result: verdict === "pass" ? body : null,
 		evidence: {
-			capability: args.namespace, // overridden by capability wrapper if needed
+			capability: CAPABILITY_NAME,
 			operationId: args.operationId,
 			namespace: args.namespace,
 			method: args.method,

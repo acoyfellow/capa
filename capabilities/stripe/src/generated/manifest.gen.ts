@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Stripe API v2026-04-22.dahlia
-// Generated:   2026-04-25T11:47:45.300Z
+// Generated:   2026-04-25T12:50:39.177Z
 // Operations:  534
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";

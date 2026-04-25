@@ -145,7 +145,10 @@ function singularize(s: string): string {
 }
 
 function toCamelCase(s: string): string {
-	return s.replace(/[_-](.)/g, (_, c) => c.toUpperCase());
+	return s
+		.replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase())
+		.replace(/^[^a-zA-Z0-9]+/, "")
+		.replace(/[^a-zA-Z0-9]+/g, "");
 }
 
 function extractPathParams(path: string): string[] {
@@ -168,6 +171,9 @@ export function parseSpec(spec: any, apiPrefix = "/v1"): CodegenResult {
 		`https://${spec.host || "api.stripe.com"}${spec.basePath || ""}`;
 
 	for (const [path, pathItem] of Object.entries<any>(spec.paths || {})) {
+		// Skip Rails-style splat/wildcard paths — openapi-typescript can't type them
+		if (path.includes("*")) continue;
+
 		const namespace = deriveNamespace(path, apiPrefix);
 		if (!namespace) continue;
 
@@ -254,6 +260,28 @@ export function parseSpec(spec: any, apiPrefix = "/v1"): CodegenResult {
 				} else {
 					op.method = `${method}_${i}`;
 				}
+			}
+		}
+	}
+
+	// Second pass: any remaining collisions (same path different verb, or collection+item)
+	// get suffixed with HTTP verb; if still colliding, append an index.
+	for (const ops of Object.values(namespaces)) {
+		const finalSeen = new Map<string, Operation[]>();
+		for (const op of ops) {
+			(finalSeen.get(op.method) || finalSeen.set(op.method, []).get(op.method)!).push(op);
+		}
+		for (const [method, group] of finalSeen) {
+			if (group.length === 1) continue;
+			for (const op of group) {
+				const base = `${op.http}${capitalize(method)}`;
+				let candidate = base;
+				let suffix = 0;
+				while (ops.some(o => o !== op && o.method === candidate)) {
+					candidate = `${base}_${suffix}`;
+					suffix++;
+				}
+				op.method = candidate;
 			}
 		}
 	}

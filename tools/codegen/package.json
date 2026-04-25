@@ -10,7 +10,11 @@
 		"start": "bun src/cli.ts"
 	},
 	"dependencies": {
-		"openapi-typescript": "^7.13.0"
+		"@types/js-yaml": "^4.0.9",
+		"@types/swagger2openapi": "^7.0.4",
+		"js-yaml": "^4.1.1",
+		"openapi-typescript": "^7.13.0",
+		"swagger2openapi": "^7.0.8"
 	},
 	"devDependencies": {
 		"@types/bun": "^1.1.0",

@@ -147,7 +147,10 @@ const RESERVED = new Set([
 ]);
 
 function toJsName(s: string): string {
-	const camelCased = s.replace(/[_-](.)/g, (_, c) => c.toUpperCase());
+	const camelCased = s
+		.replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase())
+		.replace(/^[^a-zA-Z0-9]+/, "")
+		.replace(/[^a-zA-Z0-9]+/g, "");
 	return RESERVED.has(camelCased) ? camelCased + "_" : camelCased;
 }
 
