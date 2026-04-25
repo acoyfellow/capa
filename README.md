@@ -14,7 +14,7 @@ Each call returns the result and an evidence bundle. Capabilities are generated 
 
 ## Tutorial
 
-A worked example — caller Worker that uses `capa-stripe` end-to-end.
+Build a caller Worker that charges a card using `capa-stripe`.
 
 1. Click the Deploy button in [capabilities/stripe/README.md](capabilities/stripe/README.md). Cloudflare clones the repo into your GitHub and deploys `capa-stripe` to your account. The deployed Worker exposes the entire Stripe API (534 operations) as a JSRPC binding.
 
@@ -95,7 +95,11 @@ cd tools/codegen
 bun src/cli.ts \
   --spec <url-or-path-to-openapi-spec> \
   --out  ../../capabilities/<name> \
-  --name <name>
+  --name <name> \
+  --base-url <upstream-base-url> \
+  --prefix <api-prefix> \
+  --auth <bearer|private-token|basic> \
+  --content-type <form|json>
 ```
 
 ### Persist an evidence bundle
@@ -132,9 +136,9 @@ if (evidence.verdict === "fail") {
 
 | Capability | Operations | Namespaces | Bundle (gz) | Auth | Content-Type |
 |---|---|---|---|---|---|
-| [stripe](capabilities/stripe) | 534 | 73 | 36 KiB | Bearer | Form |
-| [gitlab](capabilities/gitlab) | 1,050 | 51 | 51 KiB | Private-Token | JSON |
-| [jira](capabilities/jira) | 603 | 76 | 46 KiB | Basic | JSON |
+| [stripe](capabilities/stripe) | 534 | 73 | 38 KiB | Bearer | Form |
+| [gitlab](capabilities/gitlab) | 1,050 | 51 | 54 KiB | Private-Token | JSON |
+| [jira](capabilities/jira) | 603 | 76 | 48 KiB | Basic | JSON |
 
 ### Evidence bundle shape
 
@@ -206,16 +210,18 @@ The hand-written layer is thin. The per-method overrides for richer evidence are
 ### How the loop works
 
 ```
-┌──────────────┐         ┌────────────────────┐         ┌────────────┐
-│ caller       │  RPC    │ capa-{capability}  │  HTTP   │  upstream  │
-│ Worker       ├────────▶│  WorkerEntrypoint  ├────────▶│  third API │
-└──────────────┘         │     act ─ assert ─┐│         └────────────┘
-       ▲                 └────────────────────┘
-       │                                          │
-       └────── { result, evidence } ◀─────────────┘
+┌──────────────┐      RPC     ┌─────────────────────┐      HTTP     ┌────────────┐
+│   caller     │─────────────▶│  capa-{capability}  │──────────────▶│  upstream  │
+│   Worker     │              │   WorkerEntrypoint  │               │  third API │
+└──────┬───────┘              └─────────────────────┘               └────────────┘
+       ▲                              │
+       │      { result, evidence }    │
+       └──────────────────────────────┘
 ```
 
-`act` performs the upstream call. `assert` checks itemized postconditions on the response — generic HTTP-status by default, richer per-method overrides where defined. The verdict is the AND of every assertion.
+`fetchProof` performs the upstream HTTP call (`act`), then runs generic + per-method assertions (`assert`). The verdict is the AND of every assertion. `result` is returned only when `verdict === "pass"`.
+
+`RuntimeConfig` (base URL override, extra headers, prefix replacement) flows from the hand-written `index.ts` through the generated entrypoint to every method call.
 
 ### Why one Worker per capability
 
