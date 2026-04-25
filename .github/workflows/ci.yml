@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install
+
+      - name: Typecheck stripe
+        run: cd capabilities/stripe && bunx tsc --noEmit
+      - name: Typecheck gitlab
+        run: cd capabilities/gitlab && bunx tsc --noEmit
+      - name: Typecheck jira
+        run: cd capabilities/jira && bunx tsc --noEmit
+      - name: Typecheck harness
+        run: cd tests/harness && bunx tsc --noEmit
+
+  dry-run:
+    runs-on: ubuntu-latest
+    needs: typecheck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install
+
+      - name: Dry-run stripe
+        run: cd capabilities/stripe && bunx wrangler deploy --dry-run
+      - name: Dry-run gitlab
+        run: cd capabilities/gitlab && bunx wrangler deploy --dry-run
+      - name: Dry-run jira
+        run: cd capabilities/jira && bunx wrangler deploy --dry-run
+      - name: Dry-run harness
+        run: cd tests/harness && bunx wrangler deploy --dry-run
