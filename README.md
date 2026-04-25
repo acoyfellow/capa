@@ -130,9 +130,11 @@ if (evidence.verdict === "fail") {
 
 ### Available capabilities
 
-| Capability | Operations | Namespaces | Bundle (gz) |
-|---|---|---|---|
-| [stripe](capabilities/stripe) | 534 | 73 | 36 KiB |
+| Capability | Operations | Namespaces | Bundle (gz) | Auth | Content-Type |
+|---|---|---|---|---|---|
+| [stripe](capabilities/stripe) | 534 | 73 | 36 KiB | Bearer | Form |
+| [gitlab](capabilities/gitlab) | 1,050 | 51 | 51 KiB | Private-Token | JSON |
+| [jira](capabilities/jira) | 603 | 76 | 46 KiB | Basic | JSON |
 
 ### Evidence bundle shape
 
