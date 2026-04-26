@@ -6,12 +6,12 @@ description: The architecture and philosophy of capa.
 ## The loop
 
 ```
- caller Worker        JSRPC        capa capability        HTTP        upstream API
-┌─────────────┐    ───────▶    ┌────────────────┐    ───────▶    ┌────────────┐
-│  env.STRIPE │               │ WorkerEntrypoint │               │  Stripe /  │
-│   .charges  │◀──────────────│  fetchProof()    │◀──────────────│  GitLab /  │
-│   .create() │   {result,    │  act + assert    │               │  Jira      │
-└─────────────┘    evidence}  └────────────────┘               └────────────┘
+  caller Worker        JSRPC         capa capability         HTTP        upstream API
+ ┌─────────────┐    ───────▶     ┌─────────────────┐    ───────▶    ┌────────────┐
+ │  env.<NAME> │                │ WorkerEntrypoint  │               │  any OpenAPI │
+ │ .ns.method()│◀───────────────│   fetchProof()    │◀──────────────│   service    │
+ │             │   {result,      │   act + assert    │              │              │
+ └─────────────┘    evidence}    └─────────────────┘              └────────────┘
 ```
 
 `fetchProof` performs the upstream HTTP call (`act`), then runs generic + per-method assertions (`assert`). The verdict is the AND of every assertion. `result` is returned only when `verdict === "pass"`.
@@ -36,13 +36,13 @@ A capability is a Git repo. Forks are install. A central index would add a new c
 
 ```ts
 {
-  capability:   "stripe";
-  operationId:  "PostCharges";
-  namespace:    "charges";
-  method:       "create";
-  http:         "post";
-  path:         "/v1/charges";
-  risk:         "high";
+  capability:   "stripe";      // or "gitlab", "jira", ...
+  operationId:  "PostCharges"; // upstream operation identifier
+  namespace:    "charges";     // RPC namespace
+  method:       "create";      // RPC method name
+  http:         "post";        // underlying HTTP verb
+  path:         "/v1/charges"; // upstream path
+  risk:         "high";        // low | medium | high
   startedAt:    "2026-04-25T12:00:00Z";
   durationMs:   234;
   act: {
@@ -66,19 +66,19 @@ Every call produces this. Persist it, hash it, ignore it — it exists.
 Capabilities are not hand-coded. Each one is generated from the upstream API's OpenAPI spec.
 
 ```
-spec.openapi.json
-       │
-       ▼
-   capa-codegen ──▶ schema.gen.ts       (types from openapi-typescript)
-                ──▶ capability.gen.ts   (RpcTarget classes per namespace)
-                ──▶ manifest.gen.ts     (operationId → metadata)
-                ──▶ runtime.ts          (evidence-aware fetch)
-       │
-       ▼
-   src/index.ts (~30 LOC, applies per-method overrides)
-       │
-       ▼
-   deployed Worker
+ spec.openapi.json
+        │
+        ▼
+    capa-codegen ──▶ schema.gen.ts       (types from openapi-typescript)
+                 ──▶ capability.gen.ts   (RpcTarget classes per namespace)
+                 ──▶ manifest.gen.ts     (operationId → metadata)
+                 ──▶ runtime.ts          (evidence-aware fetch)
+        │
+        ▼
+    src/index.ts (~30 LOC, applies per-method overrides)
+        │
+        ▼
+    deployed Worker
 ```
 
 The hand-written layer is thin. The per-method overrides for richer evidence are the only thing that grows with API surface — and only for the methods you care to assert against.

@@ -17,6 +17,12 @@ const { result, evidence } = await env.STRIPE.charges.create({
   source: "tok_visa",
 });
 
+const { result, evidence } = await env.GITLAB.projects.list();
+
+const { result, evidence } = await env.JIRA.issues.createIssue({
+  project: "PROJ", summary: "Bug", issuetype: { name: "Bug" },
+});
+
 if (evidence.verdict === "fail") {
   return Response.json({ error: "verification failed", evidence }, { status: 502 });
 }
@@ -25,12 +31,12 @@ if (evidence.verdict === "fail") {
 ## Architecture
 
 ```
- caller Worker        JSRPC        capa capability        HTTP        upstream API
-┌─────────────┐    ───────▶    ┌────────────────┐    ───────▶    ┌────────────┐
-│  env.STRIPE │               │ WorkerEntrypoint │               │  Stripe /  │
-│   .charges  │◀──────────────│  fetchProof()    │◀──────────────│  GitLab /  │
-│   .create() │   {result,    │  act + assert    │               │  Jira      │
-└─────────────┘    evidence}  └────────────────┘               └────────────┘
+  caller Worker        JSRPC         capa capability         HTTP        upstream API
+ ┌─────────────┐    ───────▶     ┌─────────────────┐    ───────▶    ┌────────────┐
+ │  env.<NAME> │                │ WorkerEntrypoint  │               │  any OpenAPI │
+ │ .ns.method()│◀───────────────│   fetchProof()    │◀──────────────│   service    │
+ │             │   {result,      │   act + assert    │              │              │
+ └─────────────┘    evidence}    └─────────────────┘              └────────────┘
 ```
 
 `fetchProof` performs the upstream HTTP call (`act`), then runs generic + per-method assertions (`assert`). The verdict is the AND of every assertion.
@@ -44,8 +50,8 @@ Click a Deploy button below. Cloudflare clones the repo and deploys the Worker.
 ### 2. Set the API key
 
 ```bash
-cd capabilities/stripe
-wrangler secret put STRIPE_API_KEY
+cd capabilities/<name>
+wrangler secret put <SECRET_NAME>
 ```
 
 ### 3. Bind and call
@@ -73,7 +79,7 @@ const { result, evidence } = await env.STRIPE.charges.create({
 
 <CardGrid>
   <Card title="Tutorial" icon="open-book">
-    [Charge a card end-to-end](/tutorial)
+    [Deploy and call a capability end-to-end](/tutorial)
   </Card>
   <Card title="How It Works" icon="information">
     [The loop, JSRPC, and evidence](/how-it-works)

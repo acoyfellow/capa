@@ -1,9 +1,9 @@
 ---
 title: Tutorial
-description: Charge a card with capa-stripe end-to-end.
+description: Deploy a capability and call it from a caller Worker.
 ---
 
-Build a caller Worker that charges a card using `capa-stripe`.
+This tutorial uses `capa-stripe` as a concrete example. The steps are identical for every capability — swap the name, secret, and binding.
 
 ## 1. Deploy capa-stripe
 

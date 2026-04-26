@@ -2,9 +2,17 @@
 
 Third-party APIs as Cloudflare service bindings that return their own receipts.
 
+Every binding works the same way: call a method, get `{ result, evidence }`.
+
 ```ts
 const { result, evidence } = await env.STRIPE.charges.create({
   amount: 1000, currency: "usd", source: "tok_visa",
+});
+
+const { result, evidence } = await env.GITLAB.projects.list();
+
+const { result, evidence } = await env.JIRA.issues.createIssue({
+  project: "PROJ", summary: "Bug", issuetype: { name: "Bug" },
 });
 ```
 
@@ -14,48 +22,48 @@ Each call returns the result and an evidence bundle. Capabilities are generated 
 
 ## Tutorial
 
-Build a caller Worker that charges a card using `capa-stripe`.
+Build a caller Worker that uses any `capa-*` capability.
 
-1. Click the Deploy button in [capabilities/stripe/README.md](capabilities/stripe/README.md). Cloudflare clones the repo into your GitHub and deploys `capa-stripe` to your account. The deployed Worker exposes the entire Stripe API (534 operations) as a JSRPC binding.
+1. **Deploy a capability.** Pick one from the [capabilities directory](capabilities/). Click its Deploy button; Cloudflare clones the repo and deploys the Worker.
 
-2. Set the upstream key on the deployed Worker:
+2. **Set the upstream key.**
 
-    ```bash
-    cd capa/capabilities/stripe
-    wrangler secret put STRIPE_API_KEY
-    ```
+   ```bash
+   cd capa/capabilities/<name>
+   wrangler secret put <SECRET_NAME>
+   ```
 
-3. In a separate caller Worker, declare the binding:
+   The required secret name is in the capability's README.
 
-    ```jsonc
-    // your-app/wrangler.jsonc
-    {
-      "services": [
-        { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
-      ]
-    }
-    ```
+3. **Declare the binding** in your caller Worker's `wrangler.jsonc`:
 
-4. Call any Stripe endpoint:
+   ```jsonc
+   {
+     "services": [
+       { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
+     ]
+   }
+   ```
 
-    ```ts
-    // your-app/src/index.ts
-    export default {
-      async fetch(request, env) {
-        const { result, evidence } = await env.STRIPE.charges.create({
-          amount: 1000, currency: "usd", source: "tok_visa",
-        });
+4. **Call any endpoint:**
 
-        if (evidence.verdict === "fail") {
-          return Response.json({ error: "verification failed", evidence }, { status: 502 });
-        }
+   ```ts
+   export default {
+     async fetch(request, env) {
+       const { result, evidence } = await env.STRIPE.charges.create({
+         amount: 1000, currency: "usd", source: "tok_visa",
+       });
 
-        return Response.json({ chargeId: result.id, evidence });
-      },
-    };
-    ```
+       if (evidence.verdict === "fail") {
+         return Response.json({ error: "verification failed", evidence }, { status: 502 });
+       }
 
-5. Deploy your caller. `evidence.verdict` is `"pass"` when every assertion passed.
+       return Response.json({ chargeId: result.id, evidence });
+     },
+   };
+   ```
+
+5. **Deploy your caller.** `evidence.verdict` is `"pass"` when every assertion passed.
 
 ---
 
@@ -72,7 +80,7 @@ cd capabilities/<capability>
 wrangler secret put <SECRET_NAME>
 ```
 
-The required secret name is documented in each capability's `README.md`.
+The required secret name is documented in each capability's README.
 
 ### Bind a capability into a caller Worker
 
@@ -190,19 +198,19 @@ A wrapper Worker that returns `{ result }` is a two-day project. A wrapper that 
 Capabilities are not hand-coded. Each one is generated from the upstream API's OpenAPI spec.
 
 ```
-spec.openapi.json
-       │
-       ▼
-   capa-codegen ──▶ src/generated/schema.gen.ts        (types from openapi-typescript)
-                ──▶ src/generated/capability.gen.ts    (RpcTarget classes per namespace)
-                ──▶ src/generated/manifest.gen.ts      (operationId → metadata)
-                ──▶ src/generated/runtime.ts           (evidence-aware fetch)
-       │
-       ▼
-   src/index.ts (hand-written: ~30 LOC, applies per-method overrides)
-       │
-       ▼
-   deployed Worker
+ spec.openapi.json
+        │
+        ▼
+    capa-codegen ──▶ src/generated/schema.gen.ts        (types from openapi-typescript)
+                 ──▶ src/generated/capability.gen.ts    (RpcTarget classes per namespace)
+                 ──▶ src/generated/manifest.gen.ts      (operationId → metadata)
+                 ──▶ src/generated/runtime.ts           (evidence-aware fetch)
+        │
+        ▼
+    src/index.ts (hand-written: ~30 LOC, applies per-method overrides)
+        │
+        ▼
+    deployed Worker
 ```
 
 The hand-written layer is thin. The per-method overrides for richer evidence are the only thing that grows with API surface — and only for the methods you care to assert against.
@@ -210,13 +218,12 @@ The hand-written layer is thin. The per-method overrides for richer evidence are
 ### How the loop works
 
 ```
-┌──────────────┐      RPC     ┌─────────────────────┐      HTTP     ┌────────────┐
-│   caller     │─────────────▶│  capa-{capability}  │──────────────▶│  upstream  │
-│   Worker     │              │   WorkerEntrypoint  │               │  third API │
-└──────┬───────┘              └─────────────────────┘               └────────────┘
-       ▲                              │
-       │      { result, evidence }    │
-       └──────────────────────────────┘
+  caller Worker        JSRPC         capa capability         HTTP        upstream API
+ ┌─────────────┐    ───────▶     ┌─────────────────┐    ───────▶    ┌────────────┐
+ │  env.<NAME> │                │ WorkerEntrypoint  │               │  any OpenAPI │
+ │ .ns.method()│◀───────────────│   fetchProof()    │◀──────────────│   service    │
+ │             │   {result,      │   act + assert    │              │              │
+ └─────────────┘    evidence}    └─────────────────┘              └────────────┘
 ```
 
 `fetchProof` performs the upstream HTTP call (`act`), then runs generic + per-method assertions (`assert`). The verdict is the AND of every assertion. `result` is returned only when `verdict === "pass"`.
