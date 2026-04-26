@@ -1,1 +1,62 @@
 /* Minimal capa docs styling */
+
+.capa-flow {
+  display: grid;
+  grid-template-columns: minmax(170px, 1fr) auto minmax(220px, 1.25fr) auto minmax(170px, 1fr);
+  gap: 1rem;
+  align-items: center;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  background: var(--sl-color-gray-6);
+  overflow-x: auto;
+}
+
+.flow-node {
+  min-width: 170px;
+  padding: 1rem;
+  border: 1px solid var(--sl-color-gray-4);
+  border-radius: 0.65rem;
+  background: var(--sl-color-bg);
+  text-align: center;
+}
+
+.flow-node-wide {
+  min-width: 220px;
+}
+
+.flow-node strong,
+.flow-node code {
+  display: block;
+  margin: 0.25rem 0;
+}
+
+.flow-edge {
+  min-width: 100px;
+  text-align: center;
+  color: var(--sl-color-gray-2);
+}
+
+.flow-edge span,
+.flow-edge small {
+  display: block;
+  white-space: nowrap;
+}
+
+.flow-edge b {
+  display: block;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--sl-color-text);
+}
+
+@media (max-width: 760px) {
+  .capa-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-edge b {
+    transform: rotate(90deg);
+  }
+}

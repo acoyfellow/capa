@@ -5,14 +5,35 @@ description: The architecture and philosophy of capa.
 
 ## The loop
 
-```
-  caller Worker        JSRPC         capa capability         HTTP        upstream API
- ┌─────────────┐    ───────▶     ┌─────────────────┐    ───────▶    ┌────────────┐
- │  env.<NAME> │                │ WorkerEntrypoint  │               │  any OpenAPI │
- │ .ns.method()│◀───────────────│   fetchProof()    │◀──────────────│   service    │
- │             │   {result,      │   act + assert    │              │              │
- └─────────────┘    evidence}    └─────────────────┘              └────────────┘
-```
+<div class="capa-flow" aria-label="capa call flow">
+  <div class="flow-node">
+    <strong>Caller Worker</strong>
+    <code>env.&lt;NAME&gt;</code>
+    <code>.ns.method()</code>
+  </div>
+  <div class="flow-edge">
+    <span>JSRPC</span>
+    <b>→</b>
+    <small>result + evidence</small>
+  </div>
+  <div class="flow-node flow-node-wide">
+    <strong>capa capability</strong>
+    <code>WorkerEntrypoint</code>
+    <code>fetchProof()</code>
+    <code>act + assert</code>
+  </div>
+  <div class="flow-edge">
+    <span>HTTP</span>
+    <b>→</b>
+    <small>upstream response</small>
+  </div>
+  <div class="flow-node">
+    <strong>Upstream API</strong>
+    <code>Stripe</code>
+    <code>GitLab</code>
+    <code>Jira</code>
+  </div>
+</div>
 
 `fetchProof` performs the upstream HTTP call (`act`), then runs generic + per-method assertions (`assert`). The verdict is the AND of every assertion. `result` is returned only when `verdict === "pass"`.
 
