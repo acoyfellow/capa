@@ -9,6 +9,9 @@ export default defineConfig({
 		starlight({
 			title: 'capa',
 			description: 'Third-party APIs as proof-carrying Cloudflare service bindings',
+			components: {
+				Head: './src/components/Head.astro',
+			},
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/acoyfellow/capa' },
 			],

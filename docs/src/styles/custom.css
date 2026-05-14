@@ -149,10 +149,22 @@ h4 {
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
 }
 
+/* Starlight deliberately zeroes minimal-button side padding. That looks
+   broken beside the plump home hero pills, so keep GitHub airy too. */
+.sl-link-button.minimal {
+  padding-inline: 1.125rem !important;
+}
+
 .sl-link-button.primary {
   border-color: var(--capa-yellow) !important;
   background: linear-gradient(135deg, var(--capa-yellow), color-mix(in srgb, var(--capa-yellow) 42%, var(--capa-pink))) !important;
   color: #21102a !important;
+}
+
+@media (min-width: 50rem) {
+  .sl-link-button.minimal {
+    padding-inline: 1.25rem !important;
+  }
 }
 
 .sl-markdown-content a:not(.capa-btn) {
