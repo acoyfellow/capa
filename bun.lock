@@ -5,6 +5,33 @@
     "": {
       "name": "capa",
     },
+    "capabilities/box": {
+      "name": "@capa/box",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
+    "capabilities/discord": {
+      "name": "@capa/discord",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
+    "capabilities/github": {
+      "name": "@capa/github",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
     "capabilities/gitlab": {
       "name": "@capa/gitlab",
       "version": "0.0.1",
@@ -23,8 +50,71 @@
         "wrangler": "^4.85.0",
       },
     },
+    "capabilities/kubernetes": {
+      "name": "@capa/kubernetes",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
+    "capabilities/sentry": {
+      "name": "@capa/sentry",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
+    "capabilities/slack": {
+      "name": "@capa/slack",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
     "capabilities/stripe": {
       "name": "@capa/stripe",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
+    "capabilities/twilio": {
+      "name": "@capa/twilio",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
+    "capabilities/twilio-messaging": {
+      "name": "@capa/twilio-messaging",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
+    "capabilities/twilio-verify": {
+      "name": "@capa/twilio-verify",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
+    "capabilities/zoom": {
+      "name": "@capa/zoom",
       "version": "0.0.1",
       "devDependencies": {
         "@cloudflare/workers-types": "^4.20260425.1",
@@ -92,15 +182,35 @@
 
     "@babel/types": ["@babel/types@7.29.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.28.5" } }, "sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A=="],
 
+    "@capa/box": ["@capa/box@workspace:capabilities/box"],
+
+    "@capa/discord": ["@capa/discord@workspace:capabilities/discord"],
+
     "@capa/docs": ["@capa/docs@workspace:docs"],
+
+    "@capa/github": ["@capa/github@workspace:capabilities/github"],
 
     "@capa/gitlab": ["@capa/gitlab@workspace:capabilities/gitlab"],
 
     "@capa/jira": ["@capa/jira@workspace:capabilities/jira"],
 
+    "@capa/kubernetes": ["@capa/kubernetes@workspace:capabilities/kubernetes"],
+
+    "@capa/sentry": ["@capa/sentry@workspace:capabilities/sentry"],
+
+    "@capa/slack": ["@capa/slack@workspace:capabilities/slack"],
+
     "@capa/stripe": ["@capa/stripe@workspace:capabilities/stripe"],
 
     "@capa/test-harness": ["@capa/test-harness@workspace:tests/harness"],
+
+    "@capa/twilio": ["@capa/twilio@workspace:capabilities/twilio"],
+
+    "@capa/twilio-messaging": ["@capa/twilio-messaging@workspace:capabilities/twilio-messaging"],
+
+    "@capa/twilio-verify": ["@capa/twilio-verify@workspace:capabilities/twilio-verify"],
+
+    "@capa/zoom": ["@capa/zoom@workspace:capabilities/zoom"],
 
     "@capsizecss/unpack": ["@capsizecss/unpack@4.0.0", "", { "dependencies": { "fontkitten": "^1.0.0" } }, "sha512-VERIM64vtTP1C4mxQ5thVT9fK0apjPFobqybMtA1UdUujWka24ERHbRHFGmpbbhp73MhV+KSsHQH9C6uOTdEQA=="],
 
@@ -242,7 +352,7 @@
 
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.5", "", {}, "sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og=="],
 
-    "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
+    "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.9", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.0.3", "@jridgewell/sourcemap-codec": "^1.4.10" } }, "sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ=="],
 
     "@mdx-js/mdx": ["@mdx-js/mdx@3.1.1", "", { "dependencies": { "@types/estree": "^1.0.0", "@types/estree-jsx": "^1.0.0", "@types/hast": "^3.0.0", "@types/mdx": "^2.0.0", "acorn": "^8.0.0", "collapse-white-space": "^2.0.0", "devlop": "^1.0.0", "estree-util-is-identifier-name": "^3.0.0", "estree-util-scope": "^1.0.0", "estree-walker": "^3.0.0", "hast-util-to-jsx-runtime": "^2.0.0", "markdown-extensions": "^2.0.0", "recma-build-jsx": "^1.0.0", "recma-jsx": "^1.0.0", "recma-stringify": "^1.0.0", "rehype-recma": "^1.0.0", "remark-mdx": "^3.0.0", "remark-parse": "^11.0.0", "remark-rehype": "^11.0.0", "source-map": "^0.7.0", "unified": "^11.0.0", "unist-util-position-from-estree": "^2.0.0", "unist-util-stringify-position": "^4.0.0", "unist-util-visit": "^5.0.0", "vfile": "^6.0.0" } }, "sha512-f6ZO2ifpwAQIpzGWaBQT2TXxPv6z3RBzQKpVftEWN78Vl/YweF1uwussDx8ECAXVtr3Rs89fKyG9YlzUs9DyGQ=="],
 
@@ -1124,7 +1234,7 @@
 
     "@astrojs/sitemap/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
 
-    "@cspotcode/source-map-support/@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.9", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.0.3", "@jridgewell/sourcemap-codec": "^1.4.10" } }, "sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ=="],
+    "@jridgewell/gen-mapping/@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
     "@poppinss/colors/kleur": ["kleur@4.1.5", "", {}, "sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ=="],
 

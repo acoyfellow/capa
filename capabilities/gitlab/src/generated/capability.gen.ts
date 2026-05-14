@@ -2,8 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitLab API vv4
-// Generated:   2026-04-25T14:45:55.405Z
-// Operations:  1050
+// Operations:  1047
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -2416,27 +2415,6 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Slack Slash Commands integration.
-	 *
-	 * `PUT /api/v4/groups/{id}/integrations/slack-slash-commands` — risk: medium
-	 */
-	async slackSlashCommands(id: string, body?: unknown): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "putApiV4GroupsIdIntegrationsSlackSlashCommands",
-			namespace: "groups",
-			method: "slackSlashCommands",
-			http: "put",
-			path: `/api/v4/groups/${id}/integrations/slack-slash-commands`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["slackSlashCommands"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-		});
-	}
-
-	/**
 	 * Set Packagist integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/packagist` — risk: medium
@@ -3130,6 +3108,27 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
+	 * This feature was introduced in GitLab 19.0
+	 *
+	 * `POST /api/v4/groups/{id}/uploads/authorize` — risk: medium
+	 */
+	async uploadsAuthorize(id: string): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "postApiV4GroupsIdUploadsAuthorize",
+			namespace: "groups",
+			method: "uploadsAuthorize",
+			http: "post",
+			path: `/api/v4/groups/${id}/uploads/authorize`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["uploadsAuthorize"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+		});
+	}
+
+	/**
 	 * Get the list of uploads of a group
 	 *
 	 * `GET /api/v4/groups/{id}/uploads` — risk: medium
@@ -3144,6 +3143,27 @@ export class GroupsResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listUploads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+		});
+	}
+
+	/**
+	 * Uploads a file to the specified group. Returns a markdown-formatted link to the file.
+	 *
+	 * `POST /api/v4/groups/{id}/uploads` — risk: medium
+	 */
+	async createUpload(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "postApiV4GroupsIdUploads",
+			namespace: "groups",
+			method: "createUpload",
+			http: "post",
+			path: `/api/v4/groups/${id}/uploads`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["createUpload"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -3193,7 +3213,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Download a single project upload by secret and filename
+	 * Download a single group upload by secret and filename
 	 *
 	 * `GET /api/v4/groups/{id}/uploads/{secret}/{filename}` — risk: medium
 	 */
@@ -9547,27 +9567,6 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Slack Slash Commands integration.
-	 *
-	 * `PUT /api/v4/projects/{id}/services/slack-slash-commands` — risk: medium
-	 */
-	async servicesSlackSlashCommands(id: string, body?: unknown): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "putApiV4ProjectsIdServicesSlackSlashCommands",
-			namespace: "projects",
-			method: "servicesSlackSlashCommands",
-			http: "put",
-			path: `/api/v4/projects/${id}/services/slack-slash-commands`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["servicesSlackSlashCommands"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-		});
-	}
-
-	/**
 	 * Set Packagist integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/packagist` — risk: medium
@@ -10156,27 +10155,6 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Added in GitLab 8.13
-	 *
-	 * `POST /api/v4/projects/{id}/services/slack_slash_commands/trigger` — risk: medium
-	 */
-	async servicesslackSlashCommandsTrigger(id: string, body?: unknown): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "postApiV4ProjectsIdServicesSlackSlashCommandsTrigger",
-			namespace: "projects",
-			method: "servicesslackSlashCommandsTrigger",
-			http: "post",
-			path: `/api/v4/projects/${id}/services/slack_slash_commands/trigger`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["servicesslackSlashCommandsTrigger"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-		});
-	}
-
-	/**
 	 * Get a list of all active integrations.
 	 *
 	 * `GET /api/v4/projects/{id}/integrations` — risk: medium
@@ -10737,27 +10715,6 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsMattermostSlashCommands"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-		});
-	}
-
-	/**
-	 * Set Slack Slash Commands integration.
-	 *
-	 * `PUT /api/v4/projects/{id}/integrations/slack-slash-commands` — risk: medium
-	 */
-	async integrationsSlackSlashCommands(id: string, body?: unknown): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "putApiV4ProjectsIdIntegrationsSlackSlashCommands",
-			namespace: "projects",
-			method: "integrationsSlackSlashCommands",
-			http: "put",
-			path: `/api/v4/projects/${id}/integrations/slack-slash-commands`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["integrationsSlackSlashCommands"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -11346,27 +11303,6 @@ export class ProjectsResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["integrationsmattermostSlashCommandsTrigger"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-		});
-	}
-
-	/**
-	 * Added in GitLab 8.13
-	 *
-	 * `POST /api/v4/projects/{id}/integrations/slack_slash_commands/trigger` — risk: medium
-	 */
-	async integrationsslackSlashCommandsTrigger(id: string, body?: unknown): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "postApiV4ProjectsIdIntegrationsSlackSlashCommandsTrigger",
-			namespace: "projects",
-			method: "integrationsslackSlashCommandsTrigger",
-			http: "post",
-			path: `/api/v4/projects/${id}/integrations/slack_slash_commands/trigger`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["integrationsslackSlashCommandsTrigger"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -16501,7 +16437,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a release. Deleting a release doesn't delete the associated tag. Maintainer level access to the project is required to delete a release. This feature was introduced in GitLab 11.7.
+	 * Delete a release. Deleting a release doesn't delete the associated tag. Requires at least the Developer role for the project. This feature was introduced in GitLab 11.7.
 	 *
 	 * `DELETE /api/v4/projects/{id}/releases/{tag_name}` — risk: medium
 	 */

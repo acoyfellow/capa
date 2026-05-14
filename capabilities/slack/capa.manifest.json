@@ -1,0 +1,19 @@
+{
+	"name": "slack",
+	"entrypoint": "SlackCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2_without_examples.json",
+		"title": "Slack Web API",
+		"version": "1.7.0"
+	},
+	"upstream": {
+		"baseUrl": "https://slack.com",
+		"prefix": "/"
+	},
+	"auth": "bearer",
+	"contentType": "form",
+	"operations": 174,
+	"namespaces": 174,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

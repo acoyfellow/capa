@@ -1,6 +1,6 @@
 # capa-jira
 
-The full Jira Cloud REST API as a JSRPC capability. **603 operations, 76 namespaces**, generated from Atlassian's official OpenAPI 3.0 spec.
+The full Jira Cloud REST API as a JSRPC capability. **601 operations, 76 namespaces**, generated from Atlassian's official OpenAPI 3.0 spec.
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/jira)
 
@@ -103,7 +103,7 @@ bun src/cli.ts \
 
 | | Count |
 |---|---|
-| Operations | 603 |
+| Operations | 601 |
 | Namespaces | 76 |
 | Worker bundle (uncompressed) | 401 KiB |
 | Worker bundle (gzipped) | 46 KiB |

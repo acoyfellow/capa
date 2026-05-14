@@ -1,6 +1,6 @@
 # capa-gitlab
 
-The full GitLab REST API as a JSRPC capability. **1,050 operations, 51 namespaces**, generated from GitLab's official OpenAPI v2 spec.
+The full GitLab REST API as a JSRPC capability. **1,047 operations, 51 namespaces**, generated from GitLab's official OpenAPI v2 spec.
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/gitlab)
 
@@ -97,7 +97,7 @@ bun src/cli.ts \
 
 | | Count |
 |---|---|
-| Operations | 1,050 |
+| Operations | 1,047 |
 | Namespaces | 51 |
 | Worker bundle (uncompressed) | 581 KiB |
 | Worker bundle (gzipped) | 51 KiB |

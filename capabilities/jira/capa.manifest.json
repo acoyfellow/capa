@@ -1,0 +1,19 @@
+{
+	"name": "jira",
+	"entrypoint": "JiraCapability",
+	"source": {
+		"spec": "https://developer.atlassian.com/cloud/jira/platform/swagger-v3.v3.json",
+		"title": "The Jira Cloud platform REST API",
+		"version": "1001.0.0-SNAPSHOT-3639528be2848fa84a5613fe3ad0b7f02b359607"
+	},
+	"upstream": {
+		"baseUrl": "https://your-domain.atlassian.net",
+		"prefix": "/rest/api/3"
+	},
+	"auth": "basic",
+	"contentType": "json",
+	"operations": 601,
+	"namespaces": 76,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

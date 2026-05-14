@@ -1,0 +1,19 @@
+{
+	"name": "sentry",
+	"entrypoint": "SentryCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/getsentry/sentry-api-schema/main/openapi-derefed.json",
+		"title": "API Reference",
+		"version": "v0"
+	},
+	"upstream": {
+		"baseUrl": "https://sentry.io",
+		"prefix": "/api/0"
+	},
+	"auth": "bearer",
+	"contentType": "json",
+	"operations": 209,
+	"namespaces": 6,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

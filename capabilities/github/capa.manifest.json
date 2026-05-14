@@ -1,0 +1,19 @@
+{
+	"name": "github",
+	"entrypoint": "GithubCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
+		"title": "GitHub v3 REST API",
+		"version": "1.1.4"
+	},
+	"upstream": {
+		"baseUrl": "https://api.github.com",
+		"prefix": "/"
+	},
+	"auth": "bearer",
+	"contentType": "json",
+	"operations": 1182,
+	"namespaces": 36,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

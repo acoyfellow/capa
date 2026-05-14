@@ -1,0 +1,19 @@
+{
+	"name": "twilio-verify",
+	"entrypoint": "TwilioVerifyCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_verify_v2.json",
+		"title": "Twilio - Verify",
+		"version": "1.0.0"
+	},
+	"upstream": {
+		"baseUrl": "https://verify.twilio.com",
+		"prefix": "/v2"
+	},
+	"auth": "basic",
+	"contentType": "form",
+	"operations": 57,
+	"namespaces": 5,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

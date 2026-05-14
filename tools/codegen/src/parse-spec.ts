@@ -70,11 +70,20 @@ function deriveMethod(http: HttpMethod, path: string, apiPrefix: string): string
 		return http;
 	}
 
+	// Some APIs expose a namespace item itself as the root resource, e.g.
+	// /repos/{owner}/{repo}. That leaves only params after the namespace; treat
+	// the shape like a bare item instead of expecting a sub-resource segment.
+	if (nameSegments.length === 0) {
+		if (http === "get") return "retrieve";
+		if (http === "post" || http === "put" || http === "patch") return "update";
+		if (http === "delete") return "del";
+		return http;
+	}
+
 	// 2+ segments. The "primary" sub-resource is the FIRST name segment.
 	// Any additional name segment after that is treated as either:
 	//   - a deeper sub-resource (nested), or
 	//   - an action verb (terminal non-param segment with no further segments)
-	const primary = nameSegments[0]!;
 	const isDeeperResource = nameSegments.length > 1;
 
 	if (isDeeperResource) {

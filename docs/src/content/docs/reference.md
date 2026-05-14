@@ -8,8 +8,8 @@ description: Capabilities, codegen CLI, and evidence bundle shape.
 | Capability | Operations | Namespaces | Bundle (gz) | Auth | Body | Deploy |
 |---|---|---|---|---|---|---|
 | **stripe** | 534 | 73 | 38 KiB | Bearer | Form | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/stripe) |
-| **gitlab** | 1,050 | 51 | 54 KiB | Private-Token | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/gitlab) |
-| **jira** | 603 | 76 | 48 KiB | Basic | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/jira) |
+| **gitlab** | 1,047 | 51 | 54 KiB | Private-Token | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/gitlab) |
+| **jira** | 601 | 76 | 48 KiB | Basic | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/jira) |
 
 ### Secret names
 

@@ -2,8 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitLab API vv4
-// Generated:   2026-04-25T14:45:55.405Z
-// Operations:  1050
+// Operations:  1047
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -124,7 +123,6 @@ export const manifest = {
 	"putApiV4GroupsIdIntegrationsLinear": {"namespace":"groups","method":"linear","http":"put","path":"/api/v4/groups/{id}/integrations/linear","risk":"medium"},
 	"putApiV4GroupsIdIntegrationsMatrix": {"namespace":"groups","method":"matrix","http":"put","path":"/api/v4/groups/{id}/integrations/matrix","risk":"medium"},
 	"putApiV4GroupsIdIntegrationsMattermostSlashCommands": {"namespace":"groups","method":"mattermostSlashCommands","http":"put","path":"/api/v4/groups/{id}/integrations/mattermost-slash-commands","risk":"medium"},
-	"putApiV4GroupsIdIntegrationsSlackSlashCommands": {"namespace":"groups","method":"slackSlashCommands","http":"put","path":"/api/v4/groups/{id}/integrations/slack-slash-commands","risk":"medium"},
 	"putApiV4GroupsIdIntegrationsPackagist": {"namespace":"groups","method":"packagist","http":"put","path":"/api/v4/groups/{id}/integrations/packagist","risk":"medium"},
 	"putApiV4GroupsIdIntegrationsPhorge": {"namespace":"groups","method":"phorge","http":"put","path":"/api/v4/groups/{id}/integrations/phorge","risk":"medium"},
 	"putApiV4GroupsIdIntegrationsPipelinesEmail": {"namespace":"groups","method":"pipelinesEmail","http":"put","path":"/api/v4/groups/{id}/integrations/pipelines-email","risk":"medium"},
@@ -158,7 +156,9 @@ export const manifest = {
 	"deleteApiV4GroupsIdInvitationsEmail": {"namespace":"groups","method":"deleteInvitation","http":"delete","path":"/api/v4/groups/{id}/invitations/{email}","risk":"medium"},
 	"getApiV4GroupsIdIssues": {"namespace":"groups","method":"listIssues","http":"get","path":"/api/v4/groups/{id}/issues","risk":"medium"},
 	"getApiV4GroupsIdIssuesStatistics": {"namespace":"groups","method":"listIssuesStatistics","http":"get","path":"/api/v4/groups/{id}/issues_statistics","risk":"medium"},
+	"postApiV4GroupsIdUploadsAuthorize": {"namespace":"groups","method":"uploadsAuthorize","http":"post","path":"/api/v4/groups/{id}/uploads/authorize","risk":"medium"},
 	"getApiV4GroupsIdUploads": {"namespace":"groups","method":"listUploads","http":"get","path":"/api/v4/groups/{id}/uploads","risk":"medium"},
+	"postApiV4GroupsIdUploads": {"namespace":"groups","method":"createUpload","http":"post","path":"/api/v4/groups/{id}/uploads","risk":"medium"},
 	"getApiV4GroupsIdUploadsUploadId": {"namespace":"groups","method":"retrieveUpload_0","http":"get","path":"/api/v4/groups/{id}/uploads/{upload_id}","risk":"medium"},
 	"deleteApiV4GroupsIdUploadsUploadId": {"namespace":"groups","method":"deleteUpload_0","http":"delete","path":"/api/v4/groups/{id}/uploads/{upload_id}","risk":"medium"},
 	"getApiV4GroupsIdUploadsSecretFilename": {"namespace":"groups","method":"retrieveUpload_1","http":"get","path":"/api/v4/groups/{id}/uploads/{secret}/{filename}","risk":"medium"},
@@ -463,7 +463,6 @@ export const manifest = {
 	"putApiV4ProjectsIdServicesLinear": {"namespace":"projects","method":"servicesLinear","http":"put","path":"/api/v4/projects/{id}/services/linear","risk":"medium"},
 	"putApiV4ProjectsIdServicesMatrix": {"namespace":"projects","method":"servicesMatrix","http":"put","path":"/api/v4/projects/{id}/services/matrix","risk":"medium"},
 	"putApiV4ProjectsIdServicesMattermostSlashCommands": {"namespace":"projects","method":"servicesMattermostSlashCommands","http":"put","path":"/api/v4/projects/{id}/services/mattermost-slash-commands","risk":"medium"},
-	"putApiV4ProjectsIdServicesSlackSlashCommands": {"namespace":"projects","method":"servicesSlackSlashCommands","http":"put","path":"/api/v4/projects/{id}/services/slack-slash-commands","risk":"medium"},
 	"putApiV4ProjectsIdServicesPackagist": {"namespace":"projects","method":"servicesPackagist","http":"put","path":"/api/v4/projects/{id}/services/packagist","risk":"medium"},
 	"putApiV4ProjectsIdServicesPhorge": {"namespace":"projects","method":"servicesPhorge","http":"put","path":"/api/v4/projects/{id}/services/phorge","risk":"medium"},
 	"putApiV4ProjectsIdServicesPipelinesEmail": {"namespace":"projects","method":"servicesPipelinesEmail","http":"put","path":"/api/v4/projects/{id}/services/pipelines-email","risk":"medium"},
@@ -492,7 +491,6 @@ export const manifest = {
 	"getApiV4ProjectsIdServicesSlug": {"namespace":"projects","method":"retrieveService","http":"get","path":"/api/v4/projects/{id}/services/{slug}","risk":"medium"},
 	"deleteApiV4ProjectsIdServicesSlug": {"namespace":"projects","method":"deleteService","http":"delete","path":"/api/v4/projects/{id}/services/{slug}","risk":"medium"},
 	"postApiV4ProjectsIdServicesMattermostSlashCommandsTrigger": {"namespace":"projects","method":"servicesmattermostSlashCommandsTrigger","http":"post","path":"/api/v4/projects/{id}/services/mattermost_slash_commands/trigger","risk":"medium"},
-	"postApiV4ProjectsIdServicesSlackSlashCommandsTrigger": {"namespace":"projects","method":"servicesslackSlashCommandsTrigger","http":"post","path":"/api/v4/projects/{id}/services/slack_slash_commands/trigger","risk":"medium"},
 	"getApiV4ProjectsIdIntegrations": {"namespace":"projects","method":"listIntegrations","http":"get","path":"/api/v4/projects/{id}/integrations","risk":"medium"},
 	"putApiV4ProjectsIdIntegrationsAppleAppStore": {"namespace":"projects","method":"integrationsAppleAppStore","http":"put","path":"/api/v4/projects/{id}/integrations/apple-app-store","risk":"medium"},
 	"putApiV4ProjectsIdIntegrationsAsana": {"namespace":"projects","method":"integrationsAsana","http":"put","path":"/api/v4/projects/{id}/integrations/asana","risk":"medium"},
@@ -520,7 +518,6 @@ export const manifest = {
 	"putApiV4ProjectsIdIntegrationsLinear": {"namespace":"projects","method":"integrationsLinear","http":"put","path":"/api/v4/projects/{id}/integrations/linear","risk":"medium"},
 	"putApiV4ProjectsIdIntegrationsMatrix": {"namespace":"projects","method":"integrationsMatrix","http":"put","path":"/api/v4/projects/{id}/integrations/matrix","risk":"medium"},
 	"putApiV4ProjectsIdIntegrationsMattermostSlashCommands": {"namespace":"projects","method":"integrationsMattermostSlashCommands","http":"put","path":"/api/v4/projects/{id}/integrations/mattermost-slash-commands","risk":"medium"},
-	"putApiV4ProjectsIdIntegrationsSlackSlashCommands": {"namespace":"projects","method":"integrationsSlackSlashCommands","http":"put","path":"/api/v4/projects/{id}/integrations/slack-slash-commands","risk":"medium"},
 	"putApiV4ProjectsIdIntegrationsPackagist": {"namespace":"projects","method":"integrationsPackagist","http":"put","path":"/api/v4/projects/{id}/integrations/packagist","risk":"medium"},
 	"putApiV4ProjectsIdIntegrationsPhorge": {"namespace":"projects","method":"integrationsPhorge","http":"put","path":"/api/v4/projects/{id}/integrations/phorge","risk":"medium"},
 	"putApiV4ProjectsIdIntegrationsPipelinesEmail": {"namespace":"projects","method":"integrationsPipelinesEmail","http":"put","path":"/api/v4/projects/{id}/integrations/pipelines-email","risk":"medium"},
@@ -549,7 +546,6 @@ export const manifest = {
 	"getApiV4ProjectsIdIntegrationsSlug": {"namespace":"projects","method":"retrieveIntegration","http":"get","path":"/api/v4/projects/{id}/integrations/{slug}","risk":"medium"},
 	"deleteApiV4ProjectsIdIntegrationsSlug": {"namespace":"projects","method":"deleteIntegration","http":"delete","path":"/api/v4/projects/{id}/integrations/{slug}","risk":"medium"},
 	"postApiV4ProjectsIdIntegrationsMattermostSlashCommandsTrigger": {"namespace":"projects","method":"integrationsmattermostSlashCommandsTrigger","http":"post","path":"/api/v4/projects/{id}/integrations/mattermost_slash_commands/trigger","risk":"medium"},
-	"postApiV4ProjectsIdIntegrationsSlackSlashCommandsTrigger": {"namespace":"projects","method":"integrationsslackSlashCommandsTrigger","http":"post","path":"/api/v4/projects/{id}/integrations/slack_slash_commands/trigger","risk":"medium"},
 	"getApiV4ProjectsIdInvitations": {"namespace":"projects","method":"listInvitations","http":"get","path":"/api/v4/projects/{id}/invitations","risk":"medium"},
 	"postApiV4ProjectsIdInvitations": {"namespace":"projects","method":"createInvitation","http":"post","path":"/api/v4/projects/{id}/invitations","risk":"medium"},
 	"putApiV4ProjectsIdInvitationsEmail": {"namespace":"projects","method":"invitations","http":"put","path":"/api/v4/projects/{id}/invitations/{email}","risk":"medium"},

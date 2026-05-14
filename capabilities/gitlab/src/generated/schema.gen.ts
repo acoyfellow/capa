@@ -3416,26 +3416,6 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
-    "/api/v4/groups/{id}/integrations/slack-slash-commands": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Create/Edit Slack Slash Commands integration
-         * @description Set Slack Slash Commands integration.
-         */
-        put: operations["putApiV4GroupsIdIntegrationsSlackSlashCommands"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/v4/groups/{id}/integrations/squash-tm": {
         parameters: {
             query?: never;
@@ -4290,7 +4270,11 @@ export type paths = {
         /** @description Get the list of uploads of a group */
         get: operations["getApiV4GroupsIdUploads"];
         put?: never;
-        post?: never;
+        /**
+         * Upload a file to a group
+         * @description Uploads a file to the specified group. Returns a markdown-formatted link to the file.
+         */
+        post: operations["postApiV4GroupsIdUploads"];
         delete?: never;
         options?: never;
         head?: never;
@@ -4304,7 +4288,7 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Download a single project upload by secret and filename */
+        /** @description Download a single group upload by secret and filename */
         get: operations["getApiV4GroupsIdUploadsSecretFilename"];
         put?: never;
         post?: never;
@@ -4328,6 +4312,26 @@ export type paths = {
         post?: never;
         /** @description Delete a single group upload */
         delete: operations["deleteApiV4GroupsIdUploadsUploadId"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v4/groups/{id}/uploads/authorize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Workhorse authorize the file upload
+         * @description This feature was introduced in GitLab 19.0
+         */
+        post: operations["postApiV4GroupsIdUploadsAuthorize"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -8640,46 +8644,6 @@ export type paths = {
          * @description Set Slack integration.
          */
         put: operations["putApiV4ProjectsIdIntegrationsSlack"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v4/projects/{id}/integrations/slack_slash_commands/trigger": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Trigger a slash command for slack-slash-commands
-         * @description Added in GitLab 8.13
-         */
-        post: operations["postApiV4ProjectsIdIntegrationsSlackSlashCommandsTrigger"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v4/projects/{id}/integrations/slack-slash-commands": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Create/Edit Slack Slash Commands integration
-         * @description Set Slack Slash Commands integration.
-         */
-        put: operations["putApiV4ProjectsIdIntegrationsSlackSlashCommands"];
         post?: never;
         delete?: never;
         options?: never;
@@ -13670,7 +13634,7 @@ export type paths = {
         post?: never;
         /**
          * Delete a release
-         * @description Delete a release. Deleting a release doesn't delete the associated tag. Maintainer level access to the project is required to delete a release. This feature was introduced in GitLab 11.7.
+         * @description Delete a release. Deleting a release doesn't delete the associated tag. Requires at least the Developer role for the project. This feature was introduced in GitLab 11.7.
          */
         delete: operations["deleteApiV4ProjectsIdReleasesTagName"];
         options?: never;
@@ -15602,46 +15566,6 @@ export type paths = {
          * @description Set Slack integration.
          */
         put: operations["putApiV4ProjectsIdServicesSlack"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v4/projects/{id}/services/slack_slash_commands/trigger": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Trigger a slash command for slack-slash-commands
-         * @description Added in GitLab 8.13
-         */
-        post: operations["postApiV4ProjectsIdServicesSlackSlashCommandsTrigger"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v4/projects/{id}/services/slack-slash-commands": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Create/Edit Slack Slash Commands integration
-         * @description Set Slack Slash Commands integration.
-         */
-        put: operations["putApiV4ProjectsIdServicesSlackSlashCommands"];
         post?: never;
         delete?: never;
         options?: never;
@@ -17925,27 +17849,44 @@ export type components = {
         };
         /** @description API_Entities_Badge model */
         API_Entities_Badge: {
-            id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /** @example https://example.gitlab.com */
             image_url: string;
+            /** @example project */
             kind: string;
+            /** @example https://example.gitlab.com */
             link_url: string;
+            /** @example Pipeline Status */
             name: string;
+            /** @example https://example.gitlab.com */
             rendered_image_url: string;
+            /** @example https://example.gitlab.com */
             rendered_link_url: string;
         };
         /** @description API_Entities_BasicBadgeDetails model */
         API_Entities_BasicBadgeDetails: {
+            /** @example https://example.gitlab.com */
             image_url: string;
+            /** @example https://example.gitlab.com */
             link_url: string;
+            /** @example Pipeline Status */
             name: string;
+            /** @example https://example.gitlab.com */
             rendered_image_url: string;
+            /** @example https://example.gitlab.com */
             rendered_link_url: string;
         };
         /** @description API_Entities_BasicGroupDetails model */
         API_Entities_BasicGroupDetails: {
             /** Format: int32 */
             id: number;
+            /** @example Diaspora */
             name: string;
+            /** @example http://gitlab.example.com/groups/diaspora */
             web_url: string;
         };
         /** @description API_Entities_BasicProjectDetails model */
@@ -18002,9 +17943,17 @@ export type components = {
              * @example 1
              */
             star_count: number;
-            /** @example tag */
+            /**
+             * @example [
+             *       "tag"
+             *     ]
+             */
             tag_list: string[];
-            /** @example topic */
+            /**
+             * @example [
+             *       "topic"
+             *     ]
+             */
             topics: string[];
             /** @example public */
             visibility: string;
@@ -18064,18 +18013,42 @@ export type components = {
         /** @description API_Entities_BlameRange model */
         API_Entities_BlameRange: {
             commit: components["schemas"]["API_Entities_BlameRangeCommit"];
-            lines: string;
+            /**
+             * @example [
+             *       "lorem ipsum"
+             *     ]
+             */
+            lines: string[];
         };
         API_Entities_BlameRangeCommit: {
+            /** @example john@example.com */
             author_email: string;
+            /** @example John Smith */
             author_name: string;
+            /**
+             * Format: date-time
+             * @example 2012-05-28T04:42:42-07:00
+             */
             authored_date: string;
+            /**
+             * Format: date-time
+             * @example 2012-05-28T04:42:42-07:00
+             */
             committed_date: string;
+            /** @example jack@example.com */
             committer_email: string;
+            /** @example Jack Smith */
             committer_name: string;
+            /** @example 2695effb5807a22ff3d138d593fd856244e155e7 */
             id: string;
+            /** @example Initial commit */
             message: string;
-            parent_ids: string;
+            /**
+             * @example [
+             *       "2a4b78934375d7f53875269ffd4f45fd83a84ebe"
+             *     ]
+             */
+            parent_ids: string[];
         };
         /** @description API_Entities_Branch model */
         API_Entities_Branch: {
@@ -18260,6 +18233,7 @@ export type components = {
         };
         /** @description API_Entities_Changelog model */
         API_Entities_Changelog: {
+            /** @example ## 1.0.0 (2023-01-01) */
             notes: string;
         };
         /** @description API_Entities_Ci_Bridge model */
@@ -18432,7 +18406,7 @@ export type components = {
              * @example archive
              * @enum {string}
              */
-            file_type: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "scip" | "sarif";
+            file_type: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "scip" | "sarif" | "environment_key";
             /** @example artifacts.zip */
             filename: string;
             /**
@@ -18605,11 +18579,30 @@ export type components = {
         };
         /** @description API_Entities_Ci_Lint_Result model */
         API_Entities_Ci_Lint_Result: {
-            /** @example variables config should be a hash of key value pairs */
+            /**
+             * @example [
+             *       "variables config should be a hash of key value pairs"
+             *     ]
+             */
             errors: string[];
-            /** @example { "blob": "https://gitlab.com/root/example-project/-/blob/... */
+            /**
+             * @example [
+             *       {
+             *         "blob": "https://gitlab.com/root/example-project/-/blob/..."
+             *       }
+             *     ]
+             */
             includes: components["schemas"]["API_Entities_Ci_Lint_Result_Include"][];
-            /** @example { "name": "test: .... } */
+            /**
+             * @example [
+             *       {
+             *         "name": "test",
+             *         "script": [
+             *           "ls"
+             *         ]
+             *       }
+             *     ]
+             */
             jobs?: Record<string, never>[];
             /**
              * @example ---\n:another_test:\n  :stage: test\n
@@ -18617,7 +18610,11 @@ export type components = {
              */
             merged_yaml: string;
             valid: boolean;
-            /** @example jobs:job may allow multiple pipelines ... */
+            /**
+             * @example [
+             *       "jobs:job may allow multiple pipelines ..."
+             *     ]
+             */
             warnings: string[];
         };
         API_Entities_Ci_Lint_Result_Include: {
@@ -18627,7 +18624,13 @@ export type components = {
             context_project: string;
             /** @example e52d6d0246d7375291850e61f0abc101fbda9dc2 */
             context_sha: string;
-            /** @example { "job_name": "test", "project": "gitlab-org/gitlab", "ref": "master" } */
+            /**
+             * @example {
+             *       "job_name": "test",
+             *       "project": "gitlab-org/gitlab",
+             *       "ref": "master"
+             *     }
+             */
             extra: Record<string, never>;
             /** @example .gitlab/ci/build-images.gitlab-ci.yml */
             location: string;
@@ -19237,19 +19240,34 @@ export type components = {
              * @example 2017-07-26T11:08:53.000+02:00
              */
             created_at: string;
-            /** @example { "Signed-off-by": ["John Doe <johndoe@gitlab.com>", "Jane Doe <janedoe@gitlab.com>"] } */
+            /**
+             * @example {
+             *       "Signed-off-by": [
+             *         "John Doe <johndoe@gitlab.com>",
+             *         "Jane Doe <janedoe@gitlab.com>"
+             *       ]
+             *     }
+             */
             extended_trailers: Record<string, never>;
             /** @example 2695effb5807a22ff3d138d593fd856244e155e7 */
             id: string;
             /** @example Initial commit */
             message: string;
-            /** @example 2a4b78934375d7f53875269ffd4f45fd83a84ebe */
+            /**
+             * @example [
+             *       "2a4b78934375d7f53875269ffd4f45fd83a84ebe"
+             *     ]
+             */
             parent_ids: string[];
             /** @example 2695effb */
             short_id: string;
             /** @example Initial commit */
             title: string;
-            /** @example { "Merged-By": "Jane Doe janedoe@gitlab.com" } */
+            /**
+             * @example {
+             *       "Merged-By": "Jane Doe janedoe@gitlab.com"
+             *     }
+             */
             trailers: Record<string, never>;
             /** @example https://gitlab.example.com/janedoe/gitlab-foss/-/commit/ed899a2f4b50b4370feeea94676502b42383c746 */
             web_url: string;
@@ -19279,14 +19297,25 @@ export type components = {
              * @example 2017-07-26T11:08:53.000+02:00
              */
             created_at: string;
-            /** @example { "Signed-off-by": ["John Doe <johndoe@gitlab.com>", "Jane Doe <janedoe@gitlab.com>"] } */
+            /**
+             * @example {
+             *       "Signed-off-by": [
+             *         "John Doe <johndoe@gitlab.com>",
+             *         "Jane Doe <janedoe@gitlab.com>"
+             *       ]
+             *     }
+             */
             extended_trailers: Record<string, never>;
             /** @example 2695effb5807a22ff3d138d593fd856244e155e7 */
             id: string;
             last_pipeline: components["schemas"]["API_Entities_Ci_PipelineBasic"];
             /** @example Initial commit */
             message: string;
-            /** @example 2a4b78934375d7f53875269ffd4f45fd83a84ebe */
+            /**
+             * @example [
+             *       "2a4b78934375d7f53875269ffd4f45fd83a84ebe"
+             *     ]
+             */
             parent_ids: string[];
             /**
              * Format: int32
@@ -19300,7 +19329,11 @@ export type components = {
             status: string;
             /** @example Initial commit */
             title: string;
-            /** @example { "Merged-By": "Jane Doe janedoe@gitlab.com" } */
+            /**
+             * @example {
+             *       "Merged-By": "Jane Doe janedoe@gitlab.com"
+             *     }
+             */
             trailers: Record<string, never>;
             /** @example https://gitlab.example.com/janedoe/gitlab-foss/-/commit/ed899a2f4b50b4370feeea94676502b42383c746 */
             web_url: string;
@@ -19337,7 +19370,7 @@ export type components = {
         API_Entities_CommitSignature: {
             /** @example gitaly */
             commit_source: string;
-            signature: string;
+            signature: Record<string, never>;
             /** @example PGP */
             signature_type: string;
         };
@@ -19743,7 +19776,11 @@ export type components = {
         };
         /** @description API_Entities_Dictionary_Table model */
         API_Entities_Dictionary_Table: {
-            /** @example database */
+            /**
+             * @example [
+             *       "database"
+             *     ]
+             */
             feature_categories: string[];
             /** @example users */
             table_name: string;
@@ -19770,8 +19807,11 @@ export type components = {
             too_large: boolean;
         };
         API_Entities_DiffRefs: {
+            /** @example b83d6e391c22777fca1ed3012fce84f633d7fed0 */
             base_sha: string;
+            /** @example b83d6e391c22777fca1ed3012fce84f633d7fed0 */
             head_sha: string;
+            /** @example b83d6e391c22777fca1ed3012fce84f633d7fed0 */
             start_sha: string;
         };
         /** @description API_Entities_DiscoveredClusters model */
@@ -19987,12 +20027,12 @@ export type components = {
         };
         /** @description API_Entities_Feature_Definition model */
         API_Entities_Feature_Definition: {
-            default_enabled: string;
+            default_enabled: boolean;
             feature_issue_url: string;
             group: string;
             intended_to_rollout_by: string;
             introduced_by_url: string;
-            log_state_changes: string;
+            log_state_changes: boolean;
             milestone: string;
             name: string;
             rollout_issue_url: string;
@@ -20010,7 +20050,7 @@ export type components = {
             description: string;
             /** @example merge_train */
             name: string;
-            scopes: string;
+            scopes: unknown[];
             strategies: components["schemas"]["API_Entities_FeatureFlag_Strategy"];
             /**
              * Format: date-time
@@ -20428,6 +20468,19 @@ export type components = {
             pipeline_artifacts_verification_total_count: string;
             pipeline_artifacts_verified_count: string;
             pipeline_artifacts_verified_in_percentage: string;
+            project_import_export_relation_export_upload_uploads_checksum_failed_count: string;
+            project_import_export_relation_export_upload_uploads_checksum_total_count: string;
+            project_import_export_relation_export_upload_uploads_checksummed_count: string;
+            project_import_export_relation_export_upload_uploads_count: string;
+            project_import_export_relation_export_upload_uploads_failed_count: string;
+            project_import_export_relation_export_upload_uploads_oldest_unsynced_time: string;
+            project_import_export_relation_export_upload_uploads_registry_count: string;
+            project_import_export_relation_export_upload_uploads_synced_count: string;
+            project_import_export_relation_export_upload_uploads_synced_in_percentage: string;
+            project_import_export_relation_export_upload_uploads_verification_failed_count: string;
+            project_import_export_relation_export_upload_uploads_verification_total_count: string;
+            project_import_export_relation_export_upload_uploads_verified_count: string;
+            project_import_export_relation_export_upload_uploads_verified_in_percentage: string;
             project_repositories_checksum_failed_count: string;
             project_repositories_checksum_total_count: string;
             project_repositories_checksummed_count: string;
@@ -20549,27 +20602,47 @@ export type components = {
             user_uploads_verified_count: string;
             user_uploads_verified_in_percentage: string;
             version: string;
+            vulnerability_archive_export_uploads_checksum_failed_count: string;
+            vulnerability_archive_export_uploads_checksum_total_count: string;
+            vulnerability_archive_export_uploads_checksummed_count: string;
+            vulnerability_archive_export_uploads_count: string;
+            vulnerability_archive_export_uploads_failed_count: string;
+            vulnerability_archive_export_uploads_oldest_unsynced_time: string;
+            vulnerability_archive_export_uploads_registry_count: string;
+            vulnerability_archive_export_uploads_synced_count: string;
+            vulnerability_archive_export_uploads_synced_in_percentage: string;
+            vulnerability_archive_export_uploads_verification_failed_count: string;
+            vulnerability_archive_export_uploads_verification_total_count: string;
+            vulnerability_archive_export_uploads_verified_count: string;
+            vulnerability_archive_export_uploads_verified_in_percentage: string;
         };
         /** @description API_Entities_GitlabSubscription model */
         API_Entities_GitlabSubscription: {
             billing: {
+                /** Format: date */
                 subscription_end_date: string;
+                /** Format: date */
                 subscription_start_date: string;
+                /** Format: date */
                 trial_ends_on: string;
             };
             plan: {
-                auto_renew: string;
+                auto_renew: boolean;
                 code: string;
-                exclude_guests: string;
+                exclude_guests: boolean;
                 name: string;
-                trial: string;
-                upgradable: string;
+                trial: boolean;
+                upgradable: boolean;
             };
             usage: {
-                max_seats_used: string;
-                seats_in_subscription: string;
-                seats_in_use: string;
-                seats_owed: string;
+                /** Format: int32 */
+                max_seats_used: number;
+                /** Format: int32 */
+                seats_in_subscription: number;
+                /** Format: int32 */
+                seats_in_use: number;
+                /** Format: int32 */
+                seats_owed: number;
             };
         };
         API_Entities_Glql_Data: {
@@ -20680,6 +20753,7 @@ export type components = {
             /** Format: int32 */
             max_artifacts_size: number;
             mentions_disabled: string;
+            /** @example Diaspora */
             name: string;
             /** Format: int32 */
             organization_id: number;
@@ -20710,6 +20784,7 @@ export type components = {
             two_factor_grace_period: number;
             visibility: string;
             web_based_commit_signing_enabled?: string;
+            /** @example http://gitlab.example.com/groups/diaspora */
             web_url: string;
             wiki_access_level: string;
         };
@@ -20740,6 +20815,7 @@ export type components = {
             duo_namespace_access_rules?: string;
             emails_disabled: boolean;
             emails_enabled: boolean;
+            /** @example ssh */
             enabled_git_access_protocol?: string;
             experiment_features_enabled?: string;
             extra_shared_runners_minutes_limit: string;
@@ -20761,6 +20837,7 @@ export type components = {
             max_artifacts_size: number;
             membership_lock: string;
             mentions_disabled: string;
+            /** @example Diaspora */
             name: string;
             only_allow_merge_if_all_discussions_are_resolved?: string;
             only_allow_merge_if_pipeline_succeeds?: string;
@@ -20769,13 +20846,14 @@ export type components = {
             parent_id: string;
             path: string;
             prevent_forking_outside_group: string;
-            prevent_sharing_groups_outside_hierarchy?: string;
+            prevent_sharing_groups_outside_hierarchy?: boolean;
             project_creation_level: string;
             projects?: components["schemas"]["API_Entities_Project"];
             repository_storage?: string;
             request_access_enabled: boolean;
             require_two_factor_authentication: boolean;
             root_storage_statistics?: components["schemas"]["API_Entities_Namespace_RootStorageStatistics"];
+            /** @example b8bc4a7a29eb76ea83cf79e4908c2b */
             runners_token?: string;
             saml_group_links?: components["schemas"]["API_Entities_SamlGroupLink"];
             service_access_tokens_expiration_enforced?: string;
@@ -20783,7 +20861,7 @@ export type components = {
             shared_projects?: components["schemas"]["API_Entities_Project"];
             shared_runners_minutes_limit: string;
             shared_runners_setting: string;
-            shared_with_groups: string;
+            shared_with_groups: Record<string, never>[];
             show_diff_preview_in_email: boolean;
             statistics?: {
                 job_artifacts_size: string;
@@ -20807,8 +20885,25 @@ export type components = {
             unique_project_download_limit_interval_in_seconds?: string;
             visibility: string;
             web_based_commit_signing_enabled?: string;
+            /** @example http://gitlab.example.com/groups/diaspora */
             web_url: string;
             wiki_access_level: string;
+        };
+        /** @description API_Entities_GroupUpload model */
+        API_Entities_GroupUpload: {
+            /** @description The name of the file */
+            alt: string;
+            /** @description The full path to the file */
+            full_path: string;
+            /**
+             * Format: int32
+             * @description The ID of the file
+             */
+            id: number;
+            /** @description A markdown-formatted link to the file. */
+            markdown: string;
+            /** @description The URL to access the file */
+            url: string;
         };
         /** @description API_Entities_Hook model */
         API_Entities_Hook: {
@@ -20822,9 +20917,11 @@ export type components = {
              */
             created_at: string;
             /**
-             * @example {
-             *       "X-Custom-Header": "value"
-             *     }
+             * @example [
+             *       {
+             *         "X-Custom-Header": "value"
+             *       }
+             *     ]
              */
             custom_headers?: Record<string, never>[];
             /** @example {"event":"{{object_kind}}"} */
@@ -20837,8 +20934,11 @@ export type components = {
              */
             disabled_until: string;
             enable_ssl_verification: boolean;
-            /** @example 1 */
-            id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
             merge_requests_events: boolean;
             /** @example Hook name */
             name: string;
@@ -20851,13 +20951,25 @@ export type components = {
             /** @example my-branch-* */
             push_events_branch_filter: string;
             repository_update_events: boolean;
+            /**
+             * @description Whether an HMAC signing token is configured
+             * @example false
+             */
+            signing_token_present: boolean;
             tag_push_events: boolean;
+            /**
+             * @description Whether a secret token is configured
+             * @example false
+             */
+            token_present: boolean;
             /** @example https://webhook.site */
             url: string;
             /**
-             * @example {
-             *       "token": "secr3t"
-             *     }
+             * @example [
+             *       {
+             *         "token": "secr3t"
+             *       }
+             *     ]
              */
             url_variables?: Record<string, never>[];
         };
@@ -20899,11 +21011,8 @@ export type components = {
              */
             properties: Record<string, never>;
             push_events: boolean;
-            /**
-             * Format: int32
-             * @example jenkins
-             */
-            slug: number;
+            /** @example jenkins */
+            slug: string;
             tag_push_events: boolean;
             /** @example Jenkins CI */
             title: string;
@@ -20942,11 +21051,8 @@ export type components = {
             note_events: boolean;
             pipeline_events: boolean;
             push_events: boolean;
-            /**
-             * Format: int32
-             * @example jenkins
-             */
-            slug: number;
+            /** @example jenkins */
+            slug: string;
             tag_push_events: boolean;
             /** @example Jenkins CI */
             title: string;
@@ -20970,11 +21076,23 @@ export type components = {
         };
         /** @description API_Entities_IssuableMetricImage model */
         API_Entities_IssuableMetricImage: {
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             created_at: string;
+            /** @example /uploads/-/system/issuable_metric_image/file/1/image.png */
             file_path: string;
+            /** @example image.png */
             filename: string;
-            id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /** @example https://gitlab.example.com/example */
             url: string;
+            /** @example Example URL */
             url_text: string;
         };
         API_Entities_IssuableReferences: {
@@ -21005,16 +21123,25 @@ export type components = {
         /** @description API_Entities_Issue model */
         API_Entities_Issue: {
             _links: {
+                /** @example http://example.com/api/v4/projects/1/issues/2/award_emoji */
                 award_emoji: string;
+                /** @example http://example.com/api/v4/projects/1/issues/75 */
                 closed_as_duplicate_of: string;
+                /** @example http://example.com/api/v4/projects/1/issues/2/notes */
                 notes: string;
+                /** @example http://example.com/api/v4/projects/1 */
                 project: string;
+                /** @example http://example.com/api/v4/projects/1/issues/2 */
                 self: string;
             };
             assignee: components["schemas"]["API_Entities_UserBasic"];
             assignees: components["schemas"]["API_Entities_UserBasic"];
             author: components["schemas"]["API_Entities_UserBasic"];
-            blocking_issues_count: string;
+            /**
+             * Format: int32
+             * @example 2
+             */
+            blocking_issues_count: number;
             /**
              * Format: date-time
              * @example 2022-11-15T08:30:55.232Z
@@ -21039,7 +21166,8 @@ export type components = {
             due_date: string;
             epic?: components["schemas"]["EpicBaseEntity"];
             epic_iid?: string;
-            has_tasks: string;
+            /** @example true */
+            has_tasks: boolean;
             health_status?: string;
             /**
              * Format: int32
@@ -21051,24 +21179,34 @@ export type components = {
              * @example 14
              */
             iid: number;
-            imported: string;
+            /** @example false */
+            imported: boolean;
             /** @example github */
             imported_from: string;
             /** @example issue */
             issue_type: string;
             iteration?: components["schemas"]["API_Entities_Iteration"];
-            /** @example bug */
+            /**
+             * @example [
+             *       "bug"
+             *     ]
+             */
             labels: string[];
             /** Format: int32 */
             merge_requests_count: number;
             milestone: components["schemas"]["API_Entities_Milestone"];
-            moved_to_id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            moved_to_id: number;
             /**
              * Format: int32
              * @example 4
              */
             project_id: number;
             references: components["schemas"]["API_Entities_IssuableReferences"];
+            /** @example user@example.com */
             service_desk_reply_to: string;
             /** @description One of ["UNKNOWN", "LOW", "MEDIUM", "HIGH", "CRITICAL"] */
             severity: string;
@@ -21079,8 +21217,10 @@ export type components = {
             start_date: string;
             /** @example closed */
             state: string;
-            subscribed?: string;
+            /** @example false */
+            subscribed?: boolean;
             task_completion_status: components["schemas"]["API_Entities_TaskCompletionStatus"];
+            /** @example 2 of 4 tasks completed */
             task_status?: string;
             time_stats: components["schemas"]["API_Entities_IssuableTimeStats"];
             /** @example Impedit et ut et dolores vero provident ullam est */
@@ -21101,13 +21241,21 @@ export type components = {
             user_notes_count: number;
             /** @example http://example.com/example/example/issues/14 */
             web_url: string;
-            weight?: string;
+            /**
+             * Format: int32
+             * @example 5
+             */
+            weight?: number;
         };
         API_Entities_IssueBasic: {
             assignee: components["schemas"]["API_Entities_UserBasic"];
             assignees: components["schemas"]["API_Entities_UserBasic"];
             author: components["schemas"]["API_Entities_UserBasic"];
-            blocking_issues_count: string;
+            /**
+             * Format: int32
+             * @example 2
+             */
+            blocking_issues_count: number;
             /**
              * Format: date-time
              * @example 2022-11-15T08:30:55.232Z
@@ -21142,7 +21290,11 @@ export type components = {
             iid: number;
             /** @example issue */
             issue_type: string;
-            /** @example bug */
+            /**
+             * @example [
+             *       "bug"
+             *     ]
+             */
             labels: string[];
             /** Format: int32 */
             merge_requests_count: number;
@@ -21179,7 +21331,11 @@ export type components = {
             user_notes_count: number;
             /** @example http://example.com/example/example/issues/14 */
             web_url: string;
-            weight?: string;
+            /**
+             * Format: int32
+             * @example 5
+             */
+            weight?: number;
         };
         /** @description API_Entities_IssueLink model */
         API_Entities_IssueLink: {
@@ -21188,22 +21344,62 @@ export type components = {
              * @example 1
              */
             id: number;
+            /** @example relates_to */
             link_type: string;
             source_issue: components["schemas"]["API_Entities_IssueBasic"];
             target_issue: components["schemas"]["API_Entities_IssueBasic"];
         };
         API_Entities_Iteration: {
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             created_at: string;
+            /** @example Iteration description */
             description: string;
+            /**
+             * Format: date
+             * @example 2022-01-31
+             */
             due_date: string;
-            group_id: string;
-            id: string;
-            iid: string;
-            sequence: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            group_id: number;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            iid: number;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            sequence: number;
+            /**
+             * Format: date
+             * @example 2022-01-01
+             */
             start_date: string;
-            state: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            state: number;
+            /** @example Iteration I */
             title: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             updated_at: string;
+            /** @example https://gitlab.example.com/groups/gitlab-org/-/iterations/1 */
             web_url: string;
         };
         API_Entities_LdapGroupLink: {
@@ -21226,7 +21422,11 @@ export type components = {
         };
         /** @description API_Entities_License model */
         API_Entities_License: {
-            /** @example include-copyright */
+            /**
+             * @example [
+             *       "include-copyright"
+             *     ]
+             */
             conditions: string[];
             /** @example GNU GENERAL PUBLIC LICENSE */
             content: string;
@@ -21236,13 +21436,21 @@ export type components = {
             html_url: string;
             /** @example gpl-3.0 */
             key: string;
-            /** @example liability */
+            /**
+             * @example [
+             *       "liability"
+             *     ]
+             */
             limitations: string[];
             /** @example GNU General Public License v3.0 */
             name: string;
             /** @example GNU GPLv3 */
             nickname: string;
-            /** @example commercial-use */
+            /**
+             * @example [
+             *       "commercial-use"
+             *     ]
+             */
             permissions: string[];
             popular: boolean;
             source_url: string;
@@ -21265,10 +21473,23 @@ export type components = {
         };
         /** @description API_Entities_MarkdownUploadAdmin model */
         API_Entities_MarkdownUploadAdmin: {
+            /**
+             * Format: date-time
+             * @example 2012-06-28T10:52:04Z
+             */
             created_at: string;
+            /** @example image.png */
             filename: string;
-            id: string;
-            size: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /**
+             * Format: int32
+             * @example 1024
+             */
+            size: number;
             uploaded_by: components["schemas"]["API_Entities_UserSafe"];
         };
         /** @description API_Entities_Member model */
@@ -21307,6 +21528,8 @@ export type components = {
             web_url: string;
         };
         API_Entities_MemberRole: {
+            admin_ai_catalog_item: boolean;
+            admin_ai_catalog_item_consumer: boolean;
             admin_cicd_variables: boolean;
             admin_compliance_framework: boolean;
             admin_group_member: boolean;
@@ -21344,7 +21567,6 @@ export type components = {
             manage_group_access_tokens: boolean;
             manage_merge_request_settings: boolean;
             manage_project_access_tokens: boolean;
-            manage_protected_tags: boolean;
             manage_security_policy_link: boolean;
             /** @example Custom guest */
             name: Record<string, never>;
@@ -21368,14 +21590,23 @@ export type components = {
         };
         /** @description API_Entities_MergeRequest model */
         API_Entities_MergeRequest: {
-            allow_collaboration?: string;
-            allow_maintainer_to_push?: string;
-            approvals_before_merge: string;
+            allow_collaboration?: boolean;
+            allow_maintainer_to_push?: boolean;
+            /**
+             * Format: int32
+             * @example 2
+             */
+            approvals_before_merge: number;
             assignee: components["schemas"]["API_Entities_UserBasic"];
             assignees: components["schemas"]["API_Entities_UserBasic"];
             author: components["schemas"]["API_Entities_UserBasic"];
-            blocking_discussions_resolved: string;
+            blocking_discussions_resolved: boolean;
+            /** @example 1 */
             changes_count: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             closed_at: string;
             closed_by: components["schemas"]["API_Entities_UserBasic"];
             /**
@@ -21386,17 +21617,26 @@ export type components = {
             /** @example Repellendus impedit et vel velit dignissimos. */
             description: string;
             description_html?: string;
+            /** @example mergeable */
             detailed_merge_status: string;
             diff_refs: components["schemas"]["API_Entities_DiffRefs"];
-            discussion_locked: string;
-            diverged_commits_count?: string;
+            discussion_locked: boolean;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            diverged_commits_count?: number;
             /** Format: int32 */
             downvotes: number;
             draft: boolean;
-            first_contribution?: string;
+            first_contribution?: boolean;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             first_deployed_to_production_at?: string;
-            force_remove_source_branch: string;
-            has_conflicts: string;
+            force_remove_source_branch: boolean;
+            has_conflicts: boolean;
             head_pipeline?: components["schemas"]["API_Entities_Ci_Pipeline"];
             /**
              * Format: int32
@@ -21411,40 +21651,66 @@ export type components = {
             imported: boolean;
             /** @example bitbucket */
             imported_from: string;
-            labels: string;
+            labels: string[];
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             latest_build_finished_at?: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             latest_build_started_at?: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             merge_after: string;
+            /** @example 1234abcd */
             merge_commit_sha: string;
+            /** @example Merge error */
             merge_error: string;
+            /** @example unchecked */
             merge_status: string;
             merge_user: components["schemas"]["API_Entities_UserBasic"];
             merge_when_pipeline_succeeds: boolean;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             merged_at: string;
             merged_by: components["schemas"]["API_Entities_UserBasic"];
             milestone: components["schemas"]["API_Entities_Milestone"];
             pipeline?: components["schemas"]["API_Entities_Ci_PipelineBasic"];
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             prepared_at: string;
             /**
              * Format: int32
              * @example 4
              */
             project_id: number;
-            rebase_in_progress?: string;
+            rebase_in_progress?: boolean;
+            /** @example !1 */
             reference: string;
             references: components["schemas"]["API_Entities_IssuableReferences"];
             reviewers: components["schemas"]["API_Entities_UserBasic"];
+            /** @example 1234abcd */
             sha: string;
-            should_remove_source_branch: string;
+            should_remove_source_branch: boolean;
             source_branch: string;
             /** Format: int32 */
             source_project_id: number;
-            squash: string;
+            squash: boolean;
+            /** @example 1234abcd */
             squash_commit_sha: string;
-            squash_on_merge: string;
+            squash_on_merge: boolean;
             /** @example closed */
             state: string;
-            subscribed?: string;
+            subscribed?: boolean;
             target_branch: string;
             /** Format: int32 */
             target_project_id: number;
@@ -21461,10 +21727,11 @@ export type components = {
             /** Format: int32 */
             upvotes: number;
             user: {
-                can_merge: string;
+                can_merge: boolean;
             };
             /** Format: int32 */
             user_notes_count: number;
+            /** @example https://gitlab.example.com/my-group/my-project/-/merge_requests/1 */
             web_url: string;
             work_in_progress: boolean;
         };
@@ -21517,13 +21784,21 @@ export type components = {
         };
         /** @description API_Entities_MergeRequestBasic model */
         API_Entities_MergeRequestBasic: {
-            allow_collaboration?: string;
-            allow_maintainer_to_push?: string;
-            approvals_before_merge: string;
+            allow_collaboration?: boolean;
+            allow_maintainer_to_push?: boolean;
+            /**
+             * Format: int32
+             * @example 2
+             */
+            approvals_before_merge: number;
             assignee: components["schemas"]["API_Entities_UserBasic"];
             assignees: components["schemas"]["API_Entities_UserBasic"];
             author: components["schemas"]["API_Entities_UserBasic"];
-            blocking_discussions_resolved: string;
+            blocking_discussions_resolved: boolean;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             closed_at: string;
             closed_by: components["schemas"]["API_Entities_UserBasic"];
             /**
@@ -21534,13 +21809,14 @@ export type components = {
             /** @example Repellendus impedit et vel velit dignissimos. */
             description: string;
             description_html?: string;
+            /** @example mergeable */
             detailed_merge_status: string;
-            discussion_locked: string;
+            discussion_locked: boolean;
             /** Format: int32 */
             downvotes: number;
             draft: boolean;
-            force_remove_source_branch: string;
-            has_conflicts: string;
+            force_remove_source_branch: boolean;
+            has_conflicts: boolean;
             /**
              * Format: int32
              * @example 84
@@ -21554,32 +21830,49 @@ export type components = {
             imported: boolean;
             /** @example bitbucket */
             imported_from: string;
-            labels: string;
+            labels: string[];
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             merge_after: string;
+            /** @example 1234abcd */
             merge_commit_sha: string;
+            /** @example unchecked */
             merge_status: string;
             merge_user: components["schemas"]["API_Entities_UserBasic"];
             merge_when_pipeline_succeeds: boolean;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             merged_at: string;
             merged_by: components["schemas"]["API_Entities_UserBasic"];
             milestone: components["schemas"]["API_Entities_Milestone"];
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             prepared_at: string;
             /**
              * Format: int32
              * @example 4
              */
             project_id: number;
+            /** @example !1 */
             reference: string;
             references: components["schemas"]["API_Entities_IssuableReferences"];
             reviewers: components["schemas"]["API_Entities_UserBasic"];
+            /** @example 1234abcd */
             sha: string;
-            should_remove_source_branch: string;
+            should_remove_source_branch: boolean;
             source_branch: string;
             /** Format: int32 */
             source_project_id: number;
-            squash: string;
+            squash: boolean;
+            /** @example 1234abcd */
             squash_commit_sha: string;
-            squash_on_merge: string;
+            squash_on_merge: boolean;
             /** @example closed */
             state: string;
             target_branch: string;
@@ -21599,20 +21892,30 @@ export type components = {
             upvotes: number;
             /** Format: int32 */
             user_notes_count: number;
+            /** @example https://gitlab.example.com/my-group/my-project/-/merge_requests/1 */
             web_url: string;
             work_in_progress: boolean;
         };
         /** @description API_Entities_MergeRequestChanges model */
         API_Entities_MergeRequestChanges: {
-            allow_collaboration?: string;
-            allow_maintainer_to_push?: string;
-            approvals_before_merge: string;
+            allow_collaboration?: boolean;
+            allow_maintainer_to_push?: boolean;
+            /**
+             * Format: int32
+             * @example 2
+             */
+            approvals_before_merge: number;
             assignee: components["schemas"]["API_Entities_UserBasic"];
             assignees: components["schemas"]["API_Entities_UserBasic"];
             author: components["schemas"]["API_Entities_UserBasic"];
-            blocking_discussions_resolved: string;
-            changes: components["schemas"]["API_Entities_Diff"];
+            blocking_discussions_resolved: boolean;
+            changes: components["schemas"]["API_Entities_Diff"][];
+            /** @example 1 */
             changes_count: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             closed_at: string;
             closed_by: components["schemas"]["API_Entities_UserBasic"];
             /**
@@ -21623,17 +21926,26 @@ export type components = {
             /** @example Repellendus impedit et vel velit dignissimos. */
             description: string;
             description_html?: string;
+            /** @example mergeable */
             detailed_merge_status: string;
             diff_refs: components["schemas"]["API_Entities_DiffRefs"];
-            discussion_locked: string;
-            diverged_commits_count?: string;
+            discussion_locked: boolean;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            diverged_commits_count?: number;
             /** Format: int32 */
             downvotes: number;
             draft: boolean;
-            first_contribution?: string;
+            first_contribution?: boolean;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             first_deployed_to_production_at?: string;
-            force_remove_source_branch: string;
-            has_conflicts: string;
+            force_remove_source_branch: boolean;
+            has_conflicts: boolean;
             head_pipeline?: components["schemas"]["API_Entities_Ci_Pipeline"];
             /**
              * Format: int32
@@ -21648,41 +21960,67 @@ export type components = {
             imported: boolean;
             /** @example bitbucket */
             imported_from: string;
-            labels: string;
+            labels: string[];
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             latest_build_finished_at?: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             latest_build_started_at?: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             merge_after: string;
+            /** @example 1234abcd */
             merge_commit_sha: string;
+            /** @example Merge error */
             merge_error: string;
+            /** @example unchecked */
             merge_status: string;
             merge_user: components["schemas"]["API_Entities_UserBasic"];
             merge_when_pipeline_succeeds: boolean;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             merged_at: string;
             merged_by: components["schemas"]["API_Entities_UserBasic"];
             milestone: components["schemas"]["API_Entities_Milestone"];
-            overflow: string;
+            overflow: boolean;
             pipeline?: components["schemas"]["API_Entities_Ci_PipelineBasic"];
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             prepared_at: string;
             /**
              * Format: int32
              * @example 4
              */
             project_id: number;
-            rebase_in_progress?: string;
+            rebase_in_progress?: boolean;
+            /** @example !1 */
             reference: string;
             references: components["schemas"]["API_Entities_IssuableReferences"];
             reviewers: components["schemas"]["API_Entities_UserBasic"];
+            /** @example 1234abcd */
             sha: string;
-            should_remove_source_branch: string;
+            should_remove_source_branch: boolean;
             source_branch: string;
             /** Format: int32 */
             source_project_id: number;
-            squash: string;
+            squash: boolean;
+            /** @example 1234abcd */
             squash_commit_sha: string;
-            squash_on_merge: string;
+            squash_on_merge: boolean;
             /** @example closed */
             state: string;
-            subscribed?: string;
+            subscribed?: boolean;
             target_branch: string;
             /** Format: int32 */
             target_project_id: number;
@@ -21699,42 +22037,84 @@ export type components = {
             /** Format: int32 */
             upvotes: number;
             user: {
-                can_merge: string;
+                can_merge: boolean;
             };
             /** Format: int32 */
             user_notes_count: number;
+            /** @example https://gitlab.example.com/my-group/my-project/-/merge_requests/1 */
             web_url: string;
             work_in_progress: boolean;
         };
         /** @description API_Entities_MergeRequestDiff model */
         API_Entities_MergeRequestDiff: {
+            /** @example 1234abcd */
             base_commit_sha: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             created_at: string;
+            /** @example 1234abcd */
             head_commit_sha: string;
-            id: string;
-            merge_request_id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            merge_request_id: number;
+            /** @example 1234abcd */
             patch_id_sha: string;
+            /** @example 1 */
             real_size: string;
+            /** @example 1234abcd */
             start_commit_sha: string;
+            /** @example collected */
             state: string;
         };
         /** @description API_Entities_MergeRequestDiffFull model */
         API_Entities_MergeRequestDiffFull: {
+            /** @example 1234abcd */
             base_commit_sha: string;
-            commits: components["schemas"]["API_Entities_Commit"];
+            commits: components["schemas"]["API_Entities_Commit"][];
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             created_at: string;
-            diffs: components["schemas"]["API_Entities_Diff"];
+            diffs: components["schemas"]["API_Entities_Diff"][];
+            /** @example 1234abcd */
             head_commit_sha: string;
-            id: string;
-            merge_request_id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            merge_request_id: number;
+            /** @example 1234abcd */
             patch_id_sha: string;
+            /** @example 1 */
             real_size: string;
+            /** @example 1234abcd */
             start_commit_sha: string;
+            /** @example collected */
             state: string;
         };
         /** @description API_Entities_MergeRequestReviewer model */
         API_Entities_MergeRequestReviewer: {
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:45.080Z
+             */
             created_at: string;
+            /** @example unreviewed */
             state: string;
             user: components["schemas"]["API_Entities_UserBasic"];
         };
@@ -21805,8 +22185,16 @@ export type components = {
             /** Format: int32 */
             iid: number;
             issue_stats: {
-                closed: string;
-                total: string;
+                /**
+                 * Format: int32
+                 * @example 5
+                 */
+                closed: number;
+                /**
+                 * Format: int32
+                 * @example 10
+                 */
+                total: number;
             };
             /** Format: int32 */
             project_id?: number;
@@ -21817,11 +22205,13 @@ export type components = {
             web_url: string;
         };
         API_Entities_MirrorHostKey: {
+            /** @example SHA256:abcd1234 */
             fingerprint_sha256: string;
         };
         /** @description API_Entities_MRNote model */
         API_Entities_MRNote: {
             author: components["schemas"]["API_Entities_UserBasic"];
+            /** @example LGTM! */
             note: string;
         };
         /** @description API_Entities_Namespace model */
@@ -22003,7 +22393,11 @@ export type components = {
         /** @description API_Entities_NamespaceExistence model */
         API_Entities_NamespaceExistence: {
             exists: boolean;
-            /** @example my-group1 */
+            /**
+             * @example [
+             *       "my-group1"
+             *     ]
+             */
             suggests: string[];
         };
         /** @description API_Entities_Namespaces_Storage_LimitExclusion model */
@@ -22025,50 +22419,99 @@ export type components = {
         };
         API_Entities_Note: {
             author: components["schemas"]["API_Entities_UserBasic"];
+            /** @example Note body. */
             body: string;
-            commands_changes: string;
+            commands_changes: Record<string, never>;
+            /** @example 7b09ce7e6f80347baf0316c8c94cdba9a0a7e91d */
             commit_id?: string;
-            confidential: string;
+            /** @example false */
+            confidential: boolean;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:44.988Z
+             */
             created_at: string;
-            id: string;
-            imported: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /** @example false */
+            imported: boolean;
             /** @example github */
             imported_from: string;
-            internal: string;
-            noteable_id: string;
-            noteable_iid: string;
+            /** @example false */
+            internal: boolean;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            noteable_id: number;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            noteable_iid: number;
+            /** @example Issue */
             noteable_type: string;
-            position?: string;
-            project_id: string;
-            resolvable: string;
-            resolved?: string;
+            position?: Record<string, never>;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            project_id: number;
+            /** @example false */
+            resolvable: boolean;
+            /** @example false */
+            resolved?: boolean;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:44.988Z
+             */
             resolved_at?: string;
             resolved_by?: components["schemas"]["API_Entities_UserBasic"];
             suggestions?: components["schemas"]["API_Entities_Suggestion"];
-            system: string;
+            /** @example false */
+            system: boolean;
+            /** @example DiscussionNote */
             type: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:44.988Z
+             */
             updated_at: string;
         };
         /** @description API_Entities_NpmPackage model */
         API_Entities_NpmPackage: {
-            /** @example { "latest":"1.0.1" } */
+            /**
+             * @example {
+             *       "latest": "1.0.1"
+             *     }
+             */
             "dist-tags": Record<string, never>;
             /** @example my_package */
             name: string;
             /**
              * @example {
-             *                      "1.0.0": {
-             *                        "name": "my_package",
-             *                        "version": "1.0.0",
-             *                        "dist": { "shasum": "12345", "tarball": "https://..." }
-             *                      }
-             *                    }
+             *       "1.0.0": {
+             *         "name": "my_package",
+             *         "version": "1.0.0",
+             *         "dist": {
+             *           "shasum": "12345",
+             *           "tarball": "https://..."
+             *         }
+             *       }
+             *     }
              */
             versions: Record<string, never>;
         };
         /** @description API_Entities_NpmPackageTag model */
         API_Entities_NpmPackageTag: {
-            /** @example { "latest":"1.0.1" } */
+            /**
+             * @example {
+             *       "latest": "1.0.1"
+             *     }
+             */
             dist_tags: Record<string, never>;
         };
         API_Entities_Nuget_Dependency: {
@@ -22150,7 +22593,11 @@ export type components = {
         };
         /** @description API_Entities_Nuget_PackagesVersions model */
         API_Entities_Nuget_PackagesVersions: {
-            /** @example 1.3.0.17 */
+            /**
+             * @example [
+             *       "1.3.0.17"
+             *     ]
+             */
             versions: string[];
         };
         API_Entities_Nuget_SearchResult: {
@@ -22206,7 +22653,15 @@ export type components = {
         };
         /** @description API_Entities_Nuget_ServiceIndex model */
         API_Entities_Nuget_ServiceIndex: {
-            /** @example { "@id": "https://gitlab.com/api/v4/projects/1/packages/nuget/query", "@type": "SearchQueryService", "comment": "Filter and search for packages by keyword."} */
+            /**
+             * @example [
+             *       {
+             *         "@id": "https://gitlab.com/api/v4/projects/1/packages/nuget/query",
+             *         "@type": "SearchQueryService",
+             *         "comment": "Filter and search for packages by keyword."
+             *       }
+             *     ]
+             */
             resources: Record<string, never>[];
             /** @example 1.3.0.17 */
             version: string;
@@ -22360,12 +22815,22 @@ export type components = {
         };
         /** @description API_Entities_Packages_Conan_FilesList model */
         API_Entities_Packages_Conan_FilesList: {
-            /** @example { "files" : { "conan_sources.tgz" : { }, "conanmanifest.txt" : { }, "conanfile.py" : { } } } */
+            /**
+             * @example {
+             *       "conan_sources.tgz": {},
+             *       "conanmanifest.txt": {},
+             *       "conanfile.py": {}
+             *     }
+             */
             files: Record<string, never>;
         };
         /** @description API_Entities_Packages_Conan_PackageManifest model */
         API_Entities_Packages_Conan_PackageManifest: {
-            /** @example { "conan_package.tgz": "https://gitlab.example.com/api/v4/packages/conan/v1/files/my-package/1.0/my-group+my-project/stable/packages/103f6067a947f366ef91fc1b7da351c588d1827f/0/conan_package.tgz" */
+            /**
+             * @example {
+             *       "conan_package.tgz": "https://gitlab.example.com/api/v4/packages/conan/v1/files/my-package/1.0/my-group+my-project/stable/packages/103f6067a947f366ef91fc1b7da351c588d1827f/0/conan_package.tgz"
+             *     }
+             */
             package_urls: Record<string, never>;
         };
         /** @description API_Entities_Packages_Conan_PackageRevisions model */
@@ -22380,12 +22845,20 @@ export type components = {
         };
         /** @description API_Entities_Packages_Conan_PackageSnapshot model */
         API_Entities_Packages_Conan_PackageSnapshot: {
-            /** @example { "conan_package.tgz": "749b29bdf72587081ca03ec033ee59dc" } */
+            /**
+             * @example {
+             *       "conan_package.tgz": "749b29bdf72587081ca03ec033ee59dc"
+             *     }
+             */
             package_snapshot: Record<string, never>;
         };
         /** @description API_Entities_Packages_Conan_RecipeManifest model */
         API_Entities_Packages_Conan_RecipeManifest: {
-            /** @example { "conan_sources.tgz": "https://gitlab.example.com/api/v4/packages/conan/v1/files/my-package/1.0/my-group+my-project/stable/0/export/conan_sources.tgz" } */
+            /**
+             * @example {
+             *       "conan_sources.tgz": "https://gitlab.example.com/api/v4/packages/conan/v1/files/my-package/1.0/my-group+my-project/stable/0/export/conan_sources.tgz"
+             *     }
+             */
             recipe_urls: Record<string, never>;
         };
         /** @description API_Entities_Packages_Conan_RecipeRevisions model */
@@ -22400,7 +22873,11 @@ export type components = {
         };
         /** @description API_Entities_Packages_Conan_RecipeSnapshot model */
         API_Entities_Packages_Conan_RecipeSnapshot: {
-            /** @example { "conan_sources.tgz": "eadf19b33f4c3c7e113faabf26e76277" } */
+            /**
+             * @example {
+             *       "conan_sources.tgz": "eadf19b33f4c3c7e113faabf26e76277"
+             *     }
+             */
             recipe_snapshot: Record<string, never>;
         };
         /** @description API_Entities_Packages_Conan_Revision model */
@@ -22418,16 +22895,28 @@ export type components = {
         };
         /** @description API_Entities_Packages_Conan_UploadUrls model */
         API_Entities_Packages_Conan_UploadUrls: {
-            /** @example { "conan_package.tgz": "https://gitlab.example.com/api/v4/packages/conan/v1/files/my-package/1.0/my-group+my-project/stable/0/package/103f6067a947f366ef91fc1b7da351c588d1827f/0/conan_package.tgz" } */
+            /**
+             * @example {
+             *       "conan_package.tgz": "https://gitlab.example.com/api/v4/packages/conan/v1/files/my-package/1.0/my-group+my-project/stable/0/package/103f6067a947f366ef91fc1b7da351c588d1827f/0/conan_package.tgz"
+             *     }
+             */
             upload_urls: Record<string, never>;
         };
         /** @description API_Entities_Packages_Debian_Distribution model */
         API_Entities_Packages_Debian_Distribution: {
-            /** @example amd64 */
+            /**
+             * @example [
+             *       "amd64"
+             *     ]
+             */
             architectures: string[];
             /** @example sid */
             codename: string;
-            /** @example main */
+            /**
+             * @example [
+             *       "main"
+             *     ]
+             */
             components: string[];
             /** @example My description */
             description: string;
@@ -22623,8 +23112,15 @@ export type components = {
             description: string;
             /** @example add.rb */
             file_name: string;
-            /** @example e0d123e5f316bef78bfdf5a008837577 */
-            files: string[];
+            /**
+             * @example [
+             *       {
+             *         "path": "file.txt",
+             *         "raw_url": "https://gitlab.example.com/.../raw"
+             *       }
+             *     ]
+             */
+            files: Record<string, never>[];
             /** @example https://gitlab.example.com/snippets/65.git */
             http_url_to_repo?: string;
             /**
@@ -22643,6 +23139,7 @@ export type components = {
             project_id: number;
             /** @example http://example.com/example/example/snippets/1/raw */
             raw_url: string;
+            /** @example default */
             repository_storage?: string;
             /** @example ssh://user@gitlab.example.com/snippets/65.git */
             ssh_url_to_repo?: string;
@@ -22731,8 +23228,24 @@ export type components = {
              */
             helm_max_file_size: number;
             /**
-             * @example {"enforcement_limit"=>[{"timestamp"=>1686909124, "user_id"=>1, "username"=>"x", "value"=>5}],
-             *                        "notification_limit"=>[{"timestamp"=>1686909124, "user_id"=>2, "username"=>"y", "value"=>7}]}
+             * @example {
+             *       "enforcement_limit": [
+             *         {
+             *           "timestamp": 1686909124,
+             *           "user_id": 1,
+             *           "username": "x",
+             *           "value": 5
+             *         }
+             *       ],
+             *       "notification_limit": [
+             *         {
+             *           "timestamp": 1686909124,
+             *           "user_id": 2,
+             *           "username": "y",
+             *           "value": 7
+             *         }
+             *       ]
+             *     }
              */
             limits_history: Record<string, never>;
             /**
@@ -22949,7 +23462,15 @@ export type components = {
             license?: components["schemas"]["API_Entities_LicenseBasic"];
             /** @example https://gitlab.example.com/gitlab/gitlab/blob/master/LICENCE */
             license_url?: string;
+            /**
+             * Format: date-time
+             * @example 2020-05-07T04:27:17.016Z
+             */
             marked_for_deletion_at: string;
+            /**
+             * Format: date-time
+             * @example 2020-05-07T04:27:17.016Z
+             */
             marked_for_deletion_on: string;
             /** Format: int32 */
             max_artifacts_size: number;
@@ -22981,7 +23502,7 @@ export type components = {
             monitor_access_level: string;
             mr_default_target_self?: boolean;
             /** @example %(source_branch) */
-            mr_default_title_template?: string;
+            mr_default_title_template: string;
             /** @example project1 */
             name: string;
             /** @example John Doe / project1 */
@@ -23046,7 +23567,7 @@ export type components = {
             service_desk_address?: string;
             service_desk_enabled: boolean;
             shared_runners_enabled: boolean;
-            shared_with_groups: string[];
+            shared_with_groups: Record<string, never>[];
             show_diff_preview_in_email: boolean;
             /** @example enabled */
             snippets_access_level: string;
@@ -23067,9 +23588,17 @@ export type components = {
             statistics?: components["schemas"]["API_Entities_ProjectStatistics"];
             /** @example Suggestion message */
             suggestion_commit_message: string;
-            /** @example tag */
+            /**
+             * @example [
+             *       "tag"
+             *     ]
+             */
             tag_list: string[];
-            /** @example topic */
+            /**
+             * @example [
+             *       "topic"
+             *     ]
+             */
             topics: string[];
             /**
              * Format: date-time
@@ -23194,9 +23723,11 @@ export type components = {
              */
             created_at: string;
             /**
-             * @example {
-             *       "X-Custom-Header": "value"
-             *     }
+             * @example [
+             *       {
+             *         "X-Custom-Header": "value"
+             *       }
+             *     ]
              */
             custom_headers?: Record<string, never>[];
             /** @example {"event":"{{object_kind}}"} */
@@ -23212,8 +23743,11 @@ export type components = {
             emoji_events: boolean;
             enable_ssl_verification: boolean;
             feature_flag_events: boolean;
-            /** @example 1 */
-            id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
             issues_events: boolean;
             job_events: boolean;
             merge_requests_events: boolean;
@@ -23227,8 +23761,11 @@ export type components = {
              */
             organization_id?: number;
             pipeline_events: boolean;
-            /** @example 1 */
-            project_id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            project_id: number;
             push_events: boolean;
             /** @example my-branch-* */
             push_events_branch_filter: string;
@@ -23236,13 +23773,25 @@ export type components = {
             repository_update_events: boolean;
             resource_access_token_events: boolean;
             resource_deploy_token_events: boolean;
+            /**
+             * @description Whether an HMAC signing token is configured
+             * @example false
+             */
+            signing_token_present: boolean;
             tag_push_events: boolean;
+            /**
+             * @description Whether a secret token is configured
+             * @example false
+             */
+            token_present: boolean;
             /** @example https://webhook.site */
             url: string;
             /**
-             * @example {
-             *       "token": "secr3t"
-             *     }
+             * @example [
+             *       {
+             *         "token": "secr3t"
+             *       }
+             *     ]
              */
             url_variables?: Record<string, never>[];
             vulnerability_events: boolean;
@@ -23279,8 +23828,11 @@ export type components = {
             /** @example StandardError */
             exception_class: string;
             exception_message: string;
-            /** @example 1 */
-            id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
             /**
              * Format: int32
              * @example 1
@@ -23407,13 +23959,29 @@ export type components = {
         };
         /** @description API_Entities_Projects_Topic model */
         API_Entities_Projects_Topic: {
+            /** @example http://gitlab.example.com/uploads/topic/avatar/1/avatar.png */
             avatar_url: string;
+            /** @example A description */
             description: string;
-            id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /** @example topic1 */
             name: string;
-            organization_id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            organization_id: number;
+            /** @example Topic 1 */
             title: string;
-            total_projects_count: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            total_projects_count: number;
         };
         /** @description API_Entities_ProjectSnippet model */
         API_Entities_ProjectSnippet: {
@@ -23427,8 +23995,15 @@ export type components = {
             description: string;
             /** @example add.rb */
             file_name: string;
-            /** @example e0d123e5f316bef78bfdf5a008837577 */
-            files: string[];
+            /**
+             * @example [
+             *       {
+             *         "path": "file.txt",
+             *         "raw_url": "https://gitlab.example.com/.../raw"
+             *       }
+             *     ]
+             */
+            files: Record<string, never>[];
             /** @example https://gitlab.example.com/snippets/65.git */
             http_url_to_repo?: string;
             /**
@@ -23447,6 +24022,7 @@ export type components = {
             project_id: number;
             /** @example http://example.com/example/example/snippets/1/raw */
             raw_url: string;
+            /** @example default */
             repository_storage?: string;
             /** @example ssh://user@gitlab.example.com/snippets/65.git */
             ssh_url_to_repo?: string;
@@ -23463,24 +24039,76 @@ export type components = {
             web_url: string;
         };
         API_Entities_ProjectStatistics: {
-            commit_count: string;
-            container_registry_size: string;
-            job_artifacts_size: string;
-            lfs_objects_size: string;
-            packages_size: string;
-            pipeline_artifacts_size: string;
-            repository_size: string;
-            snippets_size: string;
-            storage_size: string;
-            uploads_size: string;
-            wiki_size: string;
+            /**
+             * Format: int32
+             * @example 37
+             */
+            commit_count: number;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            container_registry_size: number;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            job_artifacts_size: number;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            lfs_objects_size: number;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            packages_size: number;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            pipeline_artifacts_size: number;
+            /**
+             * Format: int32
+             * @example 1038090
+             */
+            repository_size: number;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            snippets_size: number;
+            /**
+             * Format: int32
+             * @example 1038090
+             */
+            storage_size: number;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            uploads_size: number;
+            /**
+             * Format: int32
+             * @example 0
+             */
+            wiki_size: number;
         };
         /** @description API_Entities_ProjectUpload model */
         API_Entities_ProjectUpload: {
+            /** @example filename */
             alt: string;
+            /** @example /-/project/1/uploads/secret/filename */
             full_path: string;
-            id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /** @example [filename](/uploads/secret/filename) */
             markdown: string;
+            /** @example /uploads/secret/filename */
             url: string;
         };
         /** @description API_Entities_ProjectWithAccess model */
@@ -23630,7 +24258,15 @@ export type components = {
             license?: components["schemas"]["API_Entities_LicenseBasic"];
             /** @example https://gitlab.example.com/gitlab/gitlab/blob/master/LICENCE */
             license_url?: string;
+            /**
+             * Format: date-time
+             * @example 2020-05-07T04:27:17.016Z
+             */
             marked_for_deletion_at: string;
+            /**
+             * Format: date-time
+             * @example 2020-05-07T04:27:17.016Z
+             */
             marked_for_deletion_on: string;
             /** Format: int32 */
             max_artifacts_size: number;
@@ -23662,7 +24298,7 @@ export type components = {
             monitor_access_level: string;
             mr_default_target_self?: boolean;
             /** @example %(source_branch) */
-            mr_default_title_template?: string;
+            mr_default_title_template: string;
             /** @example project1 */
             name: string;
             /** @example John Doe / project1 */
@@ -23731,7 +24367,7 @@ export type components = {
             service_desk_address?: string;
             service_desk_enabled: boolean;
             shared_runners_enabled: boolean;
-            shared_with_groups: string[];
+            shared_with_groups: Record<string, never>[];
             show_diff_preview_in_email: boolean;
             /** @example enabled */
             snippets_access_level: string;
@@ -23752,9 +24388,17 @@ export type components = {
             statistics?: components["schemas"]["API_Entities_ProjectStatistics"];
             /** @example Suggestion message */
             suggestion_commit_message: string;
-            /** @example tag */
+            /**
+             * @example [
+             *       "tag"
+             *     ]
+             */
             tag_list: string[];
-            /** @example topic */
+            /**
+             * @example [
+             *       "topic"
+             *     ]
+             */
             topics: string[];
             /**
              * Format: date-time
@@ -23828,7 +24472,7 @@ export type components = {
         };
         /** @description API_Entities_ProtectedTag model */
         API_Entities_ProtectedTag: {
-            create_access_levels: components["schemas"]["API_Entities_ProtectedRefAccess"];
+            create_access_levels: components["schemas"]["API_Entities_ProtectedRefAccess"][];
             /** @example release-1-0 */
             name: string;
         };
@@ -23843,12 +24487,17 @@ export type components = {
         };
         /** @description API_Entities_PublicGroupDetails model */
         API_Entities_PublicGroupDetails: {
+            /** @example http://gitlab.example.com/uploads/group/avatar/1/avatar.png */
             avatar_url: string;
+            /** @example Foobar Group */
             full_name: string;
+            /** @example foo-bar */
             full_path: string;
             /** Format: int32 */
             id: number;
+            /** @example Diaspora */
             name: string;
+            /** @example http://gitlab.example.com/groups/diaspora */
             web_url: string;
         };
         API_Entities_PushEventPayload: {
@@ -23878,16 +24527,25 @@ export type components = {
         /** @description API_Entities_RelatedIssue model */
         API_Entities_RelatedIssue: {
             _links: {
+                /** @example http://example.com/api/v4/projects/1/issues/2/award_emoji */
                 award_emoji: string;
+                /** @example http://example.com/api/v4/projects/1/issues/75 */
                 closed_as_duplicate_of: string;
+                /** @example http://example.com/api/v4/projects/1/issues/2/notes */
                 notes: string;
+                /** @example http://example.com/api/v4/projects/1 */
                 project: string;
+                /** @example http://example.com/api/v4/projects/1/issues/2 */
                 self: string;
             };
             assignee: components["schemas"]["API_Entities_UserBasic"];
             assignees: components["schemas"]["API_Entities_UserBasic"];
             author: components["schemas"]["API_Entities_UserBasic"];
-            blocking_issues_count: string;
+            /**
+             * Format: int32
+             * @example 2
+             */
+            blocking_issues_count: number;
             /**
              * Format: date-time
              * @example 2022-11-15T08:30:55.232Z
@@ -23912,7 +24570,8 @@ export type components = {
             due_date: string;
             epic?: components["schemas"]["EpicBaseEntity"];
             epic_iid?: string;
-            has_tasks: string;
+            /** @example true */
+            has_tasks: boolean;
             health_status?: string;
             /**
              * Format: int32
@@ -23924,28 +24583,51 @@ export type components = {
              * @example 14
              */
             iid: number;
-            imported: string;
+            /** @example false */
+            imported: boolean;
             /** @example github */
             imported_from: string;
-            issue_link_id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            issue_link_id: number;
             /** @example issue */
             issue_type: string;
             iteration?: components["schemas"]["API_Entities_Iteration"];
-            /** @example bug */
+            /**
+             * @example [
+             *       "bug"
+             *     ]
+             */
             labels: string[];
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:44.988Z
+             */
             link_created_at: string;
+            /** @example relates_to */
             link_type: string;
+            /**
+             * Format: date-time
+             * @example 2022-01-31T15:10:44.988Z
+             */
             link_updated_at: string;
             /** Format: int32 */
             merge_requests_count: number;
             milestone: components["schemas"]["API_Entities_Milestone"];
-            moved_to_id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            moved_to_id: number;
             /**
              * Format: int32
              * @example 4
              */
             project_id: number;
             references: components["schemas"]["API_Entities_IssuableReferences"];
+            /** @example user@example.com */
             service_desk_reply_to: string;
             /** @description One of ["UNKNOWN", "LOW", "MEDIUM", "HIGH", "CRITICAL"] */
             severity: string;
@@ -23956,8 +24638,10 @@ export type components = {
             start_date: string;
             /** @example closed */
             state: string;
-            subscribed?: string;
+            /** @example false */
+            subscribed?: boolean;
             task_completion_status: components["schemas"]["API_Entities_TaskCompletionStatus"];
+            /** @example 2 of 4 tasks completed */
             task_status?: string;
             time_stats: components["schemas"]["API_Entities_IssuableTimeStats"];
             /** @example Impedit et ut et dolores vero provident ullam est */
@@ -23978,7 +24662,11 @@ export type components = {
             user_notes_count: number;
             /** @example http://example.com/example/example/issues/14 */
             web_url: string;
-            weight?: string;
+            /**
+             * Format: int32
+             * @example 5
+             */
+            weight?: number;
         };
         /** @description API_Entities_RelationImportTracker model */
         API_Entities_RelationImportTracker: {
@@ -24097,11 +24785,8 @@ export type components = {
              */
             id: number;
             keep_divergent_refs: boolean;
-            /**
-             * Format: int32
-             * @example The remote mirror URL is invalid.
-             */
-            last_error: number;
+            /** @example The remote mirror URL is invalid. */
+            last_error: string;
             /**
              * Format: date-time
              * @example 2020-01-06T17:31:55.864Z
@@ -24117,6 +24802,7 @@ export type components = {
              * @example 2020-01-06T17:32:02.823Z
              */
             last_update_started_at: string;
+            /** @example feature-.* */
             mirror_branch_regex: string;
             only_protected_branches: boolean;
             /** @example finished */
@@ -24313,8 +24999,15 @@ export type components = {
             description: string;
             /** @example add.rb */
             file_name: string;
-            /** @example e0d123e5f316bef78bfdf5a008837577 */
-            files: string[];
+            /**
+             * @example [
+             *       {
+             *         "path": "file.txt",
+             *         "raw_url": "https://gitlab.example.com/.../raw"
+             *       }
+             *     ]
+             */
+            files: Record<string, never>[];
             /** @example https://gitlab.example.com/snippets/65.git */
             http_url_to_repo?: string;
             /**
@@ -24333,6 +25026,7 @@ export type components = {
             project_id: number;
             /** @example http://example.com/example/example/snippets/1/raw */
             raw_url: string;
+            /** @example default */
             repository_storage?: string;
             /** @example ssh://user@gitlab.example.com/snippets/65.git */
             ssh_url_to_repo?: string;
@@ -24400,13 +25094,29 @@ export type components = {
         };
         /** @description API_Entities_Suggestion model */
         API_Entities_Suggestion: {
-            appliable: string;
-            applied: string;
+            /** @example true */
+            appliable: boolean;
+            /** @example false */
+            applied: boolean;
+            /** @example Original content */
             from_content: string;
-            from_line: string;
-            id: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            from_line: number;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            id: number;
+            /** @example New content */
             to_content: string;
-            to_line: string;
+            /**
+             * Format: int32
+             * @example 1
+             */
+            to_line: number;
         };
         /** @description API_Entities_SupplyChain_Attestation model */
         API_Entities_SupplyChain_Attestation: {
@@ -24491,7 +25201,7 @@ export type components = {
         };
         /** @description API_Entities_TagSignature model */
         API_Entities_TagSignature: {
-            signature: string;
+            signature: Record<string, never>;
             /** @example PGP */
             signature_type: string;
         };
@@ -24760,7 +25470,7 @@ export type components = {
             organization: string;
             /** @example en */
             preferred_language: string;
-            /** @example null */
+            /** @example false */
             private_profile: boolean;
             /**
              * Format: int32
@@ -24874,7 +25584,7 @@ export type components = {
             organization: string;
             /** @example en */
             preferred_language: string;
-            /** @example null */
+            /** @example false */
             private_profile: boolean;
             /**
              * Format: int32
@@ -24940,9 +25650,7 @@ export type components = {
             title: string;
             /**
              * Format: int32
-             * @example {
-             *       "wiki_page_meta_id": 123
-             *     }
+             * @example 123
              */
             wiki_page_meta_id: number;
         };
@@ -24956,9 +25664,7 @@ export type components = {
             title: string;
             /**
              * Format: int32
-             * @example {
-             *       "wiki_page_meta_id": 123
-             *     }
+             * @example 123
              */
             wiki_page_meta_id: number;
         };
@@ -25372,6 +26078,8 @@ export type components = {
         };
         /** @description Set or create a feature */
         postApiV4FeaturesName: {
+            /** @description A caller_id identifying a code path, for example `GET /api/v4/projects/:id` or `ProjectsController#show`. Use comma to separate multiple endpoint paths */
+            endpoint?: string;
             /** @description A Feature group name */
             feature_group?: string;
             /** @description Skip feature flag validation checks, such as a YAML definition */
@@ -26225,14 +26933,22 @@ export type components = {
         postApiV4Groups: {
             /** @description AI-related settings */
             ai_settings_attributes?: {
+                /** @description Restrict the AI Catalog to items within this top-level group hierarchy */
+                ai_catalog_restricted_to_group_hierarchy?: boolean;
                 /** @description Enable AI usage data collection for this namespace */
                 ai_usage_data_collection_enabled?: boolean;
+                /** @description Whether to allow all Unix sockets for network access */
+                allow_all_unix_sockets?: boolean;
+                /** @description Whether to allow projects to extend the network access domain allowlist */
+                allow_project_extension?: boolean;
                 /** @description Whether Duo Agent Platform features are enabled */
                 duo_agent_platform_enabled?: boolean;
                 /** @description Enable MCP support for Duo Agent Platform */
                 duo_workflow_mcp_enabled?: boolean;
                 /** @description Whether new foundational agents are enabled by default */
                 foundational_agents_default_enabled?: boolean;
+                /** @description Whether to include recommended domains in the network access allowlist */
+                include_recommended_allowed?: boolean;
                 /**
                  * Format: int32
                  * @description The minimum access level required to enable Duo Agent Platform. This field is behind a feature flag.
@@ -26321,6 +27037,8 @@ export type components = {
             duo_custom_agents_availability?: boolean;
             /** @description Enable GitLab Duo custom flows for this group */
             duo_custom_flows_availability?: boolean;
+            /** @description Enable GitLab Duo external agents for this group */
+            duo_external_agents_availability?: boolean;
             /** @description Enable GitLab foundational Duo flows for this group */
             duo_foundational_flows_availability?: boolean;
             /** @description Enable GitLab Duo remote flows for this group */
@@ -26675,6 +27393,14 @@ export type components = {
              */
             organization_id: number;
         };
+        /** @description Upload a file to a group */
+        postApiV4GroupsIdUploads: {
+            /**
+             * Format: binary
+             * @description The file to upload
+             */
+            file: string;
+        };
         /** @description Create a new variable in a group */
         postApiV4GroupsIdVariables: {
             /** @description The description of the variable */
@@ -26766,6 +27492,8 @@ export type components = {
             push_events_branch_filter?: string;
             /** @description Trigger hook on repository update events */
             repository_update_events?: boolean;
+            /** @description HMAC signing token used to compute the webhook-signature header. Must be in whsec_<base64> format encoding a 32-byte key. Not returned in the response */
+            signing_token?: string;
             /** @description When true, the hook fires on new tags being pushed */
             tag_push_events?: boolean;
             /** @description Secret token to validate received payloads; this isn't returned in the response */
@@ -26792,13 +27520,9 @@ export type components = {
         /** @description Import a BitBucket Cloud repository */
         postApiV4ImportBitbucket: {
             /** @description BitBucket API token */
-            bitbucket_api_token?: string;
-            /** @description BitBucket app password */
-            bitbucket_app_password?: string;
-            /** @description BitBucket email (for API tokens) */
-            bitbucket_email?: string;
-            /** @description BitBucket username (for app passwords) */
-            bitbucket_username?: string;
+            bitbucket_api_token: string;
+            /** @description BitBucket email */
+            bitbucket_email: string;
             /** @description New repository name */
             new_name?: string;
             /** @description Repository path */
@@ -26913,7 +27637,7 @@ export type components = {
              * @default archive
              * @enum {string}
              */
-            artifact_type: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "scip" | "sarif";
+            artifact_type: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "scip" | "sarif" | "environment_key";
             /** @description Specify when artifact should expire */
             expire_in?: string;
             /**
@@ -26936,7 +27660,7 @@ export type components = {
              * @default archive
              * @enum {string}
              */
-            artifact_type: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "scip" | "sarif";
+            artifact_type: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "scip" | "sarif" | "environment_key";
             /**
              * Format: int32
              * @description Size of artifact file
@@ -27885,6 +28609,8 @@ export type components = {
             resource_access_token_events?: boolean;
             /** @description Trigger hook on deploy token expiry events */
             resource_deploy_token_events?: boolean;
+            /** @description HMAC signing token used to compute the webhook-signature header. Must be in whsec_<base64> format encoding a 32-byte key. Not returned in the response */
+            signing_token?: string;
             /** @description Trigger hook on tag push events */
             tag_push_events?: boolean;
             /** @description Secret token to validate received payloads; this will not be returned in the response */
@@ -27933,11 +28659,6 @@ export type components = {
         /** @description Trigger a slash command for mattermost-slash-commands */
         postApiV4ProjectsIdIntegrationsMattermostSlashCommandsTrigger: {
             /** @description The Mattermost token. */
-            token: string;
-        };
-        /** @description Trigger a slash command for slack-slash-commands */
-        postApiV4ProjectsIdIntegrationsSlackSlashCommandsTrigger: {
-            /** @description The Slack token. */
             token: string;
         };
         /** @description Invite non-members by email address to a group or project. */
@@ -29091,11 +29812,6 @@ export type components = {
             /** @description The Mattermost token. */
             token: string;
         };
-        /** @description Trigger a slash command for slack-slash-commands */
-        postApiV4ProjectsIdServicesSlackSlashCommandsTrigger: {
-            /** @description The Slack token. */
-            token: string;
-        };
         /** @description Share the project with a group */
         postApiV4ProjectsIdShare: {
             /**
@@ -29233,7 +29949,7 @@ export type components = {
             /**
              * Format: date-time
              * @description Timestamp of when the pipeline trigger token expires.
-             * @example 2024-07-01
+             * @example 2024-07-01T00:00:00.000Z
              */
             expires_at?: string;
         };
@@ -30177,14 +30893,22 @@ export type components = {
         putApiV4GroupsId: {
             /** @description AI-related settings */
             ai_settings_attributes?: {
+                /** @description Restrict the AI Catalog to items within this top-level group hierarchy */
+                ai_catalog_restricted_to_group_hierarchy?: boolean;
                 /** @description Enable AI usage data collection for this namespace */
                 ai_usage_data_collection_enabled?: boolean;
+                /** @description Whether to allow all Unix sockets for network access */
+                allow_all_unix_sockets?: boolean;
+                /** @description Whether to allow projects to extend the network access domain allowlist */
+                allow_project_extension?: boolean;
                 /** @description Whether Duo Agent Platform features are enabled */
                 duo_agent_platform_enabled?: boolean;
                 /** @description Enable MCP support for Duo Agent Platform */
                 duo_workflow_mcp_enabled?: boolean;
                 /** @description Whether new foundational agents are enabled by default */
                 foundational_agents_default_enabled?: boolean;
+                /** @description Whether to include recommended domains in the network access allowlist */
+                include_recommended_allowed?: boolean;
                 /**
                  * Format: int32
                  * @description The minimum access level required to enable Duo Agent Platform. This field is behind a feature flag.
@@ -30285,6 +31009,8 @@ export type components = {
             duo_custom_agents_availability?: boolean;
             /** @description Enable GitLab Duo custom flows for this group */
             duo_custom_flows_availability?: boolean;
+            /** @description Enable GitLab Duo external agents for this group */
+            duo_external_agents_availability?: boolean;
             /** @description Indicates whether GitLab Duo features are enabled for the group */
             duo_features_enabled?: boolean;
             /** @description Enable GitLab foundational Duo flows for this group */
@@ -30308,6 +31034,11 @@ export type components = {
             }[];
             /** @description Enable GitLab Duo remote flows for this group */
             duo_remote_flows_availability?: boolean;
+            /**
+             * Format: int32
+             * @description The ID of a project to use as the Duo Code Review custom instructions template for this group
+             */
+            duo_template_project_id?: number;
             /** @description _(Deprecated)_ Disable email notifications. Use: emails_enabled */
             emails_disabled?: boolean;
             /** @description Enable email notifications */
@@ -31069,7 +31800,7 @@ export type components = {
             jira_assignee_check_enabled?: boolean;
             /**
              * Format: int32
-             * @description The authentication method to use with Jira. Use `0` for Basic Authentication, and `1` for Jira personal access token. Defaults to `0`.
+             * @description The authentication method to use with Jira. Use `0` for basic authentication, `1` for Jira personal access token, and `2` for Jira Cloud service accounts. Defaults to `0`.
              */
             jira_auth_type?: number;
             /** @description Verify Jira issues referenced in commit messages exist before allowing the push. */
@@ -31090,13 +31821,13 @@ export type components = {
             password: string;
             /** @description Key of the project to use when creating issues from vulnerabilities.This parameter is required if using the integration to create Jira issues from vulnerabilities. */
             project_key?: string;
-            /** @description Keys of Jira projects. When `issues_enabled` is `true`, this setting specifies which Jira projects to view issues from in GitLab. */
+            /** @description Keys of Jira projects to display. When `issues_enabled` is `true`, this setting filters which Jira projects are shown in GitLab. It does not restrict the API token's access. */
             project_keys?: string[];
             /** @description The URL to the Jira project which is being linked to this GitLab project (for example, `https://jira.example.com`). */
             url: string;
             /** @description Indicates whether to inherit the default settings. Defaults to `false`. */
             use_inherited_settings?: boolean;
-            /** @description The email or username to use with Jira. Use an email for Jira Cloud, and a username for Jira Data Center and Jira Server. Required when using Basic Authentication (`jira_auth_type` is `0`). */
+            /** @description The email or username to use with Jira. Use an email for Jira Cloud, and a username for Jira Data Center and Jira Server. Required when using basic authentication (`jira_auth_type` is `0`). */
             username?: string;
             /** @description Turn on Jira issue creation for GitLab vulnerabilities. */
             vulnerabilities_enabled?: boolean;
@@ -31486,13 +32217,6 @@ export type components = {
             wiki_page_events?: boolean;
             work_item_events?: boolean;
         };
-        /** @description Create/Edit Slack Slash Commands integration */
-        putApiV4GroupsIdIntegrationsSlackSlashCommands: {
-            /** @description The Slack token. */
-            token: string;
-            /** @description Indicates whether to inherit the default settings. Defaults to `false`. */
-            use_inherited_settings?: boolean;
-        };
         /** @description Create/Edit Squash Tm integration */
         putApiV4GroupsIdIntegrationsSquashTm: {
             /** @description Trigger event when a confidential work item is created, updated, or closed. */
@@ -31779,6 +32503,8 @@ export type components = {
             push_events_branch_filter?: string;
             /** @description Trigger hook on repository update events */
             repository_update_events?: boolean;
+            /** @description HMAC signing token used to compute the webhook-signature header. Must be in whsec_<base64> format encoding a 32-byte key. Not returned in the response */
+            signing_token?: string;
             /** @description When true, the hook fires on new tags being pushed */
             tag_push_events?: boolean;
             /** @description Secret token to validate received payloads; this isn't returned in the response */
@@ -32559,6 +33285,8 @@ export type components = {
             resource_access_token_events?: boolean;
             /** @description Trigger hook on deploy token expiry events */
             resource_deploy_token_events?: boolean;
+            /** @description HMAC signing token used to compute the webhook-signature header. Must be in whsec_<base64> format encoding a 32-byte key. Not returned in the response */
+            signing_token?: string;
             /** @description Trigger hook on tag push events */
             tag_push_events?: boolean;
             /** @description Secret token to validate received payloads; this will not be returned in the response */
@@ -33114,7 +33842,7 @@ export type components = {
             jira_assignee_check_enabled?: boolean;
             /**
              * Format: int32
-             * @description The authentication method to use with Jira. Use `0` for Basic Authentication, and `1` for Jira personal access token. Defaults to `0`.
+             * @description The authentication method to use with Jira. Use `0` for basic authentication, `1` for Jira personal access token, and `2` for Jira Cloud service accounts. Defaults to `0`.
              */
             jira_auth_type?: number;
             /** @description Verify Jira issues referenced in commit messages exist before allowing the push. */
@@ -33135,13 +33863,13 @@ export type components = {
             password: string;
             /** @description Key of the project to use when creating issues from vulnerabilities.This parameter is required if using the integration to create Jira issues from vulnerabilities. */
             project_key?: string;
-            /** @description Keys of Jira projects. When `issues_enabled` is `true`, this setting specifies which Jira projects to view issues from in GitLab. */
+            /** @description Keys of Jira projects to display. When `issues_enabled` is `true`, this setting filters which Jira projects are shown in GitLab. It does not restrict the API token's access. */
             project_keys?: string[];
             /** @description The URL to the Jira project which is being linked to this GitLab project (for example, `https://jira.example.com`). */
             url: string;
             /** @description Indicates whether to inherit the default settings. Defaults to `false`. */
             use_inherited_settings?: boolean;
-            /** @description The email or username to use with Jira. Use an email for Jira Cloud, and a username for Jira Data Center and Jira Server. Required when using Basic Authentication (`jira_auth_type` is `0`). */
+            /** @description The email or username to use with Jira. Use an email for Jira Cloud, and a username for Jira Data Center and Jira Server. Required when using basic authentication (`jira_auth_type` is `0`). */
             username?: string;
             /** @description Turn on Jira issue creation for GitLab vulnerabilities. */
             vulnerabilities_enabled?: boolean;
@@ -33530,13 +34258,6 @@ export type components = {
             /** @description Trigger event when a wiki page is created or updated. */
             wiki_page_events?: boolean;
             work_item_events?: boolean;
-        };
-        /** @description Create/Edit Slack Slash Commands integration */
-        putApiV4ProjectsIdIntegrationsSlackSlashCommands: {
-            /** @description The Slack token. */
-            token: string;
-            /** @description Indicates whether to inherit the default settings. Defaults to `false`. */
-            use_inherited_settings?: boolean;
         };
         /** @description Create/Edit Squash Tm integration */
         putApiV4ProjectsIdIntegrationsSquashTm: {
@@ -34861,7 +35582,7 @@ export type components = {
             jira_assignee_check_enabled?: boolean;
             /**
              * Format: int32
-             * @description The authentication method to use with Jira. Use `0` for Basic Authentication, and `1` for Jira personal access token. Defaults to `0`.
+             * @description The authentication method to use with Jira. Use `0` for basic authentication, `1` for Jira personal access token, and `2` for Jira Cloud service accounts. Defaults to `0`.
              */
             jira_auth_type?: number;
             /** @description Verify Jira issues referenced in commit messages exist before allowing the push. */
@@ -34882,13 +35603,13 @@ export type components = {
             password: string;
             /** @description Key of the project to use when creating issues from vulnerabilities.This parameter is required if using the integration to create Jira issues from vulnerabilities. */
             project_key?: string;
-            /** @description Keys of Jira projects. When `issues_enabled` is `true`, this setting specifies which Jira projects to view issues from in GitLab. */
+            /** @description Keys of Jira projects to display. When `issues_enabled` is `true`, this setting filters which Jira projects are shown in GitLab. It does not restrict the API token's access. */
             project_keys?: string[];
             /** @description The URL to the Jira project which is being linked to this GitLab project (for example, `https://jira.example.com`). */
             url: string;
             /** @description Indicates whether to inherit the default settings. Defaults to `false`. */
             use_inherited_settings?: boolean;
-            /** @description The email or username to use with Jira. Use an email for Jira Cloud, and a username for Jira Data Center and Jira Server. Required when using Basic Authentication (`jira_auth_type` is `0`). */
+            /** @description The email or username to use with Jira. Use an email for Jira Cloud, and a username for Jira Data Center and Jira Server. Required when using basic authentication (`jira_auth_type` is `0`). */
             username?: string;
             /** @description Turn on Jira issue creation for GitLab vulnerabilities. */
             vulnerabilities_enabled?: boolean;
@@ -35278,13 +35999,6 @@ export type components = {
             wiki_page_events?: boolean;
             work_item_events?: boolean;
         };
-        /** @description Create/Edit Slack Slash Commands integration */
-        putApiV4ProjectsIdServicesSlackSlashCommands: {
-            /** @description The Slack token. */
-            token: string;
-            /** @description Indicates whether to inherit the default settings. Defaults to `false`. */
-            use_inherited_settings?: boolean;
-        };
         /** @description Create/Edit Squash Tm integration */
         putApiV4ProjectsIdServicesSquashTm: {
             /** @description Trigger event when a confidential work item is created, updated, or closed. */
@@ -35642,7 +36356,7 @@ export type components = {
              *       "base_branch": "develop"
              *     }
              */
-            recent_failures: string;
+            recent_failures: Record<string, never>;
             /** @example Failure/Error: is_expected.to eq(3) */
             stack_trace: string;
             /** @example success */
@@ -37009,7 +37723,7 @@ export interface operations {
         };
         responses: {
             /** @description Start a new GitLab Migration */
-            200: {
+            201: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -40252,7 +40966,7 @@ export interface operations {
                  * @example mynugetpkg.pdb
                  */
                 file_name: string;
-                /** @description The symbol file name */
+                /** @description The symbol file name. Must match the 'file_name' parameter */
                 same_file_name: string;
                 /**
                  * @description The symbol file signature
@@ -42387,7 +43101,7 @@ export interface operations {
             path: {
                 id: number;
                 /** @description The name of the integration */
-                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "slack-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
+                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
             };
             cookie?: never;
         };
@@ -42432,7 +43146,7 @@ export interface operations {
             path: {
                 id: number;
                 /** @description The name of the integration */
-                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "slack-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
+                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
             };
             cookie?: never;
         };
@@ -44844,60 +45558,6 @@ export interface operations {
             };
         };
     };
-    putApiV4GroupsIdIntegrationsSlackSlashCommands: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["putApiV4GroupsIdIntegrationsSlackSlashCommands"];
-            };
-        };
-        responses: {
-            /** @description Create/Edit Slack Slash Commands integration */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["API_Entities_IntegrationBasic"];
-                };
-            };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unprocessable entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     putApiV4GroupsIdIntegrationsSquashTm: {
         parameters: {
             query?: never;
@@ -46028,8 +46688,6 @@ export interface operations {
     getApiV4GroupsIdMergeRequests: {
         parameters: {
             query?: {
-                /** @description Filters merge requests by their `approved` status. `yes` returns only approved merge requests. `no` returns only non-approved merge requests. */
-                approved?: "yes" | "no";
                 /** @description Return merge requests which have been approved by the specified users with the given IDs */
                 approved_by_ids?: string;
                 /**
@@ -46067,6 +46725,8 @@ export interface operations {
                  * @example 2019-03-15T08:00:00Z
                  */
                 deployed_before?: string;
+                /** @description Filter merge requests against their `draft` status. `true` to return only draft merge requests, `false` to return non-draft merge requests. */
+                draft?: boolean;
                 /**
                  * @description Returns merge requests deployed to the given environment
                  * @example 2019-03-15T08:00:00Z
@@ -46149,7 +46809,7 @@ export interface operations {
                 updated_before?: string;
                 /** @description If simple, returns the `iid`, URL, title, description, and basic state of merge request */
                 view?: "simple";
-                /** @description Filter merge requests against their `wip` status. `yes` to return only draft merge requests, `no` to return non-draft merge requests. */
+                /** @description Deprecated. Use `draft` instead. Filter merge requests against their `wip` status. `yes` to return only draft merge requests, `no` to return non-draft merge requests. */
                 wip?: "yes" | "no";
                 /** @description If `true`, response returns more details for each label in labels field: `:name`,`:color`, `:description`, `:description_html`, `:text_color` */
                 with_labels_details?: boolean;
@@ -47306,6 +47966,46 @@ export interface operations {
             };
         };
     };
+    postApiV4GroupsIdUploads: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["postApiV4GroupsIdUploads"];
+            };
+        };
+        responses: {
+            /** @description Upload a file to a group */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["API_Entities_GroupUpload"];
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     getApiV4GroupsIdUploadsSecretFilename: {
         parameters: {
             query?: never;
@@ -47321,7 +48021,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Download a single project upload by secret and filename */
+            /** @description Download a single group upload by secret and filename */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -47458,6 +48158,33 @@ export interface operations {
             };
             /** @description Unauthenticated */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    postApiV4GroupsIdUploadsAuthorize: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Workhorse authorize the file upload */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -49431,8 +50158,6 @@ export interface operations {
     getApiV4MergeRequests: {
         parameters: {
             query?: {
-                /** @description Filters merge requests by their `approved` status. `yes` returns only approved merge requests. `no` returns only non-approved merge requests. */
-                approved?: "yes" | "no";
                 /** @description Return merge requests which have been approved by the specified users with the given IDs */
                 approved_by_ids?: string;
                 /**
@@ -49470,6 +50195,8 @@ export interface operations {
                  * @example 2019-03-15T08:00:00Z
                  */
                 deployed_before?: string;
+                /** @description Filter merge requests against their `draft` status. `true` to return only draft merge requests, `false` to return non-draft merge requests. */
+                draft?: boolean;
                 /**
                  * @description Returns merge requests deployed to the given environment
                  * @example 2019-03-15T08:00:00Z
@@ -49552,7 +50279,7 @@ export interface operations {
                 updated_before?: string;
                 /** @description If simple, returns the `iid`, URL, title, description, and basic state of merge request */
                 view?: "simple";
-                /** @description Filter merge requests against their `wip` status. `yes` to return only draft merge requests, `no` to return non-draft merge requests. */
+                /** @description Deprecated. Use `draft` instead. Filter merge requests against their `wip` status. `yes` to return only draft merge requests, `no` to return non-draft merge requests. */
                 wip?: "yes" | "no";
                 /** @description If `true`, response returns more details for each label in labels field: `:name`,`:color`, `:description`, `:description_html`, `:text_color` */
                 with_labels_details?: boolean;
@@ -55308,8 +56035,6 @@ export interface operations {
     getApiV4ProjectsIdDeploymentsDeploymentIdMergeRequests: {
         parameters: {
             query?: {
-                /** @description Filters merge requests by their `approved` status. `yes` returns only approved merge requests. `no` returns only non-approved merge requests. */
-                approved?: "yes" | "no";
                 /** @description Returns merge requests assigned to the given user `id`. `None` returns unassigned merge requests. `Any` returns merge requests with an assignee. */
                 assignee_id?: number;
                 /** @description Returns merge requests created by the given `username`. Mutually exclusive with `author_id`. */
@@ -55338,6 +56063,8 @@ export interface operations {
                  * @example 2019-03-15T08:00:00Z
                  */
                 deployed_before?: string;
+                /** @description Filter merge requests against their `draft` status. `true` to return only draft merge requests, `false` to return non-draft merge requests. */
+                draft?: boolean;
                 /**
                  * @description Returns merge requests deployed to the given environment
                  * @example 2019-03-15T08:00:00Z
@@ -55418,7 +56145,7 @@ export interface operations {
                 updated_before?: string;
                 /** @description If simple, returns the `iid`, URL, title, description, and basic state of merge request */
                 view?: "simple";
-                /** @description Filter merge requests against their `wip` status. `yes` to return only draft merge requests, `no` to return non-draft merge requests. */
+                /** @description Deprecated. Use `draft` instead. Filter merge requests against their `wip` status. `yes` to return only draft merge requests, `no` to return non-draft merge requests. */
                 wip?: "yes" | "no";
                 /** @description If `true`, response returns more details for each label in labels field: `:name`,`:color`, `:description`, `:description_html`, `:text_color` */
                 with_labels_details?: boolean;
@@ -58095,7 +58822,7 @@ export interface operations {
             path: {
                 id: number;
                 /** @description The name of the integration */
-                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "slack-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
+                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
             };
             cookie?: never;
         };
@@ -58140,7 +58867,7 @@ export interface operations {
             path: {
                 id: number;
                 /** @description The name of the integration */
-                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "slack-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
+                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
             };
             cookie?: never;
         };
@@ -60553,99 +61280,6 @@ export interface operations {
         };
         responses: {
             /** @description Create/Edit Slack integration */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["API_Entities_IntegrationBasic"];
-                };
-            };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unprocessable entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    postApiV4ProjectsIdIntegrationsSlackSlashCommandsTrigger: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The ID or URL-encoded path of the project */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["postApiV4ProjectsIdIntegrationsSlackSlashCommandsTrigger"];
-            };
-        };
-        responses: {
-            /** @description Trigger a slash command for slack-slash-commands */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    putApiV4ProjectsIdIntegrationsSlackSlashCommands: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["putApiV4ProjectsIdIntegrationsSlackSlashCommands"];
-            };
-        };
-        responses: {
-            /** @description Create/Edit Slack Slash Commands integration */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -64087,8 +64721,6 @@ export interface operations {
     getApiV4ProjectsIdMergeRequests: {
         parameters: {
             query?: {
-                /** @description Filters merge requests by their `approved` status. `yes` returns only approved merge requests. `no` returns only non-approved merge requests. */
-                approved?: "yes" | "no";
                 /** @description Return merge requests which have been approved by the specified users with the given IDs */
                 approved_by_ids?: string;
                 /**
@@ -64126,6 +64758,8 @@ export interface operations {
                  * @example 2019-03-15T08:00:00Z
                  */
                 deployed_before?: string;
+                /** @description Filter merge requests against their `draft` status. `true` to return only draft merge requests, `false` to return non-draft merge requests. */
+                draft?: boolean;
                 /**
                  * @description Returns merge requests deployed to the given environment
                  * @example 2019-03-15T08:00:00Z
@@ -64208,7 +64842,7 @@ export interface operations {
                 updated_before?: string;
                 /** @description If simple, returns the `iid`, URL, title, description, and basic state of merge request */
                 view?: "simple";
-                /** @description Filter merge requests against their `wip` status. `yes` to return only draft merge requests, `no` to return non-draft merge requests. */
+                /** @description Deprecated. Use `draft` instead. Filter merge requests against their `wip` status. `yes` to return only draft merge requests, `no` to return non-draft merge requests. */
                 wip?: "yes" | "no";
                 /** @description If `true`, response returns more details for each label in labels field: `:name`,`:color`, `:description`, `:description_html`, `:text_color` */
                 with_labels_details?: boolean;
@@ -71908,7 +72542,7 @@ export interface operations {
                  * @example mynugetpkg.pdb
                  */
                 file_name: string;
-                /** @description The symbol file name */
+                /** @description The symbol file name. Must match the 'file_name' parameter */
                 same_file_name: string;
                 /**
                  * @description The symbol file signature
@@ -79930,7 +80564,7 @@ export interface operations {
             path: {
                 id: number;
                 /** @description The name of the integration */
-                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "slack-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
+                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
             };
             cookie?: never;
         };
@@ -79975,7 +80609,7 @@ export interface operations {
             path: {
                 id: number;
                 /** @description The name of the integration */
-                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "slack-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
+                slug: "apple-app-store" | "asana" | "assembla" | "bamboo" | "bugzilla" | "buildkite" | "campfire" | "confluence" | "custom-issue-tracker" | "datadog" | "diffblue-cover" | "discord" | "drone-ci" | "emails-on-push" | "external-wiki" | "gitlab-slack-application" | "google-play" | "hangouts-chat" | "harbor" | "irker" | "jenkins" | "jira" | "jira-cloud-app" | "linear" | "matrix" | "mattermost-slash-commands" | "packagist" | "phorge" | "pipelines-email" | "pivotaltracker" | "pumble" | "pushover" | "redmine" | "ewm" | "youtrack" | "clickup" | "slack" | "microsoft-teams" | "mattermost" | "teamcity" | "telegram" | "unify-circuit" | "webex-teams" | "zentao" | "squash-tm" | "github" | "git-guardian" | "google-cloud-platform-artifact-registry" | "google-cloud-platform-workload-identity-federation" | "mock-ci" | "mock-monitoring";
             };
             cookie?: never;
         };
@@ -82388,99 +83022,6 @@ export interface operations {
         };
         responses: {
             /** @description Create/Edit Slack integration */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["API_Entities_IntegrationBasic"];
-                };
-            };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unprocessable entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    postApiV4ProjectsIdServicesSlackSlashCommandsTrigger: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The ID or URL-encoded path of the project */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["postApiV4ProjectsIdServicesSlackSlashCommandsTrigger"];
-            };
-        };
-        responses: {
-            /** @description Trigger a slash command for slack-slash-commands */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    putApiV4ProjectsIdServicesSlackSlashCommands: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["putApiV4ProjectsIdServicesSlackSlashCommands"];
-            };
-        };
-        responses: {
-            /** @description Create/Edit Slack Slash Commands integration */
             200: {
                 headers: {
                     [name: string]: unknown;

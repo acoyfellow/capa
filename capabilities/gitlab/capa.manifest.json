@@ -1,0 +1,19 @@
+{
+	"name": "gitlab",
+	"entrypoint": "GitlabCapability",
+	"source": {
+		"spec": "https://docs.gitlab.com/api/openapi/openapi_v2.yaml",
+		"title": "GitLab API",
+		"version": "v4"
+	},
+	"upstream": {
+		"baseUrl": "https://gitlab.com",
+		"prefix": "/api/v4"
+	},
+	"auth": "private-token",
+	"contentType": "json",
+	"operations": 1047,
+	"namespaces": 51,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

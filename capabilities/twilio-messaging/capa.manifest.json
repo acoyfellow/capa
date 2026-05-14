@@ -1,0 +1,19 @@
+{
+	"name": "twilio-messaging",
+	"entrypoint": "TwilioMessagingCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_messaging_v1.json",
+		"title": "Twilio - Messaging",
+		"version": "1.0.0"
+	},
+	"upstream": {
+		"baseUrl": "https://messaging.twilio.com",
+		"prefix": "/v1"
+	},
+	"auth": "basic",
+	"contentType": "form",
+	"operations": 58,
+	"namespaces": 5,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

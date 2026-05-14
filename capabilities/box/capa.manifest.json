@@ -1,0 +1,19 @@
+{
+	"name": "box",
+	"entrypoint": "BoxCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/box/box-openapi/main/openapi.json",
+		"title": "Box Platform API",
+		"version": "2024.0"
+	},
+	"upstream": {
+		"baseUrl": "https://api.box.com",
+		"prefix": "/"
+	},
+	"auth": "bearer",
+	"contentType": "json",
+	"operations": 294,
+	"namespaces": 56,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

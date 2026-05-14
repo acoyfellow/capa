@@ -141,6 +141,12 @@ async function ensureOpenApi3(spec: any): Promise<any> {
 	);
 }
 
+function toPascalCase(s: string): string {
+	return s
+		.replace(/(^|[^a-zA-Z0-9]+)([a-zA-Z0-9])/g, (_, _sep, c) => c.toUpperCase())
+		.replace(/[^a-zA-Z0-9]/g, "");
+}
+
 function renderRuntime(args: CliArgs): string {
 	const templatePath = join(__dirname, "runtime.template.ts");
 	let template = readFileSync(templatePath, "utf8");
@@ -191,6 +197,25 @@ async function main() {
 
 	console.log(`→ emitting capability code`);
 	const { capability, manifest } = emit(codegen, args.name);
+	const capabilityManifest = {
+		name: args.name,
+		entrypoint: `${toPascalCase(args.name)}Capability`,
+		source: {
+			spec: args.spec,
+			title: codegen.specTitle,
+			version: codegen.specVersion,
+		},
+		upstream: {
+			baseUrl: args.baseUrl,
+			prefix: args.prefix,
+		},
+		auth: args.auth,
+		contentType: args.contentType,
+		operations: codegen.operationCount,
+		namespaces: Object.keys(codegen.namespaces).length,
+		publicHttpRoute: false,
+		evidenceContract: "capa.evidence.v0",
+	};
 
 	const generatedDir = join(args.out, "src", "generated");
 	mkdirSync(generatedDir, { recursive: true });
@@ -199,12 +224,14 @@ async function main() {
 	writeFileSync(join(generatedDir, "capability.gen.ts"), capability);
 	writeFileSync(join(generatedDir, "manifest.gen.ts"), manifest);
 	writeFileSync(join(generatedDir, "runtime.ts"), renderRuntime(args));
+	writeFileSync(join(args.out, "capa.manifest.json"), `${JSON.stringify(capabilityManifest, null, "\t")}\n`);
 
 	console.log(`✓ wrote:
   ${generatedDir}/schema.gen.ts       (openapi-typescript output, full type tree)
   ${generatedDir}/capability.gen.ts   (RpcTarget classes + WorkerEntrypoint)
   ${generatedDir}/manifest.gen.ts     (operationId → metadata)
-  ${generatedDir}/runtime.ts          (evidence-aware fetch, baseUrl=${args.baseUrl})`);
+  ${generatedDir}/runtime.ts          (evidence-aware fetch, baseUrl=${args.baseUrl})
+  ${args.out}/capa.manifest.json      (capability metadata)`);
 
 	console.log(`
 next steps:

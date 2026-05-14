@@ -1,0 +1,19 @@
+{
+	"name": "zoom",
+	"entrypoint": "ZoomCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/zoom/api/master/openapi.v2.json",
+		"title": "Zoom API",
+		"version": "2.0.0"
+	},
+	"upstream": {
+		"baseUrl": "https://api.zoom.us",
+		"prefix": "/"
+	},
+	"auth": "bearer",
+	"contentType": "json",
+	"operations": 155,
+	"namespaces": 14,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

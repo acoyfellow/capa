@@ -1,0 +1,63 @@
+---
+import CapabilityCard from './CapabilityCard.astro';
+import { getCapabilities, getPlanned, getCatalogStats, formatNumber } from '../data/capabilities';
+
+interface Props {
+	/** When true, render a compact summary row above the grid. Default false. */
+	stats?: boolean;
+	/** When true, render planned/roadmap placeholders below. Default false. */
+	planned?: boolean;
+}
+
+const { stats = false, planned = false } = Astro.props;
+const caps = getCapabilities();
+const plannedEntries = planned ? getPlanned() : [];
+const s = stats ? getCatalogStats() : null;
+---
+
+{s && (
+	<aside class="capa-catalog-stats" aria-label="capa catalog totals">
+		<div>
+			<span class="capa-catalog-stats__num">{formatNumber(s.capabilityCount)}</span>
+			<span class="capa-catalog-stats__label">{s.capabilityCount === 1 ? 'capability' : 'capabilities'}</span>
+		</div>
+		<div>
+			<span class="capa-catalog-stats__num">{formatNumber(s.totalOperations)}</span>
+			<span class="capa-catalog-stats__label">operations</span>
+		</div>
+		<div>
+			<span class="capa-catalog-stats__num">{formatNumber(s.totalNamespaces)}</span>
+			<span class="capa-catalog-stats__label">namespaces</span>
+		</div>
+	</aside>
+)}
+
+{caps.length === 0 ? (
+	<p class="capa-catalog-empty">
+		No capabilities found. Drop a <code>capa.manifest.json</code> into
+		<code>capabilities/&lt;name&gt;/</code> to surface one here.
+	</p>
+) : (
+	<div class="capa-catalog">
+		{caps.map((entry) => <CapabilityCard entry={entry} />)}
+	</div>
+)}
+
+{plannedEntries.length > 0 && (
+	<section class="capa-catalog__planned" aria-label="Planned capabilities">
+		<h3>On the roadmap</h3>
+		<div class="capa-catalog">
+			{plannedEntries.map((p) => (
+				<article class="capa-card capa-card--planned">
+					<header class="capa-card__head">
+						<h3 class="capa-card__title">
+							<span class="capa-card__name">{p.name}</span>
+							<span class="capa-card__status capa-card__status--planned">Planned</span>
+						</h3>
+						<p class="capa-card__tagline">{p.tagline}</p>
+					</header>
+				</article>
+			))}
+		</div>
+	</section>
+)}

@@ -1,5 +1,7 @@
 /* Minimal capa docs styling */
 
+/* ----- Architecture flow diagram (legacy) ----- */
+
 .capa-flow {
   display: grid;
   grid-template-columns: minmax(170px, 1fr) auto minmax(220px, 1.25fr) auto minmax(170px, 1fr);
@@ -58,5 +60,327 @@
 
   .flow-edge b {
     transform: rotate(90deg);
+  }
+}
+
+/* ----- Capability catalog ----- */
+
+.capa-catalog-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  background: var(--sl-color-gray-6);
+}
+
+.capa-catalog-stats > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.capa-catalog-stats__num {
+  font-size: 1.75rem;
+  line-height: 1.1;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--sl-color-white);
+}
+
+.capa-catalog-stats__label {
+  font-size: 0.85rem;
+  color: var(--sl-color-gray-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.capa-catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.capa-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.1rem 1.15rem 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  background: var(--sl-color-bg);
+  transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+
+.capa-card:hover {
+  border-color: var(--sl-color-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px -12px rgba(0, 0, 0, 0.45);
+}
+
+.capa-card--planned {
+  background: var(--sl-color-gray-6);
+  border-style: dashed;
+  opacity: 0.85;
+}
+
+.capa-card__head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.capa-card__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.capa-card__name {
+  font-family: var(--sl-font-mono, ui-monospace, SFMono-Regular, monospace);
+  color: var(--sl-color-white);
+}
+
+.capa-card__status {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--sl-color-gray-4);
+  color: var(--sl-color-gray-2);
+  background: var(--sl-color-gray-6);
+  white-space: nowrap;
+}
+
+.capa-card__status--stable {
+  border-color: rgba(64, 192, 128, 0.6);
+  color: rgb(120, 220, 160);
+  background: rgba(64, 192, 128, 0.08);
+}
+
+.capa-card__status--beta {
+  border-color: rgba(232, 168, 56, 0.6);
+  color: rgb(240, 200, 120);
+  background: rgba(232, 168, 56, 0.1);
+}
+
+.capa-card__status--planned {
+  border-style: dashed;
+}
+
+.capa-card__tagline {
+  margin: 0;
+  color: var(--sl-color-gray-2);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.capa-card__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem 0.75rem;
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  background: var(--sl-color-gray-6);
+}
+
+.capa-card__stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.capa-card__stats dt {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sl-color-gray-3);
+  margin: 0;
+}
+
+.capa-card__stats dd {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--sl-color-white);
+}
+
+.capa-card__details {
+  border-top: 1px dashed var(--sl-color-gray-5);
+  padding-top: 0.6rem;
+}
+
+.capa-card__details summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--sl-color-gray-2);
+  list-style: none;
+}
+
+.capa-card__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.capa-card__details summary::before {
+  content: "▸ ";
+  display: inline-block;
+  transition: transform 120ms ease;
+  color: var(--sl-color-gray-3);
+}
+
+.capa-card__details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.capa-card__meta {
+  margin: 0.6rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+}
+
+.capa-card__meta > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.capa-card__meta dt {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sl-color-gray-3);
+  margin: 0;
+}
+
+.capa-card__meta dd {
+  margin: 0;
+  color: var(--sl-color-text);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.capa-card__meta a {
+  color: var(--sl-color-accent-high);
+  text-decoration: none;
+}
+
+.capa-card__meta a:hover {
+  text-decoration: underline;
+}
+
+.capa-card__meta code {
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+
+.capa-card__dim {
+  color: var(--sl-color-gray-3);
+  font-weight: 400;
+}
+
+.capa-card__secret {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.3rem;
+  background: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-gray-5);
+  font-size: 0.78rem;
+}
+
+.capa-card__secret--optional {
+  border-style: dashed;
+  color: var(--sl-color-gray-2);
+}
+
+.capa-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.capa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.85rem;
+  border-radius: 0.45rem;
+  border: 1px solid var(--sl-color-gray-4);
+  background: var(--sl-color-gray-6);
+  color: var(--sl-color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.capa-btn:hover {
+  background: var(--sl-color-gray-5);
+  border-color: var(--sl-color-gray-3);
+  text-decoration: none;
+}
+
+.capa-btn--primary {
+  background: var(--sl-color-accent);
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-black, #000);
+}
+
+.capa-btn--primary:hover {
+  background: var(--sl-color-accent-high);
+  border-color: var(--sl-color-accent-high);
+}
+
+.capa-catalog-empty {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border: 1px dashed var(--sl-color-gray-5);
+  border-radius: 0.65rem;
+  color: var(--sl-color-gray-2);
+  background: var(--sl-color-gray-6);
+}
+
+.capa-catalog__planned {
+  margin-top: 2rem;
+}
+
+.capa-catalog__planned h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sl-color-gray-2);
+}
+
+.capa-catalog-footnote {
+  margin: 0.5rem 0 1.5rem;
+  font-size: 0.85rem;
+  color: var(--sl-color-gray-2);
+}
+
+@media (max-width: 540px) {
+  .capa-catalog-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .capa-catalog-stats__num {
+    font-size: 1.4rem;
   }
 }

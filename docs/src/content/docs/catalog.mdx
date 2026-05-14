@@ -1,0 +1,36 @@
+---
+title: Catalog
+description: Every capa capability — operations, namespaces, bundle size, auth, and one-click deploy.
+---
+
+import CapabilityGrid from '../../components/CapabilityGrid.astro';
+
+Every capability ships:
+
+- A generated `WorkerEntrypoint` class exposing namespaced methods.
+- A `capa.manifest.json` declaring source spec, upstream URL, auth, and operation count.
+- A single side effect per method: one upstream HTTP request, one evidence bundle returned.
+
+<CapabilityGrid stats planned />
+
+## Adding a new capability
+
+The catalog above is rendered from `capabilities/*/capa.manifest.json` at build time. To add a capability:
+
+1. Run the [codegen CLI](/reference#codegen-cli) against an OpenAPI/Swagger spec.
+2. Codegen writes `capa.manifest.json` alongside the generated source.
+3. (Optional) Add a display entry in `docs/src/data/capabilities.ts` for the tagline, bundle size, and required-secret hints.
+4. Open a PR. The catalog picks it up automatically on the next build.
+
+## Invariants every capability honours
+
+| Property | Value |
+|---|---|
+| Public HTTP route | `fetch()` returns 404 |
+| Side effects per method | One upstream HTTP request |
+| Return shape | `{ result, evidence }` |
+| Evidence type | Plain JSON, no streams or handles |
+| Auth | `wrangler secret put` |
+| Billing | Caller-pays |
+
+See [Reference](/reference) for the full evidence bundle shape, codegen flags, and per-capability secret names.

@@ -1,0 +1,19 @@
+{
+	"name": "stripe",
+	"entrypoint": "StripeCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.sdk.json",
+		"title": "Stripe API",
+		"version": "2026-04-22.dahlia"
+	},
+	"upstream": {
+		"baseUrl": "https://api.stripe.com",
+		"prefix": "/v1"
+	},
+	"auth": "bearer",
+	"contentType": "form",
+	"operations": 534,
+	"namespaces": 73,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

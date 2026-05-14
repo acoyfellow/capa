@@ -1,270 +1,155 @@
 # capa
 
-Third-party APIs as Cloudflare service bindings that return their own receipts.
+Generated Cloudflare service bindings for third-party APIs.
 
-Every binding works the same way: call a method, get `{ result, evidence }`.
+Every method returns the upstream result plus a JSON evidence bundle:
 
 ```ts
 const { result, evidence } = await env.STRIPE.charges.create({
-  amount: 1000, currency: "usd", source: "tok_visa",
+	amount: 1000,
+	currency: "usd",
+	source: "tok_visa",
 });
 
-const { result, evidence } = await env.GITLAB.projects.list();
+if (evidence.verdict === "fail") {
+	return Response.json({ error: "verification failed", evidence }, { status: 502 });
+}
 
-const { result, evidence } = await env.JIRA.issues.createIssue({
-  project: "PROJ", summary: "Bug", issuetype: { name: "Bug" },
-});
+return Response.json({ chargeId: result.id, evidence });
 ```
 
-Each call returns the result and an evidence bundle. Capabilities are generated from OpenAPI specs — not hand-written wrappers.
+Bindings are generated from OpenAPI specs. The hand-written layer is `src/index.ts` plus optional evidence overrides in `src/overrides.ts`.
 
----
+## Repo
 
-## Tutorial
+| Path | Purpose |
+|---|---|
+| `SPEC.md` | Method, evidence, and capability contract |
+| `tools/codegen/` | OpenAPI -> capability generator |
+| `capabilities/<name>/capa.manifest.json` | Generated capability metadata |
+| `capabilities/<name>/src/generated/` | Generated binding code |
+| `capabilities/<name>/src/index.ts` | Worker entrypoint |
+| `capabilities/<name>/src/overrides.ts` | Per-method evidence overrides |
+| `tests/harness/` | Real capability smoke-test Worker |
+| `docs/` | Expanded docs site |
 
-Build a caller Worker that uses any `capa-*` capability.
+## Generated bindings
 
-1. **Deploy a capability.** Pick one from the [capabilities directory](capabilities/). Click its Deploy button; Cloudflare clones the repo and deploys the Worker.
+| Capability | Operations | Namespaces | Auth | Body |
+|---|---:|---:|---|---|
+| [box](capabilities/box) | 294 | 56 | bearer | json |
+| [discord](capabilities/discord) | 233 | 16 | bearer | json |
+| [github](capabilities/github) | 1,182 | 36 | bearer | json |
+| [gitlab](capabilities/gitlab) | 1,047 | 51 | private-token | json |
+| [jira](capabilities/jira) | 601 | 76 | basic | json |
+| [kubernetes](capabilities/kubernetes) | 1,111 | 6 | bearer | json |
+| [sentry](capabilities/sentry) | 209 | 6 | bearer | json |
+| [slack](capabilities/slack) | 174 | 174 | bearer | form |
+| [stripe](capabilities/stripe) | 534 | 73 | bearer | form |
+| [twilio-messaging](capabilities/twilio-messaging) | 58 | 5 | basic | form |
+| [twilio-verify](capabilities/twilio-verify) | 57 | 5 | basic | form |
+| [twilio](capabilities/twilio) | 197 | 2 | basic | form |
+| [zoom](capabilities/zoom) | 155 | 14 | bearer | json |
 
-2. **Set the upstream key.**
-
-   ```bash
-   cd capa/capabilities/<name>
-   wrangler secret put <SECRET_NAME>
-   ```
-
-   The required secret name is in the capability's README.
-
-3. **Declare the binding** in your caller Worker's `wrangler.jsonc`:
-
-   ```jsonc
-   {
-     "services": [
-       { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
-     ]
-   }
-   ```
-
-4. **Call any endpoint:**
-
-   ```ts
-   export default {
-     async fetch(request, env) {
-       const { result, evidence } = await env.STRIPE.charges.create({
-         amount: 1000, currency: "usd", source: "tok_visa",
-       });
-
-       if (evidence.verdict === "fail") {
-         return Response.json({ error: "verification failed", evidence }, { status: 502 });
-       }
-
-       return Response.json({ chargeId: result.id, evidence });
-     },
-   };
-   ```
-
-5. **Deploy your caller.** `evidence.verdict` is `"pass"` when every assertion passed.
-
----
-
-## How-to
-
-### Install a capability
-
-Click the Deploy to Cloudflare button in the capability's `README.md`. Cloudflare clones the repo, provisions the Worker, runs Workers Builds.
-
-### Set the upstream API key
+## Validate
 
 ```bash
-cd capabilities/<capability>
-wrangler secret put <SECRET_NAME>
+bun install
+bun run check
 ```
 
-The required secret name is documented in each capability's README.
+`bun run check` verifies generated files, typechecks every capability, and runs `wrangler deploy --dry-run` for each Worker.
 
-### Bind a capability into a caller Worker
+## Use a binding
+
+Deploy a capability, set its upstream secret, then bind it from another Worker.
+
+```bash
+cd capabilities/stripe
+wrangler secret put STRIPE_API_KEY
+wrangler deploy
+```
 
 ```jsonc
 {
-  "services": [
-    {
-      "binding": "<BINDING_NAME>",
-      "service": "<capa-capability>",
-      "entrypoint": "<EntrypointClassName>"
-    }
-  ]
+	"services": [
+		{ "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
+	]
 }
 ```
 
-### Generate a new capability from an OpenAPI spec
+```ts
+const { result, evidence } = await env.STRIPE.charges.create({
+	amount: 1000,
+	currency: "usd",
+	source: "tok_visa",
+});
+```
+
+## Generate a binding
 
 ```bash
 cd tools/codegen
 bun src/cli.ts \
-  --spec <url-or-path-to-openapi-spec> \
-  --out  ../../capabilities/<name> \
-  --name <name> \
-  --base-url <upstream-base-url> \
-  --prefix <api-prefix> \
-  --auth <bearer|private-token|basic> \
-  --content-type <form|json>
+	--spec <url-or-path-to-openapi-spec> \
+	--out ../../capabilities/<name> \
+	--name <name> \
+	--base-url <upstream-base-url> \
+	--prefix <api-prefix> \
+	--auth <bearer|private-token|basic> \
+	--content-type <form|json>
 ```
 
-### Persist an evidence bundle
-
-```ts
-const { result, evidence } = await env.STRIPE.charges.create(input);
-await env.AUDIT_BUCKET.put(`${evidence.startedAt}.json`, JSON.stringify(evidence));
-```
-
-### Handle a failed verdict
-
-```ts
-if (evidence.verdict === "fail") {
-  const failed = evidence.assert.filter(a => !a.passed);
-  // failed[] contains { kind, expected, actual, passed: false }
-}
-```
-
----
-
-## Reference
-
-### Repo layout
-
-| Path | Purpose |
-|---|---|
-| `tools/codegen/` | OpenAPI → capability generator |
-| `capabilities/<name>/src/generated/` | Generated code (do not edit) |
-| `capabilities/<name>/src/index.ts` | Worker entry |
-| `capabilities/<name>/src/overrides.ts` | Per-method evidence overrides |
-| `capabilities/<name>/wrangler.jsonc` | Deployment config |
-
-### Available capabilities
-
-| Capability | Operations | Namespaces | Bundle (gz) | Auth | Content-Type |
-|---|---|---|---|---|---|
-| [stripe](capabilities/stripe) | 534 | 73 | 38 KiB | Bearer | Form |
-| [gitlab](capabilities/gitlab) | 1,050 | 51 | 54 KiB | Private-Token | JSON |
-| [jira](capabilities/jira) | 603 | 76 | 48 KiB | Basic | JSON |
-
-### Evidence bundle shape
+## Evidence
 
 ```ts
 {
-  capability:   string;
-  operationId:  string;        // e.g. "PostCharges"
-  namespace:    string;        // e.g. "charges"
-  method:       string;        // e.g. "create"
-  http:         string;        // "get" | "post" | "put" | "patch" | "delete"
-  path:         string;        // "/v1/charges"
-  risk:         "low" | "medium" | "high";
-  startedAt:    string;        // ISO 8601
-  durationMs:   number;
-  act:          { request: { method: string; url: string }; status: number };
-  assert:       Array<{ kind: string; expected: unknown; actual: unknown; passed: boolean }>;
-  verdict:      "pass" | "fail";
+	capability: string;
+	operationId: string;
+	namespace: string;
+	method: string;
+	http: string;
+	path: string;
+	risk: "low" | "medium" | "high";
+	startedAt: string;
+	durationMs: number;
+	act: { request: { method: string; url: string }; status: number };
+	assert: Array<{ kind: string; expected: unknown; actual: unknown; passed: boolean }>;
+	verdict: "pass" | "fail";
 }
 ```
 
-### Method return shape
+`result` is returned only when every assertion passes. Otherwise `result` is `null` and `evidence.verdict` is `"fail"`.
 
-```ts
-{ result: T | null; evidence: EvidenceBundle }
-```
-
-`result` is `null` when `verdict === "fail"`.
-
-### Capability invariants
+## Contract
 
 | Property | Value |
 |---|---|
 | Public HTTP route | `fetch()` returns 404 |
+| Call path | Cloudflare service binding / JSRPC |
 | Side effects per method | One upstream HTTP request |
-| Evidence type | Plain JSON, no streams or handles |
-| Auth | `wrangler secret put` |
-| Billing | Caller-pays |
+| Evidence type | Plain JSON |
+| Auth | Worker secret |
+| Manifest | `capa.manifest.json` records source spec, entrypoint, auth, body type, and counts |
+| Generated files | Do not edit |
+| Editable files | `src/index.ts`, `src/overrides.ts`, `wrangler.jsonc` |
 
----
+## Non-goals
 
-## Explanation
+| Non-goal | Note |
+|---|---|
+| Public HTTP proxy | Bind capabilities instead. Do not expose them. |
+| Tamper-proof receipts | Evidence is plain JSON in v0. Persist, hash, or sign it elsewhere if needed. |
+| Business-policy engine | Callers decide how to handle `risk`, assertions, and failed verdicts. |
+| Hand-written SDK surface | API coverage comes from OpenAPI generation. |
 
-### Why this exists
+## Docs
 
-A wrapper Worker that returns `{ result }` is a two-day project. A wrapper that returns `{ result, evidence }` is a different shape — the call carries its own record of what was checked and what happened. Caller decides whether to trust, persist, or audit.
+| Page | Purpose |
+|---|---|
+| [Spec](SPEC.md) | Evidence and capability contract |
+| [Tutorial](docs/src/content/docs/tutorial.md) | Deploy and call a capability |
+| [How it works](docs/src/content/docs/how-it-works.md) | Codegen, JSRPC, evidence loop |
+| [Reference](docs/src/content/docs/reference.md) | Capability and evidence details |
+| [Codegen](tools/codegen/README.md) | Generator flags and output |
 
-### How capabilities are built
-
-Capabilities are not hand-coded. Each one is generated from the upstream API's OpenAPI spec.
-
-```
- spec.openapi.json
-        │
-        ▼
-    capa-codegen ──▶ src/generated/schema.gen.ts        (types from openapi-typescript)
-                 ──▶ src/generated/capability.gen.ts    (RpcTarget classes per namespace)
-                 ──▶ src/generated/manifest.gen.ts      (operationId → metadata)
-                 ──▶ src/generated/runtime.ts           (evidence-aware fetch)
-        │
-        ▼
-    src/index.ts (hand-written: ~30 LOC, applies per-method overrides)
-        │
-        ▼
-    deployed Worker
-```
-
-The hand-written layer is thin. The per-method overrides for richer evidence are the only thing that grows with API surface — and only for the methods you care to assert against.
-
-### How the loop works
-
-<div class="capa-flow" aria-label="capa call flow">
-  <div class="flow-node">
-    <strong>Caller Worker</strong>
-    <code>env.&lt;NAME&gt;</code>
-    <code>.ns.method()</code>
-  </div>
-  <div class="flow-edge">
-    <span>JSRPC</span>
-    <b>→</b>
-    <small>result + evidence</small>
-  </div>
-  <div class="flow-node flow-node-wide">
-    <strong>capa capability</strong>
-    <code>WorkerEntrypoint</code>
-    <code>fetchProof()</code>
-    <code>act + assert</code>
-  </div>
-  <div class="flow-edge">
-    <span>HTTP</span>
-    <b>→</b>
-    <small>upstream response</small>
-  </div>
-  <div class="flow-node">
-    <strong>Upstream API</strong>
-    <code>Stripe</code>
-    <code>GitLab</code>
-    <code>Jira</code>
-  </div>
-</div>
-
-`fetchProof` performs the upstream HTTP call (`act`), then runs generic + per-method assertions (`assert`). The verdict is the AND of every assertion. `result` is returned only when `verdict === "pass"`.
-
-`RuntimeConfig` (base URL override, extra headers, prefix replacement) flows from the hand-written `index.ts` through the generated entrypoint to every method call.
-
-### Why one Worker per capability
-
-Independent versioning, independent secrets, independent blast radius. A single capability per Worker keeps the `WorkerEntrypoint` class binding clean — the binding name maps 1:1 to a capability surface.
-
-### Why no registry
-
-A capability is a Git repo. Forks are install. A central index would add a new control point that adds no value the user couldn't get from a GitHub topic search.
-
-### Why JSRPC, not HTTP
-
-Public Workers with bindings are an incident pattern. Capabilities have no public route by design. Bind them; do not expose them.
-
----
-
-## Status
-
-`v0`. Liquid. Ship the thinnest correct thing.

@@ -1,0 +1,19 @@
+{
+	"name": "twilio",
+	"entrypoint": "TwilioCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json",
+		"title": "Twilio - Api",
+		"version": "1.0.0"
+	},
+	"upstream": {
+		"baseUrl": "https://api.twilio.com",
+		"prefix": "/2010-04-01"
+	},
+	"auth": "basic",
+	"contentType": "form",
+	"operations": 197,
+	"namespaces": 2,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

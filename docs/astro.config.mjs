@@ -15,6 +15,7 @@ export default defineConfig({
 			customCss: ['./src/styles/custom.css'],
 			sidebar: [
 				{ label: 'Home', slug: '' },
+				{ label: 'Catalog', slug: 'catalog' },
 				{ label: 'Tutorial', slug: 'tutorial' },
 				{ label: 'How It Works', slug: 'how-it-works' },
 				{ label: 'Reference', slug: 'reference' },

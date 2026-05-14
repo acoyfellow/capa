@@ -1,0 +1,95 @@
+---
+import type { CapabilityEntry } from '../data/capabilities';
+import { formatNumber } from '../data/capabilities';
+
+interface Props {
+	entry: CapabilityEntry;
+}
+
+const { entry } = Astro.props;
+---
+
+<article class="capa-card" aria-labelledby={`cap-${entry.name}`}>
+	<header class="capa-card__head">
+		<h3 id={`cap-${entry.name}`} class="capa-card__title">
+			<span class="capa-card__name">{entry.name}</span>
+		</h3>
+		{entry.tagline && <p class="capa-card__tagline">{entry.tagline}</p>}
+	</header>
+
+	<dl class="capa-card__stats">
+		<div>
+			<dt>Operations</dt>
+			<dd>{formatNumber(entry.operations)}</dd>
+		</div>
+		<div>
+			<dt>Namespaces</dt>
+			<dd>{formatNumber(entry.namespaces)}</dd>
+		</div>
+		{entry.bundleGz && (
+			<div>
+				<dt>Bundle (gz)</dt>
+				<dd>{entry.bundleGz}</dd>
+			</div>
+		)}
+		<div>
+			<dt>Auth</dt>
+			<dd>{entry.authLabel}</dd>
+		</div>
+		<div>
+			<dt>Body</dt>
+			<dd>{entry.contentTypeLabel}</dd>
+		</div>
+	</dl>
+
+	<details class="capa-card__details">
+		<summary>Upstream &amp; entrypoint</summary>
+		<dl class="capa-card__meta">
+			<div>
+				<dt>Entrypoint</dt>
+				<dd><code>{entry.entrypoint}</code></dd>
+			</div>
+			<div>
+				<dt>Upstream</dt>
+				<dd><code>{entry.upstream.baseUrl}{entry.upstream.prefix}</code></dd>
+			</div>
+			<div>
+				<dt>Spec</dt>
+				<dd>
+					<a href={entry.source.spec} rel="noreferrer noopener">
+						{entry.source.title} <span class="capa-card__dim">({entry.source.version})</span>
+					</a>
+				</dd>
+			</div>
+			{entry.requiredSecrets && entry.requiredSecrets.length > 0 && (
+				<div>
+					<dt>Required secrets</dt>
+					<dd>
+						{entry.requiredSecrets.map((s) => (
+							<code class="capa-card__secret">{s}</code>
+						))}
+					</dd>
+				</div>
+			)}
+			{entry.optionalSecrets && entry.optionalSecrets.length > 0 && (
+				<div>
+					<dt>Optional secrets</dt>
+					<dd>
+						{entry.optionalSecrets.map((s) => (
+							<code class="capa-card__secret capa-card__secret--optional">{s}</code>
+						))}
+					</dd>
+				</div>
+			)}
+		</dl>
+	</details>
+
+	<footer class="capa-card__actions">
+		<a class="capa-btn capa-btn--primary" href={entry.deployUrl} rel="noreferrer noopener">
+			Deploy
+		</a>
+		<a class="capa-btn" href={entry.repoUrl} rel="noreferrer noopener">
+			Source
+		</a>
+	</footer>
+</article>

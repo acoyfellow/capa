@@ -5,7 +5,10 @@
 	"description": "Third-party APIs as proof-carrying Cloudflare service bindings.",
 	"workspaces": ["capabilities/*", "tests/harness", "docs"],
 	"scripts": {
-		"typecheck": "cd capabilities/stripe && tsc --noEmit && cd ../gitlab && tsc --noEmit && cd ../jira && tsc --noEmit && cd ../../tests/harness && tsc --noEmit",
+		"typecheck": "for capability in capabilities/*; do bunx tsc --noEmit -p \"$capability/tsconfig.json\" || exit 1; done && bunx tsc --noEmit -p tests/harness/tsconfig.json",
+		"dry-run": "for capability in capabilities/*; do bunx wrangler deploy --dry-run -c \"$capability/wrangler.jsonc\" || exit 1; done && bunx wrangler deploy --dry-run -c tests/harness/wrangler.jsonc",
+		"check:generated": "bun tools/codegen/src/check-generated.ts",
+		"check": "bun run check:generated && bun run typecheck && bun run dry-run",
 		"deploy:stripe": "cd capabilities/stripe && wrangler deploy",
 		"deploy:gitlab": "cd capabilities/gitlab && wrangler deploy",
 		"deploy:jira": "cd capabilities/jira && wrangler deploy",

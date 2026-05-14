@@ -1,0 +1,19 @@
+{
+	"name": "discord",
+	"entrypoint": "DiscordCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
+		"title": "Discord HTTP API (Preview)",
+		"version": "10"
+	},
+	"upstream": {
+		"baseUrl": "https://discord.com",
+		"prefix": "/"
+	},
+	"auth": "bearer",
+	"contentType": "json",
+	"operations": 233,
+	"namespaces": 16,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

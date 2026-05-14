@@ -1,32 +1,51 @@
 ---
 title: capa
-description: Third-party APIs as proof-carrying Cloudflare service bindings.
+description: Generated, audited Cloudflare service bindings for third-party APIs.
 template: splash
+hero:
+  title: Third-party APIs as proof-carrying Cloudflare service bindings
+  tagline: Every call returns `{ result, evidence }`. Generated from OpenAPI. Deployed as Workers. Bound via JSRPC.
+  actions:
+    - text: View Capabilities
+      link: /catalog/
+      icon: right-arrow
+      variant: primary
+    - text: Read the tutorial
+      link: /tutorial/
+      icon: open-book
+    - text: GitHub
+      link: https://github.com/acoyfellow/capa
+      icon: external
+      variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
+import CapabilityGrid from '../../components/CapabilityGrid.astro';
 
-## Third-party APIs as proof-carrying service bindings
-
-Every call returns `{ result, evidence }`. The evidence is a plain JSON bundle you can persist, audit, or hash.
+## What you get
 
 ```ts
 const { result, evidence } = await env.STRIPE.charges.create({
-  amount: 1000,
-  currency: "usd",
-  source: "tok_visa",
-});
-
-const { result, evidence } = await env.GITLAB.projects.list();
-
-const { result, evidence } = await env.JIRA.issues.createIssue({
-  project: "PROJ", summary: "Bug", issuetype: { name: "Bug" },
+  amount: 1000, currency: "usd", source: "tok_visa",
 });
 
 if (evidence.verdict === "fail") {
   return Response.json({ error: "verification failed", evidence }, { status: 502 });
 }
 ```
+
+Evidence is a plain JSON bundle: the request, the response, every assertion that ran, the verdict. Persist it, audit it, hash it.
+
+## Capabilities
+
+capa already ships 13 generated bindings. [View Capabilities](/catalog/) for GitHub, Kubernetes, GitLab, Jira, Stripe, Box, Discord, Sentry, Slack, Twilio, Zoom, and the rest.
+
+<CapabilityGrid stats />
+
+<p class="capa-catalog-footnote">
+	New capabilities ship by dropping a <code>capa.manifest.json</code> into <code>capabilities/&lt;name&gt;/</code>.
+	The catalog renders straight from those manifests at build time.
+</p>
 
 ## Architecture
 
@@ -54,9 +73,8 @@ if (evidence.verdict === "fail") {
   </div>
   <div class="flow-node">
     <strong>Upstream API</strong>
-    <code>Stripe</code>
-    <code>GitLab</code>
-    <code>Jira</code>
+    <code>generated</code>
+    <code>per spec</code>
   </div>
 </div>
 
@@ -66,7 +84,7 @@ if (evidence.verdict === "fail") {
 
 ### 1. Deploy a capability
 
-Click a Deploy button below. Cloudflare clones the repo and deploys the Worker.
+Click a **Deploy** button under [View Capabilities](/catalog/). Cloudflare clones the repo and deploys the Worker.
 
 ### 2. Set the API key
 
@@ -90,14 +108,6 @@ const { result, evidence } = await env.STRIPE.charges.create({
 });
 ```
 
-## Capabilities
-
-| Capability | Operations | Namespaces | Bundle (gz) | Auth | Body |
-|---|---|---|---|---|---|
-| **stripe** | 534 | 73 | 38 KiB | Bearer | Form |
-| **gitlab** | 1,050 | 51 | 54 KiB | Private-Token | JSON |
-| **jira** | 603 | 76 | 48 KiB | Basic | JSON |
-
 <CardGrid>
   <Card title="Tutorial" icon="open-book">
     [Deploy and call a capability end-to-end](/tutorial)
@@ -110,6 +120,3 @@ const { result, evidence } = await env.STRIPE.charges.create({
   </Card>
 </CardGrid>
 
-## Status
-
-`v0`. Liquid. Ship the thinnest correct thing.

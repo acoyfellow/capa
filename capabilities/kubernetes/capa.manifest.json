@@ -1,0 +1,19 @@
+{
+	"name": "kubernetes",
+	"entrypoint": "KubernetesCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json",
+		"title": "Kubernetes",
+		"version": "unversioned"
+	},
+	"upstream": {
+		"baseUrl": "https://kubernetes.default.svc",
+		"prefix": "/"
+	},
+	"auth": "bearer",
+	"contentType": "json",
+	"operations": 1111,
+	"namespaces": 6,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}
