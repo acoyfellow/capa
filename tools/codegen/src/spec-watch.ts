@@ -20,6 +20,7 @@ interface LockedSpec {
 	name: string;
 	spec: string;
 	sha256: string;
+	version?: string;
 	checkedAt?: string;
 }
 
@@ -33,6 +34,9 @@ interface SpecChange {
 	spec: string;
 	previousSha256?: string;
 	currentSha256: string;
+	previousVersion?: string;
+	currentVersion?: string;
+	breaksAutomaticRefresh?: boolean;
 	surface?: SurfaceDiff;
 	surfaceError?: string;
 	schemaHints?: SchemaChangeHint[];
@@ -74,9 +78,6 @@ async function analyzeChangedSpec(entry: CapabilityRegistryEntry, rawBody: strin
 	const normalized = await normalizeSpec(rawBody);
 	const after = surfaceFromCodegen(parseSpec(normalized, entry.prefix));
 	const schema = diffSpecSchemas(null, normalized);
-	// The current lock stores hashes, not previous spec bodies, so schema hints
-	// become fully useful once a cache/snapshot is added. Keep the shape/report
-	// wired now; for hash-only locks this honestly reports skipped/no hints.
 	return { surface: diffSurfaces(before, after), schemaHints: schema.hints, schemaSummary: summarizeHints(schema.hints) };
 }
 
@@ -147,6 +148,8 @@ function markdownReport(changes: SpecChange[], failures: Array<{ name: string; s
 				`- Source: ${change.spec}`,
 				`- Previous SHA-256: \`${change.previousSha256 || "unlocked"}\``,
 				`- Current SHA-256: \`${change.currentSha256}\``,
+				`- Version: \`${change.previousVersion || "unknown"}\` → \`${change.currentVersion || "unknown"}\``,
+				`- Automatic refresh: **${change.breaksAutomaticRefresh ? "blocked — breaking drift detected" : "safe candidate"}**`,
 				"",
 			);
 			if (change.surface) {
@@ -194,18 +197,25 @@ async function main() {
 			const raw = await fetchSpec(entry.spec);
 			const currentSha256 = sha256(raw);
 			const old = prior.specs[entry.name];
-			next.specs[entry.name] = { name: entry.name, spec: entry.spec, sha256: currentSha256, checkedAt };
-			if (!old || old.spec !== entry.spec || old.sha256 !== currentSha256) {
+			const currentNormalized = await normalizeSpec(raw);
+			const currentVersion = typeof currentNormalized?.info?.version === "string" ? currentNormalized.info.version : undefined;
+			next.specs[entry.name] = { name: entry.name, spec: entry.spec, sha256: currentSha256, version: currentVersion, checkedAt };
+			if (!old || old.spec !== entry.spec || old.sha256 !== currentSha256 || old.version !== currentVersion) {
 				const change: SpecChange = {
 					name: entry.name,
 					spec: entry.spec,
 					previousSha256: old?.sha256,
 					currentSha256,
+					previousVersion: old?.version,
+					currentVersion,
 				};
 				// Compute surface diff against the committed manifest.gen.ts so the
 				// report tells reviewers which generated operations actually moved.
 				try {
 					Object.assign(change, await analyzeChangedSpec(entry, raw));
+					const surfaceBreaks = Boolean(change.surface && (change.surface.totals.removed > 0 || change.surface.totals.changed > 0));
+					const schemaBreaks = Boolean(change.schemaSummary && change.schemaSummary.breaking > 0);
+					change.breaksAutomaticRefresh = surfaceBreaks || schemaBreaks;
 				} catch (err) {
 					change.surfaceError = err instanceof Error ? err.message : String(err);
 				}
