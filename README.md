@@ -62,6 +62,8 @@ bun run check
 
 `bun run check` is the fast, credential-free gate: regenerate known specs, typecheck every capability + harness, and run `wrangler deploy --dry-run` for every Worker. Live API smoke tests are opt-in via [`tests/harness/`](tests/harness).
 
+A weekly GitHub Action also runs `bun run spec:watch`. It only fetches and hashes registered upstream OpenAPI specs; if one changed, the action fails with a Markdown report artifact so a maintainer can regenerate deliberately.
+
 ## Use a binding
 
 Deploy a capability, set its upstream secret, then bind it from another Worker.
@@ -90,7 +92,7 @@ const { result, evidence } = await env.STRIPE.charges.create({
 
 ## Generate a binding
 
-You can generate a binding locally and keep it private. If the API is broadly useful, [contributions to this repo are welcome](CONTRIBUTING.md).
+You can generate a binding locally and keep it private. If the API is broadly useful, [contributions to this repo are welcome](CONTRIBUTING.md). Maintainers can also use **Actions → Add Capability** to feed a new public spec into main and get a generated capability scaffold.
 
 ```bash
 cd tools/codegen

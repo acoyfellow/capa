@@ -11,7 +11,7 @@ You can use the generator privately, publish your own generated Worker elsewhere
 | Goal | What to do |
 |---|---|
 | Try capa locally | Generate into any directory and deploy it in your account. No PR needed. |
-| Add an API to this repo | Generate `capabilities/<name>/`, keep the source URL reproducible, and open a PR. |
+| Add an API to this repo | Generate `capabilities/<name>/`, keep the source URL reproducible, and open a PR. Maintainers can use **Actions → Add Capability** as a hot-on-main scaffold shortcut. |
 | Improve the generator/runtime/docs | Edit `tools/codegen/`, generated-file checks, docs, or harness code directly. |
 
 ## Add a capability to the catalog
@@ -81,6 +81,10 @@ curl -X POST 'http://localhost:8787/run?capability=gitlab'
 ```
 
 The harness currently has suites for Stripe, GitLab, and Jira. Add a small read-only suite when a contributed capability needs live verification and the API has a sensible no-write smoke path.
+
+## Upstream spec watch
+
+`bun run spec:watch` fetches and hashes the registered OpenAPI specs against `capabilities/spec-lock.json`. The scheduled `Spec Watch` GitHub Action runs weekly and uploads `artifacts/spec-watch/report.md`. A changed spec intentionally fails that workflow instead of merging generated churn automatically; run codegen/review generated diffs, then refresh the lock with `bun run spec:lock` when accepted.
 
 ## Keep changes focused
 

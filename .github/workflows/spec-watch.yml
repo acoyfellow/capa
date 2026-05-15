@@ -1,0 +1,25 @@
+name: Spec Watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 9 * * 1"
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Check upstream OpenAPI spec hashes
+        run: bun run spec:watch
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: capa-spec-watch
+          path: artifacts/spec-watch/

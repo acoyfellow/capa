@@ -1,0 +1,77 @@
+name: Add Capability
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: Lowercase capability name, e.g. linear
+        required: true
+        type: string
+      spec:
+        description: Public OpenAPI or Swagger spec URL
+        required: true
+        type: string
+      base_url:
+        description: Upstream HTTPS API origin
+        required: true
+        type: string
+      prefix:
+        description: API path prefix, e.g. /v1 or /
+        required: true
+        default: /
+        type: string
+      auth:
+        description: Auth header shape
+        required: true
+        default: bearer
+        type: choice
+        options:
+          - bearer
+          - private-token
+          - basic
+      content_type:
+        description: Request body encoding
+        required: true
+        default: json
+        type: choice
+        options:
+          - json
+          - form
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Register and generate capability
+        run: |
+          bun run capability:add -- \
+            --name '${{ inputs.name }}' \
+            --spec '${{ inputs.spec }}' \
+            --base-url '${{ inputs.base_url }}' \
+            --prefix '${{ inputs.prefix }}' \
+            --auth '${{ inputs.auth }}' \
+            --content-type '${{ inputs.content_type }}'
+      - name: Refresh workspace links and spec lock with the new source
+        run: |
+          bun install
+          bun run spec:lock
+      - name: Validate generated TypeScript
+        run: bun run typecheck
+      - name: Commit generated work on main
+        run: |
+          git config user.name 'capa capability bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add tools/codegen/src/registry.ts capabilities
+          if git diff --cached --quiet; then
+            echo 'No files changed.'
+            exit 0
+          fi
+          git commit -m "Add ${{ inputs.name }} capability scaffold"
+          git push origin HEAD:main

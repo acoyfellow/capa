@@ -42,7 +42,6 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import openapiTS, { astToString } from "openapi-typescript";
 import swagger2openapi from "swagger2openapi";
-// @ts-expect-error — js-yaml ships its own types via DefinitelyTyped only on demand
 import yaml from "js-yaml";
 import { parseSpec } from "./parse-spec.ts";
 import { emit } from "./emit.ts";

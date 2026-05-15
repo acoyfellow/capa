@@ -25,13 +25,12 @@ import CapabilityGrid from '../../components/CapabilityGrid.astro';
 ## What you get
 
 ```ts
-const { result, evidence } = await env.STRIPE.charges.create({
-  amount: 1000, currency: "usd", source: "tok_visa",
-});
-
-if (evidence.verdict === "fail") {
-  return Response.json({ error: "verification failed", evidence }, { status: 502 });
-}
+// Cloudflare service binding generated from Stripe's OpenAPI spec
+const { result, evidence } =
+  await env.STRIPE.paymentIntents.create({
+    amount: 2500,
+    currency: "usd",
+  });
 ```
 
 Along with the upstream result, capa gives you a plain JSON receipt: what it called, what came back, and which checks passed. Keep it for logs, show it in a UI, or ignore it when you do not need it.

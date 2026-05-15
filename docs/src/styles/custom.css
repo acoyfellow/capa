@@ -459,6 +459,29 @@ h4 {
   font-size: 0.72rem;
 }
 
+.capa-spec-link {
+  display: inline-grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--capa-yellow) 34%, var(--sl-color-gray-5));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sl-color-bg) 44%, transparent);
+  color: var(--sl-color-gray-1) !important;
+  text-decoration: none !important;
+}
+
+.capa-spec-link:hover {
+  border-color: var(--capa-yellow);
+  background: color-mix(in srgb, var(--capa-yellow) 16%, transparent);
+}
+
+.capa-spec-link svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: currentColor;
+}
+
 .capa-catalog-empty {
   margin: 1.5rem 0;
   padding: 1.25rem;
@@ -498,6 +521,36 @@ h4 {
 }
 
 @media (max-width: 760px) {
+  .capa-capability-table {
+    min-width: 0;
+  }
+
+  .capa-wide-only {
+    display: none;
+  }
+
+  .capa-col-name { width: 48%; }
+  .capa-col-num { width: 11%; }
+  .capa-col-action { width: 30%; }
+
+  .capa-capability-table th,
+  .capa-capability-table td {
+    padding-inline: 0.42rem;
+  }
+
+  .capa-capability-name {
+    font-size: 0.96rem;
+  }
+
+  .capa-capability-table small {
+    max-width: 22ch;
+    font-size: 0.68rem;
+  }
+
+  .capa-row-actions {
+    gap: 0.3rem;
+  }
+
   .capa-flow {
     grid-template-columns: 1fr;
   }

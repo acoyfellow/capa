@@ -20724,6 +20724,7 @@ export type components = {
             auto_devops_enabled: string;
             auto_duo_code_review_enabled?: string;
             avatar_url: string;
+            built_in_project_templates_enabled?: boolean;
             created_at: string;
             custom_attributes?: components["schemas"]["API_Entities_CustomAttribute"];
             default_branch: string;
@@ -20746,6 +20747,7 @@ export type components = {
             ldap_cn: string;
             ldap_group_links?: components["schemas"]["API_Entities_LdapGroupLink"];
             lfs_enabled: boolean;
+            lock_built_in_project_templates_enabled?: boolean;
             lock_duo_features_enabled?: string;
             lock_math_rendering_limits_enabled: boolean;
             marked_for_deletion_on: string;
@@ -20802,6 +20804,7 @@ export type components = {
             auto_devops_enabled: string;
             auto_duo_code_review_enabled?: string;
             avatar_url: string;
+            built_in_project_templates_enabled?: boolean;
             created_at: string;
             custom_attributes?: components["schemas"]["API_Entities_CustomAttribute"];
             default_branch: string;
@@ -20829,6 +20832,7 @@ export type components = {
             ldap_cn: string;
             ldap_group_links?: components["schemas"]["API_Entities_LdapGroupLink"];
             lfs_enabled: boolean;
+            lock_built_in_project_templates_enabled?: boolean;
             lock_duo_features_enabled?: string;
             lock_math_rendering_limits_enabled: boolean;
             marked_for_deletion_on: string;
@@ -30958,6 +30962,8 @@ export type components = {
              * @description Avatar image for the group
              */
             avatar?: string;
+            /** @description Enable built-in project templates for project creation */
+            built_in_project_templates_enabled?: boolean;
             /**
              * @description The default branch of group's projects
              * @example main
@@ -31080,6 +31086,8 @@ export type components = {
             ldap_cn?: string;
             /** @description Enable/disable LFS for the projects in this group */
             lfs_enabled?: boolean;
+            /** @description Enforce the built-in project templates setting for all subgroups */
+            lock_built_in_project_templates_enabled?: boolean;
             /** @description Indicates if the GitLab Duo features enabled setting is enforced for all subgroups */
             lock_duo_features_enabled?: boolean;
             /** @description Indicates if math rendering limits are locked for all descendent groups. */

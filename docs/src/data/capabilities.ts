@@ -63,11 +63,17 @@ export interface CapabilityDisplay {
 }
 
 const DISPLAY: Record<string, CapabilityDisplay> = {
-	stripe: {
-		tagline: 'Charges, customers, and subscriptions without hand-writing a Stripe wrapper.',
-		bundleGz: '38 KiB',
-		status: 'stable',
-		requiredSecrets: ['STRIPE_API_KEY'],
+	box: {
+		tagline: 'Files, folders, collaboration, and metadata from the Box Platform API.',
+		requiredSecrets: ['BOX_API_KEY'],
+	},
+	discord: {
+		tagline: 'Applications, guilds, channels, messages, and webhooks from Discord HTTP API v10.',
+		requiredSecrets: ['DISCORD_API_KEY'],
+	},
+	github: {
+		tagline: 'Repos, issues, pull requests, Actions, releases, and org workflows.',
+		requiredSecrets: ['GITHUB_API_KEY'],
 	},
 	gitlab: {
 		tagline: 'Projects, MRs, pipelines — across the entire GitLab API.',
@@ -82,6 +88,40 @@ const DISPLAY: Record<string, CapabilityDisplay> = {
 		status: 'stable',
 		requiredSecrets: ['JIRA_API_KEY'],
 		optionalSecrets: ['JIRA_BASE_URL_OVERRIDE'],
+	},
+	kubernetes: {
+		tagline: 'Core Kubernetes resources and cluster APIs exposed through one generated binding.',
+		requiredSecrets: ['KUBERNETES_API_KEY'],
+	},
+	sentry: {
+		tagline: 'Organizations, projects, issues, events, releases, and alerts from Sentry.',
+		requiredSecrets: ['SENTRY_API_KEY'],
+	},
+	slack: {
+		tagline: 'Channels, chat, users, files, admin endpoints, and Slack Web API workflows.',
+		requiredSecrets: ['SLACK_API_KEY'],
+	},
+	stripe: {
+		tagline: 'Charges, customers, and subscriptions without hand-writing a Stripe wrapper.',
+		bundleGz: '38 KiB',
+		status: 'stable',
+		requiredSecrets: ['STRIPE_API_KEY'],
+	},
+	twilio: {
+		tagline: 'Accounts, phone numbers, calls, messages, recordings, and Twilio REST resources.',
+		requiredSecrets: ['TWILIO_API_KEY'],
+	},
+	'twilio-messaging': {
+		tagline: 'Messaging Services, senders, compliance registrations, and delivery controls.',
+		requiredSecrets: ['TWILIO_MESSAGING_API_KEY'],
+	},
+	'twilio-verify': {
+		tagline: 'Verification services, factors, templates, rate limits, and fraud-safe flows.',
+		requiredSecrets: ['TWILIO_VERIFY_API_KEY'],
+	},
+	zoom: {
+		tagline: 'Meetings, webinars, recordings, users, reports, and Zoom account operations.',
+		requiredSecrets: ['ZOOM_API_KEY'],
 	},
 };
 

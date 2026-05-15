@@ -15,7 +15,7 @@ const s = stats ? getCatalogStats() : null;
 ---
 
 {s && (
-	<aside class="capa-catalog-stats" aria-label="capa catalog totals">
+	<aside class="capa-catalog-stats not-content" aria-label="capa catalog totals">
 		<div>
 			<span class="capa-catalog-stats__num">{formatNumber(s.capabilityCount)}</span>
 			<span class="capa-catalog-stats__label">{s.capabilityCount === 1 ? 'capability' : 'capabilities'}</span>
@@ -44,9 +44,9 @@ const s = stats ? getCatalogStats() : null;
 				<col class="capa-col-name" />
 				<col class="capa-col-num" />
 				<col class="capa-col-num" />
-				<col class="capa-col-auth" />
-				<col class="capa-col-body" />
-				<col class="capa-col-entry" />
+				<col class="capa-col-auth capa-wide-only" />
+				<col class="capa-col-body capa-wide-only" />
+				<col class="capa-col-entry capa-wide-only" />
 				<col class="capa-col-action" />
 			</colgroup>
 			<thead>
@@ -54,9 +54,9 @@ const s = stats ? getCatalogStats() : null;
 					<th scope="col">Capability</th>
 					<th scope="col">Ops</th>
 					<th scope="col">NS</th>
-					<th scope="col">Auth</th>
-					<th scope="col">Body</th>
-					<th scope="col">Entrypoint</th>
+					<th scope="col" class="capa-wide-only">Auth</th>
+					<th scope="col" class="capa-wide-only">Body</th>
+					<th scope="col" class="capa-wide-only">Entrypoint</th>
 					<th scope="col">Actions</th>
 				</tr>
 			</thead>
@@ -69,13 +69,15 @@ const s = stats ? getCatalogStats() : null;
 						</th>
 						<td class="capa-num">{formatNumber(entry.operations)}</td>
 						<td class="capa-num">{formatNumber(entry.namespaces)}</td>
-						<td>{entry.authLabel}</td>
-						<td>{entry.contentTypeLabel}</td>
-						<td><code>{entry.entrypoint}</code></td>
+						<td class="capa-wide-only">{entry.authLabel}</td>
+						<td class="capa-wide-only">{entry.contentTypeLabel}</td>
+						<td class="capa-wide-only"><code>{entry.entrypoint}</code></td>
 						<td>
 							<span class="capa-row-actions">
 								<a class="capa-btn capa-btn--primary" href={entry.deployUrl} rel="noreferrer noopener">Deploy</a>
-								<a class="capa-btn" href={entry.source.spec} rel="noreferrer noopener">Spec</a>
+								<a class="capa-spec-link" href={entry.source.spec} rel="noreferrer noopener" aria-label={`${entry.name} OpenAPI spec`} title="OpenAPI spec">
+									<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Zm0 2.5L17.5 9H14V5.5ZM8 13h8v1.75H8V13Zm0 4h8v1.75H8V17Zm0-8h3v1.75H8V9Z"/></svg>
+								</a>
 							</span>
 						</td>
 					</tr>
