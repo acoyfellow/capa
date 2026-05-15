@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"description": "Third-party APIs as proof-carrying Cloudflare service bindings.",
-	"workspaces": ["capabilities/*", "tests/harness", "docs"],
+	"workspaces": ["capabilities/*", "tests/harness", "docs", "tools/codegen"],
 	"scripts": {
 		"typecheck": "for capability in capabilities/*/; do bunx tsc --noEmit -p \"$capability/tsconfig.json\" || exit 1; done && bunx tsc --noEmit -p tests/harness/tsconfig.json",
 		"dry-run": "for capability in capabilities/*/; do bunx wrangler deploy --dry-run -c \"$capability/wrangler.jsonc\" || exit 1; done && bunx wrangler deploy --dry-run -c tests/harness/wrangler.jsonc",
