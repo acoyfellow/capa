@@ -1,6 +1,6 @@
 ---
 title: Reference
-description: Capabilities, codegen CLI, and evidence bundle shape.
+description: Capabilities, codegen CLI, and the receipt returned with each API result.
 ---
 
 ## Capabilities
@@ -70,7 +70,7 @@ bun src/cli.ts \
   --auth basic --content-type json
 ```
 
-## Evidence bundle shape
+## Return receipt shape
 
 ```ts
 {

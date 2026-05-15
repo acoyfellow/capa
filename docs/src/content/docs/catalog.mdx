@@ -1,15 +1,15 @@
 ---
 title: Catalog
-description: Every capa capability — operations, namespaces, bundle size, auth, and one-click deploy.
+description: Browse the APIs capa can wrap for your Workers, with counts, auth shape, and one-click deploy.
 ---
 
 import CapabilityGrid from '../../components/CapabilityGrid.astro';
 
-Every capability ships:
+Each capability is a deployable Worker wrapper around one API:
 
-- A generated `WorkerEntrypoint` class exposing namespaced methods.
-- A `capa.manifest.json` declaring source spec, upstream URL, auth, and operation count.
-- A single side effect per method: one upstream HTTP request, one evidence bundle returned.
+- A generated `WorkerEntrypoint` with namespaced methods you can bind from another Worker.
+- A `capa.manifest.json` with the source spec, upstream URL, auth style, and operation count.
+- One upstream HTTP request per method call, with a structured receipt returned alongside the result.
 
 <CapabilityGrid stats planned />
 
@@ -29,8 +29,8 @@ The catalog above is rendered from `capabilities/*/capa.manifest.json` at build 
 | Public HTTP route | `fetch()` returns 404 |
 | Side effects per method | One upstream HTTP request |
 | Return shape | `{ result, evidence }` |
-| Evidence type | Plain JSON, no streams or handles |
+| Returned receipt | Plain JSON, no streams or handles |
 | Auth | `wrangler secret put` |
 | Billing | Caller-pays |
 
-See [Reference](/reference) for the full evidence bundle shape, codegen flags, and per-capability secret names.
+See [Reference](/reference) for the full return shape, codegen flags, and per-capability secret names.

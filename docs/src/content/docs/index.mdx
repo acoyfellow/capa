@@ -1,10 +1,10 @@
 ---
 title: capa
-description: Generated, audited Cloudflare service bindings for third-party APIs.
+description: Ready-to-bind Cloudflare Workers for Stripe, GitHub, Jira, and other third-party APIs.
 template: splash
 hero:
-  title: Third-party APIs as proof-carrying Cloudflare service bindings
-  tagline: Every call returns `{ result, evidence }`. Generated from OpenAPI. Deployed as Workers. Bound via JSRPC.
+  title: Third-party APIs, ready to bind from your Worker
+  tagline: capa turns OpenAPI specs into Cloudflare service bindings. Call a normal-looking method and get the API response plus a small receipt of what happened.
   actions:
     - text: View Capabilities
       link: /catalog/
@@ -34,7 +34,7 @@ if (evidence.verdict === "fail") {
 }
 ```
 
-Evidence is a plain JSON bundle: the request, the response, every assertion that ran, the verdict. Persist it, audit it, hash it.
+Along with the upstream result, capa gives you a plain JSON receipt: what it called, what came back, and which checks passed. Keep it for logs, show it in a UI, or ignore it when you do not need it.
 
 ## Capabilities
 
@@ -58,7 +58,7 @@ capa already ships 13 generated bindings. [View Capabilities](/catalog/) for Git
   <div class="flow-edge">
     <span>JSRPC</span>
     <b>→</b>
-    <small>result + evidence</small>
+    <small>result + receipt</small>
   </div>
   <div class="flow-node flow-node-wide">
     <strong>capa capability</strong>
@@ -78,7 +78,7 @@ capa already ships 13 generated bindings. [View Capabilities](/catalog/) for Git
   </div>
 </div>
 
-`fetchProof` performs the upstream HTTP call (`act`), then runs generic + per-method assertions (`assert`). The verdict is the AND of every assertion.
+`fetchProof` makes the upstream HTTP call, runs the built-in checks plus any API-specific checks, and returns the response when those checks pass.
 
 ## Quick start
 
@@ -113,7 +113,7 @@ const { result, evidence } = await env.STRIPE.charges.create({
     [Deploy and call a capability end-to-end](/tutorial)
   </Card>
   <Card title="How It Works" icon="information">
-    [The loop, JSRPC, and evidence](/how-it-works)
+    [The loop, JSRPC, and returned receipts](/how-it-works)
   </Card>
   <Card title="Reference" icon="document">
     [Capabilities, codegen, overrides](/reference)

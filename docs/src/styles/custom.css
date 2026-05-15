@@ -1,63 +1,90 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap');
 
-/* capa docs: jelly-console reskin over Starlight. */
+@font-face {
+  font-family: 'Kunst Grotesk';
+  src: url('/fonts/kunst-grotesk-regular.woff2') format('woff2');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Kunst Grotesk';
+  src: url('/fonts/kunst-grotesk-medium.woff2') format('woff2');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500 800;
+}
+
+/*
+ * capa palette knobs
+ * ------------------
+ * Change DARK / LIGHT below first. The rest of this stylesheet consumes these
+ * variables, so palette tweaks should not require hunting through card CSS.
+ *
+ * dark: astronaut visor + deep sky
+ * light: warm flight-suit paper + brighter orange sunlight
+ */
 
 :root,
 :root[data-theme='dark'] {
-  --sl-font: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --sl-font-system: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --sl-font: 'Kunst Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --sl-font-system: 'Kunst Grotesk', ui-sans-serif, system-ui, sans-serif;
   --sl-font-mono: 'DM Mono', ui-monospace, SFMono-Regular, monospace;
-  --sl-color-accent-low: #21114e;
-  --sl-color-accent: #9f7cff;
-  --sl-color-accent-high: #e5d9ff;
-  --sl-color-white: #fffaf2;
-  --sl-color-gray-1: #f6edff;
-  --sl-color-gray-2: #d8cde9;
-  --sl-color-gray-3: #a99abe;
-  --sl-color-gray-4: #64557a;
-  --sl-color-gray-5: #332846;
-  --sl-color-gray-6: #1b1429;
-  --sl-color-black: #100b1b;
-  --sl-color-bg: #100b1b;
-  --sl-color-bg-nav: color-mix(in srgb, #100b1b 88%, transparent);
-  --sl-color-bg-sidebar: color-mix(in srgb, #150e23 94%, transparent);
-  --sl-color-hairline-light: rgba(255, 250, 242, 0.13);
-  --sl-color-hairline: rgba(255, 250, 242, 0.1);
-  --capa-mint: #75ffd6;
-  --capa-yellow: #ffe68a;
-  --capa-pink: #ff78c8;
-  --capa-violet: #9f7cff;
-  --capa-panel: rgba(29, 20, 45, 0.8);
-  --capa-panel-strong: rgba(38, 26, 59, 0.94);
-  --capa-ink: #fffaf2;
-  --capa-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+  --sl-color-accent-low: #3f130d;
+  --sl-color-accent: #d55d18;
+  --sl-color-accent-high: #fff1db;
+  --sl-color-white: #fff5df;
+  --sl-color-gray-1: #f2ead8;
+  --sl-color-gray-2: #c9bfab;
+  --sl-color-gray-3: #8f887b;
+  --sl-color-gray-4: #4f5352;
+  --sl-color-gray-5: #17354a;
+  --sl-color-gray-6: #082337;
+  --sl-color-black: #041827;
+  --sl-color-bg: #041827;
+  --sl-color-bg-nav: color-mix(in srgb, #041827 88%, transparent);
+  --sl-color-bg-sidebar: color-mix(in srgb, #061e30 94%, transparent);
+  --sl-color-hairline-light: rgba(255, 245, 223, 0.15);
+  --sl-color-hairline: rgba(255, 245, 223, 0.11);
+  --capa-mint: #72a9bd;
+  --capa-yellow: #fff1db;
+  --capa-pink: #61101c;
+  --capa-violet: #d55d18;
+  --capa-panel: rgba(7, 31, 49, 0.82);
+  --capa-panel-strong: rgba(10, 40, 60, 0.95);
+  --capa-ink: #fff5df;
+  --capa-shadow: 0 28px 90px rgba(2, 10, 17, 0.5);
 }
 
 :root[data-theme='light'] {
-  --sl-color-accent-low: #e9ddff;
-  --sl-color-accent: #6238dc;
-  --sl-color-accent-high: #36118f;
-  --sl-color-white: #190d2c;
-  --sl-color-gray-1: #29163f;
-  --sl-color-gray-2: #5b496e;
-  --sl-color-gray-3: #837196;
-  --sl-color-gray-4: #c7b9d7;
-  --sl-color-gray-5: #e5daf2;
-  --sl-color-gray-6: #f8f1ff;
-  --sl-color-black: #fff9ef;
-  --sl-color-bg: #fff9ef;
-  --sl-color-bg-nav: color-mix(in srgb, #fff9ef 88%, transparent);
-  --sl-color-bg-sidebar: color-mix(in srgb, #fff2e3 94%, transparent);
-  --sl-color-hairline-light: rgba(41, 22, 63, 0.13);
-  --sl-color-hairline: rgba(41, 22, 63, 0.1);
-  --capa-mint: #008c72;
-  --capa-yellow: #bd7700;
-  --capa-pink: #d72b86;
-  --capa-violet: #6238dc;
-  --capa-panel: rgba(255, 247, 236, 0.86);
-  --capa-panel-strong: rgba(255, 252, 246, 0.96);
-  --capa-ink: #190d2c;
-  --capa-shadow: 0 28px 80px rgba(76, 43, 122, 0.18);
+  /* Starlight bridge */
+  --sl-color-accent-low: #ffd49b;
+  --sl-color-accent: #df650e;
+  --sl-color-accent-high: #7c2700;
+  --sl-color-white: #122d40;
+  --sl-color-gray-1: #17354a;
+  --sl-color-gray-2: #526e7b;
+  --sl-color-gray-3: #879daa;
+  --sl-color-gray-4: #d9c4a4;
+  --sl-color-gray-5: #ecd7b7;
+  --sl-color-gray-6: #fff0d5;
+  --sl-color-black: #fff8e9;
+  --sl-color-bg: #fff8e9;
+  --sl-color-bg-nav: color-mix(in srgb, #fff8e9 90%, transparent);
+  --sl-color-bg-sidebar: color-mix(in srgb, #ffe6bd 94%, transparent);
+  --sl-color-hairline-light: rgba(124, 39, 0, 0.2);
+  --sl-color-hairline: rgba(124, 39, 0, 0.13);
+
+  /* Edit these six for the whole capa light vibe. */
+  --capa-mint: #4d8696;       /* cool counterpoint */
+  --capa-yellow: #ff9b2f;     /* primary orange */
+  --capa-pink: #c44b13;       /* burnt orange / rust */
+  --capa-violet: #f17712;     /* secondary orange glow */
+  --capa-panel: rgba(255, 226, 181, 0.9);
+  --capa-panel-strong: rgba(255, 242, 214, 0.98);
+  --capa-ink: #122d40;
+  --capa-shadow: 0 28px 80px rgba(166, 82, 20, 0.22);
 }
 
 html {
@@ -132,7 +159,7 @@ h4 {
 .hero h1 {
   max-width: 14ch;
   color: var(--capa-ink);
-  font-size: clamp(2.7rem, 6.8vw, 6rem);
+  font-size: clamp(2.25rem, 5.4vw, 4.8rem);
   line-height: 0.88;
   text-wrap: balance;
 }
@@ -158,7 +185,7 @@ h4 {
 .sl-link-button.primary {
   border-color: var(--capa-yellow) !important;
   background: linear-gradient(135deg, var(--capa-yellow), color-mix(in srgb, var(--capa-yellow) 42%, var(--capa-pink))) !important;
-  color: #21102a !important;
+  color: #3f130d !important;
 }
 
 @media (min-width: 50rem) {
@@ -174,6 +201,34 @@ h4 {
 
 .sl-markdown-content code {
   border-radius: 0.45rem;
+}
+
+/* Code samples: compact, calm framing; keep Expressive Code/Shiki's real
+   token colors intact so every snippet is still syntax highlighted. */
+.expressive-code {
+  --ec-codeFontFml: 'DM Mono', var(--sl-font-mono);
+  --ec-codeFontSize: 0.84rem;
+  --ec-codeLineHt: 1.58;
+  --ec-codeBg: color-mix(in srgb, var(--sl-color-bg) 78%, #07040d);
+  --ec-codeFg: var(--sl-color-gray-1);
+  --ec-brdCol: color-mix(in srgb, var(--sl-color-gray-5) 78%, transparent);
+  --ec-brdRad: 1rem;
+  --ec-codePadBlk: 0.85rem;
+  --ec-codePadInl: 1rem;
+}
+
+.expressive-code figure.frame,
+.expressive-code pre {
+  box-shadow: none !important;
+}
+
+.expressive-code .ec-line .code span {
+  font-weight: 400 !important;
+}
+
+.expressive-code figcaption.header {
+  color: var(--sl-color-gray-2);
+  font-family: var(--sl-font-mono);
 }
 
 /* ----- Architecture candy machine ----- */
@@ -291,281 +346,114 @@ h4 {
   text-transform: uppercase;
 }
 
-.capa-catalog {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-  gap: 1.35rem;
-  align-items: stretch;
-  margin: 1.5rem 0;
+.capa-capability-table-wrap {
+  margin: 1.45rem 0;
+  overflow-x: auto;
+  border: 1px solid color-mix(in srgb, var(--capa-yellow) 34%, var(--sl-color-gray-5));
+  border-radius: 1.35rem;
+  background: linear-gradient(145deg, var(--capa-panel-strong), var(--capa-panel));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
 }
 
-.capa-card {
-  --card-pop: var(--capa-mint);
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  grid-template-rows: auto auto auto 1fr;
-  min-height: 25rem;
-  gap: 1rem;
-  overflow: hidden;
-  padding: 1.35rem;
-  border: 1px solid color-mix(in srgb, var(--card-pop) 32%, var(--sl-color-gray-5));
-  border-radius: 1.65rem;
-  background:
-    linear-gradient(145deg, color-mix(in srgb, var(--capa-panel-strong) 92%, var(--card-pop)), var(--capa-panel)),
-    var(--capa-panel);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
-  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
-}
-
-.capa-card:nth-child(3n + 2) {
-  --card-pop: var(--capa-pink);
-}
-
-.capa-card:nth-child(3n) {
-  --card-pop: var(--capa-yellow);
-}
-
-.capa-card::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  top: -5rem;
-  right: -4rem;
-  width: 13rem;
-  height: 13rem;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--card-pop) 28%, transparent);
-}
-
-.capa-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.22;
-  background-image: radial-gradient(color-mix(in srgb, var(--card-pop) 70%, transparent) 1px, transparent 1px);
-  background-size: 18px 18px;
-  mask-image: linear-gradient(135deg, black, transparent 58%);
-}
-
-.capa-card:hover {
-  border-color: color-mix(in srgb, var(--card-pop) 72%, var(--sl-color-gray-5));
-  transform: rotate(-0.35deg) translateY(-5px);
-  box-shadow: 0 34px 82px rgba(0, 0, 0, 0.34);
-}
-
-.capa-card:nth-child(even):hover {
-  transform: rotate(0.35deg) translateY(-5px);
-}
-
-.capa-card--planned {
-  min-height: auto;
-  border-style: dashed;
-  opacity: 0.88;
-}
-
-.capa-card__head {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-}
-
-.capa-card__title {
-  display: flex;
-  align-items: baseline;
-  min-height: 3.4rem;
+.capa-capability-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
   margin: 0;
-  color: var(--capa-ink);
-  font-size: clamp(1.65rem, 3vw, 2.35rem);
-  font-weight: 700;
-  line-height: 0.94;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.25;
 }
 
-.capa-card__name {
-  overflow-wrap: anywhere;
-  letter-spacing: -0.055em;
+.capa-col-name { width: 31%; }
+.capa-col-num { width: 8%; }
+.capa-col-auth { width: 14%; }
+.capa-col-body { width: 9%; }
+.capa-col-entry { width: 18%; }
+.capa-col-action { width: 12%; }
+
+.capa-capability-table th,
+.capa-capability-table td {
+  padding: 0.58rem 0.55rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 72%, transparent);
+  vertical-align: middle;
 }
 
-.capa-card__tagline {
-  min-height: 2.7rem;
-  margin: 0;
-  color: var(--sl-color-gray-1);
-  font-size: 0.98rem;
-  line-height: 1.42;
-}
-
-.capa-card__stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.55rem;
-  margin: 0;
-  padding: 0;
-}
-
-.capa-card__stats > div {
-  display: flex;
-  min-height: 4.2rem;
-  flex-direction: column-reverse;
-  justify-content: center;
-  gap: 0.12rem;
-  padding: 0.62rem 0.7rem;
-  border: 1px solid color-mix(in srgb, var(--card-pop) 21%, var(--sl-color-gray-5));
-  border-radius: 0.95rem;
-  background: color-mix(in srgb, var(--sl-color-bg) 46%, transparent);
-}
-
-.capa-card__stats > div:first-child dd {
-  color: var(--card-pop);
-  font-size: 1.48rem;
-}
-
-.capa-card__stats dt,
-.capa-card__meta dt {
-  margin: 0;
+.capa-capability-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   color: var(--sl-color-gray-2);
   font-family: var(--sl-font-mono);
-  font-size: 0.64rem;
+  font-size: 0.66rem;
   font-weight: 500;
   letter-spacing: 0.105em;
+  text-align: left;
   text-transform: uppercase;
+  background: color-mix(in srgb, var(--capa-panel-strong) 96%, var(--capa-yellow));
 }
 
-.capa-card__stats dd {
-  margin: 0;
-  color: var(--capa-ink);
-  font-size: 1rem;
+.capa-capability-table tbody tr {
+  transition: background 140ms ease;
+}
+
+.capa-capability-table tbody tr:hover {
+  background: color-mix(in srgb, var(--capa-yellow) 13%, transparent);
+}
+
+.capa-capability-table tbody tr:last-child th,
+.capa-capability-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.capa-capability-table tbody th {
+  text-align: left;
+}
+
+.capa-capability-name {
+  display: block;
+  color: var(--capa-ink) !important;
+  font-size: 1.08rem;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
+  letter-spacing: -0.03em;
+  text-decoration: none !important;
 }
 
-.capa-card__details {
-  align-self: start;
-  overflow: hidden;
-  border: 1px dashed color-mix(in srgb, var(--card-pop) 34%, var(--sl-color-gray-5));
-  border-radius: 1rem;
-  background: color-mix(in srgb, var(--sl-color-bg) 37%, transparent);
-}
-
-.capa-card__details summary {
-  cursor: pointer;
-  padding: 0.75rem 0.85rem;
-  color: var(--sl-color-gray-1);
-  font-family: var(--sl-font-mono);
-  font-size: 0.77rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  list-style: none;
-}
-
-.capa-card__details summary::-webkit-details-marker {
-  display: none;
-}
-
-.capa-card__details summary::before {
-  content: '+ ';
-  color: var(--card-pop);
-  font-size: 1rem;
-}
-
-.capa-card__details[open] summary::before {
-  content: '− ';
-}
-
-.capa-card__meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  margin: 0;
-  padding: 0 0.85rem 0.85rem;
-  font-size: 0.85rem;
-}
-
-.capa-card__meta > div {
-  display: flex;
-  flex-direction: column;
-  gap: 0.12rem;
-}
-
-.capa-card__meta dd {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.32rem;
-  margin: 0;
-  color: var(--sl-color-text);
-}
-
-.capa-card__meta a {
-  color: var(--sl-color-accent-high);
-  text-decoration: none;
-}
-
-.capa-card__meta a:hover {
-  text-decoration: underline;
-}
-
-.capa-card__meta code {
-  font-size: 0.78rem;
-  word-break: break-all;
-}
-
-.capa-card__dim {
-  color: var(--sl-color-gray-3);
+.capa-capability-table small {
+  display: block;
+  max-width: 28ch;
+  margin-top: 0.16rem;
+  color: var(--sl-color-gray-2);
   font-weight: 400;
 }
 
-.capa-card__secret {
+.capa-capability-table code {
   display: inline-block;
-  padding: 0.16rem 0.48rem;
-  border: 1px solid color-mix(in srgb, var(--card-pop) 28%, var(--sl-color-gray-5));
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--sl-color-bg) 42%, transparent);
-  font-size: 0.75rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-size: 0.7rem;
 }
 
-.capa-card__secret--optional {
-  border-style: dashed;
-  color: var(--sl-color-gray-2);
-}
-
-.capa-card__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  gap: 0.55rem;
-  margin-top: auto;
-}
-
-.capa-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.65rem;
-  padding: 0.56rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--card-pop) 34%, var(--sl-color-gray-5));
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--sl-color-bg) 48%, transparent);
-  color: var(--capa-ink) !important;
+.capa-num {
+  color: var(--capa-ink);
+  font-variant-numeric: tabular-nums;
   font-weight: 700;
-  text-decoration: none !important;
-  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+  text-align: right;
 }
 
-.capa-btn:hover {
-  border-color: var(--card-pop);
-  background: color-mix(in srgb, var(--card-pop) 18%, var(--capa-panel));
-  transform: translateY(-1px);
+.capa-row-actions {
+  display: inline-flex;
+  gap: 0.38rem;
+  white-space: nowrap;
 }
 
-.capa-btn--primary {
-  border-color: var(--card-pop);
-  background: var(--card-pop);
-  color: #1d1025 !important;
-}
-
-.capa-btn--primary:hover {
-  background: color-mix(in srgb, var(--card-pop) 78%, white);
+.capa-row-actions .capa-btn {
+  min-height: 1.82rem;
+  padding: 0.28rem 0.5rem;
+  font-size: 0.72rem;
 }
 
 .capa-catalog-empty {
@@ -619,20 +507,5 @@ h4 {
     grid-template-columns: 1fr;
   }
 
-  .capa-card {
-    min-height: auto;
-    padding: 1.1rem;
-    border-radius: 1.35rem;
-  }
-
-  .capa-card__tagline,
-  .capa-card__title {
-    min-height: 0;
-  }
 }
 
-@media (max-width: 460px) {
-  .capa-card__stats {
-    grid-template-columns: 1fr;
-  }
-}

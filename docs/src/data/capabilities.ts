@@ -64,7 +64,7 @@ export interface CapabilityDisplay {
 
 const DISPLAY: Record<string, CapabilityDisplay> = {
 	stripe: {
-		tagline: 'Charges, customers, subscriptions — every call audited.',
+		tagline: 'Charges, customers, and subscriptions without hand-writing a Stripe wrapper.',
 		bundleGz: '38 KiB',
 		status: 'stable',
 		requiredSecrets: ['STRIPE_API_KEY'],

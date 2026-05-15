@@ -14,7 +14,7 @@ description: The architecture and philosophy of capa.
   <div class="flow-edge">
     <span>JSRPC</span>
     <b>→</b>
-    <small>result + evidence</small>
+    <small>result + receipt</small>
   </div>
   <div class="flow-node flow-node-wide">
     <strong>capa capability</strong>
@@ -35,25 +35,25 @@ description: The architecture and philosophy of capa.
   </div>
 </div>
 
-`fetchProof` performs the upstream HTTP call (`act`), then runs generic + per-method assertions (`assert`). The verdict is the AND of every assertion. `result` is returned only when `verdict === "pass"`.
+`fetchProof` makes the upstream HTTP call, runs the built-in checks plus any method-specific checks, and returns the API result when those checks pass. The JSON receipt keeps the detail if you want to log or inspect it.
 
 `RuntimeConfig` (base URL override, extra headers, prefix replacement) flows from the hand-written `index.ts` through the generated entrypoint to every method call.
 
 ## Why JSRPC, not HTTP
 
-Public Workers with bindings are an incident pattern. Capabilities have no public route by design. Bind them; do not expose them.
+A capa capability is meant to sit behind your Worker, not act as another public proxy. That keeps credentials and API calls on the service-binding path.
 
-Each capability returns 404 on any HTTP request. The only way to reach it is through a declared service binding.
+Each capability returns 404 on direct HTTP requests. Reach it through a declared service binding instead.
 
 ## Why one Worker per capability
 
-Independent versioning, independent secrets, independent blast radius. A single capability per Worker keeps the `WorkerEntrypoint` class binding clean — the binding name maps 1:1 to a capability surface.
+One Worker per API keeps setup understandable: one upstream service, one secret set, one service binding. It also lets you deploy and update capabilities independently.
 
 ## Why no registry
 
-A capability is a Git repo. Forks are install. A central index would add a new control point that adds no value the user couldn't get from a GitHub topic search.
+For now, the repo is the catalog. The site reads the manifests already checked in here, and you can fork or deploy the capabilities you actually want.
 
-## Evidence bundle
+## Returned receipt
 
 ```ts
 {
@@ -80,20 +80,20 @@ A capability is a Git repo. Forks are install. A central index would add a new c
 }
 ```
 
-Every call produces this. Persist it, hash it, ignore it — it exists.
+Every call produces this record. Save it for debugging or reporting when it helps; otherwise treat it as useful extra context.
 
 ## How capabilities are built
 
-Capabilities are not hand-coded. Each one is generated from the upstream API's OpenAPI spec.
+Capabilities are generated from upstream OpenAPI specs rather than written endpoint by endpoint.
 
-```
+```text
  spec.openapi.json
         │
         ▼
     capa-codegen ──▶ schema.gen.ts       (types from openapi-typescript)
                  ──▶ capability.gen.ts   (RpcTarget classes per namespace)
                  ──▶ manifest.gen.ts     (operationId → metadata)
-                 ──▶ runtime.ts          (evidence-aware fetch)
+                 ──▶ runtime.ts          (HTTP call + checks)
         │
         ▼
     src/index.ts (~30 LOC, applies per-method overrides)
@@ -102,7 +102,7 @@ Capabilities are not hand-coded. Each one is generated from the upstream API's O
     deployed Worker
 ```
 
-The hand-written layer is thin. The per-method overrides for richer evidence are the only thing that grows with API surface — and only for the methods you care to assert against.
+The hand-written layer stays thin. Add per-method overrides only where you want stronger checks than “the upstream accepted the call.”
 
 ## Override examples
 

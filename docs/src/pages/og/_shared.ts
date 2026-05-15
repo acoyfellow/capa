@@ -55,7 +55,7 @@ export function buildSvg(title: string, description: string): string {
 	const titleStart = isHome ? 286 : 228;
 	const titleLineHeight = isHome ? 128 : 82;
 	const descriptionLines = wrapText(
-		description || 'Generated third-party APIs as proof-carrying Cloudflare service bindings.',
+		description || 'Ready-to-bind Cloudflare Workers for third-party APIs.',
 		isHome ? 65 : 58,
 		2,
 	);
@@ -63,7 +63,7 @@ export function buildSvg(title: string, description: string): string {
 	const dots: string[] = [];
 	for (let x = 46; x < W - 46; x += 34) {
 		for (let y = 42; y < H - 42; y += 34) {
-			dots.push(`<circle cx="${x}" cy="${y}" r="1" fill="#382858" fill-opacity="0.58"/>`);
+			dots.push(`<circle cx="${x}" cy="${y}" r="1" fill="#17354a" fill-opacity="0.7"/>`);
 		}
 	}
 	const titleSvg = textLines(
@@ -91,30 +91,30 @@ export function buildSvg(title: string, description: string): string {
       @font-face { font-family: 'Google Sans Code'; font-weight: 400; src: url('data:font/truetype;base64,${codeRegularB64}') format('truetype'); }
       @font-face { font-family: 'Google Sans Code'; font-weight: 500; src: url('data:font/truetype;base64,${codeMediumB64}') format('truetype'); }
     </style>
-    <radialGradient id="pinkOrb" cx="13%" cy="11%" r="54%"><stop offset="0%" stop-color="#ff78c8" stop-opacity="0.55"/><stop offset="100%" stop-color="#ff78c8" stop-opacity="0"/></radialGradient>
-    <radialGradient id="mintOrb" cx="92%" cy="12%" r="52%"><stop offset="0%" stop-color="#75ffd6" stop-opacity="0.38"/><stop offset="100%" stop-color="#75ffd6" stop-opacity="0"/></radialGradient>
-    <radialGradient id="violetOrb" cx="74%" cy="91%" r="52%"><stop offset="0%" stop-color="#9f7cff" stop-opacity="0.43"/><stop offset="100%" stop-color="#9f7cff" stop-opacity="0"/></radialGradient>
-    <linearGradient id="headline" x1="0%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#fffaf2"/><stop offset="42%" stop-color="#ffe68a"/><stop offset="72%" stop-color="#75ffd6"/><stop offset="100%" stop-color="#ff78c8"/></linearGradient>
-    <linearGradient id="card" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#291a42" stop-opacity="0.95"/><stop offset="100%" stop-color="#161022" stop-opacity="0.92"/></linearGradient>
+    <radialGradient id="pinkOrb" cx="13%" cy="11%" r="54%"><stop offset="0%" stop-color="#61101c" stop-opacity="0.68"/><stop offset="100%" stop-color="#61101c" stop-opacity="0"/></radialGradient>
+    <radialGradient id="mintOrb" cx="92%" cy="12%" r="52%"><stop offset="0%" stop-color="#72a9bd" stop-opacity="0.48"/><stop offset="100%" stop-color="#72a9bd" stop-opacity="0"/></radialGradient>
+    <radialGradient id="violetOrb" cx="74%" cy="91%" r="52%"><stop offset="0%" stop-color="#d55d18" stop-opacity="0.52"/><stop offset="100%" stop-color="#d55d18" stop-opacity="0"/></radialGradient>
+    <linearGradient id="headline" x1="0%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#fff5df"/><stop offset="42%" stop-color="#fff1db"/><stop offset="72%" stop-color="#72a9bd"/><stop offset="100%" stop-color="#d55d18"/></linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0b3048" stop-opacity="0.96"/><stop offset="100%" stop-color="#041827" stop-opacity="0.94"/></linearGradient>
   </defs>
-  <rect width="${W}" height="${H}" fill="#100b1b"/>
+  <rect width="${W}" height="${H}" fill="#041827"/>
   <rect width="${W}" height="${H}" fill="url(#pinkOrb)"/>
   <rect width="${W}" height="${H}" fill="url(#mintOrb)"/>
   <rect width="${W}" height="${H}" fill="url(#violetOrb)"/>
   ${dots.join('\n  ')}
   <g transform="translate(46 34)">
-    <rect width="1108" height="562" rx="42" fill="url(#card)" stroke="#ffe68a" stroke-opacity="0.35" stroke-width="2"/>
-    <circle cx="998" cy="95" r="144" fill="#75ffd6" fill-opacity="0.12"/>
-    <circle cx="1018" cy="442" r="192" fill="#ff78c8" fill-opacity="0.12"/>
+    <rect width="1108" height="562" rx="42" fill="url(#card)" stroke="#fff1db" stroke-opacity="0.35" stroke-width="2"/>
+    <circle cx="998" cy="95" r="144" fill="#72a9bd" fill-opacity="0.16"/>
+    <circle cx="1018" cy="442" r="192" fill="#d55d18" fill-opacity="0.18"/>
   </g>
-  <rect x="70" y="70" width="238" height="42" rx="21" fill="#211431" stroke="#75ffd6" stroke-opacity="0.55"/>
-  <text x="95" y="98" font-family="'Google Sans Code', monospace" font-size="18" font-weight="500" fill="#75ffd6" letter-spacing="2">CAPA.COey.DEV</text>
-  <text x="1064" y="98" text-anchor="end" font-family="'Google Sans Code', monospace" font-size="18" font-weight="500" fill="#ffe68a">{ result, evidence }</text>
+  <rect x="70" y="70" width="238" height="42" rx="21" fill="#082337" stroke="#72a9bd" stroke-opacity="0.65"/>
+  <text x="95" y="98" font-family="'Google Sans Code', monospace" font-size="18" font-weight="500" fill="#72a9bd" letter-spacing="2">CAPA.COey.DEV</text>
+  <text x="1064" y="98" text-anchor="end" font-family="'Google Sans Code', monospace" font-size="18" font-weight="500" fill="#fff1db">{ result, evidence }</text>
   ${titleSvg}
   ${descriptionSvg}
-  <line x1="72" y1="530" x2="1128" y2="530" stroke="#493465" stroke-width="2"/>
-  <text x="72" y="570" font-family="'Google Sans Code', monospace" font-size="20" font-weight="500" fill="#fffaf2">OpenAPI → Workers → JSRPC</text>
-  <text x="1128" y="570" text-anchor="end" font-family="'Google Sans Code', monospace" font-size="18" font-weight="400" fill="#d8cde9">proof-carrying bindings</text>
+  <line x1="72" y1="530" x2="1128" y2="530" stroke="#31546a" stroke-width="2"/>
+  <text x="72" y="570" font-family="'Google Sans Code', monospace" font-size="20" font-weight="500" fill="#fff5df">OpenAPI → Workers → JSRPC</text>
+  <text x="1128" y="570" text-anchor="end" font-family="'Google Sans Code', monospace" font-size="18" font-weight="400" fill="#c9bfab">API wrappers for Workers</text>
 </svg>`;
 }
 

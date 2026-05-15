@@ -1,9 +1,8 @@
 ---
-import CapabilityCard from './CapabilityCard.astro';
 import { getCapabilities, getPlanned, getCatalogStats, formatNumber } from '../data/capabilities';
 
 interface Props {
-	/** When true, render a compact summary row above the grid. Default false. */
+	/** When true, render a compact summary row above the table. Default false. */
 	stats?: boolean;
 	/** When true, render planned/roadmap placeholders below. Default false. */
 	planned?: boolean;
@@ -38,26 +37,59 @@ const s = stats ? getCatalogStats() : null;
 		<code>capabilities/&lt;name&gt;/</code> to surface one here.
 	</p>
 ) : (
-	<div class="capa-catalog">
-		{caps.map((entry) => <CapabilityCard entry={entry} />)}
+	<div class="capa-capability-table-wrap">
+		<table class="capa-capability-table">
+			<caption class="sr-only">Generated capa capabilities</caption>
+			<colgroup>
+				<col class="capa-col-name" />
+				<col class="capa-col-num" />
+				<col class="capa-col-num" />
+				<col class="capa-col-auth" />
+				<col class="capa-col-body" />
+				<col class="capa-col-entry" />
+				<col class="capa-col-action" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th scope="col">Capability</th>
+					<th scope="col">Ops</th>
+					<th scope="col">NS</th>
+					<th scope="col">Auth</th>
+					<th scope="col">Body</th>
+					<th scope="col">Entrypoint</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{caps.map((entry) => (
+					<tr>
+						<th scope="row">
+							<a class="capa-capability-name" href={entry.repoUrl} rel="noreferrer noopener">{entry.name}</a>
+							{entry.tagline && <small>{entry.tagline}</small>}
+						</th>
+						<td class="capa-num">{formatNumber(entry.operations)}</td>
+						<td class="capa-num">{formatNumber(entry.namespaces)}</td>
+						<td>{entry.authLabel}</td>
+						<td>{entry.contentTypeLabel}</td>
+						<td><code>{entry.entrypoint}</code></td>
+						<td>
+							<span class="capa-row-actions">
+								<a class="capa-btn capa-btn--primary" href={entry.deployUrl} rel="noreferrer noopener">Deploy</a>
+								<a class="capa-btn" href={entry.source.spec} rel="noreferrer noopener">Spec</a>
+							</span>
+						</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
 	</div>
 )}
 
 {plannedEntries.length > 0 && (
 	<section class="capa-catalog__planned" aria-label="Planned capabilities">
 		<h3>On the roadmap</h3>
-		<div class="capa-catalog">
-			{plannedEntries.map((p) => (
-				<article class="capa-card capa-card--planned">
-					<header class="capa-card__head">
-						<h3 class="capa-card__title">
-							<span class="capa-card__name">{p.name}</span>
-							<span class="capa-card__status capa-card__status--planned">Planned</span>
-						</h3>
-						<p class="capa-card__tagline">{p.tagline}</p>
-					</header>
-				</article>
-			))}
-		</div>
+		<ul>
+			{plannedEntries.map((p) => <li><strong>{p.name}</strong> — {p.tagline}</li>)}
+		</ul>
 	</section>
 )}
