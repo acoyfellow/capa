@@ -29,7 +29,7 @@ interface SpecLock {
 	specs: Record<string, LockedSpec>;
 }
 
-interface SpecChange {
+export interface SpecChange {
 	name: string;
 	spec: string;
 	previousSha256?: string;
@@ -128,7 +128,7 @@ function renderSchemaSection(hints: SchemaChangeHint[], summary: ReturnType<type
 	return out;
 }
 
-function markdownReport(changes: SpecChange[], failures: Array<{ name: string; spec: string; error: string }>): string {
+export function markdownReport(changes: SpecChange[], failures: Array<{ name: string; spec: string; error: string }>): string {
 	const lines = [
 		"# capa upstream spec watch",
 		"",
@@ -266,7 +266,9 @@ async function main() {
 	console.log(`✓ upstream spec lock is ${shouldWriteLock ? "refreshed" : "current"}`);
 }
 
-main().catch(error => {
-	console.error(error);
-	process.exit(2);
-});
+if (import.meta.main) {
+	main().catch(error => {
+		console.error(error);
+		process.exit(2);
+	});
+}
