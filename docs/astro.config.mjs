@@ -8,7 +8,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'capa',
-			description: 'Ready-to-bind Cloudflare Workers for third-party APIs',
+			description: 'OpenAPI specs into deployable Cloudflare Worker service bindings',
 			components: {
 				Head: './src/components/Head.astro',
 			},

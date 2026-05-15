@@ -8,7 +8,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		params: { slug: doc.id || 'index' },
 		props: {
 			title: doc.data.title,
-			description: doc.data.description || 'Ready-to-bind Cloudflare Workers for third-party APIs.',
+			description: doc.data.description || 'capa turns OpenAPI specs into deployable Cloudflare Worker service bindings.',
 		},
 	}));
 };

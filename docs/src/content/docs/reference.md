@@ -41,6 +41,8 @@ bun src/cli.ts \
   --content-type <form|json>
 ```
 
+Contribution guidance and the full repo test checklist live in [CONTRIBUTING.md](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md). Generate locally if the wrapper is only for you; open a PR if it belongs in the public catalog.
+
 ### Examples
 
 **Stripe**

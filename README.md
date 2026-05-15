@@ -1,6 +1,8 @@
 # capa
 
-Generated Cloudflare service bindings for third-party APIs.
+**OpenAPI spec → Cloudflare Worker service binding.**
+
+capa generates deployable Workers from OpenAPI specs, so another Worker can call them through a service binding instead of hand-writing an API wrapper.
 
 Every method returns the upstream result plus a JSON evidence bundle:
 
@@ -58,7 +60,7 @@ bun install
 bun run check
 ```
 
-`bun run check` verifies generated files, typechecks every capability, and runs `wrangler deploy --dry-run` for each Worker.
+`bun run check` is the fast, credential-free gate: regenerate known specs, typecheck every capability + harness, and run `wrangler deploy --dry-run` for every Worker. Live API smoke tests are opt-in via [`tests/harness/`](tests/harness).
 
 ## Use a binding
 
@@ -87,6 +89,8 @@ const { result, evidence } = await env.STRIPE.charges.create({
 ```
 
 ## Generate a binding
+
+You can generate a binding locally and keep it private. If the API is broadly useful, [contributions to this repo are welcome](CONTRIBUTING.md).
 
 ```bash
 cd tools/codegen
@@ -152,4 +156,5 @@ bun src/cli.ts \
 | [How it works](docs/src/content/docs/how-it-works.md) | Codegen, JSRPC, evidence loop |
 | [Reference](docs/src/content/docs/reference.md) | Capability and evidence details |
 | [Codegen](tools/codegen/README.md) | Generator flags and output |
+| [Contributing](CONTRIBUTING.md) | Add a public capability or use the generator privately |
 

@@ -1,6 +1,6 @@
 ---
-title: Catalog
-description: Browse the APIs capa can wrap for your Workers, with counts, auth shape, and one-click deploy.
+title: OpenAPI-generated Worker binding catalog
+description: "Browse capa bindings generated from OpenAPI specs: deployable Cloudflare Workers for Stripe, GitHub, Jira, Discord, and more."
 ---
 
 import CapabilityGrid from '../../components/CapabilityGrid.astro';
@@ -15,11 +15,16 @@ Each capability is a deployable Worker wrapper around one API:
 
 ## Adding a new capability
 
-The catalog above is rendered from `capabilities/*/capa.manifest.json` at build time. To add a capability:
+The catalog above is rendered from `capabilities/*/capa.manifest.json` at build time. You have two good options:
+
+- Generate a capability locally and use it only in your own account.
+- Send a capability to this repo if the API is broadly useful.
+
+For a repo contribution:
 
 1. Run the [codegen CLI](/reference#codegen-cli) against an OpenAPI/Swagger spec.
 2. Codegen writes `capa.manifest.json` alongside the generated source.
-3. (Optional) Add a display entry in `docs/src/data/capabilities.ts` for the tagline, bundle size, and required-secret hints.
+3. Follow the [contribution guide](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md) and run `bun run check`.
 4. Open a PR. The catalog picks it up automatically on the next build.
 
 ## Invariants every capability honours

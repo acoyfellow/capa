@@ -75,3 +75,4 @@ You got the charge data and a full audit trail in one call.
 
 - [How It Works](/how-it-works) — understand the loop
 - [Reference](/reference) — all capabilities and codegen flags
+- [Contributing](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md) — generate privately, or add a public capability to the repo

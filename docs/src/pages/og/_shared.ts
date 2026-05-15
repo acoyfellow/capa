@@ -48,14 +48,14 @@ function textLines(lines: string[], x: number, startY: number, lineHeight: numbe
 }
 
 export function buildSvg(title: string, description: string): string {
-	const isHome = title.toLowerCase() === 'capa';
-	const titleText = isHome ? 'capa' : title;
-	const titleLines = wrapText(titleText, isHome ? 18 : 30, isHome ? 1 : 2);
-	const titleSize = isHome ? 126 : 72;
+	const isHome = title.toLowerCase().includes('openapi specs');
+	const titleText = isHome ? 'OpenAPI spec → Worker binding' : title;
+	const titleLines = wrapText(titleText, isHome ? 42 : 30, isHome ? 1 : 2);
+	const titleSize = isHome ? 68 : 72;
 	const titleStart = isHome ? 286 : 228;
 	const titleLineHeight = isHome ? 128 : 82;
 	const descriptionLines = wrapText(
-		description || 'Ready-to-bind Cloudflare Workers for third-party APIs.',
+		description || 'capa turns OpenAPI specs into deployable Cloudflare Worker service bindings.',
 		isHome ? 65 : 58,
 		2,
 	);
@@ -109,12 +109,12 @@ export function buildSvg(title: string, description: string): string {
   </g>
   <rect x="70" y="70" width="238" height="42" rx="21" fill="#082337" stroke="#72a9bd" stroke-opacity="0.65"/>
   <text x="95" y="98" font-family="'Google Sans Code', monospace" font-size="18" font-weight="500" fill="#72a9bd" letter-spacing="2">CAPA.COey.DEV</text>
-  <text x="1064" y="98" text-anchor="end" font-family="'Google Sans Code', monospace" font-size="18" font-weight="500" fill="#fff1db">{ result, evidence }</text>
+  <text x="1064" y="98" text-anchor="end" font-family="'Google Sans Code', monospace" font-size="18" font-weight="500" fill="#fff1db">openapi.yaml → env.API.method()</text>
   ${titleSvg}
   ${descriptionSvg}
   <line x1="72" y1="530" x2="1128" y2="530" stroke="#31546a" stroke-width="2"/>
-  <text x="72" y="570" font-family="'Google Sans Code', monospace" font-size="20" font-weight="500" fill="#fff5df">OpenAPI → Workers → JSRPC</text>
-  <text x="1128" y="570" text-anchor="end" font-family="'Google Sans Code', monospace" font-size="18" font-weight="400" fill="#c9bfab">API wrappers for Workers</text>
+  <text x="72" y="570" font-family="'Google Sans Code', monospace" font-size="20" font-weight="500" fill="#fff5df">OpenAPI spec → Cloudflare Worker binding</text>
+  <text x="1128" y="570" text-anchor="end" font-family="'Google Sans Code', monospace" font-size="18" font-weight="400" fill="#c9bfab">capa.coey.dev</text>
 </svg>`;
 }
 

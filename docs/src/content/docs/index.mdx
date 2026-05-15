@@ -1,6 +1,6 @@
 ---
-title: capa
-description: Ready-to-bind Cloudflare Workers for Stripe, GitHub, Jira, and other third-party APIs.
+title: OpenAPI specs → Cloudflare Worker bindings
+description: capa turns OpenAPI specs into deployable Cloudflare Worker service bindings. Generate an API binding, deploy it, and call it from your Worker.
 template: splash
 hero:
   title: Third-party APIs, ready to bind from your Worker
@@ -38,7 +38,7 @@ Along with the upstream result, capa gives you a plain JSON receipt: what it cal
 
 ## Capabilities
 
-capa already ships 13 generated bindings. [View Capabilities](/catalog/) for GitHub, Kubernetes, GitLab, Jira, Stripe, Box, Discord, Sentry, Slack, Twilio, Zoom, and the rest.
+capa already ships 13 generated bindings. [View Capabilities](/catalog/) for GitHub, Kubernetes, GitLab, Jira, Stripe, Box, Discord, Sentry, Slack, Twilio, Zoom, and the rest. Generate one locally for your own API, or [contribute a capability](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md) if it belongs in the shared repo.
 
 <CapabilityGrid stats />
 
@@ -117,6 +117,9 @@ const { result, evidence } = await env.STRIPE.charges.create({
   </Card>
   <Card title="Reference" icon="document">
     [Capabilities, codegen, overrides](/reference)
+  </Card>
+  <Card title="Contribute" icon="pencil">
+    [Add a useful public capability — or just generate one locally](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md)
   </Card>
 </CardGrid>
 
