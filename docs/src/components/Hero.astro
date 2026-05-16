@@ -1,0 +1,14 @@
+---
+import DefaultHero from '@astrojs/starlight/components/Hero.astro';
+---
+
+<DefaultHero />
+
+<div class="capa-hero-snippet" aria-label="Cloudflare service binding example">
+	<p>Cloudflare service binding generated from Stripe's OpenAPI spec</p>
+	<pre><code><span class="kw">const</span> &#123; result, evidence &#125; =
+  <span class="kw">await</span> env.<span class="binding">STRIPE</span>.paymentIntents.create(&#123;
+    amount: <span class="num">2500</span>,
+    currency: <span class="str">"usd"</span>,
+  &#125;);</code></pre>
+</div>

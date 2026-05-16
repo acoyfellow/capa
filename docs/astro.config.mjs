@@ -11,6 +11,7 @@ export default defineConfig({
 			description: 'OpenAPI specs into deployable Cloudflare Worker service bindings',
 			components: {
 				Head: './src/components/Head.astro',
+				Hero: './src/components/Hero.astro',
 			},
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/acoyfellow/capa' },

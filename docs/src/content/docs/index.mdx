@@ -22,17 +22,6 @@ hero:
 import { Card, CardGrid } from '@astrojs/starlight/components';
 import CapabilityGrid from '../../components/CapabilityGrid.astro';
 
-## What you get
-
-```ts
-// Cloudflare service binding generated from Stripe's OpenAPI spec
-const { result, evidence } =
-  await env.STRIPE.paymentIntents.create({
-    amount: 2500,
-    currency: "usd",
-  });
-```
-
 Along with the upstream result, capa gives you a plain JSON receipt: what it called, what came back, and which checks passed. Keep it for logs, show it in a UI, or ignore it when you do not need it.
 
 ## Capabilities

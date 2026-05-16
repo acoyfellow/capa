@@ -170,6 +170,47 @@ h4 {
   color: var(--sl-color-gray-1);
 }
 
+.capa-hero-snippet {
+  position: relative;
+  z-index: 2;
+  width: min(43rem, calc(100% - 2rem));
+  margin: -5rem 0 2.5rem auto;
+  padding: 0.95rem 1rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--capa-yellow) 48%, var(--sl-color-gray-5));
+  border-radius: 1.15rem;
+  background: color-mix(in srgb, var(--sl-color-bg) 72%, var(--capa-panel-strong));
+  box-shadow: 0 24px 60px color-mix(in srgb, var(--capa-shadow) 72%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.capa-hero-snippet p {
+  margin: 0 0 0.55rem;
+  color: var(--sl-color-gray-2);
+  font-family: var(--sl-font-mono);
+  font-size: 0.69rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.capa-hero-snippet pre {
+  margin: 0;
+  overflow-x: auto;
+  color: var(--sl-color-gray-1);
+  font-family: var(--sl-font-mono);
+  font-size: clamp(0.76rem, 1.45vw, 0.95rem);
+  line-height: 1.58;
+}
+
+.capa-hero-snippet code {
+  font-family: inherit;
+}
+
+.capa-hero-snippet .kw { color: var(--capa-violet); }
+.capa-hero-snippet .binding { color: var(--capa-mint); font-weight: 700; }
+.capa-hero-snippet .num { color: var(--capa-pink); }
+.capa-hero-snippet .str { color: var(--capa-yellow); }
+
 .sl-link-button {
   border-radius: 999px !important;
   font-weight: 700;
@@ -521,6 +562,12 @@ h4 {
 }
 
 @media (max-width: 760px) {
+  .capa-hero-snippet {
+    width: calc(100% - 1rem);
+    margin: -1.25rem auto 1.7rem;
+    padding: 0.85rem;
+  }
+
   .capa-capability-table {
     min-width: 0;
   }
