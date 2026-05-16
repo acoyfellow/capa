@@ -51,6 +51,7 @@ Bindings are generated from OpenAPI specs. The hand-written layer is `src/index.
 | [twilio-messaging](capabilities/twilio-messaging) | 58 | 5 | basic | form |
 | [twilio-verify](capabilities/twilio-verify) | 57 | 5 | basic | form |
 | [twilio](capabilities/twilio) | 197 | 2 | basic | form |
+| [twitch](capabilities/twitch) | 144 | 30 | bearer | json |
 | [zoom](capabilities/zoom) | 155 | 14 | bearer | json |
 
 ## Validate

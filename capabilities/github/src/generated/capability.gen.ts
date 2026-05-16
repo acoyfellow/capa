@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitHub v3 REST API v1.1.4
-// Operations:  1182
+// Operations:  1183
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -1382,6 +1382,27 @@ Th
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["enterprise28DayLatest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+		});
+	}
+
+	/**
+	 * Use this endpoint to retrieve download links for the Copilot enterprise user-teams report for a specific day. The report provides user-team join data for Copilot across the enterprise, with one entry 
+	 *
+	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day` — risk: medium
+	 */
+	async userTeams1Day(enterprise: string): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "copilot/copilot-enterprise-user-teams-one-day-report",
+			namespace: "enterprises",
+			method: "userTeams1Day",
+			http: "get",
+			path: `/enterprises/${enterprise}/copilot/metrics/reports/user-teams-1-day`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["userTeams1Day"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -7714,6 +7735,27 @@ To configure these settings, go to the organization's settings
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["organization28DayLatest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+		});
+	}
+
+	/**
+	 * Use this endpoint to retrieve download links for the Copilot organization user-teams report for a specific day. The report provides user-team join data for Copilot across the organization, with one en
+	 *
+	 * `GET /orgs/{org}/copilot/metrics/reports/user-teams-1-day` — risk: medium
+	 */
+	async userTeams1Day(org: string): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "copilot/copilot-organization-user-teams-one-day-report",
+			namespace: "orgs",
+			method: "userTeams1Day",
+			http: "get",
+			path: `/orgs/${org}/copilot/metrics/reports/user-teams-1-day`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["userTeams1Day"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -16795,6 +16837,31 @@ You can provide an additional `committer` parameter, which is an object containi
 	}
 
 	/**
+	 * > [!NOTE]
+> This endpoint is in public preview and is subject to change.
+
+Gets the Copilot cloud agent configuration for a repository, including MCP server
+configuration, enabled review tools, Actions
+	 *
+	 * `GET /repos/{owner}/{repo}/copilot/cloud-agent/configuration` — risk: medium
+	 */
+	async configuration(owner: string, repo: string): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "copilot/get-copilot-cloud-agent-configuration",
+			namespace: "repos",
+			method: "configuration",
+			http: "get",
+			path: `/repos/${owner}/${repo}/copilot/cloud-agent/configuration`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["configuration"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+		});
+	}
+
+	/**
 	 * OAuth app tokens and personal access tokens (classic) need the `security_events` scope to use this endpoint. If this endpoint is only used with public repositories, the token can use the `public_repo`
 	 *
 	 * `GET /repos/{owner}/{repo}/dependabot/alerts` — risk: medium
@@ -20906,52 +20973,6 @@ Delete a reaction to a [pull
 			risk: "medium",
 			body,
 			overrides: this.overrides["pulls_1"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-		});
-	}
-
-	/**
-	 * Archives a pull request. Closes, locks, and marks the pull request as archived.
-Only repository admins can archive pull requests.
-Archived pull requests are hidden from non-admin users.
-	 *
-	 * `PUT /repos/{owner}/{repo}/pulls/{pull_number}/archive` — risk: medium
-	 */
-	async archive_0(owner: string, repo: string, pullNumber: string): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "pulls/archive",
-			namespace: "repos",
-			method: "archive_0",
-			http: "put",
-			path: `/repos/${owner}/${repo}/pulls/${pullNumber}/archive`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["archive_0"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-		});
-	}
-
-	/**
-	 * Unarchives a pull request. Removes the archived flag from the pull request.
-Does not automatically reopen or unlock the pull request.
-Only repository admins can unarchive pull requests.
-	 *
-	 * `DELETE /repos/{owner}/{repo}/pulls/{pull_number}/archive` — risk: medium
-	 */
-	async archive_1(owner: string, repo: string, pullNumber: string): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "pulls/unarchive",
-			namespace: "repos",
-			method: "archive_1",
-			http: "delete",
-			path: `/repos/${owner}/${repo}/pulls/${pullNumber}/archive`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["archive_1"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,

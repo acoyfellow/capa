@@ -107,6 +107,10 @@ const DISPLAY: Record<string, CapabilityDisplay> = {
 		status: 'stable',
 		requiredSecrets: ['STRIPE_API_KEY'],
 	},
+	twitch: {
+		tagline: 'Twitch Helix channels, streams, clips, chat, moderation, and creator workflows.',
+		requiredSecrets: ['TWITCH_API_KEY', 'TWITCH_CLIENT_ID'],
+	},
 	twilio: {
 		tagline: 'Accounts, phone numbers, calls, messages, recordings, and Twilio REST resources.',
 		requiredSecrets: ['TWILIO_API_KEY'],

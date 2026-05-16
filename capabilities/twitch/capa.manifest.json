@@ -1,0 +1,19 @@
+{
+	"name": "twitch",
+	"entrypoint": "TwitchCapability",
+	"source": {
+		"spec": "https://raw.githubusercontent.com/DmitryScaletta/twitch-api-swagger/main/openapi.json",
+		"title": "Twitch API Swagger UI (Unofficial)",
+		"version": "helix"
+	},
+	"upstream": {
+		"baseUrl": "https://api.twitch.tv/helix",
+		"prefix": "/"
+	},
+	"auth": "bearer",
+	"contentType": "json",
+	"operations": 144,
+	"namespaces": 30,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

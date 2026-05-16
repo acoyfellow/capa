@@ -20615,6 +20615,19 @@ export type components = {
             vulnerability_archive_export_uploads_verification_total_count: string;
             vulnerability_archive_export_uploads_verified_count: string;
             vulnerability_archive_export_uploads_verified_in_percentage: string;
+            vulnerability_export_uploads_checksum_failed_count: string;
+            vulnerability_export_uploads_checksum_total_count: string;
+            vulnerability_export_uploads_checksummed_count: string;
+            vulnerability_export_uploads_count: string;
+            vulnerability_export_uploads_failed_count: string;
+            vulnerability_export_uploads_oldest_unsynced_time: string;
+            vulnerability_export_uploads_registry_count: string;
+            vulnerability_export_uploads_synced_count: string;
+            vulnerability_export_uploads_synced_in_percentage: string;
+            vulnerability_export_uploads_verification_failed_count: string;
+            vulnerability_export_uploads_verification_total_count: string;
+            vulnerability_export_uploads_verified_count: string;
+            vulnerability_export_uploads_verified_in_percentage: string;
         };
         /** @description API_Entities_GitlabSubscription model */
         API_Entities_GitlabSubscription: {

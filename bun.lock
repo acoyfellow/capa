@@ -113,6 +113,15 @@
         "wrangler": "^4.85.0",
       },
     },
+    "capabilities/twitch": {
+      "name": "@capa/twitch",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
     "capabilities/zoom": {
       "name": "@capa/zoom",
       "version": "0.0.1",
@@ -231,6 +240,8 @@
     "@capa/twilio-messaging": ["@capa/twilio-messaging@workspace:capabilities/twilio-messaging"],
 
     "@capa/twilio-verify": ["@capa/twilio-verify@workspace:capabilities/twilio-verify"],
+
+    "@capa/twitch": ["@capa/twitch@workspace:capabilities/twitch"],
 
     "@capa/zoom": ["@capa/zoom@workspace:capabilities/zoom"],
 

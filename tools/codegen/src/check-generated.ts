@@ -42,7 +42,7 @@ const changedFiles = changed.stdout
 
 const allowedGenerated = changedFiles.every(file =>
 	file.startsWith("capabilities/") &&
-	(file.includes("/src/generated/") || file.endsWith("/capa.manifest.json")),
+	(file.includes("/src/generated/") || file.endsWith("/capa.manifest.json") || file === "capabilities/spec-lock.json"),
 );
 
 if (!allowedGenerated) {

@@ -133,4 +133,13 @@ export const capabilityRegistry: CapabilityRegistryEntry[] = [
 		auth: "bearer",
 		contentType: "json",
 	},
+	{
+		name: "twitch",
+		spec: "https://raw.githubusercontent.com/DmitryScaletta/twitch-api-swagger/main/openapi.json",
+		out: "capabilities/twitch",
+		baseUrl: "https://api.twitch.tv/helix",
+		prefix: "/",
+		auth: "bearer",
+		contentType: "json",
+	},
 ];

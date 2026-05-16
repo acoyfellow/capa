@@ -1133,6 +1133,32 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Copilot enterprise user-teams report for a specific day
+         * @description Use this endpoint to retrieve download links for the Copilot enterprise user-teams report for a specific day. The report provides user-team join data for Copilot across the enterprise, with one entry per user-team pair.
+         *
+         *     The report contains user-team membership data for the specified day, enabling consumers to join with the existing enterprise user reports to compute team-level usage metrics. Reports are generated daily and made available for download through signed URLs with a limited expiration time.
+         *
+         *     The response includes download links to the report files, along with the specific date of the report. The report covers a complete day for which data has been processed.
+         *
+         *     Enterprise owners, billing managers, and authorized users with fine-grained "View Enterprise Copilot Metrics" permission can retrieve Copilot metrics reports for the enterprise. OAuth app tokens and personal access tokens (classic) need either the `manage_billing:copilot` or `read:enterprise` scopes to use this endpoint.
+         */
+        get: operations["copilot/copilot-enterprise-user-teams-one-day-report"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/enterprises/{enterprise}/copilot/metrics/reports/users-1-day": {
         parameters: {
             query?: never;
@@ -5223,6 +5249,8 @@ export type paths = {
          *     Only Spaces that are readable by the authenticated user are returned. This includes public Spaces and internal Spaces if the user is a member of the organization.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in a space; spaces with inaccessible resources are omitted from the response.
          */
         get: operations["copilot-spaces/list-for-org"];
         put?: never;
@@ -5233,6 +5261,8 @@ export type paths = {
          *     Organization members with appropriate permissions can create Copilot Spaces to be shared within their organization.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by the submitted resources.
          */
         post: operations["copilot-spaces/create-for-org"];
         delete?: never;
@@ -5255,6 +5285,8 @@ export type paths = {
          *     Internal Spaces require the authenticated user to be a member of the organization or have been granted read permissions.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space.
          */
         get: operations["copilot-spaces/get-for-org"];
         /**
@@ -5264,6 +5296,8 @@ export type paths = {
          *     Organization members with appropriate permissions can update Copilot Spaces owned by their organization.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space, including any being added or updated.
          */
         put: operations["copilot-spaces/update-for-org"];
         post?: never;
@@ -5276,6 +5310,8 @@ export type paths = {
          *     Organization members with appropriate permissions can delete Copilot Spaces owned by their organization.
          *
          *     OAuth app tokens and personal access tokens (classic) need both the `read:org` and `repo` scopes to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space.
          */
         delete: operations["copilot-spaces/delete-for-org"];
         options?: never;
@@ -5299,6 +5335,8 @@ export type paths = {
          *     **Note:** Team collaborators listed here are teams that are defined in the organization.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space.
          */
         get: operations["copilot-spaces/list-collaborators-for-org"];
         put?: never;
@@ -5310,6 +5348,8 @@ export type paths = {
          *     When adding teams as collaborators, they must be defined in the organization.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space.
          */
         post: operations["copilot-spaces/add-collaborator-for-org"];
         delete?: never;
@@ -5331,6 +5371,8 @@ export type paths = {
          * @description Updates the role of a collaborator for a specific Copilot Space owned by an organization. The authenticated user must have appropriate permissions to manage collaborators.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space.
          */
         put: operations["copilot-spaces/update-collaborator-for-org"];
         post?: never;
@@ -5339,6 +5381,8 @@ export type paths = {
          * @description Removes a collaborator from a specific Copilot Space owned by an organization. The authenticated user must have appropriate permissions to manage collaborators.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space.
          */
         delete: operations["copilot-spaces/remove-collaborator-for-org"];
         options?: never;
@@ -5359,6 +5403,8 @@ export type paths = {
          *     The authenticated user must have appropriate permissions to view the space.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space.
          */
         get: operations["copilot-spaces/list-resources-for-org"];
         put?: never;
@@ -5373,6 +5419,8 @@ export type paths = {
          *     For `github_file` resources, if a resource with the same repository, file path, and SHA already exists, the existing resource is returned with a `200` status.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space, including the resource being created.
          */
         post: operations["copilot-spaces/create-resource-for-org"];
         delete?: never;
@@ -5394,6 +5442,8 @@ export type paths = {
          *     The authenticated user must have appropriate permissions to view the space.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space.
          */
         get: operations["copilot-spaces/get-resource-for-org"];
         /**
@@ -5402,6 +5452,8 @@ export type paths = {
          *     The authenticated user must have write permissions on the space.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space, including the resource being updated.
          */
         put: operations["copilot-spaces/update-resource-for-org"];
         post?: never;
@@ -5411,6 +5463,8 @@ export type paths = {
          *     The authenticated user must have write permissions on the space.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *
+         *     Fine-grained tokens and GitHub App user access tokens must have been granted access to the organization that owns the space. They must also have been granted access to every repository referenced by resources in the space.
          */
         delete: operations["copilot-spaces/delete-resource-for-org"];
         options?: never;
@@ -5818,6 +5872,34 @@ export type paths = {
          *     For more information about organization metrics attribution, see [How are metrics attributed across organizations](https://docs.github.com/copilot/concepts/copilot-metrics#how-are-metrics-attributed-across-organizations).
          */
         get: operations["copilot/copilot-organization-usage-metrics"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/copilot/metrics/reports/user-teams-1-day": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Copilot organization user-teams report for a specific day
+         * @description Use this endpoint to retrieve download links for the Copilot organization user-teams report for a specific day. The report provides user-team join data for Copilot across the organization, with one entry per user-team pair.
+         *
+         *     The report contains user-team membership data for the specified day, enabling consumers to join with the existing organization user reports to compute team-level usage metrics. Reports are generated daily and made available for download through signed URLs with a limited expiration time.
+         *
+         *     The response includes download links to the report files, along with the specific date of the report. The report covers a complete day for which data has been processed.
+         *
+         *     Organization owners and authorized users with fine-grained "View Organization Copilot Metrics" permission can retrieve Copilot metrics reports for the organization. OAuth app tokens and personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         *
+         *     For more information about organization metrics attribution, see [How are metrics attributed across organizations](https://docs.github.com/copilot/concepts/copilot-metrics#how-are-metrics-attributed-across-organizations).
+         */
+        get: operations["copilot/copilot-organization-user-teams-one-day-report"];
         put?: never;
         post?: never;
         delete?: never;
@@ -13188,6 +13270,33 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/repos/{owner}/{repo}/copilot/cloud-agent/configuration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Copilot cloud agent configuration for a repository
+         * @description > [!NOTE]
+         *     > This endpoint is in public preview and is subject to change.
+         *
+         *     Gets the Copilot cloud agent configuration for a repository, including MCP server
+         *     configuration, enabled review tools, Actions workflow approval settings, and firewall
+         *     configuration.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
+         */
+        get: operations["copilot/get-copilot-cloud-agent-configuration"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/dependabot/alerts": {
         parameters: {
             query?: never;
@@ -16382,34 +16491,6 @@ export type paths = {
          *     - **`application/vnd.github.full+json`**: Returns raw, text, and HTML representations. Response will include `body`, `body_text`, and `body_html`.
          */
         patch: operations["pulls/update"];
-        trace?: never;
-    };
-    "/repos/{owner}/{repo}/pulls/{pull_number}/archive": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Archive a pull request
-         * @description Archives a pull request. Closes, locks, and marks the pull request as archived.
-         *     Only repository admins can archive pull requests.
-         *     Archived pull requests are hidden from non-admin users.
-         */
-        put: operations["pulls/archive"];
-        post?: never;
-        /**
-         * Unarchive a pull request
-         * @description Unarchives a pull request. Removes the archived flag from the pull request.
-         *     Does not automatically reopen or unlock the pull request.
-         *     Only repository admins can unarchive pull requests.
-         */
-        delete: operations["pulls/unarchive"];
-        options?: never;
-        head?: never;
-        patch?: never;
         trace?: never;
     };
     "/repos/{owner}/{repo}/pulls/{pull_number}/codespaces": {
@@ -29985,7 +30066,7 @@ export type components = {
         };
         /**
          * Issue Type
-         * @description The type of issue.
+         * @description The type assigned to the issue. This is only present for issues in repositories where issue types are supported.
          */
         "issue-type": {
             /**
@@ -37505,7 +37586,7 @@ export type components = {
          * Repository Rule
          * @description A repository rule.
          */
-        "repository-rule": components["schemas"]["repository-rule-creation"] | components["schemas"]["repository-rule-update"] | components["schemas"]["repository-rule-deletion"] | components["schemas"]["repository-rule-required-linear-history"] | components["schemas"]["repository-rule-merge-queue"] | components["schemas"]["repository-rule-required-deployments"] | components["schemas"]["repository-rule-required-signatures"] | components["schemas"]["repository-rule-pull-request"] | components["schemas"]["repository-rule-required-status-checks"] | components["schemas"]["repository-rule-non-fast-forward"] | components["schemas"]["repository-rule-commit-message-pattern"] | components["schemas"]["repository-rule-commit-author-email-pattern"] | components["schemas"]["repository-rule-committer-email-pattern"] | components["schemas"]["repository-rule-branch-name-pattern"] | components["schemas"]["repository-rule-tag-name-pattern"] | components["schemas"]["repository-rule-file-path-restriction"] | components["schemas"]["repository-rule-max-file-path-length"] | components["schemas"]["repository-rule-file-extension-restriction"] | components["schemas"]["repository-rule-max-file-size"] | components["schemas"]["repository-rule-workflows"] | components["schemas"]["repository-rule-code-scanning"] | components["schemas"]["repository-rule-copilot-code-review"];
+        "repository-rule": components["schemas"]["repository-rule-creation"] | components["schemas"]["repository-rule-update"] | components["schemas"]["repository-rule-deletion"] | components["schemas"]["repository-rule-required-linear-history"] | components["schemas"]["repository-rule-merge-queue"] | components["schemas"]["repository-rule-required-deployments"] | components["schemas"]["repository-rule-required-signatures"] | components["schemas"]["repository-rule-pull-request"] | components["schemas"]["repository-rule-required-status-checks"] | components["schemas"]["repository-rule-non-fast-forward"] | components["schemas"]["repository-rule-commit-message-pattern"] | components["schemas"]["repository-rule-commit-author-email-pattern"] | components["schemas"]["repository-rule-committer-email-pattern"] | components["schemas"]["repository-rule-branch-name-pattern"] | components["schemas"]["repository-rule-tag-name-pattern"] | components["schemas"]["repository-rule-workflows"] | components["schemas"]["repository-rule-code-scanning"] | components["schemas"]["repository-rule-copilot-code-review"] | components["schemas"]["repository-rule-file-path-restriction"] | components["schemas"]["repository-rule-max-file-path-length"] | components["schemas"]["repository-rule-file-extension-restriction"] | components["schemas"]["repository-rule-max-file-size"];
         /**
          * branch_name_pattern
          * @description Parameters to be used for the branch_name_pattern rule
@@ -37636,7 +37717,7 @@ export type components = {
          * Repository Rule
          * @description A repository rule with ruleset details.
          */
-        "repository-rule-detailed": (components["schemas"]["repository-rule-creation"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-update"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-deletion"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-linear-history"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-merge-queue"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-deployments"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-signatures"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-pull-request"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-status-checks"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-non-fast-forward"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-message-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-author-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-committer-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-branch-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-tag-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-path-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-path-length"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-extension-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-size"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-workflows"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-code-scanning"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-copilot-code-review"] & components["schemas"]["repository-rule-ruleset-info"]);
+        "repository-rule-detailed": (components["schemas"]["repository-rule-creation"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-update"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-deletion"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-linear-history"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-merge-queue"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-deployments"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-signatures"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-pull-request"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-status-checks"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-non-fast-forward"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-message-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-author-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-committer-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-branch-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-tag-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-workflows"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-code-scanning"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-copilot-code-review"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-path-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-path-length"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-extension-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-size"] & components["schemas"]["repository-rule-ruleset-info"]);
         /**
          * @description The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them. Admins can view insights on the Rule Insights page (`evaluate` is only available with GitHub Enterprise).
          * @enum {string}
@@ -99154,6 +99235,35 @@ export interface operations {
             500: components["responses"]["internal_error"];
         };
     };
+    "copilot/copilot-enterprise-user-teams-one-day-report": {
+        parameters: {
+            query: {
+                /** @description The day to request data for, in `YYYY-MM-DD` format. */
+                day: components["parameters"]["day"];
+            };
+            header?: never;
+            path: {
+                /** @description The slug version of the enterprise name. */
+                enterprise: components["parameters"]["enterprise"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["copilot-usage-metrics-1-day-report"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
     "copilot/copilot-users-one-day-usage-metrics": {
         parameters: {
             query: {
@@ -108568,6 +108678,36 @@ export interface operations {
                     "application/json": components["schemas"]["copilot-usage-metrics-28-day-report"];
                 };
             };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "copilot/copilot-organization-user-teams-one-day-report": {
+        parameters: {
+            query: {
+                /** @description The day to request data for, in `YYYY-MM-DD` format. */
+                day: components["parameters"]["day"];
+            };
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["copilot-usage-metrics-1-day-report"];
+                };
+            };
+            204: components["responses"]["no_content"];
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
             500: components["responses"]["internal_error"];
@@ -122648,6 +122788,63 @@ export interface operations {
             404: components["responses"]["not_found"];
         };
     };
+    "copilot/get-copilot-cloud-agent-configuration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description A list of custom allowlist entries, as hosts or URLs, that the firewall will allow the Copilot cloud agent to access. */
+                        custom_allowlist: string[];
+                        /** @description The enabled review tools for Copilot cloud agent. */
+                        enabled_tools: {
+                            /** @description Whether the CodeQL tool is enabled for the Copilot cloud agent. */
+                            codeql: boolean;
+                            /** @description Whether the Copilot code review tool is enabled for the Copilot cloud agent. */
+                            copilot_code_review: boolean;
+                            /** @description Whether the dependency vulnerability checks tool is enabled for the Copilot cloud agent. */
+                            dependency_vulnerability_checks: boolean;
+                            /** @description Whether the secret scanning tool is enabled for the Copilot cloud agent. */
+                            secret_scanning: boolean;
+                        };
+                        /** @description Whether the firewall is enabled. */
+                        is_firewall_enabled: boolean;
+                        /** @description Whether the firewall recommended allowlist is enabled. */
+                        is_firewall_recommended_allowlist_enabled: boolean;
+                        /**
+                         * @description The user-supplied MCP server configuration for the repository, as a free-form JSON object. This will be set to `null` if no configuration has been set.
+                         *
+                         *     The shape of a valid MCP configuration may evolve over time, so this property is intentionally not strictly typed. Clients should not assume a fixed schema.
+                         */
+                        mcp_configuration: {
+                            [key: string]: unknown;
+                        } | null;
+                        /** @description Whether Actions workflow approval is required for Copilot cloud agent pull requests. */
+                        require_actions_workflow_approval: boolean;
+                    };
+                };
+            };
+            401: components["responses"]["requires_authentication"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
     "dependabot/list-alerts-for-repo": {
         parameters: {
             query?: {
@@ -123023,8 +123220,11 @@ export interface operations {
                     "application/json": components["schemas"]["dependency-graph-diff"];
                 };
             };
+            400: components["responses"]["bad_request"];
             403: components["responses"]["dependency_review_forbidden"];
             404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+            503: components["responses"]["service_unavailable"];
         };
     };
     "dependency-graph/export-sbom": {
@@ -125916,6 +126116,17 @@ export interface operations {
                 creator?: string;
                 /** @description The direction to sort the results by. */
                 direction?: components["parameters"]["direction"];
+                /**
+                 * @description A comma-separated list of issue field filters in `field_slug:value` format.
+                 *     Only issues matching all specified field values are returned.
+                 *     Requires issue fields to be enabled for the repository. Issue fields are
+                 *     not available for user-owned repositories, and field availability for
+                 *     organization-owned public repositories depends on the organization's
+                 *     visibility settings. For example, `priority:Urgent,severity:High` filters
+                 *     issues where the `priority` field is `Urgent` AND the `severity` field is
+                 *     `High`.
+                 */
+                issue_field_values?: string;
                 /** @description A list of comma separated label names. Example: `bug,ui,@high` */
                 labels?: components["parameters"]["labels"];
                 /** @description A user that's mentioned in the issue. */
@@ -129069,62 +129280,6 @@ export interface operations {
                 };
             };
             403: components["responses"]["forbidden"];
-            422: components["responses"]["validation_failed"];
-        };
-    };
-    "pulls/archive": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The account owner of the repository. The name is not case sensitive. */
-                owner: components["parameters"]["owner"];
-                /** @description The number that identifies the pull request. */
-                pull_number: components["parameters"]["pull-number"];
-                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
-                repo: components["parameters"]["repo"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            403: components["responses"]["forbidden"];
-            404: components["responses"]["not_found"];
-            422: components["responses"]["validation_failed"];
-        };
-    };
-    "pulls/unarchive": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The account owner of the repository. The name is not case sensitive. */
-                owner: components["parameters"]["owner"];
-                /** @description The number that identifies the pull request. */
-                pull_number: components["parameters"]["pull-number"];
-                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
-                repo: components["parameters"]["repo"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            403: components["responses"]["forbidden"];
-            404: components["responses"]["not_found"];
             422: components["responses"]["validation_failed"];
         };
     };
@@ -132735,7 +132890,7 @@ export interface operations {
                         incomplete_results: boolean;
                         items: components["schemas"]["issue-search-result-item"][];
                         /** @description When a semantic or hybrid search falls back to lexical search, this field contains the reasons for the fallback. Only present when a fallback occurred. */
-                        lexical_fallback_reason?: ("no_text_terms" | "quoted_text" | "non_issue_target" | "or_boolean_not_supported" | "no_accessible_repos" | "server_error" | "only_non_semantic_fields_requested")[];
+                        lexical_fallback_reason?: ("no_text_terms" | "quoted_text" | "non_issue_target" | "or_boolean_not_supported" | "no_accessible_repos" | "server_error" | "only_non_semantic_fields_requested" | "service_unavailable")[];
                         /**
                          * @description The type of search that was performed. Possible values are `lexical`, `semantic`, or `hybrid`.
                          * @enum {string}

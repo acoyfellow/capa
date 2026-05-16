@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitHub v3 REST API v1.1.4
-// Operations:  1182
+// Operations:  1183
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -64,6 +64,7 @@ export const manifest = {
 	"code-security/get-repositories-for-enterprise-configuration": {"namespace":"enterprises","method":"repositories","http":"get","path":"/enterprises/{enterprise}/code-security/configurations/{configuration_id}/repositories","risk":"medium"},
 	"copilot/copilot-enterprise-one-day-usage-metrics": {"namespace":"enterprises","method":"enterprise1Day","http":"get","path":"/enterprises/{enterprise}/copilot/metrics/reports/enterprise-1-day","risk":"medium"},
 	"copilot/copilot-enterprise-usage-metrics": {"namespace":"enterprises","method":"enterprise28DayLatest","http":"get","path":"/enterprises/{enterprise}/copilot/metrics/reports/enterprise-28-day/latest","risk":"medium"},
+	"copilot/copilot-enterprise-user-teams-one-day-report": {"namespace":"enterprises","method":"userTeams1Day","http":"get","path":"/enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day","risk":"medium"},
 	"copilot/copilot-users-one-day-usage-metrics": {"namespace":"enterprises","method":"users1Day","http":"get","path":"/enterprises/{enterprise}/copilot/metrics/reports/users-1-day","risk":"medium"},
 	"copilot/copilot-users-usage-metrics": {"namespace":"enterprises","method":"users28DayLatest","http":"get","path":"/enterprises/{enterprise}/copilot/metrics/reports/users-28-day/latest","risk":"medium"},
 	"copilot/set-enterprise-coding-agent-policy": {"namespace":"enterprises","method":"codingAgent","http":"put","path":"/enterprises/{enterprise}/copilot/policies/coding_agent","risk":"medium"},
@@ -334,6 +335,7 @@ export const manifest = {
 	"copilot/copilot-metrics-for-organization": {"namespace":"orgs","method":"copilotMetrics","http":"get","path":"/orgs/{org}/copilot/metrics","risk":"medium"},
 	"copilot/copilot-organization-one-day-usage-metrics": {"namespace":"orgs","method":"organization1Day","http":"get","path":"/orgs/{org}/copilot/metrics/reports/organization-1-day","risk":"medium"},
 	"copilot/copilot-organization-usage-metrics": {"namespace":"orgs","method":"organization28DayLatest","http":"get","path":"/orgs/{org}/copilot/metrics/reports/organization-28-day/latest","risk":"medium"},
+	"copilot/copilot-organization-user-teams-one-day-report": {"namespace":"orgs","method":"userTeams1Day","http":"get","path":"/orgs/{org}/copilot/metrics/reports/user-teams-1-day","risk":"medium"},
 	"copilot/copilot-organization-users-one-day-usage-metrics": {"namespace":"orgs","method":"users1Day","http":"get","path":"/orgs/{org}/copilot/metrics/reports/users-1-day","risk":"medium"},
 	"copilot/copilot-organization-users-usage-metrics": {"namespace":"orgs","method":"users28DayLatest","http":"get","path":"/orgs/{org}/copilot/metrics/reports/users-28-day/latest","risk":"medium"},
 	"dependabot/list-alerts-for-org": {"namespace":"orgs","method":"dependabotAlerts","http":"get","path":"/orgs/{org}/dependabot/alerts","risk":"medium"},
@@ -733,6 +735,7 @@ export const manifest = {
 	"repos/create-or-update-file-contents": {"namespace":"repos","method":"contents","http":"put","path":"/repos/{owner}/{repo}/contents/{path}","risk":"medium"},
 	"repos/delete-file": {"namespace":"repos","method":"deleteContent","http":"delete","path":"/repos/{owner}/{repo}/contents/{path}","risk":"medium"},
 	"repos/list-contributors": {"namespace":"repos","method":"listContributors","http":"get","path":"/repos/{owner}/{repo}/contributors","risk":"medium"},
+	"copilot/get-copilot-cloud-agent-configuration": {"namespace":"repos","method":"configuration","http":"get","path":"/repos/{owner}/{repo}/copilot/cloud-agent/configuration","risk":"medium"},
 	"dependabot/list-alerts-for-repo": {"namespace":"repos","method":"getDependabotAlerts","http":"get","path":"/repos/{owner}/{repo}/dependabot/alerts","risk":"medium"},
 	"dependabot/get-alert": {"namespace":"repos","method":"dependabotalertsRetrieveAlert","http":"get","path":"/repos/{owner}/{repo}/dependabot/alerts/{alert_number}","risk":"medium"},
 	"dependabot/update-alert": {"namespace":"repos","method":"patchDependabotAlerts","http":"patch","path":"/repos/{owner}/{repo}/dependabot/alerts/{alert_number}","risk":"medium"},
@@ -918,8 +921,6 @@ export const manifest = {
 	"reactions/delete-for-pull-request-comment": {"namespace":"repos","method":"pullscommentsreactionsDeleteReaction","http":"delete","path":"/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}","risk":"medium"},
 	"pulls/get": {"namespace":"repos","method":"retrievePull","http":"get","path":"/repos/{owner}/{repo}/pulls/{pull_number}","risk":"medium"},
 	"pulls/update": {"namespace":"repos","method":"pulls_1","http":"patch","path":"/repos/{owner}/{repo}/pulls/{pull_number}","risk":"medium"},
-	"pulls/archive": {"namespace":"repos","method":"archive_0","http":"put","path":"/repos/{owner}/{repo}/pulls/{pull_number}/archive","risk":"medium"},
-	"pulls/unarchive": {"namespace":"repos","method":"archive_1","http":"delete","path":"/repos/{owner}/{repo}/pulls/{pull_number}/archive","risk":"medium"},
 	"codespaces/create-with-pr-for-authenticated-user": {"namespace":"repos","method":"codespaces","http":"post","path":"/repos/{owner}/{repo}/pulls/{pull_number}/codespaces","risk":"medium"},
 	"pulls/list-review-comments": {"namespace":"repos","method":"getPullsComments_0","http":"get","path":"/repos/{owner}/{repo}/pulls/{pull_number}/comments","risk":"medium"},
 	"pulls/create-review-comment": {"namespace":"repos","method":"postPullsComments","http":"post","path":"/repos/{owner}/{repo}/pulls/{pull_number}/comments","risk":"medium"},
