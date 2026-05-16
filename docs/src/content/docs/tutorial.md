@@ -3,7 +3,7 @@ title: Tutorial
 description: Deploy a capability and call it from a caller Worker.
 ---
 
-This tutorial uses `capa-stripe` as a concrete example. The steps are identical for every capability — swap the name, secret, and binding.
+This tutorial uses `capa-stripe` as a concrete example. The steps are identical for every capability — swap the name, secret, and binding. A future `npx @acoyfellow/capa add stripe` command should scaffold this starter Worker automatically; the explicit steps below are the contract it will encode.
 
 ## 1. Deploy capa-stripe
 

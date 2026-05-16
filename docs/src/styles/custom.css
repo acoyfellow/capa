@@ -206,6 +206,7 @@ h4 {
   font-family: inherit;
 }
 
+.capa-hero-snippet .prompt { color: var(--sl-color-gray-3); }
 .capa-hero-snippet .kw { color: var(--capa-violet); }
 .capa-hero-snippet .binding { color: var(--capa-mint); font-weight: 700; }
 .capa-hero-snippet .num { color: var(--capa-pink); }

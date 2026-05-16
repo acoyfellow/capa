@@ -14,6 +14,8 @@ export default defineConfig({
 				Hero: './src/components/Hero.astro',
 			},
 			social: [
+				{ icon: 'open-book', label: 'Catalog', href: '/catalog/' },
+				{ icon: 'document', label: 'Tutorial', href: '/tutorial/' },
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/acoyfellow/capa' },
 			],
 			customCss: ['./src/styles/custom.css'],

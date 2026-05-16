@@ -11,6 +11,16 @@ Each capability is a deployable Worker wrapper around one API:
 - A `capa.manifest.json` with the source spec, upstream URL, auth style, and operation count.
 - One upstream HTTP request per method call, with a structured receipt returned alongside the result.
 
+## Install direction
+
+The catalog is moving toward one boring, useful command:
+
+```bash
+npx @acoyfellow/capa add <capability>
+```
+
+It should drop a hello-world Worker scaffold with the service binding already filled in. No registry theater; just a fast path from “I want Stripe/GitHub/Twitch” to a runnable Worker. Projects.dev can provision provider services and credentials; capa's install path should make those APIs feel native inside Workers.
+
 <CapabilityGrid stats planned />
 
 ## Adding a new capability
