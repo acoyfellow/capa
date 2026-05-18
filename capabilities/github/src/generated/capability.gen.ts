@@ -6,12 +6,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 
 export class AdvisoriesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -25,7 +25,7 @@ By default,
 	 *
 	 * `GET /advisories` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/list-global-advisories",
 			namespace: "advisories",
@@ -38,6 +38,7 @@ By default,
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -46,7 +47,7 @@ By default,
 	 *
 	 * `GET /advisories/{ghsa_id}` — risk: low
 	 */
-	async retrieve(ghsaId: string): Promise<ProofResult<unknown>> {
+	async retrieve(ghsaId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/get-global-advisory",
 			namespace: "advisories",
@@ -59,13 +60,14 @@ By default,
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AgentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -84,7 +86,7 @@ This endpoi
 	 *
 	 * `GET /agents/repos/{owner}/{repo}/tasks` — risk: medium
 	 */
-	async tasks_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async tasks_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agent-tasks/list-tasks-for-repo",
 			namespace: "agents",
@@ -97,6 +99,7 @@ This endpoi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -110,7 +113,7 @@ This endpoint is only available to users with a Copilot Business or C
 	 *
 	 * `POST /agents/repos/{owner}/{repo}/tasks` — risk: medium
 	 */
-	async tasks_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async tasks_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agent-tasks/create-task-in-repo",
 			namespace: "agents",
@@ -123,6 +126,7 @@ This endpoint is only available to users with a Copilot Business or C
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -138,7 +142,7 @@ This endpoint work
 	 *
 	 * `GET /agents/repos/{owner}/{repo}/tasks/{task_id}` — risk: medium
 	 */
-	async repostasksRetrieveTask(owner: string, repo: string, taskId: string): Promise<ProofResult<unknown>> {
+	async repostasksRetrieveTask(owner: string, repo: string, taskId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agent-tasks/get-task-by-repo-and-id",
 			namespace: "agents",
@@ -151,6 +155,7 @@ This endpoint work
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -166,7 +171,7 @@ This endpoint works with
 	 *
 	 * `GET /agents/tasks` — risk: medium
 	 */
-	async listTasks(): Promise<ProofResult<unknown>> {
+	async listTasks(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agent-tasks/list-tasks",
 			namespace: "agents",
@@ -179,6 +184,7 @@ This endpoint works with
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -194,7 +200,7 @@ This endpoint works
 	 *
 	 * `GET /agents/tasks/{task_id}` — risk: medium
 	 */
-	async tasksRetrieveTask(taskId: string): Promise<ProofResult<unknown>> {
+	async tasksRetrieveTask(taskId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agent-tasks/get-task-by-id",
 			namespace: "agents",
@@ -207,13 +213,14 @@ This endpoint works
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -225,7 +232,7 @@ export class AppResource extends RpcTarget {
 	 *
 	 * `GET /app` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-authenticated",
 			namespace: "app",
@@ -238,6 +245,7 @@ export class AppResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -248,7 +256,7 @@ You must use
 	 *
 	 * `GET /app/hook/config` — risk: medium
 	 */
-	async config_0(): Promise<ProofResult<unknown>> {
+	async config_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-webhook-config-for-app",
 			namespace: "app",
@@ -261,6 +269,7 @@ You must use
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -271,7 +280,7 @@ You must use
 	 *
 	 * `PATCH /app/hook/config` — risk: medium
 	 */
-	async config_1(body?: unknown): Promise<ProofResult<unknown>> {
+	async config_1(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/update-webhook-config-for-app",
 			namespace: "app",
@@ -284,6 +293,7 @@ You must use
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -294,7 +304,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `GET /app/hook/deliveries` — risk: medium
 	 */
-	async deliveries(): Promise<ProofResult<unknown>> {
+	async deliveries(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-webhook-deliveries",
 			namespace: "app",
@@ -307,6 +317,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -317,7 +328,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `GET /app/hook/deliveries/{delivery_id}` — risk: medium
 	 */
-	async retrieveDelivery(deliveryId: string): Promise<ProofResult<unknown>> {
+	async retrieveDelivery(deliveryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-webhook-delivery",
 			namespace: "app",
@@ -330,6 +341,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -340,7 +352,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `POST /app/hook/deliveries/{delivery_id}/attempts` — risk: medium
 	 */
-	async attempts(deliveryId: string): Promise<ProofResult<unknown>> {
+	async attempts(deliveryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/redeliver-webhook-delivery",
 			namespace: "app",
@@ -353,6 +365,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -361,7 +374,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `GET /app/installation-requests` — risk: medium
 	 */
-	async listInstallationRequests(): Promise<ProofResult<unknown>> {
+	async listInstallationRequests(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-installation-requests-for-authenticated-app",
 			namespace: "app",
@@ -374,6 +387,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -384,7 +398,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `GET /app/installations` — risk: medium
 	 */
-	async listInstallations(): Promise<ProofResult<unknown>> {
+	async listInstallations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-installations",
 			namespace: "app",
@@ -397,6 +411,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -407,7 +422,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `GET /app/installations/{installation_id}` — risk: medium
 	 */
-	async retrieveInstallation(installationId: string): Promise<ProofResult<unknown>> {
+	async retrieveInstallation(installationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-installation",
 			namespace: "app",
@@ -420,6 +435,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -428,7 +444,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `DELETE /app/installations/{installation_id}` — risk: medium
 	 */
-	async deleteInstallation(installationId: string): Promise<ProofResult<unknown>> {
+	async deleteInstallation(installationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/delete-installation",
 			namespace: "app",
@@ -441,6 +457,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -449,7 +466,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `POST /app/installations/{installation_id}/access_tokens` — risk: medium
 	 */
-	async accessTokens(installationId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async accessTokens(installationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/create-installation-access-token",
 			namespace: "app",
@@ -462,6 +479,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -470,7 +488,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `PUT /app/installations/{installation_id}/suspended` — risk: medium
 	 */
-	async suspended_0(installationId: string): Promise<ProofResult<unknown>> {
+	async suspended_0(installationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/suspend-installation",
 			namespace: "app",
@@ -483,6 +501,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -493,7 +512,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `DELETE /app/installations/{installation_id}/suspended` — risk: medium
 	 */
-	async suspended_1(installationId: string): Promise<ProofResult<unknown>> {
+	async suspended_1(installationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/unsuspend-installation",
 			namespace: "app",
@@ -506,13 +525,14 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppManifestsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -524,7 +544,7 @@ export class AppManifestsResource extends RpcTarget {
 	 *
 	 * `POST /app-manifests/{code}/conversions` — risk: medium
 	 */
-	async createConversion(code: string): Promise<ProofResult<unknown>> {
+	async createConversion(code: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/create-from-manifest",
 			namespace: "app-manifests",
@@ -537,13 +557,14 @@ export class AppManifestsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ApplicationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -555,7 +576,7 @@ export class ApplicationsResource extends RpcTarget {
 	 *
 	 * `DELETE /applications/{client_id}/grant` — risk: medium
 	 */
-	async grant(clientId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async grant(clientId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/delete-authorization",
 			namespace: "applications",
@@ -568,6 +589,7 @@ export class ApplicationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -576,7 +598,7 @@ export class ApplicationsResource extends RpcTarget {
 	 *
 	 * `POST /applications/{client_id}/token` — risk: medium
 	 */
-	async createToken(clientId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createToken(clientId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/check-token",
 			namespace: "applications",
@@ -589,6 +611,7 @@ export class ApplicationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -597,7 +620,7 @@ export class ApplicationsResource extends RpcTarget {
 	 *
 	 * `PATCH /applications/{client_id}/token` — risk: medium
 	 */
-	async token_0(clientId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async token_0(clientId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/reset-token",
 			namespace: "applications",
@@ -610,6 +633,7 @@ export class ApplicationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -618,7 +642,7 @@ export class ApplicationsResource extends RpcTarget {
 	 *
 	 * `DELETE /applications/{client_id}/token` — risk: medium
 	 */
-	async token_1(clientId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async token_1(clientId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/delete-token",
 			namespace: "applications",
@@ -631,6 +655,7 @@ export class ApplicationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -640,7 +665,7 @@ which repositories the token can access and which permissions are granted t
 	 *
 	 * `POST /applications/{client_id}/token/scoped` — risk: medium
 	 */
-	async scoped(clientId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async scoped(clientId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/scope-token",
 			namespace: "applications",
@@ -653,13 +678,14 @@ which repositories the token can access and which permissions are granted t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -672,7 +698,7 @@ export class AppsResource extends RpcTarget {
 	 *
 	 * `GET /apps/{app_slug}` — risk: low
 	 */
-	async retrieve(appSlug: string): Promise<ProofResult<unknown>> {
+	async retrieve(appSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-by-slug",
 			namespace: "apps",
@@ -685,13 +711,14 @@ export class AppsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AssignmentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -703,7 +730,7 @@ export class AssignmentsResource extends RpcTarget {
 	 *
 	 * `GET /assignments/{assignment_id}` — risk: low
 	 */
-	async retrieve(assignmentId: string): Promise<ProofResult<unknown>> {
+	async retrieve(assignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "classroom/get-an-assignment",
 			namespace: "assignments",
@@ -716,6 +743,7 @@ export class AssignmentsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -724,7 +752,7 @@ export class AssignmentsResource extends RpcTarget {
 	 *
 	 * `GET /assignments/{assignment_id}/accepted_assignments` — risk: medium
 	 */
-	async listAcceptedAssignments(assignmentId: string): Promise<ProofResult<unknown>> {
+	async listAcceptedAssignments(assignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "classroom/list-accepted-assignments-for-an-assignment",
 			namespace: "assignments",
@@ -737,6 +765,7 @@ export class AssignmentsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -745,7 +774,7 @@ export class AssignmentsResource extends RpcTarget {
 	 *
 	 * `GET /assignments/{assignment_id}/grades` — risk: medium
 	 */
-	async listGrades(assignmentId: string): Promise<ProofResult<unknown>> {
+	async listGrades(assignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "classroom/get-assignment-grades",
 			namespace: "assignments",
@@ -758,13 +787,14 @@ export class AssignmentsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ClassroomsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -776,7 +806,7 @@ export class ClassroomsResource extends RpcTarget {
 	 *
 	 * `GET /classrooms` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "classroom/list-classrooms",
 			namespace: "classrooms",
@@ -789,6 +819,7 @@ export class ClassroomsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -797,7 +828,7 @@ export class ClassroomsResource extends RpcTarget {
 	 *
 	 * `GET /classrooms/{classroom_id}` — risk: low
 	 */
-	async retrieve(classroomId: string): Promise<ProofResult<unknown>> {
+	async retrieve(classroomId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "classroom/get-a-classroom",
 			namespace: "classrooms",
@@ -810,6 +841,7 @@ export class ClassroomsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -818,7 +850,7 @@ export class ClassroomsResource extends RpcTarget {
 	 *
 	 * `GET /classrooms/{classroom_id}/assignments` — risk: medium
 	 */
-	async listAssignments(classroomId: string): Promise<ProofResult<unknown>> {
+	async listAssignments(classroomId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "classroom/list-assignments-for-a-classroom",
 			namespace: "classrooms",
@@ -831,13 +863,14 @@ export class ClassroomsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CodesOfConductResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -849,7 +882,7 @@ export class CodesOfConductResource extends RpcTarget {
 	 *
 	 * `GET /codes_of_conduct` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codes-of-conduct/get-all-codes-of-conduct",
 			namespace: "codes_of_conduct",
@@ -862,6 +895,7 @@ export class CodesOfConductResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -870,7 +904,7 @@ export class CodesOfConductResource extends RpcTarget {
 	 *
 	 * `GET /codes_of_conduct/{key}` — risk: low
 	 */
-	async retrieve(key: string): Promise<ProofResult<unknown>> {
+	async retrieve(key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codes-of-conduct/get-conduct-code",
 			namespace: "codes_of_conduct",
@@ -883,13 +917,14 @@ export class CodesOfConductResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CredentialsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -901,7 +936,7 @@ export class CredentialsResource extends RpcTarget {
 	 *
 	 * `POST /credentials/revoke` — risk: medium
 	 */
-	async createRevoke(body?: unknown): Promise<ProofResult<unknown>> {
+	async createRevoke(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "credentials/revoke",
 			namespace: "credentials",
@@ -914,13 +949,14 @@ export class CredentialsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EmojisResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -932,7 +968,7 @@ export class EmojisResource extends RpcTarget {
 	 *
 	 * `GET /emojis` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "emojis/get",
 			namespace: "emojis",
@@ -945,13 +981,14 @@ export class EmojisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EnterprisesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -966,7 +1003,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `GET /enterprises/{enterprise}/actions/cache/retention-limit` — risk: medium
 	 */
-	async retentionLimit_0(enterprise: string): Promise<ProofResult<unknown>> {
+	async retentionLimit_0(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-retention-limit-for-enterprise",
 			namespace: "enterprises",
@@ -979,6 +1016,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -990,7 +1028,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `PUT /enterprises/{enterprise}/actions/cache/retention-limit` — risk: medium
 	 */
-	async retentionLimit_1(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retentionLimit_1(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-actions-cache-retention-limit-for-enterprise",
 			namespace: "enterprises",
@@ -1003,6 +1041,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1014,7 +1053,7 @@ OAuth tokens and personal access tokens (
 	 *
 	 * `GET /enterprises/{enterprise}/actions/cache/storage-limit` — risk: medium
 	 */
-	async storageLimit_0(enterprise: string): Promise<ProofResult<unknown>> {
+	async storageLimit_0(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-storage-limit-for-enterprise",
 			namespace: "enterprises",
@@ -1027,6 +1066,7 @@ OAuth tokens and personal access tokens (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1038,7 +1078,7 @@ OAuth tokens and personal access tokens (
 	 *
 	 * `PUT /enterprises/{enterprise}/actions/cache/storage-limit` — risk: medium
 	 */
-	async storageLimit_1(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async storageLimit_1(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-actions-cache-storage-limit-for-enterprise",
 			namespace: "enterprises",
@@ -1051,6 +1091,7 @@ OAuth tokens and personal access tokens (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1061,7 +1102,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:enterprise
 	 *
 	 * `GET /enterprises/{enterprise}/actions/oidc/customization/properties/repo` — risk: medium
 	 */
-	async repo_0(enterprise: string): Promise<ProofResult<unknown>> {
+	async repo_0(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oidc/list-oidc-custom-property-inclusions-for-enterprise",
 			namespace: "enterprises",
@@ -1074,6 +1115,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:enterprise
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1084,7 +1126,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:enterprise
 	 *
 	 * `POST /enterprises/{enterprise}/actions/oidc/customization/properties/repo` — risk: medium
 	 */
-	async repo_1(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async repo_1(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oidc/create-oidc-custom-property-inclusion-for-enterprise",
 			namespace: "enterprises",
@@ -1097,6 +1139,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:enterprise
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1107,7 +1150,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:enterprise
 	 *
 	 * `DELETE /enterprises/{enterprise}/actions/oidc/customization/properties/repo/{custom_property_name}` — risk: medium
 	 */
-	async deleteRepo(enterprise: string, customPropertyName: string): Promise<ProofResult<unknown>> {
+	async deleteRepo(enterprise: string, customPropertyName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oidc/delete-oidc-custom-property-inclusion-for-enterprise",
 			namespace: "enterprises",
@@ -1120,6 +1163,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:enterprise
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1132,7 +1176,7 @@ OAuth app tokens and personal acce
 	 *
 	 * `GET /enterprises/{enterprise}/code-security/configurations` — risk: medium
 	 */
-	async configurations_0(enterprise: string): Promise<ProofResult<unknown>> {
+	async configurations_0(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/get-configurations-for-enterprise",
 			namespace: "enterprises",
@@ -1145,6 +1189,7 @@ OAuth app tokens and personal acce
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1157,7 +1202,7 @@ OAuth app tokens and personal access tokens (
 	 *
 	 * `POST /enterprises/{enterprise}/code-security/configurations` — risk: medium
 	 */
-	async configurations_1(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async configurations_1(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/create-configuration-for-enterprise",
 			namespace: "enterprises",
@@ -1170,6 +1215,7 @@ OAuth app tokens and personal access tokens (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1182,7 +1228,7 @@ OAuth app tokens and personal acces
 	 *
 	 * `GET /enterprises/{enterprise}/code-security/configurations/defaults` — risk: medium
 	 */
-	async defaults_0(enterprise: string): Promise<ProofResult<unknown>> {
+	async defaults_0(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/get-default-configurations-for-enterprise",
 			namespace: "enterprises",
@@ -1195,6 +1241,7 @@ OAuth app tokens and personal acces
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1207,7 +1254,7 @@ OAuth app tokens and personal access t
 	 *
 	 * `GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}` — risk: medium
 	 */
-	async retrieveConfiguration(enterprise: string, configurationId: string): Promise<ProofResult<unknown>> {
+	async retrieveConfiguration(enterprise: string, configurationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/get-single-configuration-for-enterprise",
 			namespace: "enterprises",
@@ -1220,6 +1267,7 @@ OAuth app tokens and personal access t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1232,7 +1280,7 @@ OAuth app tokens and personal access tokens (
 	 *
 	 * `PATCH /enterprises/{enterprise}/code-security/configurations/{configuration_id}` — risk: medium
 	 */
-	async configurations_2(enterprise: string, configurationId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async configurations_2(enterprise: string, configurationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/update-enterprise-configuration",
 			namespace: "enterprises",
@@ -1245,6 +1293,7 @@ OAuth app tokens and personal access tokens (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1257,7 +1306,7 @@ The authentica
 	 *
 	 * `DELETE /enterprises/{enterprise}/code-security/configurations/{configuration_id}` — risk: medium
 	 */
-	async deleteConfiguration(enterprise: string, configurationId: string): Promise<ProofResult<unknown>> {
+	async deleteConfiguration(enterprise: string, configurationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/delete-configuration-for-enterprise",
 			namespace: "enterprises",
@@ -1270,6 +1319,7 @@ The authentica
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1280,7 +1330,7 @@ If i
 	 *
 	 * `POST /enterprises/{enterprise}/code-security/configurations/{configuration_id}/attach` — risk: medium
 	 */
-	async attach(enterprise: string, configurationId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async attach(enterprise: string, configurationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/attach-enterprise-configuration",
 			namespace: "enterprises",
@@ -1293,6 +1343,7 @@ If i
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1303,7 +1354,7 @@ This configuration will be applied by default to the matching repository type wh
 	 *
 	 * `PUT /enterprises/{enterprise}/code-security/configurations/{configuration_id}/defaults` — risk: medium
 	 */
-	async defaults_1(enterprise: string, configurationId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async defaults_1(enterprise: string, configurationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/set-configuration-as-default-for-enterprise",
 			namespace: "enterprises",
@@ -1316,6 +1367,7 @@ This configuration will be applied by default to the matching repository type wh
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1328,7 +1380,7 @@ The authenticated user must be an administrator of the enterprise in order to us
 	 *
 	 * `GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}/repositories` — risk: medium
 	 */
-	async repositories(enterprise: string, configurationId: string): Promise<ProofResult<unknown>> {
+	async repositories(enterprise: string, configurationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/get-repositories-for-enterprise-configuration",
 			namespace: "enterprises",
@@ -1341,6 +1393,7 @@ The authenticated user must be an administrator of the enterprise in order to us
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1349,7 +1402,7 @@ The authenticated user must be an administrator of the enterprise in order to us
 	 *
 	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-1-day` — risk: medium
 	 */
-	async enterprise1Day(enterprise: string): Promise<ProofResult<unknown>> {
+	async enterprise1Day(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-enterprise-one-day-usage-metrics",
 			namespace: "enterprises",
@@ -1362,6 +1415,7 @@ The authenticated user must be an administrator of the enterprise in order to us
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1372,7 +1426,7 @@ Th
 	 *
 	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-28-day/latest` — risk: medium
 	 */
-	async enterprise28DayLatest(enterprise: string): Promise<ProofResult<unknown>> {
+	async enterprise28DayLatest(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-enterprise-usage-metrics",
 			namespace: "enterprises",
@@ -1385,6 +1439,7 @@ Th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1393,7 +1448,7 @@ Th
 	 *
 	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day` — risk: medium
 	 */
-	async userTeams1Day(enterprise: string): Promise<ProofResult<unknown>> {
+	async userTeams1Day(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-enterprise-user-teams-one-day-report",
 			namespace: "enterprises",
@@ -1406,6 +1461,7 @@ Th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1414,7 +1470,7 @@ Th
 	 *
 	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/users-1-day` — risk: medium
 	 */
-	async users1Day(enterprise: string): Promise<ProofResult<unknown>> {
+	async users1Day(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-users-one-day-usage-metrics",
 			namespace: "enterprises",
@@ -1427,6 +1483,7 @@ Th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1435,7 +1492,7 @@ Th
 	 *
 	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/users-28-day/latest` — risk: medium
 	 */
-	async users28DayLatest(enterprise: string): Promise<ProofResult<unknown>> {
+	async users28DayLatest(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-users-usage-metrics",
 			namespace: "enterprises",
@@ -1448,6 +1505,7 @@ Th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1459,7 +1517,7 @@ organizations, disabled for all organizations, confi
 	 *
 	 * `PUT /enterprises/{enterprise}/copilot/policies/coding_agent` — risk: medium
 	 */
-	async codingAgent(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async codingAgent(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/set-enterprise-coding-agent-policy",
 			namespace: "enterprises",
@@ -1472,6 +1530,7 @@ organizations, disabled for all organizations, confi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1483,7 +1542,7 @@ using this endpoint. Organiza
 	 *
 	 * `POST /enterprises/{enterprise}/copilot/policies/coding_agent/organizations` — risk: medium
 	 */
-	async postCopilotpoliciescodingAgentOrganizations(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postCopilotpoliciescodingAgentOrganizations(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/add-organizations-to-enterprise-coding-agent-policy",
 			namespace: "enterprises",
@@ -1496,6 +1555,7 @@ using this endpoint. Organiza
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1507,7 +1567,7 @@ using this endpoint. Organiz
 	 *
 	 * `DELETE /enterprises/{enterprise}/copilot/policies/coding_agent/organizations` — risk: medium
 	 */
-	async deleteCopilotpoliciescodingAgentOrganizations(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteCopilotpoliciescodingAgentOrganizations(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/remove-organizations-from-enterprise-coding-agent-policy",
 			namespace: "enterprises",
@@ -1520,6 +1580,7 @@ using this endpoint. Organiz
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1532,7 +1593,7 @@ Alerts are only returned for orga
 	 *
 	 * `GET /enterprises/{enterprise}/dependabot/alerts` — risk: medium
 	 */
-	async alerts(enterprise: string): Promise<ProofResult<unknown>> {
+	async alerts(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/list-alerts-for-enterprise",
 			namespace: "enterprises",
@@ -1545,6 +1606,7 @@ Alerts are only returned for orga
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1555,7 +1617,7 @@ The authenticated user must be an enterprise owner to us
 	 *
 	 * `GET /enterprises/{enterprise}/dependabot/repository-access` — risk: medium
 	 */
-	async repositoryAccess_0(enterprise: string): Promise<ProofResult<unknown>> {
+	async repositoryAccess_0(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/repository-access-for-enterprise",
 			namespace: "enterprises",
@@ -1568,6 +1630,7 @@ The authenticated user must be an enterprise owner to us
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1578,7 +1641,7 @@ The authent
 	 *
 	 * `PATCH /enterprises/{enterprise}/dependabot/repository-access` — risk: medium
 	 */
-	async repositoryAccess_1(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async repositoryAccess_1(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/update-repository-access-for-enterprise",
 			namespace: "enterprises",
@@ -1591,6 +1654,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1600,7 +1664,7 @@ The authent
 	 *
 	 * `PUT /enterprises/{enterprise}/dependabot/repository-access/default-level` — risk: medium
 	 */
-	async defaultLevel(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async defaultLevel(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/set-repository-access-default-level-for-enterprise",
 			namespace: "enterprises",
@@ -1613,6 +1677,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1621,7 +1686,7 @@ The authent
 	 *
 	 * `GET /enterprises/{enterprise}/teams` — risk: medium
 	 */
-	async listTeams(enterprise: string): Promise<ProofResult<unknown>> {
+	async listTeams(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-teams/list",
 			namespace: "enterprises",
@@ -1634,6 +1699,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1642,7 +1708,7 @@ The authent
 	 *
 	 * `POST /enterprises/{enterprise}/teams` — risk: medium
 	 */
-	async createTeam(enterprise: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createTeam(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-teams/create",
 			namespace: "enterprises",
@@ -1655,6 +1721,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1663,7 +1730,7 @@ The authent
 	 *
 	 * `GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships` — risk: medium
 	 */
-	async memberships_0(enterprise: string, enterpriseTeam: string): Promise<ProofResult<unknown>> {
+	async memberships_0(enterprise: string, enterpriseTeam: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-memberships/list",
 			namespace: "enterprises",
@@ -1676,6 +1743,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1684,7 +1752,7 @@ The authent
 	 *
 	 * `POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/add` — risk: medium
 	 */
-	async membershipsAdd(enterprise: string, enterpriseTeam: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async membershipsAdd(enterprise: string, enterpriseTeam: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-memberships/bulk-add",
 			namespace: "enterprises",
@@ -1697,6 +1765,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1705,7 +1774,7 @@ The authent
 	 *
 	 * `POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove` — risk: medium
 	 */
-	async membershipsRemove(enterprise: string, enterpriseTeam: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async membershipsRemove(enterprise: string, enterpriseTeam: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-memberships/bulk-remove",
 			namespace: "enterprises",
@@ -1718,6 +1787,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1726,7 +1796,7 @@ The authent
 	 *
 	 * `GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}` — risk: medium
 	 */
-	async retrieveMembership(enterprise: string, enterpriseTeam: string, username: string): Promise<ProofResult<unknown>> {
+	async retrieveMembership(enterprise: string, enterpriseTeam: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-memberships/get",
 			namespace: "enterprises",
@@ -1739,6 +1809,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1747,7 +1818,7 @@ The authent
 	 *
 	 * `PUT /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}` — risk: medium
 	 */
-	async memberships_1(enterprise: string, enterpriseTeam: string, username: string): Promise<ProofResult<unknown>> {
+	async memberships_1(enterprise: string, enterpriseTeam: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-memberships/add",
 			namespace: "enterprises",
@@ -1760,6 +1831,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1768,7 +1840,7 @@ The authent
 	 *
 	 * `DELETE /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}` — risk: medium
 	 */
-	async deleteMembership(enterprise: string, enterpriseTeam: string, username: string): Promise<ProofResult<unknown>> {
+	async deleteMembership(enterprise: string, enterpriseTeam: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-memberships/remove",
 			namespace: "enterprises",
@@ -1781,6 +1853,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1789,7 +1862,7 @@ The authent
 	 *
 	 * `GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations` — risk: medium
 	 */
-	async getTeamsOrganizations(enterprise: string, enterpriseTeam: string): Promise<ProofResult<unknown>> {
+	async getTeamsOrganizations(enterprise: string, enterpriseTeam: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-organizations/get-assignments",
 			namespace: "enterprises",
@@ -1802,6 +1875,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1810,7 +1884,7 @@ The authent
 	 *
 	 * `POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/add` — risk: medium
 	 */
-	async organizationsAdd(enterprise: string, enterpriseTeam: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async organizationsAdd(enterprise: string, enterpriseTeam: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-organizations/bulk-add",
 			namespace: "enterprises",
@@ -1823,6 +1897,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1831,7 +1906,7 @@ The authent
 	 *
 	 * `POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/remove` — risk: medium
 	 */
-	async organizationsRemove(enterprise: string, enterpriseTeam: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async organizationsRemove(enterprise: string, enterpriseTeam: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-organizations/bulk-remove",
 			namespace: "enterprises",
@@ -1844,6 +1919,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1852,7 +1928,7 @@ The authent
 	 *
 	 * `GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}` — risk: medium
 	 */
-	async retrieveOrganization(enterprise: string, enterpriseTeam: string, org: string): Promise<ProofResult<unknown>> {
+	async retrieveOrganization(enterprise: string, enterpriseTeam: string, org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-organizations/get-assignment",
 			namespace: "enterprises",
@@ -1865,6 +1941,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1873,7 +1950,7 @@ The authent
 	 *
 	 * `PUT /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}` — risk: medium
 	 */
-	async putTeamsOrganizations(enterprise: string, enterpriseTeam: string, org: string): Promise<ProofResult<unknown>> {
+	async putTeamsOrganizations(enterprise: string, enterpriseTeam: string, org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-organizations/add",
 			namespace: "enterprises",
@@ -1886,6 +1963,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1894,7 +1972,7 @@ The authent
 	 *
 	 * `DELETE /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}` — risk: medium
 	 */
-	async deleteOrganization(enterprise: string, enterpriseTeam: string, org: string): Promise<ProofResult<unknown>> {
+	async deleteOrganization(enterprise: string, enterpriseTeam: string, org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-team-organizations/delete",
 			namespace: "enterprises",
@@ -1907,6 +1985,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1915,7 +1994,7 @@ The authent
 	 *
 	 * `GET /enterprises/{enterprise}/teams/{team_slug}` — risk: medium
 	 */
-	async retrieveTeam(enterprise: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async retrieveTeam(enterprise: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-teams/get",
 			namespace: "enterprises",
@@ -1928,6 +2007,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1936,7 +2016,7 @@ The authent
 	 *
 	 * `PATCH /enterprises/{enterprise}/teams/{team_slug}` — risk: medium
 	 */
-	async teams(enterprise: string, teamSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async teams(enterprise: string, teamSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-teams/update",
 			namespace: "enterprises",
@@ -1949,6 +2029,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1959,7 +2040,7 @@ If you are an enterprise owner, deleting an enterprise team will delete all of i
 	 *
 	 * `DELETE /enterprises/{enterprise}/teams/{team_slug}` — risk: medium
 	 */
-	async deleteTeam(enterprise: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async deleteTeam(enterprise: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "enterprise-teams/delete",
 			namespace: "enterprises",
@@ -1972,13 +2053,14 @@ If you are an enterprise owner, deleting an enterprise team will delete all of i
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EventsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1991,7 +2073,7 @@ export class EventsResource extends RpcTarget {
 	 *
 	 * `GET /events` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-public-events",
 			namespace: "events",
@@ -2004,13 +2086,14 @@ export class EventsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FeedsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2024,7 +2107,7 @@ export class FeedsResource extends RpcTarget {
 	 *
 	 * `GET /feeds` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/get-feeds",
 			namespace: "feeds",
@@ -2037,13 +2120,14 @@ export class FeedsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class GistsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2055,7 +2139,7 @@ export class GistsResource extends RpcTarget {
 	 *
 	 * `GET /gists` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/list",
 			namespace: "gists",
@@ -2068,6 +2152,7 @@ export class GistsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2079,7 +2164,7 @@ export class GistsResource extends RpcTarget {
 	 *
 	 * `POST /gists` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/create",
 			namespace: "gists",
@@ -2092,6 +2177,7 @@ export class GistsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2102,7 +2188,7 @@ Note: With [pagination](https://docs.github.com/rest/guides/using-pagination-in-
 	 *
 	 * `GET /gists/public` — risk: medium
 	 */
-	async listPublic(): Promise<ProofResult<unknown>> {
+	async listPublic(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/list-public",
 			namespace: "gists",
@@ -2115,6 +2201,7 @@ Note: With [pagination](https://docs.github.com/rest/guides/using-pagination-in-
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2123,7 +2210,7 @@ Note: With [pagination](https://docs.github.com/rest/guides/using-pagination-in-
 	 *
 	 * `GET /gists/starred` — risk: medium
 	 */
-	async listStarred(): Promise<ProofResult<unknown>> {
+	async listStarred(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/list-starred",
 			namespace: "gists",
@@ -2136,6 +2223,7 @@ Note: With [pagination](https://docs.github.com/rest/guides/using-pagination-in-
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2146,7 +2234,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /gists/{gist_id}` — risk: low
 	 */
-	async retrieve_0(gistId: string): Promise<ProofResult<unknown>> {
+	async retrieve_0(gistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/get",
 			namespace: "gists",
@@ -2159,6 +2247,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2171,7 +2260,7 @@ At leas
 	 *
 	 * `PATCH /gists/{gist_id}` — risk: medium
 	 */
-	async patch(gistId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patch(gistId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/update",
 			namespace: "gists",
@@ -2184,6 +2273,7 @@ At leas
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2192,7 +2282,7 @@ At leas
 	 *
 	 * `DELETE /gists/{gist_id}` — risk: medium
 	 */
-	async del(gistId: string): Promise<ProofResult<unknown>> {
+	async del(gistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/delete",
 			namespace: "gists",
@@ -2205,6 +2295,7 @@ At leas
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2215,7 +2306,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /gists/{gist_id}/comments` — risk: medium
 	 */
-	async listComments(gistId: string): Promise<ProofResult<unknown>> {
+	async listComments(gistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/list-comments",
 			namespace: "gists",
@@ -2228,6 +2319,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2238,7 +2330,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /gists/{gist_id}/comments` — risk: medium
 	 */
-	async createComment(gistId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createComment(gistId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/create-comment",
 			namespace: "gists",
@@ -2251,6 +2343,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2261,7 +2354,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /gists/{gist_id}/comments/{comment_id}` — risk: medium
 	 */
-	async retrieveComment(gistId: string, commentId: string): Promise<ProofResult<unknown>> {
+	async retrieveComment(gistId: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/get-comment",
 			namespace: "gists",
@@ -2274,6 +2367,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2284,7 +2378,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PATCH /gists/{gist_id}/comments/{comment_id}` — risk: medium
 	 */
-	async comments(gistId: string, commentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async comments(gistId: string, commentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/update-comment",
 			namespace: "gists",
@@ -2297,6 +2391,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2305,7 +2400,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `DELETE /gists/{gist_id}/comments/{comment_id}` — risk: medium
 	 */
-	async deleteComment(gistId: string, commentId: string): Promise<ProofResult<unknown>> {
+	async deleteComment(gistId: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/delete-comment",
 			namespace: "gists",
@@ -2318,6 +2413,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2326,7 +2422,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /gists/{gist_id}/commits` — risk: medium
 	 */
-	async listCommits(gistId: string): Promise<ProofResult<unknown>> {
+	async listCommits(gistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/list-commits",
 			namespace: "gists",
@@ -2339,6 +2435,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2347,7 +2444,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /gists/{gist_id}/forks` — risk: medium
 	 */
-	async listForks(gistId: string): Promise<ProofResult<unknown>> {
+	async listForks(gistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/list-forks",
 			namespace: "gists",
@@ -2360,6 +2457,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2368,7 +2466,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /gists/{gist_id}/forks` — risk: medium
 	 */
-	async createFork(gistId: string): Promise<ProofResult<unknown>> {
+	async createFork(gistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/fork",
 			namespace: "gists",
@@ -2381,6 +2479,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2389,7 +2488,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /gists/{gist_id}/star` — risk: medium
 	 */
-	async listStar(gistId: string): Promise<ProofResult<unknown>> {
+	async listStar(gistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/check-is-starred",
 			namespace: "gists",
@@ -2402,6 +2501,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2410,7 +2510,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PUT /gists/{gist_id}/star` — risk: medium
 	 */
-	async star_0(gistId: string): Promise<ProofResult<unknown>> {
+	async star_0(gistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/star",
 			namespace: "gists",
@@ -2423,6 +2523,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2431,7 +2532,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `DELETE /gists/{gist_id}/star` — risk: medium
 	 */
-	async star_1(gistId: string): Promise<ProofResult<unknown>> {
+	async star_1(gistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/unstar",
 			namespace: "gists",
@@ -2444,6 +2545,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2454,7 +2556,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /gists/{gist_id}/{sha}` — risk: low
 	 */
-	async retrieve_1(gistId: string, sha: string): Promise<ProofResult<unknown>> {
+	async retrieve_1(gistId: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/get-revision",
 			namespace: "gists",
@@ -2467,13 +2569,14 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class GitignoreResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2485,7 +2588,7 @@ export class GitignoreResource extends RpcTarget {
 	 *
 	 * `GET /gitignore/templates` — risk: medium
 	 */
-	async listTemplates(): Promise<ProofResult<unknown>> {
+	async listTemplates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gitignore/get-all-templates",
 			namespace: "gitignore",
@@ -2498,6 +2601,7 @@ export class GitignoreResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2508,7 +2612,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /gitignore/templates/{name}` — risk: medium
 	 */
-	async retrieveTemplate(name: string): Promise<ProofResult<unknown>> {
+	async retrieveTemplate(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gitignore/get-template",
 			namespace: "gitignore",
@@ -2521,13 +2625,14 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class InstallationResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2539,7 +2644,7 @@ export class InstallationResource extends RpcTarget {
 	 *
 	 * `GET /installation/repositories` — risk: medium
 	 */
-	async listRepositories(): Promise<ProofResult<unknown>> {
+	async listRepositories(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-repos-accessible-to-installation",
 			namespace: "installation",
@@ -2552,6 +2657,7 @@ export class InstallationResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2562,7 +2668,7 @@ Once an installation token is revoked, the token is invalidated and cannot be us
 	 *
 	 * `DELETE /installation/token` — risk: medium
 	 */
-	async token(): Promise<ProofResult<unknown>> {
+	async token(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/revoke-installation-access-token",
 			namespace: "installation",
@@ -2575,13 +2681,14 @@ Once an installation token is revoked, the token is invalidated and cannot be us
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class IssuesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2594,7 +2701,7 @@ repositories, and organization repositories. You can use the `filter` query para
 	 *
 	 * `GET /issues` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list",
 			namespace: "issues",
@@ -2607,13 +2714,14 @@ repositories, and organization repositories. You can use the `filter` query para
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class LicensesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2625,7 +2733,7 @@ export class LicensesResource extends RpcTarget {
 	 *
 	 * `GET /licenses` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "licenses/get-all-commonly-used",
 			namespace: "licenses",
@@ -2638,6 +2746,7 @@ export class LicensesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2646,7 +2755,7 @@ export class LicensesResource extends RpcTarget {
 	 *
 	 * `GET /licenses/{license}` — risk: low
 	 */
-	async retrieve(license: string): Promise<ProofResult<unknown>> {
+	async retrieve(license: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "licenses/get",
 			namespace: "licenses",
@@ -2659,13 +2768,14 @@ export class LicensesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class MarkdownResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2677,7 +2787,7 @@ export class MarkdownResource extends RpcTarget {
 	 *
 	 * `POST /markdown` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "markdown/render",
 			namespace: "markdown",
@@ -2690,6 +2800,7 @@ export class MarkdownResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2698,7 +2809,7 @@ export class MarkdownResource extends RpcTarget {
 	 *
 	 * `POST /markdown/raw` — risk: medium
 	 */
-	async createRaw(): Promise<ProofResult<unknown>> {
+	async createRaw(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "markdown/render-raw",
 			namespace: "markdown",
@@ -2711,13 +2822,14 @@ export class MarkdownResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class MarketplaceListingResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2729,7 +2841,7 @@ export class MarketplaceListingResource extends RpcTarget {
 	 *
 	 * `GET /marketplace_listing/accounts/{account_id}` — risk: medium
 	 */
-	async accountsRetrieveAccount(accountId: string): Promise<ProofResult<unknown>> {
+	async accountsRetrieveAccount(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-subscription-plan-for-account",
 			namespace: "marketplace_listing",
@@ -2742,6 +2854,7 @@ export class MarketplaceListingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2752,7 +2865,7 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 	 *
 	 * `GET /marketplace_listing/plans` — risk: medium
 	 */
-	async listPlans(): Promise<ProofResult<unknown>> {
+	async listPlans(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-plans",
 			namespace: "marketplace_listing",
@@ -2765,6 +2878,7 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2773,7 +2887,7 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 	 *
 	 * `GET /marketplace_listing/plans/{plan_id}/accounts` — risk: medium
 	 */
-	async plansAccounts(planId: string): Promise<ProofResult<unknown>> {
+	async plansAccounts(planId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-accounts-for-plan",
 			namespace: "marketplace_listing",
@@ -2786,6 +2900,7 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2794,7 +2909,7 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 	 *
 	 * `GET /marketplace_listing/stubbed/accounts/{account_id}` — risk: medium
 	 */
-	async stubbedaccountsRetrieveAccount(accountId: string): Promise<ProofResult<unknown>> {
+	async stubbedaccountsRetrieveAccount(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-subscription-plan-for-account-stubbed",
 			namespace: "marketplace_listing",
@@ -2807,6 +2922,7 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2817,7 +2933,7 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 	 *
 	 * `GET /marketplace_listing/stubbed/plans` — risk: medium
 	 */
-	async plans(): Promise<ProofResult<unknown>> {
+	async plans(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-plans-stubbed",
 			namespace: "marketplace_listing",
@@ -2830,6 +2946,7 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2838,7 +2955,7 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 	 *
 	 * `GET /marketplace_listing/stubbed/plans/{plan_id}/accounts` — risk: medium
 	 */
-	async stubbedplansAccounts(planId: string): Promise<ProofResult<unknown>> {
+	async stubbedplansAccounts(planId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-accounts-for-plan-stubbed",
 			namespace: "marketplace_listing",
@@ -2851,13 +2968,14 @@ GitHub Apps must use a [JWT](https://docs.github.com/apps/building-github-apps/a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class MetaResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2869,7 +2987,7 @@ export class MetaResource extends RpcTarget {
 	 *
 	 * `GET /meta` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "meta/get",
 			namespace: "meta",
@@ -2882,13 +3000,14 @@ export class MetaResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class NetworksResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2901,7 +3020,7 @@ export class NetworksResource extends RpcTarget {
 	 *
 	 * `GET /networks/{owner}/{repo}/events` — risk: medium
 	 */
-	async listEvents(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listEvents(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-public-events-for-repo-network",
 			namespace: "networks",
@@ -2914,13 +3033,14 @@ export class NetworksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class NotificationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2932,7 +3052,7 @@ export class NotificationsResource extends RpcTarget {
 	 *
 	 * `GET /notifications` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-notifications-for-authenticated-user",
 			namespace: "notifications",
@@ -2945,6 +3065,7 @@ export class NotificationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2953,7 +3074,7 @@ export class NotificationsResource extends RpcTarget {
 	 *
 	 * `PUT /notifications` — risk: medium
 	 */
-	async put(body?: unknown): Promise<ProofResult<unknown>> {
+	async put(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/mark-notifications-as-read",
 			namespace: "notifications",
@@ -2966,6 +3087,7 @@ export class NotificationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2974,7 +3096,7 @@ export class NotificationsResource extends RpcTarget {
 	 *
 	 * `GET /notifications/threads/{thread_id}` — risk: medium
 	 */
-	async retrieveThread(threadId: string): Promise<ProofResult<unknown>> {
+	async retrieveThread(threadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/get-thread",
 			namespace: "notifications",
@@ -2987,6 +3109,7 @@ export class NotificationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2995,7 +3118,7 @@ export class NotificationsResource extends RpcTarget {
 	 *
 	 * `PATCH /notifications/threads/{thread_id}` — risk: medium
 	 */
-	async threads(threadId: string): Promise<ProofResult<unknown>> {
+	async threads(threadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/mark-thread-as-read",
 			namespace: "notifications",
@@ -3008,6 +3131,7 @@ export class NotificationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3016,7 +3140,7 @@ export class NotificationsResource extends RpcTarget {
 	 *
 	 * `DELETE /notifications/threads/{thread_id}` — risk: medium
 	 */
-	async deleteThread(threadId: string): Promise<ProofResult<unknown>> {
+	async deleteThread(threadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/mark-thread-as-done",
 			namespace: "notifications",
@@ -3029,6 +3153,7 @@ export class NotificationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3039,7 +3164,7 @@ Note that
 	 *
 	 * `GET /notifications/threads/{thread_id}/subscription` — risk: medium
 	 */
-	async subscription_0(threadId: string): Promise<ProofResult<unknown>> {
+	async subscription_0(threadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/get-thread-subscription-for-authenticated-user",
 			namespace: "notifications",
@@ -3052,6 +3177,7 @@ Note that
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3060,7 +3186,7 @@ Note that
 	 *
 	 * `PUT /notifications/threads/{thread_id}/subscription` — risk: medium
 	 */
-	async subscription_1(threadId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async subscription_1(threadId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/set-thread-subscription",
 			namespace: "notifications",
@@ -3073,6 +3199,7 @@ Note that
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3081,7 +3208,7 @@ Note that
 	 *
 	 * `DELETE /notifications/threads/{thread_id}/subscription` — risk: medium
 	 */
-	async subscription_2(threadId: string): Promise<ProofResult<unknown>> {
+	async subscription_2(threadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/delete-thread-subscription",
 			namespace: "notifications",
@@ -3094,13 +3221,14 @@ Note that
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OctocatResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3112,7 +3240,7 @@ export class OctocatResource extends RpcTarget {
 	 *
 	 * `GET /octocat` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "meta/get-octocat",
 			namespace: "octocat",
@@ -3125,13 +3253,14 @@ export class OctocatResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OrganizationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3146,7 +3275,7 @@ export class OrganizationsResource extends RpcTarget {
 	 *
 	 * `GET /organizations` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list",
 			namespace: "organizations",
@@ -3159,6 +3288,7 @@ export class OrganizationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3170,7 +3300,7 @@ OAuth tokens and personal access tokens (classic) n
 	 *
 	 * `GET /organizations/{org}/actions/cache/retention-limit` — risk: medium
 	 */
-	async retentionLimit_0(org: string): Promise<ProofResult<unknown>> {
+	async retentionLimit_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-retention-limit-for-organization",
 			namespace: "organizations",
@@ -3183,6 +3313,7 @@ OAuth tokens and personal access tokens (classic) n
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3194,7 +3325,7 @@ OAuth tokens and personal access tokens (classic) n
 	 *
 	 * `PUT /organizations/{org}/actions/cache/retention-limit` — risk: medium
 	 */
-	async retentionLimit_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retentionLimit_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-actions-cache-retention-limit-for-organization",
 			namespace: "organizations",
@@ -3207,6 +3338,7 @@ OAuth tokens and personal access tokens (classic) n
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3218,7 +3350,7 @@ OAuth tokens and personal access tokens (classic) need
 	 *
 	 * `GET /organizations/{org}/actions/cache/storage-limit` — risk: medium
 	 */
-	async storageLimit_0(org: string): Promise<ProofResult<unknown>> {
+	async storageLimit_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-storage-limit-for-organization",
 			namespace: "organizations",
@@ -3231,6 +3363,7 @@ OAuth tokens and personal access tokens (classic) need
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3242,7 +3375,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `PUT /organizations/{org}/actions/cache/storage-limit` — risk: medium
 	 */
-	async storageLimit_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async storageLimit_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-actions-cache-storage-limit-for-organization",
 			namespace: "organizations",
@@ -3255,6 +3388,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3267,7 +3401,7 @@ Each page retur
 	 *
 	 * `GET /organizations/{org}/settings/billing/budgets` — risk: medium
 	 */
-	async budgets_0(org: string): Promise<ProofResult<unknown>> {
+	async budgets_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-all-budgets-org",
 			namespace: "organizations",
@@ -3280,6 +3414,7 @@ Each page retur
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3291,7 +3426,7 @@ Gets a budget by ID. The authenticated user must be an organization admin or bil
 	 *
 	 * `GET /organizations/{org}/settings/billing/budgets/{budget_id}` — risk: medium
 	 */
-	async retrieveBudget(org: string, budgetId: string): Promise<ProofResult<unknown>> {
+	async retrieveBudget(org: string, budgetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-budget-org",
 			namespace: "organizations",
@@ -3304,6 +3439,7 @@ Gets a budget by ID. The authenticated user must be an organization admin or bil
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3315,7 +3451,7 @@ Updates an existing budget for an organization. The authenticated user must be a
 	 *
 	 * `PATCH /organizations/{org}/settings/billing/budgets/{budget_id}` — risk: medium
 	 */
-	async budgets_1(org: string, budgetId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async budgets_1(org: string, budgetId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/update-budget-org",
 			namespace: "organizations",
@@ -3328,6 +3464,7 @@ Updates an existing budget for an organization. The authenticated user must be a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3339,7 +3476,7 @@ Deletes a budget by ID for an organization. The authenticated user must be an or
 	 *
 	 * `DELETE /organizations/{org}/settings/billing/budgets/{budget_id}` — risk: medium
 	 */
-	async deleteBudget(org: string, budgetId: string): Promise<ProofResult<unknown>> {
+	async deleteBudget(org: string, budgetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/delete-budget-org",
 			namespace: "organizations",
@@ -3352,6 +3489,7 @@ Deletes a budget by ID for an organization. The authenticated user must be an or
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3362,7 +3500,7 @@ Deletes a budget by ID for an organization. The authenticated user must be an or
 	 *
 	 * `GET /organizations/{org}/settings/billing/premium_request/usage` — risk: medium
 	 */
-	async premiumRequestUsage(org: string): Promise<ProofResult<unknown>> {
+	async premiumRequestUsage(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-github-billing-premium-request-usage-report-org",
 			namespace: "organizations",
@@ -3375,6 +3513,7 @@ Deletes a budget by ID for an organization. The authenticated user must be an or
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3385,7 +3524,7 @@ Deletes a budget by ID for an organization. The authenticated user must be an or
 	 *
 	 * `GET /organizations/{org}/settings/billing/usage` — risk: medium
 	 */
-	async usage_1(org: string): Promise<ProofResult<unknown>> {
+	async usage_1(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-github-billing-usage-report-org",
 			namespace: "organizations",
@@ -3398,6 +3537,7 @@ Deletes a budget by ID for an organization. The authenticated user must be an or
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3409,7 +3549,7 @@ Gets a summary report of usage for an organization. To use this endpoint, you mu
 	 *
 	 * `GET /organizations/{org}/settings/billing/usage/summary` — risk: medium
 	 */
-	async summary(org: string): Promise<ProofResult<unknown>> {
+	async summary(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-github-billing-usage-summary-report-org",
 			namespace: "organizations",
@@ -3422,13 +3562,14 @@ Gets a summary report of usage for an organization. To use this endpoint, you mu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OrgsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3442,7 +3583,7 @@ When the value of `two_factor_requirement_enabled` is `true`, the organization r
 	 *
 	 * `GET /orgs/{org}` — risk: low
 	 */
-	async retrieve(org: string): Promise<ProofResult<unknown>> {
+	async retrieve(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get",
 			namespace: "orgs",
@@ -3455,6 +3596,7 @@ When the value of `two_factor_requirement_enabled` is `true`, the organization r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3464,7 +3606,7 @@ When the value of `two_factor_requirement_enabled` is `true`, the organization r
 	 *
 	 * `PATCH /orgs/{org}` — risk: medium
 	 */
-	async patch(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patch(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/update",
 			namespace: "orgs",
@@ -3477,6 +3619,7 @@ When the value of `two_factor_requirement_enabled` is `true`, the organization r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3489,7 +3632,7 @@ Please review the Terms of Service regarding account deletion before using th
 	 *
 	 * `DELETE /orgs/{org}` — risk: medium
 	 */
-	async del(org: string): Promise<ProofResult<unknown>> {
+	async del(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/delete",
 			namespace: "orgs",
@@ -3502,6 +3645,7 @@ Please review the Terms of Service regarding account deletion before using th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3511,7 +3655,7 @@ The data fetched using this API is refreshed approximately every 5 minutes, so v
 	 *
 	 * `GET /orgs/{org}/actions/cache/usage` — risk: medium
 	 */
-	async usage(org: string): Promise<ProofResult<unknown>> {
+	async usage(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-usage-for-org",
 			namespace: "orgs",
@@ -3524,6 +3668,7 @@ The data fetched using this API is refreshed approximately every 5 minutes, so v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3533,7 +3678,7 @@ The data fetched using this API is refreshed approximately every 5 minutes, so v
 	 *
 	 * `GET /orgs/{org}/actions/cache/usage-by-repository` — risk: medium
 	 */
-	async usageByRepository(org: string): Promise<ProofResult<unknown>> {
+	async usageByRepository(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-usage-by-repo-for-org",
 			namespace: "orgs",
@@ -3546,6 +3691,7 @@ The data fetched using this API is refreshed approximately every 5 minutes, so v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3556,7 +3702,7 @@ OAuth app tokens and personal access tokens (classic) need the `manage_runner:or
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners` — risk: medium
 	 */
-	async hostedRunners_0(org: string): Promise<ProofResult<unknown>> {
+	async hostedRunners_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-hosted-runners-for-org",
 			namespace: "orgs",
@@ -3569,6 +3715,7 @@ OAuth app tokens and personal access tokens (classic) need the `manage_runner:or
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3578,7 +3725,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `POST /orgs/{org}/actions/hosted-runners` — risk: medium
 	 */
-	async hostedRunners_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async hostedRunners_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-hosted-runner-for-org",
 			namespace: "orgs",
@@ -3591,6 +3738,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3601,7 +3749,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/images/custom` — risk: medium
 	 */
-	async custom(org: string): Promise<ProofResult<unknown>> {
+	async custom(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-custom-images-for-org",
 			namespace: "orgs",
@@ -3614,6 +3762,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3624,7 +3773,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}` — risk: medium
 	 */
-	async retrieveCustom(org: string, imageDefinitionId: string): Promise<ProofResult<unknown>> {
+	async retrieveCustom(org: string, imageDefinitionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-custom-image-for-org",
 			namespace: "orgs",
@@ -3637,6 +3786,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3647,7 +3797,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `DELETE /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}` — risk: medium
 	 */
-	async deleteCustom(org: string, imageDefinitionId: string): Promise<ProofResult<unknown>> {
+	async deleteCustom(org: string, imageDefinitionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-custom-image-from-org",
 			namespace: "orgs",
@@ -3660,6 +3810,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3670,7 +3821,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions` — risk: medium
 	 */
-	async actionshostedRunnersimagescustomVersions(org: string, imageDefinitionId: string): Promise<ProofResult<unknown>> {
+	async actionshostedRunnersimagescustomVersions(org: string, imageDefinitionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-custom-image-versions-for-org",
 			namespace: "orgs",
@@ -3683,6 +3834,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3693,7 +3845,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}` — risk: medium
 	 */
-	async actionshostedRunnersimagescustomversionsRetrieveVersion(org: string, imageDefinitionId: string, version: string): Promise<ProofResult<unknown>> {
+	async actionshostedRunnersimagescustomversionsRetrieveVersion(org: string, imageDefinitionId: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-custom-image-version-for-org",
 			namespace: "orgs",
@@ -3706,6 +3858,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3716,7 +3869,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `DELETE /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}` — risk: medium
 	 */
-	async actionshostedRunnersimagescustomversionsDeleteVersion(org: string, imageDefinitionId: string, version: string): Promise<ProofResult<unknown>> {
+	async actionshostedRunnersimagescustomversionsDeleteVersion(org: string, imageDefinitionId: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-custom-image-version-from-org",
 			namespace: "orgs",
@@ -3729,6 +3882,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3737,7 +3891,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/images/github-owned` — risk: medium
 	 */
-	async githubOwned(org: string): Promise<ProofResult<unknown>> {
+	async githubOwned(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-hosted-runners-github-owned-images-for-org",
 			namespace: "orgs",
@@ -3750,6 +3904,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3758,7 +3913,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/images/partner` — risk: medium
 	 */
-	async partner(org: string): Promise<ProofResult<unknown>> {
+	async partner(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-hosted-runners-partner-images-for-org",
 			namespace: "orgs",
@@ -3771,6 +3926,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3779,7 +3935,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/limits` — risk: medium
 	 */
-	async limits(org: string): Promise<ProofResult<unknown>> {
+	async limits(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-hosted-runners-limits-for-org",
 			namespace: "orgs",
@@ -3792,6 +3948,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3800,7 +3957,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/machine-sizes` — risk: medium
 	 */
-	async machineSizes(org: string): Promise<ProofResult<unknown>> {
+	async machineSizes(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-hosted-runners-machine-specs-for-org",
 			namespace: "orgs",
@@ -3813,6 +3970,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3821,7 +3979,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/platforms` — risk: medium
 	 */
-	async platforms(org: string): Promise<ProofResult<unknown>> {
+	async platforms(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-hosted-runners-platforms-for-org",
 			namespace: "orgs",
@@ -3834,6 +3992,7 @@ OAuth tokens and personal access tokens (classic) need the `manage_runners:org` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3844,7 +4003,7 @@ OAuth app tokens and personal access tokens (classic) need the `manage_runners:o
 	 *
 	 * `GET /orgs/{org}/actions/hosted-runners/{hosted_runner_id}` — risk: medium
 	 */
-	async retrieveHostedRunner(org: string, hostedRunnerId: string): Promise<ProofResult<unknown>> {
+	async retrieveHostedRunner(org: string, hostedRunnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-hosted-runner-for-org",
 			namespace: "orgs",
@@ -3857,6 +4016,7 @@ OAuth app tokens and personal access tokens (classic) need the `manage_runners:o
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3866,7 +4026,7 @@ OAuth app tokens and personal access tokens (classic) need the `manage_runners:o
 	 *
 	 * `PATCH /orgs/{org}/actions/hosted-runners/{hosted_runner_id}` — risk: medium
 	 */
-	async hostedRunners_2(org: string, hostedRunnerId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async hostedRunners_2(org: string, hostedRunnerId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/update-hosted-runner-for-org",
 			namespace: "orgs",
@@ -3879,6 +4039,7 @@ OAuth app tokens and personal access tokens (classic) need the `manage_runners:o
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3887,7 +4048,7 @@ OAuth app tokens and personal access tokens (classic) need the `manage_runners:o
 	 *
 	 * `DELETE /orgs/{org}/actions/hosted-runners/{hosted_runner_id}` — risk: medium
 	 */
-	async deleteHostedRunner(org: string, hostedRunnerId: string): Promise<ProofResult<unknown>> {
+	async deleteHostedRunner(org: string, hostedRunnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-hosted-runner-for-org",
 			namespace: "orgs",
@@ -3900,6 +4061,7 @@ OAuth app tokens and personal access tokens (classic) need the `manage_runners:o
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3910,7 +4072,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:org` scope 
 	 *
 	 * `GET /orgs/{org}/actions/oidc/customization/properties/repo` — risk: medium
 	 */
-	async repo_0(org: string): Promise<ProofResult<unknown>> {
+	async repo_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oidc/list-oidc-custom-property-inclusions-for-org",
 			namespace: "orgs",
@@ -3923,6 +4085,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:org` scope 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3933,7 +4096,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `POST /orgs/{org}/actions/oidc/customization/properties/repo` — risk: medium
 	 */
-	async repo_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async repo_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oidc/create-oidc-custom-property-inclusion-for-org",
 			namespace: "orgs",
@@ -3946,6 +4109,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3956,7 +4120,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/actions/oidc/customization/properties/repo/{custom_property_name}` — risk: medium
 	 */
-	async actionsoidccustomizationpropertiesrepoDeleteRepo(org: string, customPropertyName: string): Promise<ProofResult<unknown>> {
+	async actionsoidccustomizationpropertiesrepoDeleteRepo(org: string, customPropertyName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oidc/delete-oidc-custom-property-inclusion-for-org",
 			namespace: "orgs",
@@ -3969,6 +4133,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3979,7 +4144,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:org` scope 
 	 *
 	 * `GET /orgs/{org}/actions/oidc/customization/sub` — risk: medium
 	 */
-	async sub_0(org: string): Promise<ProofResult<unknown>> {
+	async sub_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oidc/get-oidc-custom-sub-template-for-org",
 			namespace: "orgs",
@@ -3992,6 +4157,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:org` scope 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4002,7 +4168,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/oidc/customization/sub` — risk: medium
 	 */
-	async sub_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async sub_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oidc/update-oidc-custom-sub-template-for-org",
 			namespace: "orgs",
@@ -4015,6 +4181,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4025,7 +4192,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/permissions` — risk: medium
 	 */
-	async getActionsPermissions(org: string): Promise<ProofResult<unknown>> {
+	async getActionsPermissions(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-github-actions-permissions-organization",
 			namespace: "orgs",
@@ -4038,6 +4205,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4048,7 +4216,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` s
 	 *
 	 * `PUT /orgs/{org}/actions/permissions` — risk: medium
 	 */
-	async putActionsPermissions(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putActionsPermissions(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-github-actions-permissions-organization",
 			namespace: "orgs",
@@ -4061,6 +4229,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4071,7 +4240,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/permissions/artifact-and-log-retention` — risk: medium
 	 */
-	async artifactAndLogRetention_0(org: string): Promise<ProofResult<unknown>> {
+	async artifactAndLogRetention_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-artifact-and-log-retention-settings-organization",
 			namespace: "orgs",
@@ -4084,6 +4253,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4094,7 +4264,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/artifact-and-log-retention` — risk: medium
 	 */
-	async artifactAndLogRetention_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async artifactAndLogRetention_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-artifact-and-log-retention-settings-organization",
 			namespace: "orgs",
@@ -4107,6 +4277,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4117,7 +4288,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/permissions/fork-pr-contributor-approval` — risk: medium
 	 */
-	async forkPrContributorApproval_0(org: string): Promise<ProofResult<unknown>> {
+	async forkPrContributorApproval_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-fork-pr-contributor-approval-permissions-organization",
 			namespace: "orgs",
@@ -4130,6 +4301,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4140,7 +4312,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/fork-pr-contributor-approval` — risk: medium
 	 */
-	async forkPrContributorApproval_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async forkPrContributorApproval_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-fork-pr-contributor-approval-permissions-organization",
 			namespace: "orgs",
@@ -4153,6 +4325,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4161,7 +4334,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos` — risk: medium
 	 */
-	async forkPrWorkflowsPrivateRepos_0(org: string): Promise<ProofResult<unknown>> {
+	async forkPrWorkflowsPrivateRepos_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-private-repo-fork-pr-workflows-settings-organization",
 			namespace: "orgs",
@@ -4174,6 +4347,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4182,7 +4356,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos` — risk: medium
 	 */
-	async forkPrWorkflowsPrivateRepos_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async forkPrWorkflowsPrivateRepos_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-private-repo-fork-pr-workflows-settings-organization",
 			namespace: "orgs",
@@ -4195,6 +4369,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4203,7 +4378,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/permissions/repositories` — risk: medium
 	 */
-	async getActionspermissionsRepositories(org: string): Promise<ProofResult<unknown>> {
+	async getActionspermissionsRepositories(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-selected-repositories-enabled-github-actions-organization",
 			namespace: "orgs",
@@ -4216,6 +4391,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4224,7 +4400,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/repositories` — risk: medium
 	 */
-	async putActionspermissionsRepositories(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putActionspermissionsRepositories(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-selected-repositories-enabled-github-actions-organization",
 			namespace: "orgs",
@@ -4237,6 +4413,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4245,7 +4422,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/repositories/{repository_id}` — risk: medium
 	 */
-	async putActionspermissionsRepositories_0(org: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putActionspermissionsRepositories_0(org: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/enable-selected-repository-github-actions-organization",
 			namespace: "orgs",
@@ -4258,6 +4435,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4266,7 +4444,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/actions/permissions/repositories/{repository_id}` — risk: medium
 	 */
-	async actionspermissionsrepositoriesDeleteRepository(org: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async actionspermissionsrepositoriesDeleteRepository(org: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/disable-selected-repository-github-actions-organization",
 			namespace: "orgs",
@@ -4279,6 +4457,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4287,7 +4466,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/permissions/selected-actions` — risk: medium
 	 */
-	async selectedActions_0(org: string): Promise<ProofResult<unknown>> {
+	async selectedActions_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-allowed-actions-organization",
 			namespace: "orgs",
@@ -4300,6 +4479,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4308,7 +4488,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/selected-actions` — risk: medium
 	 */
-	async selectedActions_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async selectedActions_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-allowed-actions-organization",
 			namespace: "orgs",
@@ -4321,6 +4501,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4331,7 +4512,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/permissions/self-hosted-runners` — risk: medium
 	 */
-	async selfHostedRunners_0(org: string): Promise<ProofResult<unknown>> {
+	async selfHostedRunners_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-self-hosted-runners-permissions-organization",
 			namespace: "orgs",
@@ -4344,6 +4525,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4354,7 +4536,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/self-hosted-runners` — risk: medium
 	 */
-	async selfHostedRunners_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async selfHostedRunners_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-self-hosted-runners-permissions-organization",
 			namespace: "orgs",
@@ -4367,6 +4549,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4377,7 +4560,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/permissions/self-hosted-runners/repositories` — risk: medium
 	 */
-	async getActionspermissionsselfHostedRunnersRepositories(org: string): Promise<ProofResult<unknown>> {
+	async getActionspermissionsselfHostedRunnersRepositories(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-selected-repositories-self-hosted-runners-organization",
 			namespace: "orgs",
@@ -4390,6 +4573,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4400,7 +4584,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories` — risk: medium
 	 */
-	async putActionspermissionsselfHostedRunnersRepositories(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putActionspermissionsselfHostedRunnersRepositories(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-selected-repositories-self-hosted-runners-organization",
 			namespace: "orgs",
@@ -4413,6 +4597,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4423,7 +4608,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}` — risk: medium
 	 */
-	async putActionspermissionsselfHostedRunnersRepositories_0(org: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putActionspermissionsselfHostedRunnersRepositories_0(org: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/enable-selected-repository-self-hosted-runners-organization",
 			namespace: "orgs",
@@ -4436,6 +4621,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4446,7 +4632,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}` — risk: medium
 	 */
-	async actionspermissionsselfHostedRunnersrepositoriesDeleteRepository(org: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async actionspermissionsselfHostedRunnersrepositoriesDeleteRepository(org: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/disable-selected-repository-self-hosted-runners-organization",
 			namespace: "orgs",
@@ -4459,6 +4645,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4468,7 +4655,7 @@ as well as whether GitHub Actions can submit approving pull request reviews. For
 	 *
 	 * `GET /orgs/{org}/actions/permissions/workflow` — risk: medium
 	 */
-	async workflow_0(org: string): Promise<ProofResult<unknown>> {
+	async workflow_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-github-actions-default-workflow-permissions-organization",
 			namespace: "orgs",
@@ -4481,6 +4668,7 @@ as well as whether GitHub Actions can submit approving pull request reviews. For
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4490,7 +4678,7 @@ can submit approving pull request reviews. For more informatio
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/workflow` — risk: medium
 	 */
-	async workflow_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async workflow_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-github-actions-default-workflow-permissions-organization",
 			namespace: "orgs",
@@ -4503,6 +4691,7 @@ can submit approving pull request reviews. For more informatio
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4513,7 +4702,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/runner-groups` — risk: medium
 	 */
-	async runnerGroups_0(org: string): Promise<ProofResult<unknown>> {
+	async runnerGroups_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-self-hosted-runner-groups-for-org",
 			namespace: "orgs",
@@ -4526,6 +4715,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4536,7 +4726,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 	 *
 	 * `POST /orgs/{org}/actions/runner-groups` — risk: medium
 	 */
-	async runnerGroups_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async runnerGroups_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-self-hosted-runner-group-for-org",
 			namespace: "orgs",
@@ -4549,6 +4739,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4559,7 +4750,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/runner-groups/{runner_group_id}` — risk: medium
 	 */
-	async retrieveRunnerGroup(org: string, runnerGroupId: string): Promise<ProofResult<unknown>> {
+	async retrieveRunnerGroup(org: string, runnerGroupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-self-hosted-runner-group-for-org",
 			namespace: "orgs",
@@ -4572,6 +4763,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4582,7 +4774,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PATCH /orgs/{org}/actions/runner-groups/{runner_group_id}` — risk: medium
 	 */
-	async runnerGroups_2(org: string, runnerGroupId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async runnerGroups_2(org: string, runnerGroupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/update-self-hosted-runner-group-for-org",
 			namespace: "orgs",
@@ -4595,6 +4787,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4605,7 +4798,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 	 *
 	 * `DELETE /orgs/{org}/actions/runner-groups/{runner_group_id}` — risk: medium
 	 */
-	async deleteRunnerGroup(org: string, runnerGroupId: string): Promise<ProofResult<unknown>> {
+	async deleteRunnerGroup(org: string, runnerGroupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-self-hosted-runner-group-from-org",
 			namespace: "orgs",
@@ -4618,6 +4811,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4628,7 +4822,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners` — risk: medium
 	 */
-	async runnerGroupsHostedRunners(org: string, runnerGroupId: string): Promise<ProofResult<unknown>> {
+	async runnerGroupsHostedRunners(org: string, runnerGroupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-github-hosted-runners-in-group-for-org",
 			namespace: "orgs",
@@ -4641,6 +4835,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4651,7 +4846,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories` — risk: medium
 	 */
-	async getActionsrunnerGroupsRepositories(org: string, runnerGroupId: string): Promise<ProofResult<unknown>> {
+	async getActionsrunnerGroupsRepositories(org: string, runnerGroupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-repo-access-to-self-hosted-runner-group-in-org",
 			namespace: "orgs",
@@ -4664,6 +4859,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4674,7 +4870,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories` — risk: medium
 	 */
-	async putActionsrunnerGroupsRepositories(org: string, runnerGroupId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putActionsrunnerGroupsRepositories(org: string, runnerGroupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-repo-access-to-self-hosted-runner-group-in-org",
 			namespace: "orgs",
@@ -4687,6 +4883,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4695,7 +4892,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories/{repository_id}` — risk: medium
 	 */
-	async putActionsrunnerGroupsRepositories_0(org: string, runnerGroupId: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putActionsrunnerGroupsRepositories_0(org: string, runnerGroupId: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/add-repo-access-to-self-hosted-runner-group-in-org",
 			namespace: "orgs",
@@ -4708,6 +4905,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4716,7 +4914,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories/{repository_id}` — risk: medium
 	 */
-	async actionsrunnerGroupsrepositoriesDeleteRepository(org: string, runnerGroupId: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async actionsrunnerGroupsrepositoriesDeleteRepository(org: string, runnerGroupId: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/remove-repo-access-to-self-hosted-runner-group-in-org",
 			namespace: "orgs",
@@ -4729,6 +4927,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4739,7 +4938,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/actions/runner-groups/{runner_group_id}/runners` — risk: medium
 	 */
-	async getRunnerGroupsRunners(org: string, runnerGroupId: string): Promise<ProofResult<unknown>> {
+	async getRunnerGroupsRunners(org: string, runnerGroupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-self-hosted-runners-in-group-for-org",
 			namespace: "orgs",
@@ -4752,6 +4951,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4762,7 +4962,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/runners` — risk: medium
 	 */
-	async putRunnerGroupsRunners(org: string, runnerGroupId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putRunnerGroupsRunners(org: string, runnerGroupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-self-hosted-runners-in-group-for-org",
 			namespace: "orgs",
@@ -4775,6 +4975,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4785,7 +4986,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 	 *
 	 * `PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/runners/{runner_id}` — risk: medium
 	 */
-	async putRunnerGroupsRunners_0(org: string, runnerGroupId: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async putRunnerGroupsRunners_0(org: string, runnerGroupId: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/add-self-hosted-runner-to-group-for-org",
 			namespace: "orgs",
@@ -4798,6 +4999,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4808,7 +5010,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` s
 	 *
 	 * `DELETE /orgs/{org}/actions/runner-groups/{runner_group_id}/runners/{runner_id}` — risk: medium
 	 */
-	async runnerGroupsrunnersDeleteRunner(org: string, runnerGroupId: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async runnerGroupsrunnersDeleteRunner(org: string, runnerGroupId: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/remove-self-hosted-runner-from-group-for-org",
 			namespace: "orgs",
@@ -4821,6 +5023,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4833,7 +5036,7 @@ OAuth app tokens and personal access tokens (classic
 	 *
 	 * `GET /orgs/{org}/actions/runners` — risk: medium
 	 */
-	async runners_3(org: string): Promise<ProofResult<unknown>> {
+	async runners_3(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-self-hosted-runners-for-org",
 			namespace: "orgs",
@@ -4846,6 +5049,7 @@ OAuth app tokens and personal access tokens (classic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4858,7 +5062,7 @@ OAuth app tokens and personal access tok
 	 *
 	 * `GET /orgs/{org}/actions/runners/downloads` — risk: medium
 	 */
-	async downloads(org: string): Promise<ProofResult<unknown>> {
+	async downloads(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-runner-applications-for-org",
 			namespace: "orgs",
@@ -4871,6 +5075,7 @@ OAuth app tokens and personal access tok
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4883,7 +5088,7 @@ OAuth tokens and personal access tokens (classic
 	 *
 	 * `POST /orgs/{org}/actions/runners/generate-jitconfig` — risk: medium
 	 */
-	async generateJitconfig(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async generateJitconfig(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/generate-runner-jitconfig-for-org",
 			namespace: "orgs",
@@ -4896,6 +5101,7 @@ OAuth tokens and personal access tokens (classic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4906,7 +5112,7 @@ For example, you can replace `TOKEN` in the following example with the registrat
 	 *
 	 * `POST /orgs/{org}/actions/runners/registration-token` — risk: medium
 	 */
-	async registrationToken(org: string): Promise<ProofResult<unknown>> {
+	async registrationToken(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-registration-token-for-org",
 			namespace: "orgs",
@@ -4919,6 +5125,7 @@ For example, you can replace `TOKEN` in the following example with the registrat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4929,7 +5136,7 @@ For example, you can replace `TOKEN` in the following e
 	 *
 	 * `POST /orgs/{org}/actions/runners/remove-token` — risk: medium
 	 */
-	async removeToken(org: string): Promise<ProofResult<unknown>> {
+	async removeToken(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-remove-token-for-org",
 			namespace: "orgs",
@@ -4942,6 +5149,7 @@ For example, you can replace `TOKEN` in the following e
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4954,7 +5162,7 @@ OAuth app tokens and personal access tokens (cl
 	 *
 	 * `GET /orgs/{org}/actions/runners/{runner_id}` — risk: medium
 	 */
-	async retrieveRunner(org: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async retrieveRunner(org: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-self-hosted-runner-for-org",
 			namespace: "orgs",
@@ -4967,6 +5175,7 @@ OAuth app tokens and personal access tokens (cl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4977,7 +5186,7 @@ Authenticated users must h
 	 *
 	 * `DELETE /orgs/{org}/actions/runners/{runner_id}` — risk: medium
 	 */
-	async runnersDeleteRunner(org: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async runnersDeleteRunner(org: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-self-hosted-runner-from-org",
 			namespace: "orgs",
@@ -4990,6 +5199,7 @@ Authenticated users must h
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5002,7 +5212,7 @@ OAuth app tokens and personal access tok
 	 *
 	 * `GET /orgs/{org}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
-	async labels_0(org: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async labels_0(org: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-labels-for-self-hosted-runner-for-org",
 			namespace: "orgs",
@@ -5015,6 +5225,7 @@ OAuth app tokens and personal access tok
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5027,7 +5238,7 @@ OAuth tokens and personal access tokens
 	 *
 	 * `POST /orgs/{org}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
-	async labels_1(org: string, runnerId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async labels_1(org: string, runnerId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/add-custom-labels-to-self-hosted-runner-for-org",
 			namespace: "orgs",
@@ -5040,6 +5251,7 @@ OAuth tokens and personal access tokens
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5051,7 +5263,7 @@ Authenticated users must have admin access to the organization to use
 	 *
 	 * `PUT /orgs/{org}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
-	async labels_2(org: string, runnerId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async labels_2(org: string, runnerId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-custom-labels-for-self-hosted-runner-for-org",
 			namespace: "orgs",
@@ -5064,6 +5276,7 @@ Authenticated users must have admin access to the organization to use
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5075,7 +5288,7 @@ Authenticated users must have admin access to the organizatio
 	 *
 	 * `DELETE /orgs/{org}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
-	async labels_3(org: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async labels_3(org: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/remove-all-custom-labels-from-self-hosted-runner-for-org",
 			namespace: "orgs",
@@ -5088,6 +5301,7 @@ Authenticated users must have admin access to the organizatio
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5100,7 +5314,7 @@ This endpoint returns a `404 Not Found` status if the custom label is not
 	 *
 	 * `DELETE /orgs/{org}/actions/runners/{runner_id}/labels/{name}` — risk: medium
 	 */
-	async deleteLabel(org: string, runnerId: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteLabel(org: string, runnerId: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/remove-custom-label-from-self-hosted-runner-for-org",
 			namespace: "orgs",
@@ -5113,6 +5327,7 @@ This endpoint returns a `404 Not Found` status if the custom label is not
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5126,7 +5341,7 @@ OAuth a
 	 *
 	 * `GET /orgs/{org}/actions/secrets` — risk: medium
 	 */
-	async getActionsSecrets(org: string): Promise<ProofResult<unknown>> {
+	async getActionsSecrets(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-org-secrets",
 			namespace: "orgs",
@@ -5139,6 +5354,7 @@ OAuth a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5150,7 +5366,7 @@ The authenticated user must have collaborator access to a repository to
 	 *
 	 * `GET /orgs/{org}/actions/secrets/public-key` — risk: medium
 	 */
-	async actionssecretsPublicKey(org: string): Promise<ProofResult<unknown>> {
+	async actionssecretsPublicKey(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-org-public-key",
 			namespace: "orgs",
@@ -5163,6 +5379,7 @@ The authenticated user must have collaborator access to a repository to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5175,7 +5392,7 @@ OAuth tokens and pers
 	 *
 	 * `GET /orgs/{org}/actions/secrets/{secret_name}` — risk: medium
 	 */
-	async actionssecretsRetrieveSecret(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async actionssecretsRetrieveSecret(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-org-secret",
 			namespace: "orgs",
@@ -5188,6 +5405,7 @@ OAuth tokens and pers
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5197,7 +5415,7 @@ OAuth tokens and pers
 	 *
 	 * `PUT /orgs/{org}/actions/secrets/{secret_name}` — risk: medium
 	 */
-	async putActionsSecrets(org: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putActionsSecrets(org: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-or-update-org-secret",
 			namespace: "orgs",
@@ -5210,6 +5428,7 @@ OAuth tokens and pers
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5222,7 +5441,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `DELETE /orgs/{org}/actions/secrets/{secret_name}` — risk: medium
 	 */
-	async actionssecretsDeleteSecret(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async actionssecretsDeleteSecret(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-org-secret",
 			namespace: "orgs",
@@ -5235,6 +5454,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5246,7 +5466,7 @@ Authenticated users must have collaborator access to a repository to creat
 	 *
 	 * `GET /orgs/{org}/actions/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async getActionssecretsRepositories(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async getActionssecretsRepositories(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-selected-repos-for-org-secret",
 			namespace: "orgs",
@@ -5259,6 +5479,7 @@ Authenticated users must have collaborator access to a repository to creat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5269,7 +5490,7 @@ or update an organization secret](https://
 	 *
 	 * `PUT /orgs/{org}/actions/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async putActionssecretsRepositories(org: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putActionssecretsRepositories(org: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-selected-repos-for-org-secret",
 			namespace: "orgs",
@@ -5282,6 +5503,7 @@ or update an organization secret](https://
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5292,7 +5514,7 @@ update an organization s
 	 *
 	 * `PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async putActionssecretsRepositories_0(org: string, secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putActionssecretsRepositories_0(org: string, secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/add-selected-repo-to-org-secret",
 			namespace: "orgs",
@@ -5305,6 +5527,7 @@ update an organization s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5315,7 +5538,7 @@ or update an organization secret](https://docs
 	 *
 	 * `DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async actionssecretsrepositoriesDeleteRepository(org: string, secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async actionssecretsrepositoriesDeleteRepository(org: string, secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/remove-selected-repo-from-org-secret",
 			namespace: "orgs",
@@ -5328,6 +5551,7 @@ or update an organization secret](https://docs
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5340,7 +5564,7 @@ OAuth app tokens and personal access tokens (classic) need t
 	 *
 	 * `GET /orgs/{org}/actions/variables` — risk: medium
 	 */
-	async getActionsVariables(org: string): Promise<ProofResult<unknown>> {
+	async getActionsVariables(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-org-variables",
 			namespace: "orgs",
@@ -5353,6 +5577,7 @@ OAuth app tokens and personal access tokens (classic) need t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5365,7 +5590,7 @@ OAuth to
 	 *
 	 * `POST /orgs/{org}/actions/variables` — risk: medium
 	 */
-	async postActionsVariables(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postActionsVariables(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-org-variable",
 			namespace: "orgs",
@@ -5378,6 +5603,7 @@ OAuth to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5390,7 +5616,7 @@ OAuth tokens and personal access tokens (class
 	 *
 	 * `GET /orgs/{org}/actions/variables/{name}` — risk: medium
 	 */
-	async actionsvariablesRetrieveVariable(org: string, name: string): Promise<ProofResult<unknown>> {
+	async actionsvariablesRetrieveVariable(org: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-org-variable",
 			namespace: "orgs",
@@ -5403,6 +5629,7 @@ OAuth tokens and personal access tokens (class
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5415,7 +5642,7 @@ OAuth ap
 	 *
 	 * `PATCH /orgs/{org}/actions/variables/{name}` — risk: medium
 	 */
-	async patchActionsVariables(org: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchActionsVariables(org: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/update-org-variable",
 			namespace: "orgs",
@@ -5428,6 +5655,7 @@ OAuth ap
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5440,7 +5668,7 @@ OAuth tokens and personal access tok
 	 *
 	 * `DELETE /orgs/{org}/actions/variables/{name}` — risk: medium
 	 */
-	async actionsvariablesDeleteVariable(org: string, name: string): Promise<ProofResult<unknown>> {
+	async actionsvariablesDeleteVariable(org: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-org-variable",
 			namespace: "orgs",
@@ -5453,6 +5681,7 @@ OAuth tokens and personal access tok
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5464,7 +5693,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 	 *
 	 * `GET /orgs/{org}/actions/variables/{name}/repositories` — risk: medium
 	 */
-	async getActionsvariablesRepositories(org: string, name: string): Promise<ProofResult<unknown>> {
+	async getActionsvariablesRepositories(org: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-selected-repos-for-org-variable",
 			namespace: "orgs",
@@ -5477,6 +5706,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5487,7 +5717,7 @@ repositories have their `visibility` field set
 	 *
 	 * `PUT /orgs/{org}/actions/variables/{name}/repositories` — risk: medium
 	 */
-	async putActionsvariablesRepositories(org: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putActionsvariablesRepositories(org: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-selected-repos-for-org-variable",
 			namespace: "orgs",
@@ -5500,6 +5730,7 @@ repositories have their `visibility` field set
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5509,7 +5740,7 @@ Organization variables that are available to selected repositories have their `v
 	 *
 	 * `PUT /orgs/{org}/actions/variables/{name}/repositories/{repository_id}` — risk: medium
 	 */
-	async putActionsvariablesRepositories_0(org: string, name: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putActionsvariablesRepositories_0(org: string, name: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/add-selected-repo-to-org-variable",
 			namespace: "orgs",
@@ -5522,6 +5753,7 @@ Organization variables that are available to selected repositories have their `v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5532,7 +5764,7 @@ selected repositories have their `visibility` field set to `
 	 *
 	 * `DELETE /orgs/{org}/actions/variables/{name}/repositories/{repository_id}` — risk: medium
 	 */
-	async actionsvariablesrepositoriesDeleteRepository(org: string, name: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async actionsvariablesrepositoriesDeleteRepository(org: string, name: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/remove-selected-repo-from-org-variable",
 			namespace: "orgs",
@@ -5545,6 +5777,7 @@ selected repositories have their `visibility` field set to `
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5558,7 +5791,7 @@ OAuth a
 	 *
 	 * `GET /orgs/{org}/agents/secrets` — risk: medium
 	 */
-	async getAgentsSecrets(org: string): Promise<ProofResult<unknown>> {
+	async getAgentsSecrets(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/list-org-secrets",
 			namespace: "orgs",
@@ -5571,6 +5804,7 @@ OAuth a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5582,7 +5816,7 @@ Authenticated users must have collaborator access to a repository to cre
 	 *
 	 * `GET /orgs/{org}/agents/secrets/public-key` — risk: medium
 	 */
-	async agentssecretsPublicKey(org: string): Promise<ProofResult<unknown>> {
+	async agentssecretsPublicKey(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/get-org-public-key",
 			namespace: "orgs",
@@ -5595,6 +5829,7 @@ Authenticated users must have collaborator access to a repository to cre
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5607,7 +5842,7 @@ OAuth tokens and per
 	 *
 	 * `GET /orgs/{org}/agents/secrets/{secret_name}` — risk: medium
 	 */
-	async agentssecretsRetrieveSecret(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async agentssecretsRetrieveSecret(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/get-org-secret",
 			namespace: "orgs",
@@ -5620,6 +5855,7 @@ OAuth tokens and per
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5629,7 +5865,7 @@ OAuth tokens and per
 	 *
 	 * `PUT /orgs/{org}/agents/secrets/{secret_name}` — risk: medium
 	 */
-	async putAgentsSecrets(org: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putAgentsSecrets(org: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/create-or-update-org-secret",
 			namespace: "orgs",
@@ -5642,6 +5878,7 @@ OAuth tokens and per
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5654,7 +5891,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `DELETE /orgs/{org}/agents/secrets/{secret_name}` — risk: medium
 	 */
-	async agentssecretsDeleteSecret(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async agentssecretsDeleteSecret(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/delete-org-secret",
 			namespace: "orgs",
@@ -5667,6 +5904,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5678,7 +5916,7 @@ Authenticated users must have collaborator access to a repository to creat
 	 *
 	 * `GET /orgs/{org}/agents/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async getAgentssecretsRepositories(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async getAgentssecretsRepositories(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/list-selected-repos-for-org-secret",
 			namespace: "orgs",
@@ -5691,6 +5929,7 @@ Authenticated users must have collaborator access to a repository to creat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5701,7 +5940,7 @@ or update an organization secret](https://
 	 *
 	 * `PUT /orgs/{org}/agents/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async putAgentssecretsRepositories(org: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putAgentssecretsRepositories(org: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/set-selected-repos-for-org-secret",
 			namespace: "orgs",
@@ -5714,6 +5953,7 @@ or update an organization secret](https://
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5724,7 +5964,7 @@ update an organization s
 	 *
 	 * `PUT /orgs/{org}/agents/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async putAgentssecretsRepositories_0(org: string, secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putAgentssecretsRepositories_0(org: string, secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/add-selected-repo-to-org-secret",
 			namespace: "orgs",
@@ -5737,6 +5977,7 @@ update an organization s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5747,7 +5988,7 @@ or update an organization secret](https://docs
 	 *
 	 * `DELETE /orgs/{org}/agents/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async agentssecretsrepositoriesDeleteRepository(org: string, secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async agentssecretsrepositoriesDeleteRepository(org: string, secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/remove-selected-repo-from-org-secret",
 			namespace: "orgs",
@@ -5760,6 +6001,7 @@ or update an organization secret](https://docs
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5771,7 +6013,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 	 *
 	 * `GET /orgs/{org}/agents/variables` — risk: medium
 	 */
-	async getAgentsVariables(org: string): Promise<ProofResult<unknown>> {
+	async getAgentsVariables(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/list-org-variables",
 			namespace: "orgs",
@@ -5784,6 +6026,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5796,7 +6039,7 @@ OA
 	 *
 	 * `POST /orgs/{org}/agents/variables` — risk: medium
 	 */
-	async postAgentsVariables(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postAgentsVariables(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/create-org-variable",
 			namespace: "orgs",
@@ -5809,6 +6052,7 @@ OA
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5821,7 +6065,7 @@ OAuth tokens and personal access tokens
 	 *
 	 * `GET /orgs/{org}/agents/variables/{name}` — risk: medium
 	 */
-	async agentsvariablesRetrieveVariable(org: string, name: string): Promise<ProofResult<unknown>> {
+	async agentsvariablesRetrieveVariable(org: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/get-org-variable",
 			namespace: "orgs",
@@ -5834,6 +6078,7 @@ OAuth tokens and personal access tokens
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5846,7 +6091,7 @@ OA
 	 *
 	 * `PATCH /orgs/{org}/agents/variables/{name}` — risk: medium
 	 */
-	async patchAgentsVariables(org: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchAgentsVariables(org: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/update-org-variable",
 			namespace: "orgs",
@@ -5859,6 +6104,7 @@ OA
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5871,7 +6117,7 @@ OAuth tokens and personal acce
 	 *
 	 * `DELETE /orgs/{org}/agents/variables/{name}` — risk: medium
 	 */
-	async agentsvariablesDeleteVariable(org: string, name: string): Promise<ProofResult<unknown>> {
+	async agentsvariablesDeleteVariable(org: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/delete-org-variable",
 			namespace: "orgs",
@@ -5884,6 +6130,7 @@ OAuth tokens and personal acce
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5895,7 +6142,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 	 *
 	 * `GET /orgs/{org}/agents/variables/{name}/repositories` — risk: medium
 	 */
-	async getAgentsvariablesRepositories(org: string, name: string): Promise<ProofResult<unknown>> {
+	async getAgentsvariablesRepositories(org: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/list-selected-repos-for-org-variable",
 			namespace: "orgs",
@@ -5908,6 +6155,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5918,7 +6166,7 @@ repositories have their `visibility` fiel
 	 *
 	 * `PUT /orgs/{org}/agents/variables/{name}/repositories` — risk: medium
 	 */
-	async putAgentsvariablesRepositories(org: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putAgentsvariablesRepositories(org: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/set-selected-repos-for-org-variable",
 			namespace: "orgs",
@@ -5931,6 +6179,7 @@ repositories have their `visibility` fiel
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5940,7 +6189,7 @@ Organization variables that are available to selected repositories have their `v
 	 *
 	 * `PUT /orgs/{org}/agents/variables/{name}/repositories/{repository_id}` — risk: medium
 	 */
-	async putAgentsvariablesRepositories_0(org: string, name: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putAgentsvariablesRepositories_0(org: string, name: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/add-selected-repo-to-org-variable",
 			namespace: "orgs",
@@ -5953,6 +6202,7 @@ Organization variables that are available to selected repositories have their `v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5963,7 +6213,7 @@ selected repositories have their `visibility` field se
 	 *
 	 * `DELETE /orgs/{org}/agents/variables/{name}/repositories/{repository_id}` — risk: medium
 	 */
-	async agentsvariablesrepositoriesDeleteRepository(org: string, name: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async agentsvariablesrepositoriesDeleteRepository(org: string, name: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/remove-selected-repo-from-org-variable",
 			namespace: "orgs",
@@ -5976,6 +6226,7 @@ selected repositories have their `visibility` field se
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5987,7 +6238,7 @@ artifact, such as its name, digest, environments, c
 	 *
 	 * `POST /orgs/{org}/artifacts/metadata/deployment-record` — risk: medium
 	 */
-	async deploymentRecord(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deploymentRecord(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/create-artifact-deployment-record",
 			namespace: "orgs",
@@ -6000,6 +6251,7 @@ artifact, such as its name, digest, environments, c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6010,7 +6262,7 @@ If proposed records in the 'deployments' field have identical 'cluster', 'logica
 	 *
 	 * `POST /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}` — risk: medium
 	 */
-	async updateCluster(org: string, cluster: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateCluster(org: string, cluster: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/set-cluster-deployment-records",
 			namespace: "orgs",
@@ -6023,6 +6275,7 @@ If proposed records in the 'deployments' field have identical 'cluster', 'logica
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6033,7 +6286,7 @@ associ
 	 *
 	 * `POST /orgs/{org}/artifacts/metadata/storage-record` — risk: medium
 	 */
-	async storageRecord(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async storageRecord(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/create-artifact-storage-record",
 			namespace: "orgs",
@@ -6046,6 +6299,7 @@ associ
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6054,7 +6308,7 @@ associ
 	 *
 	 * `GET /orgs/{org}/artifacts/{subject_digest}/metadata/deployment-records` — risk: medium
 	 */
-	async deploymentRecords(org: string, subjectDigest: string): Promise<ProofResult<unknown>> {
+	async deploymentRecords(org: string, subjectDigest: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-artifact-deployment-records",
 			namespace: "orgs",
@@ -6067,6 +6321,7 @@ associ
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6077,7 +6332,7 @@ The collection of storage records returned by this endpoint i
 	 *
 	 * `GET /orgs/{org}/artifacts/{subject_digest}/metadata/storage-records` — risk: medium
 	 */
-	async storageRecords(org: string, subjectDigest: string): Promise<ProofResult<unknown>> {
+	async storageRecords(org: string, subjectDigest: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-artifact-storage-records",
 			namespace: "orgs",
@@ -6090,6 +6345,7 @@ The collection of storage records returned by this endpoint i
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6100,7 +6356,7 @@ The collection of attestations returned by this endpoint is filtered accord
 	 *
 	 * `POST /orgs/{org}/attestations/bulk-list` — risk: medium
 	 */
-	async bulkList(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async bulkList(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-attestations-bulk",
 			namespace: "orgs",
@@ -6113,6 +6369,7 @@ The collection of attestations returned by this endpoint is filtered accord
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6121,7 +6378,7 @@ The collection of attestations returned by this endpoint is filtered accord
 	 *
 	 * `POST /orgs/{org}/attestations/delete-request` — risk: medium
 	 */
-	async deleteRequest(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteRequest(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/delete-attestations-bulk",
 			namespace: "orgs",
@@ -6134,6 +6391,7 @@ The collection of attestations returned by this endpoint is filtered accord
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6142,7 +6400,7 @@ The collection of attestations returned by this endpoint is filtered accord
 	 *
 	 * `DELETE /orgs/{org}/attestations/digest/{subject_digest}` — risk: medium
 	 */
-	async deleteDigest(org: string, subjectDigest: string): Promise<ProofResult<unknown>> {
+	async deleteDigest(org: string, subjectDigest: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/delete-attestations-by-subject-digest",
 			namespace: "orgs",
@@ -6155,6 +6413,7 @@ The collection of attestations returned by this endpoint is filtered accord
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6164,7 +6423,7 @@ Results will be sorted in ascending order by repository ID
 	 *
 	 * `GET /orgs/{org}/attestations/repositories` — risk: medium
 	 */
-	async attestationsRepositories(org: string): Promise<ProofResult<unknown>> {
+	async attestationsRepositories(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-attestation-repositories",
 			namespace: "orgs",
@@ -6177,6 +6436,7 @@ Results will be sorted in ascending order by repository ID
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6185,7 +6445,7 @@ Results will be sorted in ascending order by repository ID
 	 *
 	 * `DELETE /orgs/{org}/attestations/{attestation_id}` — risk: medium
 	 */
-	async deleteAttestation(org: string, attestationId: string): Promise<ProofResult<unknown>> {
+	async deleteAttestation(org: string, attestationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/delete-attestations-by-id",
 			namespace: "orgs",
@@ -6198,6 +6458,7 @@ Results will be sorted in ascending order by repository ID
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6208,7 +6469,7 @@ The collection of attestations returned by this endpoint is filt
 	 *
 	 * `GET /orgs/{org}/attestations/{subject_digest}` — risk: medium
 	 */
-	async retrieveAttestation(org: string, subjectDigest: string): Promise<ProofResult<unknown>> {
+	async retrieveAttestation(org: string, subjectDigest: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-attestations",
 			namespace: "orgs",
@@ -6221,6 +6482,7 @@ The collection of attestations returned by this endpoint is filt
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6229,7 +6491,7 @@ The collection of attestations returned by this endpoint is filt
 	 *
 	 * `GET /orgs/{org}/blocks` — risk: medium
 	 */
-	async listBlocks(org: string): Promise<ProofResult<unknown>> {
+	async listBlocks(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-blocked-users",
 			namespace: "orgs",
@@ -6242,6 +6504,7 @@ The collection of attestations returned by this endpoint is filt
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6250,7 +6513,7 @@ The collection of attestations returned by this endpoint is filt
 	 *
 	 * `GET /orgs/{org}/blocks/{username}` — risk: medium
 	 */
-	async retrieveBlock(org: string, username: string): Promise<ProofResult<unknown>> {
+	async retrieveBlock(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/check-blocked-user",
 			namespace: "orgs",
@@ -6263,6 +6526,7 @@ The collection of attestations returned by this endpoint is filt
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6271,7 +6535,7 @@ The collection of attestations returned by this endpoint is filt
 	 *
 	 * `PUT /orgs/{org}/blocks/{username}` — risk: medium
 	 */
-	async blocks(org: string, username: string): Promise<ProofResult<unknown>> {
+	async blocks(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/block-user",
 			namespace: "orgs",
@@ -6284,6 +6548,7 @@ The collection of attestations returned by this endpoint is filt
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6292,7 +6557,7 @@ The collection of attestations returned by this endpoint is filt
 	 *
 	 * `DELETE /orgs/{org}/blocks/{username}` — risk: medium
 	 */
-	async deleteBlock(org: string, username: string): Promise<ProofResult<unknown>> {
+	async deleteBlock(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/unblock-user",
 			namespace: "orgs",
@@ -6305,6 +6570,7 @@ The collection of attestations returned by this endpoint is filt
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6317,7 +6583,7 @@ OAuth app tokens and personal access tokens (classic) need
 	 *
 	 * `GET /orgs/{org}/campaigns` — risk: medium
 	 */
-	async listCampaigns(org: string): Promise<ProofResult<unknown>> {
+	async listCampaigns(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "campaigns/list-org-campaigns",
 			namespace: "orgs",
@@ -6330,6 +6596,7 @@ OAuth app tokens and personal access tokens (classic) need
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6342,7 +6609,7 @@ OAuth app tokens and personal access tokens (classic) ne
 	 *
 	 * `POST /orgs/{org}/campaigns` — risk: medium
 	 */
-	async createCampaign(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createCampaign(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "campaigns/create-campaign",
 			namespace: "orgs",
@@ -6355,6 +6622,7 @@ OAuth app tokens and personal access tokens (classic) ne
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6367,7 +6635,7 @@ OAuth app tokens and personal access tokens (classic) need
 	 *
 	 * `GET /orgs/{org}/campaigns/{campaign_number}` — risk: medium
 	 */
-	async retrieveCampaign(org: string, campaignNumber: string): Promise<ProofResult<unknown>> {
+	async retrieveCampaign(org: string, campaignNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "campaigns/get-campaign-summary",
 			namespace: "orgs",
@@ -6380,6 +6648,7 @@ OAuth app tokens and personal access tokens (classic) need
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6392,7 +6661,7 @@ OAuth app tokens and personal access tokens (classic) ne
 	 *
 	 * `PATCH /orgs/{org}/campaigns/{campaign_number}` — risk: medium
 	 */
-	async campaigns(org: string, campaignNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async campaigns(org: string, campaignNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "campaigns/update-campaign",
 			namespace: "orgs",
@@ -6405,6 +6674,7 @@ OAuth app tokens and personal access tokens (classic) ne
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6417,7 +6687,7 @@ OAuth app tokens and personal access tokens (classic) ne
 	 *
 	 * `DELETE /orgs/{org}/campaigns/{campaign_number}` — risk: medium
 	 */
-	async deleteCampaign(org: string, campaignNumber: string): Promise<ProofResult<unknown>> {
+	async deleteCampaign(org: string, campaignNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "campaigns/delete-campaign",
 			namespace: "orgs",
@@ -6430,6 +6700,7 @@ OAuth app tokens and personal access tokens (classic) ne
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6438,7 +6709,7 @@ OAuth app tokens and personal access tokens (classic) ne
 	 *
 	 * `GET /orgs/{org}/code-scanning/alerts` — risk: medium
 	 */
-	async codeScanningAlerts(org: string): Promise<ProofResult<unknown>> {
+	async codeScanningAlerts(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/list-alerts-for-org",
 			namespace: "orgs",
@@ -6451,6 +6722,7 @@ OAuth app tokens and personal access tokens (classic) ne
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6463,7 +6735,7 @@ OAuth app tokens a
 	 *
 	 * `GET /orgs/{org}/code-security/configurations` — risk: medium
 	 */
-	async configurations_0(org: string): Promise<ProofResult<unknown>> {
+	async configurations_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/get-configurations-for-org",
 			namespace: "orgs",
@@ -6476,6 +6748,7 @@ OAuth app tokens a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6488,7 +6761,7 @@ OAuth app tokens and personal
 	 *
 	 * `POST /orgs/{org}/code-security/configurations` — risk: medium
 	 */
-	async configurations_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async configurations_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/create-configuration",
 			namespace: "orgs",
@@ -6501,6 +6774,7 @@ OAuth app tokens and personal
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6513,7 +6787,7 @@ OAuth app tokens an
 	 *
 	 * `GET /orgs/{org}/code-security/configurations/defaults` — risk: medium
 	 */
-	async defaults_0(org: string): Promise<ProofResult<unknown>> {
+	async defaults_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/get-default-configurations",
 			namespace: "orgs",
@@ -6526,6 +6800,7 @@ OAuth app tokens an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6537,7 +6812,7 @@ The authenticated user must be an ad
 	 *
 	 * `DELETE /orgs/{org}/code-security/configurations/detach` — risk: medium
 	 */
-	async detach(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async detach(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/detach-configuration",
 			namespace: "orgs",
@@ -6550,6 +6825,7 @@ The authenticated user must be an ad
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6562,7 +6838,7 @@ OAuth app tokens and p
 	 *
 	 * `GET /orgs/{org}/code-security/configurations/{configuration_id}` — risk: medium
 	 */
-	async retrieveConfiguration(org: string, configurationId: string): Promise<ProofResult<unknown>> {
+	async retrieveConfiguration(org: string, configurationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/get-configuration",
 			namespace: "orgs",
@@ -6575,6 +6851,7 @@ OAuth app tokens and p
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6587,7 +6864,7 @@ OAuth app tokens and personal
 	 *
 	 * `PATCH /orgs/{org}/code-security/configurations/{configuration_id}` — risk: medium
 	 */
-	async configurations_2(org: string, configurationId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async configurations_2(org: string, configurationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/update-configuration",
 			namespace: "orgs",
@@ -6600,6 +6877,7 @@ OAuth app tokens and personal
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6612,7 +6890,7 @@ Th
 	 *
 	 * `DELETE /orgs/{org}/code-security/configurations/{configuration_id}` — risk: medium
 	 */
-	async deleteConfiguration(org: string, configurationId: string): Promise<ProofResult<unknown>> {
+	async deleteConfiguration(org: string, configurationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/delete-configuration",
 			namespace: "orgs",
@@ -6625,6 +6903,7 @@ Th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6635,7 +6914,7 @@ If insuff
 	 *
 	 * `POST /orgs/{org}/code-security/configurations/{configuration_id}/attach` — risk: medium
 	 */
-	async attach(org: string, configurationId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async attach(org: string, configurationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/attach-configuration",
 			namespace: "orgs",
@@ -6648,6 +6927,7 @@ If insuff
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6658,7 +6938,7 @@ This configuration will be applied to the matching repository type (all, none, p
 	 *
 	 * `PUT /orgs/{org}/code-security/configurations/{configuration_id}/defaults` — risk: medium
 	 */
-	async defaults_1(org: string, configurationId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async defaults_1(org: string, configurationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/set-configuration-as-default",
 			namespace: "orgs",
@@ -6671,6 +6951,7 @@ This configuration will be applied to the matching repository type (all, none, p
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6681,7 +6962,7 @@ The authenticated user must be an administrator or security manager for the orga
 	 *
 	 * `GET /orgs/{org}/code-security/configurations/{configuration_id}/repositories` — risk: medium
 	 */
-	async codeSecurityconfigurationsRepositories(org: string, configurationId: string): Promise<ProofResult<unknown>> {
+	async codeSecurityconfigurationsRepositories(org: string, configurationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/get-repositories-for-configuration",
 			namespace: "orgs",
@@ -6694,6 +6975,7 @@ The authenticated user must be an administrator or security manager for the orga
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6704,7 +6986,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/codespaces` — risk: medium
 	 */
-	async listCodespaces(org: string): Promise<ProofResult<unknown>> {
+	async listCodespaces(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/list-in-organization",
 			namespace: "orgs",
@@ -6717,6 +6999,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6726,7 +7009,7 @@ OAuth app tokens and person
 	 *
 	 * `PUT /orgs/{org}/codespaces/access` — risk: medium
 	 */
-	async access(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async access(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/set-codespaces-access",
 			namespace: "orgs",
@@ -6739,6 +7022,7 @@ OAuth app tokens and person
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6750,7 +7034,7 @@ For information on how to chan
 	 *
 	 * `POST /orgs/{org}/codespaces/access/selected_users` — risk: medium
 	 */
-	async postCodespacesaccessSelectedUsers(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postCodespacesaccessSelectedUsers(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/set-codespaces-access-users",
 			namespace: "orgs",
@@ -6763,6 +7047,7 @@ For information on how to chan
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6774,7 +7059,7 @@ For information on h
 	 *
 	 * `DELETE /orgs/{org}/codespaces/access/selected_users` — risk: medium
 	 */
-	async deleteCodespacesaccessSelectedUsers(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteCodespacesaccessSelectedUsers(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/delete-codespaces-access-users",
 			namespace: "orgs",
@@ -6787,6 +7072,7 @@ For information on h
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6798,7 +7084,7 @@ OAuth app tokens and personal access tokens (classic) need the `admi
 	 *
 	 * `GET /orgs/{org}/codespaces/secrets` — risk: medium
 	 */
-	async getCodespacesSecrets(org: string): Promise<ProofResult<unknown>> {
+	async getCodespacesSecrets(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/list-org-secrets",
 			namespace: "orgs",
@@ -6811,6 +7097,7 @@ OAuth app tokens and personal access tokens (classic) need the `admi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6820,7 +7107,7 @@ OAuth app tokens and personal a
 	 *
 	 * `GET /orgs/{org}/codespaces/secrets/public-key` — risk: medium
 	 */
-	async codespacessecretsPublicKey(org: string): Promise<ProofResult<unknown>> {
+	async codespacessecretsPublicKey(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/get-org-public-key",
 			namespace: "orgs",
@@ -6833,6 +7120,7 @@ OAuth app tokens and personal a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6843,7 +7131,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/codespaces/secrets/{secret_name}` — risk: medium
 	 */
-	async codespacessecretsRetrieveSecret(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async codespacessecretsRetrieveSecret(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/get-org-secret",
 			namespace: "orgs",
@@ -6856,6 +7144,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6865,7 +7154,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/codespaces/secrets/{secret_name}` — risk: medium
 	 */
-	async putCodespacesSecrets(org: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putCodespacesSecrets(org: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/create-or-update-org-secret",
 			namespace: "orgs",
@@ -6878,6 +7167,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6888,7 +7178,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/codespaces/secrets/{secret_name}` — risk: medium
 	 */
-	async codespacessecretsDeleteSecret(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async codespacessecretsDeleteSecret(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/delete-org-secret",
 			namespace: "orgs",
@@ -6901,6 +7191,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6912,7 +7203,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org`
 	 *
 	 * `GET /orgs/{org}/codespaces/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async getCodespacessecretsRepositories(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async getCodespacessecretsRepositories(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/list-selected-repos-for-org-secret",
 			namespace: "orgs",
@@ -6925,6 +7216,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6935,7 +7227,7 @@ or update an organ
 	 *
 	 * `PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async putCodespacessecretsRepositories(org: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putCodespacessecretsRepositories(org: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/set-selected-repos-for-org-secret",
 			namespace: "orgs",
@@ -6948,6 +7240,7 @@ or update an organ
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6956,7 +7249,7 @@ or update an organ
 	 *
 	 * `PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async putCodespacessecretsRepositories_0(org: string, secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putCodespacessecretsRepositories_0(org: string, secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/add-selected-repo-to-org-secret",
 			namespace: "orgs",
@@ -6969,6 +7262,7 @@ or update an organ
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6979,7 +7273,7 @@ or update an organizat
 	 *
 	 * `DELETE /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async codespacessecretsrepositoriesDeleteRepository(org: string, secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async codespacessecretsrepositoriesDeleteRepository(org: string, secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/remove-selected-repo-from-org-secret",
 			namespace: "orgs",
@@ -6992,6 +7286,7 @@ or update an organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7002,7 +7297,7 @@ Only Spaces that are readable by the authenticated user are returned.
 	 *
 	 * `GET /orgs/{org}/copilot-spaces` — risk: medium
 	 */
-	async listCopilotSpaces(org: string): Promise<ProofResult<unknown>> {
+	async listCopilotSpaces(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/list-for-org",
 			namespace: "orgs",
@@ -7015,6 +7310,7 @@ Only Spaces that are readable by the authenticated user are returned.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7025,7 +7321,7 @@ Organization members with appropriate permissions can create C
 	 *
 	 * `POST /orgs/{org}/copilot-spaces` — risk: medium
 	 */
-	async createCopilotSpace(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createCopilotSpace(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/create-for-org",
 			namespace: "orgs",
@@ -7038,6 +7334,7 @@ Organization members with appropriate permissions can create C
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7048,7 +7345,7 @@ Internal Spaces require the authenticated user to be a member of the o
 	 *
 	 * `GET /orgs/{org}/copilot-spaces/{space_number}` — risk: medium
 	 */
-	async retrieveCopilotSpace(org: string, spaceNumber: string): Promise<ProofResult<unknown>> {
+	async retrieveCopilotSpace(org: string, spaceNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/get-for-org",
 			namespace: "orgs",
@@ -7061,6 +7358,7 @@ Internal Spaces require the authenticated user to be a member of the o
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7071,7 +7369,7 @@ Organization members with appropriate permissions can update Copil
 	 *
 	 * `PUT /orgs/{org}/copilot-spaces/{space_number}` — risk: medium
 	 */
-	async copilotSpaces(org: string, spaceNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async copilotSpaces(org: string, spaceNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/update-for-org",
 			namespace: "orgs",
@@ -7084,6 +7382,7 @@ Organization members with appropriate permissions can update Copil
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7094,7 +7393,7 @@ Organization members with appropriate permissions can update Copil
 	 *
 	 * `DELETE /orgs/{org}/copilot-spaces/{space_number}` — risk: medium
 	 */
-	async deleteCopilotSpace(org: string, spaceNumber: string): Promise<ProofResult<unknown>> {
+	async deleteCopilotSpace(org: string, spaceNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/delete-for-org",
 			namespace: "orgs",
@@ -7107,6 +7406,7 @@ Organization members with appropriate permissions can update Copil
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7117,7 +7417,7 @@ Each collaborator entry specifies which
 	 *
 	 * `GET /orgs/{org}/copilot-spaces/{space_number}/collaborators` — risk: medium
 	 */
-	async collaborators_0(org: string, spaceNumber: string): Promise<ProofResult<unknown>> {
+	async collaborators_0(org: string, spaceNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/list-collaborators-for-org",
 			namespace: "orgs",
@@ -7130,6 +7430,7 @@ Each collaborator entry specifies which
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7140,7 +7441,7 @@ Each collaborator entry specifies which
 	 *
 	 * `POST /orgs/{org}/copilot-spaces/{space_number}/collaborators` — risk: medium
 	 */
-	async collaborators_1(org: string, spaceNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async collaborators_1(org: string, spaceNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/add-collaborator-for-org",
 			namespace: "orgs",
@@ -7153,6 +7454,7 @@ Each collaborator entry specifies which
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7163,7 +7465,7 @@ OAuth app tokens and person
 	 *
 	 * `PUT /orgs/{org}/copilot-spaces/{space_number}/collaborators/{actor_type}/{actor_identifier}` — risk: medium
 	 */
-	async collaborators_2(org: string, spaceNumber: string, actorType: string, actorIdentifier: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async collaborators_2(org: string, spaceNumber: string, actorType: string, actorIdentifier: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/update-collaborator-for-org",
 			namespace: "orgs",
@@ -7176,6 +7478,7 @@ OAuth app tokens and person
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7186,7 +7489,7 @@ OAuth app tokens and personal access t
 	 *
 	 * `DELETE /orgs/{org}/copilot-spaces/{space_number}/collaborators/{actor_type}/{actor_identifier}` — risk: medium
 	 */
-	async deleteCollaborator(org: string, spaceNumber: string, actorType: string, actorIdentifier: string): Promise<ProofResult<unknown>> {
+	async deleteCollaborator(org: string, spaceNumber: string, actorType: string, actorIdentifier: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/remove-collaborator-for-org",
 			namespace: "orgs",
@@ -7199,6 +7502,7 @@ OAuth app tokens and personal access t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7210,7 +7514,7 @@ OAuth app tokens and personal access tok
 	 *
 	 * `GET /orgs/{org}/copilot-spaces/{space_number}/resources` — risk: medium
 	 */
-	async resources_0(org: string, spaceNumber: string): Promise<ProofResult<unknown>> {
+	async resources_0(org: string, spaceNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/list-resources-for-org",
 			namespace: "orgs",
@@ -7223,6 +7527,7 @@ OAuth app tokens and personal access tok
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7234,7 +7539,7 @@ The following resource types are supported: `repository`,
 	 *
 	 * `POST /orgs/{org}/copilot-spaces/{space_number}/resources` — risk: medium
 	 */
-	async resources_1(org: string, spaceNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async resources_1(org: string, spaceNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/create-resource-for-org",
 			namespace: "orgs",
@@ -7247,6 +7552,7 @@ The following resource types are supported: `repository`,
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7258,7 +7564,7 @@ OAuth app tokens and personal access tokens
 	 *
 	 * `GET /orgs/{org}/copilot-spaces/{space_number}/resources/{space_resource_id}` — risk: medium
 	 */
-	async retrieveResource(org: string, spaceNumber: string, spaceResourceId: string): Promise<ProofResult<unknown>> {
+	async retrieveResource(org: string, spaceNumber: string, spaceResourceId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/get-resource-for-org",
 			namespace: "orgs",
@@ -7271,6 +7577,7 @@ OAuth app tokens and personal access tokens
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7282,7 +7589,7 @@ OAuth app tokens and personal access tokens (
 	 *
 	 * `PUT /orgs/{org}/copilot-spaces/{space_number}/resources/{space_resource_id}` — risk: medium
 	 */
-	async resources_2(org: string, spaceNumber: string, spaceResourceId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async resources_2(org: string, spaceNumber: string, spaceResourceId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/update-resource-for-org",
 			namespace: "orgs",
@@ -7295,6 +7602,7 @@ OAuth app tokens and personal access tokens (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7306,7 +7614,7 @@ OAuth app tokens and personal access tokens (classic) need
 	 *
 	 * `DELETE /orgs/{org}/copilot-spaces/{space_number}/resources/{space_resource_id}` — risk: medium
 	 */
-	async deleteResource(org: string, spaceNumber: string, spaceResourceId: string): Promise<ProofResult<unknown>> {
+	async deleteResource(org: string, spaceNumber: string, spaceResourceId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/delete-resource-for-org",
 			namespace: "orgs",
@@ -7319,6 +7627,7 @@ OAuth app tokens and personal access tokens (classic) need
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7331,7 +7640,7 @@ and feature policies. To configure the
 	 *
 	 * `GET /orgs/{org}/copilot/billing` — risk: medium
 	 */
-	async billing(org: string): Promise<ProofResult<unknown>> {
+	async billing(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/get-copilot-organization-details",
 			namespace: "orgs",
@@ -7344,6 +7653,7 @@ and feature policies. To configure the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7355,7 +7665,7 @@ Lists all Copilot seats for which an organization with a Copilot Business or Cop
 	 *
 	 * `GET /orgs/{org}/copilot/billing/seats` — risk: medium
 	 */
-	async seats(org: string): Promise<ProofResult<unknown>> {
+	async seats(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/list-copilot-seats",
 			namespace: "orgs",
@@ -7368,6 +7678,7 @@ Lists all Copilot seats for which an organization with a Copilot Business or Cop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7380,7 +7691,7 @@ The organization will be billed for each seat based
 	 *
 	 * `POST /orgs/{org}/copilot/billing/selected_teams` — risk: medium
 	 */
-	async selectedTeams_0(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async selectedTeams_0(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/add-copilot-seats-for-teams",
 			namespace: "orgs",
@@ -7393,6 +7704,7 @@ The organization will be billed for each seat based
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7405,7 +7717,7 @@ This will cause the members of the specified team
 	 *
 	 * `DELETE /orgs/{org}/copilot/billing/selected_teams` — risk: medium
 	 */
-	async selectedTeams_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async selectedTeams_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/cancel-copilot-seat-assignment-for-teams",
 			namespace: "orgs",
@@ -7418,6 +7730,7 @@ This will cause the members of the specified team
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7430,7 +7743,7 @@ The organization will be billed for each seat based on the organizati
 	 *
 	 * `POST /orgs/{org}/copilot/billing/selected_users` — risk: medium
 	 */
-	async postCopilotbillingSelectedUsers(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postCopilotbillingSelectedUsers(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/add-copilot-seats-for-users",
 			namespace: "orgs",
@@ -7443,6 +7756,7 @@ The organization will be billed for each seat based on the organizati
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7455,7 +7769,7 @@ This will cause the specified users to lose access to GitHub Cop
 	 *
 	 * `DELETE /orgs/{org}/copilot/billing/selected_users` — risk: medium
 	 */
-	async deleteCopilotbillingSelectedUsers(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteCopilotbillingSelectedUsers(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/cancel-copilot-seat-assignment-for-users",
 			namespace: "orgs",
@@ -7468,6 +7782,7 @@ This will cause the specified users to lose access to GitHub Cop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7482,7 +7797,7 @@ Organ
 	 *
 	 * `GET /orgs/{org}/copilot/coding-agent/permissions` — risk: medium
 	 */
-	async getCopilotcodingAgentPermissions(org: string): Promise<ProofResult<unknown>> {
+	async getCopilotcodingAgentPermissions(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/get-copilot-coding-agent-permissions-organization",
 			namespace: "orgs",
@@ -7495,6 +7810,7 @@ Organ
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7508,7 +7824,7 @@ Organization owners can configure whet
 	 *
 	 * `PUT /orgs/{org}/copilot/coding-agent/permissions` — risk: medium
 	 */
-	async putCopilotcodingAgentPermissions(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putCopilotcodingAgentPermissions(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/set-copilot-coding-agent-permissions-organization",
 			namespace: "orgs",
@@ -7521,6 +7837,7 @@ Organization owners can configure whet
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7534,7 +7851,7 @@ Organization owners can use this
 	 *
 	 * `GET /orgs/{org}/copilot/coding-agent/permissions/repositories` — risk: medium
 	 */
-	async getCopilotcodingAgentpermissionsRepositories(org: string): Promise<ProofResult<unknown>> {
+	async getCopilotcodingAgentpermissionsRepositories(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/list-copilot-coding-agent-selected-repositories-for-organization",
 			namespace: "orgs",
@@ -7547,6 +7864,7 @@ Organization owners can use this
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7559,7 +7877,7 @@ agent in an organization. This method can only b
 	 *
 	 * `PUT /orgs/{org}/copilot/coding-agent/permissions/repositories` — risk: medium
 	 */
-	async putCopilotcodingAgentpermissionsRepositories(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putCopilotcodingAgentpermissionsRepositories(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/set-copilot-coding-agent-selected-repositories-for-organization",
 			namespace: "orgs",
@@ -7572,6 +7890,7 @@ agent in an organization. This method can only b
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7584,7 +7903,7 @@ cloud agent in an organization. This method can onl
 	 *
 	 * `PUT /orgs/{org}/copilot/coding-agent/permissions/repositories/{repository_id}` — risk: medium
 	 */
-	async putCopilotcodingAgentpermissionsRepositories_0(org: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putCopilotcodingAgentpermissionsRepositories_0(org: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/enable-copilot-coding-agent-for-repository-in-organization",
 			namespace: "orgs",
@@ -7597,6 +7916,7 @@ cloud agent in an organization. This method can onl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7609,7 +7929,7 @@ cloud agent in an organization. This method ca
 	 *
 	 * `DELETE /orgs/{org}/copilot/coding-agent/permissions/repositories/{repository_id}` — risk: medium
 	 */
-	async copilotcodingAgentpermissionsrepositoriesDeleteRepository(org: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async copilotcodingAgentpermissionsrepositoriesDeleteRepository(org: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/disable-copilot-coding-agent-for-repository-in-organization",
 			namespace: "orgs",
@@ -7622,6 +7942,7 @@ cloud agent in an organization. This method ca
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7634,7 +7955,7 @@ To configure these settings, go to the organiza
 	 *
 	 * `GET /orgs/{org}/copilot/content_exclusion` — risk: medium
 	 */
-	async contentExclusion_0(org: string): Promise<ProofResult<unknown>> {
+	async contentExclusion_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-content-exclusion-for-organization",
 			namespace: "orgs",
@@ -7647,6 +7968,7 @@ To configure these settings, go to the organiza
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7659,7 +7981,7 @@ To configure these settings, go to the organization's settings
 	 *
 	 * `PUT /orgs/{org}/copilot/content_exclusion` — risk: medium
 	 */
-	async contentExclusion_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async contentExclusion_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/set-copilot-content-exclusion-for-organization",
 			namespace: "orgs",
@@ -7672,6 +7994,7 @@ To configure these settings, go to the organization's settings
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7683,7 +8006,7 @@ To configure these settings, go to the organization's settings
 	 *
 	 * `GET /orgs/{org}/copilot/metrics` — risk: medium
 	 */
-	async copilotMetrics(org: string): Promise<ProofResult<unknown>> {
+	async copilotMetrics(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-metrics-for-organization",
 			namespace: "orgs",
@@ -7696,6 +8019,7 @@ To configure these settings, go to the organization's settings
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7704,7 +8028,7 @@ To configure these settings, go to the organization's settings
 	 *
 	 * `GET /orgs/{org}/copilot/metrics/reports/organization-1-day` — risk: medium
 	 */
-	async organization1Day(org: string): Promise<ProofResult<unknown>> {
+	async organization1Day(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-organization-one-day-usage-metrics",
 			namespace: "orgs",
@@ -7717,6 +8041,7 @@ To configure these settings, go to the organization's settings
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7725,7 +8050,7 @@ To configure these settings, go to the organization's settings
 	 *
 	 * `GET /orgs/{org}/copilot/metrics/reports/organization-28-day/latest` — risk: medium
 	 */
-	async organization28DayLatest(org: string): Promise<ProofResult<unknown>> {
+	async organization28DayLatest(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-organization-usage-metrics",
 			namespace: "orgs",
@@ -7738,6 +8063,7 @@ To configure these settings, go to the organization's settings
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7746,7 +8072,7 @@ To configure these settings, go to the organization's settings
 	 *
 	 * `GET /orgs/{org}/copilot/metrics/reports/user-teams-1-day` — risk: medium
 	 */
-	async userTeams1Day(org: string): Promise<ProofResult<unknown>> {
+	async userTeams1Day(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-organization-user-teams-one-day-report",
 			namespace: "orgs",
@@ -7759,6 +8085,7 @@ To configure these settings, go to the organization's settings
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7767,7 +8094,7 @@ To configure these settings, go to the organization's settings
 	 *
 	 * `GET /orgs/{org}/copilot/metrics/reports/users-1-day` — risk: medium
 	 */
-	async users1Day(org: string): Promise<ProofResult<unknown>> {
+	async users1Day(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-organization-users-one-day-usage-metrics",
 			namespace: "orgs",
@@ -7780,6 +8107,7 @@ To configure these settings, go to the organization's settings
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7788,7 +8116,7 @@ To configure these settings, go to the organization's settings
 	 *
 	 * `GET /orgs/{org}/copilot/metrics/reports/users-28-day/latest` — risk: medium
 	 */
-	async users28DayLatest(org: string): Promise<ProofResult<unknown>> {
+	async users28DayLatest(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-organization-users-usage-metrics",
 			namespace: "orgs",
@@ -7801,6 +8129,7 @@ To configure these settings, go to the organization's settings
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7813,7 +8142,7 @@ OAuth app tokens and personal access tokens (class
 	 *
 	 * `GET /orgs/{org}/dependabot/alerts` — risk: medium
 	 */
-	async dependabotAlerts(org: string): Promise<ProofResult<unknown>> {
+	async dependabotAlerts(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/list-alerts-for-org",
 			namespace: "orgs",
@@ -7826,6 +8155,7 @@ OAuth app tokens and personal access tokens (class
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7837,7 +8167,7 @@ Unauth
 	 *
 	 * `GET /orgs/{org}/dependabot/repository-access` — risk: medium
 	 */
-	async repositoryAccess_0(org: string): Promise<ProofResult<unknown>> {
+	async repositoryAccess_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/repository-access-for-org",
 			namespace: "orgs",
@@ -7850,6 +8180,7 @@ Unauth
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7861,7 +8192,7 @@ Unauth
 	 *
 	 * `PATCH /orgs/{org}/dependabot/repository-access` — risk: medium
 	 */
-	async repositoryAccess_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async repositoryAccess_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/update-repository-access-for-org",
 			namespace: "orgs",
@@ -7874,6 +8205,7 @@ Unauth
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7883,7 +8215,7 @@ Unauth
 	 *
 	 * `PUT /orgs/{org}/dependabot/repository-access/default-level` — risk: medium
 	 */
-	async defaultLevel(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async defaultLevel(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/set-repository-access-default-level",
 			namespace: "orgs",
@@ -7896,6 +8228,7 @@ Unauth
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7907,7 +8240,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/dependabot/secrets` — risk: medium
 	 */
-	async getDependabotSecrets(org: string): Promise<ProofResult<unknown>> {
+	async getDependabotSecrets(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/list-org-secrets",
 			namespace: "orgs",
@@ -7920,6 +8253,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7931,7 +8265,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:or
 	 *
 	 * `GET /orgs/{org}/dependabot/secrets/public-key` — risk: medium
 	 */
-	async dependabotsecretsPublicKey(org: string): Promise<ProofResult<unknown>> {
+	async dependabotsecretsPublicKey(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/get-org-public-key",
 			namespace: "orgs",
@@ -7944,6 +8278,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:or
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7954,7 +8289,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/dependabot/secrets/{secret_name}` — risk: medium
 	 */
-	async dependabotsecretsRetrieveSecret(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async dependabotsecretsRetrieveSecret(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/get-org-secret",
 			namespace: "orgs",
@@ -7967,6 +8302,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7976,7 +8312,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PUT /orgs/{org}/dependabot/secrets/{secret_name}` — risk: medium
 	 */
-	async putDependabotSecrets(org: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putDependabotSecrets(org: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/create-or-update-org-secret",
 			namespace: "orgs",
@@ -7989,6 +8325,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7999,7 +8336,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/dependabot/secrets/{secret_name}` — risk: medium
 	 */
-	async dependabotsecretsDeleteSecret(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async dependabotsecretsDeleteSecret(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/delete-org-secret",
 			namespace: "orgs",
@@ -8012,6 +8349,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8023,7 +8361,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org`
 	 *
 	 * `GET /orgs/{org}/dependabot/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async getDependabotsecretsRepositories(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async getDependabotsecretsRepositories(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/list-selected-repos-for-org-secret",
 			namespace: "orgs",
@@ -8036,6 +8374,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8046,7 +8385,7 @@ or update an organization secret](https://
 	 *
 	 * `PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async putDependabotsecretsRepositories(org: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putDependabotsecretsRepositories(org: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/set-selected-repos-for-org-secret",
 			namespace: "orgs",
@@ -8059,6 +8398,7 @@ or update an organization secret](https://
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8069,7 +8409,7 @@ update an organization secret](https://docs.gith
 	 *
 	 * `PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async putDependabotsecretsRepositories_0(org: string, secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putDependabotsecretsRepositories_0(org: string, secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/add-selected-repo-to-org-secret",
 			namespace: "orgs",
@@ -8082,6 +8422,7 @@ update an organization secret](https://docs.gith
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8092,7 +8433,7 @@ or update an organization secret](https://docs
 	 *
 	 * `DELETE /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async dependabotsecretsrepositoriesDeleteRepository(org: string, secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async dependabotsecretsrepositoriesDeleteRepository(org: string, secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/remove-selected-repo-from-org-secret",
 			namespace: "orgs",
@@ -8105,6 +8446,7 @@ or update an organization secret](https://docs
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8115,7 +8457,7 @@ OAuth app tokens and personal access tokens (cl
 	 *
 	 * `GET /orgs/{org}/docker/conflicts` — risk: medium
 	 */
-	async conflicts(org: string): Promise<ProofResult<unknown>> {
+	async conflicts(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/list-docker-migration-conflicting-packages-for-organization",
 			namespace: "orgs",
@@ -8128,6 +8470,7 @@ OAuth app tokens and personal access tokens (cl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8137,7 +8480,7 @@ OAuth app tokens and personal access tokens (cl
 	 *
 	 * `GET /orgs/{org}/events` — risk: medium
 	 */
-	async listEvents(org: string): Promise<ProofResult<unknown>> {
+	async listEvents(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-public-org-events",
 			namespace: "orgs",
@@ -8150,6 +8493,7 @@ OAuth app tokens and personal access tokens (cl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8158,7 +8502,7 @@ OAuth app tokens and personal access tokens (cl
 	 *
 	 * `GET /orgs/{org}/failed_invitations` — risk: medium
 	 */
-	async listFailedInvitations(org: string): Promise<ProofResult<unknown>> {
+	async listFailedInvitations(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-failed-invitations",
 			namespace: "orgs",
@@ -8171,6 +8515,7 @@ OAuth app tokens and personal access tokens (cl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8183,7 +8528,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 	 *
 	 * `GET /orgs/{org}/hooks` — risk: medium
 	 */
-	async listHooks(org: string): Promise<ProofResult<unknown>> {
+	async listHooks(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-webhooks",
 			namespace: "orgs",
@@ -8196,6 +8541,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8208,7 +8554,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 	 *
 	 * `POST /orgs/{org}/hooks` — risk: medium
 	 */
-	async createHook(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createHook(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/create-webhook",
 			namespace: "orgs",
@@ -8221,6 +8567,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8230,7 +8577,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 	 *
 	 * `GET /orgs/{org}/hooks/{hook_id}` — risk: medium
 	 */
-	async retrieveHook(org: string, hookId: string): Promise<ProofResult<unknown>> {
+	async retrieveHook(org: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-webhook",
 			namespace: "orgs",
@@ -8243,6 +8590,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8253,7 +8601,7 @@ provide the same `secret` or set a new `sec
 	 *
 	 * `PATCH /orgs/{org}/hooks/{hook_id}` — risk: medium
 	 */
-	async hooks(org: string, hookId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async hooks(org: string, hookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/update-webhook",
 			namespace: "orgs",
@@ -8266,6 +8614,7 @@ provide the same `secret` or set a new `sec
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8278,7 +8627,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 	 *
 	 * `DELETE /orgs/{org}/hooks/{hook_id}` — risk: medium
 	 */
-	async deleteHook(org: string, hookId: string): Promise<ProofResult<unknown>> {
+	async deleteHook(org: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/delete-webhook",
 			namespace: "orgs",
@@ -8291,6 +8640,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8299,7 +8649,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 	 *
 	 * `GET /orgs/{org}/hooks/{hook_id}/config` — risk: medium
 	 */
-	async config_0(org: string, hookId: string): Promise<ProofResult<unknown>> {
+	async config_0(org: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-webhook-config-for-org",
 			namespace: "orgs",
@@ -8312,6 +8662,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8320,7 +8671,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 	 *
 	 * `PATCH /orgs/{org}/hooks/{hook_id}/config` — risk: medium
 	 */
-	async config_1(org: string, hookId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async config_1(org: string, hookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/update-webhook-config-for-org",
 			namespace: "orgs",
@@ -8333,6 +8684,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8345,7 +8697,7 @@ OAuth app tokens and personal access tokens (classic) need `
 	 *
 	 * `GET /orgs/{org}/hooks/{hook_id}/deliveries` — risk: medium
 	 */
-	async deliveries(org: string, hookId: string): Promise<ProofResult<unknown>> {
+	async deliveries(org: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-webhook-deliveries",
 			namespace: "orgs",
@@ -8358,6 +8710,7 @@ OAuth app tokens and personal access tokens (classic) need `
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8370,7 +8723,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` sc
 	 *
 	 * `GET /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}` — risk: medium
 	 */
-	async retrieveDelivery(org: string, hookId: string, deliveryId: string): Promise<ProofResult<unknown>> {
+	async retrieveDelivery(org: string, hookId: string, deliveryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-webhook-delivery",
 			namespace: "orgs",
@@ -8383,6 +8736,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` sc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8395,7 +8749,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook`
 	 *
 	 * `POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts` — risk: medium
 	 */
-	async attempts(org: string, hookId: string, deliveryId: string): Promise<ProofResult<unknown>> {
+	async attempts(org: string, hookId: string, deliveryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/redeliver-webhook-delivery",
 			namespace: "orgs",
@@ -8408,6 +8762,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8421,7 +8776,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `POST /orgs/{org}/hooks/{hook_id}/pings` — risk: medium
 	 */
-	async pings(org: string, hookId: string): Promise<ProofResult<unknown>> {
+	async pings(org: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/ping-webhook",
 			namespace: "orgs",
@@ -8434,6 +8789,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8442,7 +8798,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `GET /orgs/{org}/insights/api/route-stats/{actor_type}/{actor_id}` — risk: medium
 	 */
-	async retrieveRouteStat(org: string, actorType: string, actorId: string): Promise<ProofResult<unknown>> {
+	async retrieveRouteStat(org: string, actorType: string, actorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api-insights/get-route-stats-by-actor",
 			namespace: "orgs",
@@ -8455,6 +8811,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8463,7 +8820,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `GET /orgs/{org}/insights/api/subject-stats` — risk: medium
 	 */
-	async subjectStats(org: string): Promise<ProofResult<unknown>> {
+	async subjectStats(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api-insights/get-subject-stats",
 			namespace: "orgs",
@@ -8476,6 +8833,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8484,7 +8842,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `GET /orgs/{org}/insights/api/summary-stats` — risk: medium
 	 */
-	async summaryStats(org: string): Promise<ProofResult<unknown>> {
+	async summaryStats(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api-insights/get-summary-stats",
 			namespace: "orgs",
@@ -8497,6 +8855,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8505,7 +8864,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `GET /orgs/{org}/insights/api/summary-stats/users/{user_id}` — risk: medium
 	 */
-	async summaryStatsusersRetrieveUser(org: string, userId: string): Promise<ProofResult<unknown>> {
+	async summaryStatsusersRetrieveUser(org: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api-insights/get-summary-stats-by-user",
 			namespace: "orgs",
@@ -8518,6 +8877,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8526,7 +8886,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `GET /orgs/{org}/insights/api/summary-stats/{actor_type}/{actor_id}` — risk: medium
 	 */
-	async retrieveSummaryStat(org: string, actorType: string, actorId: string): Promise<ProofResult<unknown>> {
+	async retrieveSummaryStat(org: string, actorType: string, actorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api-insights/get-summary-stats-by-actor",
 			namespace: "orgs",
@@ -8539,6 +8899,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8547,7 +8908,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `GET /orgs/{org}/insights/api/time-stats` — risk: medium
 	 */
-	async timeStats(org: string): Promise<ProofResult<unknown>> {
+	async timeStats(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api-insights/get-time-stats",
 			namespace: "orgs",
@@ -8560,6 +8921,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8568,7 +8930,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `GET /orgs/{org}/insights/api/time-stats/users/{user_id}` — risk: medium
 	 */
-	async timeStatsusersRetrieveUser(org: string, userId: string): Promise<ProofResult<unknown>> {
+	async timeStatsusersRetrieveUser(org: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api-insights/get-time-stats-by-user",
 			namespace: "orgs",
@@ -8581,6 +8943,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8589,7 +8952,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `GET /orgs/{org}/insights/api/time-stats/{actor_type}/{actor_id}` — risk: medium
 	 */
-	async retrieveTimeStat(org: string, actorType: string, actorId: string): Promise<ProofResult<unknown>> {
+	async retrieveTimeStat(org: string, actorType: string, actorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api-insights/get-time-stats-by-actor",
 			namespace: "orgs",
@@ -8602,6 +8965,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8610,7 +8974,7 @@ OAuth app tokens and personal access to
 	 *
 	 * `GET /orgs/{org}/insights/api/user-stats/{user_id}` — risk: medium
 	 */
-	async retrieveUserStat(org: string, userId: string): Promise<ProofResult<unknown>> {
+	async retrieveUserStat(org: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api-insights/get-user-stats",
 			namespace: "orgs",
@@ -8623,6 +8987,7 @@ OAuth app tokens and personal access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8633,7 +8998,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `GET /orgs/{org}/installation` — risk: medium
 	 */
-	async listInstallation(org: string): Promise<ProofResult<unknown>> {
+	async listInstallation(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-org-installation",
 			namespace: "orgs",
@@ -8646,6 +9011,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8657,7 +9023,7 @@ The authenticated user must be an organization owner to use th
 	 *
 	 * `GET /orgs/{org}/installations` — risk: medium
 	 */
-	async listInstallations(org: string): Promise<ProofResult<unknown>> {
+	async listInstallations(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-app-installations",
 			namespace: "orgs",
@@ -8670,6 +9036,7 @@ The authenticated user must be an organization owner to use th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8678,7 +9045,7 @@ The authenticated user must be an organization owner to use th
 	 *
 	 * `GET /orgs/{org}/interaction-limits` — risk: medium
 	 */
-	async listInteractionLimits(org: string): Promise<ProofResult<unknown>> {
+	async listInteractionLimits(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "interactions/get-restrictions-for-org",
 			namespace: "orgs",
@@ -8691,6 +9058,7 @@ The authenticated user must be an organization owner to use th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8699,7 +9067,7 @@ The authenticated user must be an organization owner to use th
 	 *
 	 * `PUT /orgs/{org}/interaction-limits` — risk: medium
 	 */
-	async interactionLimits_0(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async interactionLimits_0(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "interactions/set-restrictions-for-org",
 			namespace: "orgs",
@@ -8712,6 +9080,7 @@ The authenticated user must be an organization owner to use th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8720,7 +9089,7 @@ The authenticated user must be an organization owner to use th
 	 *
 	 * `DELETE /orgs/{org}/interaction-limits` — risk: medium
 	 */
-	async interactionLimits_1(org: string): Promise<ProofResult<unknown>> {
+	async interactionLimits_1(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "interactions/remove-restrictions-for-org",
 			namespace: "orgs",
@@ -8733,6 +9102,7 @@ The authenticated user must be an organization owner to use th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8743,7 +9113,7 @@ Invitation role and will be one of the following values: `direct_member`, `admin
 	 *
 	 * `GET /orgs/{org}/invitations` — risk: medium
 	 */
-	async listInvitations(org: string): Promise<ProofResult<unknown>> {
+	async listInvitations(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-pending-invitations",
 			namespace: "orgs",
@@ -8756,6 +9126,7 @@ Invitation role and will be one of the following values: `direct_member`, `admin
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8766,7 +9137,7 @@ This en
 	 *
 	 * `POST /orgs/{org}/invitations` — risk: medium
 	 */
-	async createInvitation(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createInvitation(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/create-invitation",
 			namespace: "orgs",
@@ -8779,6 +9150,7 @@ This en
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8789,7 +9161,7 @@ This endpoint triggers [notifications](https://docs.github.com/
 	 *
 	 * `DELETE /orgs/{org}/invitations/{invitation_id}` — risk: medium
 	 */
-	async deleteInvitation(org: string, invitationId: string): Promise<ProofResult<unknown>> {
+	async deleteInvitation(org: string, invitationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/cancel-invitation",
 			namespace: "orgs",
@@ -8802,6 +9174,7 @@ This endpoint triggers [notifications](https://docs.github.com/
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8810,7 +9183,7 @@ This endpoint triggers [notifications](https://docs.github.com/
 	 *
 	 * `GET /orgs/{org}/invitations/{invitation_id}/teams` — risk: medium
 	 */
-	async invitationsTeams(org: string, invitationId: string): Promise<ProofResult<unknown>> {
+	async invitationsTeams(org: string, invitationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-invitation-teams",
 			namespace: "orgs",
@@ -8823,6 +9196,7 @@ This endpoint triggers [notifications](https://docs.github.com/
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8831,7 +9205,7 @@ This endpoint triggers [notifications](https://docs.github.com/
 	 *
 	 * `GET /orgs/{org}/issue-fields` — risk: medium
 	 */
-	async listIssueFields(org: string): Promise<ProofResult<unknown>> {
+	async listIssueFields(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-issue-fields",
 			namespace: "orgs",
@@ -8844,6 +9218,7 @@ This endpoint triggers [notifications](https://docs.github.com/
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8854,7 +9229,7 @@ You can find out more about issue fields in [Managing issue fields in an organiz
 	 *
 	 * `POST /orgs/{org}/issue-fields` — risk: medium
 	 */
-	async createIssueField(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createIssueField(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/create-issue-field",
 			namespace: "orgs",
@@ -8867,6 +9242,7 @@ You can find out more about issue fields in [Managing issue fields in an organiz
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8877,7 +9253,7 @@ You can find out more about issue fields in [Managing issue fields in an organiz
 	 *
 	 * `PATCH /orgs/{org}/issue-fields/{issue_field_id}` — risk: medium
 	 */
-	async issueFields(org: string, issueFieldId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issueFields(org: string, issueFieldId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/update-issue-field",
 			namespace: "orgs",
@@ -8890,6 +9266,7 @@ You can find out more about issue fields in [Managing issue fields in an organiz
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8900,7 +9277,7 @@ You can find out more about issue fields in [Managing issue fields in an organiz
 	 *
 	 * `DELETE /orgs/{org}/issue-fields/{issue_field_id}` — risk: medium
 	 */
-	async deleteIssueField(org: string, issueFieldId: string): Promise<ProofResult<unknown>> {
+	async deleteIssueField(org: string, issueFieldId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/delete-issue-field",
 			namespace: "orgs",
@@ -8913,6 +9290,7 @@ You can find out more about issue fields in [Managing issue fields in an organiz
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8921,7 +9299,7 @@ You can find out more about issue fields in [Managing issue fields in an organiz
 	 *
 	 * `GET /orgs/{org}/issue-types` — risk: medium
 	 */
-	async listIssueTypes(org: string): Promise<ProofResult<unknown>> {
+	async listIssueTypes(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-issue-types",
 			namespace: "orgs",
@@ -8934,6 +9312,7 @@ You can find out more about issue fields in [Managing issue fields in an organiz
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8944,7 +9323,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 	 *
 	 * `POST /orgs/{org}/issue-types` — risk: medium
 	 */
-	async createIssueType(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createIssueType(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/create-issue-type",
 			namespace: "orgs",
@@ -8957,6 +9336,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8967,7 +9347,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 	 *
 	 * `PUT /orgs/{org}/issue-types/{issue_type_id}` — risk: medium
 	 */
-	async issueTypes(org: string, issueTypeId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issueTypes(org: string, issueTypeId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/update-issue-type",
 			namespace: "orgs",
@@ -8980,6 +9360,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8990,7 +9371,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 	 *
 	 * `DELETE /orgs/{org}/issue-types/{issue_type_id}` — risk: medium
 	 */
-	async deleteIssueType(org: string, issueTypeId: string): Promise<ProofResult<unknown>> {
+	async deleteIssueType(org: string, issueTypeId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/delete-issue-type",
 			namespace: "orgs",
@@ -9003,6 +9384,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9014,7 +9396,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 	 *
 	 * `GET /orgs/{org}/issues` — risk: medium
 	 */
-	async listIssues(org: string): Promise<ProofResult<unknown>> {
+	async listIssues(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-for-org",
 			namespace: "orgs",
@@ -9027,6 +9409,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9035,7 +9418,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 	 *
 	 * `GET /orgs/{org}/members` — risk: medium
 	 */
-	async listMembers(org: string): Promise<ProofResult<unknown>> {
+	async listMembers(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-members",
 			namespace: "orgs",
@@ -9048,6 +9431,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9056,7 +9440,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 	 *
 	 * `GET /orgs/{org}/members/{username}` — risk: medium
 	 */
-	async retrieveMember(org: string, username: string): Promise<ProofResult<unknown>> {
+	async retrieveMember(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/check-membership-for-user",
 			namespace: "orgs",
@@ -9069,6 +9453,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9080,7 +9465,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 	 *
 	 * `DELETE /orgs/{org}/members/{username}` — risk: medium
 	 */
-	async deleteMember(org: string, username: string): Promise<ProofResult<unknown>> {
+	async deleteMember(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/remove-member",
 			namespace: "orgs",
@@ -9093,6 +9478,7 @@ You can find out more about issue types in [Managing issue types in an organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9103,7 +9489,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/members/{username}/codespaces` — risk: medium
 	 */
-	async codespaces(org: string, username: string): Promise<ProofResult<unknown>> {
+	async codespaces(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/get-codespaces-for-user-in-org",
 			namespace: "orgs",
@@ -9116,6 +9502,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9126,7 +9513,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/members/{username}/codespaces/{codespace_name}` — risk: medium
 	 */
-	async deleteCodespace(org: string, username: string, codespaceName: string): Promise<ProofResult<unknown>> {
+	async deleteCodespace(org: string, username: string, codespaceName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/delete-from-organization",
 			namespace: "orgs",
@@ -9139,6 +9526,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9149,7 +9537,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `POST /orgs/{org}/members/{username}/codespaces/{codespace_name}/stop` — risk: medium
 	 */
-	async stop(org: string, username: string, codespaceName: string): Promise<ProofResult<unknown>> {
+	async stop(org: string, username: string, codespaceName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/stop-in-organization",
 			namespace: "orgs",
@@ -9162,6 +9550,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9175,7 +9564,7 @@ The seat obj
 	 *
 	 * `GET /orgs/{org}/members/{username}/copilot` — risk: medium
 	 */
-	async copilot(org: string, username: string): Promise<ProofResult<unknown>> {
+	async copilot(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/get-copilot-seat-details-for-user",
 			namespace: "orgs",
@@ -9188,6 +9577,7 @@ The seat obj
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9196,7 +9586,7 @@ The seat obj
 	 *
 	 * `GET /orgs/{org}/memberships/{username}` — risk: medium
 	 */
-	async membershipsRetrieveMembership(org: string, username: string): Promise<ProofResult<unknown>> {
+	async membershipsRetrieveMembership(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-membership-for-user",
 			namespace: "orgs",
@@ -9209,6 +9599,7 @@ The seat obj
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9219,7 +9610,7 @@ The seat obj
 	 *
 	 * `PUT /orgs/{org}/memberships/{username}` — risk: medium
 	 */
-	async memberships_0(org: string, username: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async memberships_0(org: string, username: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/set-membership-for-user",
 			namespace: "orgs",
@@ -9232,6 +9623,7 @@ The seat obj
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9242,7 +9634,7 @@ If the specified user is an active member of the organization, this will remove 
 	 *
 	 * `DELETE /orgs/{org}/memberships/{username}` — risk: medium
 	 */
-	async membershipsDeleteMembership(org: string, username: string): Promise<ProofResult<unknown>> {
+	async membershipsDeleteMembership(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/remove-membership-for-user",
 			namespace: "orgs",
@@ -9255,6 +9647,7 @@ If the specified user is an active member of the organization, this will remove 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9265,7 +9658,7 @@ A list of `repositories` is only returne
 	 *
 	 * `GET /orgs/{org}/migrations` — risk: medium
 	 */
-	async listMigrations(org: string): Promise<ProofResult<unknown>> {
+	async listMigrations(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/list-for-org",
 			namespace: "orgs",
@@ -9278,6 +9671,7 @@ A list of `repositories` is only returne
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9286,7 +9680,7 @@ A list of `repositories` is only returne
 	 *
 	 * `POST /orgs/{org}/migrations` — risk: medium
 	 */
-	async createMigration(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMigration(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/start-for-org",
 			namespace: "orgs",
@@ -9299,6 +9693,7 @@ A list of `repositories` is only returne
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9312,7 +9707,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `GET /orgs/{org}/migrations/{migration_id}` — risk: medium
 	 */
-	async retrieveMigration(org: string, migrationId: string): Promise<ProofResult<unknown>> {
+	async retrieveMigration(org: string, migrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/get-status-for-org",
 			namespace: "orgs",
@@ -9325,6 +9720,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9333,7 +9729,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `GET /orgs/{org}/migrations/{migration_id}/archive` — risk: medium
 	 */
-	async archive_0(org: string, migrationId: string): Promise<ProofResult<unknown>> {
+	async archive_0(org: string, migrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/download-archive-for-org",
 			namespace: "orgs",
@@ -9346,6 +9742,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9354,7 +9751,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `DELETE /orgs/{org}/migrations/{migration_id}/archive` — risk: medium
 	 */
-	async archive_1(org: string, migrationId: string): Promise<ProofResult<unknown>> {
+	async archive_1(org: string, migrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/delete-archive-for-org",
 			namespace: "orgs",
@@ -9367,6 +9764,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9375,7 +9773,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `DELETE /orgs/{org}/migrations/{migration_id}/repos/{repo_name}/lock` — risk: medium
 	 */
-	async lock(org: string, migrationId: string, repoName: string): Promise<ProofResult<unknown>> {
+	async lock(org: string, migrationId: string, repoName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/unlock-repo-for-org",
 			namespace: "orgs",
@@ -9388,6 +9786,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9396,7 +9795,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `GET /orgs/{org}/migrations/{migration_id}/repositories` — risk: medium
 	 */
-	async migrationsRepositories(org: string, migrationId: string): Promise<ProofResult<unknown>> {
+	async migrationsRepositories(org: string, migrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/list-repos-for-org",
 			namespace: "orgs",
@@ -9409,6 +9808,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9417,7 +9817,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `GET /orgs/{org}/organization-roles` — risk: medium
 	 */
-	async listOrganizationRoles(org: string): Promise<ProofResult<unknown>> {
+	async listOrganizationRoles(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-org-roles",
 			namespace: "orgs",
@@ -9430,6 +9830,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9438,7 +9839,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `DELETE /orgs/{org}/organization-roles/teams/{team_slug}` — risk: medium
 	 */
-	async deleteOrganizationRolesteamsDeleteTeam(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async deleteOrganizationRolesteamsDeleteTeam(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/revoke-all-org-roles-team",
 			namespace: "orgs",
@@ -9451,6 +9852,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9459,7 +9861,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}` — risk: medium
 	 */
-	async putOrganizationRolesTeams(org: string, teamSlug: string, roleId: string): Promise<ProofResult<unknown>> {
+	async putOrganizationRolesTeams(org: string, teamSlug: string, roleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/assign-team-to-org-role",
 			namespace: "orgs",
@@ -9472,6 +9874,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9480,7 +9883,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}` — risk: medium
 	 */
-	async deleteOrganizationRolesteamsDeleteTeam_0(org: string, teamSlug: string, roleId: string): Promise<ProofResult<unknown>> {
+	async deleteOrganizationRolesteamsDeleteTeam_0(org: string, teamSlug: string, roleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/revoke-org-role-team",
 			namespace: "orgs",
@@ -9493,6 +9896,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9501,7 +9905,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `DELETE /orgs/{org}/organization-roles/users/{username}` — risk: medium
 	 */
-	async deleteUser_0(org: string, username: string): Promise<ProofResult<unknown>> {
+	async deleteUser_0(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/revoke-all-org-roles-user",
 			namespace: "orgs",
@@ -9514,6 +9918,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9522,7 +9927,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `PUT /orgs/{org}/organization-roles/users/{username}/{role_id}` — risk: medium
 	 */
-	async users_0(org: string, username: string, roleId: string): Promise<ProofResult<unknown>> {
+	async users_0(org: string, username: string, roleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/assign-user-to-org-role",
 			namespace: "orgs",
@@ -9535,6 +9940,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9543,7 +9949,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}` — risk: medium
 	 */
-	async deleteUser_1(org: string, username: string, roleId: string): Promise<ProofResult<unknown>> {
+	async deleteUser_1(org: string, username: string, roleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/revoke-org-role-user",
 			namespace: "orgs",
@@ -9556,6 +9962,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9564,7 +9971,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `GET /orgs/{org}/organization-roles/{role_id}` — risk: medium
 	 */
-	async retrieveOrganizationRole(org: string, roleId: string): Promise<ProofResult<unknown>> {
+	async retrieveOrganizationRole(org: string, roleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-org-role",
 			namespace: "orgs",
@@ -9577,6 +9984,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9585,7 +9993,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `GET /orgs/{org}/organization-roles/{role_id}/teams` — risk: medium
 	 */
-	async getOrganizationRolesTeams(org: string, roleId: string): Promise<ProofResult<unknown>> {
+	async getOrganizationRolesTeams(org: string, roleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-org-role-teams",
 			namespace: "orgs",
@@ -9598,6 +10006,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9606,7 +10015,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `GET /orgs/{org}/organization-roles/{role_id}/users` — risk: medium
 	 */
-	async users_1(org: string, roleId: string): Promise<ProofResult<unknown>> {
+	async users_1(org: string, roleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-org-role-users",
 			namespace: "orgs",
@@ -9619,6 +10028,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9627,7 +10037,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `GET /orgs/{org}/outside_collaborators` — risk: medium
 	 */
-	async listOutsideCollaborators(org: string): Promise<ProofResult<unknown>> {
+	async listOutsideCollaborators(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-outside-collaborators",
 			namespace: "orgs",
@@ -9640,6 +10050,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9648,7 +10059,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `PUT /orgs/{org}/outside_collaborators/{username}` — risk: medium
 	 */
-	async outsideCollaborators(org: string, username: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async outsideCollaborators(org: string, username: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/convert-member-to-outside-collaborator",
 			namespace: "orgs",
@@ -9661,6 +10072,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9669,7 +10081,7 @@ The `state` of a migration can be one of the following values:
 	 *
 	 * `DELETE /orgs/{org}/outside_collaborators/{username}` — risk: medium
 	 */
-	async deleteOutsideCollaborator(org: string, username: string): Promise<ProofResult<unknown>> {
+	async deleteOutsideCollaborator(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/remove-outside-collaborator",
 			namespace: "orgs",
@@ -9682,6 +10094,7 @@ The `state` of a migration can be one of the following values:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9692,7 +10105,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /orgs/{org}/packages` — risk: medium
 	 */
-	async listPackages(org: string): Promise<ProofResult<unknown>> {
+	async listPackages(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/list-packages-for-organization",
 			namespace: "orgs",
@@ -9705,6 +10118,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9715,7 +10129,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /orgs/{org}/packages/{package_type}/{package_name}` — risk: medium
 	 */
-	async retrievePackage(org: string, packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async retrievePackage(org: string, packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/get-package-for-organization",
 			namespace: "orgs",
@@ -9728,6 +10142,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9736,7 +10151,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `DELETE /orgs/{org}/packages/{package_type}/{package_name}` — risk: medium
 	 */
-	async deletePackage(org: string, packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async deletePackage(org: string, packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/delete-package-for-org",
 			namespace: "orgs",
@@ -9749,6 +10164,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9761,7 +10177,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `POST /orgs/{org}/packages/{package_type}/{package_name}/restore` — risk: medium
 	 */
-	async restore_0(org: string, packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async restore_0(org: string, packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/restore-package-for-org",
 			namespace: "orgs",
@@ -9774,6 +10190,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9784,7 +10201,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /orgs/{org}/packages/{package_type}/{package_name}/versions` — risk: medium
 	 */
-	async packagesVersions(org: string, packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async packagesVersions(org: string, packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/get-all-package-versions-for-package-owned-by-org",
 			namespace: "orgs",
@@ -9797,6 +10214,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9807,7 +10225,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}` — risk: medium
 	 */
-	async packagesversionsRetrieveVersion(org: string, packageType: string, packageName: string, packageVersionId: string): Promise<ProofResult<unknown>> {
+	async packagesversionsRetrieveVersion(org: string, packageType: string, packageName: string, packageVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/get-package-version-for-organization",
 			namespace: "orgs",
@@ -9820,6 +10238,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9828,7 +10247,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}` — risk: medium
 	 */
-	async packagesversionsDeleteVersion(org: string, packageType: string, packageName: string, packageVersionId: string): Promise<ProofResult<unknown>> {
+	async packagesversionsDeleteVersion(org: string, packageType: string, packageName: string, packageVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/delete-package-version-for-org",
 			namespace: "orgs",
@@ -9841,6 +10260,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9853,7 +10273,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore` — risk: medium
 	 */
-	async versionsRestore(org: string, packageType: string, packageName: string, packageVersionId: string): Promise<ProofResult<unknown>> {
+	async versionsRestore(org: string, packageType: string, packageName: string, packageVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/restore-package-version-for-org",
 			namespace: "orgs",
@@ -9866,6 +10286,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9876,7 +10297,7 @@ Only GitHub Apps can use this endpoint.
 	 *
 	 * `GET /orgs/{org}/personal-access-token-requests` — risk: medium
 	 */
-	async listPersonalAccessTokenRequests(org: string): Promise<ProofResult<unknown>> {
+	async listPersonalAccessTokenRequests(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-pat-grant-requests",
 			namespace: "orgs",
@@ -9889,6 +10310,7 @@ Only GitHub Apps can use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9899,7 +10321,7 @@ Only GitHub Apps can use this endpoint.
 	 *
 	 * `POST /orgs/{org}/personal-access-token-requests` — risk: medium
 	 */
-	async createPersonalAccessTokenRequest(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createPersonalAccessTokenRequest(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/review-pat-grant-requests-in-bulk",
 			namespace: "orgs",
@@ -9912,6 +10334,7 @@ Only GitHub Apps can use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9922,7 +10345,7 @@ Only GitHub Apps can use this endpoint.
 	 *
 	 * `POST /orgs/{org}/personal-access-token-requests/{pat_request_id}` — risk: medium
 	 */
-	async updatePersonalAccessTokenRequest(org: string, patRequestId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updatePersonalAccessTokenRequest(org: string, patRequestId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/review-pat-grant-request",
 			namespace: "orgs",
@@ -9935,6 +10358,7 @@ Only GitHub Apps can use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9945,7 +10369,7 @@ Only GitHub Apps can use this endpoint.
 	 *
 	 * `GET /orgs/{org}/personal-access-token-requests/{pat_request_id}/repositories` — risk: medium
 	 */
-	async personalAccessTokenRequestsRepositories(org: string, patRequestId: string): Promise<ProofResult<unknown>> {
+	async personalAccessTokenRequestsRepositories(org: string, patRequestId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-pat-grant-request-repositories",
 			namespace: "orgs",
@@ -9958,6 +10382,7 @@ Only GitHub Apps can use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9968,7 +10393,7 @@ Only GitHub Apps can use this endpoint.
 	 *
 	 * `GET /orgs/{org}/personal-access-tokens` — risk: medium
 	 */
-	async listPersonalAccessTokens(org: string): Promise<ProofResult<unknown>> {
+	async listPersonalAccessTokens(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-pat-grants",
 			namespace: "orgs",
@@ -9981,6 +10406,7 @@ Only GitHub Apps can use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9991,7 +10417,7 @@ Only GitHub Apps can use this endpoint.
 	 *
 	 * `POST /orgs/{org}/personal-access-tokens` — risk: medium
 	 */
-	async createPersonalAccessToken(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createPersonalAccessToken(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/update-pat-accesses",
 			namespace: "orgs",
@@ -10004,6 +10430,7 @@ Only GitHub Apps can use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10012,7 +10439,7 @@ Only GitHub Apps can use this endpoint.
 	 *
 	 * `POST /orgs/{org}/personal-access-tokens/{pat_id}` — risk: medium
 	 */
-	async updatePersonalAccessToken(org: string, patId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updatePersonalAccessToken(org: string, patId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/update-pat-access",
 			namespace: "orgs",
@@ -10025,6 +10452,7 @@ Only GitHub Apps can use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10035,7 +10463,7 @@ Only GitHub Apps can use this endpoint.
 	 *
 	 * `GET /orgs/{org}/personal-access-tokens/{pat_id}/repositories` — risk: medium
 	 */
-	async personalAccessTokensRepositories(org: string, patId: string): Promise<ProofResult<unknown>> {
+	async personalAccessTokensRepositories(org: string, patId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-pat-grant-repositories",
 			namespace: "orgs",
@@ -10048,6 +10476,7 @@ Only GitHub Apps can use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10060,7 +10489,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` sco
 	 *
 	 * `GET /orgs/{org}/private-registries` — risk: medium
 	 */
-	async listPrivateRegistries(org: string): Promise<ProofResult<unknown>> {
+	async listPrivateRegistries(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "private-registries/list-org-private-registries",
 			namespace: "orgs",
@@ -10073,6 +10502,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` sco
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10082,7 +10512,7 @@ Creates a private registry configuration with an encrypted value for an organiza
 	 *
 	 * `POST /orgs/{org}/private-registries` — risk: medium
 	 */
-	async createPrivateRegistry(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createPrivateRegistry(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "private-registries/create-org-private-registry",
 			namespace: "orgs",
@@ -10095,6 +10525,7 @@ Creates a private registry configuration with an encrypted value for an organiza
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10106,7 +10537,7 @@ OAuth tokens and personal access tokens (classic)
 	 *
 	 * `GET /orgs/{org}/private-registries/public-key` — risk: medium
 	 */
-	async privateRegistriesPublicKey(org: string): Promise<ProofResult<unknown>> {
+	async privateRegistriesPublicKey(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "private-registries/get-org-public-key",
 			namespace: "orgs",
@@ -10119,6 +10550,7 @@ OAuth tokens and personal access tokens (classic)
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10130,7 +10562,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/private-registries/{secret_name}` — risk: medium
 	 */
-	async retrievePrivateRegistry(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async retrievePrivateRegistry(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "private-registries/get-org-private-registry",
 			namespace: "orgs",
@@ -10143,6 +10575,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10152,7 +10585,7 @@ Updates a private registry configuration with an encrypted value for an organiza
 	 *
 	 * `PATCH /orgs/{org}/private-registries/{secret_name}` — risk: medium
 	 */
-	async privateRegistries(org: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async privateRegistries(org: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "private-registries/update-org-private-registry",
 			namespace: "orgs",
@@ -10165,6 +10598,7 @@ Updates a private registry configuration with an encrypted value for an organiza
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10176,7 +10610,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/private-registries/{secret_name}` — risk: medium
 	 */
-	async deletePrivateRegistry(org: string, secretName: string): Promise<ProofResult<unknown>> {
+	async deletePrivateRegistry(org: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "private-registries/delete-org-private-registry",
 			namespace: "orgs",
@@ -10189,6 +10623,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10197,7 +10632,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/projectsV2` — risk: medium
 	 */
-	async listProjectsV2(org: string): Promise<ProofResult<unknown>> {
+	async listProjectsV2(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/list-for-org",
 			namespace: "orgs",
@@ -10210,6 +10645,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10218,7 +10654,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/projectsV2/{project_number}` — risk: medium
 	 */
-	async retrieveProjectsV2(org: string, projectNumber: string): Promise<ProofResult<unknown>> {
+	async retrieveProjectsV2(org: string, projectNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/get-for-org",
 			namespace: "orgs",
@@ -10231,6 +10667,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10239,7 +10676,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `POST /orgs/{org}/projectsV2/{project_number}/drafts` — risk: medium
 	 */
-	async drafts(org: string, projectNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async drafts(org: string, projectNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/create-draft-item-for-org",
 			namespace: "orgs",
@@ -10252,6 +10689,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10260,7 +10698,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/projectsV2/{project_number}/fields` — risk: medium
 	 */
-	async fields_0(org: string, projectNumber: string): Promise<ProofResult<unknown>> {
+	async fields_0(org: string, projectNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/list-fields-for-org",
 			namespace: "orgs",
@@ -10273,6 +10711,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10281,7 +10720,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `POST /orgs/{org}/projectsV2/{project_number}/fields` — risk: medium
 	 */
-	async fields_1(org: string, projectNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async fields_1(org: string, projectNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/add-field-for-org",
 			namespace: "orgs",
@@ -10294,6 +10733,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10302,7 +10742,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/projectsV2/{project_number}/fields/{field_id}` — risk: medium
 	 */
-	async retrieveField(org: string, projectNumber: string, fieldId: string): Promise<ProofResult<unknown>> {
+	async retrieveField(org: string, projectNumber: string, fieldId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/get-field-for-org",
 			namespace: "orgs",
@@ -10315,6 +10755,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10323,7 +10764,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/projectsV2/{project_number}/items` — risk: medium
 	 */
-	async items_0(org: string, projectNumber: string): Promise<ProofResult<unknown>> {
+	async items_0(org: string, projectNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/list-items-for-org",
 			namespace: "orgs",
@@ -10336,6 +10777,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10344,7 +10786,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `POST /orgs/{org}/projectsV2/{project_number}/items` — risk: medium
 	 */
-	async items_1(org: string, projectNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async items_1(org: string, projectNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/add-item-for-org",
 			namespace: "orgs",
@@ -10357,6 +10799,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10365,7 +10808,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/projectsV2/{project_number}/items/{item_id}` — risk: medium
 	 */
-	async retrieveItem(org: string, projectNumber: string, itemId: string): Promise<ProofResult<unknown>> {
+	async retrieveItem(org: string, projectNumber: string, itemId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/get-org-item",
 			namespace: "orgs",
@@ -10378,6 +10821,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10386,7 +10830,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `PATCH /orgs/{org}/projectsV2/{project_number}/items/{item_id}` — risk: medium
 	 */
-	async items_2(org: string, projectNumber: string, itemId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async items_2(org: string, projectNumber: string, itemId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/update-item-for-org",
 			namespace: "orgs",
@@ -10399,6 +10843,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10407,7 +10852,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/projectsV2/{project_number}/items/{item_id}` — risk: medium
 	 */
-	async deleteItem(org: string, projectNumber: string, itemId: string): Promise<ProofResult<unknown>> {
+	async deleteItem(org: string, projectNumber: string, itemId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/delete-item-for-org",
 			namespace: "orgs",
@@ -10420,6 +10865,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10428,7 +10874,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `POST /orgs/{org}/projectsV2/{project_number}/views` — risk: medium
 	 */
-	async views(org: string, projectNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async views(org: string, projectNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/create-view-for-org",
 			namespace: "orgs",
@@ -10441,6 +10887,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10449,7 +10896,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `GET /orgs/{org}/projectsV2/{project_number}/views/{view_number}/items` — risk: medium
 	 */
-	async viewsItems(org: string, projectNumber: string, viewNumber: string): Promise<ProofResult<unknown>> {
+	async viewsItems(org: string, projectNumber: string, viewNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/list-view-items-for-org",
 			namespace: "orgs",
@@ -10462,6 +10909,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10471,7 +10919,7 @@ Organization members can read these properties.
 	 *
 	 * `GET /orgs/{org}/properties/schema` — risk: medium
 	 */
-	async schema_0(org: string): Promise<ProofResult<unknown>> {
+	async schema_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/custom-properties-for-repos-get-organization-definitions",
 			namespace: "orgs",
@@ -10484,6 +10932,7 @@ Organization members can read these properties.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10495,7 +10944,7 @@ Missing optional
 	 *
 	 * `PATCH /orgs/{org}/properties/schema` — risk: medium
 	 */
-	async schema_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async schema_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/custom-properties-for-repos-create-or-update-organization-definitions",
 			namespace: "orgs",
@@ -10508,6 +10957,7 @@ Missing optional
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10517,7 +10967,7 @@ Organization members can read these properties.
 	 *
 	 * `GET /orgs/{org}/properties/schema/{custom_property_name}` — risk: medium
 	 */
-	async retrieveSchema(org: string, customPropertyName: string): Promise<ProofResult<unknown>> {
+	async retrieveSchema(org: string, customPropertyName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/custom-properties-for-repos-get-organization-definition",
 			namespace: "orgs",
@@ -10530,6 +10980,7 @@ Organization members can read these properties.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10542,7 +10993,7 @@ To use this endpoint, the authenticated user must be one of:
 	 *
 	 * `PUT /orgs/{org}/properties/schema/{custom_property_name}` — risk: medium
 	 */
-	async schema_2(org: string, customPropertyName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async schema_2(org: string, customPropertyName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/custom-properties-for-repos-create-or-update-organization-definition",
 			namespace: "orgs",
@@ -10555,6 +11006,7 @@ To use this endpoint, the authenticated user must be one of:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10567,7 +11019,7 @@ To use this endpoint, the authenticated user must be one of:
 	 *
 	 * `DELETE /orgs/{org}/properties/schema/{custom_property_name}` — risk: medium
 	 */
-	async deleteSchema(org: string, customPropertyName: string): Promise<ProofResult<unknown>> {
+	async deleteSchema(org: string, customPropertyName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/custom-properties-for-repos-delete-organization-definition",
 			namespace: "orgs",
@@ -10580,6 +11032,7 @@ To use this endpoint, the authenticated user must be one of:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10589,7 +11042,7 @@ Organization members can read these properties.
 	 *
 	 * `GET /orgs/{org}/properties/values` — risk: medium
 	 */
-	async values_0(org: string): Promise<ProofResult<unknown>> {
+	async values_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/custom-properties-for-repos-get-organization-values",
 			namespace: "orgs",
@@ -10602,6 +11055,7 @@ Organization members can read these properties.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10611,7 +11065,7 @@ Each target repository will have its custom property values updated to match the
 	 *
 	 * `PATCH /orgs/{org}/properties/values` — risk: medium
 	 */
-	async values_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async values_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/custom-properties-for-repos-create-or-update-organization-values",
 			namespace: "orgs",
@@ -10624,6 +11078,7 @@ Each target repository will have its custom property values updated to match the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10632,7 +11087,7 @@ Each target repository will have its custom property values updated to match the
 	 *
 	 * `GET /orgs/{org}/public_members` — risk: medium
 	 */
-	async listPublicMembers(org: string): Promise<ProofResult<unknown>> {
+	async listPublicMembers(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-public-members",
 			namespace: "orgs",
@@ -10645,6 +11100,7 @@ Each target repository will have its custom property values updated to match the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10653,7 +11109,7 @@ Each target repository will have its custom property values updated to match the
 	 *
 	 * `GET /orgs/{org}/public_members/{username}` — risk: medium
 	 */
-	async retrievePublicMember(org: string, username: string): Promise<ProofResult<unknown>> {
+	async retrievePublicMember(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/check-public-membership-for-user",
 			namespace: "orgs",
@@ -10666,6 +11122,7 @@ Each target repository will have its custom property values updated to match the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10676,7 +11133,7 @@ Note that you'll need to set `Content-Length` to zero when calling out to this e
 	 *
 	 * `PUT /orgs/{org}/public_members/{username}` — risk: medium
 	 */
-	async publicMembers(org: string, username: string): Promise<ProofResult<unknown>> {
+	async publicMembers(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/set-public-membership-for-authenticated-user",
 			namespace: "orgs",
@@ -10689,6 +11146,7 @@ Note that you'll need to set `Content-Length` to zero when calling out to this e
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10697,7 +11155,7 @@ Note that you'll need to set `Content-Length` to zero when calling out to this e
 	 *
 	 * `DELETE /orgs/{org}/public_members/{username}` — risk: medium
 	 */
-	async deletePublicMember(org: string, username: string): Promise<ProofResult<unknown>> {
+	async deletePublicMember(org: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/remove-public-membership-for-authenticated-user",
 			namespace: "orgs",
@@ -10710,6 +11168,7 @@ Note that you'll need to set `Content-Length` to zero when calling out to this e
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10721,7 +11180,7 @@ Note that you'll need to set `Content-Length` to zero when calling out to this e
 	 *
 	 * `GET /orgs/{org}/repos` — risk: medium
 	 */
-	async listRepos(org: string): Promise<ProofResult<unknown>> {
+	async listRepos(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-for-org",
 			namespace: "orgs",
@@ -10734,6 +11193,7 @@ Note that you'll need to set `Content-Length` to zero when calling out to this e
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10744,7 +11204,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 	 *
 	 * `POST /orgs/{org}/repos` — risk: medium
 	 */
-	async createRepo(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createRepo(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-in-org",
 			namespace: "orgs",
@@ -10757,6 +11217,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10765,7 +11226,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 	 *
 	 * `GET /orgs/{org}/rulesets` — risk: medium
 	 */
-	async listRulesets(org: string): Promise<ProofResult<unknown>> {
+	async listRulesets(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-org-rulesets",
 			namespace: "orgs",
@@ -10778,6 +11239,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10786,7 +11248,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 	 *
 	 * `POST /orgs/{org}/rulesets` — risk: medium
 	 */
-	async createRuleset(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createRuleset(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-org-ruleset",
 			namespace: "orgs",
@@ -10799,6 +11261,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10808,7 +11271,7 @@ For more information, see "[Managing rulesets for repositories in your organizat
 	 *
 	 * `GET /orgs/{org}/rulesets/rule-suites` — risk: medium
 	 */
-	async ruleSuites(org: string): Promise<ProofResult<unknown>> {
+	async ruleSuites(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-org-rule-suites",
 			namespace: "orgs",
@@ -10821,6 +11284,7 @@ For more information, see "[Managing rulesets for repositories in your organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10830,7 +11294,7 @@ For more information, see "[Managing rulesets for repositories in your organizat
 	 *
 	 * `GET /orgs/{org}/rulesets/rule-suites/{rule_suite_id}` — risk: medium
 	 */
-	async retrieveRuleSuite(org: string, ruleSuiteId: string): Promise<ProofResult<unknown>> {
+	async retrieveRuleSuite(org: string, ruleSuiteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-org-rule-suite",
 			namespace: "orgs",
@@ -10843,6 +11307,7 @@ For more information, see "[Managing rulesets for repositories in your organizat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10854,7 +11319,7 @@ making the API request has write access to
 	 *
 	 * `GET /orgs/{org}/rulesets/{ruleset_id}` — risk: medium
 	 */
-	async retrieveRuleset(org: string, rulesetId: string): Promise<ProofResult<unknown>> {
+	async retrieveRuleset(org: string, rulesetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-org-ruleset",
 			namespace: "orgs",
@@ -10867,6 +11332,7 @@ making the API request has write access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10875,7 +11341,7 @@ making the API request has write access to
 	 *
 	 * `PUT /orgs/{org}/rulesets/{ruleset_id}` — risk: medium
 	 */
-	async rulesets(org: string, rulesetId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async rulesets(org: string, rulesetId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-org-ruleset",
 			namespace: "orgs",
@@ -10888,6 +11354,7 @@ making the API request has write access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10896,7 +11363,7 @@ making the API request has write access to
 	 *
 	 * `DELETE /orgs/{org}/rulesets/{ruleset_id}` — risk: medium
 	 */
-	async deleteRuleset(org: string, rulesetId: string): Promise<ProofResult<unknown>> {
+	async deleteRuleset(org: string, rulesetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-org-ruleset",
 			namespace: "orgs",
@@ -10909,6 +11376,7 @@ making the API request has write access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10917,7 +11385,7 @@ making the API request has write access to
 	 *
 	 * `GET /orgs/{org}/rulesets/{ruleset_id}/history` — risk: medium
 	 */
-	async history(org: string, rulesetId: string): Promise<ProofResult<unknown>> {
+	async history(org: string, rulesetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-org-ruleset-history",
 			namespace: "orgs",
@@ -10930,6 +11398,7 @@ making the API request has write access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10938,7 +11407,7 @@ making the API request has write access to
 	 *
 	 * `GET /orgs/{org}/rulesets/{ruleset_id}/history/{version_id}` — risk: medium
 	 */
-	async retrieveHistory(org: string, rulesetId: string, versionId: string): Promise<ProofResult<unknown>> {
+	async retrieveHistory(org: string, rulesetId: string, versionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-org-ruleset-version",
 			namespace: "orgs",
@@ -10951,6 +11420,7 @@ making the API request has write access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10961,7 +11431,7 @@ The authenticated user must be an administrator or security manager for the orga
 	 *
 	 * `GET /orgs/{org}/secret-scanning/alerts` — risk: medium
 	 */
-	async secretScanningAlerts(org: string): Promise<ProofResult<unknown>> {
+	async secretScanningAlerts(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "secret-scanning/list-alerts-for-org",
 			namespace: "orgs",
@@ -10974,6 +11444,7 @@ The authenticated user must be an administrator or security manager for the orga
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10984,7 +11455,7 @@ Personal access tokens (classic) need the `read:org` scope to use this endpoint.
 	 *
 	 * `GET /orgs/{org}/secret-scanning/pattern-configurations` — risk: medium
 	 */
-	async patternConfigurations_0(org: string): Promise<ProofResult<unknown>> {
+	async patternConfigurations_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "secret-scanning/list-org-pattern-configs",
 			namespace: "orgs",
@@ -10997,6 +11468,7 @@ Personal access tokens (classic) need the `read:org` scope to use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11007,7 +11479,7 @@ Personal access tokens (classic) need the `write:org` scope to use this endpoint
 	 *
 	 * `PATCH /orgs/{org}/secret-scanning/pattern-configurations` — risk: medium
 	 */
-	async patternConfigurations_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patternConfigurations_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "secret-scanning/update-org-pattern-configs",
 			namespace: "orgs",
@@ -11020,6 +11492,7 @@ Personal access tokens (classic) need the `write:org` scope to use this endpoint
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11032,7 +11505,7 @@ OAuth app tokens and personal access
 	 *
 	 * `GET /orgs/{org}/security-advisories` — risk: medium
 	 */
-	async listSecurityAdvisories(org: string): Promise<ProofResult<unknown>> {
+	async listSecurityAdvisories(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/list-org-repository-advisories",
 			namespace: "orgs",
@@ -11045,6 +11518,7 @@ OAuth app tokens and personal access
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11054,7 +11528,7 @@ OAuth app tokens and personal access
 	 *
 	 * `GET /orgs/{org}/security-managers` — risk: medium
 	 */
-	async listSecurityManagers(org: string): Promise<ProofResult<unknown>> {
+	async listSecurityManagers(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-security-manager-teams",
 			namespace: "orgs",
@@ -11067,6 +11541,7 @@ OAuth app tokens and personal access
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11076,7 +11551,7 @@ OAuth app tokens and personal access
 	 *
 	 * `PUT /orgs/{org}/security-managers/teams/{team_slug}` — risk: medium
 	 */
-	async securityManagersTeams(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async securityManagersTeams(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/add-security-manager-team",
 			namespace: "orgs",
@@ -11089,6 +11564,7 @@ OAuth app tokens and personal access
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11098,7 +11574,7 @@ OAuth app tokens and personal access
 	 *
 	 * `DELETE /orgs/{org}/security-managers/teams/{team_slug}` — risk: medium
 	 */
-	async securityManagersteamsDeleteTeam(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async securityManagersteamsDeleteTeam(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/remove-security-manager-team",
 			namespace: "orgs",
@@ -11111,6 +11587,7 @@ OAuth app tokens and personal access
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11121,7 +11598,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 	 *
 	 * `GET /orgs/{org}/settings/immutable-releases` — risk: medium
 	 */
-	async immutableReleases_0(org: string): Promise<ProofResult<unknown>> {
+	async immutableReleases_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-immutable-releases-settings",
 			namespace: "orgs",
@@ -11134,6 +11611,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11144,7 +11622,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 	 *
 	 * `PUT /orgs/{org}/settings/immutable-releases` — risk: medium
 	 */
-	async immutableReleases_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async immutableReleases_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/set-immutable-releases-settings",
 			namespace: "orgs",
@@ -11157,6 +11635,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11167,7 +11646,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 	 *
 	 * `GET /orgs/{org}/settings/immutable-releases/repositories` — risk: medium
 	 */
-	async getSettingsimmutableReleasesRepositories(org: string): Promise<ProofResult<unknown>> {
+	async getSettingsimmutableReleasesRepositories(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-immutable-releases-settings-repositories",
 			namespace: "orgs",
@@ -11180,6 +11659,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11188,7 +11668,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 	 *
 	 * `PUT /orgs/{org}/settings/immutable-releases/repositories` — risk: medium
 	 */
-	async putSettingsimmutableReleasesRepositories(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putSettingsimmutableReleasesRepositories(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/set-immutable-releases-settings-repositories",
 			namespace: "orgs",
@@ -11201,6 +11681,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11209,7 +11690,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 	 *
 	 * `PUT /orgs/{org}/settings/immutable-releases/repositories/{repository_id}` — risk: medium
 	 */
-	async putSettingsimmutableReleasesRepositories_0(org: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putSettingsimmutableReleasesRepositories_0(org: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/enable-selected-repository-immutable-releases-organization",
 			namespace: "orgs",
@@ -11222,6 +11703,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11230,7 +11712,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 	 *
 	 * `DELETE /orgs/{org}/settings/immutable-releases/repositories/{repository_id}` — risk: medium
 	 */
-	async settingsimmutableReleasesrepositoriesDeleteRepository(org: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async settingsimmutableReleasesrepositoriesDeleteRepository(org: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/disable-selected-repository-immutable-releases-organization",
 			namespace: "orgs",
@@ -11243,6 +11725,7 @@ OAuth tokens and personal access tokens (classic) need the `admin:org` scope to 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11253,7 +11736,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 	 *
 	 * `GET /orgs/{org}/settings/network-configurations` — risk: medium
 	 */
-	async networkConfigurations_0(org: string): Promise<ProofResult<unknown>> {
+	async networkConfigurations_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "hosted-compute/list-network-configurations-for-org",
 			namespace: "orgs",
@@ -11266,6 +11749,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11276,7 +11760,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:network_co
 	 *
 	 * `POST /orgs/{org}/settings/network-configurations` — risk: medium
 	 */
-	async networkConfigurations_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async networkConfigurations_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "hosted-compute/create-network-configuration-for-org",
 			namespace: "orgs",
@@ -11289,6 +11773,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:network_co
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11299,7 +11784,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 	 *
 	 * `GET /orgs/{org}/settings/network-configurations/{network_configuration_id}` — risk: medium
 	 */
-	async retrieveNetworkConfiguration(org: string, networkConfigurationId: string): Promise<ProofResult<unknown>> {
+	async retrieveNetworkConfiguration(org: string, networkConfigurationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "hosted-compute/get-network-configuration-for-org",
 			namespace: "orgs",
@@ -11312,6 +11797,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11322,7 +11808,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:network_co
 	 *
 	 * `PATCH /orgs/{org}/settings/network-configurations/{network_configuration_id}` — risk: medium
 	 */
-	async networkConfigurations_2(org: string, networkConfigurationId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async networkConfigurations_2(org: string, networkConfigurationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "hosted-compute/update-network-configuration-for-org",
 			namespace: "orgs",
@@ -11335,6 +11821,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:network_co
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11345,7 +11832,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:network_co
 	 *
 	 * `DELETE /orgs/{org}/settings/network-configurations/{network_configuration_id}` — risk: medium
 	 */
-	async deleteNetworkConfiguration(org: string, networkConfigurationId: string): Promise<ProofResult<unknown>> {
+	async deleteNetworkConfiguration(org: string, networkConfigurationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "hosted-compute/delete-network-configuration-from-org",
 			namespace: "orgs",
@@ -11358,6 +11845,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:network_co
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11368,7 +11856,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 	 *
 	 * `GET /orgs/{org}/settings/network-settings/{network_settings_id}` — risk: medium
 	 */
-	async retrieveNetworkSetting(org: string, networkSettingsId: string): Promise<ProofResult<unknown>> {
+	async retrieveNetworkSetting(org: string, networkSettingsId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "hosted-compute/get-network-settings-for-org",
 			namespace: "orgs",
@@ -11381,6 +11869,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11392,7 +11881,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 	 *
 	 * `GET /orgs/{org}/team/{team_slug}/copilot/metrics` — risk: medium
 	 */
-	async teamcopilotMetrics(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async teamcopilotMetrics(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/copilot-metrics-for-team",
 			namespace: "orgs",
@@ -11405,6 +11894,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11413,7 +11903,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 	 *
 	 * `GET /orgs/{org}/teams` — risk: medium
 	 */
-	async listTeams(org: string): Promise<ProofResult<unknown>> {
+	async listTeams(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list",
 			namespace: "orgs",
@@ -11426,6 +11916,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11434,7 +11925,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 	 *
 	 * `POST /orgs/{org}/teams` — risk: medium
 	 */
-	async createTeam(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createTeam(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/create",
 			namespace: "orgs",
@@ -11447,6 +11938,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11455,7 +11947,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}` — risk: medium
 	 */
-	async retrieveTeam(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async retrieveTeam(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/get-by-name",
 			namespace: "orgs",
@@ -11468,6 +11960,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11479,7 +11972,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 	 *
 	 * `PATCH /orgs/{org}/teams/{team_slug}` — risk: medium
 	 */
-	async teams_4(org: string, teamSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async teams_4(org: string, teamSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/update-in-org",
 			namespace: "orgs",
@@ -11492,6 +11985,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11504,7 +11998,7 @@ If you are an organization owner, deleting a parent team will delete all of its 
 	 *
 	 * `DELETE /orgs/{org}/teams/{team_slug}` — risk: medium
 	 */
-	async teamsDeleteTeam(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async teamsDeleteTeam(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/delete-in-org",
 			namespace: "orgs",
@@ -11517,6 +12011,7 @@ If you are an organization owner, deleting a parent team will delete all of its 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11525,7 +12020,7 @@ If you are an organization owner, deleting a parent team will delete all of its 
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}/invitations` — risk: medium
 	 */
-	async invitations(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async invitations(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list-pending-invitations-in-org",
 			namespace: "orgs",
@@ -11538,6 +12033,7 @@ If you are an organization owner, deleting a parent team will delete all of its 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11548,7 +12044,7 @@ To list members in a team, the team must be visible to the authenticated user.
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}/members` — risk: medium
 	 */
-	async members(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async members(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list-members-in-org",
 			namespace: "orgs",
@@ -11561,6 +12057,7 @@ To list members in a team, the team must be visible to the authenticated user.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11574,7 +12071,7 @@ To get a user's membership with a team, the team must be visible to the authenti
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}/memberships/{username}` — risk: medium
 	 */
-	async teamsmembershipsRetrieveMembership(org: string, teamSlug: string, username: string): Promise<ProofResult<unknown>> {
+	async teamsmembershipsRetrieveMembership(org: string, teamSlug: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/get-membership-for-user-in-org",
 			namespace: "orgs",
@@ -11587,6 +12084,7 @@ To get a user's membership with a team, the team must be visible to the authenti
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11597,7 +12095,7 @@ Team synchronization is available for organizations using GitHub
 	 *
 	 * `PUT /orgs/{org}/teams/{team_slug}/memberships/{username}` — risk: medium
 	 */
-	async teamsMemberships(org: string, teamSlug: string, username: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async teamsMemberships(org: string, teamSlug: string, username: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/add-or-update-membership-for-user-in-org",
 			namespace: "orgs",
@@ -11610,6 +12108,7 @@ Team synchronization is available for organizations using GitHub
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11618,7 +12117,7 @@ Team synchronization is available for organizations using GitHub
 	 *
 	 * `DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}` — risk: medium
 	 */
-	async teamsmembershipsDeleteMembership(org: string, teamSlug: string, username: string): Promise<ProofResult<unknown>> {
+	async teamsmembershipsDeleteMembership(org: string, teamSlug: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/remove-membership-for-user-in-org",
 			namespace: "orgs",
@@ -11631,6 +12130,7 @@ Team synchronization is available for organizations using GitHub
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11642,7 +12142,7 @@ Team synchronization is available for organizations using GitHub
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}/repos` — risk: medium
 	 */
-	async repos_0(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async repos_0(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list-repos-in-org",
 			namespace: "orgs",
@@ -11655,6 +12155,7 @@ Team synchronization is available for organizations using GitHub
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11665,7 +12166,7 @@ You can also get information
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}` — risk: medium
 	 */
-	async retrieveRepo(org: string, teamSlug: string, owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async retrieveRepo(org: string, teamSlug: string, owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/check-permissions-for-repo-in-org",
 			namespace: "orgs",
@@ -11678,6 +12179,7 @@ You can also get information
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11686,7 +12188,7 @@ You can also get information
 	 *
 	 * `PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}` — risk: medium
 	 */
-	async repos_1(org: string, teamSlug: string, owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async repos_1(org: string, teamSlug: string, owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/add-or-update-repo-permissions-in-org",
 			namespace: "orgs",
@@ -11699,6 +12201,7 @@ You can also get information
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11707,7 +12210,7 @@ You can also get information
 	 *
 	 * `DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}` — risk: medium
 	 */
-	async teamsreposDeleteRepo(org: string, teamSlug: string, owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async teamsreposDeleteRepo(org: string, teamSlug: string, owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/remove-repo-in-org",
 			namespace: "orgs",
@@ -11720,6 +12223,7 @@ You can also get information
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11731,7 +12235,7 @@ You can also get information
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}/teams` — risk: medium
 	 */
-	async teams_5(org: string, teamSlug: string): Promise<ProofResult<unknown>> {
+	async teams_5(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list-child-in-org",
 			namespace: "orgs",
@@ -11744,6 +12248,7 @@ You can also get information
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11753,7 +12258,7 @@ You can also get information
 	 *
 	 * `POST /orgs/{org}/{security_product}/{enablement}` — risk: medium
 	 */
-	async update(org: string, securityProduct: string, enablement: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(org: string, securityProduct: string, enablement: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/enable-or-disable-security-product-on-all-org-repos",
 			namespace: "orgs",
@@ -11766,13 +12271,14 @@ You can also get information
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RateLimitResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -11787,7 +12293,7 @@ Some categories of endpoints have custom rate limits that are separate from the 
 	 *
 	 * `GET /rate_limit` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "rate-limit/get",
 			namespace: "rate_limit",
@@ -11800,13 +12306,14 @@ Some categories of endpoints have custom rate limits that are separate from the 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ReposResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -11821,7 +12328,7 @@ export class ReposResource extends RpcTarget {
 	 *
 	 * `GET /repos/{owner}/{repo}` — risk: low
 	 */
-	async retrieve(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async retrieve(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get",
 			namespace: "repos",
@@ -11834,6 +12341,7 @@ export class ReposResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11842,7 +12350,7 @@ export class ReposResource extends RpcTarget {
 	 *
 	 * `PATCH /repos/{owner}/{repo}` — risk: medium
 	 */
-	async update(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update",
 			namespace: "repos",
@@ -11855,6 +12363,7 @@ export class ReposResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11866,7 +12375,7 @@ repositories, you will get a `403 Forbidden`
 	 *
 	 * `DELETE /repos/{owner}/{repo}` — risk: medium
 	 */
-	async del(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async del(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete",
 			namespace: "repos",
@@ -11879,6 +12388,7 @@ repositories, you will get a `403 Forbidden`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11891,7 +12401,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/artifacts` — risk: medium
 	 */
-	async artifacts_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async artifacts_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-artifacts-for-repo",
 			namespace: "repos",
@@ -11904,6 +12414,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11916,7 +12427,7 @@ If the repository is private, OAuth tokens and personal access tokens (classic) 
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}` — risk: medium
 	 */
-	async retrieveArtifact_0(owner: string, repo: string, artifactId: string): Promise<ProofResult<unknown>> {
+	async retrieveArtifact_0(owner: string, repo: string, artifactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-artifact",
 			namespace: "repos",
@@ -11929,6 +12440,7 @@ If the repository is private, OAuth tokens and personal access tokens (classic) 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11938,7 +12450,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/artifacts/{artifact_id}` — risk: medium
 	 */
-	async deleteArtifact(owner: string, repo: string, artifactId: string): Promise<ProofResult<unknown>> {
+	async deleteArtifact(owner: string, repo: string, artifactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-artifact",
 			namespace: "repos",
@@ -11951,6 +12463,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11960,7 +12473,7 @@ the response header to find the URL for the download. The `:archive_format` must
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}` — risk: medium
 	 */
-	async retrieveArtifact_1(owner: string, repo: string, artifactId: string, archiveFormat: string): Promise<ProofResult<unknown>> {
+	async retrieveArtifact_1(owner: string, repo: string, artifactId: string, archiveFormat: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/download-artifact",
 			namespace: "repos",
@@ -11973,6 +12486,7 @@ the response header to find the URL for the download. The `:archive_format` must
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11984,7 +12498,7 @@ OAuth tokens and personal
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/cache/retention-limit` — risk: medium
 	 */
-	async retentionLimit_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async retentionLimit_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-retention-limit-for-repository",
 			namespace: "repos",
@@ -11997,6 +12511,7 @@ OAuth tokens and personal
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12008,7 +12523,7 @@ OAuth tokens and personal
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/cache/retention-limit` — risk: medium
 	 */
-	async retentionLimit_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retentionLimit_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-actions-cache-retention-limit-for-repository",
 			namespace: "repos",
@@ -12021,6 +12536,7 @@ OAuth tokens and personal
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12032,7 +12548,7 @@ OAuth tokens and personal access tokens (classic) need
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/cache/storage-limit` — risk: medium
 	 */
-	async storageLimit_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async storageLimit_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-storage-limit-for-repository",
 			namespace: "repos",
@@ -12045,6 +12561,7 @@ OAuth tokens and personal access tokens (classic) need
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12056,7 +12573,7 @@ OAuth tokens and personal access tokens (classic) need
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/cache/storage-limit` — risk: medium
 	 */
-	async storageLimit_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async storageLimit_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-actions-cache-storage-limit-for-repository",
 			namespace: "repos",
@@ -12069,6 +12586,7 @@ OAuth tokens and personal access tokens (classic) need
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12078,7 +12596,7 @@ The data fetched using this API is refreshed approximately every 5 minutes, so v
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/cache/usage` — risk: medium
 	 */
-	async usage(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async usage(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-usage",
 			namespace: "repos",
@@ -12091,6 +12609,7 @@ The data fetched using this API is refreshed approximately every 5 minutes, so v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12101,7 +12620,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/caches` — risk: medium
 	 */
-	async caches_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async caches_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-actions-cache-list",
 			namespace: "repos",
@@ -12114,6 +12633,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12122,7 +12642,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/caches` — risk: medium
 	 */
-	async caches_1(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async caches_1(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-actions-cache-by-key",
 			namespace: "repos",
@@ -12135,6 +12655,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12145,7 +12666,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/caches/{cache_id}` — risk: medium
 	 */
-	async deleteCache(owner: string, repo: string, cacheId: string): Promise<ProofResult<unknown>> {
+	async deleteCache(owner: string, repo: string, cacheId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-actions-cache-by-id",
 			namespace: "repos",
@@ -12158,6 +12679,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12168,7 +12690,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/concurrency_groups` — risk: medium
 	 */
-	async concurrencyGroups_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async concurrencyGroups_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-concurrency-groups-for-repository",
 			namespace: "repos",
@@ -12181,6 +12703,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12192,7 +12715,7 @@ Optionally, pass `ahead_of_run` or `ahead_of_
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/concurrency_groups/{concurrency_group_name}` — risk: medium
 	 */
-	async retrieveConcurrencyGroup(owner: string, repo: string, concurrencyGroupName: string): Promise<ProofResult<unknown>> {
+	async retrieveConcurrencyGroup(owner: string, repo: string, concurrencyGroupName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-concurrency-group-for-repository",
 			namespace: "repos",
@@ -12205,6 +12728,7 @@ Optionally, pass `ahead_of_run` or `ahead_of_
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12217,7 +12741,7 @@ If the repository is private, OAuth tokens and personal access tokens (classic) 
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/jobs/{job_id}` — risk: medium
 	 */
-	async retrieveJob(owner: string, repo: string, jobId: string): Promise<ProofResult<unknown>> {
+	async retrieveJob(owner: string, repo: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-job-for-workflow-run",
 			namespace: "repos",
@@ -12230,6 +12754,7 @@ If the repository is private, OAuth tokens and personal access tokens (classic) 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12241,7 +12766,7 @@ Anyone wi
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs` — risk: medium
 	 */
-	async jobsLogs(owner: string, repo: string, jobId: string): Promise<ProofResult<unknown>> {
+	async jobsLogs(owner: string, repo: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/download-job-logs-for-workflow-run",
 			namespace: "repos",
@@ -12254,6 +12779,7 @@ Anyone wi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12264,7 +12790,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun` — risk: medium
 	 */
-	async jobsRerun(owner: string, repo: string, jobId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async jobsRerun(owner: string, repo: string, jobId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/re-run-job-for-workflow-run",
 			namespace: "repos",
@@ -12277,6 +12803,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12287,7 +12814,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/oidc/customization/sub` — risk: medium
 	 */
-	async sub_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async sub_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-custom-oidc-sub-claim-for-repo",
 			namespace: "repos",
@@ -12300,6 +12827,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12310,7 +12838,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/oidc/customization/sub` — risk: medium
 	 */
-	async sub_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async sub_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-custom-oidc-sub-claim-for-repo",
 			namespace: "repos",
@@ -12323,6 +12851,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12334,7 +12863,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/organization-secrets` — risk: medium
 	 */
-	async actionsOrganizationSecrets(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async actionsOrganizationSecrets(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-repo-organization-secrets",
 			namespace: "repos",
@@ -12347,6 +12876,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12359,7 +12889,7 @@ OAuth app tokens and personal acces
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/organization-variables` — risk: medium
 	 */
-	async actionsOrganizationVariables(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async actionsOrganizationVariables(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-repo-organization-variables",
 			namespace: "repos",
@@ -12372,6 +12902,7 @@ OAuth app tokens and personal acces
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12382,7 +12913,7 @@ OAuth tokens and pers
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/permissions` — risk: medium
 	 */
-	async permissions_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async permissions_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-github-actions-permissions-repository",
 			namespace: "repos",
@@ -12395,6 +12926,7 @@ OAuth tokens and pers
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12405,7 +12937,7 @@ OAuth app tokens and personal access tokens (classic) need the `re
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/permissions` — risk: medium
 	 */
-	async permissions_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async permissions_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-github-actions-permissions-repository",
 			namespace: "repos",
@@ -12418,6 +12950,7 @@ OAuth app tokens and personal access tokens (classic) need the `re
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12428,7 +12961,7 @@ For more information, se
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/permissions/access` — risk: medium
 	 */
-	async access_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async access_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-workflow-access-to-repository",
 			namespace: "repos",
@@ -12441,6 +12974,7 @@ For more information, se
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12451,7 +12985,7 @@ For more information, se
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/permissions/access` — risk: medium
 	 */
-	async access_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async access_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-workflow-access-to-repository",
 			namespace: "repos",
@@ -12464,6 +12998,7 @@ For more information, se
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12474,7 +13009,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention` — risk: medium
 	 */
-	async artifactAndLogRetention_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async artifactAndLogRetention_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-artifact-and-log-retention-settings-repository",
 			namespace: "repos",
@@ -12487,6 +13022,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12497,7 +13033,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention` — risk: medium
 	 */
-	async artifactAndLogRetention_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async artifactAndLogRetention_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-artifact-and-log-retention-settings-repository",
 			namespace: "repos",
@@ -12510,6 +13046,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12520,7 +13057,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval` — risk: medium
 	 */
-	async forkPrContributorApproval_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async forkPrContributorApproval_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-fork-pr-contributor-approval-permissions-repository",
 			namespace: "repos",
@@ -12533,6 +13070,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12543,7 +13081,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval` — risk: medium
 	 */
-	async forkPrContributorApproval_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async forkPrContributorApproval_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-fork-pr-contributor-approval-permissions-repository",
 			namespace: "repos",
@@ -12556,6 +13094,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12566,7 +13105,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos` — risk: medium
 	 */
-	async forkPrWorkflowsPrivateRepos_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async forkPrWorkflowsPrivateRepos_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-private-repo-fork-pr-workflows-settings-repository",
 			namespace: "repos",
@@ -12579,6 +13118,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12589,7 +13129,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos` — risk: medium
 	 */
-	async forkPrWorkflowsPrivateRepos_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async forkPrWorkflowsPrivateRepos_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-private-repo-fork-pr-workflows-settings-repository",
 			namespace: "repos",
@@ -12602,6 +13142,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12610,7 +13151,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/permissions/selected-actions` — risk: medium
 	 */
-	async selectedActions_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async selectedActions_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-allowed-actions-repository",
 			namespace: "repos",
@@ -12623,6 +13164,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12631,7 +13173,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/permissions/selected-actions` — risk: medium
 	 */
-	async selectedActions_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async selectedActions_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-allowed-actions-repository",
 			namespace: "repos",
@@ -12644,6 +13186,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12654,7 +13197,7 @@ For more information
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/permissions/workflow` — risk: medium
 	 */
-	async workflow_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async workflow_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-github-actions-default-workflow-permissions-repository",
 			namespace: "repos",
@@ -12667,6 +13210,7 @@ For more information
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12677,7 +13221,7 @@ For more information,
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/permissions/workflow` — risk: medium
 	 */
-	async workflow_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async workflow_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-github-actions-default-workflow-permissions-repository",
 			namespace: "repos",
@@ -12690,6 +13234,7 @@ For more information,
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12702,7 +13247,7 @@ OAuth app tokens and personal access tokens (classic) nee
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runners` — risk: medium
 	 */
-	async runners(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async runners(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-self-hosted-runners-for-repo",
 			namespace: "repos",
@@ -12715,6 +13260,7 @@ OAuth app tokens and personal access tokens (classic) nee
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12727,7 +13273,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runners/downloads` — risk: medium
 	 */
-	async downloads(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async downloads(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-runner-applications-for-repo",
 			namespace: "repos",
@@ -12740,6 +13286,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12752,7 +13299,7 @@ OAuth tokens and personal access tokens (classic)
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runners/generate-jitconfig` — risk: medium
 	 */
-	async generateJitconfig(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async generateJitconfig(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/generate-runner-jitconfig-for-repo",
 			namespace: "repos",
@@ -12765,6 +13312,7 @@ OAuth tokens and personal access tokens (classic)
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12775,7 +13323,7 @@ For example, you can replace `TOKEN` in the following example with the registrat
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runners/registration-token` — risk: medium
 	 */
-	async registrationToken(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async registrationToken(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-registration-token-for-repo",
 			namespace: "repos",
@@ -12788,6 +13336,7 @@ For example, you can replace `TOKEN` in the following example with the registrat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12798,7 +13347,7 @@ For example, you can replace `TOKEN` in the following exa
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runners/remove-token` — risk: medium
 	 */
-	async removeToken(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async removeToken(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-remove-token-for-repo",
 			namespace: "repos",
@@ -12811,6 +13360,7 @@ For example, you can replace `TOKEN` in the following exa
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12823,7 +13373,7 @@ OAuth app tokens and personal access tokens (classic
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runners/{runner_id}` — risk: medium
 	 */
-	async retrieveRunner(owner: string, repo: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async retrieveRunner(owner: string, repo: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-self-hosted-runner-for-repo",
 			namespace: "repos",
@@ -12836,6 +13386,7 @@ OAuth app tokens and personal access tokens (classic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12846,7 +13397,7 @@ Authenticated users must have
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}` — risk: medium
 	 */
-	async deleteRunner(owner: string, repo: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async deleteRunner(owner: string, repo: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-self-hosted-runner-from-repo",
 			namespace: "repos",
@@ -12859,6 +13410,7 @@ Authenticated users must have
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12871,7 +13423,7 @@ OAuth app tokens and personal access tokens (
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
-	async getActionsrunnersLabels(owner: string, repo: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async getActionsrunnersLabels(owner: string, repo: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-labels-for-self-hosted-runner-for-repo",
 			namespace: "repos",
@@ -12884,6 +13436,7 @@ OAuth app tokens and personal access tokens (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12896,7 +13449,7 @@ OAuth tokens and personal access tokens (c
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
-	async postActionsrunnersLabels(owner: string, repo: string, runnerId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postActionsrunnersLabels(owner: string, repo: string, runnerId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/add-custom-labels-to-self-hosted-runner-for-repo",
 			namespace: "repos",
@@ -12909,6 +13462,7 @@ OAuth tokens and personal access tokens (c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12920,7 +13474,7 @@ Authenticated users must have admin access to the repository to use this
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
-	async putActionsrunnersLabels(owner: string, repo: string, runnerId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putActionsrunnersLabels(owner: string, repo: string, runnerId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/set-custom-labels-for-self-hosted-runner-for-repo",
 			namespace: "repos",
@@ -12933,6 +13487,7 @@ Authenticated users must have admin access to the repository to use this
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12944,7 +13499,7 @@ Authenticated users must have admin access to the repository to
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
-	async deleteActionsrunnersLabels(owner: string, repo: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async deleteActionsrunnersLabels(owner: string, repo: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/remove-all-custom-labels-from-self-hosted-runner-for-repo",
 			namespace: "repos",
@@ -12957,6 +13512,7 @@ Authenticated users must have admin access to the repository to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12969,7 +13525,7 @@ pre
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels/{name}` — risk: medium
 	 */
-	async actionsrunnerslabelsDeleteLabel(owner: string, repo: string, runnerId: string, name: string): Promise<ProofResult<unknown>> {
+	async actionsrunnerslabelsDeleteLabel(owner: string, repo: string, runnerId: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/remove-custom-label-from-self-hosted-runner-for-repo",
 			namespace: "repos",
@@ -12982,6 +13538,7 @@ pre
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12990,7 +13547,7 @@ pre
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs` — risk: medium
 	 */
-	async runs_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async runs_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-workflow-runs-for-repo",
 			namespace: "repos",
@@ -13003,6 +13560,7 @@ pre
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13015,7 +13573,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}` — risk: medium
 	 */
-	async retrieveRun(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async retrieveRun(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-workflow-run",
 			namespace: "repos",
@@ -13028,6 +13586,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13040,7 +13599,7 @@ If the repository is private, OAuth tokens and personal access tokens (classic) 
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/runs/{run_id}` — risk: medium
 	 */
-	async deleteRun(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async deleteRun(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-workflow-run",
 			namespace: "repos",
@@ -13053,6 +13612,7 @@ If the repository is private, OAuth tokens and personal access tokens (classic) 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13063,7 +13623,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/approvals` — risk: medium
 	 */
-	async approvals(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async approvals(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-reviews-for-run",
 			namespace: "repos",
@@ -13076,6 +13636,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13084,7 +13645,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runs/{run_id}/approve` — risk: medium
 	 */
-	async approve(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async approve(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/approve-workflow-run",
 			namespace: "repos",
@@ -13097,6 +13658,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13109,7 +13671,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts` — risk: medium
 	 */
-	async runsArtifacts(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async runsArtifacts(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-workflow-run-artifacts",
 			namespace: "repos",
@@ -13122,6 +13684,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13134,7 +13697,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}` — risk: medium
 	 */
-	async retrieveAttempt(owner: string, repo: string, runId: string, attemptNumber: string): Promise<ProofResult<unknown>> {
+	async retrieveAttempt(owner: string, repo: string, runId: string, attemptNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-workflow-run-attempt",
 			namespace: "repos",
@@ -13147,6 +13710,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13156,7 +13720,7 @@ about using parameters, see [Parameters](https://docs.github.com/rest/guides/
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs` — risk: medium
 	 */
-	async attemptsJobs(owner: string, repo: string, runId: string, attemptNumber: string): Promise<ProofResult<unknown>> {
+	async attemptsJobs(owner: string, repo: string, runId: string, attemptNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-jobs-for-workflow-run-attempt",
 			namespace: "repos",
@@ -13169,6 +13733,7 @@ about using parameters, see [Parameters](https://docs.github.com/rest/guides/
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13178,7 +13743,7 @@ about using parameters, see [Parameters](https://docs.github.com/rest/guides/
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/logs` — risk: medium
 	 */
-	async runsattemptsLogs(owner: string, repo: string, runId: string, attemptNumber: string): Promise<ProofResult<unknown>> {
+	async runsattemptsLogs(owner: string, repo: string, runId: string, attemptNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/download-workflow-run-attempt-logs",
 			namespace: "repos",
@@ -13191,6 +13756,7 @@ about using parameters, see [Parameters](https://docs.github.com/rest/guides/
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13201,7 +13767,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel` — risk: medium
 	 */
-	async actionsrunsCancel(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async actionsrunsCancel(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/cancel-workflow-run",
 			namespace: "repos",
@@ -13214,6 +13780,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13225,7 +13792,7 @@ included even when the run no longer has any items cu
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/concurrency_groups` — risk: medium
 	 */
-	async runsConcurrencyGroups(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async runsConcurrencyGroups(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-concurrency-groups-for-workflow-run",
 			namespace: "repos",
@@ -13238,6 +13805,7 @@ included even when the run no longer has any items cu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13246,7 +13814,7 @@ included even when the run no longer has any items cu
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runs/{run_id}/deployment_protection_rule` — risk: medium
 	 */
-	async deploymentProtectionRule(owner: string, repo: string, runId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deploymentProtectionRule(owner: string, repo: string, runId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/review-custom-gates-for-run",
 			namespace: "repos",
@@ -13259,6 +13827,7 @@ included even when the run no longer has any items cu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13268,7 +13837,7 @@ You should only use this endpoint to cancel a work
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runs/{run_id}/force-cancel` — risk: medium
 	 */
-	async forceCancel(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async forceCancel(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/force-cancel-workflow-run",
 			namespace: "repos",
@@ -13281,6 +13850,7 @@ You should only use this endpoint to cancel a work
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13290,7 +13860,7 @@ about using parameters, see [Parameters](https://docs.github.com/rest/guides/get
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs` — risk: medium
 	 */
-	async jobs_1(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async jobs_1(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-jobs-for-workflow-run",
 			namespace: "repos",
@@ -13303,6 +13873,7 @@ about using parameters, see [Parameters](https://docs.github.com/rest/guides/get
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13314,7 +13885,7 @@ Anyone with
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/logs` — risk: medium
 	 */
-	async getRunsLogs(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async getRunsLogs(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/download-workflow-run-logs",
 			namespace: "repos",
@@ -13327,6 +13898,7 @@ Anyone with
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13337,7 +13909,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/runs/{run_id}/logs` — risk: medium
 	 */
-	async deleteRunsLogs(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async deleteRunsLogs(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-workflow-run-logs",
 			namespace: "repos",
@@ -13350,6 +13922,7 @@ OAuth tokens and personal access tokens (classic) need the `repo` scope to use t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13362,7 +13935,7 @@ If the repository is private, OAuth
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments` — risk: medium
 	 */
-	async pendingDeployments_0(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async pendingDeployments_0(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-pending-deployments-for-run",
 			namespace: "repos",
@@ -13375,6 +13948,7 @@ If the repository is private, OAuth
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13387,7 +13961,7 @@ OAuth
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments` — risk: medium
 	 */
-	async pendingDeployments_1(owner: string, repo: string, runId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pendingDeployments_1(owner: string, repo: string, runId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/review-pending-deployments-for-run",
 			namespace: "repos",
@@ -13400,6 +13974,7 @@ OAuth
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13410,7 +13985,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun` — risk: medium
 	 */
-	async runsRerun(owner: string, repo: string, runId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async runsRerun(owner: string, repo: string, runId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/re-run-workflow",
 			namespace: "repos",
@@ -13423,6 +13998,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13433,7 +14009,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs` — risk: medium
 	 */
-	async rerunFailedJobs(owner: string, repo: string, runId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async rerunFailedJobs(owner: string, repo: string, runId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/re-run-workflow-failed-jobs",
 			namespace: "repos",
@@ -13446,6 +14022,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13455,7 +14032,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/timing` — risk: medium
 	 */
-	async runsTiming(owner: string, repo: string, runId: string): Promise<ProofResult<unknown>> {
+	async runsTiming(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-workflow-run-usage",
 			namespace: "repos",
@@ -13468,6 +14045,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13481,7 +14059,7 @@ OAuth app
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/secrets` — risk: medium
 	 */
-	async getActionsSecrets(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getActionsSecrets(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-repo-secrets",
 			namespace: "repos",
@@ -13494,6 +14072,7 @@ OAuth app
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13507,7 +14086,7 @@ If the
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/secrets/public-key` — risk: medium
 	 */
-	async actionssecretsPublicKey(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async actionssecretsPublicKey(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-repo-public-key",
 			namespace: "repos",
@@ -13520,6 +14099,7 @@ If the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13532,7 +14112,7 @@ OAuth app tokens and personal acce
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/secrets/{secret_name}` — risk: medium
 	 */
-	async actionssecretsRetrieveSecret(owner: string, repo: string, secretName: string): Promise<ProofResult<unknown>> {
+	async actionssecretsRetrieveSecret(owner: string, repo: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-repo-secret",
 			namespace: "repos",
@@ -13545,6 +14125,7 @@ OAuth app tokens and personal acce
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13554,7 +14135,7 @@ OAuth app tokens and personal acce
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}` — risk: medium
 	 */
-	async putActionsSecrets(owner: string, repo: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putActionsSecrets(owner: string, repo: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-or-update-repo-secret",
 			namespace: "repos",
@@ -13567,6 +14148,7 @@ OAuth app tokens and personal acce
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13579,7 +14161,7 @@ OAuth tokens and personal access tokens
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}` — risk: medium
 	 */
-	async actionssecretsDeleteSecret(owner: string, repo: string, secretName: string): Promise<ProofResult<unknown>> {
+	async actionssecretsDeleteSecret(owner: string, repo: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-repo-secret",
 			namespace: "repos",
@@ -13592,6 +14174,7 @@ OAuth tokens and personal access tokens
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13604,7 +14187,7 @@ OAuth app tokens and personal access tokens (classic) need the
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/variables` — risk: medium
 	 */
-	async getActionsVariables(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getActionsVariables(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-repo-variables",
 			namespace: "repos",
@@ -13617,6 +14200,7 @@ OAuth app tokens and personal access tokens (classic) need the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13629,7 +14213,7 @@ OAuth token
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/variables` — risk: medium
 	 */
-	async postActionsVariables(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postActionsVariables(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-repo-variable",
 			namespace: "repos",
@@ -13642,6 +14226,7 @@ OAuth token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13654,7 +14239,7 @@ OAuth app tokens and personal access tokens (classic) need the
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/variables/{name}` — risk: medium
 	 */
-	async actionsvariablesRetrieveVariable(owner: string, repo: string, name: string): Promise<ProofResult<unknown>> {
+	async actionsvariablesRetrieveVariable(owner: string, repo: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-repo-variable",
 			namespace: "repos",
@@ -13667,6 +14252,7 @@ OAuth app tokens and personal access tokens (classic) need the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13679,7 +14265,7 @@ OAuth app t
 	 *
 	 * `PATCH /repos/{owner}/{repo}/actions/variables/{name}` — risk: medium
 	 */
-	async patchActionsVariables(owner: string, repo: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchActionsVariables(owner: string, repo: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/update-repo-variable",
 			namespace: "repos",
@@ -13692,6 +14278,7 @@ OAuth app t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13704,7 +14291,7 @@ OAuth tokens and personal access tokens
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/variables/{name}` — risk: medium
 	 */
-	async actionsvariablesDeleteVariable(owner: string, repo: string, name: string): Promise<ProofResult<unknown>> {
+	async actionsvariablesDeleteVariable(owner: string, repo: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-repo-variable",
 			namespace: "repos",
@@ -13717,6 +14304,7 @@ OAuth tokens and personal access tokens
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13729,7 +14317,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/workflows` — risk: medium
 	 */
-	async workflows(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async workflows(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-repo-workflows",
 			namespace: "repos",
@@ -13742,6 +14330,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13755,7 +14344,7 @@ OAuth ap
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}` — risk: medium
 	 */
-	async retrieveWorkflow(owner: string, repo: string, workflowId: string): Promise<ProofResult<unknown>> {
+	async retrieveWorkflow(owner: string, repo: string, workflowId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-workflow",
 			namespace: "repos",
@@ -13768,6 +14357,7 @@ OAuth ap
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13778,7 +14368,7 @@ OAuth tokens and pe
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/disable` — risk: medium
 	 */
-	async disable(owner: string, repo: string, workflowId: string): Promise<ProofResult<unknown>> {
+	async disable(owner: string, repo: string, workflowId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/disable-workflow",
 			namespace: "repos",
@@ -13791,6 +14381,7 @@ OAuth tokens and pe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13801,7 +14392,7 @@ You must configure your
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches` — risk: medium
 	 */
-	async dispatches(owner: string, repo: string, workflowId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async dispatches(owner: string, repo: string, workflowId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-workflow-dispatch",
 			namespace: "repos",
@@ -13814,6 +14405,7 @@ You must configure your
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13824,7 +14416,7 @@ OAuth tokens and personal acces
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable` — risk: medium
 	 */
-	async enable(owner: string, repo: string, workflowId: string): Promise<ProofResult<unknown>> {
+	async enable(owner: string, repo: string, workflowId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/enable-workflow",
 			namespace: "repos",
@@ -13837,6 +14429,7 @@ OAuth tokens and personal acces
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13845,7 +14438,7 @@ OAuth tokens and personal acces
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs` — risk: medium
 	 */
-	async workflowsRuns(owner: string, repo: string, workflowId: string): Promise<ProofResult<unknown>> {
+	async workflowsRuns(owner: string, repo: string, workflowId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-workflow-runs",
 			namespace: "repos",
@@ -13858,6 +14451,7 @@ OAuth tokens and personal acces
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13867,7 +14461,7 @@ OAuth tokens and personal acces
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing` — risk: medium
 	 */
-	async workflowsTiming(owner: string, repo: string, workflowId: string): Promise<ProofResult<unknown>> {
+	async workflowsTiming(owner: string, repo: string, workflowId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-workflow-usage",
 			namespace: "repos",
@@ -13880,6 +14474,7 @@ OAuth tokens and personal acces
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13890,7 +14485,7 @@ For more information about viewing
 	 *
 	 * `GET /repos/{owner}/{repo}/activity` — risk: medium
 	 */
-	async listActivity(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listActivity(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-activities",
 			namespace: "repos",
@@ -13903,6 +14498,7 @@ For more information about viewing
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13914,7 +14510,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 	 *
 	 * `GET /repos/{owner}/{repo}/agents/organization-secrets` — risk: medium
 	 */
-	async agentsOrganizationSecrets(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async agentsOrganizationSecrets(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/list-repo-organization-secrets",
 			namespace: "repos",
@@ -13927,6 +14523,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13939,7 +14536,7 @@ OAuth app tokens and personal acces
 	 *
 	 * `GET /repos/{owner}/{repo}/agents/organization-variables` — risk: medium
 	 */
-	async agentsOrganizationVariables(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async agentsOrganizationVariables(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/list-repo-organization-variables",
 			namespace: "repos",
@@ -13952,6 +14549,7 @@ OAuth app tokens and personal acces
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13965,7 +14563,7 @@ OAuth app
 	 *
 	 * `GET /repos/{owner}/{repo}/agents/secrets` — risk: medium
 	 */
-	async getAgentsSecrets(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getAgentsSecrets(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/list-repo-secrets",
 			namespace: "repos",
@@ -13978,6 +14576,7 @@ OAuth app
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13991,7 +14590,7 @@ If the
 	 *
 	 * `GET /repos/{owner}/{repo}/agents/secrets/public-key` — risk: medium
 	 */
-	async agentssecretsPublicKey(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async agentssecretsPublicKey(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/get-repo-public-key",
 			namespace: "repos",
@@ -14004,6 +14603,7 @@ If the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14016,7 +14616,7 @@ OAuth app tokens and personal acce
 	 *
 	 * `GET /repos/{owner}/{repo}/agents/secrets/{secret_name}` — risk: medium
 	 */
-	async agentssecretsRetrieveSecret(owner: string, repo: string, secretName: string): Promise<ProofResult<unknown>> {
+	async agentssecretsRetrieveSecret(owner: string, repo: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/get-repo-secret",
 			namespace: "repos",
@@ -14029,6 +14629,7 @@ OAuth app tokens and personal acce
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14038,7 +14639,7 @@ OAuth app tokens and personal acce
 	 *
 	 * `PUT /repos/{owner}/{repo}/agents/secrets/{secret_name}` — risk: medium
 	 */
-	async putAgentsSecrets(owner: string, repo: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putAgentsSecrets(owner: string, repo: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/create-or-update-repo-secret",
 			namespace: "repos",
@@ -14051,6 +14652,7 @@ OAuth app tokens and personal acce
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14063,7 +14665,7 @@ OAuth tokens and personal access tokens
 	 *
 	 * `DELETE /repos/{owner}/{repo}/agents/secrets/{secret_name}` — risk: medium
 	 */
-	async agentssecretsDeleteSecret(owner: string, repo: string, secretName: string): Promise<ProofResult<unknown>> {
+	async agentssecretsDeleteSecret(owner: string, repo: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/delete-repo-secret",
 			namespace: "repos",
@@ -14076,6 +14678,7 @@ OAuth tokens and personal access tokens
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14088,7 +14691,7 @@ OAuth app tokens and personal access tokens (classic) need the
 	 *
 	 * `GET /repos/{owner}/{repo}/agents/variables` — risk: medium
 	 */
-	async getAgentsVariables(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getAgentsVariables(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/list-repo-variables",
 			namespace: "repos",
@@ -14101,6 +14704,7 @@ OAuth app tokens and personal access tokens (classic) need the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14113,7 +14717,7 @@ OAuth token
 	 *
 	 * `POST /repos/{owner}/{repo}/agents/variables` — risk: medium
 	 */
-	async postAgentsVariables(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postAgentsVariables(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/create-repo-variable",
 			namespace: "repos",
@@ -14126,6 +14730,7 @@ OAuth token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14138,7 +14743,7 @@ OAuth app tokens and personal access tokens (classic) need the
 	 *
 	 * `GET /repos/{owner}/{repo}/agents/variables/{name}` — risk: medium
 	 */
-	async agentsvariablesRetrieveVariable(owner: string, repo: string, name: string): Promise<ProofResult<unknown>> {
+	async agentsvariablesRetrieveVariable(owner: string, repo: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/get-repo-variable",
 			namespace: "repos",
@@ -14151,6 +14756,7 @@ OAuth app tokens and personal access tokens (classic) need the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14163,7 +14769,7 @@ OAuth app t
 	 *
 	 * `PATCH /repos/{owner}/{repo}/agents/variables/{name}` — risk: medium
 	 */
-	async patchAgentsVariables(owner: string, repo: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchAgentsVariables(owner: string, repo: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/update-repo-variable",
 			namespace: "repos",
@@ -14176,6 +14782,7 @@ OAuth app t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14188,7 +14795,7 @@ OAuth tokens and personal access tokens
 	 *
 	 * `DELETE /repos/{owner}/{repo}/agents/variables/{name}` — risk: medium
 	 */
-	async agentsvariablesDeleteVariable(owner: string, repo: string, name: string): Promise<ProofResult<unknown>> {
+	async agentsvariablesDeleteVariable(owner: string, repo: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "agents/delete-repo-variable",
 			namespace: "repos",
@@ -14201,6 +14808,7 @@ OAuth tokens and personal access tokens
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14209,7 +14817,7 @@ OAuth tokens and personal access tokens
 	 *
 	 * `GET /repos/{owner}/{repo}/assignees` — risk: medium
 	 */
-	async listAssignees(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listAssignees(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-assignees",
 			namespace: "repos",
@@ -14222,6 +14830,7 @@ OAuth tokens and personal access tokens
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14234,7 +14843,7 @@ Otherwise a
 	 *
 	 * `GET /repos/{owner}/{repo}/assignees/{assignee}` — risk: medium
 	 */
-	async assigneesRetrieveAssignee(owner: string, repo: string, assignee: string): Promise<ProofResult<unknown>> {
+	async assigneesRetrieveAssignee(owner: string, repo: string, assignee: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/check-user-can-be-assigned",
 			namespace: "repos",
@@ -14247,6 +14856,7 @@ Otherwise a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14257,7 +14867,7 @@ The authenticated user must have write permission to the repository and, if usin
 	 *
 	 * `POST /repos/{owner}/{repo}/attestations` — risk: medium
 	 */
-	async createAttestation(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createAttestation(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-attestation",
 			namespace: "repos",
@@ -14270,6 +14880,7 @@ The authenticated user must have write permission to the repository and, if usin
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14280,7 +14891,7 @@ The authenticated user making the request must have read access to the repositor
 	 *
 	 * `GET /repos/{owner}/{repo}/attestations/{subject_digest}` — risk: medium
 	 */
-	async retrieveAttestation(owner: string, repo: string, subjectDigest: string): Promise<ProofResult<unknown>> {
+	async retrieveAttestation(owner: string, repo: string, subjectDigest: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-attestations",
 			namespace: "repos",
@@ -14293,6 +14904,7 @@ The authenticated user making the request must have read access to the repositor
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14303,7 +14915,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/autolinks` — risk: medium
 	 */
-	async listAutolinks(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listAutolinks(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-autolinks",
 			namespace: "repos",
@@ -14316,6 +14928,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14324,7 +14937,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `POST /repos/{owner}/{repo}/autolinks` — risk: medium
 	 */
-	async createAutolink(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createAutolink(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-autolink",
 			namespace: "repos",
@@ -14337,6 +14950,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14347,7 +14961,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/autolinks/{autolink_id}` — risk: medium
 	 */
-	async retrieveAutolink(owner: string, repo: string, autolinkId: string): Promise<ProofResult<unknown>> {
+	async retrieveAutolink(owner: string, repo: string, autolinkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-autolink",
 			namespace: "repos",
@@ -14360,6 +14974,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14370,7 +14985,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/autolinks/{autolink_id}` — risk: medium
 	 */
-	async deleteAutolink(owner: string, repo: string, autolinkId: string): Promise<ProofResult<unknown>> {
+	async deleteAutolink(owner: string, repo: string, autolinkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-autolink",
 			namespace: "repos",
@@ -14383,6 +14998,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14391,7 +15007,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/automated-security-fixes` — risk: medium
 	 */
-	async listAutomatedSecurityFixes(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listAutomatedSecurityFixes(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/check-automated-security-fixes",
 			namespace: "repos",
@@ -14404,6 +15020,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14412,7 +15029,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `PUT /repos/{owner}/{repo}/automated-security-fixes` — risk: medium
 	 */
-	async automatedSecurityFixes_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async automatedSecurityFixes_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/enable-automated-security-fixes",
 			namespace: "repos",
@@ -14425,6 +15042,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14433,7 +15051,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/automated-security-fixes` — risk: medium
 	 */
-	async automatedSecurityFixes_1(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async automatedSecurityFixes_1(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/disable-automated-security-fixes",
 			namespace: "repos",
@@ -14446,6 +15064,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14454,7 +15073,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches` — risk: medium
 	 */
-	async listBranches(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listBranches(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-branches",
 			namespace: "repos",
@@ -14467,6 +15086,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14475,7 +15095,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}` — risk: medium
 	 */
-	async branchesRetrieveBranche(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async branchesRetrieveBranche(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-branch",
 			namespace: "repos",
@@ -14488,6 +15108,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14496,7 +15117,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection` — risk: medium
 	 */
-	async protection_0(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async protection_0(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-branch-protection",
 			namespace: "repos",
@@ -14509,6 +15130,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14517,7 +15139,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `PUT /repos/{owner}/{repo}/branches/{branch}/protection` — risk: medium
 	 */
-	async protection_1(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async protection_1(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-branch-protection",
 			namespace: "repos",
@@ -14530,6 +15152,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14538,7 +15161,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection` — risk: medium
 	 */
-	async protection_2(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async protection_2(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-branch-protection",
 			namespace: "repos",
@@ -14551,6 +15174,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14559,7 +15183,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins` — risk: medium
 	 */
-	async enforceAdmins_0(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async enforceAdmins_0(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-admin-branch-protection",
 			namespace: "repos",
@@ -14572,6 +15196,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14580,7 +15205,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins` — risk: medium
 	 */
-	async enforceAdmins_1(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async enforceAdmins_1(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/set-admin-branch-protection",
 			namespace: "repos",
@@ -14593,6 +15218,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14601,7 +15227,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins` — risk: medium
 	 */
-	async enforceAdmins_2(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async enforceAdmins_2(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-admin-branch-protection",
 			namespace: "repos",
@@ -14614,6 +15240,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14622,7 +15249,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews` — risk: medium
 	 */
-	async requiredPullRequestReviews_0(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async requiredPullRequestReviews_0(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-pull-request-review-protection",
 			namespace: "repos",
@@ -14635,6 +15262,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14643,7 +15271,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews` — risk: medium
 	 */
-	async requiredPullRequestReviews_1(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async requiredPullRequestReviews_1(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-pull-request-review-protection",
 			namespace: "repos",
@@ -14656,6 +15284,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14664,7 +15293,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews` — risk: medium
 	 */
-	async requiredPullRequestReviews_2(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async requiredPullRequestReviews_2(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-pull-request-review-protection",
 			namespace: "repos",
@@ -14677,6 +15306,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14685,7 +15315,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures` — risk: medium
 	 */
-	async requiredSignatures_0(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async requiredSignatures_0(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-commit-signature-protection",
 			namespace: "repos",
@@ -14698,6 +15328,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14706,7 +15337,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `POST /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures` — risk: medium
 	 */
-	async requiredSignatures_1(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async requiredSignatures_1(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-commit-signature-protection",
 			namespace: "repos",
@@ -14719,6 +15350,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14727,7 +15359,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures` — risk: medium
 	 */
-	async requiredSignatures_2(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async requiredSignatures_2(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-commit-signature-protection",
 			namespace: "repos",
@@ -14740,6 +15372,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14748,7 +15381,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks` — risk: medium
 	 */
-	async requiredStatusChecks_0(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async requiredStatusChecks_0(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-status-checks-protection",
 			namespace: "repos",
@@ -14761,6 +15394,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14769,7 +15403,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks` — risk: medium
 	 */
-	async requiredStatusChecks_1(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async requiredStatusChecks_1(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-status-check-protection",
 			namespace: "repos",
@@ -14782,6 +15416,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14790,7 +15425,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks` — risk: medium
 	 */
-	async requiredStatusChecks_2(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async requiredStatusChecks_2(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/remove-status-check-protection",
 			namespace: "repos",
@@ -14803,6 +15438,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14811,7 +15447,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts` — risk: medium
 	 */
-	async contexts_0(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async contexts_0(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-all-status-check-contexts",
 			namespace: "repos",
@@ -14824,6 +15460,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14832,7 +15469,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `POST /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts` — risk: medium
 	 */
-	async contexts_1(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async contexts_1(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/add-status-check-contexts",
 			namespace: "repos",
@@ -14845,6 +15482,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14853,7 +15491,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `PUT /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts` — risk: medium
 	 */
-	async contexts_2(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async contexts_2(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/set-status-check-contexts",
 			namespace: "repos",
@@ -14866,6 +15504,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14874,7 +15513,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts` — risk: medium
 	 */
-	async contexts_3(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async contexts_3(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/remove-status-check-contexts",
 			namespace: "repos",
@@ -14887,6 +15526,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14895,7 +15535,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions` — risk: medium
 	 */
-	async restrictions_0(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async restrictions_0(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-access-restrictions",
 			namespace: "repos",
@@ -14908,6 +15548,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14916,7 +15557,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions` — risk: medium
 	 */
-	async restrictions_1(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async restrictions_1(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-access-restrictions",
 			namespace: "repos",
@@ -14929,6 +15570,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14937,7 +15579,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps` — risk: medium
 	 */
-	async getBranchesprotectionrestrictionsApps(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async getBranchesprotectionrestrictionsApps(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-apps-with-access-to-protected-branch",
 			namespace: "repos",
@@ -14950,6 +15592,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14958,7 +15601,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps` — risk: medium
 	 */
-	async postBranchesprotectionrestrictionsApps(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postBranchesprotectionrestrictionsApps(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/add-app-access-restrictions",
 			namespace: "repos",
@@ -14971,6 +15614,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14979,7 +15623,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps` — risk: medium
 	 */
-	async putBranchesprotectionrestrictionsApps(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putBranchesprotectionrestrictionsApps(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/set-app-access-restrictions",
 			namespace: "repos",
@@ -14992,6 +15636,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15000,7 +15645,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps` — risk: medium
 	 */
-	async deleteBranchesprotectionrestrictionsApps(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteBranchesprotectionrestrictionsApps(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/remove-app-access-restrictions",
 			namespace: "repos",
@@ -15013,6 +15658,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15021,7 +15667,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams` — risk: medium
 	 */
-	async teams_0(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async teams_0(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-teams-with-access-to-protected-branch",
 			namespace: "repos",
@@ -15034,6 +15680,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15042,7 +15689,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams` — risk: medium
 	 */
-	async teams_1(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async teams_1(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/add-team-access-restrictions",
 			namespace: "repos",
@@ -15055,6 +15702,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15063,7 +15711,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams` — risk: medium
 	 */
-	async teams_2(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async teams_2(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/set-team-access-restrictions",
 			namespace: "repos",
@@ -15076,6 +15724,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15084,7 +15733,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams` — risk: medium
 	 */
-	async teams_3(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async teams_3(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/remove-team-access-restrictions",
 			namespace: "repos",
@@ -15097,6 +15746,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15105,7 +15755,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users` — risk: medium
 	 */
-	async users_0(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async users_0(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-users-with-access-to-protected-branch",
 			namespace: "repos",
@@ -15118,6 +15768,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15126,7 +15777,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users` — risk: medium
 	 */
-	async users_1(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async users_1(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/add-user-access-restrictions",
 			namespace: "repos",
@@ -15139,6 +15790,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15147,7 +15799,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users` — risk: medium
 	 */
-	async users_2(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async users_2(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/set-user-access-restrictions",
 			namespace: "repos",
@@ -15160,6 +15812,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15168,7 +15821,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users` — risk: medium
 	 */
-	async users_3(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async users_3(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/remove-user-access-restrictions",
 			namespace: "repos",
@@ -15181,6 +15834,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15192,7 +15846,7 @@ Information about autolinks are only available to repository administrators.
 	 *
 	 * `POST /repos/{owner}/{repo}/branches/{branch}/rename` — risk: medium
 	 */
-	async rename(owner: string, repo: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async rename(owner: string, repo: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/rename-branch",
 			namespace: "repos",
@@ -15205,6 +15859,7 @@ Information about autolinks are only available to repository administrators.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15217,7 +15872,7 @@ In a check s
 	 *
 	 * `POST /repos/{owner}/{repo}/check-runs` — risk: medium
 	 */
-	async createCheckRun(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createCheckRun(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/create",
 			namespace: "repos",
@@ -15230,6 +15885,7 @@ In a check s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15241,7 +15897,7 @@ In a check s
 	 *
 	 * `GET /repos/{owner}/{repo}/check-runs/{check_run_id}` — risk: medium
 	 */
-	async retrieveCheckRun(owner: string, repo: string, checkRunId: string): Promise<ProofResult<unknown>> {
+	async retrieveCheckRun(owner: string, repo: string, checkRunId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/get",
 			namespace: "repos",
@@ -15254,6 +15910,7 @@ In a check s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15265,7 +15922,7 @@ In a check s
 	 *
 	 * `PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}` — risk: medium
 	 */
-	async checkRuns_0(owner: string, repo: string, checkRunId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async checkRuns_0(owner: string, repo: string, checkRunId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/update",
 			namespace: "repos",
@@ -15278,6 +15935,7 @@ In a check s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15288,7 +15946,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations` — risk: medium
 	 */
-	async annotations(owner: string, repo: string, checkRunId: string): Promise<ProofResult<unknown>> {
+	async annotations(owner: string, repo: string, checkRunId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/list-annotations",
 			namespace: "repos",
@@ -15301,6 +15959,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15309,7 +15968,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/check-runs/{check_run_id}/rerequest` — risk: medium
 	 */
-	async checkRunsRerequest(owner: string, repo: string, checkRunId: string): Promise<ProofResult<unknown>> {
+	async checkRunsRerequest(owner: string, repo: string, checkRunId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/rerequest-run",
 			namespace: "repos",
@@ -15322,6 +15981,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15330,7 +15990,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/check-suites` — risk: medium
 	 */
-	async createCheckSuite(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createCheckSuite(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/create-suite",
 			namespace: "repos",
@@ -15343,6 +16003,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15351,7 +16012,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PATCH /repos/{owner}/{repo}/check-suites/preferences` — risk: medium
 	 */
-	async preferences(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async preferences(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/set-suites-preferences",
 			namespace: "repos",
@@ -15364,6 +16025,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15375,7 +16037,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/check-suites/{check_suite_id}` — risk: medium
 	 */
-	async retrieveCheckSuite(owner: string, repo: string, checkSuiteId: string): Promise<ProofResult<unknown>> {
+	async retrieveCheckSuite(owner: string, repo: string, checkSuiteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/get-suite",
 			namespace: "repos",
@@ -15388,6 +16050,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15399,7 +16062,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs` — risk: medium
 	 */
-	async checkSuitesCheckRuns(owner: string, repo: string, checkSuiteId: string): Promise<ProofResult<unknown>> {
+	async checkSuitesCheckRuns(owner: string, repo: string, checkSuiteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/list-for-suite",
 			namespace: "repos",
@@ -15412,6 +16075,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15420,7 +16084,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest` — risk: medium
 	 */
-	async checkSuitesRerequest(owner: string, repo: string, checkSuiteId: string): Promise<ProofResult<unknown>> {
+	async checkSuitesRerequest(owner: string, repo: string, checkSuiteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/rerequest-suite",
 			namespace: "repos",
@@ -15433,6 +16097,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15445,7 +16110,7 @@ for the default branch (or for the specified Git ref
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/alerts` — risk: medium
 	 */
-	async getCodeScanningAlerts(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getCodeScanningAlerts(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/list-alerts-for-repo",
 			namespace: "repos",
@@ -15458,6 +16123,7 @@ for the default branch (or for the specified Git ref
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15468,7 +16134,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}` — risk: medium
 	 */
-	async codeScanningalertsRetrieveAlert(owner: string, repo: string, alertNumber: string): Promise<ProofResult<unknown>> {
+	async codeScanningalertsRetrieveAlert(owner: string, repo: string, alertNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/get-alert",
 			namespace: "repos",
@@ -15481,6 +16147,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15490,7 +16157,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 	 *
 	 * `PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}` — risk: medium
 	 */
-	async patchCodeScanningAlerts(owner: string, repo: string, alertNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchCodeScanningAlerts(owner: string, repo: string, alertNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/update-alert",
 			namespace: "repos",
@@ -15503,6 +16170,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15513,7 +16181,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix` — risk: medium
 	 */
-	async autofix_0(owner: string, repo: string, alertNumber: string): Promise<ProofResult<unknown>> {
+	async autofix_0(owner: string, repo: string, alertNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/get-autofix",
 			namespace: "repos",
@@ -15526,6 +16194,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15538,7 +16207,7 @@ I
 	 *
 	 * `POST /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix` — risk: medium
 	 */
-	async autofix_1(owner: string, repo: string, alertNumber: string): Promise<ProofResult<unknown>> {
+	async autofix_1(owner: string, repo: string, alertNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/create-autofix",
 			namespace: "repos",
@@ -15551,6 +16220,7 @@ I
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15563,7 +16233,7 @@ OAut
 	 *
 	 * `POST /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix/commits` — risk: medium
 	 */
-	async codeScanningalertsautofixCommits(owner: string, repo: string, alertNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async codeScanningalertsautofixCommits(owner: string, repo: string, alertNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/commit-autofix",
 			namespace: "repos",
@@ -15576,6 +16246,7 @@ OAut
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15586,7 +16257,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances` — risk: medium
 	 */
-	async instances(owner: string, repo: string, alertNumber: string): Promise<ProofResult<unknown>> {
+	async instances(owner: string, repo: string, alertNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/list-alert-instances",
 			namespace: "repos",
@@ -15599,6 +16270,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15610,7 +16282,7 @@ to list the analyses you
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/analyses` — risk: medium
 	 */
-	async analyses(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async analyses(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/list-recent-analyses",
 			namespace: "repos",
@@ -15623,6 +16295,7 @@ to list the analyses you
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15634,7 +16307,7 @@ This includes the Git reference and commit SHA to which the analysis re
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}` — risk: medium
 	 */
-	async retrieveAnalys(owner: string, repo: string, analysisId: string): Promise<ProofResult<unknown>> {
+	async retrieveAnalys(owner: string, repo: string, analysisId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/get-analysis",
 			namespace: "repos",
@@ -15647,6 +16320,7 @@ This includes the Git reference and commit SHA to which the analysis re
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15659,7 +16333,7 @@ Conceptual
 	 *
 	 * `DELETE /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}` — risk: medium
 	 */
-	async deleteAnalys(owner: string, repo: string, analysisId: string): Promise<ProofResult<unknown>> {
+	async deleteAnalys(owner: string, repo: string, analysisId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/delete-analysis",
 			namespace: "repos",
@@ -15672,6 +16346,7 @@ Conceptual
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15682,7 +16357,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/codeql/databases` — risk: medium
 	 */
-	async databases(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async databases(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/list-codeql-databases",
 			namespace: "repos",
@@ -15695,6 +16370,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15706,7 +16382,7 @@ download the CodeQL database binary content, set the `Accept` heade
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}` — risk: medium
 	 */
-	async retrieveDatabas(owner: string, repo: string, language: string): Promise<ProofResult<unknown>> {
+	async retrieveDatabas(owner: string, repo: string, language: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/get-codeql-database",
 			namespace: "repos",
@@ -15719,6 +16395,7 @@ download the CodeQL database binary content, set the `Accept` heade
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15729,7 +16406,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `DELETE /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}` — risk: medium
 	 */
-	async deleteDatabas(owner: string, repo: string, language: string): Promise<ProofResult<unknown>> {
+	async deleteDatabas(owner: string, repo: string, language: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/delete-codeql-database",
 			namespace: "repos",
@@ -15742,6 +16419,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15752,7 +16430,7 @@ Get started by learning more about [running CodeQL queries at scale with Multi-R
 	 *
 	 * `POST /repos/{owner}/{repo}/code-scanning/codeql/variant-analyses` — risk: medium
 	 */
-	async variantAnalyses(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async variantAnalyses(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/create-variant-analysis",
 			namespace: "repos",
@@ -15765,6 +16443,7 @@ Get started by learning more about [running CodeQL queries at scale with Multi-R
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15775,7 +16454,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}` — risk: medium
 	 */
-	async retrieveVariantAnalys(owner: string, repo: string, codeqlVariantAnalysisId: string): Promise<ProofResult<unknown>> {
+	async retrieveVariantAnalys(owner: string, repo: string, codeqlVariantAnalysisId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/get-variant-analysis",
 			namespace: "repos",
@@ -15788,6 +16467,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15798,7 +16478,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}/repos/{repo_owner}/{repo_name}` — risk: medium
 	 */
-	async retrieveRepo(owner: string, repo: string, codeqlVariantAnalysisId: string, repoOwner: string, repoName: string): Promise<ProofResult<unknown>> {
+	async retrieveRepo(owner: string, repo: string, codeqlVariantAnalysisId: string, repoOwner: string, repoName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/get-variant-analysis-repo-task",
 			namespace: "repos",
@@ -15811,6 +16491,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15821,7 +16502,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/default-setup` — risk: medium
 	 */
-	async defaultSetup_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async defaultSetup_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/get-default-setup",
 			namespace: "repos",
@@ -15834,6 +16515,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15844,7 +16526,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PATCH /repos/{owner}/{repo}/code-scanning/default-setup` — risk: medium
 	 */
-	async defaultSetup_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async defaultSetup_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/update-default-setup",
 			namespace: "repos",
@@ -15857,6 +16539,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15865,7 +16548,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/code-scanning/sarifs` — risk: medium
 	 */
-	async sarifs(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async sarifs(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/upload-sarif",
 			namespace: "repos",
@@ -15878,6 +16561,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15886,7 +16570,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}` — risk: medium
 	 */
-	async retrieveSarif(owner: string, repo: string, sarifId: string): Promise<ProofResult<unknown>> {
+	async retrieveSarif(owner: string, repo: string, sarifId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-scanning/get-sarif",
 			namespace: "repos",
@@ -15899,6 +16583,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15910,7 +16595,7 @@ The authenticated user must be an administrator or security manager for the orga
 	 *
 	 * `GET /repos/{owner}/{repo}/code-security-configuration` — risk: medium
 	 */
-	async listCodeSecurityConfiguration(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listCodeSecurityConfiguration(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "code-security/get-configuration-for-repository",
 			namespace: "repos",
@@ -15923,6 +16608,7 @@ The authenticated user must be an administrator or security manager for the orga
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15935,7 +16621,7 @@ see "[About code owners](https://docs.github.com/repositories/managing-your-
 	 *
 	 * `GET /repos/{owner}/{repo}/codeowners/errors` — risk: medium
 	 */
-	async errors(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async errors(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/codeowners-errors",
 			namespace: "repos",
@@ -15948,6 +16634,7 @@ see "[About code owners](https://docs.github.com/repositories/managing-your-
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15958,7 +16645,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `GET /repos/{owner}/{repo}/codespaces` — risk: medium
 	 */
-	async listCodespaces(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listCodespaces(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/list-in-repository-for-authenticated-user",
 			namespace: "repos",
@@ -15971,6 +16658,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15981,7 +16669,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `POST /repos/{owner}/{repo}/codespaces` — risk: medium
 	 */
-	async createCodespace(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createCodespace(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/create-with-repo-for-authenticated-user",
 			namespace: "repos",
@@ -15994,6 +16682,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16005,7 +16694,7 @@ OAuth
 	 *
 	 * `GET /repos/{owner}/{repo}/codespaces/devcontainers` — risk: medium
 	 */
-	async devcontainers(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async devcontainers(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/list-devcontainers-in-repository-for-authenticated-user",
 			namespace: "repos",
@@ -16018,6 +16707,7 @@ OAuth
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16028,7 +16718,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `GET /repos/{owner}/{repo}/codespaces/machines` — risk: medium
 	 */
-	async machines(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async machines(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/repo-machines-for-authenticated-user",
 			namespace: "repos",
@@ -16041,6 +16731,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16051,7 +16742,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `GET /repos/{owner}/{repo}/codespaces/new` — risk: medium
 	 */
-	async new(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async new(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/pre-flight-with-repo-for-authenticated-user",
 			namespace: "repos",
@@ -16064,6 +16755,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16074,7 +16766,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` s
 	 *
 	 * `GET /repos/{owner}/{repo}/codespaces/permissions_check` — risk: medium
 	 */
-	async permissionsCheck(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async permissionsCheck(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/check-permissions-for-devcontainer",
 			namespace: "repos",
@@ -16087,6 +16779,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16098,7 +16791,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/codespaces/secrets` — risk: medium
 	 */
-	async getCodespacesSecrets(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getCodespacesSecrets(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/list-repo-secrets",
 			namespace: "repos",
@@ -16111,6 +16804,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16122,7 +16816,7 @@ If the repository is private, OAuth app tokens and personal access token
 	 *
 	 * `GET /repos/{owner}/{repo}/codespaces/secrets/public-key` — risk: medium
 	 */
-	async codespacessecretsPublicKey(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async codespacessecretsPublicKey(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/get-repo-public-key",
 			namespace: "repos",
@@ -16135,6 +16829,7 @@ If the repository is private, OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16145,7 +16840,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/codespaces/secrets/{secret_name}` — risk: medium
 	 */
-	async codespacessecretsRetrieveSecret(owner: string, repo: string, secretName: string): Promise<ProofResult<unknown>> {
+	async codespacessecretsRetrieveSecret(owner: string, repo: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/get-repo-secret",
 			namespace: "repos",
@@ -16158,6 +16853,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16167,7 +16863,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PUT /repos/{owner}/{repo}/codespaces/secrets/{secret_name}` — risk: medium
 	 */
-	async putCodespacesSecrets(owner: string, repo: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putCodespacesSecrets(owner: string, repo: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/create-or-update-repo-secret",
 			namespace: "repos",
@@ -16180,6 +16876,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16190,7 +16887,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `DELETE /repos/{owner}/{repo}/codespaces/secrets/{secret_name}` — risk: medium
 	 */
-	async codespacessecretsDeleteSecret(owner: string, repo: string, secretName: string): Promise<ProofResult<unknown>> {
+	async codespacessecretsDeleteSecret(owner: string, repo: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/delete-repo-secret",
 			namespace: "repos",
@@ -16203,6 +16900,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16211,7 +16909,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/collaborators` — risk: medium
 	 */
-	async listCollaborators(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listCollaborators(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-collaborators",
 			namespace: "repos",
@@ -16224,6 +16922,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16232,7 +16931,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/collaborators/{username}` — risk: medium
 	 */
-	async retrieveCollaborator(owner: string, repo: string, username: string): Promise<ProofResult<unknown>> {
+	async retrieveCollaborator(owner: string, repo: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/check-collaborator",
 			namespace: "repos",
@@ -16245,6 +16944,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16253,7 +16953,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PUT /repos/{owner}/{repo}/collaborators/{username}` — risk: medium
 	 */
-	async collaborators(owner: string, repo: string, username: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async collaborators(owner: string, repo: string, username: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/add-collaborator",
 			namespace: "repos",
@@ -16266,6 +16966,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16279,7 +16980,7 @@ This endpoint also:
 	 *
 	 * `DELETE /repos/{owner}/{repo}/collaborators/{username}` — risk: medium
 	 */
-	async deleteCollaborator(owner: string, repo: string, username: string): Promise<ProofResult<unknown>> {
+	async deleteCollaborator(owner: string, repo: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/remove-collaborator",
 			namespace: "repos",
@@ -16292,6 +16993,7 @@ This endpoint also:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16303,7 +17005,7 @@ The `permission` attribute provides the legacy base roles of `admin`, `write`, `
 	 *
 	 * `GET /repos/{owner}/{repo}/collaborators/{username}/permission` — risk: medium
 	 */
-	async permission(owner: string, repo: string, username: string): Promise<ProofResult<unknown>> {
+	async permission(owner: string, repo: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-collaborator-permission-level",
 			namespace: "repos",
@@ -16316,6 +17018,7 @@ The `permission` attribute provides the legacy base roles of `admin`, `write`, `
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16326,7 +17029,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/comments` — risk: medium
 	 */
-	async listComments(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listComments(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-commit-comments-for-repo",
 			namespace: "repos",
@@ -16339,6 +17042,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16349,7 +17053,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/comments/{comment_id}` — risk: medium
 	 */
-	async commentsRetrieveComment(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async commentsRetrieveComment(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-commit-comment",
 			namespace: "repos",
@@ -16362,6 +17066,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16372,7 +17077,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PATCH /repos/{owner}/{repo}/comments/{comment_id}` — risk: medium
 	 */
-	async comments_0(owner: string, repo: string, commentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async comments_0(owner: string, repo: string, commentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-commit-comment",
 			namespace: "repos",
@@ -16385,6 +17090,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16393,7 +17099,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `DELETE /repos/{owner}/{repo}/comments/{comment_id}` — risk: medium
 	 */
-	async commentsDeleteComment(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async commentsDeleteComment(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-commit-comment",
 			namespace: "repos",
@@ -16406,6 +17112,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16414,7 +17121,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/comments/{comment_id}/reactions` — risk: medium
 	 */
-	async getCommentsReactions(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async getCommentsReactions(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/list-for-commit-comment",
 			namespace: "repos",
@@ -16427,6 +17134,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16435,7 +17143,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/comments/{comment_id}/reactions` — risk: medium
 	 */
-	async postCommentsReactions(owner: string, repo: string, commentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postCommentsReactions(owner: string, repo: string, commentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/create-for-commit-comment",
 			namespace: "repos",
@@ -16448,6 +17156,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16459,7 +17168,7 @@ Delete a reaction to a [commit comm
 	 *
 	 * `DELETE /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}` — risk: medium
 	 */
-	async commentsreactionsDeleteReaction(owner: string, repo: string, commentId: string, reactionId: string): Promise<ProofResult<unknown>> {
+	async commentsreactionsDeleteReaction(owner: string, repo: string, commentId: string, reactionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/delete-for-commit-comment",
 			namespace: "repos",
@@ -16472,6 +17181,7 @@ Delete a reaction to a [commit comm
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16482,7 +17192,7 @@ The response will include a `verification` object that describes the result of v
 	 *
 	 * `GET /repos/{owner}/{repo}/commits` — risk: medium
 	 */
-	async listCommits(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listCommits(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-commits",
 			namespace: "repos",
@@ -16495,6 +17205,7 @@ The response will include a `verification` object that describes the result of v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16503,7 +17214,7 @@ The response will include a `verification` object that describes the result of v
 	 *
 	 * `GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head` — risk: medium
 	 */
-	async branchesWhereHead(owner: string, repo: string, commitSha: string): Promise<ProofResult<unknown>> {
+	async branchesWhereHead(owner: string, repo: string, commitSha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-branches-for-head-commit",
 			namespace: "repos",
@@ -16516,6 +17227,7 @@ The response will include a `verification` object that describes the result of v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16526,7 +17238,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/commits/{commit_sha}/comments` — risk: medium
 	 */
-	async getCommitsComments(owner: string, repo: string, commitSha: string): Promise<ProofResult<unknown>> {
+	async getCommitsComments(owner: string, repo: string, commitSha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-comments-for-commit",
 			namespace: "repos",
@@ -16539,6 +17251,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16549,7 +17262,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `POST /repos/{owner}/{repo}/commits/{commit_sha}/comments` — risk: medium
 	 */
-	async postCommitsComments(owner: string, repo: string, commitSha: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postCommitsComments(owner: string, repo: string, commitSha: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-commit-comment",
 			namespace: "repos",
@@ -16562,6 +17275,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16570,7 +17284,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls` — risk: medium
 	 */
-	async commitsPulls(owner: string, repo: string, commitSha: string): Promise<ProofResult<unknown>> {
+	async commitsPulls(owner: string, repo: string, commitSha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-pull-requests-associated-with-commit",
 			namespace: "repos",
@@ -16583,6 +17297,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16594,7 +17309,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `GET /repos/{owner}/{repo}/commits/{ref}` — risk: medium
 	 */
-	async commitsRetrieveCommit(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async commitsRetrieveCommit(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-commit",
 			namespace: "repos",
@@ -16607,6 +17322,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16618,7 +17334,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `GET /repos/{owner}/{repo}/commits/{ref}/check-runs` — risk: medium
 	 */
-	async commitsCheckRuns(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async commitsCheckRuns(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/list-for-ref",
 			namespace: "repos",
@@ -16631,6 +17347,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16642,7 +17359,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `GET /repos/{owner}/{repo}/commits/{ref}/check-suites` — risk: medium
 	 */
-	async checkSuites(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async checkSuites(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "checks/list-suites-for-ref",
 			namespace: "repos",
@@ -16655,6 +17372,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16666,7 +17384,7 @@ Additionally, a combined `state` is returned
 	 *
 	 * `GET /repos/{owner}/{repo}/commits/{ref}/status` — risk: medium
 	 */
-	async status(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async status(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-combined-status-for-ref",
 			namespace: "repos",
@@ -16679,6 +17397,7 @@ Additionally, a combined `state` is returned
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16687,7 +17406,7 @@ Additionally, a combined `state` is returned
 	 *
 	 * `GET /repos/{owner}/{repo}/commits/{ref}/statuses` — risk: medium
 	 */
-	async commitsStatuses(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async commitsStatuses(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-commit-statuses-for-ref",
 			namespace: "repos",
@@ -16700,6 +17419,7 @@ Additionally, a combined `state` is returned
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16710,7 +17430,7 @@ The returned metrics include an overall health score, the repository description
 	 *
 	 * `GET /repos/{owner}/{repo}/community/profile` — risk: medium
 	 */
-	async profile(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async profile(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-community-profile-metrics",
 			namespace: "repos",
@@ -16723,6 +17443,7 @@ The returned metrics include an overall health score, the repository description
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16731,7 +17452,7 @@ The returned metrics include an overall health score, the repository description
 	 *
 	 * `GET /repos/{owner}/{repo}/compare/{basehead}` — risk: medium
 	 */
-	async compareRetrieveCompare(owner: string, repo: string, basehead: string): Promise<ProofResult<unknown>> {
+	async compareRetrieveCompare(owner: string, repo: string, basehead: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/compare-commits",
 			namespace: "repos",
@@ -16744,6 +17465,7 @@ The returned metrics include an overall health score, the repository description
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16752,7 +17474,7 @@ The returned metrics include an overall health score, the repository description
 	 *
 	 * `GET /repos/{owner}/{repo}/contents/{path}` — risk: medium
 	 */
-	async retrieveContent(owner: string, repo: string, path: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveContent(owner: string, repo: string, path: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-content",
 			namespace: "repos",
@@ -16765,6 +17487,7 @@ The returned metrics include an overall health score, the repository description
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16776,7 +17499,7 @@ The returned metrics include an overall health score, the repository description
 	 *
 	 * `PUT /repos/{owner}/{repo}/contents/{path}` — risk: medium
 	 */
-	async contents(owner: string, repo: string, path: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async contents(owner: string, repo: string, path: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-or-update-file-contents",
 			namespace: "repos",
@@ -16789,6 +17512,7 @@ The returned metrics include an overall health score, the repository description
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16799,7 +17523,7 @@ You can provide an additional `committer` parameter, which is an object containi
 	 *
 	 * `DELETE /repos/{owner}/{repo}/contents/{path}` — risk: medium
 	 */
-	async deleteContent(owner: string, repo: string, path: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteContent(owner: string, repo: string, path: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-file",
 			namespace: "repos",
@@ -16812,6 +17536,7 @@ You can provide an additional `committer` parameter, which is an object containi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16820,7 +17545,7 @@ You can provide an additional `committer` parameter, which is an object containi
 	 *
 	 * `GET /repos/{owner}/{repo}/contributors` — risk: medium
 	 */
-	async listContributors(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listContributors(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-contributors",
 			namespace: "repos",
@@ -16833,6 +17558,7 @@ You can provide an additional `committer` parameter, which is an object containi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16845,7 +17571,7 @@ configuration, enabled review tools, Actions
 	 *
 	 * `GET /repos/{owner}/{repo}/copilot/cloud-agent/configuration` — risk: medium
 	 */
-	async configuration(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async configuration(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/get-copilot-cloud-agent-configuration",
 			namespace: "repos",
@@ -16858,6 +17584,7 @@ configuration, enabled review tools, Actions
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16866,7 +17593,7 @@ configuration, enabled review tools, Actions
 	 *
 	 * `GET /repos/{owner}/{repo}/dependabot/alerts` — risk: medium
 	 */
-	async getDependabotAlerts(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getDependabotAlerts(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/list-alerts-for-repo",
 			namespace: "repos",
@@ -16879,6 +17606,7 @@ configuration, enabled review tools, Actions
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16887,7 +17615,7 @@ configuration, enabled review tools, Actions
 	 *
 	 * `GET /repos/{owner}/{repo}/dependabot/alerts/{alert_number}` — risk: medium
 	 */
-	async dependabotalertsRetrieveAlert(owner: string, repo: string, alertNumber: string): Promise<ProofResult<unknown>> {
+	async dependabotalertsRetrieveAlert(owner: string, repo: string, alertNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/get-alert",
 			namespace: "repos",
@@ -16900,6 +17628,7 @@ configuration, enabled review tools, Actions
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16908,7 +17637,7 @@ configuration, enabled review tools, Actions
 	 *
 	 * `PATCH /repos/{owner}/{repo}/dependabot/alerts/{alert_number}` — risk: medium
 	 */
-	async patchDependabotAlerts(owner: string, repo: string, alertNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchDependabotAlerts(owner: string, repo: string, alertNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/update-alert",
 			namespace: "repos",
@@ -16921,6 +17650,7 @@ configuration, enabled review tools, Actions
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16932,7 +17662,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/dependabot/secrets` — risk: medium
 	 */
-	async getDependabotSecrets(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getDependabotSecrets(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/list-repo-secrets",
 			namespace: "repos",
@@ -16945,6 +17675,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16957,7 +17688,7 @@ OAuth a
 	 *
 	 * `GET /repos/{owner}/{repo}/dependabot/secrets/public-key` — risk: medium
 	 */
-	async dependabotsecretsPublicKey(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async dependabotsecretsPublicKey(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/get-repo-public-key",
 			namespace: "repos",
@@ -16970,6 +17701,7 @@ OAuth a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16980,7 +17712,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/dependabot/secrets/{secret_name}` — risk: medium
 	 */
-	async dependabotsecretsRetrieveSecret(owner: string, repo: string, secretName: string): Promise<ProofResult<unknown>> {
+	async dependabotsecretsRetrieveSecret(owner: string, repo: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/get-repo-secret",
 			namespace: "repos",
@@ -16993,6 +17725,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17002,7 +17735,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}` — risk: medium
 	 */
-	async putDependabotSecrets(owner: string, repo: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putDependabotSecrets(owner: string, repo: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/create-or-update-repo-secret",
 			namespace: "repos",
@@ -17015,6 +17748,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17025,7 +17759,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `DELETE /repos/{owner}/{repo}/dependabot/secrets/{secret_name}` — risk: medium
 	 */
-	async dependabotsecretsDeleteSecret(owner: string, repo: string, secretName: string): Promise<ProofResult<unknown>> {
+	async dependabotsecretsDeleteSecret(owner: string, repo: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependabot/delete-repo-secret",
 			namespace: "repos",
@@ -17038,6 +17772,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17046,7 +17781,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/dependency-graph/compare/{basehead}` — risk: medium
 	 */
-	async dependencyGraphcompareRetrieveCompare(owner: string, repo: string, basehead: string): Promise<ProofResult<unknown>> {
+	async dependencyGraphcompareRetrieveCompare(owner: string, repo: string, basehead: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependency-graph/diff-range",
 			namespace: "repos",
@@ -17059,6 +17794,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17067,7 +17803,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/dependency-graph/sbom` — risk: medium
 	 */
-	async sbom(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async sbom(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependency-graph/export-sbom",
 			namespace: "repos",
@@ -17080,6 +17816,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17090,7 +17827,7 @@ When the SBOM is ready, the response is a 302 redirect to a temporary download U
 	 *
 	 * `GET /repos/{owner}/{repo}/dependency-graph/sbom/fetch-report/{sbom_uuid}` — risk: medium
 	 */
-	async retrieveFetchReport(owner: string, repo: string, sbomUuid: string): Promise<ProofResult<unknown>> {
+	async retrieveFetchReport(owner: string, repo: string, sbomUuid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependency-graph/fetch-sbom-report",
 			namespace: "repos",
@@ -17103,6 +17840,7 @@ When the SBOM is ready, the response is a 302 redirect to a temporary download U
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17111,7 +17849,7 @@ When the SBOM is ready, the response is a 302 redirect to a temporary download U
 	 *
 	 * `GET /repos/{owner}/{repo}/dependency-graph/sbom/generate-report` — risk: medium
 	 */
-	async generateReport(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async generateReport(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependency-graph/generate-sbom-report",
 			namespace: "repos",
@@ -17124,6 +17862,7 @@ When the SBOM is ready, the response is a 302 redirect to a temporary download U
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17136,7 +17875,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/dependency-graph/snapshots` — risk: medium
 	 */
-	async snapshots(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async snapshots(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dependency-graph/create-repository-snapshot",
 			namespace: "repos",
@@ -17149,6 +17888,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17157,7 +17897,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/deployments` — risk: medium
 	 */
-	async listDeployments(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listDeployments(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-deployments",
 			namespace: "repos",
@@ -17170,6 +17910,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17181,7 +17922,7 @@ before we merge a p
 	 *
 	 * `POST /repos/{owner}/{repo}/deployments` — risk: medium
 	 */
-	async createDeployment(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createDeployment(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-deployment",
 			namespace: "repos",
@@ -17194,6 +17935,7 @@ before we merge a p
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17202,7 +17944,7 @@ before we merge a p
 	 *
 	 * `GET /repos/{owner}/{repo}/deployments/{deployment_id}` — risk: medium
 	 */
-	async deploymentsRetrieveDeployment(owner: string, repo: string, deploymentId: string): Promise<ProofResult<unknown>> {
+	async deploymentsRetrieveDeployment(owner: string, repo: string, deploymentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-deployment",
 			namespace: "repos",
@@ -17215,6 +17957,7 @@ before we merge a p
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17223,7 +17966,7 @@ before we merge a p
 	 *
 	 * `DELETE /repos/{owner}/{repo}/deployments/{deployment_id}` — risk: medium
 	 */
-	async deleteDeployment(owner: string, repo: string, deploymentId: string): Promise<ProofResult<unknown>> {
+	async deleteDeployment(owner: string, repo: string, deploymentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-deployment",
 			namespace: "repos",
@@ -17236,6 +17979,7 @@ before we merge a p
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17244,7 +17988,7 @@ before we merge a p
 	 *
 	 * `GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses` — risk: medium
 	 */
-	async getDeploymentsStatuses(owner: string, repo: string, deploymentId: string): Promise<ProofResult<unknown>> {
+	async getDeploymentsStatuses(owner: string, repo: string, deploymentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-deployment-statuses",
 			namespace: "repos",
@@ -17257,6 +18001,7 @@ before we merge a p
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17267,7 +18012,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo_deployment`
 	 *
 	 * `POST /repos/{owner}/{repo}/deployments/{deployment_id}/statuses` — risk: medium
 	 */
-	async postDeploymentsStatuses(owner: string, repo: string, deploymentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postDeploymentsStatuses(owner: string, repo: string, deploymentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-deployment-status",
 			namespace: "repos",
@@ -17280,6 +18025,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo_deployment`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17288,7 +18034,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo_deployment`
 	 *
 	 * `GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses/{status_id}` — risk: medium
 	 */
-	async retrieveStatus(owner: string, repo: string, deploymentId: string, statusId: string): Promise<ProofResult<unknown>> {
+	async retrieveStatus(owner: string, repo: string, deploymentId: string, statusId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-deployment-status",
 			namespace: "repos",
@@ -17301,6 +18047,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo_deployment`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17309,7 +18056,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo_deployment`
 	 *
 	 * `POST /repos/{owner}/{repo}/dispatches` — risk: medium
 	 */
-	async createDispatche(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createDispatche(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-dispatch-event",
 			namespace: "repos",
@@ -17322,6 +18069,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo_deployment`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17334,7 +18082,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/environments` — risk: medium
 	 */
-	async listEnvironments(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listEnvironments(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-all-environments",
 			namespace: "repos",
@@ -17347,6 +18095,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17356,7 +18105,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}` — risk: medium
 	 */
-	async retrieveEnvironment(owner: string, repo: string, environmentName: string): Promise<ProofResult<unknown>> {
+	async retrieveEnvironment(owner: string, repo: string, environmentName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-environment",
 			namespace: "repos",
@@ -17369,6 +18118,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17377,7 +18127,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PUT /repos/{owner}/{repo}/environments/{environment_name}` — risk: medium
 	 */
-	async environments(owner: string, repo: string, environmentName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async environments(owner: string, repo: string, environmentName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-or-update-environment",
 			namespace: "repos",
@@ -17390,6 +18140,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17398,7 +18149,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `DELETE /repos/{owner}/{repo}/environments/{environment_name}` — risk: medium
 	 */
-	async deleteEnvironment(owner: string, repo: string, environmentName: string): Promise<ProofResult<unknown>> {
+	async deleteEnvironment(owner: string, repo: string, environmentName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-an-environment",
 			namespace: "repos",
@@ -17411,6 +18162,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17423,7 +18175,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies` — risk: medium
 	 */
-	async deploymentBranchPolicies_0(owner: string, repo: string, environmentName: string): Promise<ProofResult<unknown>> {
+	async deploymentBranchPolicies_0(owner: string, repo: string, environmentName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-deployment-branch-policies",
 			namespace: "repos",
@@ -17436,6 +18188,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17446,7 +18199,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies` — risk: medium
 	 */
-	async deploymentBranchPolicies_1(owner: string, repo: string, environmentName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deploymentBranchPolicies_1(owner: string, repo: string, environmentName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-deployment-branch-policy",
 			namespace: "repos",
@@ -17459,6 +18212,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17471,7 +18225,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scop
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}` — risk: medium
 	 */
-	async retrieveDeploymentBranchPolicy(owner: string, repo: string, environmentName: string, branchPolicyId: string): Promise<ProofResult<unknown>> {
+	async retrieveDeploymentBranchPolicy(owner: string, repo: string, environmentName: string, branchPolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-deployment-branch-policy",
 			namespace: "repos",
@@ -17484,6 +18238,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17494,7 +18249,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `PUT /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}` — risk: medium
 	 */
-	async deploymentBranchPolicies_2(owner: string, repo: string, environmentName: string, branchPolicyId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deploymentBranchPolicies_2(owner: string, repo: string, environmentName: string, branchPolicyId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-deployment-branch-policy",
 			namespace: "repos",
@@ -17507,6 +18262,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17517,7 +18273,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}` — risk: medium
 	 */
-	async deleteDeploymentBranchPolicy(owner: string, repo: string, environmentName: string, branchPolicyId: string): Promise<ProofResult<unknown>> {
+	async deleteDeploymentBranchPolicy(owner: string, repo: string, environmentName: string, branchPolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-deployment-branch-policy",
 			namespace: "repos",
@@ -17530,6 +18286,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17538,7 +18295,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules` — risk: medium
 	 */
-	async deploymentProtectionRules_0(owner: string, repo: string, environmentName: string): Promise<ProofResult<unknown>> {
+	async deploymentProtectionRules_0(owner: string, repo: string, environmentName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-all-deployment-protection-rules",
 			namespace: "repos",
@@ -17551,6 +18308,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17563,7 +18321,7 @@ For more information about the app
 	 *
 	 * `POST /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules` — risk: medium
 	 */
-	async deploymentProtectionRules_1(owner: string, repo: string, environmentName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deploymentProtectionRules_1(owner: string, repo: string, environmentName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-deployment-protection-rule",
 			namespace: "repos",
@@ -17576,6 +18334,7 @@ For more information about the app
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17588,7 +18347,7 @@ For
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/apps` — risk: medium
 	 */
-	async environmentsdeploymentProtectionRulesApps(owner: string, repo: string, environmentName: string): Promise<ProofResult<unknown>> {
+	async environmentsdeploymentProtectionRulesApps(owner: string, repo: string, environmentName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-custom-deployment-rule-integrations",
 			namespace: "repos",
@@ -17601,6 +18360,7 @@ For
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17609,7 +18369,7 @@ For
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}` — risk: medium
 	 */
-	async retrieveDeploymentProtectionRule(owner: string, repo: string, environmentName: string, protectionRuleId: string): Promise<ProofResult<unknown>> {
+	async retrieveDeploymentProtectionRule(owner: string, repo: string, environmentName: string, protectionRuleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-custom-deployment-protection-rule",
 			namespace: "repos",
@@ -17622,6 +18382,7 @@ For
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17634,7 +18395,7 @@ OAuth app tokens and personal acc
 	 *
 	 * `DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}` — risk: medium
 	 */
-	async deleteDeploymentProtectionRule(owner: string, repo: string, environmentName: string, protectionRuleId: string): Promise<ProofResult<unknown>> {
+	async deleteDeploymentProtectionRule(owner: string, repo: string, environmentName: string, protectionRuleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/disable-deployment-protection-rule",
 			namespace: "repos",
@@ -17647,6 +18408,7 @@ OAuth app tokens and personal acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17660,7 +18422,7 @@ OAuth ap
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/secrets` — risk: medium
 	 */
-	async getEnvironmentsSecrets(owner: string, repo: string, environmentName: string): Promise<ProofResult<unknown>> {
+	async getEnvironmentsSecrets(owner: string, repo: string, environmentName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-environment-secrets",
 			namespace: "repos",
@@ -17673,6 +18435,7 @@ OAuth ap
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17684,7 +18447,7 @@ Anyone with read access to the repository c
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/secrets/public-key` — risk: medium
 	 */
-	async environmentssecretsPublicKey(owner: string, repo: string, environmentName: string): Promise<ProofResult<unknown>> {
+	async environmentssecretsPublicKey(owner: string, repo: string, environmentName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-environment-public-key",
 			namespace: "repos",
@@ -17697,6 +18460,7 @@ Anyone with read access to the repository c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17709,7 +18473,7 @@ OAuth tokens and persona
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}` — risk: medium
 	 */
-	async environmentssecretsRetrieveSecret(owner: string, repo: string, environmentName: string, secretName: string): Promise<ProofResult<unknown>> {
+	async environmentssecretsRetrieveSecret(owner: string, repo: string, environmentName: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-environment-secret",
 			namespace: "repos",
@@ -17722,6 +18486,7 @@ OAuth tokens and persona
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17731,7 +18496,7 @@ OAuth tokens and persona
 	 *
 	 * `PUT /repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}` — risk: medium
 	 */
-	async putEnvironmentsSecrets(owner: string, repo: string, environmentName: string, secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putEnvironmentsSecrets(owner: string, repo: string, environmentName: string, secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-or-update-environment-secret",
 			namespace: "repos",
@@ -17744,6 +18509,7 @@ OAuth tokens and persona
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17756,7 +18522,7 @@ OAuth tokens and personal access token
 	 *
 	 * `DELETE /repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}` — risk: medium
 	 */
-	async environmentssecretsDeleteSecret(owner: string, repo: string, environmentName: string, secretName: string): Promise<ProofResult<unknown>> {
+	async environmentssecretsDeleteSecret(owner: string, repo: string, environmentName: string, secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-environment-secret",
 			namespace: "repos",
@@ -17769,6 +18535,7 @@ OAuth tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17781,7 +18548,7 @@ OAuth app tokens and personal access tokens (classic) need th
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/variables` — risk: medium
 	 */
-	async getEnvironmentsVariables(owner: string, repo: string, environmentName: string): Promise<ProofResult<unknown>> {
+	async getEnvironmentsVariables(owner: string, repo: string, environmentName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/list-environment-variables",
 			namespace: "repos",
@@ -17794,6 +18561,7 @@ OAuth app tokens and personal access tokens (classic) need th
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17806,7 +18574,7 @@ OAuth toke
 	 *
 	 * `POST /repos/{owner}/{repo}/environments/{environment_name}/variables` — risk: medium
 	 */
-	async postEnvironmentsVariables(owner: string, repo: string, environmentName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postEnvironmentsVariables(owner: string, repo: string, environmentName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/create-environment-variable",
 			namespace: "repos",
@@ -17819,6 +18587,7 @@ OAuth toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17831,7 +18600,7 @@ OAuth tokens and personal access tokens (classic)
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}` — risk: medium
 	 */
-	async environmentsvariablesRetrieveVariable(owner: string, repo: string, environmentName: string, name: string): Promise<ProofResult<unknown>> {
+	async environmentsvariablesRetrieveVariable(owner: string, repo: string, environmentName: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/get-environment-variable",
 			namespace: "repos",
@@ -17844,6 +18613,7 @@ OAuth tokens and personal access tokens (classic)
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17856,7 +18626,7 @@ OAuth app
 	 *
 	 * `PATCH /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}` — risk: medium
 	 */
-	async patchEnvironmentsVariables(owner: string, repo: string, environmentName: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchEnvironmentsVariables(owner: string, repo: string, environmentName: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/update-environment-variable",
 			namespace: "repos",
@@ -17869,6 +18639,7 @@ OAuth app
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17881,7 +18652,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `DELETE /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}` — risk: medium
 	 */
-	async environmentsvariablesDeleteVariable(owner: string, repo: string, environmentName: string, name: string): Promise<ProofResult<unknown>> {
+	async environmentsvariablesDeleteVariable(owner: string, repo: string, environmentName: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/delete-environment-variable",
 			namespace: "repos",
@@ -17894,6 +18665,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17903,7 +18675,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `GET /repos/{owner}/{repo}/events` — risk: medium
 	 */
-	async listEvents(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listEvents(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-repo-events",
 			namespace: "repos",
@@ -17916,6 +18688,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17924,7 +18697,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `GET /repos/{owner}/{repo}/forks` — risk: medium
 	 */
-	async listForks(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listForks(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-forks",
 			namespace: "repos",
@@ -17937,6 +18710,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17948,7 +18722,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `POST /repos/{owner}/{repo}/forks` — risk: medium
 	 */
-	async createFork(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createFork(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-fork",
 			namespace: "repos",
@@ -17961,6 +18735,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17969,7 +18744,7 @@ OAuth tokens and personal access toke
 	 *
 	 * `POST /repos/{owner}/{repo}/git/blobs` — risk: medium
 	 */
-	async blobs(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async blobs(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/create-blob",
 			namespace: "repos",
@@ -17982,6 +18757,7 @@ OAuth tokens and personal access toke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17992,7 +18768,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/git/blobs/{file_sha}` — risk: medium
 	 */
-	async retrieveBlob(owner: string, repo: string, fileSha: string): Promise<ProofResult<unknown>> {
+	async retrieveBlob(owner: string, repo: string, fileSha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/get-blob",
 			namespace: "repos",
@@ -18005,6 +18781,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18017,7 +18794,7 @@ The response will include a `verification` object that describes the re
 	 *
 	 * `POST /repos/{owner}/{repo}/git/commits` — risk: medium
 	 */
-	async gitCommits(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async gitCommits(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/create-commit",
 			namespace: "repos",
@@ -18030,6 +18807,7 @@ The response will include a `verification` object that describes the re
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18042,7 +18820,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 	 *
 	 * `GET /repos/{owner}/{repo}/git/commits/{commit_sha}` — risk: medium
 	 */
-	async gitcommitsRetrieveCommit(owner: string, repo: string, commitSha: string): Promise<ProofResult<unknown>> {
+	async gitcommitsRetrieveCommit(owner: string, repo: string, commitSha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/get-commit",
 			namespace: "repos",
@@ -18055,6 +18833,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18063,7 +18842,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 	 *
 	 * `GET /repos/{owner}/{repo}/git/matching-refs/{ref}` — risk: medium
 	 */
-	async retrieveMatchingRef(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async retrieveMatchingRef(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/list-matching-refs",
 			namespace: "repos",
@@ -18076,6 +18855,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18084,7 +18864,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 	 *
 	 * `GET /repos/{owner}/{repo}/git/ref/{ref}` — risk: medium
 	 */
-	async retrieveRef(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async retrieveRef(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/get-ref",
 			namespace: "repos",
@@ -18097,6 +18877,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18105,7 +18886,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 	 *
 	 * `POST /repos/{owner}/{repo}/git/refs` — risk: medium
 	 */
-	async refs_0(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async refs_0(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/create-ref",
 			namespace: "repos",
@@ -18118,6 +18899,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18126,7 +18908,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 	 *
 	 * `PATCH /repos/{owner}/{repo}/git/refs/{ref}` — risk: medium
 	 */
-	async refs_1(owner: string, repo: string, ref: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async refs_1(owner: string, repo: string, ref: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/update-ref",
 			namespace: "repos",
@@ -18139,6 +18921,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18147,7 +18930,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 	 *
 	 * `DELETE /repos/{owner}/{repo}/git/refs/{ref}` — risk: medium
 	 */
-	async deleteRef(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async deleteRef(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/delete-ref",
 			namespace: "repos",
@@ -18160,6 +18943,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18168,7 +18952,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 	 *
 	 * `POST /repos/{owner}/{repo}/git/tags` — risk: medium
 	 */
-	async tags(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async tags(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/create-tag",
 			namespace: "repos",
@@ -18181,6 +18965,7 @@ To get the contents of a commit, see "[Get a commit](/rest/commits/commits#get-a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18191,7 +18976,7 @@ The response will include a `verification` object that describes the result of v
 	 *
 	 * `GET /repos/{owner}/{repo}/git/tags/{tag_sha}` — risk: medium
 	 */
-	async gittagsRetrieveTag(owner: string, repo: string, tagSha: string): Promise<ProofResult<unknown>> {
+	async gittagsRetrieveTag(owner: string, repo: string, tagSha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/get-tag",
 			namespace: "repos",
@@ -18204,6 +18989,7 @@ The response will include a `verification` object that describes the result of v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18212,7 +18998,7 @@ The response will include a `verification` object that describes the result of v
 	 *
 	 * `POST /repos/{owner}/{repo}/git/trees` — risk: medium
 	 */
-	async trees(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async trees(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/create-tree",
 			namespace: "repos",
@@ -18225,6 +19011,7 @@ The response will include a `verification` object that describes the result of v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18235,7 +19022,7 @@ If `truncated` is `true` in the response then the number of items in the `tree` 
 	 *
 	 * `GET /repos/{owner}/{repo}/git/trees/{tree_sha}` — risk: medium
 	 */
-	async retrieveTree(owner: string, repo: string, treeSha: string): Promise<ProofResult<unknown>> {
+	async retrieveTree(owner: string, repo: string, treeSha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "git/get-tree",
 			namespace: "repos",
@@ -18248,6 +19035,7 @@ If `truncated` is `true` in the response then the number of items in the `tree` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18256,7 +19044,7 @@ If `truncated` is `true` in the response then the number of items in the `tree` 
 	 *
 	 * `GET /repos/{owner}/{repo}/hooks` — risk: medium
 	 */
-	async listHooks(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listHooks(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-webhooks",
 			namespace: "repos",
@@ -18269,6 +19057,7 @@ If `truncated` is `true` in the response then the number of items in the `tree` 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18278,7 +19067,7 @@ share the same `config` as long as those webhooks do not have any `events` that 
 	 *
 	 * `POST /repos/{owner}/{repo}/hooks` — risk: medium
 	 */
-	async createHook(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createHook(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-webhook",
 			namespace: "repos",
@@ -18291,6 +19080,7 @@ share the same `config` as long as those webhooks do not have any `events` that 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18299,7 +19089,7 @@ share the same `config` as long as those webhooks do not have any `events` that 
 	 *
 	 * `GET /repos/{owner}/{repo}/hooks/{hook_id}` — risk: medium
 	 */
-	async retrieveHook(owner: string, repo: string, hookId: string): Promise<ProofResult<unknown>> {
+	async retrieveHook(owner: string, repo: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-webhook",
 			namespace: "repos",
@@ -18312,6 +19102,7 @@ share the same `config` as long as those webhooks do not have any `events` that 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18320,7 +19111,7 @@ share the same `config` as long as those webhooks do not have any `events` that 
 	 *
 	 * `PATCH /repos/{owner}/{repo}/hooks/{hook_id}` — risk: medium
 	 */
-	async hooks(owner: string, repo: string, hookId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async hooks(owner: string, repo: string, hookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-webhook",
 			namespace: "repos",
@@ -18333,6 +19124,7 @@ share the same `config` as long as those webhooks do not have any `events` that 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18343,7 +19135,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 	 *
 	 * `DELETE /repos/{owner}/{repo}/hooks/{hook_id}` — risk: medium
 	 */
-	async deleteHook(owner: string, repo: string, hookId: string): Promise<ProofResult<unknown>> {
+	async deleteHook(owner: string, repo: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-webhook",
 			namespace: "repos",
@@ -18356,6 +19148,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18364,7 +19157,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 	 *
 	 * `GET /repos/{owner}/{repo}/hooks/{hook_id}/config` — risk: medium
 	 */
-	async config_0(owner: string, repo: string, hookId: string): Promise<ProofResult<unknown>> {
+	async config_0(owner: string, repo: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-webhook-config-for-repo",
 			namespace: "repos",
@@ -18377,6 +19170,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18385,7 +19179,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 	 *
 	 * `PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config` — risk: medium
 	 */
-	async config_1(owner: string, repo: string, hookId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async config_1(owner: string, repo: string, hookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-webhook-config-for-repo",
 			namespace: "repos",
@@ -18398,6 +19192,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18406,7 +19201,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 	 *
 	 * `GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries` — risk: medium
 	 */
-	async deliveries(owner: string, repo: string, hookId: string): Promise<ProofResult<unknown>> {
+	async deliveries(owner: string, repo: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-webhook-deliveries",
 			namespace: "repos",
@@ -18419,6 +19214,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18427,7 +19223,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 	 *
 	 * `GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}` — risk: medium
 	 */
-	async retrieveDelivery(owner: string, repo: string, hookId: string, deliveryId: string): Promise<ProofResult<unknown>> {
+	async retrieveDelivery(owner: string, repo: string, hookId: string, deliveryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-webhook-delivery",
 			namespace: "repos",
@@ -18440,6 +19236,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18448,7 +19245,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 	 *
 	 * `POST /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts` — risk: medium
 	 */
-	async attempts(owner: string, repo: string, hookId: string, deliveryId: string): Promise<ProofResult<unknown>> {
+	async attempts(owner: string, repo: string, hookId: string, deliveryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/redeliver-webhook-delivery",
 			namespace: "repos",
@@ -18461,6 +19258,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18469,7 +19267,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 	 *
 	 * `POST /repos/{owner}/{repo}/hooks/{hook_id}/pings` — risk: medium
 	 */
-	async pings(owner: string, repo: string, hookId: string): Promise<ProofResult<unknown>> {
+	async pings(owner: string, repo: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/ping-webhook",
 			namespace: "repos",
@@ -18482,6 +19280,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18490,7 +19289,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 	 *
 	 * `POST /repos/{owner}/{repo}/hooks/{hook_id}/tests` — risk: medium
 	 */
-	async tests(owner: string, repo: string, hookId: string): Promise<ProofResult<unknown>> {
+	async tests(owner: string, repo: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/test-push-webhook",
 			namespace: "repos",
@@ -18503,6 +19302,7 @@ The authenticated user must be a repository owner, or have admin access in the r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18512,7 +19312,7 @@ enforced by the repository owner.  The authenticated user must have admin read a
 	 *
 	 * `GET /repos/{owner}/{repo}/immutable-releases` — risk: medium
 	 */
-	async listImmutableReleases(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listImmutableReleases(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/check-immutable-releases",
 			namespace: "repos",
@@ -18525,6 +19325,7 @@ enforced by the repository owner.  The authenticated user must have admin read a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18533,7 +19334,7 @@ enforced by the repository owner.  The authenticated user must have admin read a
 	 *
 	 * `PUT /repos/{owner}/{repo}/immutable-releases` — risk: medium
 	 */
-	async immutableReleases_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async immutableReleases_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/enable-immutable-releases",
 			namespace: "repos",
@@ -18546,6 +19347,7 @@ enforced by the repository owner.  The authenticated user must have admin read a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18554,7 +19356,7 @@ enforced by the repository owner.  The authenticated user must have admin read a
 	 *
 	 * `DELETE /repos/{owner}/{repo}/immutable-releases` — risk: medium
 	 */
-	async immutableReleases_1(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async immutableReleases_1(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/disable-immutable-releases",
 			namespace: "repos",
@@ -18567,6 +19369,7 @@ enforced by the repository owner.  The authenticated user must have admin read a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18578,7 +19381,7 @@ enforced by the repository owner.  The authenticated user must have admin read a
 	 *
 	 * `GET /repos/{owner}/{repo}/import` — risk: medium
 	 */
-	async listImport(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listImport(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/get-import-status",
 			namespace: "repos",
@@ -18591,6 +19394,7 @@ enforced by the repository owner.  The authenticated user must have admin read a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18601,7 +19405,7 @@ return a status `422 Unprocessable Entity`
 	 *
 	 * `PUT /repos/{owner}/{repo}/import` — risk: medium
 	 */
-	async import_0(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async import_0(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/start-import",
 			namespace: "repos",
@@ -18614,6 +19418,7 @@ return a status `422 Unprocessable Entity`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18625,7 +19430,7 @@ Some servers (
 	 *
 	 * `PATCH /repos/{owner}/{repo}/import` — risk: medium
 	 */
-	async import_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async import_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/update-import",
 			namespace: "repos",
@@ -18638,6 +19443,7 @@ Some servers (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18649,7 +19455,7 @@ Some servers (
 	 *
 	 * `DELETE /repos/{owner}/{repo}/import` — risk: medium
 	 */
-	async import_2(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async import_2(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/cancel-import",
 			namespace: "repos",
@@ -18662,6 +19468,7 @@ Some servers (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18670,7 +19477,7 @@ Some servers (
 	 *
 	 * `GET /repos/{owner}/{repo}/import/authors` — risk: medium
 	 */
-	async authors_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async authors_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/get-commit-authors",
 			namespace: "repos",
@@ -18683,6 +19490,7 @@ Some servers (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18695,7 +19503,7 @@ new commits to the repository.
 	 *
 	 * `PATCH /repos/{owner}/{repo}/import/authors/{author_id}` — risk: medium
 	 */
-	async authors_1(owner: string, repo: string, authorId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async authors_1(owner: string, repo: string, authorId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/map-commit-author",
 			namespace: "repos",
@@ -18708,6 +19516,7 @@ new commits to the repository.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18719,7 +19528,7 @@ new commits to the repository.
 	 *
 	 * `GET /repos/{owner}/{repo}/import/large_files` — risk: medium
 	 */
-	async largeFiles(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async largeFiles(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/get-large-files",
 			namespace: "repos",
@@ -18732,6 +19541,7 @@ new commits to the repository.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18743,7 +19553,7 @@ You can learn more about our LFS featu
 	 *
 	 * `PATCH /repos/{owner}/{repo}/import/lfs` — risk: medium
 	 */
-	async lfs(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async lfs(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/set-lfs-preference",
 			namespace: "repos",
@@ -18756,6 +19566,7 @@ You can learn more about our LFS featu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18764,7 +19575,7 @@ You can learn more about our LFS featu
 	 *
 	 * `GET /repos/{owner}/{repo}/installation` — risk: medium
 	 */
-	async listInstallation(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listInstallation(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-repo-installation",
 			namespace: "repos",
@@ -18777,6 +19588,7 @@ You can learn more about our LFS featu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18785,7 +19597,7 @@ You can learn more about our LFS featu
 	 *
 	 * `GET /repos/{owner}/{repo}/interaction-limits` — risk: medium
 	 */
-	async listInteractionLimits(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listInteractionLimits(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "interactions/get-restrictions-for-repo",
 			namespace: "repos",
@@ -18798,6 +19610,7 @@ You can learn more about our LFS featu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18806,7 +19619,7 @@ You can learn more about our LFS featu
 	 *
 	 * `PUT /repos/{owner}/{repo}/interaction-limits` — risk: medium
 	 */
-	async interactionLimits_0(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async interactionLimits_0(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "interactions/set-restrictions-for-repo",
 			namespace: "repos",
@@ -18819,6 +19632,7 @@ You can learn more about our LFS featu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18827,7 +19641,7 @@ You can learn more about our LFS featu
 	 *
 	 * `DELETE /repos/{owner}/{repo}/interaction-limits` — risk: medium
 	 */
-	async interactionLimits_1(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async interactionLimits_1(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "interactions/remove-restrictions-for-repo",
 			namespace: "repos",
@@ -18840,6 +19654,7 @@ You can learn more about our LFS featu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18848,7 +19663,7 @@ You can learn more about our LFS featu
 	 *
 	 * `GET /repos/{owner}/{repo}/invitations` — risk: medium
 	 */
-	async listInvitations(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listInvitations(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-invitations",
 			namespace: "repos",
@@ -18861,6 +19676,7 @@ You can learn more about our LFS featu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18869,7 +19685,7 @@ You can learn more about our LFS featu
 	 *
 	 * `PATCH /repos/{owner}/{repo}/invitations/{invitation_id}` — risk: medium
 	 */
-	async invitations(owner: string, repo: string, invitationId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async invitations(owner: string, repo: string, invitationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-invitation",
 			namespace: "repos",
@@ -18882,6 +19698,7 @@ You can learn more about our LFS featu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18890,7 +19707,7 @@ You can learn more about our LFS featu
 	 *
 	 * `DELETE /repos/{owner}/{repo}/invitations/{invitation_id}` — risk: medium
 	 */
-	async deleteInvitation(owner: string, repo: string, invitationId: string): Promise<ProofResult<unknown>> {
+	async deleteInvitation(owner: string, repo: string, invitationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-invitation",
 			namespace: "repos",
@@ -18903,6 +19720,7 @@ You can learn more about our LFS featu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18914,7 +19732,7 @@ You can learn more about our LFS featu
 	 *
 	 * `GET /repos/{owner}/{repo}/issues` — risk: medium
 	 */
-	async listIssues(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listIssues(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-for-repo",
 			namespace: "repos",
@@ -18927,6 +19745,7 @@ You can learn more about our LFS featu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18937,7 +19756,7 @@ Thi
 	 *
 	 * `POST /repos/{owner}/{repo}/issues` — risk: medium
 	 */
-	async createIssue(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createIssue(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/create",
 			namespace: "repos",
@@ -18950,6 +19769,7 @@ Thi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18960,7 +19780,7 @@ By default, issue comments are ordered b
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/comments` — risk: medium
 	 */
-	async getIssuesComments(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getIssuesComments(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-comments-for-repo",
 			namespace: "repos",
@@ -18973,6 +19793,7 @@ By default, issue comments are ordered b
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18983,7 +19804,7 @@ This endpoint supports the following custom media types. F
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/comments/{comment_id}` — risk: medium
 	 */
-	async issuescommentsRetrieveComment(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async issuescommentsRetrieveComment(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/get-comment",
 			namespace: "repos",
@@ -18996,6 +19817,7 @@ This endpoint supports the following custom media types. F
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19006,7 +19828,7 @@ This endpoint supports the following custom media types
 	 *
 	 * `PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}` — risk: medium
 	 */
-	async patchIssuesComments(owner: string, repo: string, commentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchIssuesComments(owner: string, repo: string, commentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/update-comment",
 			namespace: "repos",
@@ -19019,6 +19841,7 @@ This endpoint supports the following custom media types
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19027,7 +19850,7 @@ This endpoint supports the following custom media types
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}` — risk: medium
 	 */
-	async issuescommentsDeleteComment(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async issuescommentsDeleteComment(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/delete-comment",
 			namespace: "repos",
@@ -19040,6 +19863,7 @@ This endpoint supports the following custom media types
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19050,7 +19874,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PUT /repos/{owner}/{repo}/issues/comments/{comment_id}/pin` — risk: medium
 	 */
-	async pin_0(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async pin_0(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/pin-comment",
 			namespace: "repos",
@@ -19063,6 +19887,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19071,7 +19896,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/pin` — risk: medium
 	 */
-	async pin_1(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async pin_1(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/unpin-comment",
 			namespace: "repos",
@@ -19084,6 +19909,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19092,7 +19918,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions` — risk: medium
 	 */
-	async getIssuescommentsReactions(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async getIssuescommentsReactions(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/list-for-issue-comment",
 			namespace: "repos",
@@ -19105,6 +19931,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19113,7 +19940,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions` — risk: medium
 	 */
-	async postIssuescommentsReactions(owner: string, repo: string, commentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIssuescommentsReactions(owner: string, repo: string, commentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/create-for-issue-comment",
 			namespace: "repos",
@@ -19126,6 +19953,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19137,7 +19965,7 @@ Delete a reaction to
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}` — risk: medium
 	 */
-	async issuescommentsreactionsDeleteReaction(owner: string, repo: string, commentId: string, reactionId: string): Promise<ProofResult<unknown>> {
+	async issuescommentsreactionsDeleteReaction(owner: string, repo: string, commentId: string, reactionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/delete-for-issue-comment",
 			namespace: "repos",
@@ -19150,6 +19978,7 @@ Delete a reaction to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19158,7 +19987,7 @@ Delete a reaction to
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/events` — risk: medium
 	 */
-	async getIssuesEvents(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getIssuesEvents(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-events-for-repo",
 			namespace: "repos",
@@ -19171,6 +20000,7 @@ Delete a reaction to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19179,7 +20009,7 @@ Delete a reaction to
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/events/{event_id}` — risk: medium
 	 */
-	async retrieveEvent(owner: string, repo: string, eventId: string): Promise<ProofResult<unknown>> {
+	async retrieveEvent(owner: string, repo: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/get-event",
 			namespace: "repos",
@@ -19192,6 +20022,7 @@ Delete a reaction to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19201,7 +20032,7 @@ Delete a reaction to
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}` — risk: medium
 	 */
-	async retrieveIssue(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async retrieveIssue(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/get",
 			namespace: "repos",
@@ -19214,6 +20045,7 @@ Delete a reaction to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19224,7 +20056,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PATCH /repos/{owner}/{repo}/issues/{issue_number}` — risk: medium
 	 */
-	async issues(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issues(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/update",
 			namespace: "repos",
@@ -19237,6 +20069,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19245,7 +20078,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/assignees` — risk: medium
 	 */
-	async assignees_0(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async assignees_0(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/add-assignees",
 			namespace: "repos",
@@ -19258,6 +20091,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19266,7 +20100,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/{issue_number}/assignees` — risk: medium
 	 */
-	async assignees_1(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async assignees_1(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/remove-assignees",
 			namespace: "repos",
@@ -19279,6 +20113,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19291,7 +20126,7 @@ Otherwise a `404` status code is
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/assignees/{assignee}` — risk: medium
 	 */
-	async issuesassigneesRetrieveAssignee(owner: string, repo: string, issueNumber: string, assignee: string): Promise<ProofResult<unknown>> {
+	async issuesassigneesRetrieveAssignee(owner: string, repo: string, issueNumber: string, assignee: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/check-user-can-be-assigned-to-issue",
 			namespace: "repos",
@@ -19304,6 +20139,7 @@ Otherwise a `404` status code is
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19316,7 +20152,7 @@ This endpoin
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/comments` — risk: medium
 	 */
-	async getIssuesComments_0(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async getIssuesComments_0(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-comments",
 			namespace: "repos",
@@ -19329,6 +20165,7 @@ This endpoin
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19339,7 +20176,7 @@ This endpoint triggers [notifications](https://docs.git
 	 *
 	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/comments` — risk: medium
 	 */
-	async postIssuesComments(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIssuesComments(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/create-comment",
 			namespace: "repos",
@@ -19352,6 +20189,7 @@ This endpoint triggers [notifications](https://docs.git
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19362,7 +20200,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by` — risk: medium
 	 */
-	async blockedBy_0(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async blockedBy_0(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-dependencies-blocked-by",
 			namespace: "repos",
@@ -19375,6 +20213,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19386,7 +20225,7 @@ For more information, see [Rate limits
 	 *
 	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by` — risk: medium
 	 */
-	async blockedBy_1(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async blockedBy_1(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/add-blocked-by-dependency",
 			namespace: "repos",
@@ -19399,6 +20238,7 @@ For more information, see [Rate limits
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19410,7 +20250,7 @@ For more information, see [Rate li
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by/{issue_id}` — risk: medium
 	 */
-	async deleteBlockedBy(owner: string, repo: string, issueNumber: string, issueId: string): Promise<ProofResult<unknown>> {
+	async deleteBlockedBy(owner: string, repo: string, issueNumber: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/remove-dependency-blocked-by",
 			namespace: "repos",
@@ -19423,6 +20263,7 @@ For more information, see [Rate li
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19433,7 +20274,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocking` — risk: medium
 	 */
-	async blocking(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async blocking(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-dependencies-blocking",
 			namespace: "repos",
@@ -19446,6 +20287,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19454,7 +20296,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/events` — risk: medium
 	 */
-	async getIssuesEvents_0(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async getIssuesEvents_0(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-events",
 			namespace: "repos",
@@ -19467,6 +20309,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19475,7 +20318,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/issue-field-values` — risk: medium
 	 */
-	async issueFieldValues_0(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async issueFieldValues_0(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-issue-field-values-for-issue",
 			namespace: "repos",
@@ -19488,6 +20331,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19497,7 +20341,7 @@ Adding an empty array will clear all existing fiel
 	 *
 	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/issue-field-values` — risk: medium
 	 */
-	async issueFieldValues_1(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issueFieldValues_1(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/add-issue-field-values",
 			namespace: "repos",
@@ -19510,6 +20354,7 @@ Adding an empty array will clear all existing fiel
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19520,7 +20365,7 @@ This endpoint sup
 	 *
 	 * `PUT /repos/{owner}/{repo}/issues/{issue_number}/issue-field-values` — risk: medium
 	 */
-	async issueFieldValues_2(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issueFieldValues_2(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/set-issue-field-values",
 			namespace: "repos",
@@ -19533,6 +20378,7 @@ This endpoint sup
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19543,7 +20389,7 @@ Only users with push access to the repository can delete issue field values. If 
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/{issue_number}/issue-field-values/{issue_field_id}` — risk: medium
 	 */
-	async deleteIssueFieldValue(owner: string, repo: string, issueNumber: string, issueFieldId: string): Promise<ProofResult<unknown>> {
+	async deleteIssueFieldValue(owner: string, repo: string, issueNumber: string, issueFieldId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/delete-issue-field-value",
 			namespace: "repos",
@@ -19556,6 +20402,7 @@ Only users with push access to the repository can delete issue field values. If 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19564,7 +20411,7 @@ Only users with push access to the repository can delete issue field values. If 
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/labels` — risk: medium
 	 */
-	async getIssuesLabels(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async getIssuesLabels(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-labels-on-issue",
 			namespace: "repos",
@@ -19577,6 +20424,7 @@ Only users with push access to the repository can delete issue field values. If 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19585,7 +20433,7 @@ Only users with push access to the repository can delete issue field values. If 
 	 *
 	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/labels` — risk: medium
 	 */
-	async postIssuesLabels(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIssuesLabels(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/add-labels",
 			namespace: "repos",
@@ -19598,6 +20446,7 @@ Only users with push access to the repository can delete issue field values. If 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19606,7 +20455,7 @@ Only users with push access to the repository can delete issue field values. If 
 	 *
 	 * `PUT /repos/{owner}/{repo}/issues/{issue_number}/labels` — risk: medium
 	 */
-	async putIssuesLabels(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putIssuesLabels(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/set-labels",
 			namespace: "repos",
@@ -19619,6 +20468,7 @@ Only users with push access to the repository can delete issue field values. If 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19627,7 +20477,7 @@ Only users with push access to the repository can delete issue field values. If 
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels` — risk: medium
 	 */
-	async deleteIssuesLabels(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async deleteIssuesLabels(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/remove-all-labels",
 			namespace: "repos",
@@ -19640,6 +20490,7 @@ Only users with push access to the repository can delete issue field values. If 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19648,7 +20499,7 @@ Only users with push access to the repository can delete issue field values. If 
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}` — risk: medium
 	 */
-	async issueslabelsDeleteLabel(owner: string, repo: string, issueNumber: string, name: string): Promise<ProofResult<unknown>> {
+	async issueslabelsDeleteLabel(owner: string, repo: string, issueNumber: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/remove-label",
 			namespace: "repos",
@@ -19661,6 +20512,7 @@ Only users with push access to the repository can delete issue field values. If 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19671,7 +20523,7 @@ Note that, if you choose not to pass any parameters, you'll need to set `Content
 	 *
 	 * `PUT /repos/{owner}/{repo}/issues/{issue_number}/lock` — risk: medium
 	 */
-	async lock_0(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async lock_0(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/lock",
 			namespace: "repos",
@@ -19684,6 +20536,7 @@ Note that, if you choose not to pass any parameters, you'll need to set `Content
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19692,7 +20545,7 @@ Note that, if you choose not to pass any parameters, you'll need to set `Content
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock` — risk: medium
 	 */
-	async lock_1(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async lock_1(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/unlock",
 			namespace: "repos",
@@ -19705,6 +20558,7 @@ Note that, if you choose not to pass any parameters, you'll need to set `Content
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19715,7 +20569,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/parent` — risk: medium
 	 */
-	async parent(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async parent(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/get-parent",
 			namespace: "repos",
@@ -19728,6 +20582,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19736,7 +20591,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/reactions` — risk: medium
 	 */
-	async getIssuesReactions(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async getIssuesReactions(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/list-for-issue",
 			namespace: "repos",
@@ -19749,6 +20604,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19757,7 +20613,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/reactions` — risk: medium
 	 */
-	async postIssuesReactions(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIssuesReactions(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/create-for-issue",
 			namespace: "repos",
@@ -19770,6 +20626,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19781,7 +20638,7 @@ Delete a reaction to an [issue](htt
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}` — risk: medium
 	 */
-	async issuesreactionsDeleteReaction(owner: string, repo: string, issueNumber: string, reactionId: string): Promise<ProofResult<unknown>> {
+	async issuesreactionsDeleteReaction(owner: string, repo: string, issueNumber: string, reactionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/delete-for-issue",
 			namespace: "repos",
@@ -19794,6 +20651,7 @@ Delete a reaction to an [issue](htt
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19804,7 +20662,7 @@ For more information, see "[Rate limits for the AP
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issue` — risk: medium
 	 */
-	async subIssue(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async subIssue(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/remove-sub-issue",
 			namespace: "repos",
@@ -19817,6 +20675,7 @@ For more information, see "[Rate limits for the AP
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19827,7 +20686,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues` — risk: medium
 	 */
-	async subIssues_0(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async subIssues_0(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-sub-issues",
 			namespace: "repos",
@@ -19840,6 +20699,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19851,7 +20711,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues` — risk: medium
 	 */
-	async subIssues_1(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async subIssues_1(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/add-sub-issue",
 			namespace: "repos",
@@ -19864,6 +20724,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19872,7 +20733,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority` — risk: medium
 	 */
-	async priority(owner: string, repo: string, issueNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async priority(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/reprioritize-sub-issue",
 			namespace: "repos",
@@ -19885,6 +20746,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19893,7 +20755,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/timeline` — risk: medium
 	 */
-	async timeline(owner: string, repo: string, issueNumber: string): Promise<ProofResult<unknown>> {
+	async timeline(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-events-for-timeline",
 			namespace: "repos",
@@ -19906,6 +20768,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19914,7 +20777,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `GET /repos/{owner}/{repo}/keys` — risk: medium
 	 */
-	async listKeys(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listKeys(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-deploy-keys",
 			namespace: "repos",
@@ -19927,6 +20790,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19935,7 +20799,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `POST /repos/{owner}/{repo}/keys` — risk: medium
 	 */
-	async createKey(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createKey(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-deploy-key",
 			namespace: "repos",
@@ -19948,6 +20812,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19956,7 +20821,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `GET /repos/{owner}/{repo}/keys/{key_id}` — risk: medium
 	 */
-	async retrieveKey(owner: string, repo: string, keyId: string): Promise<ProofResult<unknown>> {
+	async retrieveKey(owner: string, repo: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-deploy-key",
 			namespace: "repos",
@@ -19969,6 +20834,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19977,7 +20843,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `DELETE /repos/{owner}/{repo}/keys/{key_id}` — risk: medium
 	 */
-	async deleteKey(owner: string, repo: string, keyId: string): Promise<ProofResult<unknown>> {
+	async deleteKey(owner: string, repo: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-deploy-key",
 			namespace: "repos",
@@ -19990,6 +20856,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19998,7 +20865,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `GET /repos/{owner}/{repo}/labels` — risk: medium
 	 */
-	async listLabels(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listLabels(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-labels-for-repo",
 			namespace: "repos",
@@ -20011,6 +20878,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20019,7 +20887,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `POST /repos/{owner}/{repo}/labels` — risk: medium
 	 */
-	async createLabel(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createLabel(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/create-label",
 			namespace: "repos",
@@ -20032,6 +20900,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20040,7 +20909,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `GET /repos/{owner}/{repo}/labels/{name}` — risk: medium
 	 */
-	async retrieveLabel(owner: string, repo: string, name: string): Promise<ProofResult<unknown>> {
+	async retrieveLabel(owner: string, repo: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/get-label",
 			namespace: "repos",
@@ -20053,6 +20922,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20061,7 +20931,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `PATCH /repos/{owner}/{repo}/labels/{name}` — risk: medium
 	 */
-	async labels_8(owner: string, repo: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async labels_8(owner: string, repo: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/update-label",
 			namespace: "repos",
@@ -20074,6 +20944,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20082,7 +20953,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `DELETE /repos/{owner}/{repo}/labels/{name}` — risk: medium
 	 */
-	async labelsDeleteLabel(owner: string, repo: string, name: string): Promise<ProofResult<unknown>> {
+	async labelsDeleteLabel(owner: string, repo: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/delete-label",
 			namespace: "repos",
@@ -20095,6 +20966,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20103,7 +20975,7 @@ For more information, see "[Rate limits for the API](http
 	 *
 	 * `GET /repos/{owner}/{repo}/languages` — risk: medium
 	 */
-	async listLanguages(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listLanguages(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-languages",
 			namespace: "repos",
@@ -20116,6 +20988,7 @@ For more information, see "[Rate limits for the API](http
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20126,7 +20999,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/license` — risk: medium
 	 */
-	async listLicense(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listLicense(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "licenses/get-for-repo",
 			namespace: "repos",
@@ -20139,6 +21012,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20147,7 +21021,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/merge-upstream` — risk: medium
 	 */
-	async createMergeUpstream(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMergeUpstream(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/merge-upstream",
 			namespace: "repos",
@@ -20160,6 +21034,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20168,7 +21043,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/merges` — risk: medium
 	 */
-	async createMerge(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMerge(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/merge",
 			namespace: "repos",
@@ -20181,6 +21056,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20189,7 +21065,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/milestones` — risk: medium
 	 */
-	async listMilestones(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listMilestones(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-milestones",
 			namespace: "repos",
@@ -20202,6 +21078,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20210,7 +21087,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/milestones` — risk: medium
 	 */
-	async createMilestone(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMilestone(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/create-milestone",
 			namespace: "repos",
@@ -20223,6 +21100,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20231,7 +21109,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/milestones/{milestone_number}` — risk: medium
 	 */
-	async retrieveMilestone(owner: string, repo: string, milestoneNumber: string): Promise<ProofResult<unknown>> {
+	async retrieveMilestone(owner: string, repo: string, milestoneNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/get-milestone",
 			namespace: "repos",
@@ -20244,6 +21122,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20252,7 +21131,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PATCH /repos/{owner}/{repo}/milestones/{milestone_number}` — risk: medium
 	 */
-	async milestones(owner: string, repo: string, milestoneNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async milestones(owner: string, repo: string, milestoneNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/update-milestone",
 			namespace: "repos",
@@ -20265,6 +21144,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20273,7 +21153,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `DELETE /repos/{owner}/{repo}/milestones/{milestone_number}` — risk: medium
 	 */
-	async deleteMilestone(owner: string, repo: string, milestoneNumber: string): Promise<ProofResult<unknown>> {
+	async deleteMilestone(owner: string, repo: string, milestoneNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/delete-milestone",
 			namespace: "repos",
@@ -20286,6 +21166,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20294,7 +21175,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels` — risk: medium
 	 */
-	async milestonesLabels(owner: string, repo: string, milestoneNumber: string): Promise<ProofResult<unknown>> {
+	async milestonesLabels(owner: string, repo: string, milestoneNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-labels-for-milestone",
 			namespace: "repos",
@@ -20307,6 +21188,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20315,7 +21197,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/notifications` — risk: medium
 	 */
-	async listNotifications(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listNotifications(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-repo-notifications-for-authenticated-user",
 			namespace: "repos",
@@ -20328,6 +21210,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20336,7 +21219,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PUT /repos/{owner}/{repo}/notifications` — risk: medium
 	 */
-	async notifications(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async notifications(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/mark-repo-notifications-as-read",
 			namespace: "repos",
@@ -20349,6 +21232,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20359,7 +21243,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/pages` — risk: medium
 	 */
-	async listPages(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listPages(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-pages",
 			namespace: "repos",
@@ -20372,6 +21256,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20382,7 +21267,7 @@ The authenticated user must be a repository administrator, main
 	 *
 	 * `POST /repos/{owner}/{repo}/pages` — risk: medium
 	 */
-	async createPage(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createPage(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-pages-site",
 			namespace: "repos",
@@ -20395,6 +21280,7 @@ The authenticated user must be a repository administrator, main
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20405,7 +21291,7 @@ The authenticated user must be a repository adminis
 	 *
 	 * `PUT /repos/{owner}/{repo}/pages` — risk: medium
 	 */
-	async pages_0(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pages_0(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-information-about-pages-site",
 			namespace: "repos",
@@ -20418,6 +21304,7 @@ The authenticated user must be a repository adminis
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20428,7 +21315,7 @@ The authenticated user must be a repository administrator, maintain
 	 *
 	 * `DELETE /repos/{owner}/{repo}/pages` — risk: medium
 	 */
-	async pages_1(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async pages_1(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-pages-site",
 			namespace: "repos",
@@ -20441,6 +21328,7 @@ The authenticated user must be a repository administrator, maintain
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20451,7 +21339,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/pages/builds` — risk: medium
 	 */
-	async builds_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async builds_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-pages-builds",
 			namespace: "repos",
@@ -20464,6 +21352,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20472,7 +21361,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/pages/builds` — risk: medium
 	 */
-	async builds_1(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async builds_1(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/request-pages-build",
 			namespace: "repos",
@@ -20485,6 +21374,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20495,7 +21385,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/pages/builds/latest` — risk: medium
 	 */
-	async pagesbuildsLatest(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async pagesbuildsLatest(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-latest-pages-build",
 			namespace: "repos",
@@ -20508,6 +21398,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20518,7 +21409,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `GET /repos/{owner}/{repo}/pages/builds/{build_id}` — risk: medium
 	 */
-	async retrieveBuild(owner: string, repo: string, buildId: string): Promise<ProofResult<unknown>> {
+	async retrieveBuild(owner: string, repo: string, buildId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-pages-build",
 			namespace: "repos",
@@ -20531,6 +21422,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20541,7 +21433,7 @@ The authenticated user must have write permission to the repository.
 	 *
 	 * `POST /repos/{owner}/{repo}/pages/deployments` — risk: medium
 	 */
-	async deployments(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deployments(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-pages-deployment",
 			namespace: "repos",
@@ -20554,6 +21446,7 @@ The authenticated user must have write permission to the repository.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20564,7 +21457,7 @@ The authenticated user must have read permission for the GitHub Pages site.
 	 *
 	 * `GET /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}` — risk: medium
 	 */
-	async pagesdeploymentsRetrieveDeployment(owner: string, repo: string, pagesDeploymentId: string): Promise<ProofResult<unknown>> {
+	async pagesdeploymentsRetrieveDeployment(owner: string, repo: string, pagesDeploymentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-pages-deployment",
 			namespace: "repos",
@@ -20577,6 +21470,7 @@ The authenticated user must have read permission for the GitHub Pages site.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20587,7 +21481,7 @@ The authenticated user must have write permissions for the GitHub Pages site.
 	 *
 	 * `POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel` — risk: medium
 	 */
-	async pagesdeploymentsCancel(owner: string, repo: string, pagesDeploymentId: string): Promise<ProofResult<unknown>> {
+	async pagesdeploymentsCancel(owner: string, repo: string, pagesDeploymentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/cancel-pages-deployment",
 			namespace: "repos",
@@ -20600,6 +21494,7 @@ The authenticated user must have write permissions for the GitHub Pages site.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20610,7 +21505,7 @@ The first request to this endpoint returns a `202 Accepted` status and starts an
 	 *
 	 * `GET /repos/{owner}/{repo}/pages/health` — risk: medium
 	 */
-	async health(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async health(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-pages-health-check",
 			namespace: "repos",
@@ -20623,6 +21518,7 @@ The first request to this endpoint returns a `202 Accepted` status and starts an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20631,7 +21527,7 @@ The first request to this endpoint returns a `202 Accepted` status and starts an
 	 *
 	 * `GET /repos/{owner}/{repo}/private-vulnerability-reporting` — risk: medium
 	 */
-	async listPrivateVulnerabilityReporting(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listPrivateVulnerabilityReporting(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/check-private-vulnerability-reporting",
 			namespace: "repos",
@@ -20644,6 +21540,7 @@ The first request to this endpoint returns a `202 Accepted` status and starts an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20652,7 +21549,7 @@ The first request to this endpoint returns a `202 Accepted` status and starts an
 	 *
 	 * `PUT /repos/{owner}/{repo}/private-vulnerability-reporting` — risk: medium
 	 */
-	async privateVulnerabilityReporting_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async privateVulnerabilityReporting_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/enable-private-vulnerability-reporting",
 			namespace: "repos",
@@ -20665,6 +21562,7 @@ The first request to this endpoint returns a `202 Accepted` status and starts an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20673,7 +21571,7 @@ The first request to this endpoint returns a `202 Accepted` status and starts an
 	 *
 	 * `DELETE /repos/{owner}/{repo}/private-vulnerability-reporting` — risk: medium
 	 */
-	async privateVulnerabilityReporting_1(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async privateVulnerabilityReporting_1(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/disable-private-vulnerability-reporting",
 			namespace: "repos",
@@ -20686,6 +21584,7 @@ The first request to this endpoint returns a `202 Accepted` status and starts an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20695,7 +21594,7 @@ Users with read access to the repository can use this endpoint.
 	 *
 	 * `GET /repos/{owner}/{repo}/properties/values` — risk: medium
 	 */
-	async values_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async values_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/custom-properties-for-repos-get-repository-values",
 			namespace: "repos",
@@ -20708,6 +21607,7 @@ Users with read access to the repository can use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20719,7 +21619,7 @@ Repository admins a
 	 *
 	 * `PATCH /repos/{owner}/{repo}/properties/values` — risk: medium
 	 */
-	async values_1(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async values_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/custom-properties-for-repos-create-or-update-repository-values",
 			namespace: "repos",
@@ -20732,6 +21632,7 @@ Repository admins a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20743,7 +21644,7 @@ Free and GitHub Free for organizations, GitHub Pro, and legacy per-repository bi
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls` — risk: medium
 	 */
-	async listPulls(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listPulls(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/list",
 			namespace: "repos",
@@ -20756,6 +21657,7 @@ Free and GitHub Free for organizations, GitHub Pro, and legacy per-repository bi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20764,7 +21666,7 @@ Free and GitHub Free for organizations, GitHub Pro, and legacy per-repository bi
 	 *
 	 * `POST /repos/{owner}/{repo}/pulls` — risk: medium
 	 */
-	async createPull(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createPull(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/create",
 			namespace: "repos",
@@ -20777,6 +21679,7 @@ Free and GitHub Free for organizations, GitHub Pro, and legacy per-repository bi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20788,7 +21691,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/comments` — risk: medium
 	 */
-	async getPullsComments(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getPullsComments(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/list-review-comments-for-repo",
 			namespace: "repos",
@@ -20801,6 +21704,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20811,7 +21715,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/comments/{comment_id}` — risk: medium
 	 */
-	async pullscommentsRetrieveComment(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async pullscommentsRetrieveComment(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/get-review-comment",
 			namespace: "repos",
@@ -20824,6 +21728,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20834,7 +21739,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}` — risk: medium
 	 */
-	async patchPullsComments(owner: string, repo: string, commentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchPullsComments(owner: string, repo: string, commentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/update-review-comment",
 			namespace: "repos",
@@ -20847,6 +21752,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20855,7 +21761,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}` — risk: medium
 	 */
-	async pullscommentsDeleteComment(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async pullscommentsDeleteComment(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/delete-review-comment",
 			namespace: "repos",
@@ -20868,6 +21774,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20876,7 +21783,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions` — risk: medium
 	 */
-	async getPullscommentsReactions(owner: string, repo: string, commentId: string): Promise<ProofResult<unknown>> {
+	async getPullscommentsReactions(owner: string, repo: string, commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/list-for-pull-request-review-comment",
 			namespace: "repos",
@@ -20889,6 +21796,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20897,7 +21805,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions` — risk: medium
 	 */
-	async postPullscommentsReactions(owner: string, repo: string, commentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postPullscommentsReactions(owner: string, repo: string, commentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/create-for-pull-request-review-comment",
 			namespace: "repos",
@@ -20910,6 +21818,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20921,7 +21830,7 @@ Delete a reaction to a [pull
 	 *
 	 * `DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}` — risk: medium
 	 */
-	async pullscommentsreactionsDeleteReaction(owner: string, repo: string, commentId: string, reactionId: string): Promise<ProofResult<unknown>> {
+	async pullscommentsreactionsDeleteReaction(owner: string, repo: string, commentId: string, reactionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/delete-for-pull-request-comment",
 			namespace: "repos",
@@ -20934,6 +21843,7 @@ Delete a reaction to a [pull
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20942,7 +21852,7 @@ Delete a reaction to a [pull
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}` — risk: medium
 	 */
-	async retrievePull(owner: string, repo: string, pullNumber: string): Promise<ProofResult<unknown>> {
+	async retrievePull(owner: string, repo: string, pullNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/get",
 			namespace: "repos",
@@ -20955,6 +21865,7 @@ Delete a reaction to a [pull
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20963,7 +21874,7 @@ Delete a reaction to a [pull
 	 *
 	 * `PATCH /repos/{owner}/{repo}/pulls/{pull_number}` — risk: medium
 	 */
-	async pulls_1(owner: string, repo: string, pullNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pulls_1(owner: string, repo: string, pullNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/update",
 			namespace: "repos",
@@ -20976,6 +21887,7 @@ Delete a reaction to a [pull
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20986,7 +21898,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces` — risk: medium
 	 */
-	async codespaces(owner: string, repo: string, pullNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async codespaces(owner: string, repo: string, pullNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/create-with-pr-for-authenticated-user",
 			namespace: "repos",
@@ -20999,6 +21911,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21010,7 +21923,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/comments` — risk: medium
 	 */
-	async getPullsComments_0(owner: string, repo: string, pullNumber: string): Promise<ProofResult<unknown>> {
+	async getPullsComments_0(owner: string, repo: string, pullNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/list-review-comments",
 			namespace: "repos",
@@ -21023,6 +21936,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21031,7 +21945,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/pulls/{pull_number}/comments` — risk: medium
 	 */
-	async postPullsComments(owner: string, repo: string, pullNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postPullsComments(owner: string, repo: string, pullNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/create-review-comment",
 			namespace: "repos",
@@ -21044,6 +21958,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21052,7 +21967,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/pulls/{pull_number}/comments/{comment_id}/replies` — risk: medium
 	 */
-	async replies(owner: string, repo: string, pullNumber: string, commentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async replies(owner: string, repo: string, pullNumber: string, commentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/create-reply-for-review-comment",
 			namespace: "repos",
@@ -21065,6 +21980,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21074,7 +21990,7 @@ commit list for pull requests with more than 250 commits, use the [List commits]
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/commits` — risk: medium
 	 */
-	async pullsCommits(owner: string, repo: string, pullNumber: string): Promise<ProofResult<unknown>> {
+	async pullsCommits(owner: string, repo: string, pullNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/list-commits",
 			namespace: "repos",
@@ -21087,6 +22003,7 @@ commit list for pull requests with more than 250 commits, use the [List commits]
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21100,7 +22017,7 @@ This endpoint supports the following
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/files` — risk: medium
 	 */
-	async files(owner: string, repo: string, pullNumber: string): Promise<ProofResult<unknown>> {
+	async files(owner: string, repo: string, pullNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/list-files",
 			namespace: "repos",
@@ -21113,6 +22030,7 @@ This endpoint supports the following
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21121,7 +22039,7 @@ This endpoint supports the following
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/merge` — risk: medium
 	 */
-	async merge_0(owner: string, repo: string, pullNumber: string): Promise<ProofResult<unknown>> {
+	async merge_0(owner: string, repo: string, pullNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/check-if-merged",
 			namespace: "repos",
@@ -21134,6 +22052,7 @@ This endpoint supports the following
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21143,7 +22062,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge` — risk: medium
 	 */
-	async merge_1(owner: string, repo: string, pullNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async merge_1(owner: string, repo: string, pullNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/merge",
 			namespace: "repos",
@@ -21156,6 +22075,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21164,7 +22084,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers` — risk: medium
 	 */
-	async requestedReviewers_0(owner: string, repo: string, pullNumber: string): Promise<ProofResult<unknown>> {
+	async requestedReviewers_0(owner: string, repo: string, pullNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/list-requested-reviewers",
 			namespace: "repos",
@@ -21177,6 +22097,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21186,7 +22107,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers` — risk: medium
 	 */
-	async requestedReviewers_1(owner: string, repo: string, pullNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async requestedReviewers_1(owner: string, repo: string, pullNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/request-reviewers",
 			namespace: "repos",
@@ -21199,6 +22120,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21207,7 +22129,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `DELETE /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers` — risk: medium
 	 */
-	async requestedReviewers_2(owner: string, repo: string, pullNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async requestedReviewers_2(owner: string, repo: string, pullNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/remove-requested-reviewers",
 			namespace: "repos",
@@ -21220,6 +22142,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21230,7 +22153,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews` — risk: medium
 	 */
-	async reviews_0(owner: string, repo: string, pullNumber: string): Promise<ProofResult<unknown>> {
+	async reviews_0(owner: string, repo: string, pullNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/list-reviews",
 			namespace: "repos",
@@ -21243,6 +22166,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21253,7 +22177,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews` — risk: medium
 	 */
-	async reviews_1(owner: string, repo: string, pullNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async reviews_1(owner: string, repo: string, pullNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/create-review",
 			namespace: "repos",
@@ -21266,6 +22190,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21276,7 +22201,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}` — risk: medium
 	 */
-	async retrieveReview(owner: string, repo: string, pullNumber: string, reviewId: string): Promise<ProofResult<unknown>> {
+	async retrieveReview(owner: string, repo: string, pullNumber: string, reviewId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/get-review",
 			namespace: "repos",
@@ -21289,6 +22214,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21299,7 +22225,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}` — risk: medium
 	 */
-	async reviews_2(owner: string, repo: string, pullNumber: string, reviewId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async reviews_2(owner: string, repo: string, pullNumber: string, reviewId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/update-review",
 			namespace: "repos",
@@ -21312,6 +22238,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21322,7 +22249,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `DELETE /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}` — risk: medium
 	 */
-	async deleteReview(owner: string, repo: string, pullNumber: string, reviewId: string): Promise<ProofResult<unknown>> {
+	async deleteReview(owner: string, repo: string, pullNumber: string, reviewId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/delete-pending-review",
 			namespace: "repos",
@@ -21335,6 +22262,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21345,7 +22273,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments` — risk: medium
 	 */
-	async pullsreviewsComments(owner: string, repo: string, pullNumber: string, reviewId: string): Promise<ProofResult<unknown>> {
+	async pullsreviewsComments(owner: string, repo: string, pullNumber: string, reviewId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/list-comments-for-review",
 			namespace: "repos",
@@ -21358,6 +22286,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21369,7 +22298,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals` — risk: medium
 	 */
-	async dismissals(owner: string, repo: string, pullNumber: string, reviewId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async dismissals(owner: string, repo: string, pullNumber: string, reviewId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/dismiss-review",
 			namespace: "repos",
@@ -21382,6 +22311,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21390,7 +22320,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events` — risk: medium
 	 */
-	async pullsreviewsEvents(owner: string, repo: string, pullNumber: string, reviewId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pullsreviewsEvents(owner: string, repo: string, pullNumber: string, reviewId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/submit-review",
 			namespace: "repos",
@@ -21403,6 +22333,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21412,7 +22343,7 @@ Note: If making a request on behalf of a GitHub App you must also ha
 	 *
 	 * `PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch` — risk: medium
 	 */
-	async updateBranch(owner: string, repo: string, pullNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateBranch(owner: string, repo: string, pullNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pulls/update-branch",
 			namespace: "repos",
@@ -21425,6 +22356,7 @@ Note: If making a request on behalf of a GitHub App you must also ha
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21435,7 +22367,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/readme` — risk: medium
 	 */
-	async listReadme(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listReadme(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-readme",
 			namespace: "repos",
@@ -21448,6 +22380,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21458,7 +22391,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/readme/{dir}` — risk: medium
 	 */
-	async retrieveReadme(owner: string, repo: string, dir: string): Promise<ProofResult<unknown>> {
+	async retrieveReadme(owner: string, repo: string, dir: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-readme-in-directory",
 			namespace: "repos",
@@ -21471,6 +22404,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21479,7 +22413,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/releases` — risk: medium
 	 */
-	async listReleases(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listReleases(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-releases",
 			namespace: "repos",
@@ -21492,6 +22426,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21502,7 +22437,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `POST /repos/{owner}/{repo}/releases` — risk: medium
 	 */
-	async createReleas(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReleas(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-release",
 			namespace: "repos",
@@ -21515,6 +22450,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21526,7 +22462,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `GET /repos/{owner}/{repo}/releases/assets/{asset_id}` — risk: medium
 	 */
-	async retrieveAsset(owner: string, repo: string, assetId: string): Promise<ProofResult<unknown>> {
+	async retrieveAsset(owner: string, repo: string, assetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-release-asset",
 			namespace: "repos",
@@ -21539,6 +22475,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21547,7 +22484,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}` — risk: medium
 	 */
-	async assets_0(owner: string, repo: string, assetId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async assets_0(owner: string, repo: string, assetId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-release-asset",
 			namespace: "repos",
@@ -21560,6 +22497,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21568,7 +22506,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `DELETE /repos/{owner}/{repo}/releases/assets/{asset_id}` — risk: medium
 	 */
-	async deleteAsset(owner: string, repo: string, assetId: string): Promise<ProofResult<unknown>> {
+	async deleteAsset(owner: string, repo: string, assetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-release-asset",
 			namespace: "repos",
@@ -21581,6 +22519,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21589,7 +22528,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 	 *
 	 * `POST /repos/{owner}/{repo}/releases/generate-notes` — risk: medium
 	 */
-	async generateNotes(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async generateNotes(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/generate-release-notes",
 			namespace: "repos",
@@ -21602,6 +22541,7 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21612,7 +22552,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 	 *
 	 * `GET /repos/{owner}/{repo}/releases/latest` — risk: medium
 	 */
-	async releasesLatest(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async releasesLatest(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-latest-release",
 			namespace: "repos",
@@ -21625,6 +22565,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21633,7 +22574,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 	 *
 	 * `GET /repos/{owner}/{repo}/releases/tags/{tag}` — risk: medium
 	 */
-	async releasestagsRetrieveTag(owner: string, repo: string, tag: string): Promise<ProofResult<unknown>> {
+	async releasestagsRetrieveTag(owner: string, repo: string, tag: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-release-by-tag",
 			namespace: "repos",
@@ -21646,6 +22587,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21657,7 +22599,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 	 *
 	 * `GET /repos/{owner}/{repo}/releases/{release_id}` — risk: medium
 	 */
-	async retrieveReleas(owner: string, repo: string, releaseId: string): Promise<ProofResult<unknown>> {
+	async retrieveReleas(owner: string, repo: string, releaseId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-release",
 			namespace: "repos",
@@ -21670,6 +22612,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21678,7 +22621,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 	 *
 	 * `PATCH /repos/{owner}/{repo}/releases/{release_id}` — risk: medium
 	 */
-	async releases(owner: string, repo: string, releaseId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async releases(owner: string, repo: string, releaseId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-release",
 			namespace: "repos",
@@ -21691,6 +22634,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21699,7 +22643,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 	 *
 	 * `DELETE /repos/{owner}/{repo}/releases/{release_id}` — risk: medium
 	 */
-	async deleteReleas(owner: string, repo: string, releaseId: string): Promise<ProofResult<unknown>> {
+	async deleteReleas(owner: string, repo: string, releaseId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-release",
 			namespace: "repos",
@@ -21712,6 +22656,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21720,7 +22665,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 	 *
 	 * `GET /repos/{owner}/{repo}/releases/{release_id}/assets` — risk: medium
 	 */
-	async assets_1(owner: string, repo: string, releaseId: string): Promise<ProofResult<unknown>> {
+	async assets_1(owner: string, repo: string, releaseId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-release-assets",
 			namespace: "repos",
@@ -21733,6 +22678,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21741,7 +22687,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 	 *
 	 * `POST /repos/{owner}/{repo}/releases/{release_id}/assets` — risk: medium
 	 */
-	async assets_2(owner: string, repo: string, releaseId: string): Promise<ProofResult<unknown>> {
+	async assets_2(owner: string, repo: string, releaseId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/upload-release-asset",
 			namespace: "repos",
@@ -21754,6 +22700,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21762,7 +22709,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 	 *
 	 * `GET /repos/{owner}/{repo}/releases/{release_id}/reactions` — risk: medium
 	 */
-	async getReleasesReactions(owner: string, repo: string, releaseId: string): Promise<ProofResult<unknown>> {
+	async getReleasesReactions(owner: string, repo: string, releaseId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/list-for-release",
 			namespace: "repos",
@@ -21775,6 +22722,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21783,7 +22731,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 	 *
 	 * `POST /repos/{owner}/{repo}/releases/{release_id}/reactions` — risk: medium
 	 */
-	async postReleasesReactions(owner: string, repo: string, releaseId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postReleasesReactions(owner: string, repo: string, releaseId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/create-for-release",
 			namespace: "repos",
@@ -21796,6 +22744,7 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21807,7 +22756,7 @@ Delete a reaction to a [rele
 	 *
 	 * `DELETE /repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}` — risk: medium
 	 */
-	async releasesreactionsDeleteReaction(owner: string, repo: string, releaseId: string, reactionId: string): Promise<ProofResult<unknown>> {
+	async releasesreactionsDeleteReaction(owner: string, repo: string, releaseId: string, reactionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions/delete-for-release",
 			namespace: "repos",
@@ -21820,6 +22769,7 @@ Delete a reaction to a [rele
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21829,7 +22779,7 @@ to a branch with that name will be returned. All active rules that apply will be
 	 *
 	 * `GET /repos/{owner}/{repo}/rules/branches/{branch}` — risk: medium
 	 */
-	async rulesbranchesRetrieveBranche(owner: string, repo: string, branch: string): Promise<ProofResult<unknown>> {
+	async rulesbranchesRetrieveBranche(owner: string, repo: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-branch-rules",
 			namespace: "repos",
@@ -21842,6 +22792,7 @@ to a branch with that name will be returned. All active rules that apply will be
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21850,7 +22801,7 @@ to a branch with that name will be returned. All active rules that apply will be
 	 *
 	 * `GET /repos/{owner}/{repo}/rulesets` — risk: medium
 	 */
-	async listRulesets(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listRulesets(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-repo-rulesets",
 			namespace: "repos",
@@ -21863,6 +22814,7 @@ to a branch with that name will be returned. All active rules that apply will be
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21871,7 +22823,7 @@ to a branch with that name will be returned. All active rules that apply will be
 	 *
 	 * `POST /repos/{owner}/{repo}/rulesets` — risk: medium
 	 */
-	async createRuleset(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createRuleset(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-repo-ruleset",
 			namespace: "repos",
@@ -21884,6 +22836,7 @@ to a branch with that name will be returned. All active rules that apply will be
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21893,7 +22846,7 @@ For more information, see "[Managing rulesets for a repository](https://docs.git
 	 *
 	 * `GET /repos/{owner}/{repo}/rulesets/rule-suites` — risk: medium
 	 */
-	async ruleSuites(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async ruleSuites(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-repo-rule-suites",
 			namespace: "repos",
@@ -21906,6 +22859,7 @@ For more information, see "[Managing rulesets for a repository](https://docs.git
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21915,7 +22869,7 @@ For more information, see "[Managing rulesets for a repository](https://docs.git
 	 *
 	 * `GET /repos/{owner}/{repo}/rulesets/rule-suites/{rule_suite_id}` — risk: medium
 	 */
-	async retrieveRuleSuite(owner: string, repo: string, ruleSuiteId: string): Promise<ProofResult<unknown>> {
+	async retrieveRuleSuite(owner: string, repo: string, ruleSuiteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-repo-rule-suite",
 			namespace: "repos",
@@ -21928,6 +22882,7 @@ For more information, see "[Managing rulesets for a repository](https://docs.git
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21939,7 +22894,7 @@ making the API request has write access to the ruleset.
 	 *
 	 * `GET /repos/{owner}/{repo}/rulesets/{ruleset_id}` — risk: medium
 	 */
-	async retrieveRuleset(owner: string, repo: string, rulesetId: string): Promise<ProofResult<unknown>> {
+	async retrieveRuleset(owner: string, repo: string, rulesetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-repo-ruleset",
 			namespace: "repos",
@@ -21952,6 +22907,7 @@ making the API request has write access to the ruleset.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21960,7 +22916,7 @@ making the API request has write access to the ruleset.
 	 *
 	 * `PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}` — risk: medium
 	 */
-	async rulesets(owner: string, repo: string, rulesetId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async rulesets(owner: string, repo: string, rulesetId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/update-repo-ruleset",
 			namespace: "repos",
@@ -21973,6 +22929,7 @@ making the API request has write access to the ruleset.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21981,7 +22938,7 @@ making the API request has write access to the ruleset.
 	 *
 	 * `DELETE /repos/{owner}/{repo}/rulesets/{ruleset_id}` — risk: medium
 	 */
-	async deleteRuleset(owner: string, repo: string, rulesetId: string): Promise<ProofResult<unknown>> {
+	async deleteRuleset(owner: string, repo: string, rulesetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/delete-repo-ruleset",
 			namespace: "repos",
@@ -21994,6 +22951,7 @@ making the API request has write access to the ruleset.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22002,7 +22960,7 @@ making the API request has write access to the ruleset.
 	 *
 	 * `GET /repos/{owner}/{repo}/rulesets/{ruleset_id}/history` — risk: medium
 	 */
-	async history(owner: string, repo: string, rulesetId: string): Promise<ProofResult<unknown>> {
+	async history(owner: string, repo: string, rulesetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-repo-ruleset-history",
 			namespace: "repos",
@@ -22015,6 +22973,7 @@ making the API request has write access to the ruleset.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22023,7 +22982,7 @@ making the API request has write access to the ruleset.
 	 *
 	 * `GET /repos/{owner}/{repo}/rulesets/{ruleset_id}/history/{version_id}` — risk: medium
 	 */
-	async retrieveHistory(owner: string, repo: string, rulesetId: string, versionId: string): Promise<ProofResult<unknown>> {
+	async retrieveHistory(owner: string, repo: string, rulesetId: string, versionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-repo-ruleset-version",
 			namespace: "repos",
@@ -22036,6 +22995,7 @@ making the API request has write access to the ruleset.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22046,7 +23006,7 @@ The authenticated user must be an administrator for the repository or for the or
 	 *
 	 * `GET /repos/{owner}/{repo}/secret-scanning/alerts` — risk: medium
 	 */
-	async getSecretScanningAlerts(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async getSecretScanningAlerts(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "secret-scanning/list-alerts-for-repo",
 			namespace: "repos",
@@ -22059,6 +23019,7 @@ The authenticated user must be an administrator for the repository or for the or
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22069,7 +23030,7 @@ The authenticated user must be an administrator for the repository or for the or
 	 *
 	 * `GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}` — risk: medium
 	 */
-	async secretScanningalertsRetrieveAlert(owner: string, repo: string, alertNumber: string): Promise<ProofResult<unknown>> {
+	async secretScanningalertsRetrieveAlert(owner: string, repo: string, alertNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "secret-scanning/get-alert",
 			namespace: "repos",
@@ -22082,6 +23043,7 @@ The authenticated user must be an administrator for the repository or for the or
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22094,7 +23056,7 @@ The authentic
 	 *
 	 * `PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}` — risk: medium
 	 */
-	async patchSecretScanningAlerts(owner: string, repo: string, alertNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchSecretScanningAlerts(owner: string, repo: string, alertNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "secret-scanning/update-alert",
 			namespace: "repos",
@@ -22107,6 +23069,7 @@ The authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22117,7 +23080,7 @@ The authenticated user must be an administrator for the repository or for the or
 	 *
 	 * `GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations` — risk: medium
 	 */
-	async locations(owner: string, repo: string, alertNumber: string): Promise<ProofResult<unknown>> {
+	async locations(owner: string, repo: string, alertNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "secret-scanning/list-locations-for-alert",
 			namespace: "repos",
@@ -22130,6 +23093,7 @@ The authenticated user must be an administrator for the repository or for the or
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22142,7 +23106,7 @@ OAuth app tokens and personal access tokens (classic) need the `r
 	 *
 	 * `POST /repos/{owner}/{repo}/secret-scanning/push-protection-bypasses` — risk: medium
 	 */
-	async pushProtectionBypasses(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pushProtectionBypasses(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "secret-scanning/create-push-protection-bypass",
 			namespace: "repos",
@@ -22155,6 +23119,7 @@ OAuth app tokens and personal access tokens (classic) need the `r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22166,7 +23131,7 @@ OAuth app tokens and personal access tokens (classic) need the `r
 	 *
 	 * `GET /repos/{owner}/{repo}/secret-scanning/scan-history` — risk: medium
 	 */
-	async scanHistory(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async scanHistory(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "secret-scanning/get-scan-history",
 			namespace: "repos",
@@ -22179,6 +23144,7 @@ OAuth app tokens and personal access tokens (classic) need the `r
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22189,7 +23155,7 @@ The authenticated user can access unpublished security advisories from a reposit
 	 *
 	 * `GET /repos/{owner}/{repo}/security-advisories` — risk: medium
 	 */
-	async listSecurityAdvisories(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listSecurityAdvisories(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/list-repository-advisories",
 			namespace: "repos",
@@ -22202,6 +23168,7 @@ The authenticated user can access unpublished security advisories from a reposit
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22214,7 +23181,7 @@ OAuth app
 	 *
 	 * `POST /repos/{owner}/{repo}/security-advisories` — risk: medium
 	 */
-	async createSecurityAdvisory(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createSecurityAdvisory(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/create-repository-advisory",
 			namespace: "repos",
@@ -22227,6 +23194,7 @@ OAuth app
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22236,7 +23204,7 @@ See "[Privately reporting a security vulnerability](https://docs.github.com/code
 	 *
 	 * `POST /repos/{owner}/{repo}/security-advisories/reports` — risk: medium
 	 */
-	async reports(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async reports(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/create-private-vulnerability-report",
 			namespace: "repos",
@@ -22249,6 +23217,7 @@ See "[Privately reporting a security vulnerability](https://docs.github.com/code
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22261,7 +23230,7 @@ The authenticated user can access a
 	 *
 	 * `GET /repos/{owner}/{repo}/security-advisories/{ghsa_id}` — risk: medium
 	 */
-	async retrieveSecurityAdvisory(owner: string, repo: string, ghsaId: string): Promise<ProofResult<unknown>> {
+	async retrieveSecurityAdvisory(owner: string, repo: string, ghsaId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/get-repository-advisory",
 			namespace: "repos",
@@ -22274,6 +23243,7 @@ The authenticated user can access a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22284,7 +23254,7 @@ In order to update any security advisory, the authenticated user must be a secur
 	 *
 	 * `PATCH /repos/{owner}/{repo}/security-advisories/{ghsa_id}` — risk: medium
 	 */
-	async securityAdvisories(owner: string, repo: string, ghsaId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async securityAdvisories(owner: string, repo: string, ghsaId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/update-repository-advisory",
 			namespace: "repos",
@@ -22297,6 +23267,7 @@ In order to update any security advisory, the authenticated user must be a secur
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22305,7 +23276,7 @@ In order to update any security advisory, the authenticated user must be a secur
 	 *
 	 * `POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve` — risk: medium
 	 */
-	async cve(owner: string, repo: string, ghsaId: string): Promise<ProofResult<unknown>> {
+	async cve(owner: string, repo: string, ghsaId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/create-repository-advisory-cve-request",
 			namespace: "repos",
@@ -22318,6 +23289,7 @@ In order to update any security advisory, the authenticated user must be a secur
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22329,7 +23301,7 @@ In order to update any security advisory, the authenticated user must be a secur
 	 *
 	 * `POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks` — risk: medium
 	 */
-	async forks(owner: string, repo: string, ghsaId: string): Promise<ProofResult<unknown>> {
+	async forks(owner: string, repo: string, ghsaId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "security-advisories/create-fork",
 			namespace: "repos",
@@ -22342,6 +23314,7 @@ In order to update any security advisory, the authenticated user must be a secur
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22352,7 +23325,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/stargazers` — risk: medium
 	 */
-	async listStargazers(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listStargazers(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-stargazers-for-repo",
 			namespace: "repos",
@@ -22365,6 +23338,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22376,7 +23350,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/stats/code_frequency` — risk: medium
 	 */
-	async codeFrequency(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async codeFrequency(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-code-frequency-stats",
 			namespace: "repos",
@@ -22389,6 +23363,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22397,7 +23372,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /repos/{owner}/{repo}/stats/commit_activity` — risk: medium
 	 */
-	async commitActivity(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async commitActivity(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-commit-activity-stats",
 			namespace: "repos",
@@ -22410,6 +23385,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22421,7 +23397,7 @@ Returns the `total` number of commits authored by the contributor. In addition, 
 	 *
 	 * `GET /repos/{owner}/{repo}/stats/contributors` — risk: medium
 	 */
-	async contributors(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async contributors(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-contributors-stats",
 			namespace: "repos",
@@ -22434,6 +23410,7 @@ Returns the `total` number of commits authored by the contributor. In addition, 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22442,7 +23419,7 @@ Returns the `total` number of commits authored by the contributor. In addition, 
 	 *
 	 * `GET /repos/{owner}/{repo}/stats/participation` — risk: medium
 	 */
-	async participation(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async participation(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-participation-stats",
 			namespace: "repos",
@@ -22455,6 +23432,7 @@ Returns the `total` number of commits authored by the contributor. In addition, 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22469,7 +23447,7 @@ For example, `[2, 14, 25]` indicates that there wer
 	 *
 	 * `GET /repos/{owner}/{repo}/stats/punch_card` — risk: medium
 	 */
-	async punchCard(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async punchCard(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-punch-card-stats",
 			namespace: "repos",
@@ -22482,6 +23460,7 @@ For example, `[2, 14, 25]` indicates that there wer
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22492,7 +23471,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 	 *
 	 * `POST /repos/{owner}/{repo}/statuses/{sha}` — risk: medium
 	 */
-	async updateStatus(owner: string, repo: string, sha: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateStatus(owner: string, repo: string, sha: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-commit-status",
 			namespace: "repos",
@@ -22505,6 +23484,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22513,7 +23493,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 	 *
 	 * `GET /repos/{owner}/{repo}/subscribers` — risk: medium
 	 */
-	async listSubscribers(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listSubscribers(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-watchers-for-repo",
 			namespace: "repos",
@@ -22526,6 +23506,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22534,7 +23515,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 	 *
 	 * `GET /repos/{owner}/{repo}/subscription` — risk: medium
 	 */
-	async listSubscription(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listSubscription(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/get-repo-subscription",
 			namespace: "repos",
@@ -22547,6 +23528,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22555,7 +23537,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 	 *
 	 * `PUT /repos/{owner}/{repo}/subscription` — risk: medium
 	 */
-	async subscription_0(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async subscription_0(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/set-repo-subscription",
 			namespace: "repos",
@@ -22568,6 +23550,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22576,7 +23559,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 	 *
 	 * `DELETE /repos/{owner}/{repo}/subscription` — risk: medium
 	 */
-	async subscription_1(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async subscription_1(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/delete-repo-subscription",
 			namespace: "repos",
@@ -22589,6 +23572,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22597,7 +23581,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 	 *
 	 * `GET /repos/{owner}/{repo}/tags` — risk: medium
 	 */
-	async listTags(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listTags(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-tags",
 			namespace: "repos",
@@ -22610,6 +23594,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22619,7 +23604,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 	 *
 	 * `GET /repos/{owner}/{repo}/tarball/{ref}` — risk: medium
 	 */
-	async retrieveTarball(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async retrieveTarball(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/download-tarball-archive",
 			namespace: "repos",
@@ -22632,6 +23617,7 @@ Note: there is a limit of 1000 statuses per `sha` and `context` within a reposit
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22642,7 +23628,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `GET /repos/{owner}/{repo}/teams` — risk: medium
 	 */
-	async listTeams(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listTeams(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-teams",
 			namespace: "repos",
@@ -22655,6 +23641,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22663,7 +23650,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `GET /repos/{owner}/{repo}/topics` — risk: medium
 	 */
-	async listTopics(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listTopics(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-all-topics",
 			namespace: "repos",
@@ -22676,6 +23663,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22684,7 +23672,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `PUT /repos/{owner}/{repo}/topics` — risk: medium
 	 */
-	async topics(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async topics(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/replace-all-topics",
 			namespace: "repos",
@@ -22697,6 +23685,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22705,7 +23694,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `GET /repos/{owner}/{repo}/traffic/clones` — risk: medium
 	 */
-	async clones(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async clones(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-clones",
 			namespace: "repos",
@@ -22718,6 +23707,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22726,7 +23716,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `GET /repos/{owner}/{repo}/traffic/popular/paths` — risk: medium
 	 */
-	async paths(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async paths(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-top-paths",
 			namespace: "repos",
@@ -22739,6 +23729,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22747,7 +23738,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `GET /repos/{owner}/{repo}/traffic/popular/referrers` — risk: medium
 	 */
-	async referrers(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async referrers(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-top-referrers",
 			namespace: "repos",
@@ -22760,6 +23751,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22768,7 +23760,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `GET /repos/{owner}/{repo}/traffic/views` — risk: medium
 	 */
-	async views(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async views(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-views",
 			namespace: "repos",
@@ -22781,6 +23773,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22789,7 +23782,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `POST /repos/{owner}/{repo}/transfer` — risk: medium
 	 */
-	async createTransfer(owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createTransfer(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/transfer",
 			namespace: "repos",
@@ -22802,6 +23795,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22810,7 +23804,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `GET /repos/{owner}/{repo}/vulnerability-alerts` — risk: medium
 	 */
-	async listVulnerabilityAlerts(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async listVulnerabilityAlerts(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/check-vulnerability-alerts",
 			namespace: "repos",
@@ -22823,6 +23817,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22831,7 +23826,7 @@ For a public repository, a team is listed only if that team added the public rep
 	 *
 	 * `PUT /repos/{owner}/{repo}/vulnerability-alerts` — risk: medium
 	 */
-	async vulnerabilityAlerts_0(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async vulnerabilityAlerts_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/enable-vulnerability-alerts",
 			namespace: "repos",
@@ -22844,6 +23839,7 @@ For a public repository, a team is listed only if that team added the public rep
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22854,7 +23850,7 @@ see "[About security alerts for vulnerable
 	 *
 	 * `DELETE /repos/{owner}/{repo}/vulnerability-alerts` — risk: medium
 	 */
-	async vulnerabilityAlerts_1(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async vulnerabilityAlerts_1(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/disable-vulnerability-alerts",
 			namespace: "repos",
@@ -22867,6 +23863,7 @@ see "[About security alerts for vulnerable
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22876,7 +23873,7 @@ see "[About security alerts for vulnerable
 	 *
 	 * `GET /repos/{owner}/{repo}/zipball/{ref}` — risk: medium
 	 */
-	async retrieveZipball(owner: string, repo: string, ref: string): Promise<ProofResult<unknown>> {
+	async retrieveZipball(owner: string, repo: string, ref: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/download-zipball-archive",
 			namespace: "repos",
@@ -22889,6 +23886,7 @@ see "[About security alerts for vulnerable
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22897,7 +23895,7 @@ see "[About security alerts for vulnerable
 	 *
 	 * `POST /repos/{template_owner}/{template_repo}/generate` — risk: medium
 	 */
-	async createGenerate(templateOwner: string, templateRepo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createGenerate(templateOwner: string, templateRepo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-using-template",
 			namespace: "repos",
@@ -22910,13 +23908,14 @@ see "[About security alerts for vulnerable
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RepositoriesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22932,7 +23931,7 @@ Note:
 	 *
 	 * `GET /repositories` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-public",
 			namespace: "repositories",
@@ -22945,13 +23944,14 @@ Note:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SearchResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22965,7 +23965,7 @@ When searching for code, you can get
 	 *
 	 * `GET /search/code` — risk: medium
 	 */
-	async listCode(): Promise<ProofResult<unknown>> {
+	async listCode(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search/code",
 			namespace: "search",
@@ -22978,6 +23978,7 @@ When searching for code, you can get
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22988,7 +23989,7 @@ When
 	 *
 	 * `GET /search/commits` — risk: medium
 	 */
-	async listCommits(): Promise<ProofResult<unknown>> {
+	async listCommits(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search/commits",
 			namespace: "search",
@@ -23001,6 +24002,7 @@ When
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23011,7 +24013,7 @@ When searching for issues, you can get text m
 	 *
 	 * `GET /search/issues` — risk: medium
 	 */
-	async listIssues(): Promise<ProofResult<unknown>> {
+	async listIssues(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search/issues-and-pull-requests",
 			namespace: "search",
@@ -23024,6 +24026,7 @@ When searching for issues, you can get text m
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23034,7 +24037,7 @@ When sea
 	 *
 	 * `GET /search/labels` — risk: medium
 	 */
-	async listLabels(): Promise<ProofResult<unknown>> {
+	async listLabels(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search/labels",
 			namespace: "search",
@@ -23047,6 +24050,7 @@ When sea
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23057,7 +24061,7 @@ When searching for repositories, you ca
 	 *
 	 * `GET /search/repositories` — risk: medium
 	 */
-	async listRepositories(): Promise<ProofResult<unknown>> {
+	async listRepositories(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search/repos",
 			namespace: "search",
@@ -23070,6 +24074,7 @@ When searching for repositories, you ca
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23078,7 +24083,7 @@ When searching for repositories, you ca
 	 *
 	 * `GET /search/topics` — risk: medium
 	 */
-	async listTopics(): Promise<ProofResult<unknown>> {
+	async listTopics(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search/topics",
 			namespace: "search",
@@ -23091,6 +24096,7 @@ When searching for repositories, you ca
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23101,7 +24107,7 @@ When searching for users, you can get text mat
 	 *
 	 * `GET /search/users` — risk: medium
 	 */
-	async listUsers(): Promise<ProofResult<unknown>> {
+	async listUsers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search/users",
 			namespace: "search",
@@ -23114,13 +24120,14 @@ When searching for users, you can get text mat
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23133,7 +24140,7 @@ export class TeamsResource extends RpcTarget {
 	 *
 	 * `GET /teams/{team_id}` — risk: low
 	 */
-	async retrieve(teamId: string): Promise<ProofResult<unknown>> {
+	async retrieve(teamId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/get-legacy",
 			namespace: "teams",
@@ -23146,6 +24153,7 @@ export class TeamsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23155,7 +24163,7 @@ export class TeamsResource extends RpcTarget {
 	 *
 	 * `PATCH /teams/{team_id}` — risk: medium
 	 */
-	async patch(teamId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patch(teamId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/update-legacy",
 			namespace: "teams",
@@ -23168,6 +24176,7 @@ export class TeamsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23177,7 +24186,7 @@ export class TeamsResource extends RpcTarget {
 	 *
 	 * `DELETE /teams/{team_id}` — risk: medium
 	 */
-	async del(teamId: string): Promise<ProofResult<unknown>> {
+	async del(teamId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/delete-legacy",
 			namespace: "teams",
@@ -23190,6 +24199,7 @@ export class TeamsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23199,7 +24209,7 @@ export class TeamsResource extends RpcTarget {
 	 *
 	 * `GET /teams/{team_id}/invitations` — risk: medium
 	 */
-	async listInvitations(teamId: string): Promise<ProofResult<unknown>> {
+	async listInvitations(teamId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list-pending-invitations-legacy",
 			namespace: "teams",
@@ -23212,6 +24222,7 @@ export class TeamsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23221,7 +24232,7 @@ export class TeamsResource extends RpcTarget {
 	 *
 	 * `GET /teams/{team_id}/members` — risk: medium
 	 */
-	async listMembers(teamId: string): Promise<ProofResult<unknown>> {
+	async listMembers(teamId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list-members-legacy",
 			namespace: "teams",
@@ -23234,6 +24245,7 @@ export class TeamsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23244,7 +24256,7 @@ We recommend using the [Get team membership for a user](https://docs.github.com/
 	 *
 	 * `GET /teams/{team_id}/members/{username}` — risk: medium
 	 */
-	async retrieveMember(teamId: string, username: string): Promise<ProofResult<unknown>> {
+	async retrieveMember(teamId: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/get-member-legacy",
 			namespace: "teams",
@@ -23257,6 +24269,7 @@ We recommend using the [Get team membership for a user](https://docs.github.com/
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23267,7 +24280,7 @@ We recommend using the [Add or update team membership for a user](https://docs.g
 	 *
 	 * `PUT /teams/{team_id}/members/{username}` — risk: medium
 	 */
-	async members(teamId: string, username: string): Promise<ProofResult<unknown>> {
+	async members(teamId: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/add-member-legacy",
 			namespace: "teams",
@@ -23280,6 +24293,7 @@ We recommend using the [Add or update team membership for a user](https://docs.g
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23290,7 +24304,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 	 *
 	 * `DELETE /teams/{team_id}/members/{username}` — risk: medium
 	 */
-	async deleteMember(teamId: string, username: string): Promise<ProofResult<unknown>> {
+	async deleteMember(teamId: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/remove-member-legacy",
 			namespace: "teams",
@@ -23303,6 +24317,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23312,7 +24327,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 	 *
 	 * `GET /teams/{team_id}/memberships/{username}` — risk: medium
 	 */
-	async retrieveMembership(teamId: string, username: string): Promise<ProofResult<unknown>> {
+	async retrieveMembership(teamId: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/get-membership-for-user-legacy",
 			namespace: "teams",
@@ -23325,6 +24340,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23334,7 +24350,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 	 *
 	 * `PUT /teams/{team_id}/memberships/{username}` — risk: medium
 	 */
-	async memberships(teamId: string, username: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async memberships(teamId: string, username: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/add-or-update-membership-for-user-legacy",
 			namespace: "teams",
@@ -23347,6 +24363,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23356,7 +24373,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 	 *
 	 * `DELETE /teams/{team_id}/memberships/{username}` — risk: medium
 	 */
-	async deleteMembership(teamId: string, username: string): Promise<ProofResult<unknown>> {
+	async deleteMembership(teamId: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/remove-membership-for-user-legacy",
 			namespace: "teams",
@@ -23369,6 +24386,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23378,7 +24396,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 	 *
 	 * `GET /teams/{team_id}/repos` — risk: medium
 	 */
-	async listRepos(teamId: string): Promise<ProofResult<unknown>> {
+	async listRepos(teamId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list-repos-legacy",
 			namespace: "teams",
@@ -23391,6 +24409,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23400,7 +24419,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 	 *
 	 * `GET /teams/{team_id}/repos/{owner}/{repo}` — risk: medium
 	 */
-	async retrieveRepo(teamId: string, owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async retrieveRepo(teamId: string, owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/check-permissions-for-repo-legacy",
 			namespace: "teams",
@@ -23413,6 +24432,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23422,7 +24442,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 	 *
 	 * `PUT /teams/{team_id}/repos/{owner}/{repo}` — risk: medium
 	 */
-	async repos(teamId: string, owner: string, repo: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async repos(teamId: string, owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/add-or-update-repo-permissions-legacy",
 			namespace: "teams",
@@ -23435,6 +24455,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23444,7 +24465,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 	 *
 	 * `DELETE /teams/{team_id}/repos/{owner}/{repo}` — risk: medium
 	 */
-	async deleteRepo(teamId: string, owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async deleteRepo(teamId: string, owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/remove-repo-legacy",
 			namespace: "teams",
@@ -23457,6 +24478,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23466,7 +24488,7 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 	 *
 	 * `GET /teams/{team_id}/teams` — risk: medium
 	 */
-	async listTeams(teamId: string): Promise<ProofResult<unknown>> {
+	async listTeams(teamId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list-child-legacy",
 			namespace: "teams",
@@ -23479,13 +24501,14 @@ We recommend using the [Remove team membership for a user](https://docs.github.c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UserResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23497,7 +24520,7 @@ export class UserResource extends RpcTarget {
 	 *
 	 * `GET /user` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/get-authenticated",
 			namespace: "user",
@@ -23510,6 +24533,7 @@ export class UserResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23518,7 +24542,7 @@ export class UserResource extends RpcTarget {
 	 *
 	 * `PATCH /user` — risk: medium
 	 */
-	async patch(body?: unknown): Promise<ProofResult<unknown>> {
+	async patch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/update-authenticated",
 			namespace: "user",
@@ -23531,6 +24555,7 @@ export class UserResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23539,7 +24564,7 @@ export class UserResource extends RpcTarget {
 	 *
 	 * `GET /user/blocks` — risk: medium
 	 */
-	async listBlocks(): Promise<ProofResult<unknown>> {
+	async listBlocks(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-blocked-by-authenticated-user",
 			namespace: "user",
@@ -23552,6 +24577,7 @@ export class UserResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23560,7 +24586,7 @@ export class UserResource extends RpcTarget {
 	 *
 	 * `GET /user/blocks/{username}` — risk: medium
 	 */
-	async retrieveBlock(username: string): Promise<ProofResult<unknown>> {
+	async retrieveBlock(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/check-blocked",
 			namespace: "user",
@@ -23573,6 +24599,7 @@ export class UserResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23581,7 +24608,7 @@ export class UserResource extends RpcTarget {
 	 *
 	 * `PUT /user/blocks/{username}` — risk: medium
 	 */
-	async blocks(username: string): Promise<ProofResult<unknown>> {
+	async blocks(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/block",
 			namespace: "user",
@@ -23594,6 +24621,7 @@ export class UserResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23602,7 +24630,7 @@ export class UserResource extends RpcTarget {
 	 *
 	 * `DELETE /user/blocks/{username}` — risk: medium
 	 */
-	async deleteBlock(username: string): Promise<ProofResult<unknown>> {
+	async deleteBlock(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/unblock",
 			namespace: "user",
@@ -23615,6 +24643,7 @@ export class UserResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23625,7 +24654,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `GET /user/codespaces` — risk: medium
 	 */
-	async listCodespaces(): Promise<ProofResult<unknown>> {
+	async listCodespaces(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/list-for-authenticated-user",
 			namespace: "user",
@@ -23638,6 +24667,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23650,7 +24680,7 @@ OAuth app tokens and personal access tokens (classic) need
 	 *
 	 * `POST /user/codespaces` — risk: medium
 	 */
-	async createCodespace(body?: unknown): Promise<ProofResult<unknown>> {
+	async createCodespace(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/create-for-authenticated-user",
 			namespace: "user",
@@ -23663,6 +24693,7 @@ OAuth app tokens and personal access tokens (classic) need
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23676,7 +24707,7 @@ OAuth a
 	 *
 	 * `GET /user/codespaces/secrets` — risk: medium
 	 */
-	async secrets_0(): Promise<ProofResult<unknown>> {
+	async secrets_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/list-secrets-for-authenticated-user",
 			namespace: "user",
@@ -23689,6 +24720,7 @@ OAuth a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23699,7 +24731,7 @@ The authenticated user must have Codespaces access to use this endpoint.
 	 *
 	 * `GET /user/codespaces/secrets/public-key` — risk: medium
 	 */
-	async publicKey(): Promise<ProofResult<unknown>> {
+	async publicKey(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/get-public-key-for-authenticated-user",
 			namespace: "user",
@@ -23712,6 +24744,7 @@ The authenticated user must have Codespaces access to use this endpoint.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23724,7 +24757,7 @@ OAuth app token
 	 *
 	 * `GET /user/codespaces/secrets/{secret_name}` — risk: medium
 	 */
-	async retrieveSecret(secretName: string): Promise<ProofResult<unknown>> {
+	async retrieveSecret(secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/get-secret-for-authenticated-user",
 			namespace: "user",
@@ -23737,6 +24770,7 @@ OAuth app token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23746,7 +24780,7 @@ OAuth app token
 	 *
 	 * `PUT /user/codespaces/secrets/{secret_name}` — risk: medium
 	 */
-	async secrets_1(secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async secrets_1(secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/create-or-update-secret-for-authenticated-user",
 			namespace: "user",
@@ -23759,6 +24793,7 @@ OAuth app token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23769,7 +24804,7 @@ The authent
 	 *
 	 * `DELETE /user/codespaces/secrets/{secret_name}` — risk: medium
 	 */
-	async deleteSecret(secretName: string): Promise<ProofResult<unknown>> {
+	async deleteSecret(secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/delete-secret-for-authenticated-user",
 			namespace: "user",
@@ -23782,6 +24817,7 @@ The authent
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23794,7 +24830,7 @@ OAuth app tokens and
 	 *
 	 * `GET /user/codespaces/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async getCodespacessecretsRepositories(secretName: string): Promise<ProofResult<unknown>> {
+	async getCodespacessecretsRepositories(secretName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/list-repositories-for-secret-for-authenticated-user",
 			namespace: "user",
@@ -23807,6 +24843,7 @@ OAuth app tokens and
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23819,7 +24856,7 @@ OAuth app tokens and personal access tokens (c
 	 *
 	 * `PUT /user/codespaces/secrets/{secret_name}/repositories` — risk: medium
 	 */
-	async putCodespacessecretsRepositories(secretName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putCodespacessecretsRepositories(secretName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/set-repositories-for-secret-for-authenticated-user",
 			namespace: "user",
@@ -23832,6 +24869,7 @@ OAuth app tokens and personal access tokens (c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23844,7 +24882,7 @@ OAuth app tokens and personal acc
 	 *
 	 * `PUT /user/codespaces/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async putCodespacessecretsRepositories_0(secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putCodespacessecretsRepositories_0(secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/add-repository-for-secret-for-authenticated-user",
 			namespace: "user",
@@ -23857,6 +24895,7 @@ OAuth app tokens and personal acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23869,7 +24908,7 @@ OAuth app tokens and persona
 	 *
 	 * `DELETE /user/codespaces/secrets/{secret_name}/repositories/{repository_id}` — risk: medium
 	 */
-	async codespacessecretsrepositoriesDeleteRepository(secretName: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async codespacessecretsrepositoriesDeleteRepository(secretName: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/remove-repository-for-secret-for-authenticated-user",
 			namespace: "user",
@@ -23882,6 +24921,7 @@ OAuth app tokens and persona
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23892,7 +24932,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `GET /user/codespaces/{codespace_name}` — risk: medium
 	 */
-	async retrieveCodespace(codespaceName: string): Promise<ProofResult<unknown>> {
+	async retrieveCodespace(codespaceName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/get-for-authenticated-user",
 			namespace: "user",
@@ -23905,6 +24945,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23915,7 +24956,7 @@ If you specify a new machine type it will be a
 	 *
 	 * `PATCH /user/codespaces/{codespace_name}` — risk: medium
 	 */
-	async codespaces(codespaceName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async codespaces(codespaceName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/update-for-authenticated-user",
 			namespace: "user",
@@ -23928,6 +24969,7 @@ If you specify a new machine type it will be a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23938,7 +24980,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `DELETE /user/codespaces/{codespace_name}` — risk: medium
 	 */
-	async deleteCodespace(codespaceName: string): Promise<ProofResult<unknown>> {
+	async deleteCodespace(codespaceName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/delete-for-authenticated-user",
 			namespace: "user",
@@ -23951,6 +24993,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23961,7 +25004,7 @@ If changes cannot be pushed to the codespace's repository, they will be pushed
 	 *
 	 * `POST /user/codespaces/{codespace_name}/exports` — risk: medium
 	 */
-	async exports(codespaceName: string): Promise<ProofResult<unknown>> {
+	async exports(codespaceName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/export-for-authenticated-user",
 			namespace: "user",
@@ -23974,6 +25017,7 @@ If changes cannot be pushed to the codespace's repository, they will be pushed
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23984,7 +25028,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `GET /user/codespaces/{codespace_name}/exports/{export_id}` — risk: medium
 	 */
-	async retrieveExport(codespaceName: string, exportId: string): Promise<ProofResult<unknown>> {
+	async retrieveExport(codespaceName: string, exportId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/get-export-details-for-authenticated-user",
 			namespace: "user",
@@ -23997,6 +25041,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24007,7 +25052,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `GET /user/codespaces/{codespace_name}/machines` — risk: medium
 	 */
-	async machines(codespaceName: string): Promise<ProofResult<unknown>> {
+	async machines(codespaceName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/codespace-machines-for-authenticated-user",
 			namespace: "user",
@@ -24020,6 +25065,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24030,7 +25076,7 @@ The codespace's token is granted write permissions to the repository, allowing t
 	 *
 	 * `POST /user/codespaces/{codespace_name}/publish` — risk: medium
 	 */
-	async publish(codespaceName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async publish(codespaceName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/publish-for-authenticated-user",
 			namespace: "user",
@@ -24043,6 +25089,7 @@ The codespace's token is granted write permissions to the repository, allowing t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24053,7 +25100,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `POST /user/codespaces/{codespace_name}/start` — risk: medium
 	 */
-	async start(codespaceName: string): Promise<ProofResult<unknown>> {
+	async start(codespaceName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/start-for-authenticated-user",
 			namespace: "user",
@@ -24066,6 +25113,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24076,7 +25124,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	 *
 	 * `POST /user/codespaces/{codespace_name}/stop` — risk: medium
 	 */
-	async stop(codespaceName: string): Promise<ProofResult<unknown>> {
+	async stop(codespaceName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "codespaces/stop-for-authenticated-user",
 			namespace: "user",
@@ -24089,6 +25137,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24099,7 +25148,7 @@ OAuth app tokens and personal access tokens (classi
 	 *
 	 * `GET /user/docker/conflicts` — risk: medium
 	 */
-	async conflicts(): Promise<ProofResult<unknown>> {
+	async conflicts(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/list-docker-migration-conflicting-packages-for-authenticated-user",
 			namespace: "user",
@@ -24112,6 +25161,7 @@ OAuth app tokens and personal access tokens (classi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24120,7 +25170,7 @@ OAuth app tokens and personal access tokens (classi
 	 *
 	 * `PATCH /user/email/visibility` — risk: medium
 	 */
-	async visibility(body?: unknown): Promise<ProofResult<unknown>> {
+	async visibility(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/set-primary-email-visibility-for-authenticated-user",
 			namespace: "user",
@@ -24133,6 +25183,7 @@ OAuth app tokens and personal access tokens (classi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24144,7 +25195,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 	 *
 	 * `GET /user/emails` — risk: medium
 	 */
-	async listEmails(): Promise<ProofResult<unknown>> {
+	async listEmails(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-emails-for-authenticated-user",
 			namespace: "user",
@@ -24157,6 +25208,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24165,7 +25217,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 	 *
 	 * `POST /user/emails` — risk: medium
 	 */
-	async createEmail(body?: unknown): Promise<ProofResult<unknown>> {
+	async createEmail(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/add-email-for-authenticated-user",
 			namespace: "user",
@@ -24178,6 +25230,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24186,7 +25239,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 	 *
 	 * `DELETE /user/emails` — risk: medium
 	 */
-	async emails(body?: unknown): Promise<ProofResult<unknown>> {
+	async emails(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/delete-email-for-authenticated-user",
 			namespace: "user",
@@ -24199,6 +25252,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24207,7 +25261,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 	 *
 	 * `GET /user/followers` — risk: medium
 	 */
-	async listFollowers(): Promise<ProofResult<unknown>> {
+	async listFollowers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-followers-for-authenticated-user",
 			namespace: "user",
@@ -24220,6 +25274,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24228,7 +25283,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 	 *
 	 * `GET /user/following` — risk: medium
 	 */
-	async listFollowing(): Promise<ProofResult<unknown>> {
+	async listFollowing(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-followed-by-authenticated-user",
 			namespace: "user",
@@ -24241,6 +25296,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24249,7 +25305,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 	 *
 	 * `GET /user/following/{username}` — risk: medium
 	 */
-	async retrieveFollowing(username: string): Promise<ProofResult<unknown>> {
+	async retrieveFollowing(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/check-person-is-followed-by-authenticated",
 			namespace: "user",
@@ -24262,6 +25318,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24270,7 +25327,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 	 *
 	 * `PUT /user/following/{username}` — risk: medium
 	 */
-	async following(username: string): Promise<ProofResult<unknown>> {
+	async following(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/follow",
 			namespace: "user",
@@ -24283,6 +25340,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24291,7 +25349,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 	 *
 	 * `DELETE /user/following/{username}` — risk: medium
 	 */
-	async deleteFollowing(username: string): Promise<ProofResult<unknown>> {
+	async deleteFollowing(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/unfollow",
 			namespace: "user",
@@ -24304,6 +25362,7 @@ OAuth app tokens and personal access tokens (classic) need the `user:email` scop
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24314,7 +25373,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:gpg_key` sc
 	 *
 	 * `GET /user/gpg_keys` — risk: medium
 	 */
-	async listGpgKeys(): Promise<ProofResult<unknown>> {
+	async listGpgKeys(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-gpg-keys-for-authenticated-user",
 			namespace: "user",
@@ -24327,6 +25386,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:gpg_key` sc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24337,7 +25397,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:gpg_key` s
 	 *
 	 * `POST /user/gpg_keys` — risk: medium
 	 */
-	async createGpgKey(body?: unknown): Promise<ProofResult<unknown>> {
+	async createGpgKey(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/create-gpg-key-for-authenticated-user",
 			namespace: "user",
@@ -24350,6 +25410,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:gpg_key` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24360,7 +25421,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:gpg_key` sc
 	 *
 	 * `GET /user/gpg_keys/{gpg_key_id}` — risk: medium
 	 */
-	async retrieveGpgKey(gpgKeyId: string): Promise<ProofResult<unknown>> {
+	async retrieveGpgKey(gpgKeyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/get-gpg-key-for-authenticated-user",
 			namespace: "user",
@@ -24373,6 +25434,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:gpg_key` sc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24383,7 +25445,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:gpg_key` s
 	 *
 	 * `DELETE /user/gpg_keys/{gpg_key_id}` — risk: medium
 	 */
-	async deleteGpgKey(gpgKeyId: string): Promise<ProofResult<unknown>> {
+	async deleteGpgKey(gpgKeyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/delete-gpg-key-for-authenticated-user",
 			namespace: "user",
@@ -24396,6 +25458,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:gpg_key` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24406,7 +25469,7 @@ The authenticated user has explicit permission to access reposit
 	 *
 	 * `GET /user/installations` — risk: medium
 	 */
-	async listInstallations(): Promise<ProofResult<unknown>> {
+	async listInstallations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-installations-for-authenticated-user",
 			namespace: "user",
@@ -24419,6 +25482,7 @@ The authenticated user has explicit permission to access reposit
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24429,7 +25493,7 @@ The authenticated user has explicit permission to access reposito
 	 *
 	 * `GET /user/installations/{installation_id}/repositories` — risk: medium
 	 */
-	async getInstallationsRepositories(installationId: string): Promise<ProofResult<unknown>> {
+	async getInstallationsRepositories(installationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-installation-repos-for-authenticated-user",
 			namespace: "user",
@@ -24442,6 +25506,7 @@ The authenticated user has explicit permission to access reposito
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24452,7 +25517,7 @@ This endpoint only works for PATs (classic) with the `repo` scope.
 	 *
 	 * `PUT /user/installations/{installation_id}/repositories/{repository_id}` — risk: medium
 	 */
-	async putInstallationsRepositories(installationId: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async putInstallationsRepositories(installationId: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/add-repo-to-installation-for-authenticated-user",
 			namespace: "user",
@@ -24465,6 +25530,7 @@ This endpoint only works for PATs (classic) with the `repo` scope.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24475,7 +25541,7 @@ This endpoint on
 	 *
 	 * `DELETE /user/installations/{installation_id}/repositories/{repository_id}` — risk: medium
 	 */
-	async installationsrepositoriesDeleteRepository(installationId: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async installationsrepositoriesDeleteRepository(installationId: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/remove-repo-from-installation-for-authenticated-user",
 			namespace: "user",
@@ -24488,6 +25554,7 @@ This endpoint on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24496,7 +25563,7 @@ This endpoint on
 	 *
 	 * `GET /user/interaction-limits` — risk: medium
 	 */
-	async listInteractionLimits(): Promise<ProofResult<unknown>> {
+	async listInteractionLimits(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "interactions/get-restrictions-for-authenticated-user",
 			namespace: "user",
@@ -24509,6 +25576,7 @@ This endpoint on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24517,7 +25585,7 @@ This endpoint on
 	 *
 	 * `PUT /user/interaction-limits` — risk: medium
 	 */
-	async interactionLimits_0(body?: unknown): Promise<ProofResult<unknown>> {
+	async interactionLimits_0(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "interactions/set-restrictions-for-authenticated-user",
 			namespace: "user",
@@ -24530,6 +25598,7 @@ This endpoint on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24538,7 +25607,7 @@ This endpoint on
 	 *
 	 * `DELETE /user/interaction-limits` — risk: medium
 	 */
-	async interactionLimits_1(): Promise<ProofResult<unknown>> {
+	async interactionLimits_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "interactions/remove-restrictions-for-authenticated-user",
 			namespace: "user",
@@ -24551,6 +25620,7 @@ This endpoint on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24562,7 +25632,7 @@ This endpoint on
 	 *
 	 * `GET /user/issues` — risk: medium
 	 */
-	async listIssues(): Promise<ProofResult<unknown>> {
+	async listIssues(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "issues/list-for-authenticated-user",
 			namespace: "user",
@@ -24575,6 +25645,7 @@ This endpoint on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24585,7 +25656,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:public_key`
 	 *
 	 * `GET /user/keys` — risk: medium
 	 */
-	async listKeys(): Promise<ProofResult<unknown>> {
+	async listKeys(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-public-ssh-keys-for-authenticated-user",
 			namespace: "user",
@@ -24598,6 +25669,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:public_key`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24608,7 +25680,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:public_key
 	 *
 	 * `POST /user/keys` — risk: medium
 	 */
-	async createKey(body?: unknown): Promise<ProofResult<unknown>> {
+	async createKey(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/create-public-ssh-key-for-authenticated-user",
 			namespace: "user",
@@ -24621,6 +25693,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24631,7 +25704,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:public_key`
 	 *
 	 * `GET /user/keys/{key_id}` — risk: medium
 	 */
-	async retrieveKey(keyId: string): Promise<ProofResult<unknown>> {
+	async retrieveKey(keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/get-public-ssh-key-for-authenticated-user",
 			namespace: "user",
@@ -24644,6 +25717,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:public_key`
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24654,7 +25728,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `DELETE /user/keys/{key_id}` — risk: medium
 	 */
-	async deleteKey(keyId: string): Promise<ProofResult<unknown>> {
+	async deleteKey(keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/delete-public-ssh-key-for-authenticated-user",
 			namespace: "user",
@@ -24667,6 +25741,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24675,7 +25750,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `GET /user/marketplace_purchases` — risk: medium
 	 */
-	async listMarketplacePurchases(): Promise<ProofResult<unknown>> {
+	async listMarketplacePurchases(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-subscriptions-for-authenticated-user",
 			namespace: "user",
@@ -24688,6 +25763,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24696,7 +25772,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `GET /user/marketplace_purchases/stubbed` — risk: medium
 	 */
-	async stubbed(): Promise<ProofResult<unknown>> {
+	async stubbed(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/list-subscriptions-for-authenticated-user-stubbed",
 			namespace: "user",
@@ -24709,6 +25785,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24717,7 +25794,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `GET /user/memberships/orgs` — risk: medium
 	 */
-	async orgs_0(): Promise<ProofResult<unknown>> {
+	async orgs_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-memberships-for-authenticated-user",
 			namespace: "user",
@@ -24730,6 +25807,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24738,7 +25816,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `GET /user/memberships/orgs/{org}` — risk: medium
 	 */
-	async retrieveOrg(org: string): Promise<ProofResult<unknown>> {
+	async retrieveOrg(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/get-membership-for-authenticated-user",
 			namespace: "user",
@@ -24751,6 +25829,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24759,7 +25838,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `PATCH /user/memberships/orgs/{org}` — risk: medium
 	 */
-	async orgs_1(org: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async orgs_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/update-membership-for-authenticated-user",
 			namespace: "user",
@@ -24772,6 +25851,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24780,7 +25860,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `GET /user/migrations` — risk: medium
 	 */
-	async listMigrations(): Promise<ProofResult<unknown>> {
+	async listMigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/list-for-authenticated-user",
 			namespace: "user",
@@ -24793,6 +25873,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24801,7 +25882,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `POST /user/migrations` — risk: medium
 	 */
-	async createMigration(body?: unknown): Promise<ProofResult<unknown>> {
+	async createMigration(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/start-for-authenticated-user",
 			namespace: "user",
@@ -24814,6 +25895,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24825,7 +25907,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `GET /user/migrations/{migration_id}` — risk: medium
 	 */
-	async retrieveMigration(migrationId: string): Promise<ProofResult<unknown>> {
+	async retrieveMigration(migrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/get-status-for-authenticated-user",
 			namespace: "user",
@@ -24838,6 +25920,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24848,7 +25931,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `GET /user/migrations/{migration_id}/archive` — risk: medium
 	 */
-	async archive_0(migrationId: string): Promise<ProofResult<unknown>> {
+	async archive_0(migrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/get-archive-for-authenticated-user",
 			namespace: "user",
@@ -24861,6 +25944,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24869,7 +25953,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `DELETE /user/migrations/{migration_id}/archive` — risk: medium
 	 */
-	async archive_1(migrationId: string): Promise<ProofResult<unknown>> {
+	async archive_1(migrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/delete-archive-for-authenticated-user",
 			namespace: "user",
@@ -24882,6 +25966,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24890,7 +25975,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `DELETE /user/migrations/{migration_id}/repos/{repo_name}/lock` — risk: medium
 	 */
-	async lock(migrationId: string, repoName: string): Promise<ProofResult<unknown>> {
+	async lock(migrationId: string, repoName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/unlock-repo-for-authenticated-user",
 			namespace: "user",
@@ -24903,6 +25988,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24911,7 +25997,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 *
 	 * `GET /user/migrations/{migration_id}/repositories` — risk: medium
 	 */
-	async migrationsRepositories(migrationId: string): Promise<ProofResult<unknown>> {
+	async migrationsRepositories(migrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migrations/list-repos-for-authenticated-user",
 			namespace: "user",
@@ -24924,6 +26010,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24934,7 +26021,7 @@ For OAuth app tokens and personal access tokens (classic), this endpoint only li
 	 *
 	 * `GET /user/orgs` — risk: medium
 	 */
-	async listOrgs(): Promise<ProofResult<unknown>> {
+	async listOrgs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-for-authenticated-user",
 			namespace: "user",
@@ -24947,6 +26034,7 @@ For OAuth app tokens and personal access tokens (classic), this endpoint only li
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24957,7 +26045,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /user/packages` — risk: medium
 	 */
-	async listPackages(): Promise<ProofResult<unknown>> {
+	async listPackages(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/list-packages-for-authenticated-user",
 			namespace: "user",
@@ -24970,6 +26058,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -24980,7 +26069,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /user/packages/{package_type}/{package_name}` — risk: medium
 	 */
-	async retrievePackage(packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async retrievePackage(packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/get-package-for-authenticated-user",
 			namespace: "user",
@@ -24993,6 +26082,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25001,7 +26091,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `DELETE /user/packages/{package_type}/{package_name}` — risk: medium
 	 */
-	async deletePackage(packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async deletePackage(packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/delete-package-for-authenticated-user",
 			namespace: "user",
@@ -25014,6 +26104,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25026,7 +26117,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `POST /user/packages/{package_type}/{package_name}/restore` — risk: medium
 	 */
-	async restore_0(packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async restore_0(packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/restore-package-for-authenticated-user",
 			namespace: "user",
@@ -25039,6 +26130,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25049,7 +26141,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /user/packages/{package_type}/{package_name}/versions` — risk: medium
 	 */
-	async versions(packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async versions(packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/get-all-package-versions-for-package-owned-by-authenticated-user",
 			namespace: "user",
@@ -25062,6 +26154,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25072,7 +26165,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /user/packages/{package_type}/{package_name}/versions/{package_version_id}` — risk: medium
 	 */
-	async retrieveVersion(packageType: string, packageName: string, packageVersionId: string): Promise<ProofResult<unknown>> {
+	async retrieveVersion(packageType: string, packageName: string, packageVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/get-package-version-for-authenticated-user",
 			namespace: "user",
@@ -25085,6 +26178,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25093,7 +26187,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `DELETE /user/packages/{package_type}/{package_name}/versions/{package_version_id}` — risk: medium
 	 */
-	async deleteVersion(packageType: string, packageName: string, packageVersionId: string): Promise<ProofResult<unknown>> {
+	async deleteVersion(packageType: string, packageName: string, packageVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/delete-package-version-for-authenticated-user",
 			namespace: "user",
@@ -25106,6 +26200,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25118,7 +26213,7 @@ You can restore a deleted package version under the following conditions:
 	 *
 	 * `POST /user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore` — risk: medium
 	 */
-	async versionsRestore(packageType: string, packageName: string, packageVersionId: string): Promise<ProofResult<unknown>> {
+	async versionsRestore(packageType: string, packageName: string, packageVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/restore-package-version-for-authenticated-user",
 			namespace: "user",
@@ -25131,6 +26226,7 @@ You can restore a deleted package version under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25140,7 +26236,7 @@ You can restore a deleted package version under the following conditions:
 	 *
 	 * `GET /user/public_emails` — risk: medium
 	 */
-	async listPublicEmails(): Promise<ProofResult<unknown>> {
+	async listPublicEmails(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-public-emails-for-authenticated-user",
 			namespace: "user",
@@ -25153,6 +26249,7 @@ You can restore a deleted package version under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25163,7 +26260,7 @@ The authenticated user has explicit permission to access repositories they own, 
 	 *
 	 * `GET /user/repos` — risk: medium
 	 */
-	async listRepos(): Promise<ProofResult<unknown>> {
+	async listRepos(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-for-authenticated-user",
 			namespace: "user",
@@ -25176,6 +26273,7 @@ The authenticated user has explicit permission to access repositories they own, 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25186,7 +26284,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 	 *
 	 * `POST /user/repos` — risk: medium
 	 */
-	async createRepo(body?: unknown): Promise<ProofResult<unknown>> {
+	async createRepo(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/create-for-authenticated-user",
 			namespace: "user",
@@ -25199,6 +26297,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25207,7 +26306,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 	 *
 	 * `GET /user/repository_invitations` — risk: medium
 	 */
-	async listRepositoryInvitations(): Promise<ProofResult<unknown>> {
+	async listRepositoryInvitations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-invitations-for-authenticated-user",
 			namespace: "user",
@@ -25220,6 +26319,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25228,7 +26328,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 	 *
 	 * `PATCH /user/repository_invitations/{invitation_id}` — risk: medium
 	 */
-	async repositoryInvitations(invitationId: string): Promise<ProofResult<unknown>> {
+	async repositoryInvitations(invitationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/accept-invitation-for-authenticated-user",
 			namespace: "user",
@@ -25241,6 +26341,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25249,7 +26350,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 	 *
 	 * `DELETE /user/repository_invitations/{invitation_id}` — risk: medium
 	 */
-	async deleteRepositoryInvitation(invitationId: string): Promise<ProofResult<unknown>> {
+	async deleteRepositoryInvitation(invitationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/decline-invitation-for-authenticated-user",
 			namespace: "user",
@@ -25262,6 +26363,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25270,7 +26372,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 	 *
 	 * `GET /user/social_accounts` — risk: medium
 	 */
-	async listSocialAccounts(): Promise<ProofResult<unknown>> {
+	async listSocialAccounts(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-social-accounts-for-authenticated-user",
 			namespace: "user",
@@ -25283,6 +26385,7 @@ OAuth app tokens and personal access tokens (classic) need the `public_repo` or 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25293,7 +26396,7 @@ OAuth app tokens and personal access tokens (classic) need the `user` scope to u
 	 *
 	 * `POST /user/social_accounts` — risk: medium
 	 */
-	async createSocialAccount(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSocialAccount(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/add-social-account-for-authenticated-user",
 			namespace: "user",
@@ -25306,6 +26409,7 @@ OAuth app tokens and personal access tokens (classic) need the `user` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25316,7 +26420,7 @@ OAuth app tokens and personal access tokens (classic) need the `user` scope to u
 	 *
 	 * `DELETE /user/social_accounts` — risk: medium
 	 */
-	async socialAccounts(body?: unknown): Promise<ProofResult<unknown>> {
+	async socialAccounts(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/delete-social-account-for-authenticated-user",
 			namespace: "user",
@@ -25329,6 +26433,7 @@ OAuth app tokens and personal access tokens (classic) need the `user` scope to u
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25339,7 +26444,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:ssh_signing
 	 *
 	 * `GET /user/ssh_signing_keys` — risk: medium
 	 */
-	async listSshSigningKeys(): Promise<ProofResult<unknown>> {
+	async listSshSigningKeys(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-ssh-signing-keys-for-authenticated-user",
 			namespace: "user",
@@ -25352,6 +26457,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:ssh_signing
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25362,7 +26468,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:ssh_signin
 	 *
 	 * `POST /user/ssh_signing_keys` — risk: medium
 	 */
-	async createSshSigningKey(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSshSigningKey(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/create-ssh-signing-key-for-authenticated-user",
 			namespace: "user",
@@ -25375,6 +26481,7 @@ OAuth app tokens and personal access tokens (classic) need the `write:ssh_signin
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25385,7 +26492,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:ssh_signing
 	 *
 	 * `GET /user/ssh_signing_keys/{ssh_signing_key_id}` — risk: medium
 	 */
-	async retrieveSshSigningKey(sshSigningKeyId: string): Promise<ProofResult<unknown>> {
+	async retrieveSshSigningKey(sshSigningKeyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/get-ssh-signing-key-for-authenticated-user",
 			namespace: "user",
@@ -25398,6 +26505,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:ssh_signing
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25408,7 +26516,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:ssh_signin
 	 *
 	 * `DELETE /user/ssh_signing_keys/{ssh_signing_key_id}` — risk: medium
 	 */
-	async deleteSshSigningKey(sshSigningKeyId: string): Promise<ProofResult<unknown>> {
+	async deleteSshSigningKey(sshSigningKeyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/delete-ssh-signing-key-for-authenticated-user",
 			namespace: "user",
@@ -25421,6 +26529,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:ssh_signin
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25431,7 +26540,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /user/starred` — risk: medium
 	 */
-	async listStarred(): Promise<ProofResult<unknown>> {
+	async listStarred(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-repos-starred-by-authenticated-user",
 			namespace: "user",
@@ -25444,6 +26553,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25452,7 +26562,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /user/starred/{owner}/{repo}` — risk: medium
 	 */
-	async retrieveStarred(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async retrieveStarred(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/check-repo-is-starred-by-authenticated-user",
 			namespace: "user",
@@ -25465,6 +26575,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25473,7 +26584,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `PUT /user/starred/{owner}/{repo}` — risk: medium
 	 */
-	async starred(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async starred(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/star-repo-for-authenticated-user",
 			namespace: "user",
@@ -25486,6 +26597,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25494,7 +26606,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `DELETE /user/starred/{owner}/{repo}` — risk: medium
 	 */
-	async deleteStarred(owner: string, repo: string): Promise<ProofResult<unknown>> {
+	async deleteStarred(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/unstar-repo-for-authenticated-user",
 			namespace: "user",
@@ -25507,6 +26619,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25515,7 +26628,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /user/subscriptions` — risk: medium
 	 */
-	async listSubscriptions(): Promise<ProofResult<unknown>> {
+	async listSubscriptions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-watched-repos-for-authenticated-user",
 			namespace: "user",
@@ -25528,6 +26641,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25539,7 +26653,7 @@ OAuth app tokens and personal access tokens (classic) need the `user`, `repo`, o
 	 *
 	 * `GET /user/teams` — risk: medium
 	 */
-	async listTeams(): Promise<ProofResult<unknown>> {
+	async listTeams(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "teams/list-for-authenticated-user",
 			namespace: "user",
@@ -25552,6 +26666,7 @@ OAuth app tokens and personal access tokens (classic) need the `user`, `repo`, o
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25562,7 +26677,7 @@ If you are requesting info
 	 *
 	 * `GET /user/{account_id}` — risk: low
 	 */
-	async retrieve(accountId: string): Promise<ProofResult<unknown>> {
+	async retrieve(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/get-by-id",
 			namespace: "user",
@@ -25575,6 +26690,7 @@ If you are requesting info
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25583,7 +26699,7 @@ If you are requesting info
 	 *
 	 * `POST /user/{user_id}/projectsV2/{project_number}/drafts` — risk: medium
 	 */
-	async drafts(userId: string, projectNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async drafts(userId: string, projectNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/create-draft-item-for-authenticated-user",
 			namespace: "user",
@@ -25596,13 +26712,14 @@ If you are requesting info
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -25616,7 +26733,7 @@ Note: Pagination is powered exclusively by the `since` parameter. Use
 	 *
 	 * `GET /users` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list",
 			namespace: "users",
@@ -25629,6 +26746,7 @@ Note: Pagination is powered exclusively by the `since` parameter. Use
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25637,7 +26755,7 @@ Note: Pagination is powered exclusively by the `since` parameter. Use
 	 *
 	 * `POST /users/{user_id}/projectsV2/{project_number}/views` — risk: medium
 	 */
-	async views(userId: string, projectNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async views(userId: string, projectNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/create-view-for-user",
 			namespace: "users",
@@ -25650,6 +26768,7 @@ Note: Pagination is powered exclusively by the `since` parameter. Use
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25660,7 +26779,7 @@ If you are requesting information about an [Enterprise Managed User](https://doc
 	 *
 	 * `GET /users/{username}` — risk: low
 	 */
-	async retrieve(username: string): Promise<ProofResult<unknown>> {
+	async retrieve(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/get-by-username",
 			namespace: "users",
@@ -25673,6 +26792,7 @@ If you are requesting information about an [Enterprise Managed User](https://doc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25683,7 +26803,7 @@ The collection of attestations returned by this endpoint is filtered according t
 	 *
 	 * `POST /users/{username}/attestations/bulk-list` — risk: medium
 	 */
-	async bulkList(username: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async bulkList(username: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-attestations-bulk",
 			namespace: "users",
@@ -25696,6 +26816,7 @@ The collection of attestations returned by this endpoint is filtered according t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25704,7 +26825,7 @@ The collection of attestations returned by this endpoint is filtered according t
 	 *
 	 * `POST /users/{username}/attestations/delete-request` — risk: medium
 	 */
-	async deleteRequest(username: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteRequest(username: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/delete-attestations-bulk",
 			namespace: "users",
@@ -25717,6 +26838,7 @@ The collection of attestations returned by this endpoint is filtered according t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25725,7 +26847,7 @@ The collection of attestations returned by this endpoint is filtered according t
 	 *
 	 * `DELETE /users/{username}/attestations/digest/{subject_digest}` — risk: medium
 	 */
-	async deleteDigest(username: string, subjectDigest: string): Promise<ProofResult<unknown>> {
+	async deleteDigest(username: string, subjectDigest: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/delete-attestations-by-subject-digest",
 			namespace: "users",
@@ -25738,6 +26860,7 @@ The collection of attestations returned by this endpoint is filtered according t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25746,7 +26869,7 @@ The collection of attestations returned by this endpoint is filtered according t
 	 *
 	 * `DELETE /users/{username}/attestations/{attestation_id}` — risk: medium
 	 */
-	async deleteAttestation(username: string, attestationId: string): Promise<ProofResult<unknown>> {
+	async deleteAttestation(username: string, attestationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/delete-attestations-by-id",
 			namespace: "users",
@@ -25759,6 +26882,7 @@ The collection of attestations returned by this endpoint is filtered according t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25769,7 +26893,7 @@ The collection of attestations returned by this endpoint is filtered acco
 	 *
 	 * `GET /users/{username}/attestations/{subject_digest}` — risk: medium
 	 */
-	async retrieveAttestation(username: string, subjectDigest: string): Promise<ProofResult<unknown>> {
+	async retrieveAttestation(username: string, subjectDigest: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-attestations",
 			namespace: "users",
@@ -25782,6 +26906,7 @@ The collection of attestations returned by this endpoint is filtered acco
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25792,7 +26917,7 @@ Only Spaces that are readable by the authenticated user are returned. This inclu
 	 *
 	 * `GET /users/{username}/copilot-spaces` — risk: medium
 	 */
-	async listCopilotSpaces(username: string): Promise<ProofResult<unknown>> {
+	async listCopilotSpaces(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/list-for-user",
 			namespace: "users",
@@ -25805,6 +26930,7 @@ Only Spaces that are readable by the authenticated user are returned. This inclu
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25817,7 +26943,7 @@ OAuth app tokens
 	 *
 	 * `POST /users/{username}/copilot-spaces` — risk: medium
 	 */
-	async createCopilotSpace(username: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createCopilotSpace(username: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/create-for-user",
 			namespace: "users",
@@ -25830,6 +26956,7 @@ OAuth app tokens
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25840,7 +26967,7 @@ Private user spaces require the authenticated user to be the owner of the space
 	 *
 	 * `GET /users/{username}/copilot-spaces/{space_number}` — risk: medium
 	 */
-	async retrieveCopilotSpace(username: string, spaceNumber: string): Promise<ProofResult<unknown>> {
+	async retrieveCopilotSpace(username: string, spaceNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/get-for-user",
 			namespace: "users",
@@ -25853,6 +26980,7 @@ Private user spaces require the authenticated user to be the owner of the space
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25865,7 +26993,7 @@ OAuth app tokens and personal access tok
 	 *
 	 * `PUT /users/{username}/copilot-spaces/{space_number}` — risk: medium
 	 */
-	async copilotSpaces(username: string, spaceNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async copilotSpaces(username: string, spaceNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/update-for-user",
 			namespace: "users",
@@ -25878,6 +27006,7 @@ OAuth app tokens and personal access tok
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25888,7 +27017,7 @@ OAuth app tokens and personal access tok
 	 *
 	 * `DELETE /users/{username}/copilot-spaces/{space_number}` — risk: medium
 	 */
-	async deleteCopilotSpace(username: string, spaceNumber: string): Promise<ProofResult<unknown>> {
+	async deleteCopilotSpace(username: string, spaceNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/delete-for-user",
 			namespace: "users",
@@ -25901,6 +27030,7 @@ OAuth app tokens and personal access tok
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25911,7 +27041,7 @@ Each collaborator entry specifies which
 	 *
 	 * `GET /users/{username}/copilot-spaces/{space_number}/collaborators` — risk: medium
 	 */
-	async collaborators_0(username: string, spaceNumber: string): Promise<ProofResult<unknown>> {
+	async collaborators_0(username: string, spaceNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/list-collaborators-for-user",
 			namespace: "users",
@@ -25924,6 +27054,7 @@ Each collaborator entry specifies which
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25934,7 +27065,7 @@ Team collaborators are not supported for user
 	 *
 	 * `POST /users/{username}/copilot-spaces/{space_number}/collaborators` — risk: medium
 	 */
-	async collaborators_1(username: string, spaceNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async collaborators_1(username: string, spaceNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/add-collaborator-for-user",
 			namespace: "users",
@@ -25947,6 +27078,7 @@ Team collaborators are not supported for user
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25957,7 +27089,7 @@ OAuth app tokens and personal
 	 *
 	 * `PUT /users/{username}/copilot-spaces/{space_number}/collaborators/{actor_type}/{actor_identifier}` — risk: medium
 	 */
-	async collaborators_2(username: string, spaceNumber: string, actorType: string, actorIdentifier: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async collaborators_2(username: string, spaceNumber: string, actorType: string, actorIdentifier: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/update-collaborator-for-user",
 			namespace: "users",
@@ -25970,6 +27102,7 @@ OAuth app tokens and personal
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -25980,7 +27113,7 @@ OAuth app tokens and personal access tok
 	 *
 	 * `DELETE /users/{username}/copilot-spaces/{space_number}/collaborators/{actor_type}/{actor_identifier}` — risk: medium
 	 */
-	async deleteCollaborator(username: string, spaceNumber: string, actorType: string, actorIdentifier: string): Promise<ProofResult<unknown>> {
+	async deleteCollaborator(username: string, spaceNumber: string, actorType: string, actorIdentifier: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/remove-collaborator-for-user",
 			namespace: "users",
@@ -25993,6 +27126,7 @@ OAuth app tokens and personal access tok
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26004,7 +27138,7 @@ OAuth app tokens and personal access tokens (clas
 	 *
 	 * `GET /users/{username}/copilot-spaces/{space_number}/resources` — risk: medium
 	 */
-	async resources_0(username: string, spaceNumber: string): Promise<ProofResult<unknown>> {
+	async resources_0(username: string, spaceNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/list-resources-for-user",
 			namespace: "users",
@@ -26017,6 +27151,7 @@ OAuth app tokens and personal access tokens (clas
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26028,7 +27163,7 @@ The following resource types are supported: `repository`, `github_
 	 *
 	 * `POST /users/{username}/copilot-spaces/{space_number}/resources` — risk: medium
 	 */
-	async resources_1(username: string, spaceNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async resources_1(username: string, spaceNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/create-resource-for-user",
 			namespace: "users",
@@ -26041,6 +27176,7 @@ The following resource types are supported: `repository`, `github_
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26052,7 +27188,7 @@ OAuth app tokens and personal access tokens (classic)
 	 *
 	 * `GET /users/{username}/copilot-spaces/{space_number}/resources/{space_resource_id}` — risk: medium
 	 */
-	async retrieveResource(username: string, spaceNumber: string, spaceResourceId: string): Promise<ProofResult<unknown>> {
+	async retrieveResource(username: string, spaceNumber: string, spaceResourceId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/get-resource-for-user",
 			namespace: "users",
@@ -26065,6 +27201,7 @@ OAuth app tokens and personal access tokens (classic)
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26076,7 +27213,7 @@ OAuth app tokens and personal access tokens (classic)
 	 *
 	 * `PUT /users/{username}/copilot-spaces/{space_number}/resources/{space_resource_id}` — risk: medium
 	 */
-	async resources_2(username: string, spaceNumber: string, spaceResourceId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async resources_2(username: string, spaceNumber: string, spaceResourceId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/update-resource-for-user",
 			namespace: "users",
@@ -26089,6 +27226,7 @@ OAuth app tokens and personal access tokens (classic)
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26100,7 +27238,7 @@ OAuth app tokens and personal access tokens (classic) need the `writ
 	 *
 	 * `DELETE /users/{username}/copilot-spaces/{space_number}/resources/{space_resource_id}` — risk: medium
 	 */
-	async deleteResource(username: string, spaceNumber: string, spaceResourceId: string): Promise<ProofResult<unknown>> {
+	async deleteResource(username: string, spaceNumber: string, spaceResourceId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot-spaces/delete-resource-for-user",
 			namespace: "users",
@@ -26113,6 +27251,7 @@ OAuth app tokens and personal access tokens (classic) need the `writ
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26123,7 +27262,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/docker/conflicts` — risk: medium
 	 */
-	async conflicts(username: string): Promise<ProofResult<unknown>> {
+	async conflicts(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/list-docker-migration-conflicting-packages-for-user",
 			namespace: "users",
@@ -26136,6 +27275,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26144,7 +27284,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/events` — risk: medium
 	 */
-	async listEvents(username: string): Promise<ProofResult<unknown>> {
+	async listEvents(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-events-for-authenticated-user",
 			namespace: "users",
@@ -26157,6 +27297,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26168,7 +27309,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/events/orgs/{org}` — risk: medium
 	 */
-	async retrieveOrg(username: string, org: string): Promise<ProofResult<unknown>> {
+	async retrieveOrg(username: string, org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-org-events-for-authenticated-user",
 			namespace: "users",
@@ -26181,6 +27322,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26190,7 +27332,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/events/public` — risk: medium
 	 */
-	async eventsPublic(username: string): Promise<ProofResult<unknown>> {
+	async eventsPublic(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-public-events-for-user",
 			namespace: "users",
@@ -26203,6 +27345,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26211,7 +27354,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/followers` — risk: medium
 	 */
-	async listFollowers(username: string): Promise<ProofResult<unknown>> {
+	async listFollowers(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-followers-for-user",
 			namespace: "users",
@@ -26224,6 +27367,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26232,7 +27376,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/following` — risk: medium
 	 */
-	async listFollowing(username: string): Promise<ProofResult<unknown>> {
+	async listFollowing(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-following-for-user",
 			namespace: "users",
@@ -26245,6 +27389,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26253,7 +27398,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/following/{target_user}` — risk: medium
 	 */
-	async retrieveFollowing(username: string, targetUser: string): Promise<ProofResult<unknown>> {
+	async retrieveFollowing(username: string, targetUser: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/check-following-for-user",
 			namespace: "users",
@@ -26266,6 +27411,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26274,7 +27420,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/gists` — risk: medium
 	 */
-	async listGists(username: string): Promise<ProofResult<unknown>> {
+	async listGists(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "gists/list-for-user",
 			namespace: "users",
@@ -26287,6 +27433,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26295,7 +27442,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/gpg_keys` — risk: medium
 	 */
-	async listGpgKeys(username: string): Promise<ProofResult<unknown>> {
+	async listGpgKeys(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-gpg-keys-for-user",
 			namespace: "users",
@@ -26308,6 +27455,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26318,7 +27466,7 @@ OAuth app tokens and personal access token
 	 *
 	 * `GET /users/{username}/hovercard` — risk: medium
 	 */
-	async listHovercard(username: string): Promise<ProofResult<unknown>> {
+	async listHovercard(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/get-context-for-user",
 			namespace: "users",
@@ -26331,6 +27479,7 @@ OAuth app tokens and personal access token
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26341,7 +27490,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `GET /users/{username}/installation` — risk: medium
 	 */
-	async listInstallation(username: string): Promise<ProofResult<unknown>> {
+	async listInstallation(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps/get-user-installation",
 			namespace: "users",
@@ -26354,6 +27503,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26362,7 +27512,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 	 *
 	 * `GET /users/{username}/keys` — risk: medium
 	 */
-	async listKeys(username: string): Promise<ProofResult<unknown>> {
+	async listKeys(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-public-keys-for-user",
 			namespace: "users",
@@ -26375,6 +27525,7 @@ You must use a [JWT](https://docs.github.com/apps/building-github-apps/authentic
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26385,7 +27536,7 @@ This method only lists _public_ memberships, regardl
 	 *
 	 * `GET /users/{username}/orgs` — risk: medium
 	 */
-	async listOrgs(username: string): Promise<ProofResult<unknown>> {
+	async listOrgs(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "orgs/list-for-user",
 			namespace: "users",
@@ -26398,6 +27549,7 @@ This method only lists _public_ memberships, regardl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26408,7 +27560,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /users/{username}/packages` — risk: medium
 	 */
-	async listPackages(username: string): Promise<ProofResult<unknown>> {
+	async listPackages(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/list-packages-for-user",
 			namespace: "users",
@@ -26421,6 +27573,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26431,7 +27584,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /users/{username}/packages/{package_type}/{package_name}` — risk: medium
 	 */
-	async retrievePackage(username: string, packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async retrievePackage(username: string, packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/get-package-for-user",
 			namespace: "users",
@@ -26444,6 +27597,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26454,7 +27608,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `DELETE /users/{username}/packages/{package_type}/{package_name}` — risk: medium
 	 */
-	async deletePackage(username: string, packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async deletePackage(username: string, packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/delete-package-for-user",
 			namespace: "users",
@@ -26467,6 +27621,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26479,7 +27634,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `POST /users/{username}/packages/{package_type}/{package_name}/restore` — risk: medium
 	 */
-	async restore_0(username: string, packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async restore_0(username: string, packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/restore-package-for-user",
 			namespace: "users",
@@ -26492,6 +27647,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26502,7 +27658,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /users/{username}/packages/{package_type}/{package_name}/versions` — risk: medium
 	 */
-	async versions(username: string, packageType: string, packageName: string): Promise<ProofResult<unknown>> {
+	async versions(username: string, packageType: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/get-all-package-versions-for-package-owned-by-user",
 			namespace: "users",
@@ -26515,6 +27671,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26525,7 +27682,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `GET /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}` — risk: medium
 	 */
-	async retrieveVersion(username: string, packageType: string, packageName: string, packageVersionId: string): Promise<ProofResult<unknown>> {
+	async retrieveVersion(username: string, packageType: string, packageName: string, packageVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/get-package-version-for-user",
 			namespace: "users",
@@ -26538,6 +27695,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26546,7 +27704,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	 *
 	 * `DELETE /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}` — risk: medium
 	 */
-	async deleteVersion(username: string, packageType: string, packageName: string, packageVersionId: string): Promise<ProofResult<unknown>> {
+	async deleteVersion(username: string, packageType: string, packageName: string, packageVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/delete-package-version-for-user",
 			namespace: "users",
@@ -26559,6 +27717,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26571,7 +27730,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `POST /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore` — risk: medium
 	 */
-	async versionsRestore(username: string, packageType: string, packageName: string, packageVersionId: string): Promise<ProofResult<unknown>> {
+	async versionsRestore(username: string, packageType: string, packageName: string, packageVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "packages/restore-package-version-for-user",
 			namespace: "users",
@@ -26584,6 +27743,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26592,7 +27752,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `GET /users/{username}/projectsV2` — risk: medium
 	 */
-	async listProjectsV2(username: string): Promise<ProofResult<unknown>> {
+	async listProjectsV2(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/list-for-user",
 			namespace: "users",
@@ -26605,6 +27765,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26613,7 +27774,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `GET /users/{username}/projectsV2/{project_number}` — risk: medium
 	 */
-	async retrieveProjectsV2(username: string, projectNumber: string): Promise<ProofResult<unknown>> {
+	async retrieveProjectsV2(username: string, projectNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/get-for-user",
 			namespace: "users",
@@ -26626,6 +27787,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26634,7 +27796,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `GET /users/{username}/projectsV2/{project_number}/fields` — risk: medium
 	 */
-	async fields_0(username: string, projectNumber: string): Promise<ProofResult<unknown>> {
+	async fields_0(username: string, projectNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/list-fields-for-user",
 			namespace: "users",
@@ -26647,6 +27809,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26655,7 +27818,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `POST /users/{username}/projectsV2/{project_number}/fields` — risk: medium
 	 */
-	async fields_1(username: string, projectNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async fields_1(username: string, projectNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/add-field-for-user",
 			namespace: "users",
@@ -26668,6 +27831,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26676,7 +27840,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `GET /users/{username}/projectsV2/{project_number}/fields/{field_id}` — risk: medium
 	 */
-	async retrieveField(username: string, projectNumber: string, fieldId: string): Promise<ProofResult<unknown>> {
+	async retrieveField(username: string, projectNumber: string, fieldId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/get-field-for-user",
 			namespace: "users",
@@ -26689,6 +27853,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26697,7 +27862,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `GET /users/{username}/projectsV2/{project_number}/items` — risk: medium
 	 */
-	async items_0(username: string, projectNumber: string): Promise<ProofResult<unknown>> {
+	async items_0(username: string, projectNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/list-items-for-user",
 			namespace: "users",
@@ -26710,6 +27875,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26718,7 +27884,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `POST /users/{username}/projectsV2/{project_number}/items` — risk: medium
 	 */
-	async items_1(username: string, projectNumber: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async items_1(username: string, projectNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/add-item-for-user",
 			namespace: "users",
@@ -26731,6 +27897,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26739,7 +27906,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `GET /users/{username}/projectsV2/{project_number}/items/{item_id}` — risk: medium
 	 */
-	async retrieveItem(username: string, projectNumber: string, itemId: string): Promise<ProofResult<unknown>> {
+	async retrieveItem(username: string, projectNumber: string, itemId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/get-user-item",
 			namespace: "users",
@@ -26752,6 +27919,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26760,7 +27928,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `PATCH /users/{username}/projectsV2/{project_number}/items/{item_id}` — risk: medium
 	 */
-	async items_2(username: string, projectNumber: string, itemId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async items_2(username: string, projectNumber: string, itemId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/update-item-for-user",
 			namespace: "users",
@@ -26773,6 +27941,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26781,7 +27950,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `DELETE /users/{username}/projectsV2/{project_number}/items/{item_id}` — risk: medium
 	 */
-	async deleteItem(username: string, projectNumber: string, itemId: string): Promise<ProofResult<unknown>> {
+	async deleteItem(username: string, projectNumber: string, itemId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/delete-item-for-user",
 			namespace: "users",
@@ -26794,6 +27963,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26802,7 +27972,7 @@ You can restore a deleted package under the following conditions:
 	 *
 	 * `GET /users/{username}/projectsV2/{project_number}/views/{view_number}/items` — risk: medium
 	 */
-	async viewsItems(username: string, projectNumber: string, viewNumber: string): Promise<ProofResult<unknown>> {
+	async viewsItems(username: string, projectNumber: string, viewNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "projects/list-view-items-for-user",
 			namespace: "users",
@@ -26815,6 +27985,7 @@ You can restore a deleted package under the following conditions:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26826,7 +27997,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 	 *
 	 * `GET /users/{username}/received_events` — risk: medium
 	 */
-	async listReceivedEvents(username: string): Promise<ProofResult<unknown>> {
+	async listReceivedEvents(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-received-events-for-user",
 			namespace: "users",
@@ -26839,6 +28010,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26848,7 +28020,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 	 *
 	 * `GET /users/{username}/received_events/public` — risk: medium
 	 */
-	async receivedEventsPublic(username: string): Promise<ProofResult<unknown>> {
+	async receivedEventsPublic(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-received-public-events-for-user",
 			namespace: "users",
@@ -26861,6 +28033,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26869,7 +28042,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 	 *
 	 * `GET /users/{username}/repos` — risk: medium
 	 */
-	async listRepos(username: string): Promise<ProofResult<unknown>> {
+	async listRepos(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/list-for-user",
 			namespace: "users",
@@ -26882,6 +28055,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26892,7 +28066,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 	 *
 	 * `GET /users/{username}/settings/billing/premium_request/usage` — risk: medium
 	 */
-	async premiumRequestUsage(username: string): Promise<ProofResult<unknown>> {
+	async premiumRequestUsage(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-github-billing-premium-request-usage-report-user",
 			namespace: "users",
@@ -26905,6 +28079,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26915,7 +28090,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 	 *
 	 * `GET /users/{username}/settings/billing/usage` — risk: medium
 	 */
-	async usage_1(username: string): Promise<ProofResult<unknown>> {
+	async usage_1(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-github-billing-usage-report-user",
 			namespace: "users",
@@ -26928,6 +28103,7 @@ given user, you will see private events. Otherwise, you'll only see public event
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26941,7 +28117,7 @@ Gets a summary report of usage for a user.
 	 *
 	 * `GET /users/{username}/settings/billing/usage/summary` — risk: medium
 	 */
-	async summary(username: string): Promise<ProofResult<unknown>> {
+	async summary(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-github-billing-usage-summary-report-user",
 			namespace: "users",
@@ -26954,6 +28130,7 @@ Gets a summary report of usage for a user.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26962,7 +28139,7 @@ Gets a summary report of usage for a user.
 	 *
 	 * `GET /users/{username}/social_accounts` — risk: medium
 	 */
-	async listSocialAccounts(username: string): Promise<ProofResult<unknown>> {
+	async listSocialAccounts(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-social-accounts-for-user",
 			namespace: "users",
@@ -26975,6 +28152,7 @@ Gets a summary report of usage for a user.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -26983,7 +28161,7 @@ Gets a summary report of usage for a user.
 	 *
 	 * `GET /users/{username}/ssh_signing_keys` — risk: medium
 	 */
-	async listSshSigningKeys(username: string): Promise<ProofResult<unknown>> {
+	async listSshSigningKeys(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users/list-ssh-signing-keys-for-user",
 			namespace: "users",
@@ -26996,6 +28174,7 @@ Gets a summary report of usage for a user.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -27006,7 +28185,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /users/{username}/starred` — risk: medium
 	 */
-	async listStarred(username: string): Promise<ProofResult<unknown>> {
+	async listStarred(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-repos-starred-by-user",
 			namespace: "users",
@@ -27019,6 +28198,7 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -27027,7 +28207,7 @@ This endpoint supports the following custom media types. For more information, s
 	 *
 	 * `GET /users/{username}/subscriptions` — risk: medium
 	 */
-	async listSubscriptions(username: string): Promise<ProofResult<unknown>> {
+	async listSubscriptions(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "activity/list-repos-watched-by-user",
 			namespace: "users",
@@ -27040,13 +28220,14 @@ This endpoint supports the following custom media types. For more information, s
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class VersionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -27058,7 +28239,7 @@ export class VersionsResource extends RpcTarget {
 	 *
 	 * `GET /versions` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "meta/get-all-versions",
 			namespace: "versions",
@@ -27071,13 +28252,14 @@ export class VersionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ZenResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -27089,7 +28271,7 @@ export class ZenResource extends RpcTarget {
 	 *
 	 * `GET /zen` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "meta/get-zen",
 			namespace: "zen",
@@ -27102,12 +28284,13 @@ export class ZenResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 interface Env {
-	GITHUB_API_KEY: string;
+	GITHUB_API_KEY?: string;
 }
 
 export class GithubCapability extends WorkerEntrypoint<Env> {

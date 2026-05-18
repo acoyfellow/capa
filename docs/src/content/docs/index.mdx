@@ -24,15 +24,18 @@ import CapabilityGrid from '../../components/CapabilityGrid.astro';
 
 Along with the upstream result, capa gives you a plain JSON receipt: what it called, what came back, and which checks passed. Keep it for logs, show it in a UI, or ignore it when you do not need it.
 
-## Where this is heading
+## Multi-tenant capability Workers
 
-The binding is the product. The next install UX should be just as direct:
+The default install path is still one deployed capability with one Worker secret. The target runtime shape also needs to support workflow builders and SaaS products: deploy one `capa-stripe` Worker, then select a tenant credential per RPC call.
 
-```bash
-npx @acoyfellow/capa add stripe
+```ts
+await env.STRIPE.paymentIntents.create(
+  { amount: 2500, currency: "usd" },
+  { auth: { apiKey: tenant.stripeKey } },
+);
 ```
 
-That command should create a tiny hello-world Worker already wired to the selected capability. If a service was provisioned elsewhere — including provider flows like Projects.dev — capa is the Worker binding layer that makes its API callable from `env.<SERVICE>`.
+Static secrets stay the simple default. Per-call auth is the opt-in multi-tenant path; provider credentials must stay out of returned receipts. See [Runtime auth](/runtime-auth/) for the full target contract, including providers that require extra auth headers.
 
 ## Capabilities
 

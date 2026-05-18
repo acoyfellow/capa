@@ -16974,8 +16974,8 @@ export type paths = {
             cookie?: never;
         };
         /**
-         * Search on GitLab
-         * @description This feature was introduced in GitLab 10.5.
+         * Search an instance
+         * @description Searches for a term across the entire GitLab instance. The response depends on the requested scope.
          */
         get: operations["getApiV4Search"];
         put?: never;
@@ -17759,8 +17759,8 @@ export type components = {
             approvals_required: number;
             approved: boolean;
             approved_by: components["schemas"]["API_Entities_Approvals"][];
-            approver_groups: string;
-            approvers: string;
+            approver_groups: Record<string, never>[];
+            approvers: Record<string, never>[];
             /**
              * Format: date-time
              * @example 2022-08-17T12:46:35.053Z
@@ -17805,13 +17805,17 @@ export type components = {
         };
         /** @description API_Entities_AuditEvent model */
         API_Entities_AuditEvent: {
-            author_id: string;
+            /** Format: int32 */
+            author_id: number;
+            /** Format: date-time */
             created_at: string;
-            details: string;
-            entity_id: string;
+            details: Record<string, never>;
+            /** Format: int32 */
+            entity_id: number;
             entity_type: string;
             event_name: string;
-            id: string;
+            /** Format: int32 */
+            id: number;
         };
         /** @description API_Entities_Avatar model */
         API_Entities_Avatar: {
@@ -24449,14 +24453,20 @@ export type components = {
             unprotect_access_levels: components["schemas"]["API_Entities_ProtectedRefAccess"][];
         };
         API_Entities_ProtectedEnvironments_ApprovalRuleForSummary: {
-            access_level: string;
+            /** Format: int32 */
+            access_level: number;
             access_level_description: string;
             deployment_approvals: components["schemas"]["API_Entities_Deployments_Approval"];
-            group_id: string;
-            group_inheritance_type: string;
-            id: string;
-            required_approvals: string;
-            user_id: string;
+            /** Format: int32 */
+            group_id: number;
+            /** Format: int32 */
+            group_inheritance_type: number;
+            /** Format: int32 */
+            id: number;
+            /** Format: int32 */
+            required_approvals: number;
+            /** Format: int32 */
+            user_id: number;
         };
         API_Entities_ProtectedRefAccess: {
             /**
@@ -88389,7 +88399,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Search on GitLab */
+            /** @description Search an instance */
             200: {
                 headers: {
                     [name: string]: unknown;

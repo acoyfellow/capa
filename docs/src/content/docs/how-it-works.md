@@ -49,6 +49,25 @@ Each capability returns 404 on direct HTTP requests. Reach it through a declared
 
 One Worker per API keeps setup understandable: one upstream service, one secret set, one service binding. It also lets you deploy and update capabilities independently.
 
+## Static secret by default, runtime auth when needed
+
+The basic deployment keeps its upstream credential as a Worker secret:
+
+```bash
+wrangler secret put STRIPE_API_KEY
+```
+
+Multi-tenant platforms need a second mode: one shared capability Worker, many tenant credentials selected per RPC call.
+
+```ts
+await env.STRIPE.paymentIntents.create(
+  { amount: 2500, currency: "usd" },
+  { auth: { apiKey: tenant.stripeKey } },
+);
+```
+
+The implementation target is deliberately narrow: optional `auth.apiKey` plus capability-specific extra auth headers where a provider needs them. No per-call upstream URL changes, no tenant database inside capa, and no credential data in receipts. The full target contract is documented in [Runtime auth](/runtime-auth/).
+
 ## Why no registry
 
 For now, the repo is the catalog. The site reads the manifests already checked in here, and you can fork or deploy the capabilities you actually want.

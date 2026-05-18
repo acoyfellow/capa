@@ -6,12 +6,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 
 export class AdminAppsApproveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23,7 +23,7 @@ export class AdminAppsApproveResource extends RpcTarget {
 	 *
 	 * `POST /admin.apps.approve` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_apps_approve",
 			namespace: "admin.apps.approve",
@@ -36,13 +36,14 @@ export class AdminAppsApproveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminAppsApprovedListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -54,7 +55,7 @@ export class AdminAppsApprovedListResource extends RpcTarget {
 	 *
 	 * `GET /admin.apps.approved.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_apps_approved_list",
 			namespace: "admin.apps.approved.list",
@@ -67,13 +68,14 @@ export class AdminAppsApprovedListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminAppsRequestsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -85,7 +87,7 @@ export class AdminAppsRequestsListResource extends RpcTarget {
 	 *
 	 * `GET /admin.apps.requests.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_apps_requests_list",
 			namespace: "admin.apps.requests.list",
@@ -98,13 +100,14 @@ export class AdminAppsRequestsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminAppsRestrictResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -116,7 +119,7 @@ export class AdminAppsRestrictResource extends RpcTarget {
 	 *
 	 * `POST /admin.apps.restrict` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_apps_restrict",
 			namespace: "admin.apps.restrict",
@@ -129,13 +132,14 @@ export class AdminAppsRestrictResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminAppsRestrictedListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -147,7 +151,7 @@ export class AdminAppsRestrictedListResource extends RpcTarget {
 	 *
 	 * `GET /admin.apps.restricted.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_apps_restricted_list",
 			namespace: "admin.apps.restricted.list",
@@ -160,13 +164,14 @@ export class AdminAppsRestrictedListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsArchiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -178,7 +183,7 @@ export class AdminConversationsArchiveResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.archive` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_archive",
 			namespace: "admin.conversations.archive",
@@ -191,13 +196,14 @@ export class AdminConversationsArchiveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsConvertToPrivateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -209,7 +215,7 @@ export class AdminConversationsConvertToPrivateResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.convertToPrivate` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_convertToPrivate",
 			namespace: "admin.conversations.convertToPrivate",
@@ -222,13 +228,14 @@ export class AdminConversationsConvertToPrivateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsCreateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -240,7 +247,7 @@ export class AdminConversationsCreateResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.create` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_create",
 			namespace: "admin.conversations.create",
@@ -253,13 +260,14 @@ export class AdminConversationsCreateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -271,7 +279,7 @@ export class AdminConversationsDeleteResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.delete` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_delete",
 			namespace: "admin.conversations.delete",
@@ -284,13 +292,14 @@ export class AdminConversationsDeleteResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsDisconnectSharedResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -302,7 +311,7 @@ export class AdminConversationsDisconnectSharedResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.disconnectShared` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_disconnectShared",
 			namespace: "admin.conversations.disconnectShared",
@@ -315,13 +324,14 @@ export class AdminConversationsDisconnectSharedResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsEkmListOriginalConnectedChannelInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -333,7 +343,7 @@ export class AdminConversationsEkmListOriginalConnectedChannelInfoResource exten
 	 *
 	 * `GET /admin.conversations.ekm.listOriginalConnectedChannelInfo` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_ekm_listOriginalConnectedChannelInfo",
 			namespace: "admin.conversations.ekm.listOriginalConnectedChannelInfo",
@@ -346,13 +356,14 @@ export class AdminConversationsEkmListOriginalConnectedChannelInfoResource exten
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsGetConversationPrefsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -364,7 +375,7 @@ export class AdminConversationsGetConversationPrefsResource extends RpcTarget {
 	 *
 	 * `GET /admin.conversations.getConversationPrefs` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_getConversationPrefs",
 			namespace: "admin.conversations.getConversationPrefs",
@@ -377,13 +388,14 @@ export class AdminConversationsGetConversationPrefsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsGetTeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -395,7 +407,7 @@ export class AdminConversationsGetTeamsResource extends RpcTarget {
 	 *
 	 * `GET /admin.conversations.getTeams` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_getTeams",
 			namespace: "admin.conversations.getTeams",
@@ -408,13 +420,14 @@ export class AdminConversationsGetTeamsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsInviteResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -426,7 +439,7 @@ export class AdminConversationsInviteResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.invite` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_invite",
 			namespace: "admin.conversations.invite",
@@ -439,13 +452,14 @@ export class AdminConversationsInviteResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsRenameResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -457,7 +471,7 @@ export class AdminConversationsRenameResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.rename` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_rename",
 			namespace: "admin.conversations.rename",
@@ -470,13 +484,14 @@ export class AdminConversationsRenameResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsRestrictAccessAddGroupResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -488,7 +503,7 @@ export class AdminConversationsRestrictAccessAddGroupResource extends RpcTarget 
 	 *
 	 * `POST /admin.conversations.restrictAccess.addGroup` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_restrictAccess_addGroup",
 			namespace: "admin.conversations.restrictAccess.addGroup",
@@ -501,13 +516,14 @@ export class AdminConversationsRestrictAccessAddGroupResource extends RpcTarget 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsRestrictAccessListGroupsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -519,7 +535,7 @@ export class AdminConversationsRestrictAccessListGroupsResource extends RpcTarge
 	 *
 	 * `GET /admin.conversations.restrictAccess.listGroups` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_restrictAccess_listGroups",
 			namespace: "admin.conversations.restrictAccess.listGroups",
@@ -532,13 +548,14 @@ export class AdminConversationsRestrictAccessListGroupsResource extends RpcTarge
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsRestrictAccessRemoveGroupResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -550,7 +567,7 @@ export class AdminConversationsRestrictAccessRemoveGroupResource extends RpcTarg
 	 *
 	 * `POST /admin.conversations.restrictAccess.removeGroup` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_restrictAccess_removeGroup",
 			namespace: "admin.conversations.restrictAccess.removeGroup",
@@ -563,13 +580,14 @@ export class AdminConversationsRestrictAccessRemoveGroupResource extends RpcTarg
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsSearchResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -581,7 +599,7 @@ export class AdminConversationsSearchResource extends RpcTarget {
 	 *
 	 * `GET /admin.conversations.search` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_search",
 			namespace: "admin.conversations.search",
@@ -594,13 +612,14 @@ export class AdminConversationsSearchResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsSetConversationPrefsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -612,7 +631,7 @@ export class AdminConversationsSetConversationPrefsResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.setConversationPrefs` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_setConversationPrefs",
 			namespace: "admin.conversations.setConversationPrefs",
@@ -625,13 +644,14 @@ export class AdminConversationsSetConversationPrefsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsSetTeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -643,7 +663,7 @@ export class AdminConversationsSetTeamsResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.setTeams` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_setTeams",
 			namespace: "admin.conversations.setTeams",
@@ -656,13 +676,14 @@ export class AdminConversationsSetTeamsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminConversationsUnarchiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -674,7 +695,7 @@ export class AdminConversationsUnarchiveResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.unarchive` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_conversations_unarchive",
 			namespace: "admin.conversations.unarchive",
@@ -687,13 +708,14 @@ export class AdminConversationsUnarchiveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminEmojiAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -705,7 +727,7 @@ export class AdminEmojiAddResource extends RpcTarget {
 	 *
 	 * `POST /admin.emoji.add` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_emoji_add",
 			namespace: "admin.emoji.add",
@@ -718,13 +740,14 @@ export class AdminEmojiAddResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminEmojiAddAliasResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -736,7 +759,7 @@ export class AdminEmojiAddAliasResource extends RpcTarget {
 	 *
 	 * `POST /admin.emoji.addAlias` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_emoji_addAlias",
 			namespace: "admin.emoji.addAlias",
@@ -749,13 +772,14 @@ export class AdminEmojiAddAliasResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminEmojiListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -767,7 +791,7 @@ export class AdminEmojiListResource extends RpcTarget {
 	 *
 	 * `GET /admin.emoji.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_emoji_list",
 			namespace: "admin.emoji.list",
@@ -780,13 +804,14 @@ export class AdminEmojiListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminEmojiRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -798,7 +823,7 @@ export class AdminEmojiRemoveResource extends RpcTarget {
 	 *
 	 * `POST /admin.emoji.remove` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_emoji_remove",
 			namespace: "admin.emoji.remove",
@@ -811,13 +836,14 @@ export class AdminEmojiRemoveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminEmojiRenameResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -829,7 +855,7 @@ export class AdminEmojiRenameResource extends RpcTarget {
 	 *
 	 * `POST /admin.emoji.rename` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_emoji_rename",
 			namespace: "admin.emoji.rename",
@@ -842,13 +868,14 @@ export class AdminEmojiRenameResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminInviteRequestsApproveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -860,7 +887,7 @@ export class AdminInviteRequestsApproveResource extends RpcTarget {
 	 *
 	 * `POST /admin.inviteRequests.approve` — risk: medium
 	 */
-	async create(): Promise<ProofResult<unknown>> {
+	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_inviteRequests_approve",
 			namespace: "admin.inviteRequests.approve",
@@ -873,13 +900,14 @@ export class AdminInviteRequestsApproveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminInviteRequestsApprovedListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -891,7 +919,7 @@ export class AdminInviteRequestsApprovedListResource extends RpcTarget {
 	 *
 	 * `GET /admin.inviteRequests.approved.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_inviteRequests_approved_list",
 			namespace: "admin.inviteRequests.approved.list",
@@ -904,13 +932,14 @@ export class AdminInviteRequestsApprovedListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminInviteRequestsDeniedListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -922,7 +951,7 @@ export class AdminInviteRequestsDeniedListResource extends RpcTarget {
 	 *
 	 * `GET /admin.inviteRequests.denied.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_inviteRequests_denied_list",
 			namespace: "admin.inviteRequests.denied.list",
@@ -935,13 +964,14 @@ export class AdminInviteRequestsDeniedListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminInviteRequestsDenyResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -953,7 +983,7 @@ export class AdminInviteRequestsDenyResource extends RpcTarget {
 	 *
 	 * `POST /admin.inviteRequests.deny` — risk: medium
 	 */
-	async create(): Promise<ProofResult<unknown>> {
+	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_inviteRequests_deny",
 			namespace: "admin.inviteRequests.deny",
@@ -966,13 +996,14 @@ export class AdminInviteRequestsDenyResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminInviteRequestsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -984,7 +1015,7 @@ export class AdminInviteRequestsListResource extends RpcTarget {
 	 *
 	 * `GET /admin.inviteRequests.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_inviteRequests_list",
 			namespace: "admin.inviteRequests.list",
@@ -997,13 +1028,14 @@ export class AdminInviteRequestsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsAdminsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1015,7 +1047,7 @@ export class AdminTeamsAdminsListResource extends RpcTarget {
 	 *
 	 * `GET /admin.teams.admins.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_admins_list",
 			namespace: "admin.teams.admins.list",
@@ -1028,13 +1060,14 @@ export class AdminTeamsAdminsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsCreateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1046,7 +1079,7 @@ export class AdminTeamsCreateResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.create` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_create",
 			namespace: "admin.teams.create",
@@ -1059,13 +1092,14 @@ export class AdminTeamsCreateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1077,7 +1111,7 @@ export class AdminTeamsListResource extends RpcTarget {
 	 *
 	 * `GET /admin.teams.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_list",
 			namespace: "admin.teams.list",
@@ -1090,13 +1124,14 @@ export class AdminTeamsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsOwnersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1108,7 +1143,7 @@ export class AdminTeamsOwnersListResource extends RpcTarget {
 	 *
 	 * `GET /admin.teams.owners.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_owners_list",
 			namespace: "admin.teams.owners.list",
@@ -1121,13 +1156,14 @@ export class AdminTeamsOwnersListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsSettingsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1139,7 +1175,7 @@ export class AdminTeamsSettingsInfoResource extends RpcTarget {
 	 *
 	 * `GET /admin.teams.settings.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_settings_info",
 			namespace: "admin.teams.settings.info",
@@ -1152,13 +1188,14 @@ export class AdminTeamsSettingsInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsSettingsSetDefaultChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1170,7 +1207,7 @@ export class AdminTeamsSettingsSetDefaultChannelsResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setDefaultChannels` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_settings_setDefaultChannels",
 			namespace: "admin.teams.settings.setDefaultChannels",
@@ -1183,13 +1220,14 @@ export class AdminTeamsSettingsSetDefaultChannelsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsSettingsSetDescriptionResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1201,7 +1239,7 @@ export class AdminTeamsSettingsSetDescriptionResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setDescription` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_settings_setDescription",
 			namespace: "admin.teams.settings.setDescription",
@@ -1214,13 +1252,14 @@ export class AdminTeamsSettingsSetDescriptionResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsSettingsSetDiscoverabilityResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1232,7 +1271,7 @@ export class AdminTeamsSettingsSetDiscoverabilityResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setDiscoverability` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_settings_setDiscoverability",
 			namespace: "admin.teams.settings.setDiscoverability",
@@ -1245,13 +1284,14 @@ export class AdminTeamsSettingsSetDiscoverabilityResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsSettingsSetIconResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1263,7 +1303,7 @@ export class AdminTeamsSettingsSetIconResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setIcon` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_settings_setIcon",
 			namespace: "admin.teams.settings.setIcon",
@@ -1276,13 +1316,14 @@ export class AdminTeamsSettingsSetIconResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminTeamsSettingsSetNameResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1294,7 +1335,7 @@ export class AdminTeamsSettingsSetNameResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setName` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_teams_settings_setName",
 			namespace: "admin.teams.settings.setName",
@@ -1307,13 +1348,14 @@ export class AdminTeamsSettingsSetNameResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsergroupsAddChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1325,7 +1367,7 @@ export class AdminUsergroupsAddChannelsResource extends RpcTarget {
 	 *
 	 * `POST /admin.usergroups.addChannels` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_usergroups_addChannels",
 			namespace: "admin.usergroups.addChannels",
@@ -1338,13 +1380,14 @@ export class AdminUsergroupsAddChannelsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsergroupsAddTeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1356,7 +1399,7 @@ export class AdminUsergroupsAddTeamsResource extends RpcTarget {
 	 *
 	 * `POST /admin.usergroups.addTeams` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_usergroups_addTeams",
 			namespace: "admin.usergroups.addTeams",
@@ -1369,13 +1412,14 @@ export class AdminUsergroupsAddTeamsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsergroupsListChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1387,7 +1431,7 @@ export class AdminUsergroupsListChannelsResource extends RpcTarget {
 	 *
 	 * `GET /admin.usergroups.listChannels` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_usergroups_listChannels",
 			namespace: "admin.usergroups.listChannels",
@@ -1400,13 +1444,14 @@ export class AdminUsergroupsListChannelsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsergroupsRemoveChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1418,7 +1463,7 @@ export class AdminUsergroupsRemoveChannelsResource extends RpcTarget {
 	 *
 	 * `POST /admin.usergroups.removeChannels` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_usergroups_removeChannels",
 			namespace: "admin.usergroups.removeChannels",
@@ -1431,13 +1476,14 @@ export class AdminUsergroupsRemoveChannelsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersAssignResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1449,7 +1495,7 @@ export class AdminUsersAssignResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.assign` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_assign",
 			namespace: "admin.users.assign",
@@ -1462,13 +1508,14 @@ export class AdminUsersAssignResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersInviteResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1480,7 +1527,7 @@ export class AdminUsersInviteResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.invite` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_invite",
 			namespace: "admin.users.invite",
@@ -1493,13 +1540,14 @@ export class AdminUsersInviteResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1511,7 +1559,7 @@ export class AdminUsersListResource extends RpcTarget {
 	 *
 	 * `GET /admin.users.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_list",
 			namespace: "admin.users.list",
@@ -1524,13 +1572,14 @@ export class AdminUsersListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1542,7 +1591,7 @@ export class AdminUsersRemoveResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.remove` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_remove",
 			namespace: "admin.users.remove",
@@ -1555,13 +1604,14 @@ export class AdminUsersRemoveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersSessionInvalidateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1573,7 +1623,7 @@ export class AdminUsersSessionInvalidateResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.session.invalidate` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_session_invalidate",
 			namespace: "admin.users.session.invalidate",
@@ -1586,13 +1636,14 @@ export class AdminUsersSessionInvalidateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersSessionResetResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1604,7 +1655,7 @@ export class AdminUsersSessionResetResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.session.reset` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_session_reset",
 			namespace: "admin.users.session.reset",
@@ -1617,13 +1668,14 @@ export class AdminUsersSessionResetResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersSetAdminResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1635,7 +1687,7 @@ export class AdminUsersSetAdminResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.setAdmin` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_setAdmin",
 			namespace: "admin.users.setAdmin",
@@ -1648,13 +1700,14 @@ export class AdminUsersSetAdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersSetExpirationResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1666,7 +1719,7 @@ export class AdminUsersSetExpirationResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.setExpiration` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_setExpiration",
 			namespace: "admin.users.setExpiration",
@@ -1679,13 +1732,14 @@ export class AdminUsersSetExpirationResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersSetOwnerResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1697,7 +1751,7 @@ export class AdminUsersSetOwnerResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.setOwner` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_setOwner",
 			namespace: "admin.users.setOwner",
@@ -1710,13 +1764,14 @@ export class AdminUsersSetOwnerResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminUsersSetRegularResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1728,7 +1783,7 @@ export class AdminUsersSetRegularResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.setRegular` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "admin_users_setRegular",
 			namespace: "admin.users.setRegular",
@@ -1741,13 +1796,14 @@ export class AdminUsersSetRegularResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ApiTestResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1759,7 +1815,7 @@ export class ApiTestResource extends RpcTarget {
 	 *
 	 * `GET /api.test` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "api_test",
 			namespace: "api.test",
@@ -1772,13 +1828,14 @@ export class ApiTestResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsEventAuthorizationsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1790,7 +1847,7 @@ export class AppsEventAuthorizationsListResource extends RpcTarget {
 	 *
 	 * `GET /apps.event.authorizations.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps_event_authorizations_list",
 			namespace: "apps.event.authorizations.list",
@@ -1803,13 +1860,14 @@ export class AppsEventAuthorizationsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsPermissionsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1821,7 +1879,7 @@ export class AppsPermissionsInfoResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps_permissions_info",
 			namespace: "apps.permissions.info",
@@ -1834,13 +1892,14 @@ export class AppsPermissionsInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsPermissionsRequestResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1852,7 +1911,7 @@ export class AppsPermissionsRequestResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.request` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps_permissions_request",
 			namespace: "apps.permissions.request",
@@ -1865,13 +1924,14 @@ export class AppsPermissionsRequestResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsPermissionsResourcesListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1883,7 +1943,7 @@ export class AppsPermissionsResourcesListResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.resources.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps_permissions_resources_list",
 			namespace: "apps.permissions.resources.list",
@@ -1896,13 +1956,14 @@ export class AppsPermissionsResourcesListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsPermissionsScopesListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1914,7 +1975,7 @@ export class AppsPermissionsScopesListResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.scopes.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps_permissions_scopes_list",
 			namespace: "apps.permissions.scopes.list",
@@ -1927,13 +1988,14 @@ export class AppsPermissionsScopesListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsPermissionsUsersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1945,7 +2007,7 @@ export class AppsPermissionsUsersListResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.users.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps_permissions_users_list",
 			namespace: "apps.permissions.users.list",
@@ -1958,13 +2020,14 @@ export class AppsPermissionsUsersListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsPermissionsUsersRequestResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1976,7 +2039,7 @@ export class AppsPermissionsUsersRequestResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.users.request` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps_permissions_users_request",
 			namespace: "apps.permissions.users.request",
@@ -1989,13 +2052,14 @@ export class AppsPermissionsUsersRequestResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsUninstallResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2007,7 +2071,7 @@ export class AppsUninstallResource extends RpcTarget {
 	 *
 	 * `GET /apps.uninstall` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "apps_uninstall",
 			namespace: "apps.uninstall",
@@ -2020,13 +2084,14 @@ export class AppsUninstallResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AuthRevokeResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2038,7 +2103,7 @@ export class AuthRevokeResource extends RpcTarget {
 	 *
 	 * `GET /auth.revoke` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "auth_revoke",
 			namespace: "auth.revoke",
@@ -2051,13 +2116,14 @@ export class AuthRevokeResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AuthTestResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2069,7 +2135,7 @@ export class AuthTestResource extends RpcTarget {
 	 *
 	 * `GET /auth.test` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "auth_test",
 			namespace: "auth.test",
@@ -2082,13 +2148,14 @@ export class AuthTestResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class BotsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2100,7 +2167,7 @@ export class BotsInfoResource extends RpcTarget {
 	 *
 	 * `GET /bots.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "bots_info",
 			namespace: "bots.info",
@@ -2113,13 +2180,14 @@ export class BotsInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CallsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2131,7 +2199,7 @@ export class CallsAddResource extends RpcTarget {
 	 *
 	 * `POST /calls.add` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "calls_add",
 			namespace: "calls.add",
@@ -2144,13 +2212,14 @@ export class CallsAddResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CallsEndResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2162,7 +2231,7 @@ export class CallsEndResource extends RpcTarget {
 	 *
 	 * `POST /calls.end` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "calls_end",
 			namespace: "calls.end",
@@ -2175,13 +2244,14 @@ export class CallsEndResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CallsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2193,7 +2263,7 @@ export class CallsInfoResource extends RpcTarget {
 	 *
 	 * `GET /calls.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "calls_info",
 			namespace: "calls.info",
@@ -2206,13 +2276,14 @@ export class CallsInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CallsParticipantsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2224,7 +2295,7 @@ export class CallsParticipantsAddResource extends RpcTarget {
 	 *
 	 * `POST /calls.participants.add` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "calls_participants_add",
 			namespace: "calls.participants.add",
@@ -2237,13 +2308,14 @@ export class CallsParticipantsAddResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CallsParticipantsRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2255,7 +2327,7 @@ export class CallsParticipantsRemoveResource extends RpcTarget {
 	 *
 	 * `POST /calls.participants.remove` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "calls_participants_remove",
 			namespace: "calls.participants.remove",
@@ -2268,13 +2340,14 @@ export class CallsParticipantsRemoveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CallsUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2286,7 +2359,7 @@ export class CallsUpdateResource extends RpcTarget {
 	 *
 	 * `POST /calls.update` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "calls_update",
 			namespace: "calls.update",
@@ -2299,13 +2372,14 @@ export class CallsUpdateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2317,7 +2391,7 @@ export class ChatDeleteResource extends RpcTarget {
 	 *
 	 * `POST /chat.delete` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_delete",
 			namespace: "chat.delete",
@@ -2330,13 +2404,14 @@ export class ChatDeleteResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatDeleteScheduledMessageResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2348,7 +2423,7 @@ export class ChatDeleteScheduledMessageResource extends RpcTarget {
 	 *
 	 * `POST /chat.deleteScheduledMessage` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_deleteScheduledMessage",
 			namespace: "chat.deleteScheduledMessage",
@@ -2361,13 +2436,14 @@ export class ChatDeleteScheduledMessageResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatGetPermalinkResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2379,7 +2455,7 @@ export class ChatGetPermalinkResource extends RpcTarget {
 	 *
 	 * `GET /chat.getPermalink` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_getPermalink",
 			namespace: "chat.getPermalink",
@@ -2392,13 +2468,14 @@ export class ChatGetPermalinkResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatMeMessageResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2410,7 +2487,7 @@ export class ChatMeMessageResource extends RpcTarget {
 	 *
 	 * `POST /chat.meMessage` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_meMessage",
 			namespace: "chat.meMessage",
@@ -2423,13 +2500,14 @@ export class ChatMeMessageResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatPostEphemeralResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2441,7 +2519,7 @@ export class ChatPostEphemeralResource extends RpcTarget {
 	 *
 	 * `POST /chat.postEphemeral` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_postEphemeral",
 			namespace: "chat.postEphemeral",
@@ -2454,13 +2532,14 @@ export class ChatPostEphemeralResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatPostMessageResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2472,7 +2551,7 @@ export class ChatPostMessageResource extends RpcTarget {
 	 *
 	 * `POST /chat.postMessage` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_postMessage",
 			namespace: "chat.postMessage",
@@ -2485,13 +2564,14 @@ export class ChatPostMessageResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatScheduleMessageResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2503,7 +2583,7 @@ export class ChatScheduleMessageResource extends RpcTarget {
 	 *
 	 * `POST /chat.scheduleMessage` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_scheduleMessage",
 			namespace: "chat.scheduleMessage",
@@ -2516,13 +2596,14 @@ export class ChatScheduleMessageResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatScheduledMessagesListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2534,7 +2615,7 @@ export class ChatScheduledMessagesListResource extends RpcTarget {
 	 *
 	 * `GET /chat.scheduledMessages.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_scheduledMessages_list",
 			namespace: "chat.scheduledMessages.list",
@@ -2547,13 +2628,14 @@ export class ChatScheduledMessagesListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatUnfurlResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2565,7 +2647,7 @@ export class ChatUnfurlResource extends RpcTarget {
 	 *
 	 * `POST /chat.unfurl` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_unfurl",
 			namespace: "chat.unfurl",
@@ -2578,13 +2660,14 @@ export class ChatUnfurlResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2596,7 +2679,7 @@ export class ChatUpdateResource extends RpcTarget {
 	 *
 	 * `POST /chat.update` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "chat_update",
 			namespace: "chat.update",
@@ -2609,13 +2692,14 @@ export class ChatUpdateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsArchiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2627,7 +2711,7 @@ export class ConversationsArchiveResource extends RpcTarget {
 	 *
 	 * `POST /conversations.archive` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_archive",
 			namespace: "conversations.archive",
@@ -2640,13 +2724,14 @@ export class ConversationsArchiveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsCloseResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2658,7 +2743,7 @@ export class ConversationsCloseResource extends RpcTarget {
 	 *
 	 * `POST /conversations.close` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_close",
 			namespace: "conversations.close",
@@ -2671,13 +2756,14 @@ export class ConversationsCloseResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsCreateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2689,7 +2775,7 @@ export class ConversationsCreateResource extends RpcTarget {
 	 *
 	 * `POST /conversations.create` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_create",
 			namespace: "conversations.create",
@@ -2702,13 +2788,14 @@ export class ConversationsCreateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsHistoryResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2720,7 +2807,7 @@ export class ConversationsHistoryResource extends RpcTarget {
 	 *
 	 * `GET /conversations.history` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_history",
 			namespace: "conversations.history",
@@ -2733,13 +2820,14 @@ export class ConversationsHistoryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2751,7 +2839,7 @@ export class ConversationsInfoResource extends RpcTarget {
 	 *
 	 * `GET /conversations.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_info",
 			namespace: "conversations.info",
@@ -2764,13 +2852,14 @@ export class ConversationsInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsInviteResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2782,7 +2871,7 @@ export class ConversationsInviteResource extends RpcTarget {
 	 *
 	 * `POST /conversations.invite` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_invite",
 			namespace: "conversations.invite",
@@ -2795,13 +2884,14 @@ export class ConversationsInviteResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsJoinResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2813,7 +2903,7 @@ export class ConversationsJoinResource extends RpcTarget {
 	 *
 	 * `POST /conversations.join` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_join",
 			namespace: "conversations.join",
@@ -2826,13 +2916,14 @@ export class ConversationsJoinResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsKickResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2844,7 +2935,7 @@ export class ConversationsKickResource extends RpcTarget {
 	 *
 	 * `POST /conversations.kick` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_kick",
 			namespace: "conversations.kick",
@@ -2857,13 +2948,14 @@ export class ConversationsKickResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsLeaveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2875,7 +2967,7 @@ export class ConversationsLeaveResource extends RpcTarget {
 	 *
 	 * `POST /conversations.leave` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_leave",
 			namespace: "conversations.leave",
@@ -2888,13 +2980,14 @@ export class ConversationsLeaveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2906,7 +2999,7 @@ export class ConversationsListResource extends RpcTarget {
 	 *
 	 * `GET /conversations.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_list",
 			namespace: "conversations.list",
@@ -2919,13 +3012,14 @@ export class ConversationsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsMarkResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2937,7 +3031,7 @@ export class ConversationsMarkResource extends RpcTarget {
 	 *
 	 * `POST /conversations.mark` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_mark",
 			namespace: "conversations.mark",
@@ -2950,13 +3044,14 @@ export class ConversationsMarkResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsMembersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2968,7 +3063,7 @@ export class ConversationsMembersResource extends RpcTarget {
 	 *
 	 * `GET /conversations.members` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_members",
 			namespace: "conversations.members",
@@ -2981,13 +3076,14 @@ export class ConversationsMembersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsOpenResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2999,7 +3095,7 @@ export class ConversationsOpenResource extends RpcTarget {
 	 *
 	 * `POST /conversations.open` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_open",
 			namespace: "conversations.open",
@@ -3012,13 +3108,14 @@ export class ConversationsOpenResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsRenameResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3030,7 +3127,7 @@ export class ConversationsRenameResource extends RpcTarget {
 	 *
 	 * `POST /conversations.rename` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_rename",
 			namespace: "conversations.rename",
@@ -3043,13 +3140,14 @@ export class ConversationsRenameResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsRepliesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3061,7 +3159,7 @@ export class ConversationsRepliesResource extends RpcTarget {
 	 *
 	 * `GET /conversations.replies` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_replies",
 			namespace: "conversations.replies",
@@ -3074,13 +3172,14 @@ export class ConversationsRepliesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsSetPurposeResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3092,7 +3191,7 @@ export class ConversationsSetPurposeResource extends RpcTarget {
 	 *
 	 * `POST /conversations.setPurpose` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_setPurpose",
 			namespace: "conversations.setPurpose",
@@ -3105,13 +3204,14 @@ export class ConversationsSetPurposeResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsSetTopicResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3123,7 +3223,7 @@ export class ConversationsSetTopicResource extends RpcTarget {
 	 *
 	 * `POST /conversations.setTopic` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_setTopic",
 			namespace: "conversations.setTopic",
@@ -3136,13 +3236,14 @@ export class ConversationsSetTopicResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConversationsUnarchiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3154,7 +3255,7 @@ export class ConversationsUnarchiveResource extends RpcTarget {
 	 *
 	 * `POST /conversations.unarchive` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "conversations_unarchive",
 			namespace: "conversations.unarchive",
@@ -3167,13 +3268,14 @@ export class ConversationsUnarchiveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DialogOpenResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3185,7 +3287,7 @@ export class DialogOpenResource extends RpcTarget {
 	 *
 	 * `GET /dialog.open` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dialog_open",
 			namespace: "dialog.open",
@@ -3198,13 +3300,14 @@ export class DialogOpenResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DndEndDndResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3216,7 +3319,7 @@ export class DndEndDndResource extends RpcTarget {
 	 *
 	 * `POST /dnd.endDnd` — risk: medium
 	 */
-	async create(): Promise<ProofResult<unknown>> {
+	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dnd_endDnd",
 			namespace: "dnd.endDnd",
@@ -3229,13 +3332,14 @@ export class DndEndDndResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DndEndSnoozeResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3247,7 +3351,7 @@ export class DndEndSnoozeResource extends RpcTarget {
 	 *
 	 * `POST /dnd.endSnooze` — risk: medium
 	 */
-	async create(): Promise<ProofResult<unknown>> {
+	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dnd_endSnooze",
 			namespace: "dnd.endSnooze",
@@ -3260,13 +3364,14 @@ export class DndEndSnoozeResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DndInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3278,7 +3383,7 @@ export class DndInfoResource extends RpcTarget {
 	 *
 	 * `GET /dnd.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dnd_info",
 			namespace: "dnd.info",
@@ -3291,13 +3396,14 @@ export class DndInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DndSetSnoozeResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3309,7 +3415,7 @@ export class DndSetSnoozeResource extends RpcTarget {
 	 *
 	 * `POST /dnd.setSnooze` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dnd_setSnooze",
 			namespace: "dnd.setSnooze",
@@ -3322,13 +3428,14 @@ export class DndSetSnoozeResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DndTeamInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3340,7 +3447,7 @@ export class DndTeamInfoResource extends RpcTarget {
 	 *
 	 * `GET /dnd.teamInfo` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "dnd_teamInfo",
 			namespace: "dnd.teamInfo",
@@ -3353,13 +3460,14 @@ export class DndTeamInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EmojiListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3371,7 +3479,7 @@ export class EmojiListResource extends RpcTarget {
 	 *
 	 * `GET /emoji.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "emoji_list",
 			namespace: "emoji.list",
@@ -3384,13 +3492,14 @@ export class EmojiListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesCommentsDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3402,7 +3511,7 @@ export class FilesCommentsDeleteResource extends RpcTarget {
 	 *
 	 * `POST /files.comments.delete` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_comments_delete",
 			namespace: "files.comments.delete",
@@ -3415,13 +3524,14 @@ export class FilesCommentsDeleteResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3433,7 +3543,7 @@ export class FilesDeleteResource extends RpcTarget {
 	 *
 	 * `POST /files.delete` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_delete",
 			namespace: "files.delete",
@@ -3446,13 +3556,14 @@ export class FilesDeleteResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3464,7 +3575,7 @@ export class FilesInfoResource extends RpcTarget {
 	 *
 	 * `GET /files.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_info",
 			namespace: "files.info",
@@ -3477,13 +3588,14 @@ export class FilesInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3495,7 +3607,7 @@ export class FilesListResource extends RpcTarget {
 	 *
 	 * `GET /files.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_list",
 			namespace: "files.list",
@@ -3508,13 +3620,14 @@ export class FilesListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesRemoteAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3526,7 +3639,7 @@ export class FilesRemoteAddResource extends RpcTarget {
 	 *
 	 * `POST /files.remote.add` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_remote_add",
 			namespace: "files.remote.add",
@@ -3539,13 +3652,14 @@ export class FilesRemoteAddResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesRemoteInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3557,7 +3671,7 @@ export class FilesRemoteInfoResource extends RpcTarget {
 	 *
 	 * `GET /files.remote.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_remote_info",
 			namespace: "files.remote.info",
@@ -3570,13 +3684,14 @@ export class FilesRemoteInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesRemoteListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3588,7 +3703,7 @@ export class FilesRemoteListResource extends RpcTarget {
 	 *
 	 * `GET /files.remote.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_remote_list",
 			namespace: "files.remote.list",
@@ -3601,13 +3716,14 @@ export class FilesRemoteListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesRemoteRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3619,7 +3735,7 @@ export class FilesRemoteRemoveResource extends RpcTarget {
 	 *
 	 * `POST /files.remote.remove` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_remote_remove",
 			namespace: "files.remote.remove",
@@ -3632,13 +3748,14 @@ export class FilesRemoteRemoveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesRemoteShareResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3650,7 +3767,7 @@ export class FilesRemoteShareResource extends RpcTarget {
 	 *
 	 * `GET /files.remote.share` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_remote_share",
 			namespace: "files.remote.share",
@@ -3663,13 +3780,14 @@ export class FilesRemoteShareResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesRemoteUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3681,7 +3799,7 @@ export class FilesRemoteUpdateResource extends RpcTarget {
 	 *
 	 * `POST /files.remote.update` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_remote_update",
 			namespace: "files.remote.update",
@@ -3694,13 +3812,14 @@ export class FilesRemoteUpdateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesRevokePublicURLResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3712,7 +3831,7 @@ export class FilesRevokePublicURLResource extends RpcTarget {
 	 *
 	 * `POST /files.revokePublicURL` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_revokePublicURL",
 			namespace: "files.revokePublicURL",
@@ -3725,13 +3844,14 @@ export class FilesRevokePublicURLResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesSharedPublicURLResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3743,7 +3863,7 @@ export class FilesSharedPublicURLResource extends RpcTarget {
 	 *
 	 * `POST /files.sharedPublicURL` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_sharedPublicURL",
 			namespace: "files.sharedPublicURL",
@@ -3756,13 +3876,14 @@ export class FilesSharedPublicURLResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesUploadResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3774,7 +3895,7 @@ export class FilesUploadResource extends RpcTarget {
 	 *
 	 * `POST /files.upload` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "files_upload",
 			namespace: "files.upload",
@@ -3787,13 +3908,14 @@ export class FilesUploadResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class MigrationExchangeResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3805,7 +3927,7 @@ export class MigrationExchangeResource extends RpcTarget {
 	 *
 	 * `GET /migration.exchange` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "migration_exchange",
 			namespace: "migration.exchange",
@@ -3818,13 +3940,14 @@ export class MigrationExchangeResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OauthAccessResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3836,7 +3959,7 @@ export class OauthAccessResource extends RpcTarget {
 	 *
 	 * `GET /oauth.access` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oauth_access",
 			namespace: "oauth.access",
@@ -3849,13 +3972,14 @@ export class OauthAccessResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OauthTokenResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3867,7 +3991,7 @@ export class OauthTokenResource extends RpcTarget {
 	 *
 	 * `GET /oauth.token` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oauth_token",
 			namespace: "oauth.token",
@@ -3880,13 +4004,14 @@ export class OauthTokenResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OauthV2AccessResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3898,7 +4023,7 @@ export class OauthV2AccessResource extends RpcTarget {
 	 *
 	 * `GET /oauth.v2.access` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "oauth_v2_access",
 			namespace: "oauth.v2.access",
@@ -3911,13 +4036,14 @@ export class OauthV2AccessResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PinsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3929,7 +4055,7 @@ export class PinsAddResource extends RpcTarget {
 	 *
 	 * `POST /pins.add` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pins_add",
 			namespace: "pins.add",
@@ -3942,13 +4068,14 @@ export class PinsAddResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PinsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3960,7 +4087,7 @@ export class PinsListResource extends RpcTarget {
 	 *
 	 * `GET /pins.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pins_list",
 			namespace: "pins.list",
@@ -3973,13 +4100,14 @@ export class PinsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PinsRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3991,7 +4119,7 @@ export class PinsRemoveResource extends RpcTarget {
 	 *
 	 * `POST /pins.remove` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "pins_remove",
 			namespace: "pins.remove",
@@ -4004,13 +4132,14 @@ export class PinsRemoveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ReactionsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4022,7 +4151,7 @@ export class ReactionsAddResource extends RpcTarget {
 	 *
 	 * `POST /reactions.add` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions_add",
 			namespace: "reactions.add",
@@ -4035,13 +4164,14 @@ export class ReactionsAddResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ReactionsGetResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4053,7 +4183,7 @@ export class ReactionsGetResource extends RpcTarget {
 	 *
 	 * `GET /reactions.get` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions_get",
 			namespace: "reactions.get",
@@ -4066,13 +4196,14 @@ export class ReactionsGetResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ReactionsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4084,7 +4215,7 @@ export class ReactionsListResource extends RpcTarget {
 	 *
 	 * `GET /reactions.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions_list",
 			namespace: "reactions.list",
@@ -4097,13 +4228,14 @@ export class ReactionsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ReactionsRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4115,7 +4247,7 @@ export class ReactionsRemoveResource extends RpcTarget {
 	 *
 	 * `POST /reactions.remove` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reactions_remove",
 			namespace: "reactions.remove",
@@ -4128,13 +4260,14 @@ export class ReactionsRemoveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RemindersAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4146,7 +4279,7 @@ export class RemindersAddResource extends RpcTarget {
 	 *
 	 * `POST /reminders.add` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reminders_add",
 			namespace: "reminders.add",
@@ -4159,13 +4292,14 @@ export class RemindersAddResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RemindersCompleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4177,7 +4311,7 @@ export class RemindersCompleteResource extends RpcTarget {
 	 *
 	 * `POST /reminders.complete` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reminders_complete",
 			namespace: "reminders.complete",
@@ -4190,13 +4324,14 @@ export class RemindersCompleteResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RemindersDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4208,7 +4343,7 @@ export class RemindersDeleteResource extends RpcTarget {
 	 *
 	 * `POST /reminders.delete` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reminders_delete",
 			namespace: "reminders.delete",
@@ -4221,13 +4356,14 @@ export class RemindersDeleteResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RemindersInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4239,7 +4375,7 @@ export class RemindersInfoResource extends RpcTarget {
 	 *
 	 * `GET /reminders.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reminders_info",
 			namespace: "reminders.info",
@@ -4252,13 +4388,14 @@ export class RemindersInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RemindersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4270,7 +4407,7 @@ export class RemindersListResource extends RpcTarget {
 	 *
 	 * `GET /reminders.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "reminders_list",
 			namespace: "reminders.list",
@@ -4283,13 +4420,14 @@ export class RemindersListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RtmConnectResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4301,7 +4439,7 @@ export class RtmConnectResource extends RpcTarget {
 	 *
 	 * `GET /rtm.connect` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "rtm_connect",
 			namespace: "rtm.connect",
@@ -4314,13 +4452,14 @@ export class RtmConnectResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SearchMessagesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4332,7 +4471,7 @@ export class SearchMessagesResource extends RpcTarget {
 	 *
 	 * `GET /search.messages` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search_messages",
 			namespace: "search.messages",
@@ -4345,13 +4484,14 @@ export class SearchMessagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class StarsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4363,7 +4503,7 @@ export class StarsAddResource extends RpcTarget {
 	 *
 	 * `POST /stars.add` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "stars_add",
 			namespace: "stars.add",
@@ -4376,13 +4516,14 @@ export class StarsAddResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class StarsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4394,7 +4535,7 @@ export class StarsListResource extends RpcTarget {
 	 *
 	 * `GET /stars.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "stars_list",
 			namespace: "stars.list",
@@ -4407,13 +4548,14 @@ export class StarsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class StarsRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4425,7 +4567,7 @@ export class StarsRemoveResource extends RpcTarget {
 	 *
 	 * `POST /stars.remove` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "stars_remove",
 			namespace: "stars.remove",
@@ -4438,13 +4580,14 @@ export class StarsRemoveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TeamAccessLogsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4456,7 +4599,7 @@ export class TeamAccessLogsResource extends RpcTarget {
 	 *
 	 * `GET /team.accessLogs` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "team_accessLogs",
 			namespace: "team.accessLogs",
@@ -4469,13 +4612,14 @@ export class TeamAccessLogsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TeamBillableInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4487,7 +4631,7 @@ export class TeamBillableInfoResource extends RpcTarget {
 	 *
 	 * `GET /team.billableInfo` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "team_billableInfo",
 			namespace: "team.billableInfo",
@@ -4500,13 +4644,14 @@ export class TeamBillableInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TeamInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4518,7 +4663,7 @@ export class TeamInfoResource extends RpcTarget {
 	 *
 	 * `GET /team.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "team_info",
 			namespace: "team.info",
@@ -4531,13 +4676,14 @@ export class TeamInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TeamIntegrationLogsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4549,7 +4695,7 @@ export class TeamIntegrationLogsResource extends RpcTarget {
 	 *
 	 * `GET /team.integrationLogs` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "team_integrationLogs",
 			namespace: "team.integrationLogs",
@@ -4562,13 +4708,14 @@ export class TeamIntegrationLogsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TeamProfileGetResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4580,7 +4727,7 @@ export class TeamProfileGetResource extends RpcTarget {
 	 *
 	 * `GET /team.profile.get` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "team_profile_get",
 			namespace: "team.profile.get",
@@ -4593,13 +4740,14 @@ export class TeamProfileGetResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsergroupsCreateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4611,7 +4759,7 @@ export class UsergroupsCreateResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.create` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "usergroups_create",
 			namespace: "usergroups.create",
@@ -4624,13 +4772,14 @@ export class UsergroupsCreateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsergroupsDisableResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4642,7 +4791,7 @@ export class UsergroupsDisableResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.disable` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "usergroups_disable",
 			namespace: "usergroups.disable",
@@ -4655,13 +4804,14 @@ export class UsergroupsDisableResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsergroupsEnableResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4673,7 +4823,7 @@ export class UsergroupsEnableResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.enable` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "usergroups_enable",
 			namespace: "usergroups.enable",
@@ -4686,13 +4836,14 @@ export class UsergroupsEnableResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsergroupsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4704,7 +4855,7 @@ export class UsergroupsListResource extends RpcTarget {
 	 *
 	 * `GET /usergroups.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "usergroups_list",
 			namespace: "usergroups.list",
@@ -4717,13 +4868,14 @@ export class UsergroupsListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsergroupsUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4735,7 +4887,7 @@ export class UsergroupsUpdateResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.update` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "usergroups_update",
 			namespace: "usergroups.update",
@@ -4748,13 +4900,14 @@ export class UsergroupsUpdateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsergroupsUsersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4766,7 +4919,7 @@ export class UsergroupsUsersListResource extends RpcTarget {
 	 *
 	 * `GET /usergroups.users.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "usergroups_users_list",
 			namespace: "usergroups.users.list",
@@ -4779,13 +4932,14 @@ export class UsergroupsUsersListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsergroupsUsersUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4797,7 +4951,7 @@ export class UsergroupsUsersUpdateResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.users.update` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "usergroups_users_update",
 			namespace: "usergroups.users.update",
@@ -4810,13 +4964,14 @@ export class UsergroupsUsersUpdateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersConversationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4828,7 +4983,7 @@ export class UsersConversationsResource extends RpcTarget {
 	 *
 	 * `GET /users.conversations` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_conversations",
 			namespace: "users.conversations",
@@ -4841,13 +4996,14 @@ export class UsersConversationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersDeletePhotoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4859,7 +5015,7 @@ export class UsersDeletePhotoResource extends RpcTarget {
 	 *
 	 * `POST /users.deletePhoto` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_deletePhoto",
 			namespace: "users.deletePhoto",
@@ -4872,13 +5028,14 @@ export class UsersDeletePhotoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersGetPresenceResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4890,7 +5047,7 @@ export class UsersGetPresenceResource extends RpcTarget {
 	 *
 	 * `GET /users.getPresence` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_getPresence",
 			namespace: "users.getPresence",
@@ -4903,13 +5060,14 @@ export class UsersGetPresenceResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersIdentityResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4921,7 +5079,7 @@ export class UsersIdentityResource extends RpcTarget {
 	 *
 	 * `GET /users.identity` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_identity",
 			namespace: "users.identity",
@@ -4934,13 +5092,14 @@ export class UsersIdentityResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4952,7 +5111,7 @@ export class UsersInfoResource extends RpcTarget {
 	 *
 	 * `GET /users.info` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_info",
 			namespace: "users.info",
@@ -4965,13 +5124,14 @@ export class UsersInfoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4983,7 +5143,7 @@ export class UsersListResource extends RpcTarget {
 	 *
 	 * `GET /users.list` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_list",
 			namespace: "users.list",
@@ -4996,13 +5156,14 @@ export class UsersListResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersLookupByEmailResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5014,7 +5175,7 @@ export class UsersLookupByEmailResource extends RpcTarget {
 	 *
 	 * `GET /users.lookupByEmail` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_lookupByEmail",
 			namespace: "users.lookupByEmail",
@@ -5027,13 +5188,14 @@ export class UsersLookupByEmailResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersProfileGetResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5045,7 +5207,7 @@ export class UsersProfileGetResource extends RpcTarget {
 	 *
 	 * `GET /users.profile.get` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_profile_get",
 			namespace: "users.profile.get",
@@ -5058,13 +5220,14 @@ export class UsersProfileGetResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersProfileSetResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5076,7 +5239,7 @@ export class UsersProfileSetResource extends RpcTarget {
 	 *
 	 * `POST /users.profile.set` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_profile_set",
 			namespace: "users.profile.set",
@@ -5089,13 +5252,14 @@ export class UsersProfileSetResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersSetActiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5107,7 +5271,7 @@ export class UsersSetActiveResource extends RpcTarget {
 	 *
 	 * `POST /users.setActive` — risk: medium
 	 */
-	async create(): Promise<ProofResult<unknown>> {
+	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_setActive",
 			namespace: "users.setActive",
@@ -5120,13 +5284,14 @@ export class UsersSetActiveResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersSetPhotoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5138,7 +5303,7 @@ export class UsersSetPhotoResource extends RpcTarget {
 	 *
 	 * `POST /users.setPhoto` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_setPhoto",
 			namespace: "users.setPhoto",
@@ -5151,13 +5316,14 @@ export class UsersSetPhotoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersSetPresenceResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5169,7 +5335,7 @@ export class UsersSetPresenceResource extends RpcTarget {
 	 *
 	 * `POST /users.setPresence` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "users_setPresence",
 			namespace: "users.setPresence",
@@ -5182,13 +5348,14 @@ export class UsersSetPresenceResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ViewsOpenResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5200,7 +5367,7 @@ export class ViewsOpenResource extends RpcTarget {
 	 *
 	 * `GET /views.open` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "views_open",
 			namespace: "views.open",
@@ -5213,13 +5380,14 @@ export class ViewsOpenResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ViewsPublishResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5231,7 +5399,7 @@ export class ViewsPublishResource extends RpcTarget {
 	 *
 	 * `GET /views.publish` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "views_publish",
 			namespace: "views.publish",
@@ -5244,13 +5412,14 @@ export class ViewsPublishResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ViewsPushResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5262,7 +5431,7 @@ export class ViewsPushResource extends RpcTarget {
 	 *
 	 * `GET /views.push` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "views_push",
 			namespace: "views.push",
@@ -5275,13 +5444,14 @@ export class ViewsPushResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ViewsUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5293,7 +5463,7 @@ export class ViewsUpdateResource extends RpcTarget {
 	 *
 	 * `GET /views.update` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "views_update",
 			namespace: "views.update",
@@ -5306,13 +5476,14 @@ export class ViewsUpdateResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class WorkflowsStepCompletedResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5324,7 +5495,7 @@ export class WorkflowsStepCompletedResource extends RpcTarget {
 	 *
 	 * `GET /workflows.stepCompleted` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "workflows_stepCompleted",
 			namespace: "workflows.stepCompleted",
@@ -5337,13 +5508,14 @@ export class WorkflowsStepCompletedResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class WorkflowsStepFailedResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5355,7 +5527,7 @@ export class WorkflowsStepFailedResource extends RpcTarget {
 	 *
 	 * `GET /workflows.stepFailed` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "workflows_stepFailed",
 			namespace: "workflows.stepFailed",
@@ -5368,13 +5540,14 @@ export class WorkflowsStepFailedResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class WorkflowsUpdateStepResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5386,7 +5559,7 @@ export class WorkflowsUpdateStepResource extends RpcTarget {
 	 *
 	 * `GET /workflows.updateStep` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "workflows_updateStep",
 			namespace: "workflows.updateStep",
@@ -5399,12 +5572,13 @@ export class WorkflowsUpdateStepResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 interface Env {
-	SLACK_API_KEY: string;
+	SLACK_API_KEY?: string;
 }
 
 export class SlackCapability extends WorkerEntrypoint<Env> {

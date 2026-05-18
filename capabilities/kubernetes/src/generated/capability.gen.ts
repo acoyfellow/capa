@@ -6,12 +6,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 
 export class WellKnownResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23,7 +23,7 @@ export class WellKnownResource extends RpcTarget {
 	 *
 	 * `GET /.well-known/openid-configuration/` — risk: medium
 	 */
-	async listOpenidConfiguration(): Promise<ProofResult<unknown>> {
+	async listOpenidConfiguration(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getServiceAccountIssuerOpenIDConfiguration",
 			namespace: ".well-known",
@@ -36,13 +36,14 @@ export class WellKnownResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ApiResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -54,7 +55,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCoreAPIVersions",
 			namespace: "api",
@@ -67,6 +68,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -75,7 +77,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/` — risk: medium
 	 */
-	async listV1(): Promise<ProofResult<unknown>> {
+	async listV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCoreV1APIResources",
 			namespace: "api",
@@ -88,6 +90,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -96,7 +99,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/componentstatuses` — risk: medium
 	 */
-	async componentstatuses(): Promise<ProofResult<unknown>> {
+	async componentstatuses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1ComponentStatus",
 			namespace: "api",
@@ -109,6 +112,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -117,7 +121,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/componentstatuses/{name}` — risk: medium
 	 */
-	async retrieveComponentstatus(name: string): Promise<ProofResult<unknown>> {
+	async retrieveComponentstatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1ComponentStatus",
 			namespace: "api",
@@ -130,6 +134,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -138,7 +143,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/configmaps` — risk: medium
 	 */
-	async configmaps_0(): Promise<ProofResult<unknown>> {
+	async configmaps_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1ConfigMapForAllNamespaces",
 			namespace: "api",
@@ -151,6 +156,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -159,7 +165,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/endpoints` — risk: medium
 	 */
-	async endpoints_0(): Promise<ProofResult<unknown>> {
+	async endpoints_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1EndpointsForAllNamespaces",
 			namespace: "api",
@@ -172,6 +178,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -180,7 +187,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/events` — risk: medium
 	 */
-	async events_0(): Promise<ProofResult<unknown>> {
+	async events_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1EventForAllNamespaces",
 			namespace: "api",
@@ -193,6 +200,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -201,7 +209,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/limitranges` — risk: medium
 	 */
-	async limitranges_0(): Promise<ProofResult<unknown>> {
+	async limitranges_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1LimitRangeForAllNamespaces",
 			namespace: "api",
@@ -214,6 +222,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -222,7 +231,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces` — risk: medium
 	 */
-	async namespaces_0(): Promise<ProofResult<unknown>> {
+	async namespaces_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1Namespace",
 			namespace: "api",
@@ -235,6 +244,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -243,7 +253,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces` — risk: medium
 	 */
-	async namespaces_1(): Promise<ProofResult<unknown>> {
+	async namespaces_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1Namespace",
 			namespace: "api",
@@ -256,6 +266,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -264,7 +275,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/bindings` — risk: medium
 	 */
-	async bindings(namespace: string): Promise<ProofResult<unknown>> {
+	async bindings(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedBinding",
 			namespace: "api",
@@ -277,6 +288,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -285,7 +297,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/configmaps` — risk: medium
 	 */
-	async getNamespacesConfigmaps(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesConfigmaps(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedConfigMap",
 			namespace: "api",
@@ -298,6 +310,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -306,7 +319,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/configmaps` — risk: medium
 	 */
-	async postNamespacesConfigmaps(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesConfigmaps(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedConfigMap",
 			namespace: "api",
@@ -319,6 +332,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -327,7 +341,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/configmaps` — risk: medium
 	 */
-	async deleteNamespacesConfigmaps(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesConfigmaps(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedConfigMap",
 			namespace: "api",
@@ -340,6 +354,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -348,7 +363,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/configmaps/{name}` — risk: medium
 	 */
-	async namespacesconfigmapsRetrieveConfigmap(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesconfigmapsRetrieveConfigmap(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedConfigMap",
 			namespace: "api",
@@ -361,6 +376,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -369,7 +385,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/configmaps/{name}` — risk: medium
 	 */
-	async putNamespacesConfigmaps(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesConfigmaps(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedConfigMap",
 			namespace: "api",
@@ -382,6 +398,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -390,7 +407,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/configmaps/{name}` — risk: medium
 	 */
-	async patchNamespacesConfigmaps(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesConfigmaps(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedConfigMap",
 			namespace: "api",
@@ -403,6 +420,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -411,7 +429,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/configmaps/{name}` — risk: medium
 	 */
-	async deleteConfigmap(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteConfigmap(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedConfigMap",
 			namespace: "api",
@@ -424,6 +442,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -432,7 +451,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/endpoints` — risk: medium
 	 */
-	async getNamespacesEndpoints(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesEndpoints(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedEndpoints",
 			namespace: "api",
@@ -445,6 +464,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -453,7 +473,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/endpoints` — risk: medium
 	 */
-	async postNamespacesEndpoints(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesEndpoints(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedEndpoints",
 			namespace: "api",
@@ -466,6 +486,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -474,7 +495,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/endpoints` — risk: medium
 	 */
-	async deleteNamespacesEndpoints(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesEndpoints(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedEndpoints",
 			namespace: "api",
@@ -487,6 +508,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -495,7 +517,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/endpoints/{name}` — risk: medium
 	 */
-	async namespacesendpointsRetrieveEndpoint(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesendpointsRetrieveEndpoint(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedEndpoints",
 			namespace: "api",
@@ -508,6 +530,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -516,7 +539,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/endpoints/{name}` — risk: medium
 	 */
-	async putNamespacesEndpoints(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesEndpoints(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedEndpoints",
 			namespace: "api",
@@ -529,6 +552,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -537,7 +561,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/endpoints/{name}` — risk: medium
 	 */
-	async patchNamespacesEndpoints(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesEndpoints(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedEndpoints",
 			namespace: "api",
@@ -550,6 +574,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -558,7 +583,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/endpoints/{name}` — risk: medium
 	 */
-	async deleteEndpoint(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteEndpoint(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedEndpoints",
 			namespace: "api",
@@ -571,6 +596,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -579,7 +605,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/events` — risk: medium
 	 */
-	async getNamespacesEvents(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesEvents(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedEvent",
 			namespace: "api",
@@ -592,6 +618,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -600,7 +627,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/events` — risk: medium
 	 */
-	async postNamespacesEvents(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesEvents(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedEvent",
 			namespace: "api",
@@ -613,6 +640,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -621,7 +649,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/events` — risk: medium
 	 */
-	async deleteNamespacesEvents(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesEvents(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedEvent",
 			namespace: "api",
@@ -634,6 +662,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -642,7 +671,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async namespaceseventsRetrieveEvent(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespaceseventsRetrieveEvent(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedEvent",
 			namespace: "api",
@@ -655,6 +684,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -663,7 +693,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async putNamespacesEvents(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesEvents(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedEvent",
 			namespace: "api",
@@ -676,6 +706,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -684,7 +715,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async patchNamespacesEvents(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesEvents(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedEvent",
 			namespace: "api",
@@ -697,6 +728,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -705,7 +737,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async deleteEvent(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteEvent(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedEvent",
 			namespace: "api",
@@ -718,6 +750,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -726,7 +759,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/limitranges` — risk: medium
 	 */
-	async getNamespacesLimitranges(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesLimitranges(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedLimitRange",
 			namespace: "api",
@@ -739,6 +772,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -747,7 +781,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/limitranges` — risk: medium
 	 */
-	async postNamespacesLimitranges(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesLimitranges(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedLimitRange",
 			namespace: "api",
@@ -760,6 +794,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -768,7 +803,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/limitranges` — risk: medium
 	 */
-	async deleteNamespacesLimitranges(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesLimitranges(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedLimitRange",
 			namespace: "api",
@@ -781,6 +816,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -789,7 +825,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/limitranges/{name}` — risk: medium
 	 */
-	async namespaceslimitrangesRetrieveLimitrange(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespaceslimitrangesRetrieveLimitrange(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedLimitRange",
 			namespace: "api",
@@ -802,6 +838,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -810,7 +847,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/limitranges/{name}` — risk: medium
 	 */
-	async putNamespacesLimitranges(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesLimitranges(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedLimitRange",
 			namespace: "api",
@@ -823,6 +860,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -831,7 +869,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/limitranges/{name}` — risk: medium
 	 */
-	async patchNamespacesLimitranges(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesLimitranges(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedLimitRange",
 			namespace: "api",
@@ -844,6 +882,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -852,7 +891,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/limitranges/{name}` — risk: medium
 	 */
-	async deleteLimitrange(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteLimitrange(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedLimitRange",
 			namespace: "api",
@@ -865,6 +904,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -873,7 +913,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/persistentvolumeclaims` — risk: medium
 	 */
-	async getNamespacesPersistentvolumeclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesPersistentvolumeclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedPersistentVolumeClaim",
 			namespace: "api",
@@ -886,6 +926,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -894,7 +935,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/persistentvolumeclaims` — risk: medium
 	 */
-	async postNamespacesPersistentvolumeclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesPersistentvolumeclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedPersistentVolumeClaim",
 			namespace: "api",
@@ -907,6 +948,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -915,7 +957,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/persistentvolumeclaims` — risk: medium
 	 */
-	async deleteNamespacesPersistentvolumeclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesPersistentvolumeclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedPersistentVolumeClaim",
 			namespace: "api",
@@ -928,6 +970,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -936,7 +979,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/persistentvolumeclaims/{name}` — risk: medium
 	 */
-	async namespacespersistentvolumeclaimsRetrievePersistentvolumeclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacespersistentvolumeclaimsRetrievePersistentvolumeclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedPersistentVolumeClaim",
 			namespace: "api",
@@ -949,6 +992,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -957,7 +1001,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/persistentvolumeclaims/{name}` — risk: medium
 	 */
-	async putNamespacesPersistentvolumeclaims(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesPersistentvolumeclaims(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedPersistentVolumeClaim",
 			namespace: "api",
@@ -970,6 +1014,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -978,7 +1023,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/persistentvolumeclaims/{name}` — risk: medium
 	 */
-	async patchNamespacesPersistentvolumeclaims(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesPersistentvolumeclaims(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedPersistentVolumeClaim",
 			namespace: "api",
@@ -991,6 +1036,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -999,7 +1045,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/persistentvolumeclaims/{name}` — risk: medium
 	 */
-	async deletePersistentvolumeclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deletePersistentvolumeclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedPersistentVolumeClaim",
 			namespace: "api",
@@ -1012,6 +1058,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1020,7 +1067,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/persistentvolumeclaims/{name}/status` — risk: medium
 	 */
-	async getNamespacespersistentvolumeclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getNamespacespersistentvolumeclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedPersistentVolumeClaimStatus",
 			namespace: "api",
@@ -1033,6 +1080,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1041,7 +1089,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/persistentvolumeclaims/{name}/status` — risk: medium
 	 */
-	async putNamespacespersistentvolumeclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacespersistentvolumeclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedPersistentVolumeClaimStatus",
 			namespace: "api",
@@ -1054,6 +1102,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1062,7 +1111,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/persistentvolumeclaims/{name}/status` — risk: medium
 	 */
-	async patchNamespacespersistentvolumeclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacespersistentvolumeclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedPersistentVolumeClaimStatus",
 			namespace: "api",
@@ -1075,6 +1124,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1083,7 +1133,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods` — risk: medium
 	 */
-	async getNamespacesPods(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesPods(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedPod",
 			namespace: "api",
@@ -1096,6 +1146,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1104,7 +1155,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/pods` — risk: medium
 	 */
-	async postNamespacesPods(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesPods(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedPod",
 			namespace: "api",
@@ -1117,6 +1168,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1125,7 +1177,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/pods` — risk: medium
 	 */
-	async deleteNamespacesPods(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesPods(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedPod",
 			namespace: "api",
@@ -1138,6 +1190,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1146,7 +1199,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}` — risk: medium
 	 */
-	async namespacespodsRetrievePod(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacespodsRetrievePod(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedPod",
 			namespace: "api",
@@ -1159,6 +1212,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1167,7 +1221,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/pods/{name}` — risk: medium
 	 */
-	async putNamespacesPods(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesPods(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedPod",
 			namespace: "api",
@@ -1180,6 +1234,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1188,7 +1243,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/pods/{name}` — risk: medium
 	 */
-	async patchNamespacesPods(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesPods(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedPod",
 			namespace: "api",
@@ -1201,6 +1256,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1209,7 +1265,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/pods/{name}` — risk: medium
 	 */
-	async deletePod(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deletePod(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedPod",
 			namespace: "api",
@@ -1222,6 +1278,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1230,7 +1287,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}/attach` — risk: medium
 	 */
-	async attach_0(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async attach_0(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1GetNamespacedPodAttach",
 			namespace: "api",
@@ -1243,6 +1300,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1251,7 +1309,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/pods/{name}/attach` — risk: medium
 	 */
-	async attach_1(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async attach_1(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PostNamespacedPodAttach",
 			namespace: "api",
@@ -1264,6 +1322,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1272,7 +1331,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/pods/{name}/binding` — risk: medium
 	 */
-	async binding(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async binding(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedPodBinding",
 			namespace: "api",
@@ -1285,6 +1344,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1293,7 +1353,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}/ephemeralcontainers` — risk: medium
 	 */
-	async ephemeralcontainers_0(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async ephemeralcontainers_0(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedPodEphemeralcontainers",
 			namespace: "api",
@@ -1306,6 +1366,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1314,7 +1375,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/pods/{name}/ephemeralcontainers` — risk: medium
 	 */
-	async ephemeralcontainers_1(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async ephemeralcontainers_1(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedPodEphemeralcontainers",
 			namespace: "api",
@@ -1327,6 +1388,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1335,7 +1397,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/pods/{name}/ephemeralcontainers` — risk: medium
 	 */
-	async ephemeralcontainers_2(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async ephemeralcontainers_2(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedPodEphemeralcontainers",
 			namespace: "api",
@@ -1348,6 +1410,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1356,7 +1419,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/pods/{name}/eviction` — risk: medium
 	 */
-	async eviction(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async eviction(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedPodEviction",
 			namespace: "api",
@@ -1369,6 +1432,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1377,7 +1441,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}/exec` — risk: medium
 	 */
-	async exec_0(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async exec_0(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1GetNamespacedPodExec",
 			namespace: "api",
@@ -1390,6 +1454,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1398,7 +1463,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/pods/{name}/exec` — risk: medium
 	 */
-	async exec_1(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async exec_1(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PostNamespacedPodExec",
 			namespace: "api",
@@ -1411,6 +1476,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1419,7 +1485,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}/log` — risk: medium
 	 */
-	async log(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async log(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedPodLog",
 			namespace: "api",
@@ -1432,6 +1498,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1440,7 +1507,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}/portforward` — risk: medium
 	 */
-	async portforward_0(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async portforward_0(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1GetNamespacedPodPortforward",
 			namespace: "api",
@@ -1453,6 +1520,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1461,7 +1529,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/pods/{name}/portforward` — risk: medium
 	 */
-	async portforward_1(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async portforward_1(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PostNamespacedPodPortforward",
 			namespace: "api",
@@ -1474,6 +1542,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1482,7 +1551,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}/proxy` — risk: medium
 	 */
-	async getNamespacespodsProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getNamespacespodsProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1GetNamespacedPodProxy",
 			namespace: "api",
@@ -1495,6 +1564,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1503,7 +1573,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/pods/{name}/proxy` — risk: medium
 	 */
-	async postNamespacespodsProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async postNamespacespodsProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PostNamespacedPodProxy",
 			namespace: "api",
@@ -1516,6 +1586,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1524,7 +1595,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/pods/{name}/proxy` — risk: medium
 	 */
-	async putNamespacespodsProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacespodsProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PutNamespacedPodProxy",
 			namespace: "api",
@@ -1537,6 +1608,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1545,7 +1617,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/pods/{name}/proxy` — risk: medium
 	 */
-	async patchNamespacespodsProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacespodsProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PatchNamespacedPodProxy",
 			namespace: "api",
@@ -1558,6 +1630,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1566,7 +1639,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/pods/{name}/proxy` — risk: medium
 	 */
-	async deleteNamespacespodsProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacespodsProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1DeleteNamespacedPodProxy",
 			namespace: "api",
@@ -1579,6 +1652,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1587,7 +1661,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}/proxy/{path}` — risk: medium
 	 */
-	async namespacespodsproxyRetrieveProxy(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async namespacespodsproxyRetrieveProxy(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1GetNamespacedPodProxyWithPath",
 			namespace: "api",
@@ -1600,6 +1674,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1608,7 +1683,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/pods/{name}/proxy/{path}` — risk: medium
 	 */
-	async namespacespodsproxyUpdateProxy(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async namespacespodsproxyUpdateProxy(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PostNamespacedPodProxyWithPath",
 			namespace: "api",
@@ -1621,6 +1696,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1629,7 +1705,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/pods/{name}/proxy/{path}` — risk: medium
 	 */
-	async putNamespacespodsProxy_0(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async putNamespacespodsProxy_0(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PutNamespacedPodProxyWithPath",
 			namespace: "api",
@@ -1642,6 +1718,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1650,7 +1727,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/pods/{name}/proxy/{path}` — risk: medium
 	 */
-	async patchNamespacespodsProxy_0(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async patchNamespacespodsProxy_0(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PatchNamespacedPodProxyWithPath",
 			namespace: "api",
@@ -1663,6 +1740,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1671,7 +1749,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/pods/{name}/proxy/{path}` — risk: medium
 	 */
-	async namespacespodsproxyDeleteProxy(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async namespacespodsproxyDeleteProxy(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1DeleteNamespacedPodProxyWithPath",
 			namespace: "api",
@@ -1684,6 +1762,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1692,7 +1771,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}/resize` — risk: medium
 	 */
-	async resize_0(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async resize_0(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedPodResize",
 			namespace: "api",
@@ -1705,6 +1784,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1713,7 +1793,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/pods/{name}/resize` — risk: medium
 	 */
-	async resize_1(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async resize_1(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedPodResize",
 			namespace: "api",
@@ -1726,6 +1806,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1734,7 +1815,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/pods/{name}/resize` — risk: medium
 	 */
-	async resize_2(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async resize_2(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedPodResize",
 			namespace: "api",
@@ -1747,6 +1828,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1755,7 +1837,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/pods/{name}/status` — risk: medium
 	 */
-	async getNamespacespodsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getNamespacespodsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedPodStatus",
 			namespace: "api",
@@ -1768,6 +1850,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1776,7 +1859,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/pods/{name}/status` — risk: medium
 	 */
-	async putNamespacespodsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacespodsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedPodStatus",
 			namespace: "api",
@@ -1789,6 +1872,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1797,7 +1881,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/pods/{name}/status` — risk: medium
 	 */
-	async patchNamespacespodsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacespodsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedPodStatus",
 			namespace: "api",
@@ -1810,6 +1894,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1818,7 +1903,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/podtemplates` — risk: medium
 	 */
-	async getNamespacesPodtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesPodtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedPodTemplate",
 			namespace: "api",
@@ -1831,6 +1916,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1839,7 +1925,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/podtemplates` — risk: medium
 	 */
-	async postNamespacesPodtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesPodtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedPodTemplate",
 			namespace: "api",
@@ -1852,6 +1938,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1860,7 +1947,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/podtemplates` — risk: medium
 	 */
-	async deleteNamespacesPodtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesPodtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedPodTemplate",
 			namespace: "api",
@@ -1873,6 +1960,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1881,7 +1969,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/podtemplates/{name}` — risk: medium
 	 */
-	async namespacespodtemplatesRetrievePodtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacespodtemplatesRetrievePodtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedPodTemplate",
 			namespace: "api",
@@ -1894,6 +1982,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1902,7 +1991,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/podtemplates/{name}` — risk: medium
 	 */
-	async putNamespacesPodtemplates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesPodtemplates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedPodTemplate",
 			namespace: "api",
@@ -1915,6 +2004,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1923,7 +2013,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/podtemplates/{name}` — risk: medium
 	 */
-	async patchNamespacesPodtemplates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesPodtemplates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedPodTemplate",
 			namespace: "api",
@@ -1936,6 +2026,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1944,7 +2035,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/podtemplates/{name}` — risk: medium
 	 */
-	async deletePodtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deletePodtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedPodTemplate",
 			namespace: "api",
@@ -1957,6 +2048,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1965,7 +2057,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/replicationcontrollers` — risk: medium
 	 */
-	async getNamespacesReplicationcontrollers(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesReplicationcontrollers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedReplicationController",
 			namespace: "api",
@@ -1978,6 +2070,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1986,7 +2079,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/replicationcontrollers` — risk: medium
 	 */
-	async postNamespacesReplicationcontrollers(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesReplicationcontrollers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedReplicationController",
 			namespace: "api",
@@ -1999,6 +2092,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2007,7 +2101,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/replicationcontrollers` — risk: medium
 	 */
-	async deleteNamespacesReplicationcontrollers(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesReplicationcontrollers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedReplicationController",
 			namespace: "api",
@@ -2020,6 +2114,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2028,7 +2123,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/replicationcontrollers/{name}` — risk: medium
 	 */
-	async namespacesreplicationcontrollersRetrieveReplicationcontroller(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesreplicationcontrollersRetrieveReplicationcontroller(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedReplicationController",
 			namespace: "api",
@@ -2041,6 +2136,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2049,7 +2145,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/replicationcontrollers/{name}` — risk: medium
 	 */
-	async putNamespacesReplicationcontrollers(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesReplicationcontrollers(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedReplicationController",
 			namespace: "api",
@@ -2062,6 +2158,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2070,7 +2167,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/replicationcontrollers/{name}` — risk: medium
 	 */
-	async patchNamespacesReplicationcontrollers(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesReplicationcontrollers(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedReplicationController",
 			namespace: "api",
@@ -2083,6 +2180,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2091,7 +2189,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/replicationcontrollers/{name}` — risk: medium
 	 */
-	async deleteReplicationcontroller(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteReplicationcontroller(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedReplicationController",
 			namespace: "api",
@@ -2104,6 +2202,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2112,7 +2211,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/replicationcontrollers/{name}/scale` — risk: medium
 	 */
-	async scale_0(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async scale_0(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedReplicationControllerScale",
 			namespace: "api",
@@ -2125,6 +2224,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2133,7 +2233,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/replicationcontrollers/{name}/scale` — risk: medium
 	 */
-	async scale_1(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async scale_1(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedReplicationControllerScale",
 			namespace: "api",
@@ -2146,6 +2246,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2154,7 +2255,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/replicationcontrollers/{name}/scale` — risk: medium
 	 */
-	async scale_2(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async scale_2(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedReplicationControllerScale",
 			namespace: "api",
@@ -2167,6 +2268,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2175,7 +2277,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/replicationcontrollers/{name}/status` — risk: medium
 	 */
-	async getNamespacesreplicationcontrollersStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getNamespacesreplicationcontrollersStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedReplicationControllerStatus",
 			namespace: "api",
@@ -2188,6 +2290,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2196,7 +2299,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/replicationcontrollers/{name}/status` — risk: medium
 	 */
-	async putNamespacesreplicationcontrollersStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesreplicationcontrollersStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedReplicationControllerStatus",
 			namespace: "api",
@@ -2209,6 +2312,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2217,7 +2321,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/replicationcontrollers/{name}/status` — risk: medium
 	 */
-	async patchNamespacesreplicationcontrollersStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesreplicationcontrollersStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedReplicationControllerStatus",
 			namespace: "api",
@@ -2230,6 +2334,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2238,7 +2343,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/resourcequotas` — risk: medium
 	 */
-	async getNamespacesResourcequotas(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesResourcequotas(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedResourceQuota",
 			namespace: "api",
@@ -2251,6 +2356,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2259,7 +2365,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/resourcequotas` — risk: medium
 	 */
-	async postNamespacesResourcequotas(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesResourcequotas(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedResourceQuota",
 			namespace: "api",
@@ -2272,6 +2378,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2280,7 +2387,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/resourcequotas` — risk: medium
 	 */
-	async deleteNamespacesResourcequotas(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesResourcequotas(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedResourceQuota",
 			namespace: "api",
@@ -2293,6 +2400,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2301,7 +2409,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/resourcequotas/{name}` — risk: medium
 	 */
-	async namespacesresourcequotasRetrieveResourcequota(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesresourcequotasRetrieveResourcequota(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedResourceQuota",
 			namespace: "api",
@@ -2314,6 +2422,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2322,7 +2431,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/resourcequotas/{name}` — risk: medium
 	 */
-	async putNamespacesResourcequotas(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesResourcequotas(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedResourceQuota",
 			namespace: "api",
@@ -2335,6 +2444,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2343,7 +2453,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/resourcequotas/{name}` — risk: medium
 	 */
-	async patchNamespacesResourcequotas(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesResourcequotas(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedResourceQuota",
 			namespace: "api",
@@ -2356,6 +2466,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2364,7 +2475,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/resourcequotas/{name}` — risk: medium
 	 */
-	async deleteResourcequota(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteResourcequota(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedResourceQuota",
 			namespace: "api",
@@ -2377,6 +2488,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2385,7 +2497,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/resourcequotas/{name}/status` — risk: medium
 	 */
-	async getNamespacesresourcequotasStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getNamespacesresourcequotasStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedResourceQuotaStatus",
 			namespace: "api",
@@ -2398,6 +2510,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2406,7 +2519,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/resourcequotas/{name}/status` — risk: medium
 	 */
-	async putNamespacesresourcequotasStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesresourcequotasStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedResourceQuotaStatus",
 			namespace: "api",
@@ -2419,6 +2532,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2427,7 +2541,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/resourcequotas/{name}/status` — risk: medium
 	 */
-	async patchNamespacesresourcequotasStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesresourcequotasStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedResourceQuotaStatus",
 			namespace: "api",
@@ -2440,6 +2554,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2448,7 +2563,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/secrets` — risk: medium
 	 */
-	async getNamespacesSecrets(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesSecrets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedSecret",
 			namespace: "api",
@@ -2461,6 +2576,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2469,7 +2585,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/secrets` — risk: medium
 	 */
-	async postNamespacesSecrets(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesSecrets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedSecret",
 			namespace: "api",
@@ -2482,6 +2598,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2490,7 +2607,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/secrets` — risk: medium
 	 */
-	async deleteNamespacesSecrets(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesSecrets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedSecret",
 			namespace: "api",
@@ -2503,6 +2620,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2511,7 +2629,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/secrets/{name}` — risk: medium
 	 */
-	async namespacessecretsRetrieveSecret(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacessecretsRetrieveSecret(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedSecret",
 			namespace: "api",
@@ -2524,6 +2642,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2532,7 +2651,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/secrets/{name}` — risk: medium
 	 */
-	async putNamespacesSecrets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesSecrets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedSecret",
 			namespace: "api",
@@ -2545,6 +2664,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2553,7 +2673,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/secrets/{name}` — risk: medium
 	 */
-	async patchNamespacesSecrets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesSecrets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedSecret",
 			namespace: "api",
@@ -2566,6 +2686,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2574,7 +2695,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/secrets/{name}` — risk: medium
 	 */
-	async deleteSecret(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteSecret(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedSecret",
 			namespace: "api",
@@ -2587,6 +2708,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2595,7 +2717,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/serviceaccounts` — risk: medium
 	 */
-	async getNamespacesServiceaccounts(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesServiceaccounts(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedServiceAccount",
 			namespace: "api",
@@ -2608,6 +2730,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2616,7 +2739,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/serviceaccounts` — risk: medium
 	 */
-	async postNamespacesServiceaccounts(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesServiceaccounts(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedServiceAccount",
 			namespace: "api",
@@ -2629,6 +2752,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2637,7 +2761,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/serviceaccounts` — risk: medium
 	 */
-	async deleteNamespacesServiceaccounts(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesServiceaccounts(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedServiceAccount",
 			namespace: "api",
@@ -2650,6 +2774,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2658,7 +2783,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/serviceaccounts/{name}` — risk: medium
 	 */
-	async namespacesserviceaccountsRetrieveServiceaccount(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesserviceaccountsRetrieveServiceaccount(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedServiceAccount",
 			namespace: "api",
@@ -2671,6 +2796,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2679,7 +2805,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/serviceaccounts/{name}` — risk: medium
 	 */
-	async putNamespacesServiceaccounts(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesServiceaccounts(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedServiceAccount",
 			namespace: "api",
@@ -2692,6 +2818,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2700,7 +2827,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/serviceaccounts/{name}` — risk: medium
 	 */
-	async patchNamespacesServiceaccounts(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesServiceaccounts(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedServiceAccount",
 			namespace: "api",
@@ -2713,6 +2840,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2721,7 +2849,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/serviceaccounts/{name}` — risk: medium
 	 */
-	async deleteServiceaccount(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteServiceaccount(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedServiceAccount",
 			namespace: "api",
@@ -2734,6 +2862,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2742,7 +2871,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/serviceaccounts/{name}/token` — risk: medium
 	 */
-	async token(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async token(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedServiceAccountToken",
 			namespace: "api",
@@ -2755,6 +2884,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2763,7 +2893,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/services` — risk: medium
 	 */
-	async getNamespacesServices(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesServices(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1NamespacedService",
 			namespace: "api",
@@ -2776,6 +2906,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2784,7 +2915,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/services` — risk: medium
 	 */
-	async postNamespacesServices(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesServices(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1NamespacedService",
 			namespace: "api",
@@ -2797,6 +2928,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2805,7 +2937,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/services` — risk: medium
 	 */
-	async deleteNamespacesServices(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesServices(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNamespacedService",
 			namespace: "api",
@@ -2818,6 +2950,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2826,7 +2959,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/services/{name}` — risk: medium
 	 */
-	async namespacesservicesRetrieveService(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesservicesRetrieveService(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedService",
 			namespace: "api",
@@ -2839,6 +2972,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2847,7 +2981,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/services/{name}` — risk: medium
 	 */
-	async putNamespacesServices(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesServices(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedService",
 			namespace: "api",
@@ -2860,6 +2994,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2868,7 +3003,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/services/{name}` — risk: medium
 	 */
-	async patchNamespacesServices(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesServices(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedService",
 			namespace: "api",
@@ -2881,6 +3016,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2889,7 +3025,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/services/{name}` — risk: medium
 	 */
-	async deleteService(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteService(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1NamespacedService",
 			namespace: "api",
@@ -2902,6 +3038,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2910,7 +3047,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/services/{name}/proxy` — risk: medium
 	 */
-	async getNamespacesservicesProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getNamespacesservicesProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1GetNamespacedServiceProxy",
 			namespace: "api",
@@ -2923,6 +3060,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2931,7 +3069,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/services/{name}/proxy` — risk: medium
 	 */
-	async postNamespacesservicesProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async postNamespacesservicesProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PostNamespacedServiceProxy",
 			namespace: "api",
@@ -2944,6 +3082,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2952,7 +3091,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/services/{name}/proxy` — risk: medium
 	 */
-	async putNamespacesservicesProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesservicesProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PutNamespacedServiceProxy",
 			namespace: "api",
@@ -2965,6 +3104,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2973,7 +3113,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/services/{name}/proxy` — risk: medium
 	 */
-	async patchNamespacesservicesProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesservicesProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PatchNamespacedServiceProxy",
 			namespace: "api",
@@ -2986,6 +3126,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2994,7 +3135,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/services/{name}/proxy` — risk: medium
 	 */
-	async deleteNamespacesservicesProxy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesservicesProxy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1DeleteNamespacedServiceProxy",
 			namespace: "api",
@@ -3007,6 +3148,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3015,7 +3157,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/services/{name}/proxy/{path}` — risk: medium
 	 */
-	async namespacesservicesproxyRetrieveProxy(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async namespacesservicesproxyRetrieveProxy(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1GetNamespacedServiceProxyWithPath",
 			namespace: "api",
@@ -3028,6 +3170,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3036,7 +3179,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/namespaces/{namespace}/services/{name}/proxy/{path}` — risk: medium
 	 */
-	async namespacesservicesproxyUpdateProxy(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async namespacesservicesproxyUpdateProxy(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PostNamespacedServiceProxyWithPath",
 			namespace: "api",
@@ -3049,6 +3192,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3057,7 +3201,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/services/{name}/proxy/{path}` — risk: medium
 	 */
-	async putNamespacesservicesProxy_0(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async putNamespacesservicesProxy_0(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PutNamespacedServiceProxyWithPath",
 			namespace: "api",
@@ -3070,6 +3214,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3078,7 +3223,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/services/{name}/proxy/{path}` — risk: medium
 	 */
-	async patchNamespacesservicesProxy_0(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesservicesProxy_0(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PatchNamespacedServiceProxyWithPath",
 			namespace: "api",
@@ -3091,6 +3236,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3099,7 +3245,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{namespace}/services/{name}/proxy/{path}` — risk: medium
 	 */
-	async namespacesservicesproxyDeleteProxy(namespace: string, name: string, path: string): Promise<ProofResult<unknown>> {
+	async namespacesservicesproxyDeleteProxy(namespace: string, name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1DeleteNamespacedServiceProxyWithPath",
 			namespace: "api",
@@ -3112,6 +3258,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3120,7 +3267,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{namespace}/services/{name}/status` — risk: medium
 	 */
-	async getNamespacesservicesStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getNamespacesservicesStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespacedServiceStatus",
 			namespace: "api",
@@ -3133,6 +3280,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3141,7 +3289,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{namespace}/services/{name}/status` — risk: medium
 	 */
-	async putNamespacesservicesStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesservicesStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespacedServiceStatus",
 			namespace: "api",
@@ -3154,6 +3302,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3162,7 +3311,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{namespace}/services/{name}/status` — risk: medium
 	 */
-	async patchNamespacesservicesStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesservicesStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespacedServiceStatus",
 			namespace: "api",
@@ -3175,6 +3324,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3183,7 +3333,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{name}` — risk: medium
 	 */
-	async namespacesRetrieveNamespace(name: string): Promise<ProofResult<unknown>> {
+	async namespacesRetrieveNamespace(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1Namespace",
 			namespace: "api",
@@ -3196,6 +3346,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3204,7 +3355,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{name}` — risk: medium
 	 */
-	async namespaces_2(name: string): Promise<ProofResult<unknown>> {
+	async namespaces_2(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1Namespace",
 			namespace: "api",
@@ -3217,6 +3368,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3225,7 +3377,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{name}` — risk: medium
 	 */
-	async namespaces_3(name: string): Promise<ProofResult<unknown>> {
+	async namespaces_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1Namespace",
 			namespace: "api",
@@ -3238,6 +3390,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3246,7 +3399,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/namespaces/{name}` — risk: medium
 	 */
-	async deleteNamespace(name: string): Promise<ProofResult<unknown>> {
+	async deleteNamespace(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1Namespace",
 			namespace: "api",
@@ -3259,6 +3412,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3267,7 +3421,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{name}/finalize` — risk: medium
 	 */
-	async finalize(name: string): Promise<ProofResult<unknown>> {
+	async finalize(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespaceFinalize",
 			namespace: "api",
@@ -3280,6 +3434,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3288,7 +3443,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/namespaces/{name}/status` — risk: medium
 	 */
-	async getNamespacesStatus(name: string): Promise<ProofResult<unknown>> {
+	async getNamespacesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NamespaceStatus",
 			namespace: "api",
@@ -3301,6 +3456,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3309,7 +3465,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/namespaces/{name}/status` — risk: medium
 	 */
-	async putNamespacesStatus(name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NamespaceStatus",
 			namespace: "api",
@@ -3322,6 +3478,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3330,7 +3487,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/namespaces/{name}/status` — risk: medium
 	 */
-	async patchNamespacesStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NamespaceStatus",
 			namespace: "api",
@@ -3343,6 +3500,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3351,7 +3509,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/nodes` — risk: medium
 	 */
-	async nodes_0(): Promise<ProofResult<unknown>> {
+	async nodes_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1Node",
 			namespace: "api",
@@ -3364,6 +3522,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3372,7 +3531,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/nodes` — risk: medium
 	 */
-	async nodes_1(): Promise<ProofResult<unknown>> {
+	async nodes_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1Node",
 			namespace: "api",
@@ -3385,6 +3544,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3393,7 +3553,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/nodes` — risk: medium
 	 */
-	async nodes_2(): Promise<ProofResult<unknown>> {
+	async nodes_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionNode",
 			namespace: "api",
@@ -3406,6 +3566,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3414,7 +3575,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/nodes/{name}` — risk: medium
 	 */
-	async nodesRetrieveNode(name: string): Promise<ProofResult<unknown>> {
+	async nodesRetrieveNode(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1Node",
 			namespace: "api",
@@ -3427,6 +3588,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3435,7 +3597,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/nodes/{name}` — risk: medium
 	 */
-	async nodes_3(name: string): Promise<ProofResult<unknown>> {
+	async nodes_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1Node",
 			namespace: "api",
@@ -3448,6 +3610,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3456,7 +3619,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/nodes/{name}` — risk: medium
 	 */
-	async nodes_4(name: string): Promise<ProofResult<unknown>> {
+	async nodes_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1Node",
 			namespace: "api",
@@ -3469,6 +3632,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3477,7 +3641,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/nodes/{name}` — risk: medium
 	 */
-	async deleteNode(name: string): Promise<ProofResult<unknown>> {
+	async deleteNode(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1Node",
 			namespace: "api",
@@ -3490,6 +3654,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3498,7 +3663,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/nodes/{name}/proxy` — risk: medium
 	 */
-	async getNodesProxy(name: string): Promise<ProofResult<unknown>> {
+	async getNodesProxy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1GetNodeProxy",
 			namespace: "api",
@@ -3511,6 +3676,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3519,7 +3685,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/nodes/{name}/proxy` — risk: medium
 	 */
-	async postNodesProxy(name: string): Promise<ProofResult<unknown>> {
+	async postNodesProxy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PostNodeProxy",
 			namespace: "api",
@@ -3532,6 +3698,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3540,7 +3707,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/nodes/{name}/proxy` — risk: medium
 	 */
-	async putNodesProxy(name: string): Promise<ProofResult<unknown>> {
+	async putNodesProxy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PutNodeProxy",
 			namespace: "api",
@@ -3553,6 +3720,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3561,7 +3729,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/nodes/{name}/proxy` — risk: medium
 	 */
-	async patchNodesProxy(name: string): Promise<ProofResult<unknown>> {
+	async patchNodesProxy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PatchNodeProxy",
 			namespace: "api",
@@ -3574,6 +3742,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3582,7 +3751,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/nodes/{name}/proxy` — risk: medium
 	 */
-	async deleteNodesProxy(name: string): Promise<ProofResult<unknown>> {
+	async deleteNodesProxy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1DeleteNodeProxy",
 			namespace: "api",
@@ -3595,6 +3764,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3603,7 +3773,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/nodes/{name}/proxy/{path}` — risk: medium
 	 */
-	async nodesproxyRetrieveProxy(name: string, path: string): Promise<ProofResult<unknown>> {
+	async nodesproxyRetrieveProxy(name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1GetNodeProxyWithPath",
 			namespace: "api",
@@ -3616,6 +3786,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3624,7 +3795,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/nodes/{name}/proxy/{path}` — risk: medium
 	 */
-	async nodesproxyUpdateProxy(name: string, path: string): Promise<ProofResult<unknown>> {
+	async nodesproxyUpdateProxy(name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PostNodeProxyWithPath",
 			namespace: "api",
@@ -3637,6 +3808,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3645,7 +3817,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/nodes/{name}/proxy/{path}` — risk: medium
 	 */
-	async putNodesProxy_0(name: string, path: string): Promise<ProofResult<unknown>> {
+	async putNodesProxy_0(name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PutNodeProxyWithPath",
 			namespace: "api",
@@ -3658,6 +3830,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3666,7 +3839,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/nodes/{name}/proxy/{path}` — risk: medium
 	 */
-	async patchNodesProxy_0(name: string, path: string): Promise<ProofResult<unknown>> {
+	async patchNodesProxy_0(name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1PatchNodeProxyWithPath",
 			namespace: "api",
@@ -3679,6 +3852,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3687,7 +3861,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/nodes/{name}/proxy/{path}` — risk: medium
 	 */
-	async nodesproxyDeleteProxy(name: string, path: string): Promise<ProofResult<unknown>> {
+	async nodesproxyDeleteProxy(name: string, path: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "connectCoreV1DeleteNodeProxyWithPath",
 			namespace: "api",
@@ -3700,6 +3874,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3708,7 +3883,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/nodes/{name}/status` — risk: medium
 	 */
-	async getNodesStatus(name: string): Promise<ProofResult<unknown>> {
+	async getNodesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1NodeStatus",
 			namespace: "api",
@@ -3721,6 +3896,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3729,7 +3905,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/nodes/{name}/status` — risk: medium
 	 */
-	async putNodesStatus(name: string): Promise<ProofResult<unknown>> {
+	async putNodesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1NodeStatus",
 			namespace: "api",
@@ -3742,6 +3918,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3750,7 +3927,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/nodes/{name}/status` — risk: medium
 	 */
-	async patchNodesStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchNodesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1NodeStatus",
 			namespace: "api",
@@ -3763,6 +3940,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3771,7 +3949,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/persistentvolumeclaims` — risk: medium
 	 */
-	async persistentvolumeclaims_5(): Promise<ProofResult<unknown>> {
+	async persistentvolumeclaims_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1PersistentVolumeClaimForAllNamespaces",
 			namespace: "api",
@@ -3784,6 +3962,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3792,7 +3971,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/persistentvolumes` — risk: medium
 	 */
-	async persistentvolumes_0(): Promise<ProofResult<unknown>> {
+	async persistentvolumes_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1PersistentVolume",
 			namespace: "api",
@@ -3805,6 +3984,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3813,7 +3993,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `POST /api/v1/persistentvolumes` — risk: medium
 	 */
-	async persistentvolumes_1(): Promise<ProofResult<unknown>> {
+	async persistentvolumes_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoreV1PersistentVolume",
 			namespace: "api",
@@ -3826,6 +4006,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3834,7 +4015,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/persistentvolumes` — risk: medium
 	 */
-	async persistentvolumes_2(): Promise<ProofResult<unknown>> {
+	async persistentvolumes_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1CollectionPersistentVolume",
 			namespace: "api",
@@ -3847,6 +4028,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3855,7 +4037,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/persistentvolumes/{name}` — risk: medium
 	 */
-	async persistentvolumesRetrievePersistentvolume(name: string): Promise<ProofResult<unknown>> {
+	async persistentvolumesRetrievePersistentvolume(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1PersistentVolume",
 			namespace: "api",
@@ -3868,6 +4050,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3876,7 +4059,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/persistentvolumes/{name}` — risk: medium
 	 */
-	async persistentvolumes_3(name: string): Promise<ProofResult<unknown>> {
+	async persistentvolumes_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1PersistentVolume",
 			namespace: "api",
@@ -3889,6 +4072,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3897,7 +4081,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/persistentvolumes/{name}` — risk: medium
 	 */
-	async persistentvolumes_4(name: string): Promise<ProofResult<unknown>> {
+	async persistentvolumes_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1PersistentVolume",
 			namespace: "api",
@@ -3910,6 +4094,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3918,7 +4103,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v1/persistentvolumes/{name}` — risk: medium
 	 */
-	async deletePersistentvolume(name: string): Promise<ProofResult<unknown>> {
+	async deletePersistentvolume(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoreV1PersistentVolume",
 			namespace: "api",
@@ -3931,6 +4116,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3939,7 +4125,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/persistentvolumes/{name}/status` — risk: medium
 	 */
-	async getPersistentvolumesStatus(name: string): Promise<ProofResult<unknown>> {
+	async getPersistentvolumesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoreV1PersistentVolumeStatus",
 			namespace: "api",
@@ -3952,6 +4138,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3960,7 +4147,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PUT /api/v1/persistentvolumes/{name}/status` — risk: medium
 	 */
-	async putPersistentvolumesStatus(name: string): Promise<ProofResult<unknown>> {
+	async putPersistentvolumesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoreV1PersistentVolumeStatus",
 			namespace: "api",
@@ -3973,6 +4160,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3981,7 +4169,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v1/persistentvolumes/{name}/status` — risk: medium
 	 */
-	async patchPersistentvolumesStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchPersistentvolumesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoreV1PersistentVolumeStatus",
 			namespace: "api",
@@ -3994,6 +4182,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4002,7 +4191,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/pods` — risk: medium
 	 */
-	async pods_5(): Promise<ProofResult<unknown>> {
+	async pods_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1PodForAllNamespaces",
 			namespace: "api",
@@ -4015,6 +4204,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4023,7 +4213,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/podtemplates` — risk: medium
 	 */
-	async podtemplates_5(): Promise<ProofResult<unknown>> {
+	async podtemplates_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1PodTemplateForAllNamespaces",
 			namespace: "api",
@@ -4036,6 +4226,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4044,7 +4235,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/replicationcontrollers` — risk: medium
 	 */
-	async replicationcontrollers_5(): Promise<ProofResult<unknown>> {
+	async replicationcontrollers_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1ReplicationControllerForAllNamespaces",
 			namespace: "api",
@@ -4057,6 +4248,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4065,7 +4257,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/resourcequotas` — risk: medium
 	 */
-	async resourcequotas_5(): Promise<ProofResult<unknown>> {
+	async resourcequotas_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1ResourceQuotaForAllNamespaces",
 			namespace: "api",
@@ -4078,6 +4270,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4086,7 +4279,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/secrets` — risk: medium
 	 */
-	async secrets_5(): Promise<ProofResult<unknown>> {
+	async secrets_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1SecretForAllNamespaces",
 			namespace: "api",
@@ -4099,6 +4292,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4107,7 +4301,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/serviceaccounts` — risk: medium
 	 */
-	async serviceaccounts_5(): Promise<ProofResult<unknown>> {
+	async serviceaccounts_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1ServiceAccountForAllNamespaces",
 			namespace: "api",
@@ -4120,6 +4314,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4128,7 +4323,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/services` — risk: medium
 	 */
-	async services_5(): Promise<ProofResult<unknown>> {
+	async services_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoreV1ServiceForAllNamespaces",
 			namespace: "api",
@@ -4141,6 +4336,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4149,7 +4345,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/configmaps` — risk: medium
 	 */
-	async watchConfigmaps(): Promise<ProofResult<unknown>> {
+	async watchConfigmaps(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1ConfigMapListForAllNamespaces",
 			namespace: "api",
@@ -4162,6 +4358,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4170,7 +4367,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/endpoints` — risk: medium
 	 */
-	async watchEndpoints(): Promise<ProofResult<unknown>> {
+	async watchEndpoints(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1EndpointsListForAllNamespaces",
 			namespace: "api",
@@ -4183,6 +4380,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4191,7 +4389,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/events` — risk: medium
 	 */
-	async watchEvents(): Promise<ProofResult<unknown>> {
+	async watchEvents(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1EventListForAllNamespaces",
 			namespace: "api",
@@ -4204,6 +4402,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4212,7 +4411,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/limitranges` — risk: medium
 	 */
-	async watchLimitranges(): Promise<ProofResult<unknown>> {
+	async watchLimitranges(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1LimitRangeListForAllNamespaces",
 			namespace: "api",
@@ -4225,6 +4424,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4233,7 +4433,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces` — risk: medium
 	 */
-	async watchNamespaces(): Promise<ProofResult<unknown>> {
+	async watchNamespaces(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespaceList",
 			namespace: "api",
@@ -4246,6 +4446,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4254,7 +4455,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/configmaps` — risk: medium
 	 */
-	async watchnamespacesConfigmaps(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesConfigmaps(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedConfigMapList",
 			namespace: "api",
@@ -4267,6 +4468,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4275,7 +4477,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/configmaps/{name}` — risk: medium
 	 */
-	async watchnamespacesconfigmapsRetrieveConfigmap(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesconfigmapsRetrieveConfigmap(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedConfigMap",
 			namespace: "api",
@@ -4288,6 +4490,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4296,7 +4499,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/endpoints` — risk: medium
 	 */
-	async watchnamespacesEndpoints(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesEndpoints(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedEndpointsList",
 			namespace: "api",
@@ -4309,6 +4512,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4317,7 +4521,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/endpoints/{name}` — risk: medium
 	 */
-	async watchnamespacesendpointsRetrieveEndpoint(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesendpointsRetrieveEndpoint(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedEndpoints",
 			namespace: "api",
@@ -4330,6 +4534,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4338,7 +4543,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/events` — risk: medium
 	 */
-	async watchnamespacesEvents(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesEvents(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedEventList",
 			namespace: "api",
@@ -4351,6 +4556,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4359,7 +4565,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async watchnamespaceseventsRetrieveEvent(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespaceseventsRetrieveEvent(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedEvent",
 			namespace: "api",
@@ -4372,6 +4578,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4380,7 +4587,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/limitranges` — risk: medium
 	 */
-	async watchnamespacesLimitranges(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesLimitranges(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedLimitRangeList",
 			namespace: "api",
@@ -4393,6 +4600,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4401,7 +4609,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/limitranges/{name}` — risk: medium
 	 */
-	async watchnamespaceslimitrangesRetrieveLimitrange(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespaceslimitrangesRetrieveLimitrange(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedLimitRange",
 			namespace: "api",
@@ -4414,6 +4622,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4422,7 +4631,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/persistentvolumeclaims` — risk: medium
 	 */
-	async watchnamespacesPersistentvolumeclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesPersistentvolumeclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedPersistentVolumeClaimList",
 			namespace: "api",
@@ -4435,6 +4644,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4443,7 +4653,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/persistentvolumeclaims/{name}` — risk: medium
 	 */
-	async watchnamespacespersistentvolumeclaimsRetrievePersistentvolumeclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacespersistentvolumeclaimsRetrievePersistentvolumeclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedPersistentVolumeClaim",
 			namespace: "api",
@@ -4456,6 +4666,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4464,7 +4675,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/pods` — risk: medium
 	 */
-	async watchnamespacesPods(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesPods(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedPodList",
 			namespace: "api",
@@ -4477,6 +4688,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4485,7 +4697,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/pods/{name}` — risk: medium
 	 */
-	async watchnamespacespodsRetrievePod(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacespodsRetrievePod(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedPod",
 			namespace: "api",
@@ -4498,6 +4710,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4506,7 +4719,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/podtemplates` — risk: medium
 	 */
-	async watchnamespacesPodtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesPodtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedPodTemplateList",
 			namespace: "api",
@@ -4519,6 +4732,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4527,7 +4741,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/podtemplates/{name}` — risk: medium
 	 */
-	async watchnamespacespodtemplatesRetrievePodtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacespodtemplatesRetrievePodtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedPodTemplate",
 			namespace: "api",
@@ -4540,6 +4754,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4548,7 +4763,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/replicationcontrollers` — risk: medium
 	 */
-	async watchnamespacesReplicationcontrollers(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesReplicationcontrollers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedReplicationControllerList",
 			namespace: "api",
@@ -4561,6 +4776,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4569,7 +4785,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/replicationcontrollers/{name}` — risk: medium
 	 */
-	async watchnamespacesreplicationcontrollersRetrieveReplicationcontroller(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesreplicationcontrollersRetrieveReplicationcontroller(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedReplicationController",
 			namespace: "api",
@@ -4582,6 +4798,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4590,7 +4807,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/resourcequotas` — risk: medium
 	 */
-	async watchnamespacesResourcequotas(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesResourcequotas(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedResourceQuotaList",
 			namespace: "api",
@@ -4603,6 +4820,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4611,7 +4829,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/resourcequotas/{name}` — risk: medium
 	 */
-	async watchnamespacesresourcequotasRetrieveResourcequota(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesresourcequotasRetrieveResourcequota(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedResourceQuota",
 			namespace: "api",
@@ -4624,6 +4842,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4632,7 +4851,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/secrets` — risk: medium
 	 */
-	async watchnamespacesSecrets(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesSecrets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedSecretList",
 			namespace: "api",
@@ -4645,6 +4864,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4653,7 +4873,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/secrets/{name}` — risk: medium
 	 */
-	async watchnamespacessecretsRetrieveSecret(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacessecretsRetrieveSecret(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedSecret",
 			namespace: "api",
@@ -4666,6 +4886,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4674,7 +4895,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/serviceaccounts` — risk: medium
 	 */
-	async watchnamespacesServiceaccounts(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesServiceaccounts(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedServiceAccountList",
 			namespace: "api",
@@ -4687,6 +4908,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4695,7 +4917,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/serviceaccounts/{name}` — risk: medium
 	 */
-	async watchnamespacesserviceaccountsRetrieveServiceaccount(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesserviceaccountsRetrieveServiceaccount(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedServiceAccount",
 			namespace: "api",
@@ -4708,6 +4930,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4716,7 +4939,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/services` — risk: medium
 	 */
-	async watchnamespacesServices(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesServices(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedServiceList",
 			namespace: "api",
@@ -4729,6 +4952,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4737,7 +4961,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{namespace}/services/{name}` — risk: medium
 	 */
-	async watchnamespacesservicesRetrieveService(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesservicesRetrieveService(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NamespacedService",
 			namespace: "api",
@@ -4750,6 +4974,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4758,7 +4983,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/namespaces/{name}` — risk: medium
 	 */
-	async watchnamespacesRetrieveNamespace(name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesRetrieveNamespace(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1Namespace",
 			namespace: "api",
@@ -4771,6 +4996,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4779,7 +5005,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/nodes` — risk: medium
 	 */
-	async watchNodes(): Promise<ProofResult<unknown>> {
+	async watchNodes(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1NodeList",
 			namespace: "api",
@@ -4792,6 +5018,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4800,7 +5027,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/nodes/{name}` — risk: medium
 	 */
-	async watchnodesRetrieveNode(name: string): Promise<ProofResult<unknown>> {
+	async watchnodesRetrieveNode(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1Node",
 			namespace: "api",
@@ -4813,6 +5040,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4821,7 +5049,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/persistentvolumeclaims` — risk: medium
 	 */
-	async watchPersistentvolumeclaims(): Promise<ProofResult<unknown>> {
+	async watchPersistentvolumeclaims(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1PersistentVolumeClaimListForAllNamespaces",
 			namespace: "api",
@@ -4834,6 +5062,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4842,7 +5071,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/persistentvolumes` — risk: medium
 	 */
-	async watchPersistentvolumes(): Promise<ProofResult<unknown>> {
+	async watchPersistentvolumes(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1PersistentVolumeList",
 			namespace: "api",
@@ -4855,6 +5084,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4863,7 +5093,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/persistentvolumes/{name}` — risk: medium
 	 */
-	async watchpersistentvolumesRetrievePersistentvolume(name: string): Promise<ProofResult<unknown>> {
+	async watchpersistentvolumesRetrievePersistentvolume(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1PersistentVolume",
 			namespace: "api",
@@ -4876,6 +5106,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4884,7 +5115,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/pods` — risk: medium
 	 */
-	async watchPods(): Promise<ProofResult<unknown>> {
+	async watchPods(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1PodListForAllNamespaces",
 			namespace: "api",
@@ -4897,6 +5128,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4905,7 +5137,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/podtemplates` — risk: medium
 	 */
-	async watchPodtemplates(): Promise<ProofResult<unknown>> {
+	async watchPodtemplates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1PodTemplateListForAllNamespaces",
 			namespace: "api",
@@ -4918,6 +5150,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4926,7 +5159,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/replicationcontrollers` — risk: medium
 	 */
-	async watchReplicationcontrollers(): Promise<ProofResult<unknown>> {
+	async watchReplicationcontrollers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1ReplicationControllerListForAllNamespaces",
 			namespace: "api",
@@ -4939,6 +5172,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4947,7 +5181,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/resourcequotas` — risk: medium
 	 */
-	async watchResourcequotas(): Promise<ProofResult<unknown>> {
+	async watchResourcequotas(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1ResourceQuotaListForAllNamespaces",
 			namespace: "api",
@@ -4960,6 +5194,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4968,7 +5203,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/secrets` — risk: medium
 	 */
-	async watchSecrets(): Promise<ProofResult<unknown>> {
+	async watchSecrets(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1SecretListForAllNamespaces",
 			namespace: "api",
@@ -4981,6 +5216,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4989,7 +5225,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/serviceaccounts` — risk: medium
 	 */
-	async watchServiceaccounts(): Promise<ProofResult<unknown>> {
+	async watchServiceaccounts(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1ServiceAccountListForAllNamespaces",
 			namespace: "api",
@@ -5002,6 +5238,7 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5010,7 +5247,7 @@ export class ApiResource extends RpcTarget {
 	 *
 	 * `GET /api/v1/watch/services` — risk: medium
 	 */
-	async watchServices(): Promise<ProofResult<unknown>> {
+	async watchServices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoreV1ServiceListForAllNamespaces",
 			namespace: "api",
@@ -5023,13 +5260,14 @@ export class ApiResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ApisResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5041,7 +5279,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAPIVersions",
 			namespace: "apis",
@@ -5054,6 +5292,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5062,7 +5301,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/` — risk: medium
 	 */
-	async listAdmissionregistrationK8sIo(): Promise<ProofResult<unknown>> {
+	async listAdmissionregistrationK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAdmissionregistrationAPIGroup",
 			namespace: "apis",
@@ -5075,6 +5314,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5083,7 +5323,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/` — risk: medium
 	 */
-	async admissionregistrationK8sIoV1(): Promise<ProofResult<unknown>> {
+	async admissionregistrationK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAdmissionregistrationV1APIResources",
 			namespace: "apis",
@@ -5096,6 +5336,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5104,7 +5345,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicies` — risk: medium
 	 */
-	async getV1Mutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async getV1Mutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -5117,6 +5358,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5125,7 +5367,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicies` — risk: medium
 	 */
-	async postV1Mutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async postV1Mutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -5138,6 +5380,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5146,7 +5389,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicies` — risk: medium
 	 */
-	async deleteV1Mutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async deleteV1Mutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1CollectionMutatingAdmissionPolicy",
 			namespace: "apis",
@@ -5159,6 +5402,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5167,7 +5411,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async v1mutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async v1mutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -5180,6 +5424,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5188,7 +5433,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async putV1Mutatingadmissionpolicies(name: string): Promise<ProofResult<unknown>> {
+	async putV1Mutatingadmissionpolicies(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -5201,6 +5446,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5209,7 +5455,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async patchV1Mutatingadmissionpolicies(name: string): Promise<ProofResult<unknown>> {
+	async patchV1Mutatingadmissionpolicies(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -5222,6 +5468,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5230,7 +5477,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async v1mutatingadmissionpoliciesDeleteMutatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async v1mutatingadmissionpoliciesDeleteMutatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -5243,6 +5490,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5251,7 +5499,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async getV1Mutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async getV1Mutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5264,6 +5512,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5272,7 +5521,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async postV1Mutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async postV1Mutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5285,6 +5534,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5293,7 +5543,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async deleteV1Mutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async deleteV1Mutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1CollectionMutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5306,6 +5556,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5314,7 +5565,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async v1mutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async v1mutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5327,6 +5578,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5335,7 +5587,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async putV1Mutatingadmissionpolicybindings(name: string): Promise<ProofResult<unknown>> {
+	async putV1Mutatingadmissionpolicybindings(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5348,6 +5600,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5356,7 +5609,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async patchV1Mutatingadmissionpolicybindings(name: string): Promise<ProofResult<unknown>> {
+	async patchV1Mutatingadmissionpolicybindings(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5369,6 +5622,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5377,7 +5631,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async v1mutatingadmissionpolicybindingsDeleteMutatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async v1mutatingadmissionpolicybindingsDeleteMutatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5390,6 +5644,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5398,7 +5653,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations` — risk: medium
 	 */
-	async mutatingwebhookconfigurations_0(): Promise<ProofResult<unknown>> {
+	async mutatingwebhookconfigurations_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1MutatingWebhookConfiguration",
 			namespace: "apis",
@@ -5411,6 +5666,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5419,7 +5675,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations` — risk: medium
 	 */
-	async mutatingwebhookconfigurations_1(): Promise<ProofResult<unknown>> {
+	async mutatingwebhookconfigurations_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1MutatingWebhookConfiguration",
 			namespace: "apis",
@@ -5432,6 +5688,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5440,7 +5697,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations` — risk: medium
 	 */
-	async mutatingwebhookconfigurations_2(): Promise<ProofResult<unknown>> {
+	async mutatingwebhookconfigurations_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1CollectionMutatingWebhookConfiguration",
 			namespace: "apis",
@@ -5453,6 +5710,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5461,7 +5719,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async mutatingwebhookconfigurationsRetrieveMutatingwebhookconfiguration(name: string): Promise<ProofResult<unknown>> {
+	async mutatingwebhookconfigurationsRetrieveMutatingwebhookconfiguration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1MutatingWebhookConfiguration",
 			namespace: "apis",
@@ -5474,6 +5732,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5482,7 +5741,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async mutatingwebhookconfigurations_3(name: string): Promise<ProofResult<unknown>> {
+	async mutatingwebhookconfigurations_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1MutatingWebhookConfiguration",
 			namespace: "apis",
@@ -5495,6 +5754,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5503,7 +5763,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async mutatingwebhookconfigurations_4(name: string): Promise<ProofResult<unknown>> {
+	async mutatingwebhookconfigurations_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1MutatingWebhookConfiguration",
 			namespace: "apis",
@@ -5516,6 +5776,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5524,7 +5785,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async deleteMutatingwebhookconfiguration(name: string): Promise<ProofResult<unknown>> {
+	async deleteMutatingwebhookconfiguration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1MutatingWebhookConfiguration",
 			namespace: "apis",
@@ -5537,6 +5798,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5545,7 +5807,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies` — risk: medium
 	 */
-	async validatingadmissionpolicies_0(): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicies_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1ValidatingAdmissionPolicy",
 			namespace: "apis",
@@ -5558,6 +5820,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5566,7 +5829,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies` — risk: medium
 	 */
-	async validatingadmissionpolicies_1(): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicies_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1ValidatingAdmissionPolicy",
 			namespace: "apis",
@@ -5579,6 +5842,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5587,7 +5851,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies` — risk: medium
 	 */
-	async validatingadmissionpolicies_2(): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicies_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1CollectionValidatingAdmissionPolicy",
 			namespace: "apis",
@@ -5600,6 +5864,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5608,7 +5873,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async validatingadmissionpoliciesRetrieveValidatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async validatingadmissionpoliciesRetrieveValidatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1ValidatingAdmissionPolicy",
 			namespace: "apis",
@@ -5621,6 +5886,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5629,7 +5895,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async validatingadmissionpolicies_3(name: string): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicies_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1ValidatingAdmissionPolicy",
 			namespace: "apis",
@@ -5642,6 +5908,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5650,7 +5917,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async validatingadmissionpolicies_4(name: string): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicies_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1ValidatingAdmissionPolicy",
 			namespace: "apis",
@@ -5663,6 +5930,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5671,7 +5939,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async deleteValidatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async deleteValidatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1ValidatingAdmissionPolicy",
 			namespace: "apis",
@@ -5684,6 +5952,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5692,7 +5961,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies/{name}/status` — risk: medium
 	 */
-	async getAdmissionregistrationK8sIov1validatingadmissionpoliciesStatus(name: string): Promise<ProofResult<unknown>> {
+	async getAdmissionregistrationK8sIov1validatingadmissionpoliciesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1ValidatingAdmissionPolicyStatus",
 			namespace: "apis",
@@ -5705,6 +5974,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5713,7 +5983,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies/{name}/status` — risk: medium
 	 */
-	async putAdmissionregistrationK8sIov1validatingadmissionpoliciesStatus(name: string): Promise<ProofResult<unknown>> {
+	async putAdmissionregistrationK8sIov1validatingadmissionpoliciesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1ValidatingAdmissionPolicyStatus",
 			namespace: "apis",
@@ -5726,6 +5996,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5734,7 +6005,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicies/{name}/status` — risk: medium
 	 */
-	async patchAdmissionregistrationK8sIov1validatingadmissionpoliciesStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchAdmissionregistrationK8sIov1validatingadmissionpoliciesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1ValidatingAdmissionPolicyStatus",
 			namespace: "apis",
@@ -5747,6 +6018,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5755,7 +6027,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicybindings` — risk: medium
 	 */
-	async validatingadmissionpolicybindings_0(): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicybindings_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1ValidatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5768,6 +6040,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5776,7 +6049,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicybindings` — risk: medium
 	 */
-	async validatingadmissionpolicybindings_1(): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicybindings_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1ValidatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5789,6 +6062,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5797,7 +6071,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicybindings` — risk: medium
 	 */
-	async validatingadmissionpolicybindings_2(): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicybindings_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1CollectionValidatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5810,6 +6084,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5818,7 +6093,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async validatingadmissionpolicybindingsRetrieveValidatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicybindingsRetrieveValidatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1ValidatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5831,6 +6106,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5839,7 +6115,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async validatingadmissionpolicybindings_3(name: string): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicybindings_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1ValidatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5852,6 +6128,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5860,7 +6137,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async validatingadmissionpolicybindings_4(name: string): Promise<ProofResult<unknown>> {
+	async validatingadmissionpolicybindings_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1ValidatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5873,6 +6150,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5881,7 +6159,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/validatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async deleteValidatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async deleteValidatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1ValidatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -5894,6 +6172,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5902,7 +6181,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/validatingwebhookconfigurations` — risk: medium
 	 */
-	async validatingwebhookconfigurations_0(): Promise<ProofResult<unknown>> {
+	async validatingwebhookconfigurations_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1ValidatingWebhookConfiguration",
 			namespace: "apis",
@@ -5915,6 +6194,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5923,7 +6203,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1/validatingwebhookconfigurations` — risk: medium
 	 */
-	async validatingwebhookconfigurations_1(): Promise<ProofResult<unknown>> {
+	async validatingwebhookconfigurations_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1ValidatingWebhookConfiguration",
 			namespace: "apis",
@@ -5936,6 +6216,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5944,7 +6225,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/validatingwebhookconfigurations` — risk: medium
 	 */
-	async validatingwebhookconfigurations_2(): Promise<ProofResult<unknown>> {
+	async validatingwebhookconfigurations_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1CollectionValidatingWebhookConfiguration",
 			namespace: "apis",
@@ -5957,6 +6238,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5965,7 +6247,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/validatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async validatingwebhookconfigurationsRetrieveValidatingwebhookconfiguration(name: string): Promise<ProofResult<unknown>> {
+	async validatingwebhookconfigurationsRetrieveValidatingwebhookconfiguration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1ValidatingWebhookConfiguration",
 			namespace: "apis",
@@ -5978,6 +6260,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5986,7 +6269,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1/validatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async validatingwebhookconfigurations_3(name: string): Promise<ProofResult<unknown>> {
+	async validatingwebhookconfigurations_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1ValidatingWebhookConfiguration",
 			namespace: "apis",
@@ -5999,6 +6282,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6007,7 +6291,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1/validatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async validatingwebhookconfigurations_4(name: string): Promise<ProofResult<unknown>> {
+	async validatingwebhookconfigurations_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1ValidatingWebhookConfiguration",
 			namespace: "apis",
@@ -6020,6 +6304,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6028,7 +6313,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1/validatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async deleteValidatingwebhookconfiguration(name: string): Promise<ProofResult<unknown>> {
+	async deleteValidatingwebhookconfiguration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1ValidatingWebhookConfiguration",
 			namespace: "apis",
@@ -6041,6 +6326,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6049,7 +6335,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/mutatingadmissionpolicies` — risk: medium
 	 */
-	async v1watchMutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async v1watchMutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1MutatingAdmissionPolicyList",
 			namespace: "apis",
@@ -6062,6 +6348,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6070,7 +6357,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async v1watchmutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async v1watchmutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6083,6 +6370,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6091,7 +6379,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async v1watchMutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async v1watchMutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1MutatingAdmissionPolicyBindingList",
 			namespace: "apis",
@@ -6104,6 +6392,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6112,7 +6401,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async v1watchmutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async v1watchmutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6125,6 +6414,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6133,7 +6423,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/mutatingwebhookconfigurations` — risk: medium
 	 */
-	async watchMutatingwebhookconfigurations(): Promise<ProofResult<unknown>> {
+	async watchMutatingwebhookconfigurations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1MutatingWebhookConfigurationList",
 			namespace: "apis",
@@ -6146,6 +6436,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6154,7 +6445,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/mutatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async watchmutatingwebhookconfigurationsRetrieveMutatingwebhookconfiguration(name: string): Promise<ProofResult<unknown>> {
+	async watchmutatingwebhookconfigurationsRetrieveMutatingwebhookconfiguration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1MutatingWebhookConfiguration",
 			namespace: "apis",
@@ -6167,6 +6458,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6175,7 +6467,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/validatingadmissionpolicies` — risk: medium
 	 */
-	async watchValidatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async watchValidatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1ValidatingAdmissionPolicyList",
 			namespace: "apis",
@@ -6188,6 +6480,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6196,7 +6489,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/validatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async watchvalidatingadmissionpoliciesRetrieveValidatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async watchvalidatingadmissionpoliciesRetrieveValidatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1ValidatingAdmissionPolicy",
 			namespace: "apis",
@@ -6209,6 +6502,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6217,7 +6511,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/validatingadmissionpolicybindings` — risk: medium
 	 */
-	async watchValidatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async watchValidatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1ValidatingAdmissionPolicyBindingList",
 			namespace: "apis",
@@ -6230,6 +6524,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6238,7 +6533,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/validatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async watchvalidatingadmissionpolicybindingsRetrieveValidatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async watchvalidatingadmissionpolicybindingsRetrieveValidatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1ValidatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6251,6 +6546,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6259,7 +6555,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/validatingwebhookconfigurations` — risk: medium
 	 */
-	async watchValidatingwebhookconfigurations(): Promise<ProofResult<unknown>> {
+	async watchValidatingwebhookconfigurations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1ValidatingWebhookConfigurationList",
 			namespace: "apis",
@@ -6272,6 +6568,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6280,7 +6577,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1/watch/validatingwebhookconfigurations/{name}` — risk: medium
 	 */
-	async watchvalidatingwebhookconfigurationsRetrieveValidatingwebhookconfiguration(name: string): Promise<ProofResult<unknown>> {
+	async watchvalidatingwebhookconfigurationsRetrieveValidatingwebhookconfiguration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1ValidatingWebhookConfiguration",
 			namespace: "apis",
@@ -6293,6 +6590,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6301,7 +6599,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1alpha1/` — risk: medium
 	 */
-	async admissionregistrationK8sIoV1alpha1(): Promise<ProofResult<unknown>> {
+	async admissionregistrationK8sIoV1alpha1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAdmissionregistrationV1alpha1APIResources",
 			namespace: "apis",
@@ -6314,6 +6612,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6322,7 +6621,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicies` — risk: medium
 	 */
-	async getV1alpha1Mutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async getV1alpha1Mutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1alpha1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6335,6 +6634,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6343,7 +6643,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicies` — risk: medium
 	 */
-	async postV1alpha1Mutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async postV1alpha1Mutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1alpha1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6356,6 +6656,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6364,7 +6665,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicies` — risk: medium
 	 */
-	async deleteV1alpha1Mutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async deleteV1alpha1Mutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1alpha1CollectionMutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6377,6 +6678,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6385,7 +6687,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async v1alpha1mutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha1mutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1alpha1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6398,6 +6700,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6406,7 +6709,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async putV1alpha1Mutatingadmissionpolicies(name: string): Promise<ProofResult<unknown>> {
+	async putV1alpha1Mutatingadmissionpolicies(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1alpha1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6419,6 +6722,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6427,7 +6731,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async patchV1alpha1Mutatingadmissionpolicies(name: string): Promise<ProofResult<unknown>> {
+	async patchV1alpha1Mutatingadmissionpolicies(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1alpha1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6440,6 +6744,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6448,7 +6753,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async v1alpha1mutatingadmissionpoliciesDeleteMutatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha1mutatingadmissionpoliciesDeleteMutatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1alpha1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6461,6 +6766,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6469,7 +6775,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async getV1alpha1Mutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async getV1alpha1Mutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1alpha1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6482,6 +6788,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6490,7 +6797,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async postV1alpha1Mutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async postV1alpha1Mutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1alpha1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6503,6 +6810,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6511,7 +6819,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async deleteV1alpha1Mutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async deleteV1alpha1Mutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1alpha1CollectionMutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6524,6 +6832,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6532,7 +6841,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async v1alpha1mutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha1mutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1alpha1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6545,6 +6854,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6553,7 +6863,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async putV1alpha1Mutatingadmissionpolicybindings(name: string): Promise<ProofResult<unknown>> {
+	async putV1alpha1Mutatingadmissionpolicybindings(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1alpha1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6566,6 +6876,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6574,7 +6885,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async patchV1alpha1Mutatingadmissionpolicybindings(name: string): Promise<ProofResult<unknown>> {
+	async patchV1alpha1Mutatingadmissionpolicybindings(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1alpha1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6587,6 +6898,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6595,7 +6907,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1alpha1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async v1alpha1mutatingadmissionpolicybindingsDeleteMutatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha1mutatingadmissionpolicybindingsDeleteMutatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1alpha1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6608,6 +6920,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6616,7 +6929,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1alpha1/watch/mutatingadmissionpolicies` — risk: medium
 	 */
-	async v1alpha1watchMutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async v1alpha1watchMutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1alpha1MutatingAdmissionPolicyList",
 			namespace: "apis",
@@ -6629,6 +6942,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6637,7 +6951,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1alpha1/watch/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async v1alpha1watchmutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha1watchmutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1alpha1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6650,6 +6964,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6658,7 +6973,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1alpha1/watch/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async v1alpha1watchMutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async v1alpha1watchMutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1alpha1MutatingAdmissionPolicyBindingList",
 			namespace: "apis",
@@ -6671,6 +6986,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6679,7 +6995,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1alpha1/watch/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async v1alpha1watchmutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha1watchmutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1alpha1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6692,6 +7008,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6700,7 +7017,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1beta1/` — risk: medium
 	 */
-	async admissionregistrationK8sIoV1beta1(): Promise<ProofResult<unknown>> {
+	async admissionregistrationK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAdmissionregistrationV1beta1APIResources",
 			namespace: "apis",
@@ -6713,6 +7030,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6721,7 +7039,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies` — risk: medium
 	 */
-	async getV1beta1Mutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async getV1beta1Mutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1beta1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6734,6 +7052,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6742,7 +7061,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies` — risk: medium
 	 */
-	async postV1beta1Mutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async postV1beta1Mutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1beta1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6755,6 +7074,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6763,7 +7083,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies` — risk: medium
 	 */
-	async deleteV1beta1Mutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async deleteV1beta1Mutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1beta1CollectionMutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6776,6 +7096,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6784,7 +7105,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async v1beta1mutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1mutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1beta1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6797,6 +7118,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6805,7 +7127,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async putV1beta1Mutatingadmissionpolicies(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1Mutatingadmissionpolicies(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1beta1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6818,6 +7140,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6826,7 +7149,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async patchV1beta1Mutatingadmissionpolicies(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1Mutatingadmissionpolicies(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1beta1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6839,6 +7162,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6847,7 +7171,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async v1beta1mutatingadmissionpoliciesDeleteMutatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1mutatingadmissionpoliciesDeleteMutatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1beta1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -6860,6 +7184,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6868,7 +7193,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async getV1beta1Mutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async getV1beta1Mutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAdmissionregistrationV1beta1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6881,6 +7206,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6889,7 +7215,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async postV1beta1Mutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async postV1beta1Mutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAdmissionregistrationV1beta1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6902,6 +7228,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6910,7 +7237,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async deleteV1beta1Mutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async deleteV1beta1Mutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1beta1CollectionMutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6923,6 +7250,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6931,7 +7259,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async v1beta1mutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1mutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAdmissionregistrationV1beta1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6944,6 +7272,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6952,7 +7281,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async putV1beta1Mutatingadmissionpolicybindings(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1Mutatingadmissionpolicybindings(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAdmissionregistrationV1beta1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6965,6 +7294,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6973,7 +7303,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async patchV1beta1Mutatingadmissionpolicybindings(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1Mutatingadmissionpolicybindings(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAdmissionregistrationV1beta1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -6986,6 +7316,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6994,7 +7325,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async v1beta1mutatingadmissionpolicybindingsDeleteMutatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1mutatingadmissionpolicybindingsDeleteMutatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAdmissionregistrationV1beta1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -7007,6 +7338,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7015,7 +7347,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1beta1/watch/mutatingadmissionpolicies` — risk: medium
 	 */
-	async v1beta1watchMutatingadmissionpolicies(): Promise<ProofResult<unknown>> {
+	async v1beta1watchMutatingadmissionpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1beta1MutatingAdmissionPolicyList",
 			namespace: "apis",
@@ -7028,6 +7360,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7036,7 +7369,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1beta1/watch/mutatingadmissionpolicies/{name}` — risk: medium
 	 */
-	async v1beta1watchmutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchmutatingadmissionpoliciesRetrieveMutatingadmissionpolicy(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1beta1MutatingAdmissionPolicy",
 			namespace: "apis",
@@ -7049,6 +7382,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7057,7 +7391,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1beta1/watch/mutatingadmissionpolicybindings` — risk: medium
 	 */
-	async v1beta1watchMutatingadmissionpolicybindings(): Promise<ProofResult<unknown>> {
+	async v1beta1watchMutatingadmissionpolicybindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1beta1MutatingAdmissionPolicyBindingList",
 			namespace: "apis",
@@ -7070,6 +7404,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7078,7 +7413,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/admissionregistration.k8s.io/v1beta1/watch/mutatingadmissionpolicybindings/{name}` — risk: medium
 	 */
-	async v1beta1watchmutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchmutatingadmissionpolicybindingsRetrieveMutatingadmissionpolicybinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAdmissionregistrationV1beta1MutatingAdmissionPolicyBinding",
 			namespace: "apis",
@@ -7091,6 +7426,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7099,7 +7435,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiextensions.k8s.io/` — risk: medium
 	 */
-	async listApiextensionsK8sIo(): Promise<ProofResult<unknown>> {
+	async listApiextensionsK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiextensionsAPIGroup",
 			namespace: "apis",
@@ -7112,6 +7448,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7120,7 +7457,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiextensions.k8s.io/v1/` — risk: medium
 	 */
-	async apiextensionsK8sIoV1(): Promise<ProofResult<unknown>> {
+	async apiextensionsK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiextensionsV1APIResources",
 			namespace: "apis",
@@ -7133,6 +7470,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7141,7 +7479,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiextensions.k8s.io/v1/customresourcedefinitions` — risk: medium
 	 */
-	async customresourcedefinitions_0(): Promise<ProofResult<unknown>> {
+	async customresourcedefinitions_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listApiextensionsV1CustomResourceDefinition",
 			namespace: "apis",
@@ -7154,6 +7492,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7162,7 +7501,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/apiextensions.k8s.io/v1/customresourcedefinitions` — risk: medium
 	 */
-	async customresourcedefinitions_1(): Promise<ProofResult<unknown>> {
+	async customresourcedefinitions_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createApiextensionsV1CustomResourceDefinition",
 			namespace: "apis",
@@ -7175,6 +7514,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7183,7 +7523,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apiextensions.k8s.io/v1/customresourcedefinitions` — risk: medium
 	 */
-	async customresourcedefinitions_2(): Promise<ProofResult<unknown>> {
+	async customresourcedefinitions_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiextensionsV1CollectionCustomResourceDefinition",
 			namespace: "apis",
@@ -7196,6 +7536,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7204,7 +7545,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiextensions.k8s.io/v1/customresourcedefinitions/{name}` — risk: medium
 	 */
-	async customresourcedefinitionsRetrieveCustomresourcedefinition(name: string): Promise<ProofResult<unknown>> {
+	async customresourcedefinitionsRetrieveCustomresourcedefinition(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readApiextensionsV1CustomResourceDefinition",
 			namespace: "apis",
@@ -7217,6 +7558,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7225,7 +7567,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apiextensions.k8s.io/v1/customresourcedefinitions/{name}` — risk: medium
 	 */
-	async customresourcedefinitions_3(name: string): Promise<ProofResult<unknown>> {
+	async customresourcedefinitions_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceApiextensionsV1CustomResourceDefinition",
 			namespace: "apis",
@@ -7238,6 +7580,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7246,7 +7589,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apiextensions.k8s.io/v1/customresourcedefinitions/{name}` — risk: medium
 	 */
-	async customresourcedefinitions_4(name: string): Promise<ProofResult<unknown>> {
+	async customresourcedefinitions_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiextensionsV1CustomResourceDefinition",
 			namespace: "apis",
@@ -7259,6 +7602,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7267,7 +7611,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apiextensions.k8s.io/v1/customresourcedefinitions/{name}` — risk: medium
 	 */
-	async deleteCustomresourcedefinition(name: string): Promise<ProofResult<unknown>> {
+	async deleteCustomresourcedefinition(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiextensionsV1CustomResourceDefinition",
 			namespace: "apis",
@@ -7280,6 +7624,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7288,7 +7633,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiextensions.k8s.io/v1/customresourcedefinitions/{name}/status` — risk: medium
 	 */
-	async getApiextensionsK8sIov1customresourcedefinitionsStatus(name: string): Promise<ProofResult<unknown>> {
+	async getApiextensionsK8sIov1customresourcedefinitionsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readApiextensionsV1CustomResourceDefinitionStatus",
 			namespace: "apis",
@@ -7301,6 +7646,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7309,7 +7655,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apiextensions.k8s.io/v1/customresourcedefinitions/{name}/status` — risk: medium
 	 */
-	async putApiextensionsK8sIov1customresourcedefinitionsStatus(name: string): Promise<ProofResult<unknown>> {
+	async putApiextensionsK8sIov1customresourcedefinitionsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceApiextensionsV1CustomResourceDefinitionStatus",
 			namespace: "apis",
@@ -7322,6 +7668,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7330,7 +7677,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apiextensions.k8s.io/v1/customresourcedefinitions/{name}/status` — risk: medium
 	 */
-	async patchApiextensionsK8sIov1customresourcedefinitionsStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchApiextensionsK8sIov1customresourcedefinitionsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiextensionsV1CustomResourceDefinitionStatus",
 			namespace: "apis",
@@ -7343,6 +7690,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7351,7 +7699,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiextensions.k8s.io/v1/watch/customresourcedefinitions` — risk: medium
 	 */
-	async watchCustomresourcedefinitions(): Promise<ProofResult<unknown>> {
+	async watchCustomresourcedefinitions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchApiextensionsV1CustomResourceDefinitionList",
 			namespace: "apis",
@@ -7364,6 +7712,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7372,7 +7721,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiextensions.k8s.io/v1/watch/customresourcedefinitions/{name}` — risk: medium
 	 */
-	async watchcustomresourcedefinitionsRetrieveCustomresourcedefinition(name: string): Promise<ProofResult<unknown>> {
+	async watchcustomresourcedefinitionsRetrieveCustomresourcedefinition(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchApiextensionsV1CustomResourceDefinition",
 			namespace: "apis",
@@ -7385,6 +7734,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7393,7 +7743,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiregistration.k8s.io/` — risk: medium
 	 */
-	async listApiregistrationK8sIo(): Promise<ProofResult<unknown>> {
+	async listApiregistrationK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiregistrationAPIGroup",
 			namespace: "apis",
@@ -7406,6 +7756,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7414,7 +7765,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiregistration.k8s.io/v1/` — risk: medium
 	 */
-	async apiregistrationK8sIoV1(): Promise<ProofResult<unknown>> {
+	async apiregistrationK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiregistrationV1APIResources",
 			namespace: "apis",
@@ -7427,6 +7778,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7435,7 +7787,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiregistration.k8s.io/v1/apiservices` — risk: medium
 	 */
-	async apiservices_0(): Promise<ProofResult<unknown>> {
+	async apiservices_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listApiregistrationV1APIService",
 			namespace: "apis",
@@ -7448,6 +7800,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7456,7 +7809,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/apiregistration.k8s.io/v1/apiservices` — risk: medium
 	 */
-	async apiservices_1(): Promise<ProofResult<unknown>> {
+	async apiservices_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createApiregistrationV1APIService",
 			namespace: "apis",
@@ -7469,6 +7822,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7477,7 +7831,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apiregistration.k8s.io/v1/apiservices` — risk: medium
 	 */
-	async apiservices_2(): Promise<ProofResult<unknown>> {
+	async apiservices_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiregistrationV1CollectionAPIService",
 			namespace: "apis",
@@ -7490,6 +7844,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7498,7 +7853,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiregistration.k8s.io/v1/apiservices/{name}` — risk: medium
 	 */
-	async apiservicesRetrieveApiservice(name: string): Promise<ProofResult<unknown>> {
+	async apiservicesRetrieveApiservice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readApiregistrationV1APIService",
 			namespace: "apis",
@@ -7511,6 +7866,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7519,7 +7875,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apiregistration.k8s.io/v1/apiservices/{name}` — risk: medium
 	 */
-	async apiservices_3(name: string): Promise<ProofResult<unknown>> {
+	async apiservices_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceApiregistrationV1APIService",
 			namespace: "apis",
@@ -7532,6 +7888,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7540,7 +7897,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apiregistration.k8s.io/v1/apiservices/{name}` — risk: medium
 	 */
-	async apiservices_4(name: string): Promise<ProofResult<unknown>> {
+	async apiservices_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiregistrationV1APIService",
 			namespace: "apis",
@@ -7553,6 +7910,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7561,7 +7919,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apiregistration.k8s.io/v1/apiservices/{name}` — risk: medium
 	 */
-	async deleteApiservice(name: string): Promise<ProofResult<unknown>> {
+	async deleteApiservice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiregistrationV1APIService",
 			namespace: "apis",
@@ -7574,6 +7932,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7582,7 +7941,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiregistration.k8s.io/v1/apiservices/{name}/status` — risk: medium
 	 */
-	async getApiregistrationK8sIov1apiservicesStatus(name: string): Promise<ProofResult<unknown>> {
+	async getApiregistrationK8sIov1apiservicesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readApiregistrationV1APIServiceStatus",
 			namespace: "apis",
@@ -7595,6 +7954,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7603,7 +7963,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apiregistration.k8s.io/v1/apiservices/{name}/status` — risk: medium
 	 */
-	async putApiregistrationK8sIov1apiservicesStatus(name: string): Promise<ProofResult<unknown>> {
+	async putApiregistrationK8sIov1apiservicesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceApiregistrationV1APIServiceStatus",
 			namespace: "apis",
@@ -7616,6 +7976,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7624,7 +7985,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apiregistration.k8s.io/v1/apiservices/{name}/status` — risk: medium
 	 */
-	async patchApiregistrationK8sIov1apiservicesStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchApiregistrationK8sIov1apiservicesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiregistrationV1APIServiceStatus",
 			namespace: "apis",
@@ -7637,6 +7998,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7645,7 +8007,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiregistration.k8s.io/v1/watch/apiservices` — risk: medium
 	 */
-	async watchApiservices(): Promise<ProofResult<unknown>> {
+	async watchApiservices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchApiregistrationV1APIServiceList",
 			namespace: "apis",
@@ -7658,6 +8020,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7666,7 +8029,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apiregistration.k8s.io/v1/watch/apiservices/{name}` — risk: medium
 	 */
-	async watchapiservicesRetrieveApiservice(name: string): Promise<ProofResult<unknown>> {
+	async watchapiservicesRetrieveApiservice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchApiregistrationV1APIService",
 			namespace: "apis",
@@ -7679,6 +8042,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7687,7 +8051,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/` — risk: medium
 	 */
-	async listApps(): Promise<ProofResult<unknown>> {
+	async listApps(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAppsAPIGroup",
 			namespace: "apis",
@@ -7700,6 +8064,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7708,7 +8073,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/` — risk: medium
 	 */
-	async appsV1(): Promise<ProofResult<unknown>> {
+	async appsV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAppsV1APIResources",
 			namespace: "apis",
@@ -7721,6 +8086,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7729,7 +8095,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/controllerrevisions` — risk: medium
 	 */
-	async controllerrevisions_0(): Promise<ProofResult<unknown>> {
+	async controllerrevisions_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1ControllerRevisionForAllNamespaces",
 			namespace: "apis",
@@ -7742,6 +8108,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7750,7 +8117,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/daemonsets` — risk: medium
 	 */
-	async daemonsets_0(): Promise<ProofResult<unknown>> {
+	async daemonsets_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1DaemonSetForAllNamespaces",
 			namespace: "apis",
@@ -7763,6 +8130,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7771,7 +8139,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/deployments` — risk: medium
 	 */
-	async deployments_0(): Promise<ProofResult<unknown>> {
+	async deployments_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1DeploymentForAllNamespaces",
 			namespace: "apis",
@@ -7784,6 +8152,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7792,7 +8161,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/controllerrevisions` — risk: medium
 	 */
-	async getNamespacesControllerrevisions(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesControllerrevisions(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1NamespacedControllerRevision",
 			namespace: "apis",
@@ -7805,6 +8174,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7813,7 +8183,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/apps/v1/namespaces/{namespace}/controllerrevisions` — risk: medium
 	 */
-	async postNamespacesControllerrevisions(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesControllerrevisions(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAppsV1NamespacedControllerRevision",
 			namespace: "apis",
@@ -7826,6 +8196,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7834,7 +8205,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/controllerrevisions` — risk: medium
 	 */
-	async deleteNamespacesControllerrevisions(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesControllerrevisions(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1CollectionNamespacedControllerRevision",
 			namespace: "apis",
@@ -7847,6 +8218,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7855,7 +8227,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/controllerrevisions/{name}` — risk: medium
 	 */
-	async namespacescontrollerrevisionsRetrieveControllerrevision(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacescontrollerrevisionsRetrieveControllerrevision(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedControllerRevision",
 			namespace: "apis",
@@ -7868,6 +8240,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7876,7 +8249,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/controllerrevisions/{name}` — risk: medium
 	 */
-	async putNamespacesControllerrevisions(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesControllerrevisions(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedControllerRevision",
 			namespace: "apis",
@@ -7889,6 +8262,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7897,7 +8271,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/controllerrevisions/{name}` — risk: medium
 	 */
-	async patchNamespacesControllerrevisions(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesControllerrevisions(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedControllerRevision",
 			namespace: "apis",
@@ -7910,6 +8284,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7918,7 +8293,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/controllerrevisions/{name}` — risk: medium
 	 */
-	async deleteControllerrevision(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteControllerrevision(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1NamespacedControllerRevision",
 			namespace: "apis",
@@ -7931,6 +8306,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7939,7 +8315,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/daemonsets` — risk: medium
 	 */
-	async getNamespacesDaemonsets(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesDaemonsets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1NamespacedDaemonSet",
 			namespace: "apis",
@@ -7952,6 +8328,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7960,7 +8337,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/apps/v1/namespaces/{namespace}/daemonsets` — risk: medium
 	 */
-	async postNamespacesDaemonsets(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesDaemonsets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAppsV1NamespacedDaemonSet",
 			namespace: "apis",
@@ -7973,6 +8350,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7981,7 +8359,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/daemonsets` — risk: medium
 	 */
-	async deleteNamespacesDaemonsets(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesDaemonsets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1CollectionNamespacedDaemonSet",
 			namespace: "apis",
@@ -7994,6 +8372,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8002,7 +8381,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/daemonsets/{name}` — risk: medium
 	 */
-	async namespacesdaemonsetsRetrieveDaemonset(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesdaemonsetsRetrieveDaemonset(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedDaemonSet",
 			namespace: "apis",
@@ -8015,6 +8394,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8023,7 +8403,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/daemonsets/{name}` — risk: medium
 	 */
-	async putNamespacesDaemonsets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesDaemonsets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedDaemonSet",
 			namespace: "apis",
@@ -8036,6 +8416,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8044,7 +8425,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/daemonsets/{name}` — risk: medium
 	 */
-	async patchNamespacesDaemonsets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesDaemonsets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedDaemonSet",
 			namespace: "apis",
@@ -8057,6 +8438,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8065,7 +8447,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/daemonsets/{name}` — risk: medium
 	 */
-	async deleteDaemonset(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteDaemonset(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1NamespacedDaemonSet",
 			namespace: "apis",
@@ -8078,6 +8460,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8086,7 +8469,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/daemonsets/{name}/status` — risk: medium
 	 */
-	async getAppsv1namespacesdaemonsetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getAppsv1namespacesdaemonsetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedDaemonSetStatus",
 			namespace: "apis",
@@ -8099,6 +8482,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8107,7 +8491,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/daemonsets/{name}/status` — risk: medium
 	 */
-	async putAppsv1namespacesdaemonsetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putAppsv1namespacesdaemonsetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedDaemonSetStatus",
 			namespace: "apis",
@@ -8120,6 +8504,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8128,7 +8513,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/daemonsets/{name}/status` — risk: medium
 	 */
-	async patchAppsv1namespacesdaemonsetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchAppsv1namespacesdaemonsetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedDaemonSetStatus",
 			namespace: "apis",
@@ -8141,6 +8526,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8149,7 +8535,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/deployments` — risk: medium
 	 */
-	async getNamespacesDeployments(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesDeployments(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1NamespacedDeployment",
 			namespace: "apis",
@@ -8162,6 +8548,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8170,7 +8557,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/apps/v1/namespaces/{namespace}/deployments` — risk: medium
 	 */
-	async postNamespacesDeployments(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesDeployments(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAppsV1NamespacedDeployment",
 			namespace: "apis",
@@ -8183,6 +8570,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8191,7 +8579,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/deployments` — risk: medium
 	 */
-	async deleteNamespacesDeployments(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesDeployments(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1CollectionNamespacedDeployment",
 			namespace: "apis",
@@ -8204,6 +8592,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8212,7 +8601,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/deployments/{name}` — risk: medium
 	 */
-	async namespacesdeploymentsRetrieveDeployment(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesdeploymentsRetrieveDeployment(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedDeployment",
 			namespace: "apis",
@@ -8225,6 +8614,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8233,7 +8623,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/deployments/{name}` — risk: medium
 	 */
-	async putNamespacesDeployments(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesDeployments(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedDeployment",
 			namespace: "apis",
@@ -8246,6 +8636,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8254,7 +8645,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/deployments/{name}` — risk: medium
 	 */
-	async patchNamespacesDeployments(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesDeployments(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedDeployment",
 			namespace: "apis",
@@ -8267,6 +8658,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8275,7 +8667,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/deployments/{name}` — risk: medium
 	 */
-	async deleteDeployment(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteDeployment(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1NamespacedDeployment",
 			namespace: "apis",
@@ -8288,6 +8680,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8296,7 +8689,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/deployments/{name}/scale` — risk: medium
 	 */
-	async getDeploymentsScale(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getDeploymentsScale(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedDeploymentScale",
 			namespace: "apis",
@@ -8309,6 +8702,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8317,7 +8711,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/deployments/{name}/scale` — risk: medium
 	 */
-	async putDeploymentsScale(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putDeploymentsScale(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedDeploymentScale",
 			namespace: "apis",
@@ -8330,6 +8724,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8338,7 +8733,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/deployments/{name}/scale` — risk: medium
 	 */
-	async patchDeploymentsScale(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchDeploymentsScale(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedDeploymentScale",
 			namespace: "apis",
@@ -8351,6 +8746,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8359,7 +8755,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/deployments/{name}/status` — risk: medium
 	 */
-	async getAppsv1namespacesdeploymentsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getAppsv1namespacesdeploymentsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedDeploymentStatus",
 			namespace: "apis",
@@ -8372,6 +8768,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8380,7 +8777,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/deployments/{name}/status` — risk: medium
 	 */
-	async putAppsv1namespacesdeploymentsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putAppsv1namespacesdeploymentsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedDeploymentStatus",
 			namespace: "apis",
@@ -8393,6 +8790,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8401,7 +8799,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/deployments/{name}/status` — risk: medium
 	 */
-	async patchAppsv1namespacesdeploymentsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchAppsv1namespacesdeploymentsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedDeploymentStatus",
 			namespace: "apis",
@@ -8414,6 +8812,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8422,7 +8821,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/replicasets` — risk: medium
 	 */
-	async getNamespacesReplicasets(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesReplicasets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1NamespacedReplicaSet",
 			namespace: "apis",
@@ -8435,6 +8834,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8443,7 +8843,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/apps/v1/namespaces/{namespace}/replicasets` — risk: medium
 	 */
-	async postNamespacesReplicasets(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesReplicasets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAppsV1NamespacedReplicaSet",
 			namespace: "apis",
@@ -8456,6 +8856,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8464,7 +8865,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/replicasets` — risk: medium
 	 */
-	async deleteNamespacesReplicasets(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesReplicasets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1CollectionNamespacedReplicaSet",
 			namespace: "apis",
@@ -8477,6 +8878,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8485,7 +8887,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/replicasets/{name}` — risk: medium
 	 */
-	async namespacesreplicasetsRetrieveReplicaset(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesreplicasetsRetrieveReplicaset(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedReplicaSet",
 			namespace: "apis",
@@ -8498,6 +8900,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8506,7 +8909,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/replicasets/{name}` — risk: medium
 	 */
-	async putNamespacesReplicasets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesReplicasets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedReplicaSet",
 			namespace: "apis",
@@ -8519,6 +8922,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8527,7 +8931,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/replicasets/{name}` — risk: medium
 	 */
-	async patchNamespacesReplicasets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesReplicasets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedReplicaSet",
 			namespace: "apis",
@@ -8540,6 +8944,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8548,7 +8953,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/replicasets/{name}` — risk: medium
 	 */
-	async deleteReplicaset(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteReplicaset(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1NamespacedReplicaSet",
 			namespace: "apis",
@@ -8561,6 +8966,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8569,7 +8975,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/replicasets/{name}/scale` — risk: medium
 	 */
-	async getReplicasetsScale(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getReplicasetsScale(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedReplicaSetScale",
 			namespace: "apis",
@@ -8582,6 +8988,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8590,7 +8997,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/replicasets/{name}/scale` — risk: medium
 	 */
-	async putReplicasetsScale(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putReplicasetsScale(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedReplicaSetScale",
 			namespace: "apis",
@@ -8603,6 +9010,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8611,7 +9019,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/replicasets/{name}/scale` — risk: medium
 	 */
-	async patchReplicasetsScale(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchReplicasetsScale(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedReplicaSetScale",
 			namespace: "apis",
@@ -8624,6 +9032,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8632,7 +9041,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/replicasets/{name}/status` — risk: medium
 	 */
-	async getAppsv1namespacesreplicasetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getAppsv1namespacesreplicasetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedReplicaSetStatus",
 			namespace: "apis",
@@ -8645,6 +9054,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8653,7 +9063,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/replicasets/{name}/status` — risk: medium
 	 */
-	async putAppsv1namespacesreplicasetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putAppsv1namespacesreplicasetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedReplicaSetStatus",
 			namespace: "apis",
@@ -8666,6 +9076,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8674,7 +9085,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/replicasets/{name}/status` — risk: medium
 	 */
-	async patchAppsv1namespacesreplicasetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchAppsv1namespacesreplicasetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedReplicaSetStatus",
 			namespace: "apis",
@@ -8687,6 +9098,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8695,7 +9107,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/statefulsets` — risk: medium
 	 */
-	async getNamespacesStatefulsets(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesStatefulsets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1NamespacedStatefulSet",
 			namespace: "apis",
@@ -8708,6 +9120,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8716,7 +9129,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/apps/v1/namespaces/{namespace}/statefulsets` — risk: medium
 	 */
-	async postNamespacesStatefulsets(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesStatefulsets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAppsV1NamespacedStatefulSet",
 			namespace: "apis",
@@ -8729,6 +9142,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8737,7 +9151,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/statefulsets` — risk: medium
 	 */
-	async deleteNamespacesStatefulsets(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesStatefulsets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1CollectionNamespacedStatefulSet",
 			namespace: "apis",
@@ -8750,6 +9164,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8758,7 +9173,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}` — risk: medium
 	 */
-	async namespacesstatefulsetsRetrieveStatefulset(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesstatefulsetsRetrieveStatefulset(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedStatefulSet",
 			namespace: "apis",
@@ -8771,6 +9186,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8779,7 +9195,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}` — risk: medium
 	 */
-	async putNamespacesStatefulsets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesStatefulsets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedStatefulSet",
 			namespace: "apis",
@@ -8792,6 +9208,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8800,7 +9217,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}` — risk: medium
 	 */
-	async patchNamespacesStatefulsets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesStatefulsets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedStatefulSet",
 			namespace: "apis",
@@ -8813,6 +9230,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8821,7 +9239,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}` — risk: medium
 	 */
-	async deleteStatefulset(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteStatefulset(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAppsV1NamespacedStatefulSet",
 			namespace: "apis",
@@ -8834,6 +9252,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8842,7 +9261,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}/scale` — risk: medium
 	 */
-	async getStatefulsetsScale(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getStatefulsetsScale(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedStatefulSetScale",
 			namespace: "apis",
@@ -8855,6 +9274,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8863,7 +9283,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}/scale` — risk: medium
 	 */
-	async putStatefulsetsScale(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putStatefulsetsScale(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedStatefulSetScale",
 			namespace: "apis",
@@ -8876,6 +9296,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8884,7 +9305,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}/scale` — risk: medium
 	 */
-	async patchStatefulsetsScale(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchStatefulsetsScale(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedStatefulSetScale",
 			namespace: "apis",
@@ -8897,6 +9318,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8905,7 +9327,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}/status` — risk: medium
 	 */
-	async getAppsv1namespacesstatefulsetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getAppsv1namespacesstatefulsetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAppsV1NamespacedStatefulSetStatus",
 			namespace: "apis",
@@ -8918,6 +9340,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8926,7 +9349,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}/status` — risk: medium
 	 */
-	async putAppsv1namespacesstatefulsetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putAppsv1namespacesstatefulsetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAppsV1NamespacedStatefulSetStatus",
 			namespace: "apis",
@@ -8939,6 +9362,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8947,7 +9371,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/apps/v1/namespaces/{namespace}/statefulsets/{name}/status` — risk: medium
 	 */
-	async patchAppsv1namespacesstatefulsetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchAppsv1namespacesstatefulsetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAppsV1NamespacedStatefulSetStatus",
 			namespace: "apis",
@@ -8960,6 +9384,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8968,7 +9393,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/replicasets` — risk: medium
 	 */
-	async replicasets_5(): Promise<ProofResult<unknown>> {
+	async replicasets_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1ReplicaSetForAllNamespaces",
 			namespace: "apis",
@@ -8981,6 +9406,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8989,7 +9415,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/statefulsets` — risk: medium
 	 */
-	async statefulsets_5(): Promise<ProofResult<unknown>> {
+	async statefulsets_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAppsV1StatefulSetForAllNamespaces",
 			namespace: "apis",
@@ -9002,6 +9428,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9010,7 +9437,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/controllerrevisions` — risk: medium
 	 */
-	async watchControllerrevisions(): Promise<ProofResult<unknown>> {
+	async watchControllerrevisions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1ControllerRevisionListForAllNamespaces",
 			namespace: "apis",
@@ -9023,6 +9450,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9031,7 +9459,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/daemonsets` — risk: medium
 	 */
-	async watchDaemonsets(): Promise<ProofResult<unknown>> {
+	async watchDaemonsets(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1DaemonSetListForAllNamespaces",
 			namespace: "apis",
@@ -9044,6 +9472,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9052,7 +9481,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/deployments` — risk: medium
 	 */
-	async watchDeployments(): Promise<ProofResult<unknown>> {
+	async watchDeployments(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1DeploymentListForAllNamespaces",
 			namespace: "apis",
@@ -9065,6 +9494,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9073,7 +9503,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/controllerrevisions` — risk: medium
 	 */
-	async watchnamespacesControllerrevisions(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesControllerrevisions(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedControllerRevisionList",
 			namespace: "apis",
@@ -9086,6 +9516,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9094,7 +9525,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/controllerrevisions/{name}` — risk: medium
 	 */
-	async watchnamespacescontrollerrevisionsRetrieveControllerrevision(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacescontrollerrevisionsRetrieveControllerrevision(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedControllerRevision",
 			namespace: "apis",
@@ -9107,6 +9538,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9115,7 +9547,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/daemonsets` — risk: medium
 	 */
-	async watchnamespacesDaemonsets(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesDaemonsets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedDaemonSetList",
 			namespace: "apis",
@@ -9128,6 +9560,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9136,7 +9569,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/daemonsets/{name}` — risk: medium
 	 */
-	async watchnamespacesdaemonsetsRetrieveDaemonset(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesdaemonsetsRetrieveDaemonset(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedDaemonSet",
 			namespace: "apis",
@@ -9149,6 +9582,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9157,7 +9591,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/deployments` — risk: medium
 	 */
-	async watchnamespacesDeployments(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesDeployments(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedDeploymentList",
 			namespace: "apis",
@@ -9170,6 +9604,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9178,7 +9613,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/deployments/{name}` — risk: medium
 	 */
-	async watchnamespacesdeploymentsRetrieveDeployment(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesdeploymentsRetrieveDeployment(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedDeployment",
 			namespace: "apis",
@@ -9191,6 +9626,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9199,7 +9635,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/replicasets` — risk: medium
 	 */
-	async watchnamespacesReplicasets(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesReplicasets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedReplicaSetList",
 			namespace: "apis",
@@ -9212,6 +9648,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9220,7 +9657,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/replicasets/{name}` — risk: medium
 	 */
-	async watchnamespacesreplicasetsRetrieveReplicaset(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesreplicasetsRetrieveReplicaset(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedReplicaSet",
 			namespace: "apis",
@@ -9233,6 +9670,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9241,7 +9679,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/statefulsets` — risk: medium
 	 */
-	async watchnamespacesStatefulsets(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesStatefulsets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedStatefulSetList",
 			namespace: "apis",
@@ -9254,6 +9692,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9262,7 +9701,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/namespaces/{namespace}/statefulsets/{name}` — risk: medium
 	 */
-	async watchnamespacesstatefulsetsRetrieveStatefulset(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesstatefulsetsRetrieveStatefulset(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1NamespacedStatefulSet",
 			namespace: "apis",
@@ -9275,6 +9714,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9283,7 +9723,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/replicasets` — risk: medium
 	 */
-	async watchReplicasets(): Promise<ProofResult<unknown>> {
+	async watchReplicasets(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1ReplicaSetListForAllNamespaces",
 			namespace: "apis",
@@ -9296,6 +9736,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9304,7 +9745,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/apps/v1/watch/statefulsets` — risk: medium
 	 */
-	async watchStatefulsets(): Promise<ProofResult<unknown>> {
+	async watchStatefulsets(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAppsV1StatefulSetListForAllNamespaces",
 			namespace: "apis",
@@ -9317,6 +9758,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9325,7 +9767,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/authentication.k8s.io/` — risk: medium
 	 */
-	async listAuthenticationK8sIo(): Promise<ProofResult<unknown>> {
+	async listAuthenticationK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAuthenticationAPIGroup",
 			namespace: "apis",
@@ -9338,6 +9780,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9346,7 +9789,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/authentication.k8s.io/v1/` — risk: medium
 	 */
-	async authenticationK8sIoV1(): Promise<ProofResult<unknown>> {
+	async authenticationK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAuthenticationV1APIResources",
 			namespace: "apis",
@@ -9359,6 +9802,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9367,7 +9811,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/authentication.k8s.io/v1/selfsubjectreviews` — risk: medium
 	 */
-	async selfsubjectreviews(): Promise<ProofResult<unknown>> {
+	async selfsubjectreviews(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAuthenticationV1SelfSubjectReview",
 			namespace: "apis",
@@ -9380,6 +9824,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9388,7 +9833,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/authentication.k8s.io/v1/tokenreviews` — risk: medium
 	 */
-	async tokenreviews(): Promise<ProofResult<unknown>> {
+	async tokenreviews(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAuthenticationV1TokenReview",
 			namespace: "apis",
@@ -9401,6 +9846,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9409,7 +9855,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/authorization.k8s.io/` — risk: medium
 	 */
-	async listAuthorizationK8sIo(): Promise<ProofResult<unknown>> {
+	async listAuthorizationK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAuthorizationAPIGroup",
 			namespace: "apis",
@@ -9422,6 +9868,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9430,7 +9877,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/authorization.k8s.io/v1/` — risk: medium
 	 */
-	async authorizationK8sIoV1(): Promise<ProofResult<unknown>> {
+	async authorizationK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAuthorizationV1APIResources",
 			namespace: "apis",
@@ -9443,6 +9890,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9451,7 +9899,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/authorization.k8s.io/v1/namespaces/{namespace}/localsubjectaccessreviews` — risk: medium
 	 */
-	async localsubjectaccessreviews(namespace: string): Promise<ProofResult<unknown>> {
+	async localsubjectaccessreviews(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAuthorizationV1NamespacedLocalSubjectAccessReview",
 			namespace: "apis",
@@ -9464,6 +9912,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9472,7 +9921,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/authorization.k8s.io/v1/selfsubjectaccessreviews` — risk: medium
 	 */
-	async selfsubjectaccessreviews(): Promise<ProofResult<unknown>> {
+	async selfsubjectaccessreviews(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAuthorizationV1SelfSubjectAccessReview",
 			namespace: "apis",
@@ -9485,6 +9934,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9493,7 +9943,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/authorization.k8s.io/v1/selfsubjectrulesreviews` — risk: medium
 	 */
-	async selfsubjectrulesreviews(): Promise<ProofResult<unknown>> {
+	async selfsubjectrulesreviews(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAuthorizationV1SelfSubjectRulesReview",
 			namespace: "apis",
@@ -9506,6 +9956,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9514,7 +9965,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/authorization.k8s.io/v1/subjectaccessreviews` — risk: medium
 	 */
-	async subjectaccessreviews(): Promise<ProofResult<unknown>> {
+	async subjectaccessreviews(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAuthorizationV1SubjectAccessReview",
 			namespace: "apis",
@@ -9527,6 +9978,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9535,7 +9987,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/` — risk: medium
 	 */
-	async listAutoscaling(): Promise<ProofResult<unknown>> {
+	async listAutoscaling(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAutoscalingAPIGroup",
 			namespace: "apis",
@@ -9548,6 +10000,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9556,7 +10009,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v1/` — risk: medium
 	 */
-	async autoscalingV1(): Promise<ProofResult<unknown>> {
+	async autoscalingV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAutoscalingV1APIResources",
 			namespace: "apis",
@@ -9569,6 +10022,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9577,7 +10031,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v1/horizontalpodautoscalers` — risk: medium
 	 */
-	async v1Horizontalpodautoscalers(): Promise<ProofResult<unknown>> {
+	async v1Horizontalpodautoscalers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAutoscalingV1HorizontalPodAutoscalerForAllNamespaces",
 			namespace: "apis",
@@ -9590,6 +10044,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9598,7 +10053,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers` — risk: medium
 	 */
-	async getV1namespacesHorizontalpodautoscalers(namespace: string): Promise<ProofResult<unknown>> {
+	async getV1namespacesHorizontalpodautoscalers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAutoscalingV1NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9611,6 +10066,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9619,7 +10075,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers` — risk: medium
 	 */
-	async postV1namespacesHorizontalpodautoscalers(namespace: string): Promise<ProofResult<unknown>> {
+	async postV1namespacesHorizontalpodautoscalers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAutoscalingV1NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9632,6 +10088,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9640,7 +10097,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers` — risk: medium
 	 */
-	async deleteV1namespacesHorizontalpodautoscalers(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV1namespacesHorizontalpodautoscalers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAutoscalingV1CollectionNamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9653,6 +10110,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9661,7 +10119,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async v1namespaceshorizontalpodautoscalersRetrieveHorizontalpodautoscaler(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1namespaceshorizontalpodautoscalersRetrieveHorizontalpodautoscaler(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAutoscalingV1NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9674,6 +10132,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9682,7 +10141,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async putV1namespacesHorizontalpodautoscalers(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV1namespacesHorizontalpodautoscalers(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAutoscalingV1NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9695,6 +10154,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9703,7 +10163,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async patchV1namespacesHorizontalpodautoscalers(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV1namespacesHorizontalpodautoscalers(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAutoscalingV1NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9716,6 +10176,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9724,7 +10185,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async v1namespaceshorizontalpodautoscalersDeleteHorizontalpodautoscaler(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1namespaceshorizontalpodautoscalersDeleteHorizontalpodautoscaler(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAutoscalingV1NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9737,6 +10198,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9745,7 +10207,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers/{name}/status` — risk: medium
 	 */
-	async getAutoscalingv1namespaceshorizontalpodautoscalersStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getAutoscalingv1namespaceshorizontalpodautoscalersStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAutoscalingV1NamespacedHorizontalPodAutoscalerStatus",
 			namespace: "apis",
@@ -9758,6 +10220,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9766,7 +10229,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers/{name}/status` — risk: medium
 	 */
-	async putAutoscalingv1namespaceshorizontalpodautoscalersStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putAutoscalingv1namespaceshorizontalpodautoscalersStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAutoscalingV1NamespacedHorizontalPodAutoscalerStatus",
 			namespace: "apis",
@@ -9779,6 +10242,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9787,7 +10251,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/autoscaling/v1/namespaces/{namespace}/horizontalpodautoscalers/{name}/status` — risk: medium
 	 */
-	async patchAutoscalingv1namespaceshorizontalpodautoscalersStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchAutoscalingv1namespaceshorizontalpodautoscalersStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAutoscalingV1NamespacedHorizontalPodAutoscalerStatus",
 			namespace: "apis",
@@ -9800,6 +10264,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9808,7 +10273,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v1/watch/horizontalpodautoscalers` — risk: medium
 	 */
-	async v1watchHorizontalpodautoscalers(): Promise<ProofResult<unknown>> {
+	async v1watchHorizontalpodautoscalers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAutoscalingV1HorizontalPodAutoscalerListForAllNamespaces",
 			namespace: "apis",
@@ -9821,6 +10286,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9829,7 +10295,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v1/watch/namespaces/{namespace}/horizontalpodautoscalers` — risk: medium
 	 */
-	async v1watchnamespacesHorizontalpodautoscalers(namespace: string): Promise<ProofResult<unknown>> {
+	async v1watchnamespacesHorizontalpodautoscalers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAutoscalingV1NamespacedHorizontalPodAutoscalerList",
 			namespace: "apis",
@@ -9842,6 +10308,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9850,7 +10317,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v1/watch/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async v1watchnamespaceshorizontalpodautoscalersRetrieveHorizontalpodautoscaler(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1watchnamespaceshorizontalpodautoscalersRetrieveHorizontalpodautoscaler(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAutoscalingV1NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9863,6 +10330,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9871,7 +10339,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v2/` — risk: medium
 	 */
-	async v2(): Promise<ProofResult<unknown>> {
+	async v2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getAutoscalingV2APIResources",
 			namespace: "apis",
@@ -9884,6 +10352,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9892,7 +10361,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v2/horizontalpodautoscalers` — risk: medium
 	 */
-	async v2Horizontalpodautoscalers(): Promise<ProofResult<unknown>> {
+	async v2Horizontalpodautoscalers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAutoscalingV2HorizontalPodAutoscalerForAllNamespaces",
 			namespace: "apis",
@@ -9905,6 +10374,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9913,7 +10383,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers` — risk: medium
 	 */
-	async getV2namespacesHorizontalpodautoscalers(namespace: string): Promise<ProofResult<unknown>> {
+	async getV2namespacesHorizontalpodautoscalers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listAutoscalingV2NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9926,6 +10396,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9934,7 +10405,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers` — risk: medium
 	 */
-	async postV2namespacesHorizontalpodautoscalers(namespace: string): Promise<ProofResult<unknown>> {
+	async postV2namespacesHorizontalpodautoscalers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createAutoscalingV2NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9947,6 +10418,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9955,7 +10427,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers` — risk: medium
 	 */
-	async deleteV2namespacesHorizontalpodautoscalers(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV2namespacesHorizontalpodautoscalers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAutoscalingV2CollectionNamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9968,6 +10440,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9976,7 +10449,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async v2namespaceshorizontalpodautoscalersRetrieveHorizontalpodautoscaler(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v2namespaceshorizontalpodautoscalersRetrieveHorizontalpodautoscaler(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAutoscalingV2NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -9989,6 +10462,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9997,7 +10471,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async putV2namespacesHorizontalpodautoscalers(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV2namespacesHorizontalpodautoscalers(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAutoscalingV2NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -10010,6 +10484,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10018,7 +10493,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async patchV2namespacesHorizontalpodautoscalers(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV2namespacesHorizontalpodautoscalers(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAutoscalingV2NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -10031,6 +10506,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10039,7 +10515,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async v2namespaceshorizontalpodautoscalersDeleteHorizontalpodautoscaler(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v2namespaceshorizontalpodautoscalersDeleteHorizontalpodautoscaler(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteAutoscalingV2NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -10052,6 +10528,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10060,7 +10537,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers/{name}/status` — risk: medium
 	 */
-	async getAutoscalingv2namespaceshorizontalpodautoscalersStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getAutoscalingv2namespaceshorizontalpodautoscalersStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readAutoscalingV2NamespacedHorizontalPodAutoscalerStatus",
 			namespace: "apis",
@@ -10073,6 +10550,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10081,7 +10559,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers/{name}/status` — risk: medium
 	 */
-	async putAutoscalingv2namespaceshorizontalpodautoscalersStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putAutoscalingv2namespaceshorizontalpodautoscalersStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceAutoscalingV2NamespacedHorizontalPodAutoscalerStatus",
 			namespace: "apis",
@@ -10094,6 +10572,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10102,7 +10581,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/autoscaling/v2/namespaces/{namespace}/horizontalpodautoscalers/{name}/status` — risk: medium
 	 */
-	async patchAutoscalingv2namespaceshorizontalpodautoscalersStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchAutoscalingv2namespaceshorizontalpodautoscalersStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchAutoscalingV2NamespacedHorizontalPodAutoscalerStatus",
 			namespace: "apis",
@@ -10115,6 +10594,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10123,7 +10603,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v2/watch/horizontalpodautoscalers` — risk: medium
 	 */
-	async v2watchHorizontalpodautoscalers(): Promise<ProofResult<unknown>> {
+	async v2watchHorizontalpodautoscalers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAutoscalingV2HorizontalPodAutoscalerListForAllNamespaces",
 			namespace: "apis",
@@ -10136,6 +10616,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10144,7 +10625,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v2/watch/namespaces/{namespace}/horizontalpodautoscalers` — risk: medium
 	 */
-	async v2watchnamespacesHorizontalpodautoscalers(namespace: string): Promise<ProofResult<unknown>> {
+	async v2watchnamespacesHorizontalpodautoscalers(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAutoscalingV2NamespacedHorizontalPodAutoscalerList",
 			namespace: "apis",
@@ -10157,6 +10638,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10165,7 +10647,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/autoscaling/v2/watch/namespaces/{namespace}/horizontalpodautoscalers/{name}` — risk: medium
 	 */
-	async v2watchnamespaceshorizontalpodautoscalersRetrieveHorizontalpodautoscaler(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v2watchnamespaceshorizontalpodautoscalersRetrieveHorizontalpodautoscaler(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchAutoscalingV2NamespacedHorizontalPodAutoscaler",
 			namespace: "apis",
@@ -10178,6 +10660,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10186,7 +10669,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/` — risk: medium
 	 */
-	async listBatch(): Promise<ProofResult<unknown>> {
+	async listBatch(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getBatchAPIGroup",
 			namespace: "apis",
@@ -10199,6 +10682,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10207,7 +10691,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/` — risk: medium
 	 */
-	async batchV1(): Promise<ProofResult<unknown>> {
+	async batchV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getBatchV1APIResources",
 			namespace: "apis",
@@ -10220,6 +10704,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10228,7 +10713,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/cronjobs` — risk: medium
 	 */
-	async cronjobs_0(): Promise<ProofResult<unknown>> {
+	async cronjobs_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listBatchV1CronJobForAllNamespaces",
 			namespace: "apis",
@@ -10241,6 +10726,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10249,7 +10735,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/jobs` — risk: medium
 	 */
-	async jobs_0(): Promise<ProofResult<unknown>> {
+	async jobs_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listBatchV1JobForAllNamespaces",
 			namespace: "apis",
@@ -10262,6 +10748,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10270,7 +10757,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/namespaces/{namespace}/cronjobs` — risk: medium
 	 */
-	async getNamespacesCronjobs(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesCronjobs(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listBatchV1NamespacedCronJob",
 			namespace: "apis",
@@ -10283,6 +10770,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10291,7 +10779,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/batch/v1/namespaces/{namespace}/cronjobs` — risk: medium
 	 */
-	async postNamespacesCronjobs(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesCronjobs(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createBatchV1NamespacedCronJob",
 			namespace: "apis",
@@ -10304,6 +10792,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10312,7 +10801,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/batch/v1/namespaces/{namespace}/cronjobs` — risk: medium
 	 */
-	async deleteNamespacesCronjobs(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesCronjobs(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteBatchV1CollectionNamespacedCronJob",
 			namespace: "apis",
@@ -10325,6 +10814,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10333,7 +10823,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/namespaces/{namespace}/cronjobs/{name}` — risk: medium
 	 */
-	async namespacescronjobsRetrieveCronjob(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacescronjobsRetrieveCronjob(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readBatchV1NamespacedCronJob",
 			namespace: "apis",
@@ -10346,6 +10836,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10354,7 +10845,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/batch/v1/namespaces/{namespace}/cronjobs/{name}` — risk: medium
 	 */
-	async putNamespacesCronjobs(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesCronjobs(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceBatchV1NamespacedCronJob",
 			namespace: "apis",
@@ -10367,6 +10858,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10375,7 +10867,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/batch/v1/namespaces/{namespace}/cronjobs/{name}` — risk: medium
 	 */
-	async patchNamespacesCronjobs(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesCronjobs(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchBatchV1NamespacedCronJob",
 			namespace: "apis",
@@ -10388,6 +10880,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10396,7 +10889,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/batch/v1/namespaces/{namespace}/cronjobs/{name}` — risk: medium
 	 */
-	async deleteCronjob(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteCronjob(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteBatchV1NamespacedCronJob",
 			namespace: "apis",
@@ -10409,6 +10902,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10417,7 +10911,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/namespaces/{namespace}/cronjobs/{name}/status` — risk: medium
 	 */
-	async getBatchv1namespacescronjobsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getBatchv1namespacescronjobsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readBatchV1NamespacedCronJobStatus",
 			namespace: "apis",
@@ -10430,6 +10924,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10438,7 +10933,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/batch/v1/namespaces/{namespace}/cronjobs/{name}/status` — risk: medium
 	 */
-	async putBatchv1namespacescronjobsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putBatchv1namespacescronjobsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceBatchV1NamespacedCronJobStatus",
 			namespace: "apis",
@@ -10451,6 +10946,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10459,7 +10955,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/batch/v1/namespaces/{namespace}/cronjobs/{name}/status` — risk: medium
 	 */
-	async patchBatchv1namespacescronjobsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchBatchv1namespacescronjobsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchBatchV1NamespacedCronJobStatus",
 			namespace: "apis",
@@ -10472,6 +10968,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10480,7 +10977,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/namespaces/{namespace}/jobs` — risk: medium
 	 */
-	async getNamespacesJobs(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesJobs(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listBatchV1NamespacedJob",
 			namespace: "apis",
@@ -10493,6 +10990,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10501,7 +10999,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/batch/v1/namespaces/{namespace}/jobs` — risk: medium
 	 */
-	async postNamespacesJobs(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesJobs(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createBatchV1NamespacedJob",
 			namespace: "apis",
@@ -10514,6 +11012,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10522,7 +11021,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/batch/v1/namespaces/{namespace}/jobs` — risk: medium
 	 */
-	async deleteNamespacesJobs(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesJobs(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteBatchV1CollectionNamespacedJob",
 			namespace: "apis",
@@ -10535,6 +11034,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10543,7 +11043,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/namespaces/{namespace}/jobs/{name}` — risk: medium
 	 */
-	async namespacesjobsRetrieveJob(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesjobsRetrieveJob(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readBatchV1NamespacedJob",
 			namespace: "apis",
@@ -10556,6 +11056,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10564,7 +11065,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/batch/v1/namespaces/{namespace}/jobs/{name}` — risk: medium
 	 */
-	async putNamespacesJobs(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesJobs(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceBatchV1NamespacedJob",
 			namespace: "apis",
@@ -10577,6 +11078,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10585,7 +11087,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/batch/v1/namespaces/{namespace}/jobs/{name}` — risk: medium
 	 */
-	async patchNamespacesJobs(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesJobs(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchBatchV1NamespacedJob",
 			namespace: "apis",
@@ -10598,6 +11100,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10606,7 +11109,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/batch/v1/namespaces/{namespace}/jobs/{name}` — risk: medium
 	 */
-	async deleteJob(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteJob(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteBatchV1NamespacedJob",
 			namespace: "apis",
@@ -10619,6 +11122,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10627,7 +11131,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/namespaces/{namespace}/jobs/{name}/status` — risk: medium
 	 */
-	async getBatchv1namespacesjobsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getBatchv1namespacesjobsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readBatchV1NamespacedJobStatus",
 			namespace: "apis",
@@ -10640,6 +11144,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10648,7 +11153,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/batch/v1/namespaces/{namespace}/jobs/{name}/status` — risk: medium
 	 */
-	async putBatchv1namespacesjobsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putBatchv1namespacesjobsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceBatchV1NamespacedJobStatus",
 			namespace: "apis",
@@ -10661,6 +11166,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10669,7 +11175,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/batch/v1/namespaces/{namespace}/jobs/{name}/status` — risk: medium
 	 */
-	async patchBatchv1namespacesjobsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchBatchv1namespacesjobsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchBatchV1NamespacedJobStatus",
 			namespace: "apis",
@@ -10682,6 +11188,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10690,7 +11197,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/watch/cronjobs` — risk: medium
 	 */
-	async watchCronjobs(): Promise<ProofResult<unknown>> {
+	async watchCronjobs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchBatchV1CronJobListForAllNamespaces",
 			namespace: "apis",
@@ -10703,6 +11210,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10711,7 +11219,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/watch/jobs` — risk: medium
 	 */
-	async watchJobs(): Promise<ProofResult<unknown>> {
+	async watchJobs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchBatchV1JobListForAllNamespaces",
 			namespace: "apis",
@@ -10724,6 +11232,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10732,7 +11241,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/watch/namespaces/{namespace}/cronjobs` — risk: medium
 	 */
-	async watchnamespacesCronjobs(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesCronjobs(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchBatchV1NamespacedCronJobList",
 			namespace: "apis",
@@ -10745,6 +11254,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10753,7 +11263,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/watch/namespaces/{namespace}/cronjobs/{name}` — risk: medium
 	 */
-	async watchnamespacescronjobsRetrieveCronjob(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacescronjobsRetrieveCronjob(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchBatchV1NamespacedCronJob",
 			namespace: "apis",
@@ -10766,6 +11276,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10774,7 +11285,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/watch/namespaces/{namespace}/jobs` — risk: medium
 	 */
-	async watchnamespacesJobs(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesJobs(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchBatchV1NamespacedJobList",
 			namespace: "apis",
@@ -10787,6 +11298,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10795,7 +11307,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/batch/v1/watch/namespaces/{namespace}/jobs/{name}` — risk: medium
 	 */
-	async watchnamespacesjobsRetrieveJob(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesjobsRetrieveJob(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchBatchV1NamespacedJob",
 			namespace: "apis",
@@ -10808,6 +11320,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10816,7 +11329,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/` — risk: medium
 	 */
-	async listCertificatesK8sIo(): Promise<ProofResult<unknown>> {
+	async listCertificatesK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCertificatesAPIGroup",
 			namespace: "apis",
@@ -10829,6 +11342,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10837,7 +11351,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1/` — risk: medium
 	 */
-	async certificatesK8sIoV1(): Promise<ProofResult<unknown>> {
+	async certificatesK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCertificatesV1APIResources",
 			namespace: "apis",
@@ -10850,6 +11364,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10858,7 +11373,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1/certificatesigningrequests` — risk: medium
 	 */
-	async certificatesigningrequests_0(): Promise<ProofResult<unknown>> {
+	async certificatesigningrequests_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCertificatesV1CertificateSigningRequest",
 			namespace: "apis",
@@ -10871,6 +11386,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10879,7 +11395,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/certificates.k8s.io/v1/certificatesigningrequests` — risk: medium
 	 */
-	async certificatesigningrequests_1(): Promise<ProofResult<unknown>> {
+	async certificatesigningrequests_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCertificatesV1CertificateSigningRequest",
 			namespace: "apis",
@@ -10892,6 +11408,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10900,7 +11417,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1/certificatesigningrequests` — risk: medium
 	 */
-	async certificatesigningrequests_2(): Promise<ProofResult<unknown>> {
+	async certificatesigningrequests_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1CollectionCertificateSigningRequest",
 			namespace: "apis",
@@ -10913,6 +11430,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10921,7 +11439,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}` — risk: medium
 	 */
-	async certificatesigningrequestsRetrieveCertificatesigningrequest(name: string): Promise<ProofResult<unknown>> {
+	async certificatesigningrequestsRetrieveCertificatesigningrequest(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCertificatesV1CertificateSigningRequest",
 			namespace: "apis",
@@ -10934,6 +11452,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10942,7 +11461,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}` — risk: medium
 	 */
-	async certificatesigningrequests_3(name: string): Promise<ProofResult<unknown>> {
+	async certificatesigningrequests_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCertificatesV1CertificateSigningRequest",
 			namespace: "apis",
@@ -10955,6 +11474,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10963,7 +11483,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}` — risk: medium
 	 */
-	async certificatesigningrequests_4(name: string): Promise<ProofResult<unknown>> {
+	async certificatesigningrequests_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCertificatesV1CertificateSigningRequest",
 			namespace: "apis",
@@ -10976,6 +11496,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10984,7 +11505,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}` — risk: medium
 	 */
-	async deleteCertificatesigningrequest(name: string): Promise<ProofResult<unknown>> {
+	async deleteCertificatesigningrequest(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1CertificateSigningRequest",
 			namespace: "apis",
@@ -10997,6 +11518,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11005,7 +11527,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}/approval` — risk: medium
 	 */
-	async approval_0(name: string): Promise<ProofResult<unknown>> {
+	async approval_0(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCertificatesV1CertificateSigningRequestApproval",
 			namespace: "apis",
@@ -11018,6 +11540,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11026,7 +11549,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}/approval` — risk: medium
 	 */
-	async approval_1(name: string): Promise<ProofResult<unknown>> {
+	async approval_1(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCertificatesV1CertificateSigningRequestApproval",
 			namespace: "apis",
@@ -11039,6 +11562,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11047,7 +11571,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}/approval` — risk: medium
 	 */
-	async approval_2(name: string): Promise<ProofResult<unknown>> {
+	async approval_2(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCertificatesV1CertificateSigningRequestApproval",
 			namespace: "apis",
@@ -11060,6 +11584,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11068,7 +11593,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}/status` — risk: medium
 	 */
-	async getCertificatesK8sIov1certificatesigningrequestsStatus(name: string): Promise<ProofResult<unknown>> {
+	async getCertificatesK8sIov1certificatesigningrequestsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCertificatesV1CertificateSigningRequestStatus",
 			namespace: "apis",
@@ -11081,6 +11606,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11089,7 +11615,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}/status` — risk: medium
 	 */
-	async putCertificatesK8sIov1certificatesigningrequestsStatus(name: string): Promise<ProofResult<unknown>> {
+	async putCertificatesK8sIov1certificatesigningrequestsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCertificatesV1CertificateSigningRequestStatus",
 			namespace: "apis",
@@ -11102,6 +11628,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11110,7 +11637,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/certificates.k8s.io/v1/certificatesigningrequests/{name}/status` — risk: medium
 	 */
-	async patchCertificatesK8sIov1certificatesigningrequestsStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchCertificatesK8sIov1certificatesigningrequestsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCertificatesV1CertificateSigningRequestStatus",
 			namespace: "apis",
@@ -11123,6 +11650,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11131,7 +11659,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1/watch/certificatesigningrequests` — risk: medium
 	 */
-	async watchCertificatesigningrequests(): Promise<ProofResult<unknown>> {
+	async watchCertificatesigningrequests(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1CertificateSigningRequestList",
 			namespace: "apis",
@@ -11144,6 +11672,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11152,7 +11681,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1/watch/certificatesigningrequests/{name}` — risk: medium
 	 */
-	async watchcertificatesigningrequestsRetrieveCertificatesigningrequest(name: string): Promise<ProofResult<unknown>> {
+	async watchcertificatesigningrequestsRetrieveCertificatesigningrequest(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1CertificateSigningRequest",
 			namespace: "apis",
@@ -11165,6 +11694,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11173,7 +11703,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1alpha1/` — risk: medium
 	 */
-	async certificatesK8sIoV1alpha1(): Promise<ProofResult<unknown>> {
+	async certificatesK8sIoV1alpha1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCertificatesV1alpha1APIResources",
 			namespace: "apis",
@@ -11186,6 +11716,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11194,7 +11725,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1alpha1/clustertrustbundles` — risk: medium
 	 */
-	async getV1alpha1Clustertrustbundles(): Promise<ProofResult<unknown>> {
+	async getV1alpha1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCertificatesV1alpha1ClusterTrustBundle",
 			namespace: "apis",
@@ -11207,6 +11738,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11215,7 +11747,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/certificates.k8s.io/v1alpha1/clustertrustbundles` — risk: medium
 	 */
-	async postV1alpha1Clustertrustbundles(): Promise<ProofResult<unknown>> {
+	async postV1alpha1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCertificatesV1alpha1ClusterTrustBundle",
 			namespace: "apis",
@@ -11228,6 +11760,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11236,7 +11769,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1alpha1/clustertrustbundles` — risk: medium
 	 */
-	async deleteV1alpha1Clustertrustbundles(): Promise<ProofResult<unknown>> {
+	async deleteV1alpha1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1alpha1CollectionClusterTrustBundle",
 			namespace: "apis",
@@ -11249,6 +11782,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11257,7 +11791,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1alpha1/clustertrustbundles/{name}` — risk: medium
 	 */
-	async v1alpha1clustertrustbundlesRetrieveClustertrustbundle(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha1clustertrustbundlesRetrieveClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCertificatesV1alpha1ClusterTrustBundle",
 			namespace: "apis",
@@ -11270,6 +11804,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11278,7 +11813,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/certificates.k8s.io/v1alpha1/clustertrustbundles/{name}` — risk: medium
 	 */
-	async putV1alpha1Clustertrustbundles(name: string): Promise<ProofResult<unknown>> {
+	async putV1alpha1Clustertrustbundles(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCertificatesV1alpha1ClusterTrustBundle",
 			namespace: "apis",
@@ -11291,6 +11826,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11299,7 +11835,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/certificates.k8s.io/v1alpha1/clustertrustbundles/{name}` — risk: medium
 	 */
-	async patchV1alpha1Clustertrustbundles(name: string): Promise<ProofResult<unknown>> {
+	async patchV1alpha1Clustertrustbundles(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCertificatesV1alpha1ClusterTrustBundle",
 			namespace: "apis",
@@ -11312,6 +11848,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11320,7 +11857,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1alpha1/clustertrustbundles/{name}` — risk: medium
 	 */
-	async v1alpha1clustertrustbundlesDeleteClustertrustbundle(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha1clustertrustbundlesDeleteClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1alpha1ClusterTrustBundle",
 			namespace: "apis",
@@ -11333,6 +11870,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11341,7 +11879,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1alpha1/watch/clustertrustbundles` — risk: medium
 	 */
-	async v1alpha1watchClustertrustbundles(): Promise<ProofResult<unknown>> {
+	async v1alpha1watchClustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1alpha1ClusterTrustBundleList",
 			namespace: "apis",
@@ -11354,6 +11892,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11362,7 +11901,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1alpha1/watch/clustertrustbundles/{name}` — risk: medium
 	 */
-	async v1alpha1watchclustertrustbundlesRetrieveClustertrustbundle(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha1watchclustertrustbundlesRetrieveClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1alpha1ClusterTrustBundle",
 			namespace: "apis",
@@ -11375,6 +11914,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11383,7 +11923,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/` — risk: medium
 	 */
-	async certificatesK8sIoV1beta1(): Promise<ProofResult<unknown>> {
+	async certificatesK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCertificatesV1beta1APIResources",
 			namespace: "apis",
@@ -11396,6 +11936,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11404,7 +11945,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/clustertrustbundles` — risk: medium
 	 */
-	async getV1beta1Clustertrustbundles(): Promise<ProofResult<unknown>> {
+	async getV1beta1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCertificatesV1beta1ClusterTrustBundle",
 			namespace: "apis",
@@ -11417,6 +11958,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11425,7 +11967,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/certificates.k8s.io/v1beta1/clustertrustbundles` — risk: medium
 	 */
-	async postV1beta1Clustertrustbundles(): Promise<ProofResult<unknown>> {
+	async postV1beta1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCertificatesV1beta1ClusterTrustBundle",
 			namespace: "apis",
@@ -11438,6 +11980,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11446,7 +11989,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1beta1/clustertrustbundles` — risk: medium
 	 */
-	async deleteV1beta1Clustertrustbundles(): Promise<ProofResult<unknown>> {
+	async deleteV1beta1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1beta1CollectionClusterTrustBundle",
 			namespace: "apis",
@@ -11459,6 +12002,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11467,7 +12011,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/clustertrustbundles/{name}` — risk: medium
 	 */
-	async v1beta1clustertrustbundlesRetrieveClustertrustbundle(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1clustertrustbundlesRetrieveClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCertificatesV1beta1ClusterTrustBundle",
 			namespace: "apis",
@@ -11480,6 +12024,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11488,7 +12033,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/certificates.k8s.io/v1beta1/clustertrustbundles/{name}` — risk: medium
 	 */
-	async putV1beta1Clustertrustbundles(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1Clustertrustbundles(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCertificatesV1beta1ClusterTrustBundle",
 			namespace: "apis",
@@ -11501,6 +12046,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11509,7 +12055,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/certificates.k8s.io/v1beta1/clustertrustbundles/{name}` — risk: medium
 	 */
-	async patchV1beta1Clustertrustbundles(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1Clustertrustbundles(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCertificatesV1beta1ClusterTrustBundle",
 			namespace: "apis",
@@ -11522,6 +12068,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11530,7 +12077,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1beta1/clustertrustbundles/{name}` — risk: medium
 	 */
-	async v1beta1clustertrustbundlesDeleteClustertrustbundle(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1clustertrustbundlesDeleteClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1beta1ClusterTrustBundle",
 			namespace: "apis",
@@ -11543,6 +12090,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11551,7 +12099,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests` — risk: medium
 	 */
-	async getNamespacesPodcertificaterequests(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
@@ -11564,6 +12112,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11572,7 +12121,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests` — risk: medium
 	 */
-	async postNamespacesPodcertificaterequests(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
@@ -11585,6 +12134,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11593,7 +12143,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests` — risk: medium
 	 */
-	async deleteNamespacesPodcertificaterequests(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1beta1CollectionNamespacedPodCertificateRequest",
 			namespace: "apis",
@@ -11606,6 +12156,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11614,7 +12165,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async namespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
@@ -11627,6 +12178,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11635,7 +12187,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async putNamespacesPodcertificaterequests(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesPodcertificaterequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
@@ -11648,6 +12200,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11656,7 +12209,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async patchNamespacesPodcertificaterequests(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesPodcertificaterequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
@@ -11669,6 +12222,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11677,7 +12231,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async deletePodcertificaterequest(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deletePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
@@ -11690,6 +12244,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11698,7 +12253,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}/status` — risk: medium
 	 */
-	async getCertificatesK8sIov1beta1namespacespodcertificaterequestsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getCertificatesK8sIov1beta1namespacespodcertificaterequestsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCertificatesV1beta1NamespacedPodCertificateRequestStatus",
 			namespace: "apis",
@@ -11711,6 +12266,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11719,7 +12275,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}/status` — risk: medium
 	 */
-	async putCertificatesK8sIov1beta1namespacespodcertificaterequestsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putCertificatesK8sIov1beta1namespacespodcertificaterequestsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCertificatesV1beta1NamespacedPodCertificateRequestStatus",
 			namespace: "apis",
@@ -11732,6 +12288,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11740,7 +12297,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}/status` — risk: medium
 	 */
-	async patchCertificatesK8sIov1beta1namespacespodcertificaterequestsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchCertificatesK8sIov1beta1namespacespodcertificaterequestsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCertificatesV1beta1NamespacedPodCertificateRequestStatus",
 			namespace: "apis",
@@ -11753,6 +12310,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11761,7 +12319,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/podcertificaterequests` — risk: medium
 	 */
-	async podcertificaterequests_5(): Promise<ProofResult<unknown>> {
+	async podcertificaterequests_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCertificatesV1beta1PodCertificateRequestForAllNamespaces",
 			namespace: "apis",
@@ -11774,6 +12332,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11782,7 +12341,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/watch/clustertrustbundles` — risk: medium
 	 */
-	async v1beta1watchClustertrustbundles(): Promise<ProofResult<unknown>> {
+	async v1beta1watchClustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1beta1ClusterTrustBundleList",
 			namespace: "apis",
@@ -11795,6 +12354,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11803,7 +12363,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/watch/clustertrustbundles/{name}` — risk: medium
 	 */
-	async v1beta1watchclustertrustbundlesRetrieveClustertrustbundle(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchclustertrustbundlesRetrieveClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1beta1ClusterTrustBundle",
 			namespace: "apis",
@@ -11816,6 +12376,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11824,7 +12385,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/watch/namespaces/{namespace}/podcertificaterequests` — risk: medium
 	 */
-	async watchnamespacesPodcertificaterequests(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1beta1NamespacedPodCertificateRequestList",
 			namespace: "apis",
@@ -11837,6 +12398,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11845,7 +12407,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/watch/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async watchnamespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
@@ -11858,6 +12420,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11866,7 +12429,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/watch/podcertificaterequests` — risk: medium
 	 */
-	async watchPodcertificaterequests(): Promise<ProofResult<unknown>> {
+	async watchPodcertificaterequests(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1beta1PodCertificateRequestListForAllNamespaces",
 			namespace: "apis",
@@ -11879,6 +12442,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11887,7 +12451,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/` — risk: medium
 	 */
-	async listCoordinationK8sIo(): Promise<ProofResult<unknown>> {
+	async listCoordinationK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCoordinationAPIGroup",
 			namespace: "apis",
@@ -11900,6 +12464,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11908,7 +12473,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1/` — risk: medium
 	 */
-	async coordinationK8sIoV1(): Promise<ProofResult<unknown>> {
+	async coordinationK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCoordinationV1APIResources",
 			namespace: "apis",
@@ -11921,6 +12486,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11929,7 +12495,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1/leases` — risk: medium
 	 */
-	async leases_0(): Promise<ProofResult<unknown>> {
+	async leases_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoordinationV1LeaseForAllNamespaces",
 			namespace: "apis",
@@ -11942,6 +12508,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11950,7 +12517,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1/namespaces/{namespace}/leases` — risk: medium
 	 */
-	async getNamespacesLeases(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesLeases(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoordinationV1NamespacedLease",
 			namespace: "apis",
@@ -11963,6 +12530,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11971,7 +12539,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/coordination.k8s.io/v1/namespaces/{namespace}/leases` — risk: medium
 	 */
-	async postNamespacesLeases(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesLeases(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoordinationV1NamespacedLease",
 			namespace: "apis",
@@ -11984,6 +12552,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11992,7 +12561,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/coordination.k8s.io/v1/namespaces/{namespace}/leases` — risk: medium
 	 */
-	async deleteNamespacesLeases(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesLeases(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoordinationV1CollectionNamespacedLease",
 			namespace: "apis",
@@ -12005,6 +12574,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12013,7 +12583,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1/namespaces/{namespace}/leases/{name}` — risk: medium
 	 */
-	async namespacesleasesRetrieveLeas(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesleasesRetrieveLeas(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoordinationV1NamespacedLease",
 			namespace: "apis",
@@ -12026,6 +12596,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12034,7 +12605,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/coordination.k8s.io/v1/namespaces/{namespace}/leases/{name}` — risk: medium
 	 */
-	async putNamespacesLeases(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesLeases(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoordinationV1NamespacedLease",
 			namespace: "apis",
@@ -12047,6 +12618,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12055,7 +12627,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/coordination.k8s.io/v1/namespaces/{namespace}/leases/{name}` — risk: medium
 	 */
-	async patchNamespacesLeases(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesLeases(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoordinationV1NamespacedLease",
 			namespace: "apis",
@@ -12068,6 +12640,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12076,7 +12649,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/coordination.k8s.io/v1/namespaces/{namespace}/leases/{name}` — risk: medium
 	 */
-	async deleteLeas(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteLeas(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoordinationV1NamespacedLease",
 			namespace: "apis",
@@ -12089,6 +12662,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12097,7 +12671,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1/watch/leases` — risk: medium
 	 */
-	async watchLeases(): Promise<ProofResult<unknown>> {
+	async watchLeases(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoordinationV1LeaseListForAllNamespaces",
 			namespace: "apis",
@@ -12110,6 +12684,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12118,7 +12693,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1/watch/namespaces/{namespace}/leases` — risk: medium
 	 */
-	async watchnamespacesLeases(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesLeases(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoordinationV1NamespacedLeaseList",
 			namespace: "apis",
@@ -12131,6 +12706,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12139,7 +12715,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1/watch/namespaces/{namespace}/leases/{name}` — risk: medium
 	 */
-	async watchnamespacesleasesRetrieveLeas(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesleasesRetrieveLeas(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoordinationV1NamespacedLease",
 			namespace: "apis",
@@ -12152,6 +12728,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12160,7 +12737,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1alpha2/` — risk: medium
 	 */
-	async coordinationK8sIoV1alpha2(): Promise<ProofResult<unknown>> {
+	async coordinationK8sIoV1alpha2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCoordinationV1alpha2APIResources",
 			namespace: "apis",
@@ -12173,6 +12750,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12181,7 +12759,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1alpha2/leasecandidates` — risk: medium
 	 */
-	async v1alpha2Leasecandidates(): Promise<ProofResult<unknown>> {
+	async v1alpha2Leasecandidates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoordinationV1alpha2LeaseCandidateForAllNamespaces",
 			namespace: "apis",
@@ -12194,6 +12772,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12202,7 +12781,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1alpha2/namespaces/{namespace}/leasecandidates` — risk: medium
 	 */
-	async getV1alpha2namespacesLeasecandidates(namespace: string): Promise<ProofResult<unknown>> {
+	async getV1alpha2namespacesLeasecandidates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoordinationV1alpha2NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12215,6 +12794,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12223,7 +12803,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/coordination.k8s.io/v1alpha2/namespaces/{namespace}/leasecandidates` — risk: medium
 	 */
-	async postV1alpha2namespacesLeasecandidates(namespace: string): Promise<ProofResult<unknown>> {
+	async postV1alpha2namespacesLeasecandidates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoordinationV1alpha2NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12236,6 +12816,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12244,7 +12825,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/coordination.k8s.io/v1alpha2/namespaces/{namespace}/leasecandidates` — risk: medium
 	 */
-	async deleteV1alpha2namespacesLeasecandidates(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV1alpha2namespacesLeasecandidates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoordinationV1alpha2CollectionNamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12257,6 +12838,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12265,7 +12847,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1alpha2/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async v1alpha2namespacesleasecandidatesRetrieveLeasecandidate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1alpha2namespacesleasecandidatesRetrieveLeasecandidate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoordinationV1alpha2NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12278,6 +12860,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12286,7 +12869,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/coordination.k8s.io/v1alpha2/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async putV1alpha2namespacesLeasecandidates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV1alpha2namespacesLeasecandidates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoordinationV1alpha2NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12299,6 +12882,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12307,7 +12891,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/coordination.k8s.io/v1alpha2/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async patchV1alpha2namespacesLeasecandidates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV1alpha2namespacesLeasecandidates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoordinationV1alpha2NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12320,6 +12904,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12328,7 +12913,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/coordination.k8s.io/v1alpha2/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async v1alpha2namespacesleasecandidatesDeleteLeasecandidate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1alpha2namespacesleasecandidatesDeleteLeasecandidate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoordinationV1alpha2NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12341,6 +12926,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12349,7 +12935,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1alpha2/watch/leasecandidates` — risk: medium
 	 */
-	async v1alpha2watchLeasecandidates(): Promise<ProofResult<unknown>> {
+	async v1alpha2watchLeasecandidates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoordinationV1alpha2LeaseCandidateListForAllNamespaces",
 			namespace: "apis",
@@ -12362,6 +12948,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12370,7 +12957,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1alpha2/watch/namespaces/{namespace}/leasecandidates` — risk: medium
 	 */
-	async v1alpha2watchnamespacesLeasecandidates(namespace: string): Promise<ProofResult<unknown>> {
+	async v1alpha2watchnamespacesLeasecandidates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoordinationV1alpha2NamespacedLeaseCandidateList",
 			namespace: "apis",
@@ -12383,6 +12970,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12391,7 +12979,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1alpha2/watch/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async v1alpha2watchnamespacesleasecandidatesRetrieveLeasecandidate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1alpha2watchnamespacesleasecandidatesRetrieveLeasecandidate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoordinationV1alpha2NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12404,6 +12992,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12412,7 +13001,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1beta1/` — risk: medium
 	 */
-	async coordinationK8sIoV1beta1(): Promise<ProofResult<unknown>> {
+	async coordinationK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCoordinationV1beta1APIResources",
 			namespace: "apis",
@@ -12425,6 +13014,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12433,7 +13023,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1beta1/leasecandidates` — risk: medium
 	 */
-	async v1beta1Leasecandidates(): Promise<ProofResult<unknown>> {
+	async v1beta1Leasecandidates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoordinationV1beta1LeaseCandidateForAllNamespaces",
 			namespace: "apis",
@@ -12446,6 +13036,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12454,7 +13045,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1beta1/namespaces/{namespace}/leasecandidates` — risk: medium
 	 */
-	async getV1beta1namespacesLeasecandidates(namespace: string): Promise<ProofResult<unknown>> {
+	async getV1beta1namespacesLeasecandidates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCoordinationV1beta1NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12467,6 +13058,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12475,7 +13067,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/coordination.k8s.io/v1beta1/namespaces/{namespace}/leasecandidates` — risk: medium
 	 */
-	async postV1beta1namespacesLeasecandidates(namespace: string): Promise<ProofResult<unknown>> {
+	async postV1beta1namespacesLeasecandidates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCoordinationV1beta1NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12488,6 +13080,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12496,7 +13089,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/coordination.k8s.io/v1beta1/namespaces/{namespace}/leasecandidates` — risk: medium
 	 */
-	async deleteV1beta1namespacesLeasecandidates(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV1beta1namespacesLeasecandidates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoordinationV1beta1CollectionNamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12509,6 +13102,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12517,7 +13111,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1beta1/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async v1beta1namespacesleasecandidatesRetrieveLeasecandidate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta1namespacesleasecandidatesRetrieveLeasecandidate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCoordinationV1beta1NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12530,6 +13124,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12538,7 +13133,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/coordination.k8s.io/v1beta1/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async putV1beta1namespacesLeasecandidates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1namespacesLeasecandidates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCoordinationV1beta1NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12551,6 +13146,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12559,7 +13155,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/coordination.k8s.io/v1beta1/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async patchV1beta1namespacesLeasecandidates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1namespacesLeasecandidates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCoordinationV1beta1NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12572,6 +13168,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12580,7 +13177,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/coordination.k8s.io/v1beta1/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async v1beta1namespacesleasecandidatesDeleteLeasecandidate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta1namespacesleasecandidatesDeleteLeasecandidate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCoordinationV1beta1NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12593,6 +13190,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12601,7 +13199,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1beta1/watch/leasecandidates` — risk: medium
 	 */
-	async v1beta1watchLeasecandidates(): Promise<ProofResult<unknown>> {
+	async v1beta1watchLeasecandidates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoordinationV1beta1LeaseCandidateListForAllNamespaces",
 			namespace: "apis",
@@ -12614,6 +13212,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12622,7 +13221,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1beta1/watch/namespaces/{namespace}/leasecandidates` — risk: medium
 	 */
-	async v1beta1watchnamespacesLeasecandidates(namespace: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchnamespacesLeasecandidates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoordinationV1beta1NamespacedLeaseCandidateList",
 			namespace: "apis",
@@ -12635,6 +13234,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12643,7 +13243,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1beta1/watch/namespaces/{namespace}/leasecandidates/{name}` — risk: medium
 	 */
-	async v1beta1watchnamespacesleasecandidatesRetrieveLeasecandidate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchnamespacesleasecandidatesRetrieveLeasecandidate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCoordinationV1beta1NamespacedLeaseCandidate",
 			namespace: "apis",
@@ -12656,6 +13256,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12664,7 +13265,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/discovery.k8s.io/` — risk: medium
 	 */
-	async listDiscoveryK8sIo(): Promise<ProofResult<unknown>> {
+	async listDiscoveryK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getDiscoveryAPIGroup",
 			namespace: "apis",
@@ -12677,6 +13278,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12685,7 +13287,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/discovery.k8s.io/v1/` — risk: medium
 	 */
-	async discoveryK8sIoV1(): Promise<ProofResult<unknown>> {
+	async discoveryK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getDiscoveryV1APIResources",
 			namespace: "apis",
@@ -12698,6 +13300,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12706,7 +13309,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/discovery.k8s.io/v1/endpointslices` — risk: medium
 	 */
-	async endpointslices_0(): Promise<ProofResult<unknown>> {
+	async endpointslices_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listDiscoveryV1EndpointSliceForAllNamespaces",
 			namespace: "apis",
@@ -12719,6 +13322,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12727,7 +13331,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/discovery.k8s.io/v1/namespaces/{namespace}/endpointslices` — risk: medium
 	 */
-	async getNamespacesEndpointslices(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesEndpointslices(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listDiscoveryV1NamespacedEndpointSlice",
 			namespace: "apis",
@@ -12740,6 +13344,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12748,7 +13353,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/discovery.k8s.io/v1/namespaces/{namespace}/endpointslices` — risk: medium
 	 */
-	async postNamespacesEndpointslices(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesEndpointslices(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createDiscoveryV1NamespacedEndpointSlice",
 			namespace: "apis",
@@ -12761,6 +13366,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12769,7 +13375,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/discovery.k8s.io/v1/namespaces/{namespace}/endpointslices` — risk: medium
 	 */
-	async deleteNamespacesEndpointslices(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesEndpointslices(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteDiscoveryV1CollectionNamespacedEndpointSlice",
 			namespace: "apis",
@@ -12782,6 +13388,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12790,7 +13397,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/discovery.k8s.io/v1/namespaces/{namespace}/endpointslices/{name}` — risk: medium
 	 */
-	async namespacesendpointslicesRetrieveEndpointslice(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesendpointslicesRetrieveEndpointslice(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readDiscoveryV1NamespacedEndpointSlice",
 			namespace: "apis",
@@ -12803,6 +13410,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12811,7 +13419,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/discovery.k8s.io/v1/namespaces/{namespace}/endpointslices/{name}` — risk: medium
 	 */
-	async putNamespacesEndpointslices(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesEndpointslices(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceDiscoveryV1NamespacedEndpointSlice",
 			namespace: "apis",
@@ -12824,6 +13432,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12832,7 +13441,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/discovery.k8s.io/v1/namespaces/{namespace}/endpointslices/{name}` — risk: medium
 	 */
-	async patchNamespacesEndpointslices(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesEndpointslices(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchDiscoveryV1NamespacedEndpointSlice",
 			namespace: "apis",
@@ -12845,6 +13454,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12853,7 +13463,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/discovery.k8s.io/v1/namespaces/{namespace}/endpointslices/{name}` — risk: medium
 	 */
-	async deleteEndpointslice(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteEndpointslice(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteDiscoveryV1NamespacedEndpointSlice",
 			namespace: "apis",
@@ -12866,6 +13476,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12874,7 +13485,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/discovery.k8s.io/v1/watch/endpointslices` — risk: medium
 	 */
-	async watchEndpointslices(): Promise<ProofResult<unknown>> {
+	async watchEndpointslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchDiscoveryV1EndpointSliceListForAllNamespaces",
 			namespace: "apis",
@@ -12887,6 +13498,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12895,7 +13507,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/discovery.k8s.io/v1/watch/namespaces/{namespace}/endpointslices` — risk: medium
 	 */
-	async watchnamespacesEndpointslices(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesEndpointslices(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchDiscoveryV1NamespacedEndpointSliceList",
 			namespace: "apis",
@@ -12908,6 +13520,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12916,7 +13529,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/discovery.k8s.io/v1/watch/namespaces/{namespace}/endpointslices/{name}` — risk: medium
 	 */
-	async watchnamespacesendpointslicesRetrieveEndpointslice(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesendpointslicesRetrieveEndpointslice(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchDiscoveryV1NamespacedEndpointSlice",
 			namespace: "apis",
@@ -12929,6 +13542,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12937,7 +13551,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/events.k8s.io/` — risk: medium
 	 */
-	async listEventsK8sIo(): Promise<ProofResult<unknown>> {
+	async listEventsK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getEventsAPIGroup",
 			namespace: "apis",
@@ -12950,6 +13564,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12958,7 +13573,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/events.k8s.io/v1/` — risk: medium
 	 */
-	async eventsK8sIoV1(): Promise<ProofResult<unknown>> {
+	async eventsK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getEventsV1APIResources",
 			namespace: "apis",
@@ -12971,6 +13586,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12979,7 +13595,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/events.k8s.io/v1/events` — risk: medium
 	 */
-	async events_0(): Promise<ProofResult<unknown>> {
+	async events_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listEventsV1EventForAllNamespaces",
 			namespace: "apis",
@@ -12992,6 +13608,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13000,7 +13617,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/events.k8s.io/v1/namespaces/{namespace}/events` — risk: medium
 	 */
-	async getNamespacesEvents(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesEvents(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listEventsV1NamespacedEvent",
 			namespace: "apis",
@@ -13013,6 +13630,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13021,7 +13639,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/events.k8s.io/v1/namespaces/{namespace}/events` — risk: medium
 	 */
-	async postNamespacesEvents(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesEvents(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createEventsV1NamespacedEvent",
 			namespace: "apis",
@@ -13034,6 +13652,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13042,7 +13661,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/events.k8s.io/v1/namespaces/{namespace}/events` — risk: medium
 	 */
-	async deleteNamespacesEvents(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesEvents(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteEventsV1CollectionNamespacedEvent",
 			namespace: "apis",
@@ -13055,6 +13674,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13063,7 +13683,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/events.k8s.io/v1/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async namespaceseventsRetrieveEvent(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespaceseventsRetrieveEvent(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readEventsV1NamespacedEvent",
 			namespace: "apis",
@@ -13076,6 +13696,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13084,7 +13705,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/events.k8s.io/v1/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async putNamespacesEvents(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesEvents(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceEventsV1NamespacedEvent",
 			namespace: "apis",
@@ -13097,6 +13718,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13105,7 +13727,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/events.k8s.io/v1/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async patchNamespacesEvents(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesEvents(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchEventsV1NamespacedEvent",
 			namespace: "apis",
@@ -13118,6 +13740,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13126,7 +13749,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/events.k8s.io/v1/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async deleteEvent(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteEvent(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteEventsV1NamespacedEvent",
 			namespace: "apis",
@@ -13139,6 +13762,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13147,7 +13771,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/events.k8s.io/v1/watch/events` — risk: medium
 	 */
-	async watchEvents(): Promise<ProofResult<unknown>> {
+	async watchEvents(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchEventsV1EventListForAllNamespaces",
 			namespace: "apis",
@@ -13160,6 +13784,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13168,7 +13793,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/events.k8s.io/v1/watch/namespaces/{namespace}/events` — risk: medium
 	 */
-	async watchnamespacesEvents(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesEvents(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchEventsV1NamespacedEventList",
 			namespace: "apis",
@@ -13181,6 +13806,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13189,7 +13815,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/events.k8s.io/v1/watch/namespaces/{namespace}/events/{name}` — risk: medium
 	 */
-	async watchnamespaceseventsRetrieveEvent(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespaceseventsRetrieveEvent(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchEventsV1NamespacedEvent",
 			namespace: "apis",
@@ -13202,6 +13828,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13210,7 +13837,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/` — risk: medium
 	 */
-	async listFlowcontrolApiserverK8sIo(): Promise<ProofResult<unknown>> {
+	async listFlowcontrolApiserverK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getFlowcontrolApiserverAPIGroup",
 			namespace: "apis",
@@ -13223,6 +13850,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13231,7 +13859,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/` — risk: medium
 	 */
-	async flowcontrolApiserverK8sIoV1(): Promise<ProofResult<unknown>> {
+	async flowcontrolApiserverK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getFlowcontrolApiserverV1APIResources",
 			namespace: "apis",
@@ -13244,6 +13872,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13252,7 +13881,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas` — risk: medium
 	 */
-	async flowschemas_0(): Promise<ProofResult<unknown>> {
+	async flowschemas_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listFlowcontrolApiserverV1FlowSchema",
 			namespace: "apis",
@@ -13265,6 +13894,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13273,7 +13903,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas` — risk: medium
 	 */
-	async flowschemas_1(): Promise<ProofResult<unknown>> {
+	async flowschemas_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createFlowcontrolApiserverV1FlowSchema",
 			namespace: "apis",
@@ -13286,6 +13916,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13294,7 +13925,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas` — risk: medium
 	 */
-	async flowschemas_2(): Promise<ProofResult<unknown>> {
+	async flowschemas_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteFlowcontrolApiserverV1CollectionFlowSchema",
 			namespace: "apis",
@@ -13307,6 +13938,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13315,7 +13947,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas/{name}` — risk: medium
 	 */
-	async flowschemasRetrieveFlowschema(name: string): Promise<ProofResult<unknown>> {
+	async flowschemasRetrieveFlowschema(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readFlowcontrolApiserverV1FlowSchema",
 			namespace: "apis",
@@ -13328,6 +13960,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13336,7 +13969,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas/{name}` — risk: medium
 	 */
-	async flowschemas_3(name: string): Promise<ProofResult<unknown>> {
+	async flowschemas_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceFlowcontrolApiserverV1FlowSchema",
 			namespace: "apis",
@@ -13349,6 +13982,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13357,7 +13991,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas/{name}` — risk: medium
 	 */
-	async flowschemas_4(name: string): Promise<ProofResult<unknown>> {
+	async flowschemas_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchFlowcontrolApiserverV1FlowSchema",
 			namespace: "apis",
@@ -13370,6 +14004,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13378,7 +14013,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas/{name}` — risk: medium
 	 */
-	async deleteFlowschema(name: string): Promise<ProofResult<unknown>> {
+	async deleteFlowschema(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteFlowcontrolApiserverV1FlowSchema",
 			namespace: "apis",
@@ -13391,6 +14026,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13399,7 +14035,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas/{name}/status` — risk: medium
 	 */
-	async getFlowcontrolApiserverK8sIov1flowschemasStatus(name: string): Promise<ProofResult<unknown>> {
+	async getFlowcontrolApiserverK8sIov1flowschemasStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readFlowcontrolApiserverV1FlowSchemaStatus",
 			namespace: "apis",
@@ -13412,6 +14048,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13420,7 +14057,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas/{name}/status` — risk: medium
 	 */
-	async putFlowcontrolApiserverK8sIov1flowschemasStatus(name: string): Promise<ProofResult<unknown>> {
+	async putFlowcontrolApiserverK8sIov1flowschemasStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceFlowcontrolApiserverV1FlowSchemaStatus",
 			namespace: "apis",
@@ -13433,6 +14070,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13441,7 +14079,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/flowcontrol.apiserver.k8s.io/v1/flowschemas/{name}/status` — risk: medium
 	 */
-	async patchFlowcontrolApiserverK8sIov1flowschemasStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchFlowcontrolApiserverK8sIov1flowschemasStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchFlowcontrolApiserverV1FlowSchemaStatus",
 			namespace: "apis",
@@ -13454,6 +14092,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13462,7 +14101,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations` — risk: medium
 	 */
-	async prioritylevelconfigurations_0(): Promise<ProofResult<unknown>> {
+	async prioritylevelconfigurations_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listFlowcontrolApiserverV1PriorityLevelConfiguration",
 			namespace: "apis",
@@ -13475,6 +14114,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13483,7 +14123,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations` — risk: medium
 	 */
-	async prioritylevelconfigurations_1(): Promise<ProofResult<unknown>> {
+	async prioritylevelconfigurations_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createFlowcontrolApiserverV1PriorityLevelConfiguration",
 			namespace: "apis",
@@ -13496,6 +14136,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13504,7 +14145,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations` — risk: medium
 	 */
-	async prioritylevelconfigurations_2(): Promise<ProofResult<unknown>> {
+	async prioritylevelconfigurations_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteFlowcontrolApiserverV1CollectionPriorityLevelConfiguration",
 			namespace: "apis",
@@ -13517,6 +14158,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13525,7 +14167,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations/{name}` — risk: medium
 	 */
-	async prioritylevelconfigurationsRetrievePrioritylevelconfiguration(name: string): Promise<ProofResult<unknown>> {
+	async prioritylevelconfigurationsRetrievePrioritylevelconfiguration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readFlowcontrolApiserverV1PriorityLevelConfiguration",
 			namespace: "apis",
@@ -13538,6 +14180,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13546,7 +14189,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations/{name}` — risk: medium
 	 */
-	async prioritylevelconfigurations_3(name: string): Promise<ProofResult<unknown>> {
+	async prioritylevelconfigurations_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceFlowcontrolApiserverV1PriorityLevelConfiguration",
 			namespace: "apis",
@@ -13559,6 +14202,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13567,7 +14211,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations/{name}` — risk: medium
 	 */
-	async prioritylevelconfigurations_4(name: string): Promise<ProofResult<unknown>> {
+	async prioritylevelconfigurations_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchFlowcontrolApiserverV1PriorityLevelConfiguration",
 			namespace: "apis",
@@ -13580,6 +14224,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13588,7 +14233,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations/{name}` — risk: medium
 	 */
-	async deletePrioritylevelconfiguration(name: string): Promise<ProofResult<unknown>> {
+	async deletePrioritylevelconfiguration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteFlowcontrolApiserverV1PriorityLevelConfiguration",
 			namespace: "apis",
@@ -13601,6 +14246,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13609,7 +14255,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations/{name}/status` — risk: medium
 	 */
-	async getFlowcontrolApiserverK8sIov1prioritylevelconfigurationsStatus(name: string): Promise<ProofResult<unknown>> {
+	async getFlowcontrolApiserverK8sIov1prioritylevelconfigurationsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readFlowcontrolApiserverV1PriorityLevelConfigurationStatus",
 			namespace: "apis",
@@ -13622,6 +14268,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13630,7 +14277,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations/{name}/status` — risk: medium
 	 */
-	async putFlowcontrolApiserverK8sIov1prioritylevelconfigurationsStatus(name: string): Promise<ProofResult<unknown>> {
+	async putFlowcontrolApiserverK8sIov1prioritylevelconfigurationsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceFlowcontrolApiserverV1PriorityLevelConfigurationStatus",
 			namespace: "apis",
@@ -13643,6 +14290,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13651,7 +14299,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations/{name}/status` — risk: medium
 	 */
-	async patchFlowcontrolApiserverK8sIov1prioritylevelconfigurationsStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchFlowcontrolApiserverK8sIov1prioritylevelconfigurationsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchFlowcontrolApiserverV1PriorityLevelConfigurationStatus",
 			namespace: "apis",
@@ -13664,6 +14312,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13672,7 +14321,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/watch/flowschemas` — risk: medium
 	 */
-	async watchFlowschemas(): Promise<ProofResult<unknown>> {
+	async watchFlowschemas(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchFlowcontrolApiserverV1FlowSchemaList",
 			namespace: "apis",
@@ -13685,6 +14334,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13693,7 +14343,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/watch/flowschemas/{name}` — risk: medium
 	 */
-	async watchflowschemasRetrieveFlowschema(name: string): Promise<ProofResult<unknown>> {
+	async watchflowschemasRetrieveFlowschema(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchFlowcontrolApiserverV1FlowSchema",
 			namespace: "apis",
@@ -13706,6 +14356,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13714,7 +14365,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/watch/prioritylevelconfigurations` — risk: medium
 	 */
-	async watchPrioritylevelconfigurations(): Promise<ProofResult<unknown>> {
+	async watchPrioritylevelconfigurations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchFlowcontrolApiserverV1PriorityLevelConfigurationList",
 			namespace: "apis",
@@ -13727,6 +14378,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13735,7 +14387,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/flowcontrol.apiserver.k8s.io/v1/watch/prioritylevelconfigurations/{name}` — risk: medium
 	 */
-	async watchprioritylevelconfigurationsRetrievePrioritylevelconfiguration(name: string): Promise<ProofResult<unknown>> {
+	async watchprioritylevelconfigurationsRetrievePrioritylevelconfiguration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchFlowcontrolApiserverV1PriorityLevelConfiguration",
 			namespace: "apis",
@@ -13748,6 +14400,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13756,7 +14409,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/internal.apiserver.k8s.io/` — risk: medium
 	 */
-	async listInternalApiserverK8sIo(): Promise<ProofResult<unknown>> {
+	async listInternalApiserverK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getInternalApiserverAPIGroup",
 			namespace: "apis",
@@ -13769,6 +14422,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13777,7 +14431,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/internal.apiserver.k8s.io/v1alpha1/` — risk: medium
 	 */
-	async internalApiserverK8sIoV1alpha1(): Promise<ProofResult<unknown>> {
+	async internalApiserverK8sIoV1alpha1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getInternalApiserverV1alpha1APIResources",
 			namespace: "apis",
@@ -13790,6 +14444,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13798,7 +14453,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/internal.apiserver.k8s.io/v1alpha1/storageversions` — risk: medium
 	 */
-	async storageversions_0(): Promise<ProofResult<unknown>> {
+	async storageversions_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listInternalApiserverV1alpha1StorageVersion",
 			namespace: "apis",
@@ -13811,6 +14466,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13819,7 +14475,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/internal.apiserver.k8s.io/v1alpha1/storageversions` — risk: medium
 	 */
-	async storageversions_1(): Promise<ProofResult<unknown>> {
+	async storageversions_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createInternalApiserverV1alpha1StorageVersion",
 			namespace: "apis",
@@ -13832,6 +14488,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13840,7 +14497,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/internal.apiserver.k8s.io/v1alpha1/storageversions` — risk: medium
 	 */
-	async storageversions_2(): Promise<ProofResult<unknown>> {
+	async storageversions_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteInternalApiserverV1alpha1CollectionStorageVersion",
 			namespace: "apis",
@@ -13853,6 +14510,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13861,7 +14519,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/internal.apiserver.k8s.io/v1alpha1/storageversions/{name}` — risk: medium
 	 */
-	async storageversionsRetrieveStorageversion(name: string): Promise<ProofResult<unknown>> {
+	async storageversionsRetrieveStorageversion(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readInternalApiserverV1alpha1StorageVersion",
 			namespace: "apis",
@@ -13874,6 +14532,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13882,7 +14541,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/internal.apiserver.k8s.io/v1alpha1/storageversions/{name}` — risk: medium
 	 */
-	async storageversions_3(name: string): Promise<ProofResult<unknown>> {
+	async storageversions_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceInternalApiserverV1alpha1StorageVersion",
 			namespace: "apis",
@@ -13895,6 +14554,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13903,7 +14563,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/internal.apiserver.k8s.io/v1alpha1/storageversions/{name}` — risk: medium
 	 */
-	async storageversions_4(name: string): Promise<ProofResult<unknown>> {
+	async storageversions_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchInternalApiserverV1alpha1StorageVersion",
 			namespace: "apis",
@@ -13916,6 +14576,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13924,7 +14585,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/internal.apiserver.k8s.io/v1alpha1/storageversions/{name}` — risk: medium
 	 */
-	async deleteStorageversion(name: string): Promise<ProofResult<unknown>> {
+	async deleteStorageversion(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteInternalApiserverV1alpha1StorageVersion",
 			namespace: "apis",
@@ -13937,6 +14598,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13945,7 +14607,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/internal.apiserver.k8s.io/v1alpha1/storageversions/{name}/status` — risk: medium
 	 */
-	async getInternalApiserverK8sIov1alpha1storageversionsStatus(name: string): Promise<ProofResult<unknown>> {
+	async getInternalApiserverK8sIov1alpha1storageversionsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readInternalApiserverV1alpha1StorageVersionStatus",
 			namespace: "apis",
@@ -13958,6 +14620,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13966,7 +14629,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/internal.apiserver.k8s.io/v1alpha1/storageversions/{name}/status` — risk: medium
 	 */
-	async putInternalApiserverK8sIov1alpha1storageversionsStatus(name: string): Promise<ProofResult<unknown>> {
+	async putInternalApiserverK8sIov1alpha1storageversionsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceInternalApiserverV1alpha1StorageVersionStatus",
 			namespace: "apis",
@@ -13979,6 +14642,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13987,7 +14651,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/internal.apiserver.k8s.io/v1alpha1/storageversions/{name}/status` — risk: medium
 	 */
-	async patchInternalApiserverK8sIov1alpha1storageversionsStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchInternalApiserverK8sIov1alpha1storageversionsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchInternalApiserverV1alpha1StorageVersionStatus",
 			namespace: "apis",
@@ -14000,6 +14664,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14008,7 +14673,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/internal.apiserver.k8s.io/v1alpha1/watch/storageversions` — risk: medium
 	 */
-	async watchStorageversions(): Promise<ProofResult<unknown>> {
+	async watchStorageversions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchInternalApiserverV1alpha1StorageVersionList",
 			namespace: "apis",
@@ -14021,6 +14686,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14029,7 +14695,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/internal.apiserver.k8s.io/v1alpha1/watch/storageversions/{name}` — risk: medium
 	 */
-	async watchstorageversionsRetrieveStorageversion(name: string): Promise<ProofResult<unknown>> {
+	async watchstorageversionsRetrieveStorageversion(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchInternalApiserverV1alpha1StorageVersion",
 			namespace: "apis",
@@ -14042,6 +14708,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14050,7 +14717,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/` — risk: medium
 	 */
-	async listNetworkingK8sIo(): Promise<ProofResult<unknown>> {
+	async listNetworkingK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getNetworkingAPIGroup",
 			namespace: "apis",
@@ -14063,6 +14730,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14071,7 +14739,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/` — risk: medium
 	 */
-	async networkingK8sIoV1(): Promise<ProofResult<unknown>> {
+	async networkingK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getNetworkingV1APIResources",
 			namespace: "apis",
@@ -14084,6 +14752,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14092,7 +14761,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/ingressclasses` — risk: medium
 	 */
-	async ingressclasses_0(): Promise<ProofResult<unknown>> {
+	async ingressclasses_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1IngressClass",
 			namespace: "apis",
@@ -14105,6 +14774,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14113,7 +14783,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/networking.k8s.io/v1/ingressclasses` — risk: medium
 	 */
-	async ingressclasses_1(): Promise<ProofResult<unknown>> {
+	async ingressclasses_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNetworkingV1IngressClass",
 			namespace: "apis",
@@ -14126,6 +14796,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14134,7 +14805,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/ingressclasses` — risk: medium
 	 */
-	async ingressclasses_2(): Promise<ProofResult<unknown>> {
+	async ingressclasses_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1CollectionIngressClass",
 			namespace: "apis",
@@ -14147,6 +14818,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14155,7 +14827,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/ingressclasses/{name}` — risk: medium
 	 */
-	async ingressclassesRetrieveIngressclass(name: string): Promise<ProofResult<unknown>> {
+	async ingressclassesRetrieveIngressclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1IngressClass",
 			namespace: "apis",
@@ -14168,6 +14840,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14176,7 +14849,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1/ingressclasses/{name}` — risk: medium
 	 */
-	async ingressclasses_3(name: string): Promise<ProofResult<unknown>> {
+	async ingressclasses_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1IngressClass",
 			namespace: "apis",
@@ -14189,6 +14862,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14197,7 +14871,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1/ingressclasses/{name}` — risk: medium
 	 */
-	async ingressclasses_4(name: string): Promise<ProofResult<unknown>> {
+	async ingressclasses_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1IngressClass",
 			namespace: "apis",
@@ -14210,6 +14884,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14218,7 +14893,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/ingressclasses/{name}` — risk: medium
 	 */
-	async deleteIngressclass(name: string): Promise<ProofResult<unknown>> {
+	async deleteIngressclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1IngressClass",
 			namespace: "apis",
@@ -14231,6 +14906,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14239,7 +14915,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/ingresses` — risk: medium
 	 */
-	async ingresses_0(): Promise<ProofResult<unknown>> {
+	async ingresses_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1IngressForAllNamespaces",
 			namespace: "apis",
@@ -14252,6 +14928,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14260,7 +14937,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/ipaddresses` — risk: medium
 	 */
-	async getV1Ipaddresses(): Promise<ProofResult<unknown>> {
+	async getV1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1IPAddress",
 			namespace: "apis",
@@ -14273,6 +14950,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14281,7 +14959,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/networking.k8s.io/v1/ipaddresses` — risk: medium
 	 */
-	async postV1Ipaddresses(): Promise<ProofResult<unknown>> {
+	async postV1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNetworkingV1IPAddress",
 			namespace: "apis",
@@ -14294,6 +14972,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14302,7 +14981,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/ipaddresses` — risk: medium
 	 */
-	async deleteV1Ipaddresses(): Promise<ProofResult<unknown>> {
+	async deleteV1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1CollectionIPAddress",
 			namespace: "apis",
@@ -14315,6 +14994,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14323,7 +15003,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/ipaddresses/{name}` — risk: medium
 	 */
-	async v1ipaddressesRetrieveIpaddress(name: string): Promise<ProofResult<unknown>> {
+	async v1ipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1IPAddress",
 			namespace: "apis",
@@ -14336,6 +15016,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14344,7 +15025,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1/ipaddresses/{name}` — risk: medium
 	 */
-	async putV1Ipaddresses(name: string): Promise<ProofResult<unknown>> {
+	async putV1Ipaddresses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1IPAddress",
 			namespace: "apis",
@@ -14357,6 +15038,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14365,7 +15047,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1/ipaddresses/{name}` — risk: medium
 	 */
-	async patchV1Ipaddresses(name: string): Promise<ProofResult<unknown>> {
+	async patchV1Ipaddresses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1IPAddress",
 			namespace: "apis",
@@ -14378,6 +15060,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14386,7 +15069,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/ipaddresses/{name}` — risk: medium
 	 */
-	async v1ipaddressesDeleteIpaddress(name: string): Promise<ProofResult<unknown>> {
+	async v1ipaddressesDeleteIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1IPAddress",
 			namespace: "apis",
@@ -14399,6 +15082,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14407,7 +15091,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses` — risk: medium
 	 */
-	async getNamespacesIngresses(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesIngresses(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1NamespacedIngress",
 			namespace: "apis",
@@ -14420,6 +15104,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14428,7 +15113,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses` — risk: medium
 	 */
-	async postNamespacesIngresses(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesIngresses(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNetworkingV1NamespacedIngress",
 			namespace: "apis",
@@ -14441,6 +15126,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14449,7 +15135,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses` — risk: medium
 	 */
-	async deleteNamespacesIngresses(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesIngresses(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1CollectionNamespacedIngress",
 			namespace: "apis",
@@ -14462,6 +15148,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14470,7 +15157,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses/{name}` — risk: medium
 	 */
-	async namespacesingressesRetrieveIngress(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesingressesRetrieveIngress(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1NamespacedIngress",
 			namespace: "apis",
@@ -14483,6 +15170,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14491,7 +15179,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses/{name}` — risk: medium
 	 */
-	async putNamespacesIngresses(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesIngresses(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1NamespacedIngress",
 			namespace: "apis",
@@ -14504,6 +15192,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14512,7 +15201,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses/{name}` — risk: medium
 	 */
-	async patchNamespacesIngresses(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesIngresses(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1NamespacedIngress",
 			namespace: "apis",
@@ -14525,6 +15214,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14533,7 +15223,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses/{name}` — risk: medium
 	 */
-	async deleteIngress(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteIngress(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1NamespacedIngress",
 			namespace: "apis",
@@ -14546,6 +15236,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14554,7 +15245,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses/{name}/status` — risk: medium
 	 */
-	async getNetworkingK8sIov1namespacesingressesStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getNetworkingK8sIov1namespacesingressesStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1NamespacedIngressStatus",
 			namespace: "apis",
@@ -14567,6 +15258,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14575,7 +15267,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses/{name}/status` — risk: medium
 	 */
-	async putNetworkingK8sIov1namespacesingressesStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNetworkingK8sIov1namespacesingressesStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1NamespacedIngressStatus",
 			namespace: "apis",
@@ -14588,6 +15280,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14596,7 +15289,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1/namespaces/{namespace}/ingresses/{name}/status` — risk: medium
 	 */
-	async patchNetworkingK8sIov1namespacesingressesStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNetworkingK8sIov1namespacesingressesStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1NamespacedIngressStatus",
 			namespace: "apis",
@@ -14609,6 +15302,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14617,7 +15311,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/namespaces/{namespace}/networkpolicies` — risk: medium
 	 */
-	async getNamespacesNetworkpolicies(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesNetworkpolicies(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1NamespacedNetworkPolicy",
 			namespace: "apis",
@@ -14630,6 +15324,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14638,7 +15333,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/networking.k8s.io/v1/namespaces/{namespace}/networkpolicies` — risk: medium
 	 */
-	async postNamespacesNetworkpolicies(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesNetworkpolicies(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNetworkingV1NamespacedNetworkPolicy",
 			namespace: "apis",
@@ -14651,6 +15346,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14659,7 +15355,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/namespaces/{namespace}/networkpolicies` — risk: medium
 	 */
-	async deleteNamespacesNetworkpolicies(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesNetworkpolicies(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1CollectionNamespacedNetworkPolicy",
 			namespace: "apis",
@@ -14672,6 +15368,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14680,7 +15377,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/namespaces/{namespace}/networkpolicies/{name}` — risk: medium
 	 */
-	async namespacesnetworkpoliciesRetrieveNetworkpolicy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesnetworkpoliciesRetrieveNetworkpolicy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1NamespacedNetworkPolicy",
 			namespace: "apis",
@@ -14693,6 +15390,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14701,7 +15399,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1/namespaces/{namespace}/networkpolicies/{name}` — risk: medium
 	 */
-	async putNamespacesNetworkpolicies(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesNetworkpolicies(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1NamespacedNetworkPolicy",
 			namespace: "apis",
@@ -14714,6 +15412,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14722,7 +15421,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1/namespaces/{namespace}/networkpolicies/{name}` — risk: medium
 	 */
-	async patchNamespacesNetworkpolicies(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesNetworkpolicies(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1NamespacedNetworkPolicy",
 			namespace: "apis",
@@ -14735,6 +15434,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14743,7 +15443,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/namespaces/{namespace}/networkpolicies/{name}` — risk: medium
 	 */
-	async deleteNetworkpolicy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteNetworkpolicy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1NamespacedNetworkPolicy",
 			namespace: "apis",
@@ -14756,6 +15456,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14764,7 +15465,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/networkpolicies` — risk: medium
 	 */
-	async networkpolicies_5(): Promise<ProofResult<unknown>> {
+	async networkpolicies_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1NetworkPolicyForAllNamespaces",
 			namespace: "apis",
@@ -14777,6 +15478,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14785,7 +15487,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/servicecidrs` — risk: medium
 	 */
-	async getV1Servicecidrs(): Promise<ProofResult<unknown>> {
+	async getV1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1ServiceCIDR",
 			namespace: "apis",
@@ -14798,6 +15500,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14806,7 +15509,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/networking.k8s.io/v1/servicecidrs` — risk: medium
 	 */
-	async postV1Servicecidrs(): Promise<ProofResult<unknown>> {
+	async postV1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNetworkingV1ServiceCIDR",
 			namespace: "apis",
@@ -14819,6 +15522,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14827,7 +15531,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/servicecidrs` — risk: medium
 	 */
-	async deleteV1Servicecidrs(): Promise<ProofResult<unknown>> {
+	async deleteV1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1CollectionServiceCIDR",
 			namespace: "apis",
@@ -14840,6 +15544,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14848,7 +15553,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/servicecidrs/{name}` — risk: medium
 	 */
-	async v1servicecidrsRetrieveServicecidr(name: string): Promise<ProofResult<unknown>> {
+	async v1servicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1ServiceCIDR",
 			namespace: "apis",
@@ -14861,6 +15566,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14869,7 +15575,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1/servicecidrs/{name}` — risk: medium
 	 */
-	async putV1Servicecidrs(name: string): Promise<ProofResult<unknown>> {
+	async putV1Servicecidrs(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1ServiceCIDR",
 			namespace: "apis",
@@ -14882,6 +15588,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14890,7 +15597,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1/servicecidrs/{name}` — risk: medium
 	 */
-	async patchV1Servicecidrs(name: string): Promise<ProofResult<unknown>> {
+	async patchV1Servicecidrs(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1ServiceCIDR",
 			namespace: "apis",
@@ -14903,6 +15610,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14911,7 +15619,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/servicecidrs/{name}` — risk: medium
 	 */
-	async v1servicecidrsDeleteServicecidr(name: string): Promise<ProofResult<unknown>> {
+	async v1servicecidrsDeleteServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1ServiceCIDR",
 			namespace: "apis",
@@ -14924,6 +15632,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14932,7 +15641,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/servicecidrs/{name}/status` — risk: medium
 	 */
-	async getNetworkingK8sIov1servicecidrsStatus(name: string): Promise<ProofResult<unknown>> {
+	async getNetworkingK8sIov1servicecidrsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1ServiceCIDRStatus",
 			namespace: "apis",
@@ -14945,6 +15654,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14953,7 +15663,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1/servicecidrs/{name}/status` — risk: medium
 	 */
-	async putNetworkingK8sIov1servicecidrsStatus(name: string): Promise<ProofResult<unknown>> {
+	async putNetworkingK8sIov1servicecidrsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1ServiceCIDRStatus",
 			namespace: "apis",
@@ -14966,6 +15676,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14974,7 +15685,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1/servicecidrs/{name}/status` — risk: medium
 	 */
-	async patchNetworkingK8sIov1servicecidrsStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchNetworkingK8sIov1servicecidrsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1ServiceCIDRStatus",
 			namespace: "apis",
@@ -14987,6 +15698,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14995,7 +15707,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/ingressclasses` — risk: medium
 	 */
-	async watchIngressclasses(): Promise<ProofResult<unknown>> {
+	async watchIngressclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1IngressClassList",
 			namespace: "apis",
@@ -15008,6 +15720,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15016,7 +15729,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/ingressclasses/{name}` — risk: medium
 	 */
-	async watchingressclassesRetrieveIngressclass(name: string): Promise<ProofResult<unknown>> {
+	async watchingressclassesRetrieveIngressclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1IngressClass",
 			namespace: "apis",
@@ -15029,6 +15742,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15037,7 +15751,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/ingresses` — risk: medium
 	 */
-	async watchIngresses(): Promise<ProofResult<unknown>> {
+	async watchIngresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1IngressListForAllNamespaces",
 			namespace: "apis",
@@ -15050,6 +15764,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15058,7 +15773,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/ipaddresses` — risk: medium
 	 */
-	async v1watchIpaddresses(): Promise<ProofResult<unknown>> {
+	async v1watchIpaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1IPAddressList",
 			namespace: "apis",
@@ -15071,6 +15786,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15079,7 +15795,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/ipaddresses/{name}` — risk: medium
 	 */
-	async v1watchipaddressesRetrieveIpaddress(name: string): Promise<ProofResult<unknown>> {
+	async v1watchipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1IPAddress",
 			namespace: "apis",
@@ -15092,6 +15808,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15100,7 +15817,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/namespaces/{namespace}/ingresses` — risk: medium
 	 */
-	async watchnamespacesIngresses(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesIngresses(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1NamespacedIngressList",
 			namespace: "apis",
@@ -15113,6 +15830,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15121,7 +15839,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/namespaces/{namespace}/ingresses/{name}` — risk: medium
 	 */
-	async watchnamespacesingressesRetrieveIngress(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesingressesRetrieveIngress(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1NamespacedIngress",
 			namespace: "apis",
@@ -15134,6 +15852,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15142,7 +15861,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/namespaces/{namespace}/networkpolicies` — risk: medium
 	 */
-	async watchnamespacesNetworkpolicies(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesNetworkpolicies(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1NamespacedNetworkPolicyList",
 			namespace: "apis",
@@ -15155,6 +15874,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15163,7 +15883,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/namespaces/{namespace}/networkpolicies/{name}` — risk: medium
 	 */
-	async watchnamespacesnetworkpoliciesRetrieveNetworkpolicy(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesnetworkpoliciesRetrieveNetworkpolicy(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1NamespacedNetworkPolicy",
 			namespace: "apis",
@@ -15176,6 +15896,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15184,7 +15905,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/networkpolicies` — risk: medium
 	 */
-	async watchNetworkpolicies(): Promise<ProofResult<unknown>> {
+	async watchNetworkpolicies(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1NetworkPolicyListForAllNamespaces",
 			namespace: "apis",
@@ -15197,6 +15918,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15205,7 +15927,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/servicecidrs` — risk: medium
 	 */
-	async v1watchServicecidrs(): Promise<ProofResult<unknown>> {
+	async v1watchServicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1ServiceCIDRList",
 			namespace: "apis",
@@ -15218,6 +15940,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15226,7 +15949,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/servicecidrs/{name}` — risk: medium
 	 */
-	async v1watchservicecidrsRetrieveServicecidr(name: string): Promise<ProofResult<unknown>> {
+	async v1watchservicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1ServiceCIDR",
 			namespace: "apis",
@@ -15239,6 +15962,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15247,7 +15971,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/` — risk: medium
 	 */
-	async networkingK8sIoV1beta1(): Promise<ProofResult<unknown>> {
+	async networkingK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getNetworkingV1beta1APIResources",
 			namespace: "apis",
@@ -15260,6 +15984,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15268,7 +15993,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/ipaddresses` — risk: medium
 	 */
-	async getV1beta1Ipaddresses(): Promise<ProofResult<unknown>> {
+	async getV1beta1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1beta1IPAddress",
 			namespace: "apis",
@@ -15281,6 +16006,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15289,7 +16015,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/networking.k8s.io/v1beta1/ipaddresses` — risk: medium
 	 */
-	async postV1beta1Ipaddresses(): Promise<ProofResult<unknown>> {
+	async postV1beta1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNetworkingV1beta1IPAddress",
 			namespace: "apis",
@@ -15302,6 +16028,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15310,7 +16037,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1beta1/ipaddresses` — risk: medium
 	 */
-	async deleteV1beta1Ipaddresses(): Promise<ProofResult<unknown>> {
+	async deleteV1beta1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1beta1CollectionIPAddress",
 			namespace: "apis",
@@ -15323,6 +16050,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15331,7 +16059,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/ipaddresses/{name}` — risk: medium
 	 */
-	async v1beta1ipaddressesRetrieveIpaddress(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1ipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1beta1IPAddress",
 			namespace: "apis",
@@ -15344,6 +16072,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15352,7 +16081,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1beta1/ipaddresses/{name}` — risk: medium
 	 */
-	async putV1beta1Ipaddresses(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1Ipaddresses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1beta1IPAddress",
 			namespace: "apis",
@@ -15365,6 +16094,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15373,7 +16103,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1beta1/ipaddresses/{name}` — risk: medium
 	 */
-	async patchV1beta1Ipaddresses(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1Ipaddresses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1beta1IPAddress",
 			namespace: "apis",
@@ -15386,6 +16116,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15394,7 +16125,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1beta1/ipaddresses/{name}` — risk: medium
 	 */
-	async v1beta1ipaddressesDeleteIpaddress(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1ipaddressesDeleteIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1beta1IPAddress",
 			namespace: "apis",
@@ -15407,6 +16138,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15415,7 +16147,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/servicecidrs` — risk: medium
 	 */
-	async getV1beta1Servicecidrs(): Promise<ProofResult<unknown>> {
+	async getV1beta1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1beta1ServiceCIDR",
 			namespace: "apis",
@@ -15428,6 +16160,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15436,7 +16169,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/networking.k8s.io/v1beta1/servicecidrs` — risk: medium
 	 */
-	async postV1beta1Servicecidrs(): Promise<ProofResult<unknown>> {
+	async postV1beta1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNetworkingV1beta1ServiceCIDR",
 			namespace: "apis",
@@ -15449,6 +16182,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15457,7 +16191,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1beta1/servicecidrs` — risk: medium
 	 */
-	async deleteV1beta1Servicecidrs(): Promise<ProofResult<unknown>> {
+	async deleteV1beta1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1beta1CollectionServiceCIDR",
 			namespace: "apis",
@@ -15470,6 +16204,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15478,7 +16213,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/servicecidrs/{name}` — risk: medium
 	 */
-	async v1beta1servicecidrsRetrieveServicecidr(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1servicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1beta1ServiceCIDR",
 			namespace: "apis",
@@ -15491,6 +16226,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15499,7 +16235,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1beta1/servicecidrs/{name}` — risk: medium
 	 */
-	async putV1beta1Servicecidrs(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1Servicecidrs(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1beta1ServiceCIDR",
 			namespace: "apis",
@@ -15512,6 +16248,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15520,7 +16257,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1beta1/servicecidrs/{name}` — risk: medium
 	 */
-	async patchV1beta1Servicecidrs(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1Servicecidrs(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1beta1ServiceCIDR",
 			namespace: "apis",
@@ -15533,6 +16270,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15541,7 +16279,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1beta1/servicecidrs/{name}` — risk: medium
 	 */
-	async v1beta1servicecidrsDeleteServicecidr(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1servicecidrsDeleteServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1beta1ServiceCIDR",
 			namespace: "apis",
@@ -15554,6 +16292,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15562,7 +16301,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/servicecidrs/{name}/status` — risk: medium
 	 */
-	async getNetworkingK8sIov1beta1servicecidrsStatus(name: string): Promise<ProofResult<unknown>> {
+	async getNetworkingK8sIov1beta1servicecidrsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1beta1ServiceCIDRStatus",
 			namespace: "apis",
@@ -15575,6 +16314,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15583,7 +16323,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1beta1/servicecidrs/{name}/status` — risk: medium
 	 */
-	async putNetworkingK8sIov1beta1servicecidrsStatus(name: string): Promise<ProofResult<unknown>> {
+	async putNetworkingK8sIov1beta1servicecidrsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1beta1ServiceCIDRStatus",
 			namespace: "apis",
@@ -15596,6 +16336,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15604,7 +16345,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1beta1/servicecidrs/{name}/status` — risk: medium
 	 */
-	async patchNetworkingK8sIov1beta1servicecidrsStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchNetworkingK8sIov1beta1servicecidrsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1beta1ServiceCIDRStatus",
 			namespace: "apis",
@@ -15617,6 +16358,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15625,7 +16367,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/watch/ipaddresses` — risk: medium
 	 */
-	async v1beta1watchIpaddresses(): Promise<ProofResult<unknown>> {
+	async v1beta1watchIpaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1beta1IPAddressList",
 			namespace: "apis",
@@ -15638,6 +16380,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15646,7 +16389,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/watch/ipaddresses/{name}` — risk: medium
 	 */
-	async v1beta1watchipaddressesRetrieveIpaddress(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1beta1IPAddress",
 			namespace: "apis",
@@ -15659,6 +16402,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15667,7 +16411,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/watch/servicecidrs` — risk: medium
 	 */
-	async v1beta1watchServicecidrs(): Promise<ProofResult<unknown>> {
+	async v1beta1watchServicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1beta1ServiceCIDRList",
 			namespace: "apis",
@@ -15680,6 +16424,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15688,7 +16433,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1beta1/watch/servicecidrs/{name}` — risk: medium
 	 */
-	async v1beta1watchservicecidrsRetrieveServicecidr(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchservicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1beta1ServiceCIDR",
 			namespace: "apis",
@@ -15701,6 +16446,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15709,7 +16455,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/node.k8s.io/` — risk: medium
 	 */
-	async listNodeK8sIo(): Promise<ProofResult<unknown>> {
+	async listNodeK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getNodeAPIGroup",
 			namespace: "apis",
@@ -15722,6 +16468,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15730,7 +16477,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/node.k8s.io/v1/` — risk: medium
 	 */
-	async nodeK8sIoV1(): Promise<ProofResult<unknown>> {
+	async nodeK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getNodeV1APIResources",
 			namespace: "apis",
@@ -15743,6 +16490,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15751,7 +16499,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/node.k8s.io/v1/runtimeclasses` — risk: medium
 	 */
-	async runtimeclasses_0(): Promise<ProofResult<unknown>> {
+	async runtimeclasses_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNodeV1RuntimeClass",
 			namespace: "apis",
@@ -15764,6 +16512,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15772,7 +16521,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/node.k8s.io/v1/runtimeclasses` — risk: medium
 	 */
-	async runtimeclasses_1(): Promise<ProofResult<unknown>> {
+	async runtimeclasses_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNodeV1RuntimeClass",
 			namespace: "apis",
@@ -15785,6 +16534,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15793,7 +16543,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/node.k8s.io/v1/runtimeclasses` — risk: medium
 	 */
-	async runtimeclasses_2(): Promise<ProofResult<unknown>> {
+	async runtimeclasses_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNodeV1CollectionRuntimeClass",
 			namespace: "apis",
@@ -15806,6 +16556,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15814,7 +16565,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/node.k8s.io/v1/runtimeclasses/{name}` — risk: medium
 	 */
-	async runtimeclassesRetrieveRuntimeclass(name: string): Promise<ProofResult<unknown>> {
+	async runtimeclassesRetrieveRuntimeclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNodeV1RuntimeClass",
 			namespace: "apis",
@@ -15827,6 +16578,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15835,7 +16587,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/node.k8s.io/v1/runtimeclasses/{name}` — risk: medium
 	 */
-	async runtimeclasses_3(name: string): Promise<ProofResult<unknown>> {
+	async runtimeclasses_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNodeV1RuntimeClass",
 			namespace: "apis",
@@ -15848,6 +16600,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15856,7 +16609,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/node.k8s.io/v1/runtimeclasses/{name}` — risk: medium
 	 */
-	async runtimeclasses_4(name: string): Promise<ProofResult<unknown>> {
+	async runtimeclasses_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNodeV1RuntimeClass",
 			namespace: "apis",
@@ -15869,6 +16622,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15877,7 +16631,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/node.k8s.io/v1/runtimeclasses/{name}` — risk: medium
 	 */
-	async deleteRuntimeclass(name: string): Promise<ProofResult<unknown>> {
+	async deleteRuntimeclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNodeV1RuntimeClass",
 			namespace: "apis",
@@ -15890,6 +16644,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15898,7 +16653,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/node.k8s.io/v1/watch/runtimeclasses` — risk: medium
 	 */
-	async watchRuntimeclasses(): Promise<ProofResult<unknown>> {
+	async watchRuntimeclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNodeV1RuntimeClassList",
 			namespace: "apis",
@@ -15911,6 +16666,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15919,7 +16675,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/node.k8s.io/v1/watch/runtimeclasses/{name}` — risk: medium
 	 */
-	async watchruntimeclassesRetrieveRuntimeclass(name: string): Promise<ProofResult<unknown>> {
+	async watchruntimeclassesRetrieveRuntimeclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNodeV1RuntimeClass",
 			namespace: "apis",
@@ -15932,6 +16688,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15940,7 +16697,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/policy/` — risk: medium
 	 */
-	async listPolicy(): Promise<ProofResult<unknown>> {
+	async listPolicy(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getPolicyAPIGroup",
 			namespace: "apis",
@@ -15953,6 +16710,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15961,7 +16719,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/policy/v1/` — risk: medium
 	 */
-	async policyV1(): Promise<ProofResult<unknown>> {
+	async policyV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getPolicyV1APIResources",
 			namespace: "apis",
@@ -15974,6 +16732,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15982,7 +16741,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets` — risk: medium
 	 */
-	async getNamespacesPoddisruptionbudgets(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesPoddisruptionbudgets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listPolicyV1NamespacedPodDisruptionBudget",
 			namespace: "apis",
@@ -15995,6 +16754,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16003,7 +16763,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets` — risk: medium
 	 */
-	async postNamespacesPoddisruptionbudgets(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesPoddisruptionbudgets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createPolicyV1NamespacedPodDisruptionBudget",
 			namespace: "apis",
@@ -16016,6 +16776,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16024,7 +16785,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets` — risk: medium
 	 */
-	async deleteNamespacesPoddisruptionbudgets(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesPoddisruptionbudgets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deletePolicyV1CollectionNamespacedPodDisruptionBudget",
 			namespace: "apis",
@@ -16037,6 +16798,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16045,7 +16807,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets/{name}` — risk: medium
 	 */
-	async namespacespoddisruptionbudgetsRetrievePoddisruptionbudget(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacespoddisruptionbudgetsRetrievePoddisruptionbudget(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readPolicyV1NamespacedPodDisruptionBudget",
 			namespace: "apis",
@@ -16058,6 +16820,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16066,7 +16829,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets/{name}` — risk: medium
 	 */
-	async putNamespacesPoddisruptionbudgets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesPoddisruptionbudgets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replacePolicyV1NamespacedPodDisruptionBudget",
 			namespace: "apis",
@@ -16079,6 +16842,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16087,7 +16851,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets/{name}` — risk: medium
 	 */
-	async patchNamespacesPoddisruptionbudgets(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesPoddisruptionbudgets(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchPolicyV1NamespacedPodDisruptionBudget",
 			namespace: "apis",
@@ -16100,6 +16864,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16108,7 +16873,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets/{name}` — risk: medium
 	 */
-	async deletePoddisruptionbudget(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deletePoddisruptionbudget(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deletePolicyV1NamespacedPodDisruptionBudget",
 			namespace: "apis",
@@ -16121,6 +16886,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16129,7 +16895,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets/{name}/status` — risk: medium
 	 */
-	async getPolicyv1namespacespoddisruptionbudgetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getPolicyv1namespacespoddisruptionbudgetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readPolicyV1NamespacedPodDisruptionBudgetStatus",
 			namespace: "apis",
@@ -16142,6 +16908,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16150,7 +16917,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets/{name}/status` — risk: medium
 	 */
-	async putPolicyv1namespacespoddisruptionbudgetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putPolicyv1namespacespoddisruptionbudgetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replacePolicyV1NamespacedPodDisruptionBudgetStatus",
 			namespace: "apis",
@@ -16163,6 +16930,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16171,7 +16939,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/policy/v1/namespaces/{namespace}/poddisruptionbudgets/{name}/status` — risk: medium
 	 */
-	async patchPolicyv1namespacespoddisruptionbudgetsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchPolicyv1namespacespoddisruptionbudgetsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchPolicyV1NamespacedPodDisruptionBudgetStatus",
 			namespace: "apis",
@@ -16184,6 +16952,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16192,7 +16961,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/policy/v1/poddisruptionbudgets` — risk: medium
 	 */
-	async poddisruptionbudgets_5(): Promise<ProofResult<unknown>> {
+	async poddisruptionbudgets_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listPolicyV1PodDisruptionBudgetForAllNamespaces",
 			namespace: "apis",
@@ -16205,6 +16974,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16213,7 +16983,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/policy/v1/watch/namespaces/{namespace}/poddisruptionbudgets` — risk: medium
 	 */
-	async watchnamespacesPoddisruptionbudgets(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesPoddisruptionbudgets(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchPolicyV1NamespacedPodDisruptionBudgetList",
 			namespace: "apis",
@@ -16226,6 +16996,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16234,7 +17005,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/policy/v1/watch/namespaces/{namespace}/poddisruptionbudgets/{name}` — risk: medium
 	 */
-	async watchnamespacespoddisruptionbudgetsRetrievePoddisruptionbudget(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacespoddisruptionbudgetsRetrievePoddisruptionbudget(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchPolicyV1NamespacedPodDisruptionBudget",
 			namespace: "apis",
@@ -16247,6 +17018,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16255,7 +17027,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/policy/v1/watch/poddisruptionbudgets` — risk: medium
 	 */
-	async watchPoddisruptionbudgets(): Promise<ProofResult<unknown>> {
+	async watchPoddisruptionbudgets(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchPolicyV1PodDisruptionBudgetListForAllNamespaces",
 			namespace: "apis",
@@ -16268,6 +17040,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16276,7 +17049,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/` — risk: medium
 	 */
-	async listRbacAuthorizationK8sIo(): Promise<ProofResult<unknown>> {
+	async listRbacAuthorizationK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getRbacAuthorizationAPIGroup",
 			namespace: "apis",
@@ -16289,6 +17062,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16297,7 +17071,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/` — risk: medium
 	 */
-	async rbacAuthorizationK8sIoV1(): Promise<ProofResult<unknown>> {
+	async rbacAuthorizationK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getRbacAuthorizationV1APIResources",
 			namespace: "apis",
@@ -16310,6 +17084,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16318,7 +17093,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/clusterrolebindings` — risk: medium
 	 */
-	async clusterrolebindings_0(): Promise<ProofResult<unknown>> {
+	async clusterrolebindings_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listRbacAuthorizationV1ClusterRoleBinding",
 			namespace: "apis",
@@ -16331,6 +17106,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16339,7 +17115,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/rbac.authorization.k8s.io/v1/clusterrolebindings` — risk: medium
 	 */
-	async clusterrolebindings_1(): Promise<ProofResult<unknown>> {
+	async clusterrolebindings_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createRbacAuthorizationV1ClusterRoleBinding",
 			namespace: "apis",
@@ -16352,6 +17128,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16360,7 +17137,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/rbac.authorization.k8s.io/v1/clusterrolebindings` — risk: medium
 	 */
-	async clusterrolebindings_2(): Promise<ProofResult<unknown>> {
+	async clusterrolebindings_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteRbacAuthorizationV1CollectionClusterRoleBinding",
 			namespace: "apis",
@@ -16373,6 +17150,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16381,7 +17159,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/clusterrolebindings/{name}` — risk: medium
 	 */
-	async clusterrolebindingsRetrieveClusterrolebinding(name: string): Promise<ProofResult<unknown>> {
+	async clusterrolebindingsRetrieveClusterrolebinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readRbacAuthorizationV1ClusterRoleBinding",
 			namespace: "apis",
@@ -16394,6 +17172,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16402,7 +17181,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/rbac.authorization.k8s.io/v1/clusterrolebindings/{name}` — risk: medium
 	 */
-	async clusterrolebindings_3(name: string): Promise<ProofResult<unknown>> {
+	async clusterrolebindings_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceRbacAuthorizationV1ClusterRoleBinding",
 			namespace: "apis",
@@ -16415,6 +17194,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16423,7 +17203,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/rbac.authorization.k8s.io/v1/clusterrolebindings/{name}` — risk: medium
 	 */
-	async clusterrolebindings_4(name: string): Promise<ProofResult<unknown>> {
+	async clusterrolebindings_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchRbacAuthorizationV1ClusterRoleBinding",
 			namespace: "apis",
@@ -16436,6 +17216,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16444,7 +17225,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/rbac.authorization.k8s.io/v1/clusterrolebindings/{name}` — risk: medium
 	 */
-	async deleteClusterrolebinding(name: string): Promise<ProofResult<unknown>> {
+	async deleteClusterrolebinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteRbacAuthorizationV1ClusterRoleBinding",
 			namespace: "apis",
@@ -16457,6 +17238,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16465,7 +17247,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/clusterroles` — risk: medium
 	 */
-	async clusterroles_0(): Promise<ProofResult<unknown>> {
+	async clusterroles_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listRbacAuthorizationV1ClusterRole",
 			namespace: "apis",
@@ -16478,6 +17260,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16486,7 +17269,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/rbac.authorization.k8s.io/v1/clusterroles` — risk: medium
 	 */
-	async clusterroles_1(): Promise<ProofResult<unknown>> {
+	async clusterroles_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createRbacAuthorizationV1ClusterRole",
 			namespace: "apis",
@@ -16499,6 +17282,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16507,7 +17291,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/rbac.authorization.k8s.io/v1/clusterroles` — risk: medium
 	 */
-	async clusterroles_2(): Promise<ProofResult<unknown>> {
+	async clusterroles_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteRbacAuthorizationV1CollectionClusterRole",
 			namespace: "apis",
@@ -16520,6 +17304,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16528,7 +17313,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/clusterroles/{name}` — risk: medium
 	 */
-	async clusterrolesRetrieveClusterrole(name: string): Promise<ProofResult<unknown>> {
+	async clusterrolesRetrieveClusterrole(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readRbacAuthorizationV1ClusterRole",
 			namespace: "apis",
@@ -16541,6 +17326,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16549,7 +17335,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/rbac.authorization.k8s.io/v1/clusterroles/{name}` — risk: medium
 	 */
-	async clusterroles_3(name: string): Promise<ProofResult<unknown>> {
+	async clusterroles_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceRbacAuthorizationV1ClusterRole",
 			namespace: "apis",
@@ -16562,6 +17348,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16570,7 +17357,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/rbac.authorization.k8s.io/v1/clusterroles/{name}` — risk: medium
 	 */
-	async clusterroles_4(name: string): Promise<ProofResult<unknown>> {
+	async clusterroles_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchRbacAuthorizationV1ClusterRole",
 			namespace: "apis",
@@ -16583,6 +17370,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16591,7 +17379,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/rbac.authorization.k8s.io/v1/clusterroles/{name}` — risk: medium
 	 */
-	async deleteClusterrole(name: string): Promise<ProofResult<unknown>> {
+	async deleteClusterrole(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteRbacAuthorizationV1ClusterRole",
 			namespace: "apis",
@@ -16604,6 +17392,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16612,7 +17401,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/rolebindings` — risk: medium
 	 */
-	async getNamespacesRolebindings(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesRolebindings(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listRbacAuthorizationV1NamespacedRoleBinding",
 			namespace: "apis",
@@ -16625,6 +17414,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16633,7 +17423,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/rolebindings` — risk: medium
 	 */
-	async postNamespacesRolebindings(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesRolebindings(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createRbacAuthorizationV1NamespacedRoleBinding",
 			namespace: "apis",
@@ -16646,6 +17436,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16654,7 +17445,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/rolebindings` — risk: medium
 	 */
-	async deleteNamespacesRolebindings(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesRolebindings(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteRbacAuthorizationV1CollectionNamespacedRoleBinding",
 			namespace: "apis",
@@ -16667,6 +17458,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16675,7 +17467,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/rolebindings/{name}` — risk: medium
 	 */
-	async namespacesrolebindingsRetrieveRolebinding(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesrolebindingsRetrieveRolebinding(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readRbacAuthorizationV1NamespacedRoleBinding",
 			namespace: "apis",
@@ -16688,6 +17480,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16696,7 +17489,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/rolebindings/{name}` — risk: medium
 	 */
-	async putNamespacesRolebindings(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesRolebindings(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceRbacAuthorizationV1NamespacedRoleBinding",
 			namespace: "apis",
@@ -16709,6 +17502,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16717,7 +17511,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/rolebindings/{name}` — risk: medium
 	 */
-	async patchNamespacesRolebindings(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesRolebindings(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchRbacAuthorizationV1NamespacedRoleBinding",
 			namespace: "apis",
@@ -16730,6 +17524,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16738,7 +17533,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/rolebindings/{name}` — risk: medium
 	 */
-	async deleteRolebinding(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteRolebinding(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteRbacAuthorizationV1NamespacedRoleBinding",
 			namespace: "apis",
@@ -16751,6 +17546,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16759,7 +17555,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/roles` — risk: medium
 	 */
-	async getNamespacesRoles(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesRoles(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listRbacAuthorizationV1NamespacedRole",
 			namespace: "apis",
@@ -16772,6 +17568,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16780,7 +17577,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/roles` — risk: medium
 	 */
-	async postNamespacesRoles(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesRoles(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createRbacAuthorizationV1NamespacedRole",
 			namespace: "apis",
@@ -16793,6 +17590,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16801,7 +17599,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/roles` — risk: medium
 	 */
-	async deleteNamespacesRoles(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesRoles(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteRbacAuthorizationV1CollectionNamespacedRole",
 			namespace: "apis",
@@ -16814,6 +17612,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16822,7 +17621,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/roles/{name}` — risk: medium
 	 */
-	async namespacesrolesRetrieveRole(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesrolesRetrieveRole(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readRbacAuthorizationV1NamespacedRole",
 			namespace: "apis",
@@ -16835,6 +17634,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16843,7 +17643,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/roles/{name}` — risk: medium
 	 */
-	async putNamespacesRoles(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesRoles(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceRbacAuthorizationV1NamespacedRole",
 			namespace: "apis",
@@ -16856,6 +17656,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16864,7 +17665,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/roles/{name}` — risk: medium
 	 */
-	async patchNamespacesRoles(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesRoles(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchRbacAuthorizationV1NamespacedRole",
 			namespace: "apis",
@@ -16877,6 +17678,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16885,7 +17687,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/rbac.authorization.k8s.io/v1/namespaces/{namespace}/roles/{name}` — risk: medium
 	 */
-	async deleteRole(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteRole(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteRbacAuthorizationV1NamespacedRole",
 			namespace: "apis",
@@ -16898,6 +17700,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16906,7 +17709,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/rolebindings` — risk: medium
 	 */
-	async rolebindings_5(): Promise<ProofResult<unknown>> {
+	async rolebindings_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listRbacAuthorizationV1RoleBindingForAllNamespaces",
 			namespace: "apis",
@@ -16919,6 +17722,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16927,7 +17731,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/roles` — risk: medium
 	 */
-	async roles_5(): Promise<ProofResult<unknown>> {
+	async roles_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listRbacAuthorizationV1RoleForAllNamespaces",
 			namespace: "apis",
@@ -16940,6 +17744,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16948,7 +17753,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/clusterrolebindings` — risk: medium
 	 */
-	async watchClusterrolebindings(): Promise<ProofResult<unknown>> {
+	async watchClusterrolebindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1ClusterRoleBindingList",
 			namespace: "apis",
@@ -16961,6 +17766,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16969,7 +17775,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/clusterrolebindings/{name}` — risk: medium
 	 */
-	async watchclusterrolebindingsRetrieveClusterrolebinding(name: string): Promise<ProofResult<unknown>> {
+	async watchclusterrolebindingsRetrieveClusterrolebinding(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1ClusterRoleBinding",
 			namespace: "apis",
@@ -16982,6 +17788,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16990,7 +17797,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/clusterroles` — risk: medium
 	 */
-	async watchClusterroles(): Promise<ProofResult<unknown>> {
+	async watchClusterroles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1ClusterRoleList",
 			namespace: "apis",
@@ -17003,6 +17810,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17011,7 +17819,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/clusterroles/{name}` — risk: medium
 	 */
-	async watchclusterrolesRetrieveClusterrole(name: string): Promise<ProofResult<unknown>> {
+	async watchclusterrolesRetrieveClusterrole(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1ClusterRole",
 			namespace: "apis",
@@ -17024,6 +17832,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17032,7 +17841,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/namespaces/{namespace}/rolebindings` — risk: medium
 	 */
-	async watchnamespacesRolebindings(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesRolebindings(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1NamespacedRoleBindingList",
 			namespace: "apis",
@@ -17045,6 +17854,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17053,7 +17863,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/namespaces/{namespace}/rolebindings/{name}` — risk: medium
 	 */
-	async watchnamespacesrolebindingsRetrieveRolebinding(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesrolebindingsRetrieveRolebinding(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1NamespacedRoleBinding",
 			namespace: "apis",
@@ -17066,6 +17876,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17074,7 +17885,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/namespaces/{namespace}/roles` — risk: medium
 	 */
-	async watchnamespacesRoles(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesRoles(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1NamespacedRoleList",
 			namespace: "apis",
@@ -17087,6 +17898,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17095,7 +17907,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/namespaces/{namespace}/roles/{name}` — risk: medium
 	 */
-	async watchnamespacesrolesRetrieveRole(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesrolesRetrieveRole(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1NamespacedRole",
 			namespace: "apis",
@@ -17108,6 +17920,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17116,7 +17929,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/rolebindings` — risk: medium
 	 */
-	async watchRolebindings(): Promise<ProofResult<unknown>> {
+	async watchRolebindings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1RoleBindingListForAllNamespaces",
 			namespace: "apis",
@@ -17129,6 +17942,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17137,7 +17951,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/rbac.authorization.k8s.io/v1/watch/roles` — risk: medium
 	 */
-	async watchRoles(): Promise<ProofResult<unknown>> {
+	async watchRoles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchRbacAuthorizationV1RoleListForAllNamespaces",
 			namespace: "apis",
@@ -17150,6 +17964,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17158,7 +17973,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/` — risk: medium
 	 */
-	async listResourceK8sIo(): Promise<ProofResult<unknown>> {
+	async listResourceK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getResourceAPIGroup",
 			namespace: "apis",
@@ -17171,6 +17986,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17179,7 +17995,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/` — risk: medium
 	 */
-	async resourceK8sIoV1(): Promise<ProofResult<unknown>> {
+	async resourceK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getResourceV1APIResources",
 			namespace: "apis",
@@ -17192,6 +18008,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17200,7 +18017,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/deviceclasses` — risk: medium
 	 */
-	async getV1Deviceclasses(): Promise<ProofResult<unknown>> {
+	async getV1Deviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1DeviceClass",
 			namespace: "apis",
@@ -17213,6 +18030,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17221,7 +18039,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1/deviceclasses` — risk: medium
 	 */
-	async postV1Deviceclasses(): Promise<ProofResult<unknown>> {
+	async postV1Deviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1DeviceClass",
 			namespace: "apis",
@@ -17234,6 +18052,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17242,7 +18061,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1/deviceclasses` — risk: medium
 	 */
-	async deleteV1Deviceclasses(): Promise<ProofResult<unknown>> {
+	async deleteV1Deviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1CollectionDeviceClass",
 			namespace: "apis",
@@ -17255,6 +18074,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17263,7 +18083,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/deviceclasses/{name}` — risk: medium
 	 */
-	async v1deviceclassesRetrieveDeviceclass(name: string): Promise<ProofResult<unknown>> {
+	async v1deviceclassesRetrieveDeviceclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1DeviceClass",
 			namespace: "apis",
@@ -17276,6 +18096,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17284,7 +18105,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1/deviceclasses/{name}` — risk: medium
 	 */
-	async putV1Deviceclasses(name: string): Promise<ProofResult<unknown>> {
+	async putV1Deviceclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1DeviceClass",
 			namespace: "apis",
@@ -17297,6 +18118,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17305,7 +18127,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1/deviceclasses/{name}` — risk: medium
 	 */
-	async patchV1Deviceclasses(name: string): Promise<ProofResult<unknown>> {
+	async patchV1Deviceclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1DeviceClass",
 			namespace: "apis",
@@ -17318,6 +18140,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17326,7 +18149,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1/deviceclasses/{name}` — risk: medium
 	 */
-	async v1deviceclassesDeleteDeviceclass(name: string): Promise<ProofResult<unknown>> {
+	async v1deviceclassesDeleteDeviceclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1DeviceClass",
 			namespace: "apis",
@@ -17339,6 +18162,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17347,7 +18171,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async getV1namespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async getV1namespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1NamespacedResourceClaim",
 			namespace: "apis",
@@ -17360,6 +18184,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17368,7 +18193,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async postV1namespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async postV1namespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1NamespacedResourceClaim",
 			namespace: "apis",
@@ -17381,6 +18206,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17389,7 +18215,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async deleteV1namespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV1namespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1CollectionNamespacedResourceClaim",
 			namespace: "apis",
@@ -17402,6 +18228,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17410,7 +18237,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async v1namespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1namespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1NamespacedResourceClaim",
 			namespace: "apis",
@@ -17423,6 +18250,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17431,7 +18259,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async putV1namespacesResourceclaims(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV1namespacesResourceclaims(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1NamespacedResourceClaim",
 			namespace: "apis",
@@ -17444,6 +18272,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17452,7 +18281,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async patchV1namespacesResourceclaims(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV1namespacesResourceclaims(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1NamespacedResourceClaim",
 			namespace: "apis",
@@ -17465,6 +18294,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17473,7 +18303,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async v1namespacesresourceclaimsDeleteResourceclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1namespacesresourceclaimsDeleteResourceclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1NamespacedResourceClaim",
 			namespace: "apis",
@@ -17486,6 +18316,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17494,7 +18325,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims/{name}/status` — risk: medium
 	 */
-	async getResourceK8sIov1namespacesresourceclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getResourceK8sIov1namespacesresourceclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1NamespacedResourceClaimStatus",
 			namespace: "apis",
@@ -17507,6 +18338,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17515,7 +18347,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims/{name}/status` — risk: medium
 	 */
-	async putResourceK8sIov1namespacesresourceclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putResourceK8sIov1namespacesresourceclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1NamespacedResourceClaimStatus",
 			namespace: "apis",
@@ -17528,6 +18360,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17536,7 +18369,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims/{name}/status` — risk: medium
 	 */
-	async patchResourceK8sIov1namespacesresourceclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchResourceK8sIov1namespacesresourceclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1NamespacedResourceClaimStatus",
 			namespace: "apis",
@@ -17549,6 +18382,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17557,7 +18391,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async getV1namespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async getV1namespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -17570,6 +18404,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17578,7 +18413,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async postV1namespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async postV1namespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -17591,6 +18426,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17599,7 +18435,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async deleteV1namespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV1namespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1CollectionNamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -17612,6 +18448,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17620,7 +18457,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async v1namespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1namespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -17633,6 +18470,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17641,7 +18479,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async putV1namespacesResourceclaimtemplates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV1namespacesResourceclaimtemplates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -17654,6 +18492,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17662,7 +18501,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async patchV1namespacesResourceclaimtemplates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV1namespacesResourceclaimtemplates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -17675,6 +18514,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17683,7 +18523,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async v1namespacesresourceclaimtemplatesDeleteResourceclaimtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1namespacesresourceclaimtemplatesDeleteResourceclaimtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -17696,6 +18536,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17704,7 +18545,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/resourceclaims` — risk: medium
 	 */
-	async v1Resourceclaims(): Promise<ProofResult<unknown>> {
+	async v1Resourceclaims(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1ResourceClaimForAllNamespaces",
 			namespace: "apis",
@@ -17717,6 +18558,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17725,7 +18567,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/resourceclaimtemplates` — risk: medium
 	 */
-	async v1Resourceclaimtemplates(): Promise<ProofResult<unknown>> {
+	async v1Resourceclaimtemplates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1ResourceClaimTemplateForAllNamespaces",
 			namespace: "apis",
@@ -17738,6 +18580,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17746,7 +18589,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/resourceslices` — risk: medium
 	 */
-	async getV1Resourceslices(): Promise<ProofResult<unknown>> {
+	async getV1Resourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1ResourceSlice",
 			namespace: "apis",
@@ -17759,6 +18602,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17767,7 +18611,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1/resourceslices` — risk: medium
 	 */
-	async postV1Resourceslices(): Promise<ProofResult<unknown>> {
+	async postV1Resourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1ResourceSlice",
 			namespace: "apis",
@@ -17780,6 +18624,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17788,7 +18633,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1/resourceslices` — risk: medium
 	 */
-	async deleteV1Resourceslices(): Promise<ProofResult<unknown>> {
+	async deleteV1Resourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1CollectionResourceSlice",
 			namespace: "apis",
@@ -17801,6 +18646,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17809,7 +18655,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/resourceslices/{name}` — risk: medium
 	 */
-	async v1resourceslicesRetrieveResourceslice(name: string): Promise<ProofResult<unknown>> {
+	async v1resourceslicesRetrieveResourceslice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1ResourceSlice",
 			namespace: "apis",
@@ -17822,6 +18668,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17830,7 +18677,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1/resourceslices/{name}` — risk: medium
 	 */
-	async putV1Resourceslices(name: string): Promise<ProofResult<unknown>> {
+	async putV1Resourceslices(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1ResourceSlice",
 			namespace: "apis",
@@ -17843,6 +18690,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17851,7 +18699,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1/resourceslices/{name}` — risk: medium
 	 */
-	async patchV1Resourceslices(name: string): Promise<ProofResult<unknown>> {
+	async patchV1Resourceslices(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1ResourceSlice",
 			namespace: "apis",
@@ -17864,6 +18712,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17872,7 +18721,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1/resourceslices/{name}` — risk: medium
 	 */
-	async v1resourceslicesDeleteResourceslice(name: string): Promise<ProofResult<unknown>> {
+	async v1resourceslicesDeleteResourceslice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1ResourceSlice",
 			namespace: "apis",
@@ -17885,6 +18734,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17893,7 +18743,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/deviceclasses` — risk: medium
 	 */
-	async v1watchDeviceclasses(): Promise<ProofResult<unknown>> {
+	async v1watchDeviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1DeviceClassList",
 			namespace: "apis",
@@ -17906,6 +18756,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17914,7 +18765,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/deviceclasses/{name}` — risk: medium
 	 */
-	async v1watchdeviceclassesRetrieveDeviceclass(name: string): Promise<ProofResult<unknown>> {
+	async v1watchdeviceclassesRetrieveDeviceclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1DeviceClass",
 			namespace: "apis",
@@ -17927,6 +18778,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17935,7 +18787,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async v1watchnamespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async v1watchnamespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1NamespacedResourceClaimList",
 			namespace: "apis",
@@ -17948,6 +18800,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17956,7 +18809,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async v1watchnamespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1watchnamespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1NamespacedResourceClaim",
 			namespace: "apis",
@@ -17969,6 +18822,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17977,7 +18831,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async v1watchnamespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async v1watchnamespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1NamespacedResourceClaimTemplateList",
 			namespace: "apis",
@@ -17990,6 +18844,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17998,7 +18853,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async v1watchnamespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1watchnamespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -18011,6 +18866,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18019,7 +18875,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/resourceclaims` — risk: medium
 	 */
-	async v1watchResourceclaims(): Promise<ProofResult<unknown>> {
+	async v1watchResourceclaims(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1ResourceClaimListForAllNamespaces",
 			namespace: "apis",
@@ -18032,6 +18888,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18040,7 +18897,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/resourceclaimtemplates` — risk: medium
 	 */
-	async v1watchResourceclaimtemplates(): Promise<ProofResult<unknown>> {
+	async v1watchResourceclaimtemplates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1ResourceClaimTemplateListForAllNamespaces",
 			namespace: "apis",
@@ -18053,6 +18910,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18061,7 +18919,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/resourceslices` — risk: medium
 	 */
-	async v1watchResourceslices(): Promise<ProofResult<unknown>> {
+	async v1watchResourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1ResourceSliceList",
 			namespace: "apis",
@@ -18074,6 +18932,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18082,7 +18941,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/resourceslices/{name}` — risk: medium
 	 */
-	async v1watchresourceslicesRetrieveResourceslice(name: string): Promise<ProofResult<unknown>> {
+	async v1watchresourceslicesRetrieveResourceslice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1ResourceSlice",
 			namespace: "apis",
@@ -18095,6 +18954,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18103,7 +18963,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/` — risk: medium
 	 */
-	async v1alpha3(): Promise<ProofResult<unknown>> {
+	async v1alpha3(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getResourceV1alpha3APIResources",
 			namespace: "apis",
@@ -18116,6 +18976,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18124,7 +18985,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/devicetaintrules` — risk: medium
 	 */
-	async getV1alpha3Devicetaintrules(): Promise<ProofResult<unknown>> {
+	async getV1alpha3Devicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1alpha3DeviceTaintRule",
 			namespace: "apis",
@@ -18137,6 +18998,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18145,7 +19007,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1alpha3/devicetaintrules` — risk: medium
 	 */
-	async postV1alpha3Devicetaintrules(): Promise<ProofResult<unknown>> {
+	async postV1alpha3Devicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1alpha3DeviceTaintRule",
 			namespace: "apis",
@@ -18158,6 +19020,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18166,7 +19029,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1alpha3/devicetaintrules` — risk: medium
 	 */
-	async deleteV1alpha3Devicetaintrules(): Promise<ProofResult<unknown>> {
+	async deleteV1alpha3Devicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1alpha3CollectionDeviceTaintRule",
 			namespace: "apis",
@@ -18179,6 +19042,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18187,7 +19051,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/devicetaintrules/{name}` — risk: medium
 	 */
-	async v1alpha3devicetaintrulesRetrieveDevicetaintrule(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha3devicetaintrulesRetrieveDevicetaintrule(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1alpha3DeviceTaintRule",
 			namespace: "apis",
@@ -18200,6 +19064,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18208,7 +19073,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1alpha3/devicetaintrules/{name}` — risk: medium
 	 */
-	async putV1alpha3Devicetaintrules(name: string): Promise<ProofResult<unknown>> {
+	async putV1alpha3Devicetaintrules(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1alpha3DeviceTaintRule",
 			namespace: "apis",
@@ -18221,6 +19086,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18229,7 +19095,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1alpha3/devicetaintrules/{name}` — risk: medium
 	 */
-	async patchV1alpha3Devicetaintrules(name: string): Promise<ProofResult<unknown>> {
+	async patchV1alpha3Devicetaintrules(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1alpha3DeviceTaintRule",
 			namespace: "apis",
@@ -18242,6 +19108,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18250,7 +19117,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1alpha3/devicetaintrules/{name}` — risk: medium
 	 */
-	async v1alpha3devicetaintrulesDeleteDevicetaintrule(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha3devicetaintrulesDeleteDevicetaintrule(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1alpha3DeviceTaintRule",
 			namespace: "apis",
@@ -18263,6 +19130,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18271,7 +19139,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/devicetaintrules/{name}/status` — risk: medium
 	 */
-	async getResourceK8sIov1alpha3devicetaintrulesStatus(name: string): Promise<ProofResult<unknown>> {
+	async getResourceK8sIov1alpha3devicetaintrulesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1alpha3DeviceTaintRuleStatus",
 			namespace: "apis",
@@ -18284,6 +19152,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18292,7 +19161,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1alpha3/devicetaintrules/{name}/status` — risk: medium
 	 */
-	async putResourceK8sIov1alpha3devicetaintrulesStatus(name: string): Promise<ProofResult<unknown>> {
+	async putResourceK8sIov1alpha3devicetaintrulesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1alpha3DeviceTaintRuleStatus",
 			namespace: "apis",
@@ -18305,6 +19174,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18313,7 +19183,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1alpha3/devicetaintrules/{name}/status` — risk: medium
 	 */
-	async patchResourceK8sIov1alpha3devicetaintrulesStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchResourceK8sIov1alpha3devicetaintrulesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1alpha3DeviceTaintRuleStatus",
 			namespace: "apis",
@@ -18326,6 +19196,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18334,7 +19205,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests` — risk: medium
 	 */
-	async resourcepoolstatusrequests_0(): Promise<ProofResult<unknown>> {
+	async resourcepoolstatusrequests_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1alpha3ResourcePoolStatusRequest",
 			namespace: "apis",
@@ -18347,6 +19218,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18355,7 +19227,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests` — risk: medium
 	 */
-	async resourcepoolstatusrequests_1(): Promise<ProofResult<unknown>> {
+	async resourcepoolstatusrequests_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1alpha3ResourcePoolStatusRequest",
 			namespace: "apis",
@@ -18368,6 +19240,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18376,7 +19249,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests` — risk: medium
 	 */
-	async resourcepoolstatusrequests_2(): Promise<ProofResult<unknown>> {
+	async resourcepoolstatusrequests_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1alpha3CollectionResourcePoolStatusRequest",
 			namespace: "apis",
@@ -18389,6 +19262,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18397,7 +19271,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests/{name}` — risk: medium
 	 */
-	async resourcepoolstatusrequestsRetrieveResourcepoolstatusrequest(name: string): Promise<ProofResult<unknown>> {
+	async resourcepoolstatusrequestsRetrieveResourcepoolstatusrequest(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1alpha3ResourcePoolStatusRequest",
 			namespace: "apis",
@@ -18410,6 +19284,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18418,7 +19293,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests/{name}` — risk: medium
 	 */
-	async resourcepoolstatusrequests_3(name: string): Promise<ProofResult<unknown>> {
+	async resourcepoolstatusrequests_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1alpha3ResourcePoolStatusRequest",
 			namespace: "apis",
@@ -18431,6 +19306,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18439,7 +19315,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests/{name}` — risk: medium
 	 */
-	async resourcepoolstatusrequests_4(name: string): Promise<ProofResult<unknown>> {
+	async resourcepoolstatusrequests_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1alpha3ResourcePoolStatusRequest",
 			namespace: "apis",
@@ -18452,6 +19328,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18460,7 +19337,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests/{name}` — risk: medium
 	 */
-	async deleteResourcepoolstatusrequest(name: string): Promise<ProofResult<unknown>> {
+	async deleteResourcepoolstatusrequest(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1alpha3ResourcePoolStatusRequest",
 			namespace: "apis",
@@ -18473,6 +19350,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18481,7 +19359,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests/{name}/status` — risk: medium
 	 */
-	async getResourceK8sIov1alpha3resourcepoolstatusrequestsStatus(name: string): Promise<ProofResult<unknown>> {
+	async getResourceK8sIov1alpha3resourcepoolstatusrequestsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1alpha3ResourcePoolStatusRequestStatus",
 			namespace: "apis",
@@ -18494,6 +19372,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18502,7 +19381,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests/{name}/status` — risk: medium
 	 */
-	async putResourceK8sIov1alpha3resourcepoolstatusrequestsStatus(name: string): Promise<ProofResult<unknown>> {
+	async putResourceK8sIov1alpha3resourcepoolstatusrequestsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1alpha3ResourcePoolStatusRequestStatus",
 			namespace: "apis",
@@ -18515,6 +19394,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18523,7 +19403,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1alpha3/resourcepoolstatusrequests/{name}/status` — risk: medium
 	 */
-	async patchResourceK8sIov1alpha3resourcepoolstatusrequestsStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchResourceK8sIov1alpha3resourcepoolstatusrequestsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1alpha3ResourcePoolStatusRequestStatus",
 			namespace: "apis",
@@ -18536,6 +19416,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18544,7 +19425,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/watch/devicetaintrules` — risk: medium
 	 */
-	async v1alpha3watchDevicetaintrules(): Promise<ProofResult<unknown>> {
+	async v1alpha3watchDevicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1alpha3DeviceTaintRuleList",
 			namespace: "apis",
@@ -18557,6 +19438,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18565,7 +19447,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/watch/devicetaintrules/{name}` — risk: medium
 	 */
-	async v1alpha3watchdevicetaintrulesRetrieveDevicetaintrule(name: string): Promise<ProofResult<unknown>> {
+	async v1alpha3watchdevicetaintrulesRetrieveDevicetaintrule(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1alpha3DeviceTaintRule",
 			namespace: "apis",
@@ -18578,6 +19460,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18586,7 +19469,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/watch/resourcepoolstatusrequests` — risk: medium
 	 */
-	async watchResourcepoolstatusrequests(): Promise<ProofResult<unknown>> {
+	async watchResourcepoolstatusrequests(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1alpha3ResourcePoolStatusRequestList",
 			namespace: "apis",
@@ -18599,6 +19482,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18607,7 +19491,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/watch/resourcepoolstatusrequests/{name}` — risk: medium
 	 */
-	async watchresourcepoolstatusrequestsRetrieveResourcepoolstatusrequest(name: string): Promise<ProofResult<unknown>> {
+	async watchresourcepoolstatusrequestsRetrieveResourcepoolstatusrequest(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1alpha3ResourcePoolStatusRequest",
 			namespace: "apis",
@@ -18620,6 +19504,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18628,7 +19513,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/` — risk: medium
 	 */
-	async resourceK8sIoV1beta1(): Promise<ProofResult<unknown>> {
+	async resourceK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getResourceV1beta1APIResources",
 			namespace: "apis",
@@ -18641,6 +19526,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18649,7 +19535,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/deviceclasses` — risk: medium
 	 */
-	async getV1beta1Deviceclasses(): Promise<ProofResult<unknown>> {
+	async getV1beta1Deviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta1DeviceClass",
 			namespace: "apis",
@@ -18662,6 +19548,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18670,7 +19557,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1beta1/deviceclasses` — risk: medium
 	 */
-	async postV1beta1Deviceclasses(): Promise<ProofResult<unknown>> {
+	async postV1beta1Deviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1beta1DeviceClass",
 			namespace: "apis",
@@ -18683,6 +19570,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18691,7 +19579,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta1/deviceclasses` — risk: medium
 	 */
-	async deleteV1beta1Deviceclasses(): Promise<ProofResult<unknown>> {
+	async deleteV1beta1Deviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta1CollectionDeviceClass",
 			namespace: "apis",
@@ -18704,6 +19592,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18712,7 +19601,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/deviceclasses/{name}` — risk: medium
 	 */
-	async v1beta1deviceclassesRetrieveDeviceclass(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1deviceclassesRetrieveDeviceclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta1DeviceClass",
 			namespace: "apis",
@@ -18725,6 +19614,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18733,7 +19623,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta1/deviceclasses/{name}` — risk: medium
 	 */
-	async putV1beta1Deviceclasses(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1Deviceclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta1DeviceClass",
 			namespace: "apis",
@@ -18746,6 +19636,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18754,7 +19645,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta1/deviceclasses/{name}` — risk: medium
 	 */
-	async patchV1beta1Deviceclasses(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1Deviceclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta1DeviceClass",
 			namespace: "apis",
@@ -18767,6 +19658,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18775,7 +19667,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta1/deviceclasses/{name}` — risk: medium
 	 */
-	async v1beta1deviceclassesDeleteDeviceclass(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1deviceclassesDeleteDeviceclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta1DeviceClass",
 			namespace: "apis",
@@ -18788,6 +19680,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18796,7 +19689,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async getV1beta1namespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async getV1beta1namespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta1NamespacedResourceClaim",
 			namespace: "apis",
@@ -18809,6 +19702,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18817,7 +19711,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async postV1beta1namespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async postV1beta1namespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1beta1NamespacedResourceClaim",
 			namespace: "apis",
@@ -18830,6 +19724,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18838,7 +19733,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async deleteV1beta1namespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV1beta1namespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta1CollectionNamespacedResourceClaim",
 			namespace: "apis",
@@ -18851,6 +19746,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18859,7 +19755,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async v1beta1namespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta1namespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta1NamespacedResourceClaim",
 			namespace: "apis",
@@ -18872,6 +19768,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18880,7 +19777,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async putV1beta1namespacesResourceclaims(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1namespacesResourceclaims(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta1NamespacedResourceClaim",
 			namespace: "apis",
@@ -18893,6 +19790,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18901,7 +19799,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async patchV1beta1namespacesResourceclaims(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1namespacesResourceclaims(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta1NamespacedResourceClaim",
 			namespace: "apis",
@@ -18914,6 +19812,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18922,7 +19821,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async v1beta1namespacesresourceclaimsDeleteResourceclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta1namespacesresourceclaimsDeleteResourceclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta1NamespacedResourceClaim",
 			namespace: "apis",
@@ -18935,6 +19834,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18943,7 +19843,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims/{name}/status` — risk: medium
 	 */
-	async getResourceK8sIov1beta1namespacesresourceclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getResourceK8sIov1beta1namespacesresourceclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta1NamespacedResourceClaimStatus",
 			namespace: "apis",
@@ -18956,6 +19856,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18964,7 +19865,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims/{name}/status` — risk: medium
 	 */
-	async putResourceK8sIov1beta1namespacesresourceclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putResourceK8sIov1beta1namespacesresourceclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta1NamespacedResourceClaimStatus",
 			namespace: "apis",
@@ -18977,6 +19878,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18985,7 +19887,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaims/{name}/status` — risk: medium
 	 */
-	async patchResourceK8sIov1beta1namespacesresourceclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchResourceK8sIov1beta1namespacesresourceclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta1NamespacedResourceClaimStatus",
 			namespace: "apis",
@@ -18998,6 +19900,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19006,7 +19909,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async getV1beta1namespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async getV1beta1namespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -19019,6 +19922,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19027,7 +19931,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async postV1beta1namespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async postV1beta1namespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1beta1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -19040,6 +19944,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19048,7 +19953,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async deleteV1beta1namespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV1beta1namespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta1CollectionNamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -19061,6 +19966,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19069,7 +19975,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async v1beta1namespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta1namespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -19082,6 +19988,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19090,7 +19997,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async putV1beta1namespacesResourceclaimtemplates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1namespacesResourceclaimtemplates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -19103,6 +20010,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19111,7 +20019,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async patchV1beta1namespacesResourceclaimtemplates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1namespacesResourceclaimtemplates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -19124,6 +20032,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19132,7 +20041,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta1/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async v1beta1namespacesresourceclaimtemplatesDeleteResourceclaimtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta1namespacesresourceclaimtemplatesDeleteResourceclaimtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -19145,6 +20054,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19153,7 +20063,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/resourceclaims` — risk: medium
 	 */
-	async v1beta1Resourceclaims(): Promise<ProofResult<unknown>> {
+	async v1beta1Resourceclaims(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta1ResourceClaimForAllNamespaces",
 			namespace: "apis",
@@ -19166,6 +20076,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19174,7 +20085,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/resourceclaimtemplates` — risk: medium
 	 */
-	async v1beta1Resourceclaimtemplates(): Promise<ProofResult<unknown>> {
+	async v1beta1Resourceclaimtemplates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta1ResourceClaimTemplateForAllNamespaces",
 			namespace: "apis",
@@ -19187,6 +20098,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19195,7 +20107,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/resourceslices` — risk: medium
 	 */
-	async getV1beta1Resourceslices(): Promise<ProofResult<unknown>> {
+	async getV1beta1Resourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta1ResourceSlice",
 			namespace: "apis",
@@ -19208,6 +20120,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19216,7 +20129,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1beta1/resourceslices` — risk: medium
 	 */
-	async postV1beta1Resourceslices(): Promise<ProofResult<unknown>> {
+	async postV1beta1Resourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1beta1ResourceSlice",
 			namespace: "apis",
@@ -19229,6 +20142,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19237,7 +20151,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta1/resourceslices` — risk: medium
 	 */
-	async deleteV1beta1Resourceslices(): Promise<ProofResult<unknown>> {
+	async deleteV1beta1Resourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta1CollectionResourceSlice",
 			namespace: "apis",
@@ -19250,6 +20164,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19258,7 +20173,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/resourceslices/{name}` — risk: medium
 	 */
-	async v1beta1resourceslicesRetrieveResourceslice(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1resourceslicesRetrieveResourceslice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta1ResourceSlice",
 			namespace: "apis",
@@ -19271,6 +20186,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19279,7 +20195,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta1/resourceslices/{name}` — risk: medium
 	 */
-	async putV1beta1Resourceslices(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1Resourceslices(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta1ResourceSlice",
 			namespace: "apis",
@@ -19292,6 +20208,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19300,7 +20217,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta1/resourceslices/{name}` — risk: medium
 	 */
-	async patchV1beta1Resourceslices(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1Resourceslices(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta1ResourceSlice",
 			namespace: "apis",
@@ -19313,6 +20230,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19321,7 +20239,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta1/resourceslices/{name}` — risk: medium
 	 */
-	async v1beta1resourceslicesDeleteResourceslice(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1resourceslicesDeleteResourceslice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta1ResourceSlice",
 			namespace: "apis",
@@ -19334,6 +20252,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19342,7 +20261,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/deviceclasses` — risk: medium
 	 */
-	async v1beta1watchDeviceclasses(): Promise<ProofResult<unknown>> {
+	async v1beta1watchDeviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1DeviceClassList",
 			namespace: "apis",
@@ -19355,6 +20274,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19363,7 +20283,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/deviceclasses/{name}` — risk: medium
 	 */
-	async v1beta1watchdeviceclassesRetrieveDeviceclass(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchdeviceclassesRetrieveDeviceclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1DeviceClass",
 			namespace: "apis",
@@ -19376,6 +20296,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19384,7 +20305,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async v1beta1watchnamespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchnamespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1NamespacedResourceClaimList",
 			namespace: "apis",
@@ -19397,6 +20318,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19405,7 +20327,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async v1beta1watchnamespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchnamespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1NamespacedResourceClaim",
 			namespace: "apis",
@@ -19418,6 +20340,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19426,7 +20349,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async v1beta1watchnamespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchnamespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1NamespacedResourceClaimTemplateList",
 			namespace: "apis",
@@ -19439,6 +20362,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19447,7 +20371,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async v1beta1watchnamespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchnamespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -19460,6 +20384,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19468,7 +20393,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/resourceclaims` — risk: medium
 	 */
-	async v1beta1watchResourceclaims(): Promise<ProofResult<unknown>> {
+	async v1beta1watchResourceclaims(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1ResourceClaimListForAllNamespaces",
 			namespace: "apis",
@@ -19481,6 +20406,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19489,7 +20415,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/resourceclaimtemplates` — risk: medium
 	 */
-	async v1beta1watchResourceclaimtemplates(): Promise<ProofResult<unknown>> {
+	async v1beta1watchResourceclaimtemplates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1ResourceClaimTemplateListForAllNamespaces",
 			namespace: "apis",
@@ -19502,6 +20428,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19510,7 +20437,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/resourceslices` — risk: medium
 	 */
-	async v1beta1watchResourceslices(): Promise<ProofResult<unknown>> {
+	async v1beta1watchResourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1ResourceSliceList",
 			namespace: "apis",
@@ -19523,6 +20450,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19531,7 +20459,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta1/watch/resourceslices/{name}` — risk: medium
 	 */
-	async v1beta1watchresourceslicesRetrieveResourceslice(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchresourceslicesRetrieveResourceslice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta1ResourceSlice",
 			namespace: "apis",
@@ -19544,6 +20472,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19552,7 +20481,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/` — risk: medium
 	 */
-	async v1beta2(): Promise<ProofResult<unknown>> {
+	async v1beta2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getResourceV1beta2APIResources",
 			namespace: "apis",
@@ -19565,6 +20494,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19573,7 +20503,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/deviceclasses` — risk: medium
 	 */
-	async getV1beta2Deviceclasses(): Promise<ProofResult<unknown>> {
+	async getV1beta2Deviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta2DeviceClass",
 			namespace: "apis",
@@ -19586,6 +20516,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19594,7 +20525,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1beta2/deviceclasses` — risk: medium
 	 */
-	async postV1beta2Deviceclasses(): Promise<ProofResult<unknown>> {
+	async postV1beta2Deviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1beta2DeviceClass",
 			namespace: "apis",
@@ -19607,6 +20538,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19615,7 +20547,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/deviceclasses` — risk: medium
 	 */
-	async deleteV1beta2Deviceclasses(): Promise<ProofResult<unknown>> {
+	async deleteV1beta2Deviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2CollectionDeviceClass",
 			namespace: "apis",
@@ -19628,6 +20560,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19636,7 +20569,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/deviceclasses/{name}` — risk: medium
 	 */
-	async v1beta2deviceclassesRetrieveDeviceclass(name: string): Promise<ProofResult<unknown>> {
+	async v1beta2deviceclassesRetrieveDeviceclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta2DeviceClass",
 			namespace: "apis",
@@ -19649,6 +20582,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19657,7 +20591,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta2/deviceclasses/{name}` — risk: medium
 	 */
-	async putV1beta2Deviceclasses(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta2Deviceclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta2DeviceClass",
 			namespace: "apis",
@@ -19670,6 +20604,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19678,7 +20613,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta2/deviceclasses/{name}` — risk: medium
 	 */
-	async patchV1beta2Deviceclasses(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta2Deviceclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta2DeviceClass",
 			namespace: "apis",
@@ -19691,6 +20626,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19699,7 +20635,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/deviceclasses/{name}` — risk: medium
 	 */
-	async v1beta2deviceclassesDeleteDeviceclass(name: string): Promise<ProofResult<unknown>> {
+	async v1beta2deviceclassesDeleteDeviceclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2DeviceClass",
 			namespace: "apis",
@@ -19712,6 +20648,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19720,7 +20657,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/devicetaintrules` — risk: medium
 	 */
-	async getV1beta2Devicetaintrules(): Promise<ProofResult<unknown>> {
+	async getV1beta2Devicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta2DeviceTaintRule",
 			namespace: "apis",
@@ -19733,6 +20670,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19741,7 +20679,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1beta2/devicetaintrules` — risk: medium
 	 */
-	async postV1beta2Devicetaintrules(): Promise<ProofResult<unknown>> {
+	async postV1beta2Devicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1beta2DeviceTaintRule",
 			namespace: "apis",
@@ -19754,6 +20692,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19762,7 +20701,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/devicetaintrules` — risk: medium
 	 */
-	async deleteV1beta2Devicetaintrules(): Promise<ProofResult<unknown>> {
+	async deleteV1beta2Devicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2CollectionDeviceTaintRule",
 			namespace: "apis",
@@ -19775,6 +20714,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19783,7 +20723,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/devicetaintrules/{name}` — risk: medium
 	 */
-	async v1beta2devicetaintrulesRetrieveDevicetaintrule(name: string): Promise<ProofResult<unknown>> {
+	async v1beta2devicetaintrulesRetrieveDevicetaintrule(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta2DeviceTaintRule",
 			namespace: "apis",
@@ -19796,6 +20736,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19804,7 +20745,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta2/devicetaintrules/{name}` — risk: medium
 	 */
-	async putV1beta2Devicetaintrules(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta2Devicetaintrules(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta2DeviceTaintRule",
 			namespace: "apis",
@@ -19817,6 +20758,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19825,7 +20767,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta2/devicetaintrules/{name}` — risk: medium
 	 */
-	async patchV1beta2Devicetaintrules(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta2Devicetaintrules(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta2DeviceTaintRule",
 			namespace: "apis",
@@ -19838,6 +20780,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19846,7 +20789,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/devicetaintrules/{name}` — risk: medium
 	 */
-	async v1beta2devicetaintrulesDeleteDevicetaintrule(name: string): Promise<ProofResult<unknown>> {
+	async v1beta2devicetaintrulesDeleteDevicetaintrule(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2DeviceTaintRule",
 			namespace: "apis",
@@ -19859,6 +20802,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19867,7 +20811,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/devicetaintrules/{name}/status` — risk: medium
 	 */
-	async getResourceK8sIov1beta2devicetaintrulesStatus(name: string): Promise<ProofResult<unknown>> {
+	async getResourceK8sIov1beta2devicetaintrulesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta2DeviceTaintRuleStatus",
 			namespace: "apis",
@@ -19880,6 +20824,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19888,7 +20833,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta2/devicetaintrules/{name}/status` — risk: medium
 	 */
-	async putResourceK8sIov1beta2devicetaintrulesStatus(name: string): Promise<ProofResult<unknown>> {
+	async putResourceK8sIov1beta2devicetaintrulesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta2DeviceTaintRuleStatus",
 			namespace: "apis",
@@ -19901,6 +20846,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19909,7 +20855,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta2/devicetaintrules/{name}/status` — risk: medium
 	 */
-	async patchResourceK8sIov1beta2devicetaintrulesStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchResourceK8sIov1beta2devicetaintrulesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta2DeviceTaintRuleStatus",
 			namespace: "apis",
@@ -19922,6 +20868,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19930,7 +20877,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async getV1beta2namespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async getV1beta2namespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta2NamespacedResourceClaim",
 			namespace: "apis",
@@ -19943,6 +20890,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19951,7 +20899,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async postV1beta2namespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async postV1beta2namespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1beta2NamespacedResourceClaim",
 			namespace: "apis",
@@ -19964,6 +20912,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19972,7 +20921,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async deleteV1beta2namespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV1beta2namespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2CollectionNamespacedResourceClaim",
 			namespace: "apis",
@@ -19985,6 +20934,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19993,7 +20943,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async v1beta2namespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta2namespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta2NamespacedResourceClaim",
 			namespace: "apis",
@@ -20006,6 +20956,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20014,7 +20965,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async putV1beta2namespacesResourceclaims(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV1beta2namespacesResourceclaims(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta2NamespacedResourceClaim",
 			namespace: "apis",
@@ -20027,6 +20978,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20035,7 +20987,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async patchV1beta2namespacesResourceclaims(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta2namespacesResourceclaims(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta2NamespacedResourceClaim",
 			namespace: "apis",
@@ -20048,6 +21000,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20056,7 +21009,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async v1beta2namespacesresourceclaimsDeleteResourceclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta2namespacesresourceclaimsDeleteResourceclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2NamespacedResourceClaim",
 			namespace: "apis",
@@ -20069,6 +21022,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20077,7 +21031,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims/{name}/status` — risk: medium
 	 */
-	async getResourceK8sIov1beta2namespacesresourceclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getResourceK8sIov1beta2namespacesresourceclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta2NamespacedResourceClaimStatus",
 			namespace: "apis",
@@ -20090,6 +21044,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20098,7 +21053,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims/{name}/status` — risk: medium
 	 */
-	async putResourceK8sIov1beta2namespacesresourceclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putResourceK8sIov1beta2namespacesresourceclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta2NamespacedResourceClaimStatus",
 			namespace: "apis",
@@ -20111,6 +21066,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20119,7 +21075,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaims/{name}/status` — risk: medium
 	 */
-	async patchResourceK8sIov1beta2namespacesresourceclaimsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchResourceK8sIov1beta2namespacesresourceclaimsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta2NamespacedResourceClaimStatus",
 			namespace: "apis",
@@ -20132,6 +21088,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20140,7 +21097,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async getV1beta2namespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async getV1beta2namespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta2NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -20153,6 +21110,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20161,7 +21119,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async postV1beta2namespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async postV1beta2namespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1beta2NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -20174,6 +21132,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20182,7 +21141,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async deleteV1beta2namespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteV1beta2namespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2CollectionNamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -20195,6 +21154,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20203,7 +21163,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async v1beta2namespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta2namespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta2NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -20216,6 +21176,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20224,7 +21185,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async putV1beta2namespacesResourceclaimtemplates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putV1beta2namespacesResourceclaimtemplates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta2NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -20237,6 +21198,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20245,7 +21207,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async patchV1beta2namespacesResourceclaimtemplates(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta2namespacesResourceclaimtemplates(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta2NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -20258,6 +21220,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20266,7 +21229,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async v1beta2namespacesresourceclaimtemplatesDeleteResourceclaimtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta2namespacesresourceclaimtemplatesDeleteResourceclaimtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -20279,6 +21242,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20287,7 +21251,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/resourceclaims` — risk: medium
 	 */
-	async v1beta2Resourceclaims(): Promise<ProofResult<unknown>> {
+	async v1beta2Resourceclaims(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta2ResourceClaimForAllNamespaces",
 			namespace: "apis",
@@ -20300,6 +21264,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20308,7 +21273,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/resourceclaimtemplates` — risk: medium
 	 */
-	async v1beta2Resourceclaimtemplates(): Promise<ProofResult<unknown>> {
+	async v1beta2Resourceclaimtemplates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta2ResourceClaimTemplateForAllNamespaces",
 			namespace: "apis",
@@ -20321,6 +21286,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20329,7 +21295,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/resourceslices` — risk: medium
 	 */
-	async getV1beta2Resourceslices(): Promise<ProofResult<unknown>> {
+	async getV1beta2Resourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listResourceV1beta2ResourceSlice",
 			namespace: "apis",
@@ -20342,6 +21308,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20350,7 +21317,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/resource.k8s.io/v1beta2/resourceslices` — risk: medium
 	 */
-	async postV1beta2Resourceslices(): Promise<ProofResult<unknown>> {
+	async postV1beta2Resourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createResourceV1beta2ResourceSlice",
 			namespace: "apis",
@@ -20363,6 +21330,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20371,7 +21339,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/resourceslices` — risk: medium
 	 */
-	async deleteV1beta2Resourceslices(): Promise<ProofResult<unknown>> {
+	async deleteV1beta2Resourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2CollectionResourceSlice",
 			namespace: "apis",
@@ -20384,6 +21352,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20392,7 +21361,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/resourceslices/{name}` — risk: medium
 	 */
-	async v1beta2resourceslicesRetrieveResourceslice(name: string): Promise<ProofResult<unknown>> {
+	async v1beta2resourceslicesRetrieveResourceslice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readResourceV1beta2ResourceSlice",
 			namespace: "apis",
@@ -20405,6 +21374,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20413,7 +21383,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/resource.k8s.io/v1beta2/resourceslices/{name}` — risk: medium
 	 */
-	async putV1beta2Resourceslices(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta2Resourceslices(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceResourceV1beta2ResourceSlice",
 			namespace: "apis",
@@ -20426,6 +21396,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20434,7 +21405,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/resource.k8s.io/v1beta2/resourceslices/{name}` — risk: medium
 	 */
-	async patchV1beta2Resourceslices(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta2Resourceslices(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchResourceV1beta2ResourceSlice",
 			namespace: "apis",
@@ -20447,6 +21418,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20455,7 +21427,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/resource.k8s.io/v1beta2/resourceslices/{name}` — risk: medium
 	 */
-	async v1beta2resourceslicesDeleteResourceslice(name: string): Promise<ProofResult<unknown>> {
+	async v1beta2resourceslicesDeleteResourceslice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteResourceV1beta2ResourceSlice",
 			namespace: "apis",
@@ -20468,6 +21440,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20476,7 +21449,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/deviceclasses` — risk: medium
 	 */
-	async v1beta2watchDeviceclasses(): Promise<ProofResult<unknown>> {
+	async v1beta2watchDeviceclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2DeviceClassList",
 			namespace: "apis",
@@ -20489,6 +21462,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20497,7 +21471,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/deviceclasses/{name}` — risk: medium
 	 */
-	async v1beta2watchdeviceclassesRetrieveDeviceclass(name: string): Promise<ProofResult<unknown>> {
+	async v1beta2watchdeviceclassesRetrieveDeviceclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2DeviceClass",
 			namespace: "apis",
@@ -20510,6 +21484,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20518,7 +21493,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/devicetaintrules` — risk: medium
 	 */
-	async v1beta2watchDevicetaintrules(): Promise<ProofResult<unknown>> {
+	async v1beta2watchDevicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2DeviceTaintRuleList",
 			namespace: "apis",
@@ -20531,6 +21506,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20539,7 +21515,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/devicetaintrules/{name}` — risk: medium
 	 */
-	async v1beta2watchdevicetaintrulesRetrieveDevicetaintrule(name: string): Promise<ProofResult<unknown>> {
+	async v1beta2watchdevicetaintrulesRetrieveDevicetaintrule(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2DeviceTaintRule",
 			namespace: "apis",
@@ -20552,6 +21528,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20560,7 +21537,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/namespaces/{namespace}/resourceclaims` — risk: medium
 	 */
-	async v1beta2watchnamespacesResourceclaims(namespace: string): Promise<ProofResult<unknown>> {
+	async v1beta2watchnamespacesResourceclaims(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2NamespacedResourceClaimList",
 			namespace: "apis",
@@ -20573,6 +21550,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20581,7 +21559,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/namespaces/{namespace}/resourceclaims/{name}` — risk: medium
 	 */
-	async v1beta2watchnamespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta2watchnamespacesresourceclaimsRetrieveResourceclaim(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2NamespacedResourceClaim",
 			namespace: "apis",
@@ -20594,6 +21572,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20602,7 +21581,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/namespaces/{namespace}/resourceclaimtemplates` — risk: medium
 	 */
-	async v1beta2watchnamespacesResourceclaimtemplates(namespace: string): Promise<ProofResult<unknown>> {
+	async v1beta2watchnamespacesResourceclaimtemplates(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2NamespacedResourceClaimTemplateList",
 			namespace: "apis",
@@ -20615,6 +21594,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20623,7 +21603,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/namespaces/{namespace}/resourceclaimtemplates/{name}` — risk: medium
 	 */
-	async v1beta2watchnamespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async v1beta2watchnamespacesresourceclaimtemplatesRetrieveResourceclaimtemplate(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2NamespacedResourceClaimTemplate",
 			namespace: "apis",
@@ -20636,6 +21616,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20644,7 +21625,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/resourceclaims` — risk: medium
 	 */
-	async v1beta2watchResourceclaims(): Promise<ProofResult<unknown>> {
+	async v1beta2watchResourceclaims(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2ResourceClaimListForAllNamespaces",
 			namespace: "apis",
@@ -20657,6 +21638,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20665,7 +21647,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/resourceclaimtemplates` — risk: medium
 	 */
-	async v1beta2watchResourceclaimtemplates(): Promise<ProofResult<unknown>> {
+	async v1beta2watchResourceclaimtemplates(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2ResourceClaimTemplateListForAllNamespaces",
 			namespace: "apis",
@@ -20678,6 +21660,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20686,7 +21669,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/resourceslices` — risk: medium
 	 */
-	async v1beta2watchResourceslices(): Promise<ProofResult<unknown>> {
+	async v1beta2watchResourceslices(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2ResourceSliceList",
 			namespace: "apis",
@@ -20699,6 +21682,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20707,7 +21691,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1beta2/watch/resourceslices/{name}` — risk: medium
 	 */
-	async v1beta2watchresourceslicesRetrieveResourceslice(name: string): Promise<ProofResult<unknown>> {
+	async v1beta2watchresourceslicesRetrieveResourceslice(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchResourceV1beta2ResourceSlice",
 			namespace: "apis",
@@ -20720,6 +21704,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20728,7 +21713,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/` — risk: medium
 	 */
-	async listSchedulingK8sIo(): Promise<ProofResult<unknown>> {
+	async listSchedulingK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getSchedulingAPIGroup",
 			namespace: "apis",
@@ -20741,6 +21726,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20749,7 +21735,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1/` — risk: medium
 	 */
-	async schedulingK8sIoV1(): Promise<ProofResult<unknown>> {
+	async schedulingK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getSchedulingV1APIResources",
 			namespace: "apis",
@@ -20762,6 +21748,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20770,7 +21757,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1/priorityclasses` — risk: medium
 	 */
-	async priorityclasses_0(): Promise<ProofResult<unknown>> {
+	async priorityclasses_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listSchedulingV1PriorityClass",
 			namespace: "apis",
@@ -20783,6 +21770,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20791,7 +21779,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/scheduling.k8s.io/v1/priorityclasses` — risk: medium
 	 */
-	async priorityclasses_1(): Promise<ProofResult<unknown>> {
+	async priorityclasses_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createSchedulingV1PriorityClass",
 			namespace: "apis",
@@ -20804,6 +21792,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20812,7 +21801,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/scheduling.k8s.io/v1/priorityclasses` — risk: medium
 	 */
-	async priorityclasses_2(): Promise<ProofResult<unknown>> {
+	async priorityclasses_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteSchedulingV1CollectionPriorityClass",
 			namespace: "apis",
@@ -20825,6 +21814,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20833,7 +21823,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1/priorityclasses/{name}` — risk: medium
 	 */
-	async priorityclassesRetrievePriorityclass(name: string): Promise<ProofResult<unknown>> {
+	async priorityclassesRetrievePriorityclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readSchedulingV1PriorityClass",
 			namespace: "apis",
@@ -20846,6 +21836,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20854,7 +21845,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/scheduling.k8s.io/v1/priorityclasses/{name}` — risk: medium
 	 */
-	async priorityclasses_3(name: string): Promise<ProofResult<unknown>> {
+	async priorityclasses_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceSchedulingV1PriorityClass",
 			namespace: "apis",
@@ -20867,6 +21858,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20875,7 +21867,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/scheduling.k8s.io/v1/priorityclasses/{name}` — risk: medium
 	 */
-	async priorityclasses_4(name: string): Promise<ProofResult<unknown>> {
+	async priorityclasses_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchSchedulingV1PriorityClass",
 			namespace: "apis",
@@ -20888,6 +21880,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20896,7 +21889,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/scheduling.k8s.io/v1/priorityclasses/{name}` — risk: medium
 	 */
-	async deletePriorityclass(name: string): Promise<ProofResult<unknown>> {
+	async deletePriorityclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteSchedulingV1PriorityClass",
 			namespace: "apis",
@@ -20909,6 +21902,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20917,7 +21911,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1/watch/priorityclasses` — risk: medium
 	 */
-	async watchPriorityclasses(): Promise<ProofResult<unknown>> {
+	async watchPriorityclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchSchedulingV1PriorityClassList",
 			namespace: "apis",
@@ -20930,6 +21924,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20938,7 +21933,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1/watch/priorityclasses/{name}` — risk: medium
 	 */
-	async watchpriorityclassesRetrievePriorityclass(name: string): Promise<ProofResult<unknown>> {
+	async watchpriorityclassesRetrievePriorityclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchSchedulingV1PriorityClass",
 			namespace: "apis",
@@ -20951,6 +21946,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20959,7 +21955,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/` — risk: medium
 	 */
-	async schedulingK8sIoV1alpha2(): Promise<ProofResult<unknown>> {
+	async schedulingK8sIoV1alpha2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getSchedulingV1alpha2APIResources",
 			namespace: "apis",
@@ -20972,6 +21968,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20980,7 +21977,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups` — risk: medium
 	 */
-	async getNamespacesPodgroups(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listSchedulingV1alpha2NamespacedPodGroup",
 			namespace: "apis",
@@ -20993,6 +21990,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21001,7 +21999,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups` — risk: medium
 	 */
-	async postNamespacesPodgroups(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createSchedulingV1alpha2NamespacedPodGroup",
 			namespace: "apis",
@@ -21014,6 +22012,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21022,7 +22021,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups` — risk: medium
 	 */
-	async deleteNamespacesPodgroups(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteSchedulingV1alpha2CollectionNamespacedPodGroup",
 			namespace: "apis",
@@ -21035,6 +22034,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21043,7 +22043,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async namespacespodgroupsRetrievePodgroup(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacespodgroupsRetrievePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readSchedulingV1alpha2NamespacedPodGroup",
 			namespace: "apis",
@@ -21056,6 +22056,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21064,7 +22065,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async putNamespacesPodgroups(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesPodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceSchedulingV1alpha2NamespacedPodGroup",
 			namespace: "apis",
@@ -21077,6 +22078,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21085,7 +22087,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async patchNamespacesPodgroups(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesPodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchSchedulingV1alpha2NamespacedPodGroup",
 			namespace: "apis",
@@ -21098,6 +22100,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21106,7 +22109,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async deletePodgroup(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deletePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteSchedulingV1alpha2NamespacedPodGroup",
 			namespace: "apis",
@@ -21119,6 +22122,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21127,7 +22131,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
 	 */
-	async getSchedulingK8sIov1alpha2namespacespodgroupsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async getSchedulingK8sIov1alpha2namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readSchedulingV1alpha2NamespacedPodGroupStatus",
 			namespace: "apis",
@@ -21140,6 +22144,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21148,7 +22153,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
 	 */
-	async putSchedulingK8sIov1alpha2namespacespodgroupsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putSchedulingK8sIov1alpha2namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceSchedulingV1alpha2NamespacedPodGroupStatus",
 			namespace: "apis",
@@ -21161,6 +22166,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21169,7 +22175,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
 	 */
-	async patchSchedulingK8sIov1alpha2namespacespodgroupsStatus(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchSchedulingK8sIov1alpha2namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchSchedulingV1alpha2NamespacedPodGroupStatus",
 			namespace: "apis",
@@ -21182,6 +22188,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21190,7 +22197,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads` — risk: medium
 	 */
-	async getNamespacesWorkloads(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listSchedulingV1alpha2NamespacedWorkload",
 			namespace: "apis",
@@ -21203,6 +22210,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21211,7 +22219,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads` — risk: medium
 	 */
-	async postNamespacesWorkloads(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createSchedulingV1alpha2NamespacedWorkload",
 			namespace: "apis",
@@ -21224,6 +22232,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21232,7 +22241,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads` — risk: medium
 	 */
-	async deleteNamespacesWorkloads(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteSchedulingV1alpha2CollectionNamespacedWorkload",
 			namespace: "apis",
@@ -21245,6 +22254,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21253,7 +22263,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async namespacesworkloadsRetrieveWorkload(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacesworkloadsRetrieveWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readSchedulingV1alpha2NamespacedWorkload",
 			namespace: "apis",
@@ -21266,6 +22276,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21274,7 +22285,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async putNamespacesWorkloads(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesWorkloads(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceSchedulingV1alpha2NamespacedWorkload",
 			namespace: "apis",
@@ -21287,6 +22298,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21295,7 +22307,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async patchNamespacesWorkloads(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesWorkloads(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchSchedulingV1alpha2NamespacedWorkload",
 			namespace: "apis",
@@ -21308,6 +22320,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21316,7 +22329,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async deleteWorkload(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteSchedulingV1alpha2NamespacedWorkload",
 			namespace: "apis",
@@ -21329,6 +22342,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21337,7 +22351,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/podgroups` — risk: medium
 	 */
-	async podgroups_5(): Promise<ProofResult<unknown>> {
+	async podgroups_5(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listSchedulingV1alpha2PodGroupForAllNamespaces",
 			namespace: "apis",
@@ -21350,6 +22364,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21358,7 +22373,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/namespaces/{namespace}/podgroups` — risk: medium
 	 */
-	async watchnamespacesPodgroups(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchSchedulingV1alpha2NamespacedPodGroupList",
 			namespace: "apis",
@@ -21371,6 +22386,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21379,7 +22395,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async watchnamespacespodgroupsRetrievePodgroup(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacespodgroupsRetrievePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchSchedulingV1alpha2NamespacedPodGroup",
 			namespace: "apis",
@@ -21392,6 +22408,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21400,7 +22417,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/namespaces/{namespace}/workloads` — risk: medium
 	 */
-	async watchnamespacesWorkloads(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchSchedulingV1alpha2NamespacedWorkloadList",
 			namespace: "apis",
@@ -21413,6 +22430,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21421,7 +22439,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async watchnamespacesworkloadsRetrieveWorkload(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesworkloadsRetrieveWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchSchedulingV1alpha2NamespacedWorkload",
 			namespace: "apis",
@@ -21434,6 +22452,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21442,7 +22461,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/podgroups` — risk: medium
 	 */
-	async watchPodgroups(): Promise<ProofResult<unknown>> {
+	async watchPodgroups(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchSchedulingV1alpha2PodGroupListForAllNamespaces",
 			namespace: "apis",
@@ -21455,6 +22474,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21463,7 +22483,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/workloads` — risk: medium
 	 */
-	async watchWorkloads(): Promise<ProofResult<unknown>> {
+	async watchWorkloads(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchSchedulingV1alpha2WorkloadListForAllNamespaces",
 			namespace: "apis",
@@ -21476,6 +22496,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21484,7 +22505,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/scheduling.k8s.io/v1alpha2/workloads` — risk: medium
 	 */
-	async workloads_7(): Promise<ProofResult<unknown>> {
+	async workloads_7(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listSchedulingV1alpha2WorkloadForAllNamespaces",
 			namespace: "apis",
@@ -21497,6 +22518,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21505,7 +22527,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/` — risk: medium
 	 */
-	async listStorageK8sIo(): Promise<ProofResult<unknown>> {
+	async listStorageK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getStorageAPIGroup",
 			namespace: "apis",
@@ -21518,6 +22540,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21526,7 +22549,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/` — risk: medium
 	 */
-	async storageK8sIoV1(): Promise<ProofResult<unknown>> {
+	async storageK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getStorageV1APIResources",
 			namespace: "apis",
@@ -21539,6 +22562,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21547,7 +22571,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/csidrivers` — risk: medium
 	 */
-	async csidrivers_0(): Promise<ProofResult<unknown>> {
+	async csidrivers_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStorageV1CSIDriver",
 			namespace: "apis",
@@ -21560,6 +22584,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21568,7 +22593,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storage.k8s.io/v1/csidrivers` — risk: medium
 	 */
-	async csidrivers_1(): Promise<ProofResult<unknown>> {
+	async csidrivers_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStorageV1CSIDriver",
 			namespace: "apis",
@@ -21581,6 +22606,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21589,7 +22615,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/csidrivers` — risk: medium
 	 */
-	async csidrivers_2(): Promise<ProofResult<unknown>> {
+	async csidrivers_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1CollectionCSIDriver",
 			namespace: "apis",
@@ -21602,6 +22628,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21610,7 +22637,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/csidrivers/{name}` — risk: medium
 	 */
-	async csidriversRetrieveCsidriver(name: string): Promise<ProofResult<unknown>> {
+	async csidriversRetrieveCsidriver(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStorageV1CSIDriver",
 			namespace: "apis",
@@ -21623,6 +22650,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21631,7 +22659,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storage.k8s.io/v1/csidrivers/{name}` — risk: medium
 	 */
-	async csidrivers_3(name: string): Promise<ProofResult<unknown>> {
+	async csidrivers_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStorageV1CSIDriver",
 			namespace: "apis",
@@ -21644,6 +22672,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21652,7 +22681,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storage.k8s.io/v1/csidrivers/{name}` — risk: medium
 	 */
-	async csidrivers_4(name: string): Promise<ProofResult<unknown>> {
+	async csidrivers_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStorageV1CSIDriver",
 			namespace: "apis",
@@ -21665,6 +22694,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21673,7 +22703,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/csidrivers/{name}` — risk: medium
 	 */
-	async deleteCsidriver(name: string): Promise<ProofResult<unknown>> {
+	async deleteCsidriver(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1CSIDriver",
 			namespace: "apis",
@@ -21686,6 +22716,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21694,7 +22725,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/csinodes` — risk: medium
 	 */
-	async csinodes_0(): Promise<ProofResult<unknown>> {
+	async csinodes_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStorageV1CSINode",
 			namespace: "apis",
@@ -21707,6 +22738,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21715,7 +22747,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storage.k8s.io/v1/csinodes` — risk: medium
 	 */
-	async csinodes_1(): Promise<ProofResult<unknown>> {
+	async csinodes_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStorageV1CSINode",
 			namespace: "apis",
@@ -21728,6 +22760,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21736,7 +22769,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/csinodes` — risk: medium
 	 */
-	async csinodes_2(): Promise<ProofResult<unknown>> {
+	async csinodes_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1CollectionCSINode",
 			namespace: "apis",
@@ -21749,6 +22782,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21757,7 +22791,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/csinodes/{name}` — risk: medium
 	 */
-	async csinodesRetrieveCsinode(name: string): Promise<ProofResult<unknown>> {
+	async csinodesRetrieveCsinode(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStorageV1CSINode",
 			namespace: "apis",
@@ -21770,6 +22804,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21778,7 +22813,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storage.k8s.io/v1/csinodes/{name}` — risk: medium
 	 */
-	async csinodes_3(name: string): Promise<ProofResult<unknown>> {
+	async csinodes_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStorageV1CSINode",
 			namespace: "apis",
@@ -21791,6 +22826,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21799,7 +22835,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storage.k8s.io/v1/csinodes/{name}` — risk: medium
 	 */
-	async csinodes_4(name: string): Promise<ProofResult<unknown>> {
+	async csinodes_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStorageV1CSINode",
 			namespace: "apis",
@@ -21812,6 +22848,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21820,7 +22857,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/csinodes/{name}` — risk: medium
 	 */
-	async deleteCsinode(name: string): Promise<ProofResult<unknown>> {
+	async deleteCsinode(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1CSINode",
 			namespace: "apis",
@@ -21833,6 +22870,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21841,7 +22879,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/csistoragecapacities` — risk: medium
 	 */
-	async csistoragecapacities_0(): Promise<ProofResult<unknown>> {
+	async csistoragecapacities_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStorageV1CSIStorageCapacityForAllNamespaces",
 			namespace: "apis",
@@ -21854,6 +22892,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21862,7 +22901,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/namespaces/{namespace}/csistoragecapacities` — risk: medium
 	 */
-	async getNamespacesCsistoragecapacities(namespace: string): Promise<ProofResult<unknown>> {
+	async getNamespacesCsistoragecapacities(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStorageV1NamespacedCSIStorageCapacity",
 			namespace: "apis",
@@ -21875,6 +22914,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21883,7 +22923,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storage.k8s.io/v1/namespaces/{namespace}/csistoragecapacities` — risk: medium
 	 */
-	async postNamespacesCsistoragecapacities(namespace: string): Promise<ProofResult<unknown>> {
+	async postNamespacesCsistoragecapacities(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStorageV1NamespacedCSIStorageCapacity",
 			namespace: "apis",
@@ -21896,6 +22936,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21904,7 +22945,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/namespaces/{namespace}/csistoragecapacities` — risk: medium
 	 */
-	async deleteNamespacesCsistoragecapacities(namespace: string): Promise<ProofResult<unknown>> {
+	async deleteNamespacesCsistoragecapacities(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1CollectionNamespacedCSIStorageCapacity",
 			namespace: "apis",
@@ -21917,6 +22958,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21925,7 +22967,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/namespaces/{namespace}/csistoragecapacities/{name}` — risk: medium
 	 */
-	async namespacescsistoragecapacitiesRetrieveCsistoragecapacity(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async namespacescsistoragecapacitiesRetrieveCsistoragecapacity(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStorageV1NamespacedCSIStorageCapacity",
 			namespace: "apis",
@@ -21938,6 +22980,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21946,7 +22989,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storage.k8s.io/v1/namespaces/{namespace}/csistoragecapacities/{name}` — risk: medium
 	 */
-	async putNamespacesCsistoragecapacities(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async putNamespacesCsistoragecapacities(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStorageV1NamespacedCSIStorageCapacity",
 			namespace: "apis",
@@ -21959,6 +23002,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21967,7 +23011,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storage.k8s.io/v1/namespaces/{namespace}/csistoragecapacities/{name}` — risk: medium
 	 */
-	async patchNamespacesCsistoragecapacities(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async patchNamespacesCsistoragecapacities(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStorageV1NamespacedCSIStorageCapacity",
 			namespace: "apis",
@@ -21980,6 +23024,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21988,7 +23033,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/namespaces/{namespace}/csistoragecapacities/{name}` — risk: medium
 	 */
-	async deleteCsistoragecapacity(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteCsistoragecapacity(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1NamespacedCSIStorageCapacity",
 			namespace: "apis",
@@ -22001,6 +23046,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22009,7 +23055,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/storageclasses` — risk: medium
 	 */
-	async storageclasses_0(): Promise<ProofResult<unknown>> {
+	async storageclasses_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStorageV1StorageClass",
 			namespace: "apis",
@@ -22022,6 +23068,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22030,7 +23077,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storage.k8s.io/v1/storageclasses` — risk: medium
 	 */
-	async storageclasses_1(): Promise<ProofResult<unknown>> {
+	async storageclasses_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStorageV1StorageClass",
 			namespace: "apis",
@@ -22043,6 +23090,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22051,7 +23099,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/storageclasses` — risk: medium
 	 */
-	async storageclasses_2(): Promise<ProofResult<unknown>> {
+	async storageclasses_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1CollectionStorageClass",
 			namespace: "apis",
@@ -22064,6 +23112,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22072,7 +23121,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/storageclasses/{name}` — risk: medium
 	 */
-	async storageclassesRetrieveStorageclass(name: string): Promise<ProofResult<unknown>> {
+	async storageclassesRetrieveStorageclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStorageV1StorageClass",
 			namespace: "apis",
@@ -22085,6 +23134,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22093,7 +23143,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storage.k8s.io/v1/storageclasses/{name}` — risk: medium
 	 */
-	async storageclasses_3(name: string): Promise<ProofResult<unknown>> {
+	async storageclasses_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStorageV1StorageClass",
 			namespace: "apis",
@@ -22106,6 +23156,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22114,7 +23165,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storage.k8s.io/v1/storageclasses/{name}` — risk: medium
 	 */
-	async storageclasses_4(name: string): Promise<ProofResult<unknown>> {
+	async storageclasses_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStorageV1StorageClass",
 			namespace: "apis",
@@ -22127,6 +23178,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22135,7 +23187,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/storageclasses/{name}` — risk: medium
 	 */
-	async deleteStorageclass(name: string): Promise<ProofResult<unknown>> {
+	async deleteStorageclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1StorageClass",
 			namespace: "apis",
@@ -22148,6 +23200,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22156,7 +23209,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/volumeattachments` — risk: medium
 	 */
-	async volumeattachments_0(): Promise<ProofResult<unknown>> {
+	async volumeattachments_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStorageV1VolumeAttachment",
 			namespace: "apis",
@@ -22169,6 +23222,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22177,7 +23231,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storage.k8s.io/v1/volumeattachments` — risk: medium
 	 */
-	async volumeattachments_1(): Promise<ProofResult<unknown>> {
+	async volumeattachments_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStorageV1VolumeAttachment",
 			namespace: "apis",
@@ -22190,6 +23244,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22198,7 +23253,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/volumeattachments` — risk: medium
 	 */
-	async volumeattachments_2(): Promise<ProofResult<unknown>> {
+	async volumeattachments_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1CollectionVolumeAttachment",
 			namespace: "apis",
@@ -22211,6 +23266,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22219,7 +23275,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/volumeattachments/{name}` — risk: medium
 	 */
-	async volumeattachmentsRetrieveVolumeattachment(name: string): Promise<ProofResult<unknown>> {
+	async volumeattachmentsRetrieveVolumeattachment(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStorageV1VolumeAttachment",
 			namespace: "apis",
@@ -22232,6 +23288,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22240,7 +23297,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storage.k8s.io/v1/volumeattachments/{name}` — risk: medium
 	 */
-	async volumeattachments_3(name: string): Promise<ProofResult<unknown>> {
+	async volumeattachments_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStorageV1VolumeAttachment",
 			namespace: "apis",
@@ -22253,6 +23310,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22261,7 +23319,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storage.k8s.io/v1/volumeattachments/{name}` — risk: medium
 	 */
-	async volumeattachments_4(name: string): Promise<ProofResult<unknown>> {
+	async volumeattachments_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStorageV1VolumeAttachment",
 			namespace: "apis",
@@ -22274,6 +23332,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22282,7 +23341,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/volumeattachments/{name}` — risk: medium
 	 */
-	async deleteVolumeattachment(name: string): Promise<ProofResult<unknown>> {
+	async deleteVolumeattachment(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1VolumeAttachment",
 			namespace: "apis",
@@ -22295,6 +23354,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22303,7 +23363,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/volumeattachments/{name}/status` — risk: medium
 	 */
-	async getStorageK8sIov1volumeattachmentsStatus(name: string): Promise<ProofResult<unknown>> {
+	async getStorageK8sIov1volumeattachmentsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStorageV1VolumeAttachmentStatus",
 			namespace: "apis",
@@ -22316,6 +23376,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22324,7 +23385,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storage.k8s.io/v1/volumeattachments/{name}/status` — risk: medium
 	 */
-	async putStorageK8sIov1volumeattachmentsStatus(name: string): Promise<ProofResult<unknown>> {
+	async putStorageK8sIov1volumeattachmentsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStorageV1VolumeAttachmentStatus",
 			namespace: "apis",
@@ -22337,6 +23398,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22345,7 +23407,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storage.k8s.io/v1/volumeattachments/{name}/status` — risk: medium
 	 */
-	async patchStorageK8sIov1volumeattachmentsStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchStorageK8sIov1volumeattachmentsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStorageV1VolumeAttachmentStatus",
 			namespace: "apis",
@@ -22358,6 +23420,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22366,7 +23429,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/volumeattributesclasses` — risk: medium
 	 */
-	async getV1Volumeattributesclasses(): Promise<ProofResult<unknown>> {
+	async getV1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStorageV1VolumeAttributesClass",
 			namespace: "apis",
@@ -22379,6 +23442,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22387,7 +23451,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storage.k8s.io/v1/volumeattributesclasses` — risk: medium
 	 */
-	async postV1Volumeattributesclasses(): Promise<ProofResult<unknown>> {
+	async postV1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStorageV1VolumeAttributesClass",
 			namespace: "apis",
@@ -22400,6 +23464,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22408,7 +23473,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/volumeattributesclasses` — risk: medium
 	 */
-	async deleteV1Volumeattributesclasses(): Promise<ProofResult<unknown>> {
+	async deleteV1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1CollectionVolumeAttributesClass",
 			namespace: "apis",
@@ -22421,6 +23486,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22429,7 +23495,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async v1volumeattributesclassesRetrieveVolumeattributesclass(name: string): Promise<ProofResult<unknown>> {
+	async v1volumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStorageV1VolumeAttributesClass",
 			namespace: "apis",
@@ -22442,6 +23508,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22450,7 +23517,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storage.k8s.io/v1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async putV1Volumeattributesclasses(name: string): Promise<ProofResult<unknown>> {
+	async putV1Volumeattributesclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStorageV1VolumeAttributesClass",
 			namespace: "apis",
@@ -22463,6 +23530,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22471,7 +23539,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storage.k8s.io/v1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async patchV1Volumeattributesclasses(name: string): Promise<ProofResult<unknown>> {
+	async patchV1Volumeattributesclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStorageV1VolumeAttributesClass",
 			namespace: "apis",
@@ -22484,6 +23552,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22492,7 +23561,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async v1volumeattributesclassesDeleteVolumeattributesclass(name: string): Promise<ProofResult<unknown>> {
+	async v1volumeattributesclassesDeleteVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1VolumeAttributesClass",
 			namespace: "apis",
@@ -22505,6 +23574,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22513,7 +23583,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/csidrivers` — risk: medium
 	 */
-	async watchCsidrivers(): Promise<ProofResult<unknown>> {
+	async watchCsidrivers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1CSIDriverList",
 			namespace: "apis",
@@ -22526,6 +23596,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22534,7 +23605,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/csidrivers/{name}` — risk: medium
 	 */
-	async watchcsidriversRetrieveCsidriver(name: string): Promise<ProofResult<unknown>> {
+	async watchcsidriversRetrieveCsidriver(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1CSIDriver",
 			namespace: "apis",
@@ -22547,6 +23618,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22555,7 +23627,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/csinodes` — risk: medium
 	 */
-	async watchCsinodes(): Promise<ProofResult<unknown>> {
+	async watchCsinodes(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1CSINodeList",
 			namespace: "apis",
@@ -22568,6 +23640,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22576,7 +23649,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/csinodes/{name}` — risk: medium
 	 */
-	async watchcsinodesRetrieveCsinode(name: string): Promise<ProofResult<unknown>> {
+	async watchcsinodesRetrieveCsinode(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1CSINode",
 			namespace: "apis",
@@ -22589,6 +23662,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22597,7 +23671,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/csistoragecapacities` — risk: medium
 	 */
-	async watchCsistoragecapacities(): Promise<ProofResult<unknown>> {
+	async watchCsistoragecapacities(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1CSIStorageCapacityListForAllNamespaces",
 			namespace: "apis",
@@ -22610,6 +23684,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22618,7 +23693,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/namespaces/{namespace}/csistoragecapacities` — risk: medium
 	 */
-	async watchnamespacesCsistoragecapacities(namespace: string): Promise<ProofResult<unknown>> {
+	async watchnamespacesCsistoragecapacities(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1NamespacedCSIStorageCapacityList",
 			namespace: "apis",
@@ -22631,6 +23706,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22639,7 +23715,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/namespaces/{namespace}/csistoragecapacities/{name}` — risk: medium
 	 */
-	async watchnamespacescsistoragecapacitiesRetrieveCsistoragecapacity(namespace: string, name: string): Promise<ProofResult<unknown>> {
+	async watchnamespacescsistoragecapacitiesRetrieveCsistoragecapacity(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1NamespacedCSIStorageCapacity",
 			namespace: "apis",
@@ -22652,6 +23728,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22660,7 +23737,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/storageclasses` — risk: medium
 	 */
-	async watchStorageclasses(): Promise<ProofResult<unknown>> {
+	async watchStorageclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1StorageClassList",
 			namespace: "apis",
@@ -22673,6 +23750,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22681,7 +23759,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/storageclasses/{name}` — risk: medium
 	 */
-	async watchstorageclassesRetrieveStorageclass(name: string): Promise<ProofResult<unknown>> {
+	async watchstorageclassesRetrieveStorageclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1StorageClass",
 			namespace: "apis",
@@ -22694,6 +23772,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22702,7 +23781,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/volumeattachments` — risk: medium
 	 */
-	async watchVolumeattachments(): Promise<ProofResult<unknown>> {
+	async watchVolumeattachments(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1VolumeAttachmentList",
 			namespace: "apis",
@@ -22715,6 +23794,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22723,7 +23803,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/volumeattachments/{name}` — risk: medium
 	 */
-	async watchvolumeattachmentsRetrieveVolumeattachment(name: string): Promise<ProofResult<unknown>> {
+	async watchvolumeattachmentsRetrieveVolumeattachment(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1VolumeAttachment",
 			namespace: "apis",
@@ -22736,6 +23816,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22744,7 +23825,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/volumeattributesclasses` — risk: medium
 	 */
-	async v1watchVolumeattributesclasses(): Promise<ProofResult<unknown>> {
+	async v1watchVolumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1VolumeAttributesClassList",
 			namespace: "apis",
@@ -22757,6 +23838,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22765,7 +23847,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async v1watchvolumeattributesclassesRetrieveVolumeattributesclass(name: string): Promise<ProofResult<unknown>> {
+	async v1watchvolumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1VolumeAttributesClass",
 			namespace: "apis",
@@ -22778,6 +23860,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22786,7 +23869,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1beta1/` — risk: medium
 	 */
-	async storageK8sIoV1beta1(): Promise<ProofResult<unknown>> {
+	async storageK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getStorageV1beta1APIResources",
 			namespace: "apis",
@@ -22799,6 +23882,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22807,7 +23891,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1beta1/volumeattributesclasses` — risk: medium
 	 */
-	async getV1beta1Volumeattributesclasses(): Promise<ProofResult<unknown>> {
+	async getV1beta1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStorageV1beta1VolumeAttributesClass",
 			namespace: "apis",
@@ -22820,6 +23904,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22828,7 +23913,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storage.k8s.io/v1beta1/volumeattributesclasses` — risk: medium
 	 */
-	async postV1beta1Volumeattributesclasses(): Promise<ProofResult<unknown>> {
+	async postV1beta1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStorageV1beta1VolumeAttributesClass",
 			namespace: "apis",
@@ -22841,6 +23926,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22849,7 +23935,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1beta1/volumeattributesclasses` — risk: medium
 	 */
-	async deleteV1beta1Volumeattributesclasses(): Promise<ProofResult<unknown>> {
+	async deleteV1beta1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1beta1CollectionVolumeAttributesClass",
 			namespace: "apis",
@@ -22862,6 +23948,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22870,7 +23957,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1beta1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async v1beta1volumeattributesclassesRetrieveVolumeattributesclass(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1volumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStorageV1beta1VolumeAttributesClass",
 			namespace: "apis",
@@ -22883,6 +23970,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22891,7 +23979,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storage.k8s.io/v1beta1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async putV1beta1Volumeattributesclasses(name: string): Promise<ProofResult<unknown>> {
+	async putV1beta1Volumeattributesclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStorageV1beta1VolumeAttributesClass",
 			namespace: "apis",
@@ -22904,6 +23992,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22912,7 +24001,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storage.k8s.io/v1beta1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async patchV1beta1Volumeattributesclasses(name: string): Promise<ProofResult<unknown>> {
+	async patchV1beta1Volumeattributesclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStorageV1beta1VolumeAttributesClass",
 			namespace: "apis",
@@ -22925,6 +24014,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22933,7 +24023,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1beta1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async v1beta1volumeattributesclassesDeleteVolumeattributesclass(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1volumeattributesclassesDeleteVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1beta1VolumeAttributesClass",
 			namespace: "apis",
@@ -22946,6 +24036,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22954,7 +24045,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1beta1/watch/volumeattributesclasses` — risk: medium
 	 */
-	async v1beta1watchVolumeattributesclasses(): Promise<ProofResult<unknown>> {
+	async v1beta1watchVolumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1beta1VolumeAttributesClassList",
 			namespace: "apis",
@@ -22967,6 +24058,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22975,7 +24067,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1beta1/watch/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async v1beta1watchvolumeattributesclassesRetrieveVolumeattributesclass(name: string): Promise<ProofResult<unknown>> {
+	async v1beta1watchvolumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1beta1VolumeAttributesClass",
 			namespace: "apis",
@@ -22988,6 +24080,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22996,7 +24089,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/` — risk: medium
 	 */
-	async listStoragemigrationK8sIo(): Promise<ProofResult<unknown>> {
+	async listStoragemigrationK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getStoragemigrationAPIGroup",
 			namespace: "apis",
@@ -23009,6 +24102,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23017,7 +24111,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/` — risk: medium
 	 */
-	async storagemigrationK8sIoV1beta1(): Promise<ProofResult<unknown>> {
+	async storagemigrationK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getStoragemigrationV1beta1APIResources",
 			namespace: "apis",
@@ -23030,6 +24124,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23038,7 +24133,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations` — risk: medium
 	 */
-	async storageversionmigrations_0(): Promise<ProofResult<unknown>> {
+	async storageversionmigrations_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
@@ -23051,6 +24146,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23059,7 +24155,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations` — risk: medium
 	 */
-	async storageversionmigrations_1(): Promise<ProofResult<unknown>> {
+	async storageversionmigrations_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
@@ -23072,6 +24168,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23080,7 +24177,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations` — risk: medium
 	 */
-	async storageversionmigrations_2(): Promise<ProofResult<unknown>> {
+	async storageversionmigrations_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStoragemigrationV1beta1CollectionStorageVersionMigration",
 			namespace: "apis",
@@ -23093,6 +24190,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23101,7 +24199,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}` — risk: medium
 	 */
-	async storageversionmigrationsRetrieveStorageversionmigration(name: string): Promise<ProofResult<unknown>> {
+	async storageversionmigrationsRetrieveStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
@@ -23114,6 +24212,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23122,7 +24221,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}` — risk: medium
 	 */
-	async storageversionmigrations_3(name: string): Promise<ProofResult<unknown>> {
+	async storageversionmigrations_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
@@ -23135,6 +24234,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23143,7 +24243,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}` — risk: medium
 	 */
-	async storageversionmigrations_4(name: string): Promise<ProofResult<unknown>> {
+	async storageversionmigrations_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
@@ -23156,6 +24256,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23164,7 +24265,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}` — risk: medium
 	 */
-	async deleteStorageversionmigration(name: string): Promise<ProofResult<unknown>> {
+	async deleteStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
@@ -23177,6 +24278,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23185,7 +24287,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}/status` — risk: medium
 	 */
-	async getStoragemigrationK8sIov1beta1storageversionmigrationsStatus(name: string): Promise<ProofResult<unknown>> {
+	async getStoragemigrationK8sIov1beta1storageversionmigrationsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStoragemigrationV1beta1StorageVersionMigrationStatus",
 			namespace: "apis",
@@ -23198,6 +24300,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23206,7 +24309,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}/status` — risk: medium
 	 */
-	async putStoragemigrationK8sIov1beta1storageversionmigrationsStatus(name: string): Promise<ProofResult<unknown>> {
+	async putStoragemigrationK8sIov1beta1storageversionmigrationsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStoragemigrationV1beta1StorageVersionMigrationStatus",
 			namespace: "apis",
@@ -23219,6 +24322,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23227,7 +24331,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}/status` — risk: medium
 	 */
-	async patchStoragemigrationK8sIov1beta1storageversionmigrationsStatus(name: string): Promise<ProofResult<unknown>> {
+	async patchStoragemigrationK8sIov1beta1storageversionmigrationsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStoragemigrationV1beta1StorageVersionMigrationStatus",
 			namespace: "apis",
@@ -23240,6 +24344,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23248,7 +24353,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/watch/storageversionmigrations` — risk: medium
 	 */
-	async watchStorageversionmigrations(): Promise<ProofResult<unknown>> {
+	async watchStorageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStoragemigrationV1beta1StorageVersionMigrationList",
 			namespace: "apis",
@@ -23261,6 +24366,7 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23269,7 +24375,7 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/watch/storageversionmigrations/{name}` — risk: medium
 	 */
-	async watchstorageversionmigrationsRetrieveStorageversionmigration(name: string): Promise<ProofResult<unknown>> {
+	async watchstorageversionmigrationsRetrieveStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
@@ -23282,13 +24388,14 @@ export class ApisResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class LogsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23300,7 +24407,7 @@ export class LogsResource extends RpcTarget {
 	 *
 	 * `GET /logs/` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "logFileListHandler",
 			namespace: "logs",
@@ -23313,6 +24420,7 @@ export class LogsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -23321,7 +24429,7 @@ export class LogsResource extends RpcTarget {
 	 *
 	 * `GET /logs/{logpath}` — risk: low
 	 */
-	async retrieve(logpath: string): Promise<ProofResult<unknown>> {
+	async retrieve(logpath: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "logFileHandler",
 			namespace: "logs",
@@ -23334,13 +24442,14 @@ export class LogsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OpenidResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23352,7 +24461,7 @@ export class OpenidResource extends RpcTarget {
 	 *
 	 * `GET /openid/v1/jwks/` — risk: medium
 	 */
-	async jwks(): Promise<ProofResult<unknown>> {
+	async jwks(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getServiceAccountIssuerOpenIDKeyset",
 			namespace: "openid",
@@ -23365,13 +24474,14 @@ export class OpenidResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class VersionResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23383,7 +24493,7 @@ export class VersionResource extends RpcTarget {
 	 *
 	 * `GET /version/` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCodeVersion",
 			namespace: "version",
@@ -23396,12 +24506,13 @@ export class VersionResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 interface Env {
-	KUBERNETES_API_KEY: string;
+	KUBERNETES_API_KEY?: string;
 }
 
 export class KubernetesCapability extends WorkerEntrypoint<Env> {

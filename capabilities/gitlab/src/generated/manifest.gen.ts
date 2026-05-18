@@ -6,7 +6,7 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 export const manifest = {
 	"getApiV4GroupsIdAccessRequests": {"namespace":"groups","method":"listAccessRequests","http":"get","path":"/api/v4/groups/{id}/access_requests","risk":"medium"},

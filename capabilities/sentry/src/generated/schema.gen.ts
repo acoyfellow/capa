@@ -2219,6 +2219,43 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-check-rules/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Retrieve the current Snapshot status check rules configured for a project.
+         *
+         *     Use this endpoint when external CI needs to evaluate the same Snapshot
+         *     change-type rules that Sentry uses. The endpoint returns the current
+         *     project configuration, not a historical snapshot from when a build was
+         *     processed.
+         *
+         *     The response includes whether status check enforcement is enabled and the
+         *     Snapshot change types that fail the status check.
+         *
+         *     This endpoint requires a bearer token with `project:read` access. Project
+         *     distribution tokens are not supported.
+         *
+         *     Response notes:
+         *
+         *     - `enabled: false` means status-check enforcement is disabled for the project.
+         *     - `rules` contains one boolean per Snapshot change type.
+         *     - `failOnAdded`, `failOnRemoved`, `failOnChanged`, and `failOnRenamed`
+         *       indicate which unapproved change types fail the status check.
+         */
+        get: operations["Retrieve Snapshot status check rules for a project"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/build-distribution/latest/": {
         parameters: {
             query?: never;
@@ -5432,70 +5469,72 @@ export type components = {
             requires_checksum?: boolean;
         };
         GetReplay: {
-            activity?: number | null;
-            browser?: {
-                name?: string | null;
-                version?: string | null;
-            };
-            clicks?: {
-                [key: string]: unknown;
-            }[];
-            count_dead_clicks?: number | null;
-            count_errors?: number | null;
-            count_infos?: number | null;
-            count_rage_clicks?: number | null;
-            count_segments?: number | null;
-            count_urls?: number | null;
-            count_warnings?: number | null;
-            device?: {
-                brand?: string | null;
-                family?: string | null;
-                model?: string | null;
-                name?: string | null;
-            };
-            dist?: string | null;
-            duration?: number | null;
-            environment?: string | null;
-            error_ids?: string[];
-            finished_at?: string | null;
-            has_viewed?: boolean;
-            id?: string;
-            is_archived?: boolean | null;
-            os?: {
-                name?: string | null;
-                version?: string | null;
-            };
-            ota_updates?: {
-                channel?: string | null;
-                runtime_version?: string | null;
-                update_id?: string | null;
-            };
-            platform?: string | null;
-            project_id?: string;
-            releases?: string[];
-            replay_type?: string;
-            sdk?: {
-                name?: string | null;
-                version?: string | null;
-            };
-            started_at?: string | null;
-            tags?: {
-                [key: string]: string[];
-            } | unknown[];
-            trace_ids?: string[];
-            urls?: string[] | null;
-            user?: {
-                display_name?: string | null;
-                email?: string | null;
-                geo?: {
-                    city?: string | null;
-                    country_code?: string | null;
-                    region?: string | null;
-                    subdivision?: string | null;
+            data: {
+                activity?: number | null;
+                browser?: {
+                    name?: string | null;
+                    version?: string | null;
                 };
-                id?: string | null;
-                ip?: string | null;
-                username?: string | null;
+                clicks?: {
+                    [key: string]: unknown;
+                }[];
+                count_dead_clicks?: number | null;
+                count_errors?: number | null;
+                count_infos?: number | null;
+                count_rage_clicks?: number | null;
+                count_segments?: number | null;
+                count_urls?: number | null;
+                count_warnings?: number | null;
+                device?: {
+                    brand?: string | null;
+                    family?: string | null;
+                    model?: string | null;
+                    name?: string | null;
+                };
+                dist?: string | null;
+                duration?: number | null;
+                environment?: string | null;
+                error_ids?: string[];
+                finished_at?: string | null;
+                has_viewed?: boolean;
+                id?: string;
+                is_archived?: boolean | null;
+                os?: {
+                    name?: string | null;
+                    version?: string | null;
+                };
+                ota_updates?: {
+                    channel?: string | null;
+                    runtime_version?: string | null;
+                    update_id?: string | null;
+                };
+                platform?: string | null;
+                project_id?: string;
+                releases?: string[];
+                replay_type?: string;
+                sdk?: {
+                    name?: string | null;
+                    version?: string | null;
+                };
+                started_at?: string | null;
+                tags?: {
+                    [key: string]: string[];
+                } | unknown[];
+                trace_ids?: string[];
+                urls?: string[] | null;
+                user?: {
+                    display_name?: string | null;
+                    email?: string | null;
+                    geo?: {
+                        city?: string | null;
+                        country_code?: string | null;
+                        region?: string | null;
+                        subdivision?: string | null;
+                    };
+                    id?: string | null;
+                    ip?: string | null;
+                    username?: string | null;
+                };
             };
         };
         GetReplayDeletionJob: {
@@ -9244,6 +9283,15 @@ export type components = {
                 metric: "install_size" | "download_size";
                 value: string;
             }[];
+        };
+        ProjectSnapshotStatusCheckRulesResponse: {
+            enabled: boolean;
+            rules: {
+                failOnAdded: boolean;
+                failOnChanged: boolean;
+                failOnRemoved: boolean;
+                failOnRenamed: boolean;
+            };
         };
         ProjectSummary: {
             access: string[];
@@ -24365,70 +24413,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        activity?: number | null;
-                        browser?: {
-                            name?: string | null;
-                            version?: string | null;
-                        };
-                        clicks?: {
-                            [key: string]: unknown;
-                        }[];
-                        count_dead_clicks?: number | null;
-                        count_errors?: number | null;
-                        count_infos?: number | null;
-                        count_rage_clicks?: number | null;
-                        count_segments?: number | null;
-                        count_urls?: number | null;
-                        count_warnings?: number | null;
-                        device?: {
-                            brand?: string | null;
-                            family?: string | null;
-                            model?: string | null;
-                            name?: string | null;
-                        };
-                        dist?: string | null;
-                        duration?: number | null;
-                        environment?: string | null;
-                        error_ids?: string[];
-                        finished_at?: string | null;
-                        has_viewed?: boolean;
-                        id?: string;
-                        is_archived?: boolean | null;
-                        os?: {
-                            name?: string | null;
-                            version?: string | null;
-                        };
-                        ota_updates?: {
-                            channel?: string | null;
-                            runtime_version?: string | null;
-                            update_id?: string | null;
-                        };
-                        platform?: string | null;
-                        project_id?: string;
-                        releases?: string[];
-                        replay_type?: string;
-                        sdk?: {
-                            name?: string | null;
-                            version?: string | null;
-                        };
-                        started_at?: string | null;
-                        tags?: {
-                            [key: string]: string[];
-                        } | unknown[];
-                        trace_ids?: string[];
-                        urls?: string[] | null;
-                        user?: {
-                            display_name?: string | null;
-                            email?: string | null;
-                            geo?: {
-                                city?: string | null;
-                                country_code?: string | null;
-                                region?: string | null;
-                                subdivision?: string | null;
+                        data: {
+                            activity?: number | null;
+                            browser?: {
+                                name?: string | null;
+                                version?: string | null;
                             };
-                            id?: string | null;
-                            ip?: string | null;
-                            username?: string | null;
+                            clicks?: {
+                                [key: string]: unknown;
+                            }[];
+                            count_dead_clicks?: number | null;
+                            count_errors?: number | null;
+                            count_infos?: number | null;
+                            count_rage_clicks?: number | null;
+                            count_segments?: number | null;
+                            count_urls?: number | null;
+                            count_warnings?: number | null;
+                            device?: {
+                                brand?: string | null;
+                                family?: string | null;
+                                model?: string | null;
+                                name?: string | null;
+                            };
+                            dist?: string | null;
+                            duration?: number | null;
+                            environment?: string | null;
+                            error_ids?: string[];
+                            finished_at?: string | null;
+                            has_viewed?: boolean;
+                            id?: string;
+                            is_archived?: boolean | null;
+                            os?: {
+                                name?: string | null;
+                                version?: string | null;
+                            };
+                            ota_updates?: {
+                                channel?: string | null;
+                                runtime_version?: string | null;
+                                update_id?: string | null;
+                            };
+                            platform?: string | null;
+                            project_id?: string;
+                            releases?: string[];
+                            replay_type?: string;
+                            sdk?: {
+                                name?: string | null;
+                                version?: string | null;
+                            };
+                            started_at?: string | null;
+                            tags?: {
+                                [key: string]: string[];
+                            } | unknown[];
+                            trace_ids?: string[];
+                            urls?: string[] | null;
+                            user?: {
+                                display_name?: string | null;
+                                email?: string | null;
+                                geo?: {
+                                    city?: string | null;
+                                    country_code?: string | null;
+                                    region?: string | null;
+                                    subdivision?: string | null;
+                                };
+                                id?: string | null;
+                                ip?: string | null;
+                                username?: string | null;
+                            };
                         };
                     };
                 };
@@ -33207,6 +33257,52 @@ export interface operations {
                             metric: "install_size" | "download_size";
                             value: string;
                         }[];
+                    };
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "Retrieve Snapshot status check rules for a project": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The ID or slug of the project the resource belongs to. */
+                project_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        enabled: boolean;
+                        rules: {
+                            failOnAdded: boolean;
+                            failOnChanged: boolean;
+                            failOnRemoved: boolean;
+                            failOnRenamed: boolean;
+                        };
                     };
                 };
             };

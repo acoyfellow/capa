@@ -2,16 +2,16 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: API Reference vv0
-// Operations:  209
+// Operations:  210
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 
 export class OrganizationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -24,7 +24,7 @@ This is particularly useful for requests with a user bound context. For API key-
 	 *
 	 * `GET /api/0/organizations/` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List Your Organizations",
 			namespace: "organizations",
@@ -37,6 +37,7 @@ This is particularly useful for requests with a user bound context. For API key-
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -46,7 +47,7 @@ such as membership access and teams.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/` — risk: low
 	 */
-	async retrieve(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async retrieve(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Organization",
 			namespace: "organizations",
@@ -59,6 +60,7 @@ such as membership access and teams.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -67,7 +69,7 @@ such as membership access and teams.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/` — risk: medium
 	 */
-	async put(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an Organization",
 			namespace: "organizations",
@@ -80,6 +82,7 @@ such as membership access and teams.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -88,7 +91,7 @@ such as membership access and teams.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/config/integrations/` — risk: medium
 	 */
-	async integrations(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async integrations(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Get Integration Provider Information",
 			namespace: "organizations",
@@ -101,6 +104,7 @@ such as membership access and teams.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -109,7 +113,7 @@ such as membership access and teams.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/dashboards/` — risk: medium
 	 */
-	async listDashboards(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listDashboards(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Custom Dashboards",
 			namespace: "organizations",
@@ -122,6 +126,7 @@ such as membership access and teams.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -130,7 +135,7 @@ such as membership access and teams.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/dashboards/` — risk: medium
 	 */
-	async createDashboard(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createDashboard(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a New Dashboard for an Organization",
 			namespace: "organizations",
@@ -143,6 +148,7 @@ such as membership access and teams.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -151,7 +157,7 @@ such as membership access and teams.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/` — risk: medium
 	 */
-	async retrieveDashboard(organizationIdOrSlug: string, dashboardId: string): Promise<ProofResult<unknown>> {
+	async retrieveDashboard(organizationIdOrSlug: string, dashboardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Organization's Custom Dashboard",
 			namespace: "organizations",
@@ -164,6 +170,7 @@ such as membership access and teams.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -175,7 +182,7 @@ display type
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/` — risk: medium
 	 */
-	async dashboards(organizationIdOrSlug: string, dashboardId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async dashboards(organizationIdOrSlug: string, dashboardId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Edit an Organization's Custom Dashboard",
 			namespace: "organizations",
@@ -188,6 +195,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -196,7 +204,7 @@ display type
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/` — risk: medium
 	 */
-	async deleteDashboard(organizationIdOrSlug: string, dashboardId: string): Promise<ProofResult<unknown>> {
+	async deleteDashboard(organizationIdOrSlug: string, dashboardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Organization's Custom Dashboard",
 			namespace: "organizations",
@@ -209,6 +217,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -217,7 +226,7 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/detectors/` — risk: medium
 	 */
-	async listDetectors(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listDetectors(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Fetch an Organization's Monitors",
 			namespace: "organizations",
@@ -230,6 +239,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -238,7 +248,7 @@ display type
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/detectors/` — risk: medium
 	 */
-	async detectors_0(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async detectors_0(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Mutate an Organization's Monitors",
 			namespace: "organizations",
@@ -251,6 +261,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -259,7 +270,7 @@ display type
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/detectors/` — risk: medium
 	 */
-	async detectors_1(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async detectors_1(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Bulk Delete Monitors",
 			namespace: "organizations",
@@ -272,6 +283,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -280,7 +292,7 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/` — risk: medium
 	 */
-	async retrieveDetector(organizationIdOrSlug: string, detectorId: string): Promise<ProofResult<unknown>> {
+	async retrieveDetector(organizationIdOrSlug: string, detectorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Fetch a Monitor",
 			namespace: "organizations",
@@ -293,6 +305,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -301,7 +314,7 @@ display type
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/` — risk: medium
 	 */
-	async detectors_2(organizationIdOrSlug: string, detectorId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async detectors_2(organizationIdOrSlug: string, detectorId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Monitor by ID",
 			namespace: "organizations",
@@ -314,6 +327,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -322,7 +336,7 @@ display type
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/` — risk: medium
 	 */
-	async deleteDetector(organizationIdOrSlug: string, detectorId: string): Promise<ProofResult<unknown>> {
+	async deleteDetector(organizationIdOrSlug: string, detectorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Monitor",
 			namespace: "organizations",
@@ -335,6 +349,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -343,7 +358,7 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/discover/saved/` — risk: medium
 	 */
-	async saved_0(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async saved_0(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Discover Saved Queries",
 			namespace: "organizations",
@@ -356,6 +371,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -364,7 +380,7 @@ display type
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/discover/saved/` — risk: medium
 	 */
-	async saved_1(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async saved_1(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a New Saved Query",
 			namespace: "organizations",
@@ -377,6 +393,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -385,7 +402,7 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/` — risk: medium
 	 */
-	async retrieveSaved(organizationIdOrSlug: string, queryId: string): Promise<ProofResult<unknown>> {
+	async retrieveSaved(organizationIdOrSlug: string, queryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Organization's Discover Saved Query",
 			namespace: "organizations",
@@ -398,6 +415,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -406,7 +424,7 @@ display type
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/` — risk: medium
 	 */
-	async saved_2(organizationIdOrSlug: string, queryId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async saved_2(organizationIdOrSlug: string, queryId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Edit an Organization's Discover Saved Query",
 			namespace: "organizations",
@@ -419,6 +437,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -427,7 +446,7 @@ display type
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/` — risk: medium
 	 */
-	async deleteSaved(organizationIdOrSlug: string, queryId: string): Promise<ProofResult<unknown>> {
+	async deleteSaved(organizationIdOrSlug: string, queryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Organization's Discover Saved Query",
 			namespace: "organizations",
@@ -440,6 +459,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -448,7 +468,7 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/environments/` — risk: medium
 	 */
-	async listEnvironments(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listEnvironments(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Environments",
 			namespace: "organizations",
@@ -461,6 +481,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -469,7 +490,7 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/eventids/{event_id}/` — risk: medium
 	 */
-	async retrieveEventid(organizationIdOrSlug: string, eventId: string): Promise<ProofResult<unknown>> {
+	async retrieveEventid(organizationIdOrSlug: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Resolve an Event ID",
 			namespace: "organizations",
@@ -482,6 +503,7 @@ display type
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -495,7 +517,7 @@ The `field` query parameter
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/events/` — risk: medium
 	 */
-	async listEvents(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listEvents(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Query Explore Events in Table Format",
 			namespace: "organizations",
@@ -508,6 +530,7 @@ The `field` query parameter
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -519,7 +542,7 @@ on the parameters passe
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/events-timeseries/` — risk: medium
 	 */
-	async listEventsTimeseries(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listEventsTimeseries(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Query Explore Events in Timeseries Format",
 			namespace: "organizations",
@@ -532,6 +555,7 @@ on the parameters passe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -540,7 +564,7 @@ on the parameters passe
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/external-users/` — risk: medium
 	 */
-	async createExternalUser(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createExternalUser(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create an External User",
 			namespace: "organizations",
@@ -553,6 +577,7 @@ on the parameters passe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -561,7 +586,7 @@ on the parameters passe
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/` — risk: medium
 	 */
-	async externalUsers(organizationIdOrSlug: string, externalUserId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async externalUsers(organizationIdOrSlug: string, externalUserId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an External User",
 			namespace: "organizations",
@@ -574,6 +599,7 @@ on the parameters passe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -582,7 +608,7 @@ on the parameters passe
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/` — risk: medium
 	 */
-	async deleteExternalUser(organizationIdOrSlug: string, externalUserId: string): Promise<ProofResult<unknown>> {
+	async deleteExternalUser(organizationIdOrSlug: string, externalUserId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an External User",
 			namespace: "organizations",
@@ -595,6 +621,7 @@ on the parameters passe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -603,7 +630,7 @@ on the parameters passe
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/forwarding/` — risk: medium
 	 */
-	async listForwarding(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listForwarding(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Data Forwarders for an Organization",
 			namespace: "organizations",
@@ -616,6 +643,7 @@ on the parameters passe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -627,7 +655,7 @@ Project-specific overrides can only be created after creating the data
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/forwarding/` — risk: medium
 	 */
-	async createForwarding(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createForwarding(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a Data Forwarder for an Organization",
 			namespace: "organizations",
@@ -640,6 +668,7 @@ Project-specific overrides can only be created after creating the data
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -650,7 +679,7 @@ configuration to be pr
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/` — risk: medium
 	 */
-	async forwarding(organizationIdOrSlug: string, dataForwarderId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async forwarding(organizationIdOrSlug: string, dataForwarderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Data Forwarder for an Organization",
 			namespace: "organizations",
@@ -663,6 +692,7 @@ configuration to be pr
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -671,7 +701,7 @@ configuration to be pr
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/` — risk: medium
 	 */
-	async deleteForwarding(organizationIdOrSlug: string, dataForwarderId: string): Promise<ProofResult<unknown>> {
+	async deleteForwarding(organizationIdOrSlug: string, dataForwarderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Data Forwarder for an Organization",
 			namespace: "organizations",
@@ -684,6 +714,7 @@ configuration to be pr
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -692,7 +723,7 @@ configuration to be pr
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/integrations/` — risk: medium
 	 */
-	async listIntegrations(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listIntegrations(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Available Integrations",
 			namespace: "organizations",
@@ -705,6 +736,7 @@ configuration to be pr
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -715,7 +747,7 @@ integration_id.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/` — risk: medium
 	 */
-	async retrieveIntegration(organizationIdOrSlug: string, integrationId: string): Promise<ProofResult<unknown>> {
+	async retrieveIntegration(organizationIdOrSlug: string, integrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Integration for an Organization",
 			namespace: "organizations",
@@ -728,6 +760,7 @@ integration_id.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -738,7 +771,7 @@ integration_id.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/` — risk: medium
 	 */
-	async deleteIntegration(organizationIdOrSlug: string, integrationId: string): Promise<ProofResult<unknown>> {
+	async deleteIntegration(organizationIdOrSlug: string, integrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Integration for an Organization",
 			namespace: "organizations",
@@ -751,6 +784,7 @@ integration_id.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -759,7 +793,7 @@ integration_id.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/` — risk: medium
 	 */
-	async listIssues(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listIssues(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Issues",
 			namespace: "organizations",
@@ -772,6 +806,7 @@ integration_id.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -782,7 +817,7 @@ integration_id.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/issues/` — risk: medium
 	 */
-	async issues_0(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issues_0(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Bulk Mutate an Organization's Issues",
 			namespace: "organizations",
@@ -795,6 +830,7 @@ integration_id.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -803,7 +839,7 @@ integration_id.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/issues/` — risk: medium
 	 */
-	async issues_1(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async issues_1(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Bulk Remove an Organization's Issues",
 			namespace: "organizations",
@@ -816,6 +852,7 @@ integration_id.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -826,7 +863,7 @@ Response includes pending invites that are approved by organization owners or ma
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/members/` — risk: medium
 	 */
-	async listMembers(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listMembers(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Members",
 			namespace: "organizations",
@@ -839,6 +876,7 @@ Response includes pending invites that are approved by organization owners or ma
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -847,7 +885,7 @@ Response includes pending invites that are approved by organization owners or ma
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/members/` — risk: medium
 	 */
-	async createMember(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMember(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Add a Member to an Organization",
 			namespace: "organizations",
@@ -860,6 +898,7 @@ Response includes pending invites that are approved by organization owners or ma
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -870,7 +909,7 @@ Response will be a pending invite if it has been approved by organization owners
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/members/{member_id}/` — risk: medium
 	 */
-	async retrieveMember(organizationIdOrSlug: string, memberId: string): Promise<ProofResult<unknown>> {
+	async retrieveMember(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Organization Member",
 			namespace: "organizations",
@@ -883,6 +922,7 @@ Response will be a pending invite if it has been approved by organization owners
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -891,7 +931,7 @@ Response will be a pending invite if it has been approved by organization owners
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/members/{member_id}/` — risk: medium
 	 */
-	async members(organizationIdOrSlug: string, memberId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async members(organizationIdOrSlug: string, memberId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an Organization Member's Roles",
 			namespace: "organizations",
@@ -904,6 +944,7 @@ Response will be a pending invite if it has been approved by organization owners
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -912,7 +953,7 @@ Response will be a pending invite if it has been approved by organization owners
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/members/{member_id}/` — risk: medium
 	 */
-	async deleteMember(organizationIdOrSlug: string, memberId: string): Promise<ProofResult<unknown>> {
+	async deleteMember(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Organization Member",
 			namespace: "organizations",
@@ -925,6 +966,7 @@ Response will be a pending invite if it has been approved by organization owners
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -935,7 +977,7 @@ Response will be a pending invite if it has been approved by organization owners
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async updateTeam(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async updateTeam(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Add an Organization Member to a Team",
 			namespace: "organizations",
@@ -948,6 +990,7 @@ Response will be a pending invite if it has been approved by organization owners
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -959,7 +1002,7 @@ automatically granted a minimum team role of `admin` on all team
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async teams(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async teams(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an Organization Member's Team Role",
 			namespace: "organizations",
@@ -972,6 +1015,7 @@ automatically granted a minimum team role of `admin` on all team
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -984,7 +1028,7 @@ table outlines the accepted scopes.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async deleteTeam(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async deleteTeam(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Organization Member from a Team",
 			namespace: "organizations",
@@ -997,6 +1041,7 @@ table outlines the accepted scopes.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1005,7 +1050,7 @@ table outlines the accepted scopes.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/monitors/` — risk: medium
 	 */
-	async listMonitors(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listMonitors(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Monitors for an Organization",
 			namespace: "organizations",
@@ -1018,6 +1063,7 @@ table outlines the accepted scopes.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1026,7 +1072,7 @@ table outlines the accepted scopes.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/monitors/` — risk: medium
 	 */
-	async createMonitor(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMonitor(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a Monitor",
 			namespace: "organizations",
@@ -1039,6 +1085,7 @@ table outlines the accepted scopes.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1047,7 +1094,7 @@ table outlines the accepted scopes.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async retrieveMonitor(organizationIdOrSlug: string, monitorIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async retrieveMonitor(organizationIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Monitor",
 			namespace: "organizations",
@@ -1060,6 +1107,7 @@ table outlines the accepted scopes.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1068,7 +1116,7 @@ table outlines the accepted scopes.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async monitors(organizationIdOrSlug: string, monitorIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async monitors(organizationIdOrSlug: string, monitorIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Monitor",
 			namespace: "organizations",
@@ -1081,6 +1129,7 @@ table outlines the accepted scopes.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1089,7 +1138,7 @@ table outlines the accepted scopes.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async deleteMonitor(organizationIdOrSlug: string, monitorIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async deleteMonitor(organizationIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Monitor or Monitor Environments",
 			namespace: "organizations",
@@ -1102,6 +1151,7 @@ table outlines the accepted scopes.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1110,7 +1160,7 @@ table outlines the accepted scopes.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/` — risk: medium
 	 */
-	async checkins(organizationIdOrSlug: string, monitorIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async checkins(organizationIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Check-Ins for a Monitor",
 			namespace: "organizations",
@@ -1123,6 +1173,7 @@ table outlines the accepted scopes.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1133,7 +1184,7 @@ Notification Actions notify a set of members when an action has been triggered t
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/notifications/actions/` — risk: medium
 	 */
-	async actions_0(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async actions_0(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List Spike Protection Notifications",
 			namespace: "organizations",
@@ -1146,6 +1197,7 @@ Notification Actions notify a set of members when an action has been triggered t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1157,7 +1209,7 @@ For exam
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/notifications/actions/` — risk: medium
 	 */
-	async actions_1(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async actions_1(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a Spike Protection Notification Action",
 			namespace: "organizations",
@@ -1170,6 +1222,7 @@ For exam
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1180,7 +1233,7 @@ Notification Actions notify a set of members when an action has been triggered t
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/` — risk: medium
 	 */
-	async retrieveAction(organizationIdOrSlug: string, actionId: string): Promise<ProofResult<unknown>> {
+	async retrieveAction(organizationIdOrSlug: string, actionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Spike Protection Notification Action",
 			namespace: "organizations",
@@ -1193,6 +1246,7 @@ Notification Actions notify a set of members when an action has been triggered t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1204,7 +1258,7 @@ For example, org
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/` — risk: medium
 	 */
-	async actions_2(organizationIdOrSlug: string, actionId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async actions_2(organizationIdOrSlug: string, actionId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Spike Protection Notification Action",
 			namespace: "organizations",
@@ -1217,6 +1271,7 @@ For example, org
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1228,7 +1283,7 @@ For example, org
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/` — risk: medium
 	 */
-	async deleteAction(organizationIdOrSlug: string, actionId: string): Promise<ProofResult<unknown>> {
+	async deleteAction(organizationIdOrSlug: string, actionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Spike Protection Notification Action",
 			namespace: "organizations",
@@ -1241,6 +1296,7 @@ For example, org
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1252,7 +1308,7 @@ including whether the artifact is installable, the install URL, download cou
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/install-details/` — risk: medium
 	 */
-	async installDetails(organizationIdOrSlug: string, artifactId: string): Promise<ProofResult<unknown>> {
+	async installDetails(organizationIdOrSlug: string, artifactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve install info for a given artifact",
 			namespace: "organizations",
@@ -1265,6 +1321,7 @@ including whether the artifact is installable, the install URL, download cou
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1276,7 +1333,7 @@ When a base artifact exists (either from commit comparison or v
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/size-analysis/` — risk: medium
 	 */
-	async sizeAnalysis(organizationIdOrSlug: string, artifactId: string): Promise<ProofResult<unknown>> {
+	async sizeAnalysis(organizationIdOrSlug: string, artifactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Size Analysis results for a given artifact",
 			namespace: "organizations",
@@ -1289,6 +1346,7 @@ When a base artifact exists (either from commit comparison or v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1297,7 +1355,7 @@ When a base artifact exists (either from commit comparison or v
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repositories/` — risk: medium
 	 */
-	async repositories(organizationIdOrSlug: string, owner: string): Promise<ProofResult<unknown>> {
+	async repositories(organizationIdOrSlug: string, owner: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieves list of repositories for a given owner",
 			namespace: "organizations",
@@ -1310,6 +1368,7 @@ When a base artifact exists (either from commit comparison or v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1318,7 +1377,7 @@ When a base artifact exists (either from commit comparison or v
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repositories/sync/` — risk: medium
 	 */
-	async sync_0(organizationIdOrSlug: string, owner: string): Promise<ProofResult<unknown>> {
+	async sync_0(organizationIdOrSlug: string, owner: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Gets syncing status for repositories for an integrated org",
 			namespace: "organizations",
@@ -1331,6 +1390,7 @@ When a base artifact exists (either from commit comparison or v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1339,7 +1399,7 @@ When a base artifact exists (either from commit comparison or v
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repositories/sync/` — risk: medium
 	 */
-	async sync_1(organizationIdOrSlug: string, owner: string): Promise<ProofResult<unknown>> {
+	async sync_1(organizationIdOrSlug: string, owner: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Syncs repositories from an integrated org with GitHub",
 			namespace: "organizations",
@@ -1352,6 +1412,7 @@ When a base artifact exists (either from commit comparison or v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1360,7 +1421,7 @@ When a base artifact exists (either from commit comparison or v
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repositories/tokens/` — risk: medium
 	 */
-	async tokens(organizationIdOrSlug: string, owner: string): Promise<ProofResult<unknown>> {
+	async tokens(organizationIdOrSlug: string, owner: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieves a paginated list of repository tokens for a given owner",
 			namespace: "organizations",
@@ -1373,6 +1434,7 @@ When a base artifact exists (either from commit comparison or v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1381,7 +1443,7 @@ When a base artifact exists (either from commit comparison or v
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repository/{repository}/` — risk: medium
 	 */
-	async retrieveRepository(organizationIdOrSlug: string, owner: string, repository: string): Promise<ProofResult<unknown>> {
+	async retrieveRepository(organizationIdOrSlug: string, owner: string, repository: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieves a single repository for a given owner",
 			namespace: "organizations",
@@ -1394,6 +1456,7 @@ When a base artifact exists (either from commit comparison or v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1402,7 +1465,7 @@ When a base artifact exists (either from commit comparison or v
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repository/{repository}/branches/` — risk: medium
 	 */
-	async branches(organizationIdOrSlug: string, owner: string, repository: string): Promise<ProofResult<unknown>> {
+	async branches(organizationIdOrSlug: string, owner: string, repository: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieves list of branches for a given owner and repository",
 			namespace: "organizations",
@@ -1415,6 +1478,7 @@ When a base artifact exists (either from commit comparison or v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1423,7 +1487,7 @@ When a base artifact exists (either from commit comparison or v
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repository/{repository}/test-results/` — risk: medium
 	 */
-	async testResults(organizationIdOrSlug: string, owner: string, repository: string): Promise<ProofResult<unknown>> {
+	async testResults(organizationIdOrSlug: string, owner: string, repository: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve paginated list of test results for repository, owner, and organization",
 			namespace: "organizations",
@@ -1436,6 +1500,7 @@ When a base artifact exists (either from commit comparison or v
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1445,7 +1510,7 @@ Also accepts a query parameter to specify the time period for the metrics.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repository/{repository}/test-results-aggregates/` — risk: medium
 	 */
-	async testResultsAggregates(organizationIdOrSlug: string, owner: string, repository: string): Promise<ProofResult<unknown>> {
+	async testResultsAggregates(organizationIdOrSlug: string, owner: string, repository: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve aggregated test result metrics for repository, owner, and organization",
 			namespace: "organizations",
@@ -1458,6 +1523,7 @@ Also accepts a query parameter to specify the time period for the metrics.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1467,7 +1533,7 @@ It accepts a list of test suites as a query parameter to specify individual test
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repository/{repository}/test-suites/` — risk: medium
 	 */
-	async testSuites(organizationIdOrSlug: string, owner: string, repository: string): Promise<ProofResult<unknown>> {
+	async testSuites(organizationIdOrSlug: string, owner: string, repository: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve test suites belonging to a repository's test results",
 			namespace: "organizations",
@@ -1480,6 +1546,7 @@ It accepts a list of test suites as a query parameter to specify individual test
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1488,7 +1555,7 @@ It accepts a list of test suites as a query parameter to specify individual test
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/prevent/owner/{owner}/repository/{repository}/token/regenerate/` — risk: medium
 	 */
-	async regenerate(organizationIdOrSlug: string, owner: string, repository: string): Promise<ProofResult<unknown>> {
+	async regenerate(organizationIdOrSlug: string, owner: string, repository: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Regenerates a repository upload token and returns the new token",
 			namespace: "organizations",
@@ -1501,6 +1568,7 @@ It accepts a list of test suites as a query parameter to specify individual test
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1512,7 +1580,7 @@ to identify
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/project-keys/` — risk: medium
 	 */
-	async listProjectKeys(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listProjectKeys(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Client Keys",
 			namespace: "organizations",
@@ -1525,6 +1593,7 @@ to identify
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1533,7 +1602,7 @@ to identify
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/projects/` — risk: medium
 	 */
-	async listProjects(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listProjects(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Projects",
 			namespace: "organizations",
@@ -1546,6 +1615,7 @@ to identify
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1554,7 +1624,7 @@ to identify
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/projects/{project_id_or_slug}/detectors/` — risk: medium
 	 */
-	async projectsDetectors(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async projectsDetectors(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a Monitor for a Project",
 			namespace: "organizations",
@@ -1567,6 +1637,7 @@ to identify
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1575,7 +1646,7 @@ to identify
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/relay_usage/` — risk: medium
 	 */
-	async listRelayUsage(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listRelayUsage(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's trusted Relays",
 			namespace: "organizations",
@@ -1588,6 +1659,7 @@ to identify
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1600,7 +1672,7 @@ Constructs a response ke
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/release-threshold-statuses/` — risk: medium
 	 */
-	async listReleaseThresholdStatuses(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listReleaseThresholdStatuses(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Statuses of Release Thresholds (Alpha)",
 			namespace: "organizations",
@@ -1613,6 +1685,7 @@ Constructs a response ke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1621,7 +1694,7 @@ Constructs a response ke
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/` — risk: medium
 	 */
-	async retrieveReleas(organizationIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async retrieveReleas(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Organization's Release",
 			namespace: "organizations",
@@ -1634,6 +1707,7 @@ Constructs a response ke
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1643,7 +1717,7 @@ the release (the ref, url, and dates).
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/releases/{version}/` — risk: medium
 	 */
-	async releases(organizationIdOrSlug: string, version: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async releases(organizationIdOrSlug: string, version: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an Organization's Release",
 			namespace: "organizations",
@@ -1656,6 +1730,7 @@ the release (the ref, url, and dates).
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1664,7 +1739,7 @@ the release (the ref, url, and dates).
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/releases/{version}/` — risk: medium
 	 */
-	async deleteReleas(organizationIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async deleteReleas(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Organization's Release",
 			namespace: "organizations",
@@ -1677,6 +1752,7 @@ the release (the ref, url, and dates).
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1685,7 +1761,7 @@ the release (the ref, url, and dates).
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/` — risk: medium
 	 */
-	async deploys_0(organizationIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async deploys_0(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Release's Deploys",
 			namespace: "organizations",
@@ -1698,6 +1774,7 @@ the release (the ref, url, and dates).
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1706,7 +1783,7 @@ the release (the ref, url, and dates).
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/` — risk: medium
 	 */
-	async deploys_1(organizationIdOrSlug: string, version: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deploys_1(organizationIdOrSlug: string, version: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a Deploy",
 			namespace: "organizations",
@@ -1719,6 +1796,7 @@ the release (the ref, url, and dates).
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1729,7 +1807,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/replay-count/` — risk: medium
 	 */
-	async listReplayCount(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listReplayCount(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Count of Replays for a Given Issue or Transaction",
 			namespace: "organizations",
@@ -1742,6 +1820,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1750,7 +1829,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/replay-selectors/` — risk: medium
 	 */
-	async listReplaySelectors(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listReplaySelectors(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Selectors",
 			namespace: "organizations",
@@ -1763,6 +1842,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1771,7 +1851,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/replays/` — risk: medium
 	 */
-	async listReplays(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listReplays(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Replays",
 			namespace: "organizations",
@@ -1784,6 +1864,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1792,7 +1873,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/replays/{replay_id}/` — risk: medium
 	 */
-	async retrieveReplay(organizationIdOrSlug: string, replayId: string): Promise<ProofResult<unknown>> {
+	async retrieveReplay(organizationIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Replay Instance",
 			namespace: "organizations",
@@ -1805,6 +1886,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1813,7 +1895,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/repos/{repo_id}/commits/` — risk: medium
 	 */
-	async reposCommits(organizationIdOrSlug: string, repoId: string): Promise<ProofResult<unknown>> {
+	async reposCommits(organizationIdOrSlug: string, repoId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Repository's Commits",
 			namespace: "organizations",
@@ -1826,6 +1908,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1836,7 +1919,7 @@ Note that the members field will only contain up to 10,000 members.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups` — risk: medium
 	 */
-	async Groups_0(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async Groups_0(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Paginated Teams",
 			namespace: "organizations",
@@ -1849,6 +1932,7 @@ Note that the members field will only contain up to 10,000 members.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1861,7 +1945,7 @@ Note that teams are always created with an
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups` — risk: medium
 	 */
-	async Groups_1(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async Groups_1(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Provision a New Team",
 			namespace: "organizations",
@@ -1874,6 +1958,7 @@ Note that teams are always created with an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1883,7 +1968,7 @@ Note that teams are always created with an
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}` — risk: medium
 	 */
-	async retrieveGroup(organizationIdOrSlug: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async retrieveGroup(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Query an Individual Team",
 			namespace: "organizations",
@@ -1896,6 +1981,7 @@ Note that teams are always created with an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1904,7 +1990,7 @@ Note that teams are always created with an
 	 *
 	 * `PATCH /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}` — risk: medium
 	 */
-	async Groups_2(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async Groups_2(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Team's Attributes",
 			namespace: "organizations",
@@ -1917,6 +2003,7 @@ Note that teams are always created with an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1925,7 +2012,7 @@ Note that teams are always created with an
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}` — risk: medium
 	 */
-	async deleteGroup(organizationIdOrSlug: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async deleteGroup(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Individual Team",
 			namespace: "organizations",
@@ -1938,6 +2025,7 @@ Note that teams are always created with an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1946,7 +2034,7 @@ Note that teams are always created with an
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Users` — risk: medium
 	 */
-	async Users_0(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async Users_0(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's SCIM Members",
 			namespace: "organizations",
@@ -1959,6 +2047,7 @@ Note that teams are always created with an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1969,7 +2058,7 @@ Note that this API does not support setting secondary emails.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/scim/v2/Users` — risk: medium
 	 */
-	async Users_1(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async Users_1(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Provision a New Organization Member",
 			namespace: "organizations",
@@ -1982,6 +2071,7 @@ Note that this API does not support setting secondary emails.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1992,7 +2082,7 @@ Sentry's SCIM API does not currently
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}` — risk: medium
 	 */
-	async retrieveUser(organizationIdOrSlug: string, memberId: string): Promise<ProofResult<unknown>> {
+	async retrieveUser(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Query an Individual Organization Member",
 			namespace: "organizations",
@@ -2005,6 +2095,7 @@ Sentry's SCIM API does not currently
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2013,7 +2104,7 @@ Sentry's SCIM API does not currently
 	 *
 	 * `PATCH /api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}` — risk: medium
 	 */
-	async Users_2(organizationIdOrSlug: string, memberId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async Users_2(organizationIdOrSlug: string, memberId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an Organization Member's Attributes",
 			namespace: "organizations",
@@ -2026,6 +2117,7 @@ Sentry's SCIM API does not currently
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2034,7 +2126,7 @@ Sentry's SCIM API does not currently
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}` — risk: medium
 	 */
-	async deleteUser(organizationIdOrSlug: string, memberId: string): Promise<ProofResult<unknown>> {
+	async deleteUser(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Organization Member via SCIM",
 			namespace: "organizations",
@@ -2047,6 +2139,7 @@ Sentry's SCIM API does not currently
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2055,7 +2148,7 @@ Sentry's SCIM API does not currently
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/sentry-apps/` — risk: medium
 	 */
-	async listSentryApps(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listSentryApps(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve the custom integrations created by an organization",
 			namespace: "organizations",
@@ -2068,6 +2161,7 @@ Sentry's SCIM API does not currently
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2080,7 +2174,7 @@ The date range i
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/sessions/` — risk: medium
 	 */
-	async listSessions(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listSessions(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Release Health Session Statistics",
 			namespace: "organizations",
@@ -2093,6 +2187,7 @@ The date range i
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2101,7 +2196,7 @@ The date range i
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/shortids/{issue_id}/` — risk: medium
 	 */
-	async retrieveShortid(organizationIdOrSlug: string, issueId: string): Promise<ProofResult<unknown>> {
+	async retrieveShortid(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Resolve a Short ID",
 			namespace: "organizations",
@@ -2114,6 +2209,7 @@ The date range i
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2122,7 +2218,7 @@ The date range i
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/stats-summary/` — risk: medium
 	 */
-	async listStatsSummary(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listStatsSummary(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Organization's Events Count by Project",
 			namespace: "organizations",
@@ -2135,6 +2231,7 @@ The date range i
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2144,7 +2241,7 @@ Select a field, define a date range, and group or filter by columns.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/stats_v2/` — risk: medium
 	 */
-	async listStatsV2(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listStatsV2(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Event Counts for an Organization (v2)",
 			namespace: "organizations",
@@ -2157,6 +2254,7 @@ Select a field, define a date range, and group or filter by columns.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2165,7 +2263,7 @@ Select a field, define a date range, and group or filter by columns.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/teams/` — risk: medium
 	 */
-	async listTeams(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listTeams(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Teams",
 			namespace: "organizations",
@@ -2178,6 +2276,7 @@ Select a field, define a date range, and group or filter by columns.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2187,7 +2286,7 @@ or `slug` body params to be set.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/teams/` — risk: medium
 	 */
-	async createTeam(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createTeam(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a New Team",
 			namespace: "organizations",
@@ -2200,6 +2299,7 @@ or `slug` body params to be set.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2209,7 +2309,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/user-teams/` — risk: medium
 	 */
-	async listUserTeams(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listUserTeams(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a User's Teams for an Organization",
 			namespace: "organizations",
@@ -2222,6 +2322,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2230,7 +2331,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/workflows/` — risk: medium
 	 */
-	async listWorkflows(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listWorkflows(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Fetch Alerts",
 			namespace: "organizations",
@@ -2243,6 +2344,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2251,7 +2353,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/workflows/` — risk: medium
 	 */
-	async createWorkflow(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createWorkflow(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create an Alert for an Organization",
 			namespace: "organizations",
@@ -2264,6 +2366,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2272,7 +2375,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/workflows/` — risk: medium
 	 */
-	async workflows_0(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async workflows_0(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Mutate an Organization's Alerts",
 			namespace: "organizations",
@@ -2285,6 +2388,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2293,7 +2397,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/workflows/` — risk: medium
 	 */
-	async workflows_1(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async workflows_1(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Bulk Delete Alerts",
 			namespace: "organizations",
@@ -2306,6 +2410,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2314,7 +2419,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/` — risk: medium
 	 */
-	async retrieveWorkflow(organizationIdOrSlug: string, workflowId: string): Promise<ProofResult<unknown>> {
+	async retrieveWorkflow(organizationIdOrSlug: string, workflowId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Fetch an Alert",
 			namespace: "organizations",
@@ -2327,6 +2432,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2335,7 +2441,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/` — risk: medium
 	 */
-	async workflows_2(organizationIdOrSlug: string, workflowId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async workflows_2(organizationIdOrSlug: string, workflowId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an Alert by ID",
 			namespace: "organizations",
@@ -2348,6 +2454,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2356,7 +2463,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/` — risk: medium
 	 */
-	async deleteWorkflow(organizationIdOrSlug: string, workflowId: string): Promise<ProofResult<unknown>> {
+	async deleteWorkflow(organizationIdOrSlug: string, workflowId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Alert",
 			namespace: "organizations",
@@ -2369,6 +2476,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2377,7 +2485,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/repos/` — risk: medium
 	 */
-	async listRepos(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listRepos(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Repositories",
 			namespace: "organizations",
@@ -2390,6 +2498,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2399,7 +2508,7 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/values/` — risk: medium
 	 */
-	async values(organizationIdOrSlug: string, issueId: string, key: string): Promise<ProofResult<unknown>> {
+	async values(organizationIdOrSlug: string, issueId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Tag's Values for an Issue",
 			namespace: "organizations",
@@ -2412,6 +2521,7 @@ Returns at most 1000 values when paginated.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2420,7 +2530,7 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/hashes/` — risk: medium
 	 */
-	async hashes(organizationIdOrSlug: string, issueId: string): Promise<ProofResult<unknown>> {
+	async hashes(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Issue's Hashes",
 			namespace: "organizations",
@@ -2433,6 +2543,7 @@ Returns at most 1000 values when paginated.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2441,7 +2552,7 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/` — risk: medium
 	 */
-	async retrieveIssue(organizationIdOrSlug: string, issueId: string): Promise<ProofResult<unknown>> {
+	async retrieveIssue(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Issue",
 			namespace: "organizations",
@@ -2454,6 +2565,7 @@ Returns at most 1000 values when paginated.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2462,7 +2574,7 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/` — risk: medium
 	 */
-	async issues_2(organizationIdOrSlug: string, issueId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issues_2(organizationIdOrSlug: string, issueId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an Issue",
 			namespace: "organizations",
@@ -2475,6 +2587,7 @@ Returns at most 1000 values when paginated.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2483,7 +2596,7 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/` — risk: medium
 	 */
-	async deleteIssue(organizationIdOrSlug: string, issueId: string): Promise<ProofResult<unknown>> {
+	async deleteIssue(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Remove an Issue",
 			namespace: "organizations",
@@ -2496,6 +2609,7 @@ Returns at most 1000 values when paginated.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2504,7 +2618,7 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/` — risk: medium
 	 */
-	async listReleases(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listReleases(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Releases",
 			namespace: "organizations",
@@ -2517,6 +2631,7 @@ Returns at most 1000 values when paginated.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2528,7 +2643,7 @@ first seen events with the release that might have introduced the
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/releases/` — risk: medium
 	 */
-	async createReleas(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReleas(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a New Release for an Organization",
 			namespace: "organizations",
@@ -2541,6 +2656,7 @@ first seen events with the release that might have introduced the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2549,7 +2665,7 @@ first seen events with the release that might have introduced the
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/` — risk: medium
 	 */
-	async files_0(organizationIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async files_0(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Release Files",
 			namespace: "organizations",
@@ -2562,6 +2678,7 @@ first seen events with the release that might have introduced the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2574,7 +2691,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/` — risk: medium
 	 */
-	async files_1(organizationIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async files_1(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Upload a New Organization Release File",
 			namespace: "organizations",
@@ -2587,6 +2704,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2595,7 +2713,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async retrieveFile(organizationIdOrSlug: string, version: string, fileId: string): Promise<ProofResult<unknown>> {
+	async retrieveFile(organizationIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Organization Release's File",
 			namespace: "organizations",
@@ -2608,6 +2726,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2616,7 +2735,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async files_2(organizationIdOrSlug: string, version: string, fileId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async files_2(organizationIdOrSlug: string, version: string, fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an Organization Release File",
 			namespace: "organizations",
@@ -2629,6 +2748,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2637,7 +2757,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async deleteFile(organizationIdOrSlug: string, version: string, fileId: string): Promise<ProofResult<unknown>> {
+	async deleteFile(organizationIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an Organization Release's File",
 			namespace: "organizations",
@@ -2650,6 +2770,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2658,7 +2779,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/commits/` — risk: medium
 	 */
-	async releasesCommits(organizationIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async releasesCommits(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization Release's Commits",
 			namespace: "organizations",
@@ -2671,6 +2792,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2679,7 +2801,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/commitfiles/` — risk: medium
 	 */
-	async commitfiles(organizationIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async commitfiles(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Files Changed in a Release's Commits",
 			namespace: "organizations",
@@ -2692,6 +2814,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2700,7 +2823,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/sentry-app-installations/` — risk: medium
 	 */
-	async listSentryAppInstallations(organizationIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listSentryAppInstallations(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Organization's Integration Platform Installations",
 			namespace: "organizations",
@@ -2713,6 +2836,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2721,7 +2845,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/spike-protections/` — risk: medium
 	 */
-	async createSpikeProtection(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createSpikeProtection(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Enable Spike Protection",
 			namespace: "organizations",
@@ -2734,6 +2858,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2742,7 +2867,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/spike-protections/` — risk: medium
 	 */
-	async spikeProtections(organizationIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async spikeProtections(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Disable Spike Protection",
 			namespace: "organizations",
@@ -2755,6 +2880,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2768,7 +2894,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/` — risk: medium
 	 */
-	async autofix_0(organizationIdOrSlug: string, issueId: string): Promise<ProofResult<unknown>> {
+	async autofix_0(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Seer Issue Fix State",
 			namespace: "organizations",
@@ -2781,6 +2907,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2796,7 +2923,7 @@ The issue fix process can:
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/` — risk: medium
 	 */
-	async autofix_1(organizationIdOrSlug: string, issueId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async autofix_1(organizationIdOrSlug: string, issueId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Start Seer Issue Fix",
 			namespace: "organizations",
@@ -2809,6 +2936,7 @@ The issue fix process can:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2817,7 +2945,7 @@ The issue fix process can:
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/` — risk: medium
 	 */
-	async events(organizationIdOrSlug: string, issueId: string): Promise<ProofResult<unknown>> {
+	async events(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List an Issue's Events",
 			namespace: "organizations",
@@ -2830,6 +2958,7 @@ The issue fix process can:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2838,7 +2967,7 @@ The issue fix process can:
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/{event_id}/` — risk: medium
 	 */
-	async retrieveEvent(organizationIdOrSlug: string, issueId: string, eventId: string): Promise<ProofResult<unknown>> {
+	async retrieveEvent(organizationIdOrSlug: string, issueId: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Issue Event",
 			namespace: "organizations",
@@ -2851,6 +2980,7 @@ The issue fix process can:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2859,7 +2989,7 @@ The issue fix process can:
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/external-issues/` — risk: medium
 	 */
-	async externalIssues(organizationIdOrSlug: string, issueId: string): Promise<ProofResult<unknown>> {
+	async externalIssues(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve custom integration issue links for the given Sentry issue",
 			namespace: "organizations",
@@ -2872,6 +3002,7 @@ The issue fix process can:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2880,7 +3011,7 @@ The issue fix process can:
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/` — risk: medium
 	 */
-	async retrieveTag(organizationIdOrSlug: string, issueId: string, key: string): Promise<ProofResult<unknown>> {
+	async retrieveTag(organizationIdOrSlug: string, issueId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Tag Details",
 			namespace: "organizations",
@@ -2893,13 +3024,14 @@ The issue fix process can:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ProjectsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2911,7 +3043,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/` — risk: low
 	 */
-	async retrieve(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async retrieve(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Project",
 			namespace: "projects",
@@ -2924,6 +3056,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2935,7 +3068,7 @@ Note that solely having the **`project:read`** scope restricts updatable setting
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/` — risk: medium
 	 */
-	async update(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Project",
 			namespace: "projects",
@@ -2948,6 +3081,7 @@ Note that solely having the **`project:read`** scope restricts updatable setting
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2959,7 +3093,7 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/` — risk: medium
 	 */
-	async del(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async del(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Project",
 			namespace: "projects",
@@ -2972,6 +3106,7 @@ begun the state of a project changes and will be hidden from most public vi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2980,7 +3115,7 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/` — risk: medium
 	 */
-	async listEnvironments(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listEnvironments(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Environments",
 			namespace: "projects",
@@ -2993,6 +3128,7 @@ begun the state of a project changes and will be hidden from most public vi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3001,7 +3137,7 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/` — risk: medium
 	 */
-	async retrieveEnvironment(organizationIdOrSlug: string, projectIdOrSlug: string, environment: string): Promise<ProofResult<unknown>> {
+	async retrieveEnvironment(organizationIdOrSlug: string, projectIdOrSlug: string, environment: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Project Environment",
 			namespace: "projects",
@@ -3014,6 +3150,7 @@ begun the state of a project changes and will be hidden from most public vi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3022,7 +3159,7 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/` — risk: medium
 	 */
-	async environments(organizationIdOrSlug: string, projectIdOrSlug: string, environment: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async environments(organizationIdOrSlug: string, projectIdOrSlug: string, environment: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Project Environment",
 			namespace: "projects",
@@ -3035,6 +3172,7 @@ begun the state of a project changes and will be hidden from most public vi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3043,7 +3181,7 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/` — risk: medium
 	 */
-	async listEvents(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listEvents(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Error Events",
 			namespace: "projects",
@@ -3056,6 +3194,7 @@ begun the state of a project changes and will be hidden from most public vi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3064,7 +3203,7 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/source-map-debug/` — risk: medium
 	 */
-	async sourceMapDebug(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string): Promise<ProofResult<unknown>> {
+	async sourceMapDebug(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Debug Issues Related to Source Maps for a Given Event",
 			namespace: "projects",
@@ -3077,6 +3216,7 @@ begun the state of a project changes and will be hidden from most public vi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3086,7 +3226,7 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/` — risk: medium
 	 */
-	async listFilters(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listFilters(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Data Filters",
 			namespace: "projects",
@@ -3099,6 +3239,7 @@ begun the state of a project changes and will be hidden from most public vi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3107,7 +3248,7 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/{filter_id}/` — risk: medium
 	 */
-	async filters(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async filters(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an Inbound Data Filter",
 			namespace: "projects",
@@ -3120,6 +3261,7 @@ begun the state of a project changes and will be hidden from most public vi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3128,7 +3270,7 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/` — risk: medium
 	 */
-	async listKeys(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listKeys(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Client Keys",
 			namespace: "projects",
@@ -3141,6 +3283,7 @@ begun the state of a project changes and will be hidden from most public vi
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3150,7 +3293,7 @@ are generated by the server.
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/` — risk: medium
 	 */
-	async createKey(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createKey(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a New Client Key",
 			namespace: "projects",
@@ -3163,6 +3306,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3171,7 +3315,7 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/` — risk: medium
 	 */
-	async retrieveKey(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string): Promise<ProofResult<unknown>> {
+	async retrieveKey(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Client Key",
 			namespace: "projects",
@@ -3184,6 +3328,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3192,7 +3337,7 @@ are generated by the server.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/` — risk: medium
 	 */
-	async keys(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async keys(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Client Key",
 			namespace: "projects",
@@ -3205,6 +3350,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3213,7 +3359,7 @@ are generated by the server.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/` — risk: medium
 	 */
-	async deleteKey(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string): Promise<ProofResult<unknown>> {
+	async deleteKey(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Client Key",
 			namespace: "projects",
@@ -3226,6 +3372,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3234,7 +3381,7 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/members/` — risk: medium
 	 */
-	async listMembers(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listMembers(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Organization Members",
 			namespace: "projects",
@@ -3247,6 +3394,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3255,7 +3403,7 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async retrieveMonitor(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async retrieveMonitor(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Monitor for a Project",
 			namespace: "projects",
@@ -3268,6 +3416,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3276,7 +3425,7 @@ are generated by the server.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async monitors(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async monitors(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Monitor for a Project",
 			namespace: "projects",
@@ -3289,6 +3438,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3297,7 +3447,7 @@ are generated by the server.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async deleteMonitor(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async deleteMonitor(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Monitor or Monitor Environments for a Project",
 			namespace: "projects",
@@ -3310,6 +3460,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3318,7 +3469,7 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/` — risk: medium
 	 */
-	async checkins(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async checkins(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Check-Ins for a Monitor by Project",
 			namespace: "projects",
@@ -3331,6 +3482,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3339,7 +3491,7 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/` — risk: medium
 	 */
-	async listOwnership(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listOwnership(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Ownership Configuration for a Project",
 			namespace: "projects",
@@ -3352,6 +3504,7 @@ are generated by the server.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3361,7 +3514,7 @@ attributes submitted are modified.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/` — risk: medium
 	 */
-	async ownership(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async ownership(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update Ownership Configuration for a Project",
 			namespace: "projects",
@@ -3374,6 +3527,7 @@ attributes submitted are modified.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3385,19 +3539,45 @@ want external CI to evaluate the same Si
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-check-rules/` — risk: medium
 	 */
-	async statusCheckRules(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async sizeAnalysisStatusCheckRules(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Size Analysis status check rules for a project",
 			namespace: "projects",
-			method: "statusCheckRules",
+			method: "sizeAnalysisStatusCheckRules",
 			http: "get",
 			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/preprod/size-analysis/status-check-rules/`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["statusCheckRules"],
+			overrides: this.overrides["sizeAnalysisStatusCheckRules"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Retrieve the current Snapshot status check rules configured for a project.
+
+Use this endpoint when external CI needs to evaluate the same Snapshot
+change-type rules that Sentry uses. The endpoint retu
+	 *
+	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-check-rules/` — risk: medium
+	 */
+	async snapshotsStatusCheckRules(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "Retrieve Snapshot status check rules for a project",
+			namespace: "projects",
+			method: "snapshotsStatusCheckRules",
+			http: "get",
+			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/preprod/snapshots/status-check-rules/`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["snapshotsStatusCheckRules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3410,7 +3590,7 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/build-distribution/latest/` — risk: medium
 	 */
-	async latest(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async latest(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Get the latest installable build for a project",
 			namespace: "projects",
@@ -3423,6 +3603,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3431,7 +3612,7 @@ whether an update is a
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/` — risk: medium
 	 */
-	async deleteReplay(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string): Promise<ProofResult<unknown>> {
+	async deleteReplay(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Replay Instance",
 			namespace: "projects",
@@ -3444,6 +3625,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3452,7 +3634,7 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/clicks/` — risk: medium
 	 */
-	async clicks(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string): Promise<ProofResult<unknown>> {
+	async clicks(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List Clicked Nodes",
 			namespace: "projects",
@@ -3465,6 +3647,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3473,7 +3656,7 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/` — risk: medium
 	 */
-	async recordingSegments(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string): Promise<ProofResult<unknown>> {
+	async recordingSegments(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List Recording Segments",
 			namespace: "projects",
@@ -3486,6 +3669,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3494,7 +3678,7 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/{segment_id}/` — risk: medium
 	 */
-	async retrieveRecordingSegment(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, segmentId: string): Promise<ProofResult<unknown>> {
+	async retrieveRecordingSegment(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, segmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Recording Segment",
 			namespace: "projects",
@@ -3507,6 +3691,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3515,7 +3700,7 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/viewed-by/` — risk: medium
 	 */
-	async viewedBy(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string): Promise<ProofResult<unknown>> {
+	async viewedBy(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List Users Who Have Viewed a Replay",
 			namespace: "projects",
@@ -3528,6 +3713,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3536,7 +3722,7 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/` — risk: medium
 	 */
-	async delete_0(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async delete_0(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List Replay Batch-Deletion Jobs",
 			namespace: "projects",
@@ -3549,6 +3735,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3557,7 +3744,7 @@ whether an update is a
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/` — risk: medium
 	 */
-	async delete_1(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async delete_1(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create Replay Batch Deletion Job",
 			namespace: "projects",
@@ -3570,6 +3757,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3578,7 +3766,7 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/{job_id}/` — risk: medium
 	 */
-	async retrieveDelete(organizationIdOrSlug: string, projectIdOrSlug: string, jobId: string): Promise<ProofResult<unknown>> {
+	async retrieveDelete(organizationIdOrSlug: string, projectIdOrSlug: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Replay Batch-Deletion Job",
 			namespace: "projects",
@@ -3591,6 +3779,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3599,7 +3788,7 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/` — risk: medium
 	 */
-	async listSymbolSources(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listSymbolSources(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Project's Symbol Sources",
 			namespace: "projects",
@@ -3612,6 +3801,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3620,7 +3810,7 @@ whether an update is a
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/` — risk: medium
 	 */
-	async createSymbolSource(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createSymbolSource(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Add a Symbol Source to a Project",
 			namespace: "projects",
@@ -3633,6 +3823,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3641,7 +3832,7 @@ whether an update is a
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/` — risk: medium
 	 */
-	async symbolSources_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async symbolSources_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Project's Symbol Source",
 			namespace: "projects",
@@ -3654,6 +3845,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3662,7 +3854,7 @@ whether an update is a
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/` — risk: medium
 	 */
-	async symbolSources_1(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async symbolSources_1(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Symbol Source from a Project",
 			namespace: "projects",
@@ -3675,6 +3867,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3683,7 +3876,7 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/` — risk: medium
 	 */
-	async listTeams(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listTeams(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Teams",
 			namespace: "projects",
@@ -3696,6 +3889,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3704,7 +3898,7 @@ whether an update is a
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async updateTeam(organizationIdOrSlug: string, projectIdOrSlug: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async updateTeam(organizationIdOrSlug: string, projectIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Add a Team to a Project",
 			namespace: "projects",
@@ -3717,6 +3911,7 @@ whether an update is a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3727,7 +3922,7 @@ Note that Team Admins can only revoke access to teams they are admins of.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async deleteTeam(organizationIdOrSlug: string, projectIdOrSlug: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async deleteTeam(organizationIdOrSlug: string, projectIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Team from a Project",
 			namespace: "projects",
@@ -3740,6 +3935,7 @@ Note that Team Admins can only revoke access to teams they are admins of.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3748,7 +3944,7 @@ Note that Team Admins can only revoke access to teams they are admins of.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/` — risk: medium
 	 */
-	async dsyms_0(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async dsyms_0(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Debug Information Files",
 			namespace: "projects",
@@ -3761,6 +3957,7 @@ Note that Team Admins can only revoke access to teams they are admins of.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3774,7 +3971,7 @@ Requests to this endpoint should
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/` — risk: medium
 	 */
-	async dsyms_1(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async dsyms_1(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Upload a New File",
 			namespace: "projects",
@@ -3787,6 +3984,7 @@ Requests to this endpoint should
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3795,7 +3993,7 @@ Requests to this endpoint should
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/` — risk: medium
 	 */
-	async dsyms_2(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async dsyms_2(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Specific Project's Debug Information File",
 			namespace: "projects",
@@ -3808,6 +4006,7 @@ Requests to this endpoint should
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3816,7 +4015,7 @@ Requests to this endpoint should
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/users/` — risk: medium
 	 */
-	async listUsers(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listUsers(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Users",
 			namespace: "projects",
@@ -3829,6 +4028,7 @@ Requests to this endpoint should
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3841,7 +4041,7 @@ When [paginated](/api/pagination) can return at most 1000 values.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/tags/{key}/values/` — risk: medium
 	 */
-	async values(organizationIdOrSlug: string, projectIdOrSlug: string, key: string): Promise<ProofResult<unknown>> {
+	async values(organizationIdOrSlug: string, projectIdOrSlug: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Tag's Values",
 			namespace: "projects",
@@ -3854,6 +4054,7 @@ When [paginated](/api/pagination) can return at most 1000 values.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3865,7 +4066,7 @@ Query ranges are limited to Sentry's configured time-series resolutions.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/stats/` — risk: medium
 	 */
-	async listStats(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listStats(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve Event Counts for a Project",
 			namespace: "projects",
@@ -3878,6 +4079,7 @@ Query ranges are limited to Sentry's configured time-series resolutions.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3888,7 +4090,7 @@ Query ranges are limited to Sentry's configured time-series resolutions.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/` — risk: medium
 	 */
-	async listUserFeedback(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listUserFeedback(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's User Feedback",
 			namespace: "projects",
@@ -3901,6 +4103,7 @@ Query ranges are limited to Sentry's configured time-series resolutions.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3909,7 +4112,7 @@ Query ranges are limited to Sentry's configured time-series resolutions.
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/` — risk: medium
 	 */
-	async createUserFeedback(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createUserFeedback(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Submit User Feedback",
 			namespace: "projects",
@@ -3922,6 +4125,7 @@ Query ranges are limited to Sentry's configured time-series resolutions.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3930,7 +4134,7 @@ Query ranges are limited to Sentry's configured time-series resolutions.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/` — risk: medium
 	 */
-	async listHooks(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listHooks(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Service Hooks",
 			namespace: "projects",
@@ -3943,6 +4147,7 @@ Query ranges are limited to Sentry's configured time-series resolutions.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3958,7 +4163,7 @@ This endpoint requires the
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/` — risk: medium
 	 */
-	async createHook(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createHook(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Register a New Service Hook",
 			namespace: "projects",
@@ -3971,6 +4176,7 @@ This endpoint requires the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3979,7 +4185,7 @@ This endpoint requires the
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/` — risk: medium
 	 */
-	async retrieveHook(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string): Promise<ProofResult<unknown>> {
+	async retrieveHook(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Service Hook",
 			namespace: "projects",
@@ -3992,6 +4198,7 @@ This endpoint requires the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4000,7 +4207,7 @@ This endpoint requires the
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/` — risk: medium
 	 */
-	async hooks(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async hooks(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Service Hook",
 			namespace: "projects",
@@ -4013,6 +4220,7 @@ This endpoint requires the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4021,7 +4229,7 @@ This endpoint requires the
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/` — risk: medium
 	 */
-	async deleteHook(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string): Promise<ProofResult<unknown>> {
+	async deleteHook(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Remove a Service Hook",
 			namespace: "projects",
@@ -4034,6 +4242,7 @@ This endpoint requires the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4042,7 +4251,7 @@ This endpoint requires the
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/` — risk: medium
 	 */
-	async retrieveEvent(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string): Promise<ProofResult<unknown>> {
+	async retrieveEvent(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve an Event for a Project",
 			namespace: "projects",
@@ -4055,6 +4264,7 @@ This endpoint requires the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4066,7 +4276,7 @@ Re
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/` — risk: medium
 	 */
-	async listIssues(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listIssues(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Issues",
 			namespace: "projects",
@@ -4079,6 +4289,7 @@ Re
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4089,7 +4300,7 @@ Re
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/` — risk: medium
 	 */
-	async issues_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issues_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Bulk Mutate a List of Issues",
 			namespace: "projects",
@@ -4102,6 +4313,7 @@ Re
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4113,7 +4325,7 @@ Only queries by 'id' are accepted.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/` — risk: medium
 	 */
-	async issues_1(organizationIdOrSlug: string, projectIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async issues_1(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Bulk Remove a List of Issues",
 			namespace: "projects",
@@ -4126,6 +4338,7 @@ Only queries by 'id' are accepted.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4134,7 +4347,7 @@ Only queries by 'id' are accepted.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/` — risk: medium
 	 */
-	async files_0(organizationIdOrSlug: string, projectIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async files_0(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project's Release Files",
 			namespace: "projects",
@@ -4147,6 +4360,7 @@ Only queries by 'id' are accepted.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4159,7 +4373,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/` — risk: medium
 	 */
-	async files_1(organizationIdOrSlug: string, projectIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async files_1(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Upload a New Project Release File",
 			namespace: "projects",
@@ -4172,6 +4386,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4180,7 +4395,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async retrieveFile(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string): Promise<ProofResult<unknown>> {
+	async retrieveFile(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Project Release's File",
 			namespace: "projects",
@@ -4193,6 +4408,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4201,7 +4417,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async files_2(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async files_2(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Project Release File",
 			namespace: "projects",
@@ -4214,6 +4430,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4222,7 +4439,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async deleteFile(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string): Promise<ProofResult<unknown>> {
+	async deleteFile(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Project Release's File",
 			namespace: "projects",
@@ -4235,6 +4452,7 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4243,7 +4461,7 @@ Requests to this endpoint should use the region-spe
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/commits/` — risk: medium
 	 */
-	async commits(organizationIdOrSlug: string, projectIdOrSlug: string, version: string): Promise<ProofResult<unknown>> {
+	async commits(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Project Release's Commits",
 			namespace: "projects",
@@ -4256,13 +4474,14 @@ Requests to this endpoint should use the region-spe
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SeerResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4277,7 +4496,7 @@ This endpoint does not require authentication and can be used to disc
 	 *
 	 * `GET /api/0/seer/models/` — risk: medium
 	 */
-	async listModels(): Promise<ProofResult<unknown>> {
+	async listModels(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List Seer AI Models",
 			namespace: "seer",
@@ -4290,13 +4509,14 @@ This endpoint does not require authentication and can be used to disc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SentryAppsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4308,7 +4528,7 @@ export class SentryAppsResource extends RpcTarget {
 	 *
 	 * `GET /api/0/sentry-apps/{sentry_app_id_or_slug}/` — risk: low
 	 */
-	async retrieve(sentryAppIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async retrieve(sentryAppIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a custom integration by ID or slug.",
 			namespace: "sentry-apps",
@@ -4321,6 +4541,7 @@ export class SentryAppsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4329,7 +4550,7 @@ export class SentryAppsResource extends RpcTarget {
 	 *
 	 * `PUT /api/0/sentry-apps/{sentry_app_id_or_slug}/` — risk: medium
 	 */
-	async put(sentryAppIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(sentryAppIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an existing custom integration.",
 			namespace: "sentry-apps",
@@ -4342,6 +4563,7 @@ export class SentryAppsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4350,7 +4572,7 @@ export class SentryAppsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/0/sentry-apps/{sentry_app_id_or_slug}/` — risk: medium
 	 */
-	async del(sentryAppIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async del(sentryAppIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a custom integration.",
 			namespace: "sentry-apps",
@@ -4363,13 +4585,14 @@ export class SentryAppsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4381,7 +4604,7 @@ export class TeamsResource extends RpcTarget {
 	 *
 	 * `GET /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/` — risk: low
 	 */
-	async retrieve(organizationIdOrSlug: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async retrieve(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Retrieve a Team",
 			namespace: "teams",
@@ -4394,6 +4617,7 @@ export class TeamsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4403,7 +4627,7 @@ team.
 	 *
 	 * `PUT /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/` — risk: medium
 	 */
-	async update(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update a Team",
 			namespace: "teams",
@@ -4416,6 +4640,7 @@ team.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4427,7 +4652,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 	 *
 	 * `DELETE /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/` — risk: medium
 	 */
-	async del(organizationIdOrSlug: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async del(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete a Team",
 			namespace: "teams",
@@ -4440,6 +4665,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4448,7 +4674,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 	 *
 	 * `POST /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/` — risk: medium
 	 */
-	async createExternalTeam(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createExternalTeam(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create an External Team",
 			namespace: "teams",
@@ -4461,6 +4687,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4469,7 +4696,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 	 *
 	 * `PUT /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/` — risk: medium
 	 */
-	async externalTeams(organizationIdOrSlug: string, teamIdOrSlug: string, externalTeamId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async externalTeams(organizationIdOrSlug: string, teamIdOrSlug: string, externalTeamId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Update an External Team",
 			namespace: "teams",
@@ -4482,6 +4709,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4490,7 +4718,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 	 *
 	 * `DELETE /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/` — risk: medium
 	 */
-	async deleteExternalTeam(organizationIdOrSlug: string, teamIdOrSlug: string, externalTeamId: string): Promise<ProofResult<unknown>> {
+	async deleteExternalTeam(organizationIdOrSlug: string, teamIdOrSlug: string, externalTeamId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an External Team",
 			namespace: "teams",
@@ -4503,6 +4731,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4513,7 +4742,7 @@ The response will not include members with pending invites.
 	 *
 	 * `GET /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/members/` — risk: medium
 	 */
-	async listMembers(organizationIdOrSlug: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listMembers(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Team's Members",
 			namespace: "teams",
@@ -4526,6 +4755,7 @@ The response will not include members with pending invites.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4534,7 +4764,7 @@ The response will not include members with pending invites.
 	 *
 	 * `GET /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/` — risk: medium
 	 */
-	async listProjects(organizationIdOrSlug: string, teamIdOrSlug: string): Promise<ProofResult<unknown>> {
+	async listProjects(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "List a Team's Projects",
 			namespace: "teams",
@@ -4547,6 +4777,7 @@ The response will not include members with pending invites.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4558,7 +4789,7 @@ The response will not include members with pending invites.
 	 *
 	 * `POST /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/` — risk: medium
 	 */
-	async createProject(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createProject(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create a New Project",
 			namespace: "teams",
@@ -4571,13 +4802,14 @@ The response will not include members with pending invites.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SentryAppInstallationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4589,7 +4821,7 @@ export class SentryAppInstallationsResource extends RpcTarget {
 	 *
 	 * `POST /api/0/sentry-app-installations/{uuid}/external-issues/` — risk: medium
 	 */
-	async createExternalIssue(uuid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createExternalIssue(uuid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Create or update an External Issue",
 			namespace: "sentry-app-installations",
@@ -4602,6 +4834,7 @@ export class SentryAppInstallationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4610,7 +4843,7 @@ export class SentryAppInstallationsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/0/sentry-app-installations/{uuid}/external-issues/{external_issue_id}/` — risk: medium
 	 */
-	async deleteExternalIssue(uuid: string, externalIssueId: string): Promise<ProofResult<unknown>> {
+	async deleteExternalIssue(uuid: string, externalIssueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "Delete an External Issue",
 			namespace: "sentry-app-installations",
@@ -4623,12 +4856,13 @@ export class SentryAppInstallationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 interface Env {
-	SENTRY_API_KEY: string;
+	SENTRY_API_KEY?: string;
 }
 
 export class SentryCapability extends WorkerEntrypoint<Env> {

@@ -71,6 +71,18 @@ The `charges.create` call:
 
 You got the charge data and a full audit trail in one call.
 
+## Multi-tenant direction
+
+The explicit tutorial above uses a Worker secret, which stays the simplest setup. The target platform-builder shape uses one shared capability Worker with a tenant credential selected per call:
+
+```ts
+await env.STRIPE.paymentIntents.create(body, {
+  auth: { apiKey: tenant.stripeKey },
+});
+```
+
+That lets workflow products expose a Stripe node without deploying one capa Worker per customer. See [Runtime auth](/runtime-auth/) for the target API, plus providers that need a second auth header like Twitch.
+
 ## Next
 
 - [How It Works](/how-it-works) — understand the loop

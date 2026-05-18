@@ -6,7 +6,7 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 export const manifest = {
 	"admin_apps_approve": {"namespace":"admin.apps.approve","method":"create","http":"post","path":"/admin.apps.approve","risk":"medium"},

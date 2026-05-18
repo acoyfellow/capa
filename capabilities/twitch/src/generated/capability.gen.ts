@@ -6,12 +6,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 
 export class ChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -27,7 +27,7 @@ export class ChannelsResource extends RpcTarget {
 	 *
 	 * `POST /channels/commercial` — risk: medium
 	 */
-	async createCommercial(body?: unknown): Promise<ProofResult<unknown>> {
+	async createCommercial(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "start-commercial",
 			namespace: "channels",
@@ -40,6 +40,7 @@ export class ChannelsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -48,7 +49,7 @@ export class ChannelsResource extends RpcTarget {
 	 *
 	 * `GET /channels/ads` — risk: medium
 	 */
-	async listAds(): Promise<ProofResult<unknown>> {
+	async listAds(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-ad-schedule",
 			namespace: "channels",
@@ -61,6 +62,7 @@ export class ChannelsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -71,7 +73,7 @@ __Authorization:_
 	 *
 	 * `POST /channels/ads/schedule/snooze` — risk: medium
 	 */
-	async snooze(): Promise<ProofResult<unknown>> {
+	async snooze(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "snooze-next-ad",
 			namespace: "channels",
@@ -84,6 +86,7 @@ __Authorization:_
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -96,7 +99,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /channels` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-channel-information",
 			namespace: "channels",
@@ -109,6 +112,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -122,7 +126,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PATCH /channels` — risk: medium
 	 */
-	async patch(body?: unknown): Promise<ProofResult<unknown>> {
+	async patch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "modify-channel-information",
 			namespace: "channels",
@@ -135,6 +139,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -147,7 +152,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /channels/editors` — risk: medium
 	 */
-	async listEditors(): Promise<ProofResult<unknown>> {
+	async listEditors(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-channel-editors",
 			namespace: "channels",
@@ -160,6 +165,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -172,7 +178,7 @@ Requires a [user access token](ht
 	 *
 	 * `GET /channels/followed` — risk: medium
 	 */
-	async listFollowed(): Promise<ProofResult<unknown>> {
+	async listFollowed(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-followed-channels",
 			namespace: "channels",
@@ -185,6 +191,7 @@ Requires a [user access token](ht
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -197,7 +204,7 @@ __Authorization:__
 	 *
 	 * `GET /channels/followers` — risk: medium
 	 */
-	async listFollowers(): Promise<ProofResult<unknown>> {
+	async listFollowers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-channel-followers",
 			namespace: "channels",
@@ -210,6 +217,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -222,7 +230,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /channels/vips` — risk: medium
 	 */
-	async listVips(): Promise<ProofResult<unknown>> {
+	async listVips(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-vips",
 			namespace: "channels",
@@ -235,6 +243,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -249,7 +258,7 @@ Requires a [user access to
 	 *
 	 * `POST /channels/vips` — risk: medium
 	 */
-	async createVip(): Promise<ProofResult<unknown>> {
+	async createVip(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "add-channel-vip",
 			namespace: "channels",
@@ -262,6 +271,7 @@ Requires a [user access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -272,7 +282,7 @@ If the broadcaster is removing the user’s VIP status, the ID in the _broadcast
 	 *
 	 * `DELETE /channels/vips` — risk: medium
 	 */
-	async vips(): Promise<ProofResult<unknown>> {
+	async vips(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "remove-channel-vip",
 			namespace: "channels",
@@ -285,13 +295,14 @@ If the broadcaster is removing the user’s VIP status, the ID in the _broadcast
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AnalyticsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -307,7 +318,7 @@ Req
 	 *
 	 * `GET /analytics/extensions` — risk: medium
 	 */
-	async listExtensions(): Promise<ProofResult<unknown>> {
+	async listExtensions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-extension-analytics",
 			namespace: "analytics",
@@ -320,6 +331,7 @@ Req
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -332,7 +344,7 @@ Requires
 	 *
 	 * `GET /analytics/games` — risk: medium
 	 */
-	async listGames(): Promise<ProofResult<unknown>> {
+	async listGames(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-game-analytics",
 			namespace: "analytics",
@@ -345,13 +357,14 @@ Requires
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class BitsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -367,7 +380,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /bits/leaderboard` — risk: medium
 	 */
-	async listLeaderboard(): Promise<ProofResult<unknown>> {
+	async listLeaderboard(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-bits-leaderboard",
 			namespace: "bits",
@@ -380,6 +393,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -392,7 +406,7 @@ Requires an [ap
 	 *
 	 * `GET /bits/cheermotes` — risk: medium
 	 */
-	async listCheermotes(): Promise<ProofResult<unknown>> {
+	async listCheermotes(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-cheermotes",
 			namespace: "bits",
@@ -405,6 +419,7 @@ Requires an [ap
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -417,7 +432,7 @@ Requires an [app access token](https://dev.twitch.tv/
 	 *
 	 * `GET /bits/extensions` — risk: medium
 	 */
-	async listExtensions(): Promise<ProofResult<unknown>> {
+	async listExtensions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-extension-bits-products",
 			namespace: "bits",
@@ -430,6 +445,7 @@ Requires an [app access token](https://dev.twitch.tv/
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -442,7 +458,7 @@ Requires an [app acces
 	 *
 	 * `PUT /bits/extensions` — risk: medium
 	 */
-	async extensions(body?: unknown): Promise<ProofResult<unknown>> {
+	async extensions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-extension-bits-product",
 			namespace: "bits",
@@ -455,13 +471,14 @@ Requires an [app acces
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ExtensionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -477,7 +494,7 @@ Requires an [app access token](https://dev.tw
 	 *
 	 * `GET /extensions/transactions` — risk: medium
 	 */
-	async listTransactions(): Promise<ProofResult<unknown>> {
+	async listTransactions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-extension-transactions",
 			namespace: "extensions",
@@ -490,6 +507,7 @@ Requires an [app access token](https://dev.tw
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -504,7 +522,7 @@ Requires a signed JSON Web
 	 *
 	 * `GET /extensions/configurations` — risk: medium
 	 */
-	async listConfigurations(): Promise<ProofResult<unknown>> {
+	async listConfigurations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-extension-configuration-segment",
 			namespace: "extensions",
@@ -517,6 +535,7 @@ Requires a signed JSON Web
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -527,7 +546,7 @@ Requires a signed JSON Web
 	 *
 	 * `PUT /extensions/configurations` — risk: medium
 	 */
-	async configurations(body?: unknown): Promise<ProofResult<unknown>> {
+	async configurations(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "set-extension-configuration-segment",
 			namespace: "extensions",
@@ -540,6 +559,7 @@ Requires a signed JSON Web
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -548,7 +568,7 @@ Requires a signed JSON Web
 	 *
 	 * `PUT /extensions/required_configuration` — risk: medium
 	 */
-	async requiredConfiguration(body?: unknown): Promise<ProofResult<unknown>> {
+	async requiredConfiguration(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "set-extension-required-configuration",
 			namespace: "extensions",
@@ -561,6 +581,7 @@ Requires a signed JSON Web
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -569,7 +590,7 @@ Requires a signed JSON Web
 	 *
 	 * `POST /extensions/pubsub` — risk: medium
 	 */
-	async createPubsub(body?: unknown): Promise<ProofResult<unknown>> {
+	async createPubsub(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "send-extension-pubsub-message",
 			namespace: "extensions",
@@ -582,6 +603,7 @@ Requires a signed JSON Web
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -592,7 +614,7 @@ It may take a few minutes for the list to include or remove broadcasters that ha
 	 *
 	 * `GET /extensions/live` — risk: medium
 	 */
-	async listLive(): Promise<ProofResult<unknown>> {
+	async listLive(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-extension-live-channels",
 			namespace: "extensions",
@@ -605,6 +627,7 @@ It may take a few minutes for the list to include or remove broadcasters that ha
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -617,7 +640,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 	 *
 	 * `GET /extensions/jwt/secrets` — risk: medium
 	 */
-	async secrets_0(): Promise<ProofResult<unknown>> {
+	async secrets_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-extension-secrets",
 			namespace: "extensions",
@@ -630,6 +653,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -639,7 +663,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 	 *
 	 * `POST /extensions/jwt/secrets` — risk: medium
 	 */
-	async secrets_1(): Promise<ProofResult<unknown>> {
+	async secrets_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-extension-secret",
 			namespace: "extensions",
@@ -652,6 +676,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -660,7 +685,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 	 *
 	 * `POST /extensions/chat` — risk: medium
 	 */
-	async createChat(body?: unknown): Promise<ProofResult<unknown>> {
+	async createChat(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "send-extension-chat-message",
 			namespace: "extensions",
@@ -673,6 +698,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -685,7 +711,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 	 *
 	 * `GET /extensions` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-extensions",
 			namespace: "extensions",
@@ -698,6 +724,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -710,7 +737,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /extensions/released` — risk: medium
 	 */
-	async listReleased(): Promise<ProofResult<unknown>> {
+	async listReleased(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-released-extensions",
 			namespace: "extensions",
@@ -723,13 +750,14 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChannelPointsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -747,7 +775,7 @@ Req
 	 *
 	 * `GET /channel_points/custom_rewards` — risk: medium
 	 */
-	async listCustomRewards(): Promise<ProofResult<unknown>> {
+	async listCustomRewards(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-custom-reward",
 			namespace: "channel_points",
@@ -760,6 +788,7 @@ Req
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -772,7 +801,7 @@ Requires a [user ac
 	 *
 	 * `POST /channel_points/custom_rewards` — risk: medium
 	 */
-	async createCustomReward(body?: unknown): Promise<ProofResult<unknown>> {
+	async createCustomReward(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-custom-rewards",
 			namespace: "channel_points",
@@ -785,6 +814,7 @@ Requires a [user ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -797,7 +827,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#use
 	 *
 	 * `PATCH /channel_points/custom_rewards` — risk: medium
 	 */
-	async customRewards_0(body?: unknown): Promise<ProofResult<unknown>> {
+	async customRewards_0(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-custom-reward",
 			namespace: "channel_points",
@@ -810,6 +840,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#use
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -820,7 +851,7 @@ The app used to create the reward is the only app that may delete it. If the rew
 	 *
 	 * `DELETE /channel_points/custom_rewards` — risk: medium
 	 */
-	async customRewards_1(): Promise<ProofResult<unknown>> {
+	async customRewards_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "delete-custom-reward",
 			namespace: "channel_points",
@@ -833,6 +864,7 @@ The app used to create the reward is the only app that may delete it. If the rew
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -845,7 +877,7 @@ Requires a [user access token](https://
 	 *
 	 * `GET /channel_points/custom_rewards/redemptions` — risk: medium
 	 */
-	async redemptions_0(): Promise<ProofResult<unknown>> {
+	async redemptions_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-custom-reward-redemption",
 			namespace: "channel_points",
@@ -858,6 +890,7 @@ Requires a [user access token](https://
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -870,7 +903,7 @@ Req
 	 *
 	 * `PATCH /channel_points/custom_rewards/redemptions` — risk: medium
 	 */
-	async redemptions_1(body?: unknown): Promise<ProofResult<unknown>> {
+	async redemptions_1(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-redemption-status",
 			namespace: "channel_points",
@@ -883,13 +916,14 @@ Req
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CharityResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -903,7 +937,7 @@ To receive events when progress is made to
 	 *
 	 * `GET /charity/campaigns` — risk: medium
 	 */
-	async listCampaigns(): Promise<ProofResult<unknown>> {
+	async listCampaigns(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-charity-campaign",
 			namespace: "charity",
@@ -916,6 +950,7 @@ To receive events when progress is made to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -926,7 +961,7 @@ To receive events as donations occur, subscribe to the [channel.charity\_campaig
 	 *
 	 * `GET /charity/donations` — risk: medium
 	 */
-	async listDonations(): Promise<ProofResult<unknown>> {
+	async listDonations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-charity-campaign-donations",
 			namespace: "charity",
@@ -939,13 +974,14 @@ To receive events as donations occur, subscribe to the [channel.charity\_campaig
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChatResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -961,7 +997,7 @@ To determin
 	 *
 	 * `GET /chat/chatters` — risk: medium
 	 */
-	async listChatters(): Promise<ProofResult<unknown>> {
+	async listChatters(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-chatters",
 			namespace: "chat",
@@ -974,6 +1010,7 @@ To determin
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -982,7 +1019,7 @@ To determin
 	 *
 	 * `GET /chat/emotes` — risk: medium
 	 */
-	async listEmotes(): Promise<ProofResult<unknown>> {
+	async listEmotes(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-channel-emotes",
 			namespace: "chat",
@@ -995,6 +1032,7 @@ To determin
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1005,7 +1043,7 @@ To determin
 	 *
 	 * `GET /chat/emotes/global` — risk: medium
 	 */
-	async emotesGlobal(): Promise<ProofResult<unknown>> {
+	async emotesGlobal(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-global-emotes",
 			namespace: "chat",
@@ -1018,6 +1056,7 @@ To determin
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1028,7 +1067,7 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 	 *
 	 * `GET /chat/emotes/set` — risk: medium
 	 */
-	async set(): Promise<ProofResult<unknown>> {
+	async set(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-emote-sets",
 			namespace: "chat",
@@ -1041,6 +1080,7 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1049,7 +1089,7 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 	 *
 	 * `GET /chat/badges` — risk: medium
 	 */
-	async listBadges(): Promise<ProofResult<unknown>> {
+	async listBadges(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-channel-chat-badges",
 			namespace: "chat",
@@ -1062,6 +1102,7 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1070,7 +1111,7 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 	 *
 	 * `GET /chat/badges/global` — risk: medium
 	 */
-	async badgesGlobal(): Promise<ProofResult<unknown>> {
+	async badgesGlobal(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-global-chat-badges",
 			namespace: "chat",
@@ -1083,6 +1124,7 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1093,7 +1135,7 @@ For an overview of chat settings, see [Chat Commands for Broadcasters and Modera
 	 *
 	 * `GET /chat/settings` — risk: medium
 	 */
-	async listSettings(): Promise<ProofResult<unknown>> {
+	async listSettings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-chat-settings",
 			namespace: "chat",
@@ -1106,6 +1148,7 @@ For an overview of chat settings, see [Chat Commands for Broadcasters and Modera
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1120,7 +1163,7 @@ Requires one of the following:
 	 *
 	 * `PATCH /chat/settings` — risk: medium
 	 */
-	async settings(body?: unknown): Promise<ProofResult<unknown>> {
+	async settings(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-chat-settings",
 			namespace: "chat",
@@ -1133,6 +1176,7 @@ Requires one of the following:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1146,7 +1190,7 @@ __Authorization:__
 	 *
 	 * `GET /chat/emotes/user` — risk: medium
 	 */
-	async user(): Promise<ProofResult<unknown>> {
+	async user(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-user-emotes",
 			namespace: "chat",
@@ -1159,6 +1203,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1173,7 +1218,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/aut
 	 *
 	 * `POST /chat/announcements` — risk: medium
 	 */
-	async createAnnouncement(body?: unknown): Promise<ProofResult<unknown>> {
+	async createAnnouncement(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "send-chat-announcement",
 			namespace: "chat",
@@ -1186,6 +1231,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/aut
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1194,7 +1240,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/aut
 	 *
 	 * `POST /chat/shoutouts` — risk: medium
 	 */
-	async createShoutout(): Promise<ProofResult<unknown>> {
+	async createShoutout(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "send-a-shoutout",
 			namespace: "chat",
@@ -1207,6 +1253,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/aut
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1219,7 +1266,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/aut
 	 *
 	 * `POST /chat/messages` — risk: medium
 	 */
-	async createMessage(body?: unknown): Promise<ProofResult<unknown>> {
+	async createMessage(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "send-chat-message",
 			namespace: "chat",
@@ -1232,6 +1279,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/aut
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1244,7 +1292,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /chat/color` — risk: medium
 	 */
-	async listColor(): Promise<ProofResult<unknown>> {
+	async listColor(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-user-chat-color",
 			namespace: "chat",
@@ -1257,6 +1305,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1269,7 +1318,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PUT /chat/color` — risk: medium
 	 */
-	async color(): Promise<ProofResult<unknown>> {
+	async color(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-user-chat-color",
 			namespace: "chat",
@@ -1282,13 +1331,14 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SharedChatResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1304,7 +1354,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/cli/token-command/#app
 	 *
 	 * `GET /shared_chat/session` — risk: medium
 	 */
-	async listSession(): Promise<ProofResult<unknown>> {
+	async listSession(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-shared-chat-session",
 			namespace: "shared_chat",
@@ -1317,13 +1367,14 @@ Requires an [app access token](https://dev.twitch.tv/docs/cli/token-command/#app
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ClipsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1337,7 +1388,7 @@ When using pagination for clips,
 	 *
 	 * `GET /clips` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-clips",
 			namespace: "clips",
@@ -1350,6 +1401,7 @@ When using pagination for clips,
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1360,7 +1412,7 @@ This API captures up to 90 seconds of the broadcaster’s stream. The 90 seconds
 	 *
 	 * `POST /clips` — risk: medium
 	 */
-	async create(): Promise<ProofResult<unknown>> {
+	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-clip",
 			namespace: "clips",
@@ -1373,6 +1425,7 @@ This API captures up to 90 seconds of the broadcaster’s stream. The 90 seconds
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1383,7 +1436,7 @@ This API captures up to 90 seconds of the broadcaster’s stream. The 90 seconds
 	 *
 	 * `GET /clips/downloads` — risk: medium
 	 */
-	async listDownloads(): Promise<ProofResult<unknown>> {
+	async listDownloads(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-clips-download",
 			namespace: "clips",
@@ -1396,13 +1449,14 @@ This API captures up to 90 seconds of the broadcaster’s stream. The 90 seconds
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class VideosResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1414,7 +1468,7 @@ export class VideosResource extends RpcTarget {
 	 *
 	 * `POST /videos/clips` — risk: medium
 	 */
-	async createClip(): Promise<ProofResult<unknown>> {
+	async createClip(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-clip-from-vod",
 			namespace: "videos",
@@ -1427,6 +1481,7 @@ export class VideosResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1437,7 +1492,7 @@ You may apply several filters to get a subset of the videos. The filters are app
 	 *
 	 * `GET /videos` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-videos",
 			namespace: "videos",
@@ -1450,6 +1505,7 @@ You may apply several filters to get a subset of the videos. The filters are app
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1462,7 +1518,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `DELETE /videos` — risk: medium
 	 */
-	async delete(): Promise<ProofResult<unknown>> {
+	async delete(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "delete-videos",
 			namespace: "videos",
@@ -1475,13 +1531,14 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EventsubResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1497,7 +1554,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /eventsub/conduits` — risk: medium
 	 */
-	async listConduits(): Promise<ProofResult<unknown>> {
+	async listConduits(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-conduits",
 			namespace: "eventsub",
@@ -1510,6 +1567,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1522,7 +1580,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `POST /eventsub/conduits` — risk: medium
 	 */
-	async createConduit(body?: unknown): Promise<ProofResult<unknown>> {
+	async createConduit(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-conduits",
 			namespace: "eventsub",
@@ -1535,6 +1593,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1543,7 +1602,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `PATCH /eventsub/conduits` — risk: medium
 	 */
-	async conduits_0(body?: unknown): Promise<ProofResult<unknown>> {
+	async conduits_0(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-conduits",
 			namespace: "eventsub",
@@ -1556,6 +1615,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1564,7 +1624,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `DELETE /eventsub/conduits` — risk: medium
 	 */
-	async conduits_1(): Promise<ProofResult<unknown>> {
+	async conduits_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "delete-conduit",
 			namespace: "eventsub",
@@ -1577,6 +1637,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1589,7 +1650,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#
 	 *
 	 * `GET /eventsub/conduits/shards` — risk: medium
 	 */
-	async shards_0(): Promise<ProofResult<unknown>> {
+	async shards_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-conduit-shards",
 			namespace: "eventsub",
@@ -1602,6 +1663,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1612,7 +1674,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#
 	 *
 	 * `PATCH /eventsub/conduits/shards` — risk: medium
 	 */
-	async shards_1(body?: unknown): Promise<ProofResult<unknown>> {
+	async shards_1(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-conduit-shards",
 			namespace: "eventsub",
@@ -1625,6 +1687,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1637,7 +1700,7 @@ If you use [Webhooks](https://dev.twitch.tv/docs/eventsub/handling-webhook-event
 	 *
 	 * `GET /eventsub/subscriptions` — risk: medium
 	 */
-	async listSubscriptions(): Promise<ProofResult<unknown>> {
+	async listSubscriptions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-eventsub-subscriptions",
 			namespace: "eventsub",
@@ -1650,6 +1713,7 @@ If you use [Webhooks](https://dev.twitch.tv/docs/eventsub/handling-webhook-event
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1662,7 +1726,7 @@ If you use [webhooks to receive events](https://dev.twitch.tv/docs/eventsub/hand
 	 *
 	 * `POST /eventsub/subscriptions` — risk: medium
 	 */
-	async createSubscription(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSubscription(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-eventsub-subscription",
 			namespace: "eventsub",
@@ -1675,6 +1739,7 @@ If you use [webhooks to receive events](https://dev.twitch.tv/docs/eventsub/hand
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1687,7 +1752,7 @@ If you use [webhooks to receive events](https://dev.twitch.tv/docs/eventsub/hand
 	 *
 	 * `DELETE /eventsub/subscriptions` — risk: medium
 	 */
-	async subscriptions(): Promise<ProofResult<unknown>> {
+	async subscriptions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "delete-eventsub-subscription",
 			namespace: "eventsub",
@@ -1700,13 +1765,14 @@ If you use [webhooks to receive events](https://dev.twitch.tv/docs/eventsub/hand
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ContentClassificationLabelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1722,7 +1788,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /content_classification_labels` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-content-classification-labels",
 			namespace: "content_classification_labels",
@@ -1735,13 +1801,14 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EntitlementsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1755,7 +1822,7 @@ export class EntitlementsResource extends RpcTarget {
 	 *
 	 * `GET /entitlements/drops` — risk: medium
 	 */
-	async listDrops(): Promise<ProofResult<unknown>> {
+	async listDrops(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-drops-entitlements",
 			namespace: "entitlements",
@@ -1768,6 +1835,7 @@ export class EntitlementsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1781,7 +1849,7 @@ The following table identifies which entitlements are updated based on the type 
 	 *
 	 * `PATCH /entitlements/drops` — risk: medium
 	 */
-	async drops(body?: unknown): Promise<ProofResult<unknown>> {
+	async drops(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-drops-entitlements",
 			namespace: "entitlements",
@@ -1794,13 +1862,14 @@ The following table identifies which entitlements are updated based on the type 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class GamesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1816,7 +1885,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /games/top` — risk: medium
 	 */
-	async listTop(): Promise<ProofResult<unknown>> {
+	async listTop(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-top-games",
 			namespace: "games",
@@ -1829,6 +1898,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1839,7 +1909,7 @@ You may get up to 100 categories or games by specifying their ID or name. You ma
 	 *
 	 * `GET /games` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-games",
 			namespace: "games",
@@ -1852,13 +1922,14 @@ You may get up to 100 categories or games by specifying their ID or name. You ma
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class GoalsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1872,7 +1943,7 @@ Instead of polling for the progress of a goal, consider [subscribing](https://de
 	 *
 	 * `GET /goals` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-creator-goals",
 			namespace: "goals",
@@ -1885,13 +1956,14 @@ Instead of polling for the progress of a goal, consider [subscribing](https://de
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class GuestStarResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1907,7 +1979,7 @@ __Authorization:__
 	 *
 	 * `GET /guest_star/channel_settings` — risk: medium
 	 */
-	async listChannelSettings(): Promise<ProofResult<unknown>> {
+	async listChannelSettings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-channel-guest-star-settings",
 			namespace: "guest_star",
@@ -1920,6 +1992,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1932,7 +2005,7 @@ __Authorization:__
 	 *
 	 * `PUT /guest_star/channel_settings` — risk: medium
 	 */
-	async channelSettings(body?: unknown): Promise<ProofResult<unknown>> {
+	async channelSettings(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-channel-guest-star-settings",
 			namespace: "guest_star",
@@ -1945,6 +2018,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1957,7 +2031,7 @@ __Authorization:__
 	 *
 	 * `GET /guest_star/session` — risk: medium
 	 */
-	async listSession(): Promise<ProofResult<unknown>> {
+	async listSession(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-guest-star-session",
 			namespace: "guest_star",
@@ -1970,6 +2044,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1980,7 +2055,7 @@ __Authorization
 	 *
 	 * `POST /guest_star/session` — risk: medium
 	 */
-	async createSession(): Promise<ProofResult<unknown>> {
+	async createSession(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-guest-star-session",
 			namespace: "guest_star",
@@ -1993,6 +2068,7 @@ __Authorization
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2005,7 +2081,7 @@ __Authorization:__
 	 *
 	 * `DELETE /guest_star/session` — risk: medium
 	 */
-	async session(): Promise<ProofResult<unknown>> {
+	async session(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "end-guest-star-session",
 			namespace: "guest_star",
@@ -2018,6 +2094,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2030,7 +2107,7 @@ __Authorization:__
 	 *
 	 * `GET /guest_star/invites` — risk: medium
 	 */
-	async listInvites(): Promise<ProofResult<unknown>> {
+	async listInvites(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-guest-star-invites",
 			namespace: "guest_star",
@@ -2043,6 +2120,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2055,7 +2133,7 @@ __Authorization:__
 	 *
 	 * `POST /guest_star/invites` — risk: medium
 	 */
-	async createInvite(): Promise<ProofResult<unknown>> {
+	async createInvite(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "send-guest-star-invite",
 			namespace: "guest_star",
@@ -2068,6 +2146,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2080,7 +2159,7 @@ __Authorization:__
 	 *
 	 * `DELETE /guest_star/invites` — risk: medium
 	 */
-	async invites(): Promise<ProofResult<unknown>> {
+	async invites(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "delete-guest-star-invite",
 			namespace: "guest_star",
@@ -2093,6 +2172,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2105,7 +2185,7 @@ __Authorization:__
 	 *
 	 * `POST /guest_star/slot` — risk: medium
 	 */
-	async createSlot(): Promise<ProofResult<unknown>> {
+	async createSlot(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "assign-guest-star-slot",
 			namespace: "guest_star",
@@ -2118,6 +2198,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2130,7 +2211,7 @@ __Authorization:__
 	 *
 	 * `PATCH /guest_star/slot` — risk: medium
 	 */
-	async slot_0(): Promise<ProofResult<unknown>> {
+	async slot_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-guest-star-slot",
 			namespace: "guest_star",
@@ -2143,6 +2224,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2151,7 +2233,7 @@ __Authorization:__
 	 *
 	 * `DELETE /guest_star/slot` — risk: medium
 	 */
-	async slot_1(): Promise<ProofResult<unknown>> {
+	async slot_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "delete-guest-star-slot",
 			namespace: "guest_star",
@@ -2164,6 +2246,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2172,7 +2255,7 @@ __Authorization:__
 	 *
 	 * `PATCH /guest_star/slot_settings` — risk: medium
 	 */
-	async slotSettings(): Promise<ProofResult<unknown>> {
+	async slotSettings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-guest-star-slot-settings",
 			namespace: "guest_star",
@@ -2185,13 +2268,14 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class HypetrainResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2208,7 +2292,7 @@ __Authorization:__
 	 *
 	 * `GET /hypetrain/status` — risk: medium
 	 */
-	async listStatus(): Promise<ProofResult<unknown>> {
+	async listStatus(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-hype-train-status",
 			namespace: "hypetrain",
@@ -2221,13 +2305,14 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ModerationResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2241,7 +2326,7 @@ AutoMod is a moderation tool that holds inappropriate or harassing chat messages
 	 *
 	 * `POST /moderation/enforcements/status` — risk: medium
 	 */
-	async status(body?: unknown): Promise<ProofResult<unknown>> {
+	async status(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "check-automod-status",
 			namespace: "moderation",
@@ -2254,6 +2339,7 @@ AutoMod is a moderation tool that holds inappropriate or harassing chat messages
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2264,7 +2350,7 @@ To get messages that AutoMod i
 	 *
 	 * `POST /moderation/automod/message` — risk: medium
 	 */
-	async message(body?: unknown): Promise<ProofResult<unknown>> {
+	async message(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "manage-held-automod-messages",
 			namespace: "moderation",
@@ -2277,6 +2363,7 @@ To get messages that AutoMod i
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2289,7 +2376,7 @@ Requires o
 	 *
 	 * `GET /moderation/automod/settings` — risk: medium
 	 */
-	async settings_0(): Promise<ProofResult<unknown>> {
+	async settings_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-automod-settings",
 			namespace: "moderation",
@@ -2302,6 +2389,7 @@ Requires o
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2314,7 +2402,7 @@ Require
 	 *
 	 * `PUT /moderation/automod/settings` — risk: medium
 	 */
-	async settings_1(body?: unknown): Promise<ProofResult<unknown>> {
+	async settings_1(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-automod-settings",
 			namespace: "moderation",
@@ -2327,6 +2415,7 @@ Require
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2341,7 +2430,7 @@ Requires one of the following:
 	 *
 	 * `GET /moderation/banned` — risk: medium
 	 */
-	async listBanned(): Promise<ProofResult<unknown>> {
+	async listBanned(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-banned-users",
 			namespace: "moderation",
@@ -2354,6 +2443,7 @@ Requires one of the following:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2364,7 +2454,7 @@ For information about banning or putting users in a timeout, see [Ban a User](ht
 	 *
 	 * `POST /moderation/bans` — risk: medium
 	 */
-	async createBan(body?: unknown): Promise<ProofResult<unknown>> {
+	async createBan(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ban-user",
 			namespace: "moderation",
@@ -2377,6 +2467,7 @@ For information about banning or putting users in a timeout, see [Ban a User](ht
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2391,7 +2482,7 @@ Requires one of the following:
 	 *
 	 * `DELETE /moderation/bans` — risk: medium
 	 */
-	async bans(): Promise<ProofResult<unknown>> {
+	async bans(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "unban-user",
 			namespace: "moderation",
@@ -2404,6 +2495,7 @@ Requires one of the following:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2416,7 +2508,7 @@ __Authorization:__
 	 *
 	 * `GET /moderation/unban_requests` — risk: medium
 	 */
-	async listUnbanRequests(): Promise<ProofResult<unknown>> {
+	async listUnbanRequests(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-unban-requests",
 			namespace: "moderation",
@@ -2429,6 +2521,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2442,7 +2535,7 @@ __Authorization:__
 	 *
 	 * `PATCH /moderation/unban_requests` — risk: medium
 	 */
-	async unbanRequests(): Promise<ProofResult<unknown>> {
+	async unbanRequests(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "resolve-unban-requests",
 			namespace: "moderation",
@@ -2455,6 +2548,7 @@ __Authorization:__
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2467,7 +2561,7 @@ Requires
 	 *
 	 * `GET /moderation/blocked_terms` — risk: medium
 	 */
-	async listBlockedTerms(): Promise<ProofResult<unknown>> {
+	async listBlockedTerms(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-blocked-terms",
 			namespace: "moderation",
@@ -2480,6 +2574,7 @@ Requires
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2494,7 +2589,7 @@ Requires one of the following:
 	 *
 	 * `POST /moderation/blocked_terms` — risk: medium
 	 */
-	async createBlockedTerm(body?: unknown): Promise<ProofResult<unknown>> {
+	async createBlockedTerm(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "add-blocked-term",
 			namespace: "moderation",
@@ -2507,6 +2602,7 @@ Requires one of the following:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2521,7 +2617,7 @@ Requires one of the following:
 	 *
 	 * `DELETE /moderation/blocked_terms` — risk: medium
 	 */
-	async blockedTerms(): Promise<ProofResult<unknown>> {
+	async blockedTerms(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "remove-blocked-term",
 			namespace: "moderation",
@@ -2534,6 +2630,7 @@ Requires one of the following:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2548,7 +2645,7 @@ Requires one of the following:
 	 *
 	 * `DELETE /moderation/chat` — risk: medium
 	 */
-	async chat(): Promise<ProofResult<unknown>> {
+	async chat(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "delete-chat-messages",
 			namespace: "moderation",
@@ -2561,6 +2658,7 @@ Requires one of the following:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2575,7 +2673,7 @@ Requires one of the following:
 	 *
 	 * `GET /moderation/channels` — risk: medium
 	 */
-	async listChannels(): Promise<ProofResult<unknown>> {
+	async listChannels(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-moderated-channels",
 			namespace: "moderation",
@@ -2588,6 +2686,7 @@ Requires one of the following:
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2600,7 +2699,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /moderation/moderators` — risk: medium
 	 */
-	async listModerators(): Promise<ProofResult<unknown>> {
+	async listModerators(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-moderators",
 			namespace: "moderation",
@@ -2613,6 +2712,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2627,7 +2727,7 @@ Requires a [user access token](htt
 	 *
 	 * `POST /moderation/moderators` — risk: medium
 	 */
-	async createModerator(): Promise<ProofResult<unknown>> {
+	async createModerator(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "add-channel-moderator",
 			namespace: "moderation",
@@ -2640,6 +2740,7 @@ Requires a [user access token](htt
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2654,7 +2755,7 @@ Requires a [user access to
 	 *
 	 * `DELETE /moderation/moderators` — risk: medium
 	 */
-	async moderators(): Promise<ProofResult<unknown>> {
+	async moderators(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "remove-channel-moderator",
 			namespace: "moderation",
@@ -2667,6 +2768,7 @@ Requires a [user access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2677,7 +2779,7 @@ To receive notification when the broadcaster activates and deactivates Shield Mo
 	 *
 	 * `GET /moderation/shield_mode` — risk: medium
 	 */
-	async listShieldMode(): Promise<ProofResult<unknown>> {
+	async listShieldMode(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-shield-mode-status",
 			namespace: "moderation",
@@ -2690,6 +2792,7 @@ To receive notification when the broadcaster activates and deactivates Shield Mo
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2700,7 +2803,7 @@ Twitch’s Shield Mode feature is like a panic button that broadcasters can push
 	 *
 	 * `PUT /moderation/shield_mode` — risk: medium
 	 */
-	async shieldMode(body?: unknown): Promise<ProofResult<unknown>> {
+	async shieldMode(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-shield-mode-status",
 			namespace: "moderation",
@@ -2713,6 +2816,7 @@ Twitch’s Shield Mode feature is like a panic button that broadcasters can push
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2721,7 +2825,7 @@ Twitch’s Shield Mode feature is like a panic button that broadcasters can push
 	 *
 	 * `POST /moderation/warnings` — risk: medium
 	 */
-	async createWarning(body?: unknown): Promise<ProofResult<unknown>> {
+	async createWarning(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "warn-chat-user",
 			namespace: "moderation",
@@ -2734,6 +2838,7 @@ Twitch’s Shield Mode feature is like a panic button that broadcasters can push
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2746,7 +2851,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `POST /moderation/suspicious_users` — risk: medium
 	 */
-	async createSuspiciousUser(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSuspiciousUser(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "add-suspicious-status-to-chat-user",
 			namespace: "moderation",
@@ -2759,6 +2864,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2771,7 +2877,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `DELETE /moderation/suspicious_users` — risk: medium
 	 */
-	async suspiciousUsers(): Promise<ProofResult<unknown>> {
+	async suspiciousUsers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "remove-suspicious-status-from-chat-user",
 			namespace: "moderation",
@@ -2784,13 +2890,14 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PollsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2808,7 +2915,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication
 	 *
 	 * `GET /polls` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-polls",
 			namespace: "polls",
@@ -2821,6 +2928,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2835,7 +2943,7 @@ Requires a [user access token]
 	 *
 	 * `POST /polls` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-poll",
 			namespace: "polls",
@@ -2848,6 +2956,7 @@ Requires a [user access token]
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2860,7 +2969,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PATCH /polls` — risk: medium
 	 */
-	async patch(body?: unknown): Promise<ProofResult<unknown>> {
+	async patch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "end-poll",
 			namespace: "polls",
@@ -2873,13 +2982,14 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PredictionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2895,7 +3005,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /predictions` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-predictions",
 			namespace: "predictions",
@@ -2908,6 +3018,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2918,7 +3029,7 @@ With a Channel Points Prediction, the broadcaster poses a question and viewers t
 	 *
 	 * `POST /predictions` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-prediction",
 			namespace: "predictions",
@@ -2931,6 +3042,7 @@ With a Channel Points Prediction, the broadcaster poses a question and viewers t
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2943,7 +3055,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PATCH /predictions` — risk: medium
 	 */
-	async patch(body?: unknown): Promise<ProofResult<unknown>> {
+	async patch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "end-prediction",
 			namespace: "predictions",
@@ -2956,13 +3068,14 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RaidsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2976,7 +3089,7 @@ When you call the API from a chat bot or extension, the Twitch UX pops up a wind
 	 *
 	 * `POST /raids` — risk: medium
 	 */
-	async create(): Promise<ProofResult<unknown>> {
+	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "start-a-raid",
 			namespace: "raids",
@@ -2989,6 +3102,7 @@ When you call the API from a chat bot or extension, the Twitch UX pops up a wind
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3001,7 +3115,7 @@ You can cancel a raid at any point up until the broadcaster clicks **Raid Now** 
 	 *
 	 * `DELETE /raids` — risk: medium
 	 */
-	async delete(): Promise<ProofResult<unknown>> {
+	async delete(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "cancel-a-raid",
 			namespace: "raids",
@@ -3014,13 +3128,14 @@ You can cancel a raid at any point up until the broadcaster clicks **Raid Now** 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ScheduleResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3034,7 +3149,7 @@ __Authoriza
 	 *
 	 * `GET /schedule` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-channel-stream-schedule",
 			namespace: "schedule",
@@ -3047,6 +3162,7 @@ __Authoriza
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3061,7 +3177,7 @@ __Response B
 	 *
 	 * `GET /schedule/icalendar` — risk: medium
 	 */
-	async listIcalendar(): Promise<ProofResult<unknown>> {
+	async listIcalendar(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-channel-icalendar",
 			namespace: "schedule",
@@ -3074,6 +3190,7 @@ __Response B
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3086,7 +3203,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PATCH /schedule/settings` — risk: medium
 	 */
-	async settings(): Promise<ProofResult<unknown>> {
+	async settings(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-channel-stream-schedule",
 			namespace: "schedule",
@@ -3099,6 +3216,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3107,7 +3225,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `POST /schedule/segment` — risk: medium
 	 */
-	async createSegment(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSegment(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-channel-stream-schedule-segment",
 			namespace: "schedule",
@@ -3120,6 +3238,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3130,7 +3249,7 @@ For recurring segments, updating a segment’s title, category, duration, and ti
 	 *
 	 * `PATCH /schedule/segment` — risk: medium
 	 */
-	async segment_0(body?: unknown): Promise<ProofResult<unknown>> {
+	async segment_0(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-channel-stream-schedule-segment",
 			namespace: "schedule",
@@ -3143,6 +3262,7 @@ For recurring segments, updating a segment’s title, category, duration, and ti
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3157,7 +3277,7 @@ Requir
 	 *
 	 * `DELETE /schedule/segment` — risk: medium
 	 */
-	async segment_1(): Promise<ProofResult<unknown>> {
+	async segment_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "delete-channel-stream-schedule-segment",
 			namespace: "schedule",
@@ -3170,13 +3290,14 @@ Requir
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SearchResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3190,7 +3311,7 @@ To match, the category’s name must contain all parts of the query string. For 
 	 *
 	 * `GET /search/categories` — risk: medium
 	 */
-	async listCategories(): Promise<ProofResult<unknown>> {
+	async listCategories(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search-categories",
 			namespace: "search",
@@ -3203,6 +3324,7 @@ To match, the category’s name must contain all parts of the query string. For 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3213,7 +3335,7 @@ The fields that the API uses for comparison depends on the value that the _live\
 	 *
 	 * `GET /search/channels` — risk: medium
 	 */
-	async listChannels(): Promise<ProofResult<unknown>> {
+	async listChannels(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "search-channels",
 			namespace: "search",
@@ -3226,13 +3348,14 @@ The fields that the API uses for comparison depends on the value that the _live\
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class StreamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3248,7 +3371,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams/key` — risk: medium
 	 */
-	async listKey(): Promise<ProofResult<unknown>> {
+	async listKey(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-stream-key",
 			namespace: "streams",
@@ -3261,6 +3384,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3269,7 +3393,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-streams",
 			namespace: "streams",
@@ -3282,6 +3406,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3294,7 +3419,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams/followed` — risk: medium
 	 */
-	async listFollowed(): Promise<ProofResult<unknown>> {
+	async listFollowed(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-followed-streams",
 			namespace: "streams",
@@ -3307,6 +3432,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3315,7 +3441,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams/markers` — risk: medium
 	 */
-	async listMarkers(): Promise<ProofResult<unknown>> {
+	async listMarkers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-stream-markers",
 			namespace: "streams",
@@ -3328,6 +3454,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3336,7 +3463,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `POST /streams/markers` — risk: medium
 	 */
-	async createMarker(body?: unknown): Promise<ProofResult<unknown>> {
+	async createMarker(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "create-stream-marker",
 			namespace: "streams",
@@ -3349,6 +3476,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3357,7 +3485,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams/tags` — risk: medium
 	 */
-	async listTags(): Promise<ProofResult<unknown>> {
+	async listTags(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-stream-tags",
 			namespace: "streams",
@@ -3370,13 +3498,14 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SubscriptionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3392,7 +3521,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /subscriptions` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-broadcaster-subscriptions",
 			namespace: "subscriptions",
@@ -3405,6 +3534,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3417,7 +3547,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /subscriptions/user` — risk: high
 	 */
-	async listUser(): Promise<ProofResult<unknown>> {
+	async listUser(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "check-user-subscription",
 			namespace: "subscriptions",
@@ -3430,13 +3560,14 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TagsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3448,7 +3579,7 @@ export class TagsResource extends RpcTarget {
 	 *
 	 * `GET /tags/streams` — risk: medium
 	 */
-	async listStreams(): Promise<ProofResult<unknown>> {
+	async listStreams(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-all-stream-tags",
 			namespace: "tags",
@@ -3461,13 +3592,14 @@ export class TagsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3483,7 +3615,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /teams/channel` — risk: medium
 	 */
-	async listChannel(): Promise<ProofResult<unknown>> {
+	async listChannel(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-channel-teams",
 			namespace: "teams",
@@ -3496,6 +3628,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3508,7 +3641,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authenticati
 	 *
 	 * `GET /teams` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-teams",
 			namespace: "teams",
@@ -3521,13 +3654,14 @@ Requires an [app access token](https://dev.twitch.tv/docs/authenticati
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3541,7 +3675,7 @@ You may look up users using their user ID, login name, or both but the sum total
 	 *
 	 * `GET /users` — risk: low
 	 */
-	async list_0(): Promise<ProofResult<unknown>> {
+	async list_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-users",
 			namespace: "users",
@@ -3554,6 +3688,7 @@ You may look up users using their user ID, login name, or both but the sum total
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3564,7 +3699,7 @@ To include the user’s verified email address in the response, the us
 	 *
 	 * `PUT /users` — risk: medium
 	 */
-	async put(): Promise<ProofResult<unknown>> {
+	async put(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-user",
 			namespace: "users",
@@ -3577,6 +3712,7 @@ To include the user’s verified email address in the response, the us
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3587,7 +3723,7 @@ __Author
 	 *
 	 * `GET /users/blocks` — risk: medium
 	 */
-	async listBlocks(): Promise<ProofResult<unknown>> {
+	async listBlocks(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-user-block-list",
 			namespace: "users",
@@ -3600,6 +3736,7 @@ __Author
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3610,7 +3747,7 @@ To learn more about blockin
 	 *
 	 * `PUT /users/blocks` — risk: medium
 	 */
-	async blocks_0(): Promise<ProofResult<unknown>> {
+	async blocks_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "block-user",
 			namespace: "users",
@@ -3623,6 +3760,7 @@ To learn more about blockin
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3635,7 +3773,7 @@ Requires a [user access token](h
 	 *
 	 * `DELETE /users/blocks` — risk: medium
 	 */
-	async blocks_1(): Promise<ProofResult<unknown>> {
+	async blocks_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "unblock-user",
 			namespace: "users",
@@ -3648,6 +3786,7 @@ Requires a [user access token](h
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3660,7 +3799,7 @@ Requires a [user access to
 	 *
 	 * `GET /users/extensions/list` — risk: low
 	 */
-	async extensionsList(): Promise<ProofResult<unknown>> {
+	async extensionsList(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-user-extensions",
 			namespace: "users",
@@ -3673,6 +3812,7 @@ Requires a [user access to
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3683,7 +3823,7 @@ NOTE: To include extensions that you have under development, you must specify a 
 	 *
 	 * `GET /users/extensions` — risk: medium
 	 */
-	async listExtensions(): Promise<ProofResult<unknown>> {
+	async listExtensions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-user-active-extensions",
 			namespace: "users",
@@ -3696,6 +3836,7 @@ NOTE: To include extensions that you have under development, you must specify a 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3704,7 +3845,7 @@ NOTE: To include extensions that you have under development, you must specify a 
 	 *
 	 * `PUT /users/extensions` — risk: medium
 	 */
-	async extensions(body?: unknown): Promise<ProofResult<unknown>> {
+	async extensions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update-user-extensions",
 			namespace: "users",
@@ -3717,13 +3858,14 @@ NOTE: To include extensions that you have under development, you must specify a 
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AuthorizationResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3739,7 +3881,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /authorization/users` — risk: medium
 	 */
-	async listUsers(): Promise<ProofResult<unknown>> {
+	async listUsers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "get-authorization-by-user",
 			namespace: "authorization",
@@ -3752,13 +3894,14 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class WhispersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3772,7 +3915,7 @@ NOTE: The user sending the whisper must have a verified phone number (see the **
 	 *
 	 * `POST /whispers` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "send-whisper",
 			namespace: "whispers",
@@ -3785,12 +3928,13 @@ NOTE: The user sending the whisper must have a verified phone number (see the **
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 interface Env {
-	TWITCH_API_KEY: string;
+	TWITCH_API_KEY?: string;
 }
 
 export class TwitchCapability extends WorkerEntrypoint<Env> {

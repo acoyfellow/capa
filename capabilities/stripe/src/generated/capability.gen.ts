@@ -6,12 +6,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 
 export class AccountResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23,7 +23,7 @@ export class AccountResource extends RpcTarget {
 	 *
 	 * `GET /v1/account` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAccount",
 			namespace: "account",
@@ -36,13 +36,14 @@ export class AccountResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AccountLinksResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -54,7 +55,7 @@ export class AccountLinksResource extends RpcTarget {
 	 *
 	 * `POST /v1/account_links` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountLinks",
 			namespace: "account_links",
@@ -67,13 +68,14 @@ export class AccountLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AccountSessionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -85,7 +87,7 @@ export class AccountSessionsResource extends RpcTarget {
 	 *
 	 * `POST /v1/account_sessions` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountSessions",
 			namespace: "account_sessions",
@@ -98,13 +100,14 @@ export class AccountSessionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AccountsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -116,7 +119,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /v1/accounts` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAccounts",
 			namespace: "accounts",
@@ -129,6 +132,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -138,7 +142,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
 	 *
 	 * `POST /v1/accounts` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccounts",
 			namespace: "accounts",
@@ -151,6 +155,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -159,7 +164,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
 	 *
 	 * `GET /v1/accounts/{account}` — risk: low
 	 */
-	async retrieve(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAccountsAccount",
 			namespace: "accounts",
@@ -172,6 +177,7 @@ To do this, you’ll first need to <a href="https://dashboard.stripe.com/account
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -183,7 +189,7 @@ left unchanged.</p>
 	 *
 	 * `POST /v1/accounts/{account}` — risk: medium
 	 */
-	async update(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountsAccount",
 			namespace: "accounts",
@@ -196,6 +202,7 @@ left unchanged.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -208,7 +215,7 @@ left unchanged.</p>
 	 *
 	 * `DELETE /v1/accounts/{account}` — risk: medium
 	 */
-	async del(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteAccountsAccount",
 			namespace: "accounts",
@@ -221,6 +228,7 @@ left unchanged.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -229,7 +237,7 @@ left unchanged.</p>
 	 *
 	 * `GET /v1/accounts/{account}/capabilities` — risk: medium
 	 */
-	async listCapabilities(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listCapabilities(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAccountsAccountCapabilities",
 			namespace: "accounts",
@@ -242,6 +250,7 @@ left unchanged.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -250,7 +259,7 @@ left unchanged.</p>
 	 *
 	 * `GET /v1/accounts/{account}/capabilities/{capability}` — risk: medium
 	 */
-	async retrieveCapability(account: string, capability: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveCapability(account: string, capability: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAccountsAccountCapabilitiesCapability",
 			namespace: "accounts",
@@ -263,6 +272,7 @@ left unchanged.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -271,7 +281,7 @@ left unchanged.</p>
 	 *
 	 * `POST /v1/accounts/{account}/capabilities/{capability}` — risk: medium
 	 */
-	async updateCapability(account: string, capability: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateCapability(account: string, capability: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountsAccountCapabilitiesCapability",
 			namespace: "accounts",
@@ -284,6 +294,7 @@ left unchanged.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -292,7 +303,7 @@ left unchanged.</p>
 	 *
 	 * `GET /v1/accounts/{account}/external_accounts` — risk: medium
 	 */
-	async listExternalAccounts(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listExternalAccounts(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAccountsAccountExternalAccounts",
 			namespace: "accounts",
@@ -305,6 +316,7 @@ left unchanged.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -313,7 +325,7 @@ left unchanged.</p>
 	 *
 	 * `POST /v1/accounts/{account}/external_accounts` — risk: medium
 	 */
-	async createExternalAccount(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createExternalAccount(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountsAccountExternalAccounts",
 			namespace: "accounts",
@@ -326,6 +338,7 @@ left unchanged.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -334,7 +347,7 @@ left unchanged.</p>
 	 *
 	 * `GET /v1/accounts/{account}/external_accounts/{id}` — risk: medium
 	 */
-	async retrieveExternalAccount(account: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveExternalAccount(account: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAccountsAccountExternalAccountsId",
 			namespace: "accounts",
@@ -347,6 +360,7 @@ left unchanged.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -357,7 +371,7 @@ details
 	 *
 	 * `POST /v1/accounts/{account}/external_accounts/{id}` — risk: medium
 	 */
-	async updateExternalAccount(account: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateExternalAccount(account: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountsAccountExternalAccountsId",
 			namespace: "accounts",
@@ -370,6 +384,7 @@ details
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -378,7 +393,7 @@ details
 	 *
 	 * `DELETE /v1/accounts/{account}/external_accounts/{id}` — risk: medium
 	 */
-	async deleteExternalAccount(account: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteExternalAccount(account: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteAccountsAccountExternalAccountsId",
 			namespace: "accounts",
@@ -391,6 +406,7 @@ details
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -401,7 +417,7 @@ details
 	 *
 	 * `POST /v1/accounts/{account}/login_links` — risk: medium
 	 */
-	async createLoginLink(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createLoginLink(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountsAccountLoginLinks",
 			namespace: "accounts",
@@ -414,6 +430,7 @@ details
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -422,7 +439,7 @@ details
 	 *
 	 * `GET /v1/accounts/{account}/persons` — risk: medium
 	 */
-	async listPersons(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listPersons(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAccountsAccountPersons",
 			namespace: "accounts",
@@ -435,6 +452,7 @@ details
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -443,7 +461,7 @@ details
 	 *
 	 * `POST /v1/accounts/{account}/persons` — risk: medium
 	 */
-	async createPerson(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createPerson(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountsAccountPersons",
 			namespace: "accounts",
@@ -456,6 +474,7 @@ details
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -464,7 +483,7 @@ details
 	 *
 	 * `GET /v1/accounts/{account}/persons/{person}` — risk: medium
 	 */
-	async retrievePerson(account: string, person: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrievePerson(account: string, person: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAccountsAccountPersonsPerson",
 			namespace: "accounts",
@@ -477,6 +496,7 @@ details
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -485,7 +505,7 @@ details
 	 *
 	 * `POST /v1/accounts/{account}/persons/{person}` — risk: medium
 	 */
-	async updatePerson(account: string, person: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updatePerson(account: string, person: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountsAccountPersonsPerson",
 			namespace: "accounts",
@@ -498,6 +518,7 @@ details
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -506,7 +527,7 @@ details
 	 *
 	 * `DELETE /v1/accounts/{account}/persons/{person}` — risk: medium
 	 */
-	async deletePerson(account: string, person: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deletePerson(account: string, person: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteAccountsAccountPersonsPerson",
 			namespace: "accounts",
@@ -519,6 +540,7 @@ details
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -529,7 +551,7 @@ details
 	 *
 	 * `POST /v1/accounts/{account}/reject` — risk: medium
 	 */
-	async reject(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async reject(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAccountsAccountReject",
 			namespace: "accounts",
@@ -542,13 +564,14 @@ details
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ApplePayResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -560,7 +583,7 @@ export class ApplePayResource extends RpcTarget {
 	 *
 	 * `GET /v1/apple_pay/domains` — risk: medium
 	 */
-	async listDomains(body?: unknown): Promise<ProofResult<unknown>> {
+	async listDomains(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetApplePayDomains",
 			namespace: "apple_pay",
@@ -573,6 +596,7 @@ export class ApplePayResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -581,7 +605,7 @@ export class ApplePayResource extends RpcTarget {
 	 *
 	 * `POST /v1/apple_pay/domains` — risk: medium
 	 */
-	async createDomain(body?: unknown): Promise<ProofResult<unknown>> {
+	async createDomain(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostApplePayDomains",
 			namespace: "apple_pay",
@@ -594,6 +618,7 @@ export class ApplePayResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -602,7 +627,7 @@ export class ApplePayResource extends RpcTarget {
 	 *
 	 * `GET /v1/apple_pay/domains/{domain}` — risk: medium
 	 */
-	async retrieveDomain(domain: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveDomain(domain: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetApplePayDomainsDomain",
 			namespace: "apple_pay",
@@ -615,6 +640,7 @@ export class ApplePayResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -623,7 +649,7 @@ export class ApplePayResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/apple_pay/domains/{domain}` — risk: medium
 	 */
-	async deleteDomain(domain: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteDomain(domain: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteApplePayDomainsDomain",
 			namespace: "apple_pay",
@@ -636,13 +662,14 @@ export class ApplePayResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ApplicationFeesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -654,7 +681,7 @@ export class ApplicationFeesResource extends RpcTarget {
 	 *
 	 * `GET /v1/application_fees` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetApplicationFees",
 			namespace: "application_fees",
@@ -667,6 +694,7 @@ export class ApplicationFeesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -675,7 +703,7 @@ export class ApplicationFeesResource extends RpcTarget {
 	 *
 	 * `GET /v1/application_fees/{fee}/refunds/{id}` — risk: medium
 	 */
-	async retrieveRefund(fee: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveRefund(fee: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetApplicationFeesFeeRefundsId",
 			namespace: "application_fees",
@@ -688,6 +716,7 @@ export class ApplicationFeesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -698,7 +727,7 @@ export class ApplicationFeesResource extends RpcTarget {
 	 *
 	 * `POST /v1/application_fees/{fee}/refunds/{id}` — risk: medium
 	 */
-	async updateRefund(fee: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateRefund(fee: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostApplicationFeesFeeRefundsId",
 			namespace: "application_fees",
@@ -711,6 +740,7 @@ export class ApplicationFeesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -719,7 +749,7 @@ export class ApplicationFeesResource extends RpcTarget {
 	 *
 	 * `GET /v1/application_fees/{id}` — risk: low
 	 */
-	async retrieve(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetApplicationFeesId",
 			namespace: "application_fees",
@@ -732,6 +762,7 @@ export class ApplicationFeesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -740,7 +771,7 @@ export class ApplicationFeesResource extends RpcTarget {
 	 *
 	 * `GET /v1/application_fees/{id}/refunds` — risk: medium
 	 */
-	async listRefunds(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listRefunds(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetApplicationFeesIdRefunds",
 			namespace: "application_fees",
@@ -753,6 +784,7 @@ export class ApplicationFeesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -764,7 +796,7 @@ Funds will be refunded to the Stripe account from which the fee was originally c
 	 *
 	 * `POST /v1/application_fees/{id}/refunds` — risk: medium
 	 */
-	async createRefund(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createRefund(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostApplicationFeesIdRefunds",
 			namespace: "application_fees",
@@ -777,13 +809,14 @@ Funds will be refunded to the Stripe account from which the fee was originally c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AppsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -795,7 +828,7 @@ export class AppsResource extends RpcTarget {
 	 *
 	 * `GET /v1/apps/secrets` — risk: medium
 	 */
-	async listSecrets(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSecrets(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAppsSecrets",
 			namespace: "apps",
@@ -808,6 +841,7 @@ export class AppsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -816,7 +850,7 @@ export class AppsResource extends RpcTarget {
 	 *
 	 * `POST /v1/apps/secrets` — risk: medium
 	 */
-	async createSecret(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSecret(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAppsSecrets",
 			namespace: "apps",
@@ -829,6 +863,7 @@ export class AppsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -837,7 +872,7 @@ export class AppsResource extends RpcTarget {
 	 *
 	 * `POST /v1/apps/secrets/delete` — risk: medium
 	 */
-	async delete(body?: unknown): Promise<ProofResult<unknown>> {
+	async delete(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostAppsSecretsDelete",
 			namespace: "apps",
@@ -850,6 +885,7 @@ export class AppsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -858,7 +894,7 @@ export class AppsResource extends RpcTarget {
 	 *
 	 * `GET /v1/apps/secrets/find` — risk: medium
 	 */
-	async find(body?: unknown): Promise<ProofResult<unknown>> {
+	async find(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetAppsSecretsFind",
 			namespace: "apps",
@@ -871,13 +907,14 @@ export class AppsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class BalanceResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -890,7 +927,7 @@ export class BalanceResource extends RpcTarget {
 	 *
 	 * `GET /v1/balance` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBalance",
 			namespace: "balance",
@@ -903,13 +940,14 @@ export class BalanceResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class BalanceSettingsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -922,7 +960,7 @@ export class BalanceSettingsResource extends RpcTarget {
 	 *
 	 * `GET /v1/balance_settings` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBalanceSettings",
 			namespace: "balance_settings",
@@ -935,6 +973,7 @@ export class BalanceSettingsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -944,7 +983,7 @@ export class BalanceSettingsResource extends RpcTarget {
 	 *
 	 * `POST /v1/balance_settings` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBalanceSettings",
 			namespace: "balance_settings",
@@ -957,13 +996,14 @@ export class BalanceSettingsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class BalanceTransactionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -975,7 +1015,7 @@ export class BalanceTransactionsResource extends RpcTarget {
 	 *
 	 * `GET /v1/balance_transactions` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBalanceTransactions",
 			namespace: "balance_transactions",
@@ -988,6 +1028,7 @@ export class BalanceTransactionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -998,7 +1039,7 @@ export class BalanceTransactionsResource extends RpcTarget {
 	 *
 	 * `GET /v1/balance_transactions/{id}` — risk: low
 	 */
-	async retrieve(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBalanceTransactionsId",
 			namespace: "balance_transactions",
@@ -1011,13 +1052,14 @@ export class BalanceTransactionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class BillingResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1029,7 +1071,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/alerts` — risk: medium
 	 */
-	async listAlerts(body?: unknown): Promise<ProofResult<unknown>> {
+	async listAlerts(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingAlerts",
 			namespace: "billing",
@@ -1042,6 +1084,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1050,7 +1093,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/alerts` — risk: medium
 	 */
-	async createAlert(body?: unknown): Promise<ProofResult<unknown>> {
+	async createAlert(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingAlerts",
 			namespace: "billing",
@@ -1063,6 +1106,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1071,7 +1115,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/alerts/{id}` — risk: medium
 	 */
-	async retrieveAlert(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveAlert(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingAlertsId",
 			namespace: "billing",
@@ -1084,6 +1128,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1092,7 +1137,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/alerts/{id}/activate` — risk: medium
 	 */
-	async activate(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async activate(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingAlertsIdActivate",
 			namespace: "billing",
@@ -1105,6 +1150,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1113,7 +1159,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/alerts/{id}/archive` — risk: medium
 	 */
-	async archive(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async archive(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingAlertsIdArchive",
 			namespace: "billing",
@@ -1126,6 +1172,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1134,7 +1181,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/alerts/{id}/deactivate` — risk: medium
 	 */
-	async alertsDeactivate(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async alertsDeactivate(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingAlertsIdDeactivate",
 			namespace: "billing",
@@ -1147,6 +1194,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1155,7 +1203,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/credit_balance_summary` — risk: medium
 	 */
-	async listCreditBalanceSummary(body?: unknown): Promise<ProofResult<unknown>> {
+	async listCreditBalanceSummary(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingCreditBalanceSummary",
 			namespace: "billing",
@@ -1168,6 +1216,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1176,7 +1225,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/credit_balance_transactions` — risk: medium
 	 */
-	async listCreditBalanceTransactions(body?: unknown): Promise<ProofResult<unknown>> {
+	async listCreditBalanceTransactions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingCreditBalanceTransactions",
 			namespace: "billing",
@@ -1189,6 +1238,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1197,7 +1247,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/credit_balance_transactions/{id}` — risk: medium
 	 */
-	async retrieveCreditBalanceTransaction(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveCreditBalanceTransaction(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingCreditBalanceTransactionsId",
 			namespace: "billing",
@@ -1210,6 +1260,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1218,7 +1269,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/credit_grants` — risk: medium
 	 */
-	async listCreditGrants(body?: unknown): Promise<ProofResult<unknown>> {
+	async listCreditGrants(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingCreditGrants",
 			namespace: "billing",
@@ -1231,6 +1282,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1239,7 +1291,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/credit_grants` — risk: medium
 	 */
-	async createCreditGrant(body?: unknown): Promise<ProofResult<unknown>> {
+	async createCreditGrant(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingCreditGrants",
 			namespace: "billing",
@@ -1252,6 +1304,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1260,7 +1313,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/credit_grants/{id}` — risk: medium
 	 */
-	async retrieveCreditGrant(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveCreditGrant(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingCreditGrantsId",
 			namespace: "billing",
@@ -1273,6 +1326,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1281,7 +1335,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/credit_grants/{id}` — risk: medium
 	 */
-	async updateCreditGrant(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateCreditGrant(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingCreditGrantsId",
 			namespace: "billing",
@@ -1294,6 +1348,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1302,7 +1357,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/credit_grants/{id}/expire` — risk: medium
 	 */
-	async expire(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async expire(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingCreditGrantsIdExpire",
 			namespace: "billing",
@@ -1315,6 +1370,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1323,7 +1379,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/credit_grants/{id}/void` — risk: medium
 	 */
-	async void(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async void(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingCreditGrantsIdVoid",
 			namespace: "billing",
@@ -1336,6 +1392,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1344,7 +1401,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/meter_event_adjustments` — risk: medium
 	 */
-	async createMeterEventAdjustment(body?: unknown): Promise<ProofResult<unknown>> {
+	async createMeterEventAdjustment(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingMeterEventAdjustments",
 			namespace: "billing",
@@ -1357,6 +1414,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1365,7 +1423,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/meter_events` — risk: medium
 	 */
-	async createMeterEvent(body?: unknown): Promise<ProofResult<unknown>> {
+	async createMeterEvent(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingMeterEvents",
 			namespace: "billing",
@@ -1378,6 +1436,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1386,7 +1445,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/meters` — risk: medium
 	 */
-	async listMeters(body?: unknown): Promise<ProofResult<unknown>> {
+	async listMeters(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingMeters",
 			namespace: "billing",
@@ -1399,6 +1458,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1407,7 +1467,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/meters` — risk: medium
 	 */
-	async createMeter(body?: unknown): Promise<ProofResult<unknown>> {
+	async createMeter(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingMeters",
 			namespace: "billing",
@@ -1420,6 +1480,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1428,7 +1489,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/meters/{id}` — risk: medium
 	 */
-	async retrieveMeter(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveMeter(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingMetersId",
 			namespace: "billing",
@@ -1441,6 +1502,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1449,7 +1511,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/meters/{id}` — risk: medium
 	 */
-	async updateMeter(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateMeter(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingMetersId",
 			namespace: "billing",
@@ -1462,6 +1524,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1470,7 +1533,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/meters/{id}/deactivate` — risk: medium
 	 */
-	async metersDeactivate(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async metersDeactivate(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingMetersIdDeactivate",
 			namespace: "billing",
@@ -1483,6 +1546,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1491,7 +1555,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing/meters/{id}/event_summaries` — risk: medium
 	 */
-	async eventSummaries(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async eventSummaries(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingMetersIdEventSummaries",
 			namespace: "billing",
@@ -1504,6 +1568,7 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1512,7 +1577,7 @@ export class BillingResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing/meters/{id}/reactivate` — risk: medium
 	 */
-	async reactivate(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async reactivate(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingMetersIdReactivate",
 			namespace: "billing",
@@ -1525,13 +1590,14 @@ export class BillingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class BillingPortalResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1543,7 +1609,7 @@ export class BillingPortalResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing_portal/configurations` — risk: high
 	 */
-	async listConfigurations(body?: unknown): Promise<ProofResult<unknown>> {
+	async listConfigurations(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingPortalConfigurations",
 			namespace: "billing_portal",
@@ -1556,6 +1622,7 @@ export class BillingPortalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1564,7 +1631,7 @@ export class BillingPortalResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing_portal/configurations` — risk: high
 	 */
-	async createConfiguration(body?: unknown): Promise<ProofResult<unknown>> {
+	async createConfiguration(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingPortalConfigurations",
 			namespace: "billing_portal",
@@ -1577,6 +1644,7 @@ export class BillingPortalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1585,7 +1653,7 @@ export class BillingPortalResource extends RpcTarget {
 	 *
 	 * `GET /v1/billing_portal/configurations/{configuration}` — risk: high
 	 */
-	async retrieveConfiguration(configuration: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveConfiguration(configuration: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetBillingPortalConfigurationsConfiguration",
 			namespace: "billing_portal",
@@ -1598,6 +1666,7 @@ export class BillingPortalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1606,7 +1675,7 @@ export class BillingPortalResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing_portal/configurations/{configuration}` — risk: high
 	 */
-	async updateConfiguration(configuration: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateConfiguration(configuration: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingPortalConfigurationsConfiguration",
 			namespace: "billing_portal",
@@ -1619,6 +1688,7 @@ export class BillingPortalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1627,7 +1697,7 @@ export class BillingPortalResource extends RpcTarget {
 	 *
 	 * `POST /v1/billing_portal/sessions` — risk: high
 	 */
-	async createSession(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSession(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostBillingPortalSessions",
 			namespace: "billing_portal",
@@ -1640,13 +1710,14 @@ export class BillingPortalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChargesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1658,7 +1729,7 @@ export class ChargesResource extends RpcTarget {
 	 *
 	 * `GET /v1/charges` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCharges",
 			namespace: "charges",
@@ -1671,6 +1742,7 @@ export class ChargesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1680,7 +1752,7 @@ to initiate a new payment instead. Confirmation of the PaymentIntent creates the
 	 *
 	 * `POST /v1/charges` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCharges",
 			namespace: "charges",
@@ -1693,6 +1765,7 @@ to initiate a new payment instead. Confirmation of the PaymentIntent creates the
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1702,7 +1775,7 @@ Don’t use search in read-after-write flows where strict consisten
 	 *
 	 * `GET /v1/charges/search` — risk: high
 	 */
-	async listSearch(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSearch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetChargesSearch",
 			namespace: "charges",
@@ -1715,6 +1788,7 @@ Don’t use search in read-after-write flows where strict consisten
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1723,7 +1797,7 @@ Don’t use search in read-after-write flows where strict consisten
 	 *
 	 * `GET /v1/charges/{charge}` — risk: low
 	 */
-	async retrieve(charge: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(charge: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetChargesCharge",
 			namespace: "charges",
@@ -1736,6 +1810,7 @@ Don’t use search in read-after-write flows where strict consisten
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1744,7 +1819,7 @@ Don’t use search in read-after-write flows where strict consisten
 	 *
 	 * `POST /v1/charges/{charge}` — risk: high
 	 */
-	async update(charge: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(charge: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostChargesCharge",
 			namespace: "charges",
@@ -1757,6 +1832,7 @@ Don’t use search in read-after-write flows where strict consisten
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1767,7 +1843,7 @@ Don’t use search in read-after-write flows where strict consisten
 	 *
 	 * `POST /v1/charges/{charge}/capture` — risk: high
 	 */
-	async capture(charge: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async capture(charge: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostChargesChargeCapture",
 			namespace: "charges",
@@ -1780,6 +1856,7 @@ Don’t use search in read-after-write flows where strict consisten
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1788,7 +1865,7 @@ Don’t use search in read-after-write flows where strict consisten
 	 *
 	 * `GET /v1/charges/{charge}/refunds` — risk: high
 	 */
-	async listRefunds(charge: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listRefunds(charge: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetChargesChargeRefunds",
 			namespace: "charges",
@@ -1801,6 +1878,7 @@ Don’t use search in read-after-write flows where strict consisten
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1809,7 +1887,7 @@ Don’t use search in read-after-write flows where strict consisten
 	 *
 	 * `GET /v1/charges/{charge}/refunds/{refund}` — risk: high
 	 */
-	async retrieveRefund(charge: string, refund: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveRefund(charge: string, refund: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetChargesChargeRefundsRefund",
 			namespace: "charges",
@@ -1822,13 +1900,14 @@ Don’t use search in read-after-write flows where strict consisten
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CheckoutResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1840,7 +1919,7 @@ export class CheckoutResource extends RpcTarget {
 	 *
 	 * `GET /v1/checkout/sessions` — risk: high
 	 */
-	async listSessions(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSessions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCheckoutSessions",
 			namespace: "checkout",
@@ -1853,6 +1932,7 @@ export class CheckoutResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1861,7 +1941,7 @@ export class CheckoutResource extends RpcTarget {
 	 *
 	 * `POST /v1/checkout/sessions` — risk: high
 	 */
-	async createSession(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSession(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCheckoutSessions",
 			namespace: "checkout",
@@ -1874,6 +1954,7 @@ export class CheckoutResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1882,7 +1963,7 @@ export class CheckoutResource extends RpcTarget {
 	 *
 	 * `GET /v1/checkout/sessions/{session}` — risk: high
 	 */
-	async retrieveSession(session: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveSession(session: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCheckoutSessionsSession",
 			namespace: "checkout",
@@ -1895,6 +1976,7 @@ export class CheckoutResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1905,7 +1987,7 @@ export class CheckoutResource extends RpcTarget {
 	 *
 	 * `POST /v1/checkout/sessions/{session}` — risk: high
 	 */
-	async updateSession(session: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateSession(session: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCheckoutSessionsSession",
 			namespace: "checkout",
@@ -1918,6 +2000,7 @@ export class CheckoutResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1928,7 +2011,7 @@ export class CheckoutResource extends RpcTarget {
 	 *
 	 * `POST /v1/checkout/sessions/{session}/expire` — risk: high
 	 */
-	async expire(session: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async expire(session: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCheckoutSessionsSessionExpire",
 			namespace: "checkout",
@@ -1941,6 +2024,7 @@ export class CheckoutResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1949,7 +2033,7 @@ export class CheckoutResource extends RpcTarget {
 	 *
 	 * `GET /v1/checkout/sessions/{session}/line_items` — risk: high
 	 */
-	async lineItems(session: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async lineItems(session: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCheckoutSessionsSessionLineItems",
 			namespace: "checkout",
@@ -1962,13 +2046,14 @@ export class CheckoutResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ClimateResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1981,7 +2066,7 @@ most recently created orders appearing first.</p>
 	 *
 	 * `GET /v1/climate/orders` — risk: medium
 	 */
-	async listOrders(body?: unknown): Promise<ProofResult<unknown>> {
+	async listOrders(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetClimateOrders",
 			namespace: "climate",
@@ -1994,6 +2079,7 @@ most recently created orders appearing first.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2003,7 +2089,7 @@ after creation and payment will be deducted your Stripe balance.</p>
 	 *
 	 * `POST /v1/climate/orders` — risk: medium
 	 */
-	async createOrder(body?: unknown): Promise<ProofResult<unknown>> {
+	async createOrder(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostClimateOrders",
 			namespace: "climate",
@@ -2016,6 +2102,7 @@ after creation and payment will be deducted your Stripe balance.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2024,7 +2111,7 @@ after creation and payment will be deducted your Stripe balance.</p>
 	 *
 	 * `GET /v1/climate/orders/{order}` — risk: medium
 	 */
-	async retrieveOrder(order: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveOrder(order: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetClimateOrdersOrder",
 			namespace: "climate",
@@ -2037,6 +2124,7 @@ after creation and payment will be deducted your Stripe balance.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2045,7 +2133,7 @@ after creation and payment will be deducted your Stripe balance.</p>
 	 *
 	 * `POST /v1/climate/orders/{order}` — risk: medium
 	 */
-	async updateOrder(order: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateOrder(order: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostClimateOrdersOrder",
 			namespace: "climate",
@@ -2058,6 +2146,7 @@ after creation and payment will be deducted your Stripe balance.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2067,7 +2156,7 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 	 *
 	 * `POST /v1/climate/orders/{order}/cancel` — risk: medium
 	 */
-	async cancel(order: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(order: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostClimateOrdersOrderCancel",
 			namespace: "climate",
@@ -2080,6 +2169,7 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2088,7 +2178,7 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 	 *
 	 * `GET /v1/climate/products` — risk: medium
 	 */
-	async listProducts(body?: unknown): Promise<ProofResult<unknown>> {
+	async listProducts(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetClimateProducts",
 			namespace: "climate",
@@ -2101,6 +2191,7 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2109,7 +2200,7 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 	 *
 	 * `GET /v1/climate/products/{product}` — risk: medium
 	 */
-	async retrieveProduct(product: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveProduct(product: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetClimateProductsProduct",
 			namespace: "climate",
@@ -2122,6 +2213,7 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2130,7 +2222,7 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 	 *
 	 * `GET /v1/climate/suppliers` — risk: medium
 	 */
-	async listSuppliers(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSuppliers(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetClimateSuppliers",
 			namespace: "climate",
@@ -2143,6 +2235,7 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2151,7 +2244,7 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 	 *
 	 * `GET /v1/climate/suppliers/{supplier}` — risk: medium
 	 */
-	async retrieveSupplier(supplier: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveSupplier(supplier: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetClimateSuppliersSupplier",
 			namespace: "climate",
@@ -2164,13 +2257,14 @@ reservation <code>amount_subtotal</code>, but not the <code>amount_fees</code> f
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ConfirmationTokensResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2182,7 +2276,7 @@ export class ConfirmationTokensResource extends RpcTarget {
 	 *
 	 * `GET /v1/confirmation_tokens/{confirmation_token}` — risk: low
 	 */
-	async retrieve(confirmationToken: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(confirmationToken: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetConfirmationTokensConfirmationToken",
 			namespace: "confirmation_tokens",
@@ -2195,13 +2289,14 @@ export class ConfirmationTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CountrySpecsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2213,7 +2308,7 @@ export class CountrySpecsResource extends RpcTarget {
 	 *
 	 * `GET /v1/country_specs` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCountrySpecs",
 			namespace: "country_specs",
@@ -2226,6 +2321,7 @@ export class CountrySpecsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2234,7 +2330,7 @@ export class CountrySpecsResource extends RpcTarget {
 	 *
 	 * `GET /v1/country_specs/{country}` — risk: low
 	 */
-	async retrieve(country: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(country: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCountrySpecsCountry",
 			namespace: "country_specs",
@@ -2247,13 +2343,14 @@ export class CountrySpecsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CouponsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2265,7 +2362,7 @@ export class CouponsResource extends RpcTarget {
 	 *
 	 * `GET /v1/coupons` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCoupons",
 			namespace: "coupons",
@@ -2278,6 +2375,7 @@ export class CouponsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2286,7 +2384,7 @@ export class CouponsResource extends RpcTarget {
 	 *
 	 * `POST /v1/coupons` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCoupons",
 			namespace: "coupons",
@@ -2299,6 +2397,7 @@ export class CouponsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2307,7 +2406,7 @@ export class CouponsResource extends RpcTarget {
 	 *
 	 * `GET /v1/coupons/{coupon}` — risk: low
 	 */
-	async retrieve(coupon: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(coupon: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCouponsCoupon",
 			namespace: "coupons",
@@ -2320,6 +2419,7 @@ export class CouponsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2328,7 +2428,7 @@ export class CouponsResource extends RpcTarget {
 	 *
 	 * `POST /v1/coupons/{coupon}` — risk: medium
 	 */
-	async update(coupon: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(coupon: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCouponsCoupon",
 			namespace: "coupons",
@@ -2341,6 +2441,7 @@ export class CouponsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2349,7 +2450,7 @@ export class CouponsResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/coupons/{coupon}` — risk: medium
 	 */
-	async del(coupon: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(coupon: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteCouponsCoupon",
 			namespace: "coupons",
@@ -2362,13 +2463,14 @@ export class CouponsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CreditNotesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2380,7 +2482,7 @@ export class CreditNotesResource extends RpcTarget {
 	 *
 	 * `GET /v1/credit_notes` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCreditNotes",
 			namespace: "credit_notes",
@@ -2393,6 +2495,7 @@ export class CreditNotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2402,7 +2505,7 @@ This
 	 *
 	 * `POST /v1/credit_notes` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCreditNotes",
 			namespace: "credit_notes",
@@ -2415,6 +2518,7 @@ This
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2423,7 +2527,7 @@ This
 	 *
 	 * `GET /v1/credit_notes/preview` — risk: high
 	 */
-	async listPreview(body?: unknown): Promise<ProofResult<unknown>> {
+	async listPreview(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCreditNotesPreview",
 			namespace: "credit_notes",
@@ -2436,6 +2540,7 @@ This
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2444,7 +2549,7 @@ This
 	 *
 	 * `GET /v1/credit_notes/preview/lines` — risk: high
 	 */
-	async lines(body?: unknown): Promise<ProofResult<unknown>> {
+	async lines(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCreditNotesPreviewLines",
 			namespace: "credit_notes",
@@ -2457,6 +2562,7 @@ This
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2465,7 +2571,7 @@ This
 	 *
 	 * `GET /v1/credit_notes/{credit_note}/lines` — risk: high
 	 */
-	async listLines(creditNote: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listLines(creditNote: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCreditNotesCreditNoteLines",
 			namespace: "credit_notes",
@@ -2478,6 +2584,7 @@ This
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2486,7 +2593,7 @@ This
 	 *
 	 * `GET /v1/credit_notes/{id}` — risk: low
 	 */
-	async retrieve(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCreditNotesId",
 			namespace: "credit_notes",
@@ -2499,6 +2606,7 @@ This
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2507,7 +2615,7 @@ This
 	 *
 	 * `POST /v1/credit_notes/{id}` — risk: high
 	 */
-	async update(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCreditNotesId",
 			namespace: "credit_notes",
@@ -2520,6 +2628,7 @@ This
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2528,7 +2637,7 @@ This
 	 *
 	 * `POST /v1/credit_notes/{id}/void` — risk: high
 	 */
-	async void(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async void(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCreditNotesIdVoid",
 			namespace: "credit_notes",
@@ -2541,13 +2650,14 @@ This
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CustomerSessionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2559,7 +2669,7 @@ export class CustomerSessionsResource extends RpcTarget {
 	 *
 	 * `POST /v1/customer_sessions` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomerSessions",
 			namespace: "customer_sessions",
@@ -2572,13 +2682,14 @@ export class CustomerSessionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class CustomersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2590,7 +2701,7 @@ export class CustomersResource extends RpcTarget {
 	 *
 	 * `GET /v1/customers` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomers",
 			namespace: "customers",
@@ -2603,6 +2714,7 @@ export class CustomersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2611,7 +2723,7 @@ export class CustomersResource extends RpcTarget {
 	 *
 	 * `POST /v1/customers` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomers",
 			namespace: "customers",
@@ -2624,6 +2736,7 @@ export class CustomersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2633,7 +2746,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `GET /v1/customers/search` — risk: medium
 	 */
-	async listSearch(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSearch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersSearch",
 			namespace: "customers",
@@ -2646,6 +2759,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2654,7 +2768,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `GET /v1/customers/{customer}` — risk: low
 	 */
-	async retrieve(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomer",
 			namespace: "customers",
@@ -2667,6 +2781,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2675,7 +2790,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `POST /v1/customers/{customer}` — risk: medium
 	 */
-	async update(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomersCustomer",
 			namespace: "customers",
@@ -2688,6 +2803,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2696,7 +2812,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `DELETE /v1/customers/{customer}` — risk: medium
 	 */
-	async del(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteCustomersCustomer",
 			namespace: "customers",
@@ -2709,6 +2825,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2717,7 +2834,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `GET /v1/customers/{customer}/balance_transactions` — risk: medium
 	 */
-	async listBalanceTransactions(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listBalanceTransactions(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerBalanceTransactions",
 			namespace: "customers",
@@ -2730,6 +2847,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2738,7 +2856,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `POST /v1/customers/{customer}/balance_transactions` — risk: medium
 	 */
-	async createBalanceTransaction(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createBalanceTransaction(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomersCustomerBalanceTransactions",
 			namespace: "customers",
@@ -2751,6 +2869,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2759,7 +2878,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `GET /v1/customers/{customer}/balance_transactions/{transaction}` — risk: medium
 	 */
-	async retrieveBalanceTransaction(customer: string, transaction: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveBalanceTransaction(customer: string, transaction: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerBalanceTransactionsTransaction",
 			namespace: "customers",
@@ -2772,6 +2891,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2780,7 +2900,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `POST /v1/customers/{customer}/balance_transactions/{transaction}` — risk: medium
 	 */
-	async updateBalanceTransaction(customer: string, transaction: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateBalanceTransaction(customer: string, transaction: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomersCustomerBalanceTransactionsTransaction",
 			namespace: "customers",
@@ -2793,6 +2913,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2801,7 +2922,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `GET /v1/customers/{customer}/cash_balance` — risk: medium
 	 */
-	async listCashBalance(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listCashBalance(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerCashBalance",
 			namespace: "customers",
@@ -2814,6 +2935,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2822,7 +2944,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `POST /v1/customers/{customer}/cash_balance` — risk: medium
 	 */
-	async createCashBalance(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createCashBalance(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomersCustomerCashBalance",
 			namespace: "customers",
@@ -2835,6 +2957,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2843,7 +2966,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `GET /v1/customers/{customer}/cash_balance_transactions` — risk: medium
 	 */
-	async listCashBalanceTransactions(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listCashBalanceTransactions(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerCashBalanceTransactions",
 			namespace: "customers",
@@ -2856,6 +2979,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2864,7 +2988,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `GET /v1/customers/{customer}/cash_balance_transactions/{transaction}` — risk: medium
 	 */
-	async retrieveCashBalanceTransaction(customer: string, transaction: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveCashBalanceTransaction(customer: string, transaction: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerCashBalanceTransactionsTransaction",
 			namespace: "customers",
@@ -2877,6 +3001,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2885,7 +3010,7 @@ Don’t use search in read-after-write flows where strict consist
 	 *
 	 * `DELETE /v1/customers/{customer}/discount` — risk: medium
 	 */
-	async discount(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async discount(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteCustomersCustomerDiscount",
 			namespace: "customers",
@@ -2898,6 +3023,7 @@ Don’t use search in read-after-write flows where strict consist
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2907,7 +3033,7 @@ funding instructions will be created. If funding instructions have already
 	 *
 	 * `POST /v1/customers/{customer}/funding_instructions` — risk: medium
 	 */
-	async createFundingInstruction(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createFundingInstruction(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomersCustomerFundingInstructions",
 			namespace: "customers",
@@ -2920,6 +3046,7 @@ funding instructions will be created. If funding instructions have already
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2928,7 +3055,7 @@ funding instructions will be created. If funding instructions have already
 	 *
 	 * `GET /v1/customers/{customer}/payment_methods` — risk: medium
 	 */
-	async listPaymentMethods(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listPaymentMethods(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerPaymentMethods",
 			namespace: "customers",
@@ -2941,6 +3068,7 @@ funding instructions will be created. If funding instructions have already
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2949,7 +3077,7 @@ funding instructions will be created. If funding instructions have already
 	 *
 	 * `GET /v1/customers/{customer}/payment_methods/{payment_method}` — risk: medium
 	 */
-	async retrievePaymentMethod(customer: string, paymentMethod: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrievePaymentMethod(customer: string, paymentMethod: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerPaymentMethodsPaymentMethod",
 			namespace: "customers",
@@ -2962,6 +3090,7 @@ funding instructions will be created. If funding instructions have already
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2970,7 +3099,7 @@ funding instructions will be created. If funding instructions have already
 	 *
 	 * `GET /v1/customers/{customer}/sources` — risk: medium
 	 */
-	async listSources(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listSources(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerSources",
 			namespace: "customers",
@@ -2983,6 +3112,7 @@ funding instructions will be created. If funding instructions have already
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2994,7 +3124,7 @@ Howeve
 	 *
 	 * `POST /v1/customers/{customer}/sources` — risk: medium
 	 */
-	async createSource(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createSource(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomersCustomerSources",
 			namespace: "customers",
@@ -3007,6 +3137,7 @@ Howeve
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3015,7 +3146,7 @@ Howeve
 	 *
 	 * `GET /v1/customers/{customer}/sources/{id}` — risk: medium
 	 */
-	async retrieveSource(customer: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveSource(customer: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerSourcesId",
 			namespace: "customers",
@@ -3028,6 +3159,7 @@ Howeve
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3036,7 +3168,7 @@ Howeve
 	 *
 	 * `POST /v1/customers/{customer}/sources/{id}` — risk: medium
 	 */
-	async updateSource(customer: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateSource(customer: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomersCustomerSourcesId",
 			namespace: "customers",
@@ -3049,6 +3181,7 @@ Howeve
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3057,7 +3190,7 @@ Howeve
 	 *
 	 * `DELETE /v1/customers/{customer}/sources/{id}` — risk: medium
 	 */
-	async deleteSource(customer: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteSource(customer: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteCustomersCustomerSourcesId",
 			namespace: "customers",
@@ -3070,6 +3203,7 @@ Howeve
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3078,7 +3212,7 @@ Howeve
 	 *
 	 * `POST /v1/customers/{customer}/sources/{id}/verify` — risk: medium
 	 */
-	async verify(customer: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async verify(customer: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomersCustomerSourcesIdVerify",
 			namespace: "customers",
@@ -3091,6 +3225,7 @@ Howeve
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3099,7 +3234,7 @@ Howeve
 	 *
 	 * `GET /v1/customers/{customer}/tax_ids` — risk: medium
 	 */
-	async listTaxIds(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listTaxIds(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerTaxIds",
 			namespace: "customers",
@@ -3112,6 +3247,7 @@ Howeve
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3120,7 +3256,7 @@ Howeve
 	 *
 	 * `POST /v1/customers/{customer}/tax_ids` — risk: medium
 	 */
-	async createTaxId(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createTaxId(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostCustomersCustomerTaxIds",
 			namespace: "customers",
@@ -3133,6 +3269,7 @@ Howeve
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3141,7 +3278,7 @@ Howeve
 	 *
 	 * `GET /v1/customers/{customer}/tax_ids/{id}` — risk: medium
 	 */
-	async retrieveTaxId(customer: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveTaxId(customer: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetCustomersCustomerTaxIdsId",
 			namespace: "customers",
@@ -3154,6 +3291,7 @@ Howeve
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3162,7 +3300,7 @@ Howeve
 	 *
 	 * `DELETE /v1/customers/{customer}/tax_ids/{id}` — risk: medium
 	 */
-	async deleteTaxId(customer: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteTaxId(customer: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteCustomersCustomerTaxIdsId",
 			namespace: "customers",
@@ -3175,13 +3313,14 @@ Howeve
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DisputesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3193,7 +3332,7 @@ export class DisputesResource extends RpcTarget {
 	 *
 	 * `GET /v1/disputes` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetDisputes",
 			namespace: "disputes",
@@ -3206,6 +3345,7 @@ export class DisputesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3214,7 +3354,7 @@ export class DisputesResource extends RpcTarget {
 	 *
 	 * `GET /v1/disputes/{dispute}` — risk: low
 	 */
-	async retrieve(dispute: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(dispute: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetDisputesDispute",
 			namespace: "disputes",
@@ -3227,6 +3367,7 @@ export class DisputesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3235,7 +3376,7 @@ export class DisputesResource extends RpcTarget {
 	 *
 	 * `POST /v1/disputes/{dispute}` — risk: high
 	 */
-	async update(dispute: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(dispute: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostDisputesDispute",
 			namespace: "disputes",
@@ -3248,6 +3389,7 @@ export class DisputesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3258,7 +3400,7 @@ export class DisputesResource extends RpcTarget {
 	 *
 	 * `POST /v1/disputes/{dispute}/close` — risk: high
 	 */
-	async close(dispute: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async close(dispute: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostDisputesDisputeClose",
 			namespace: "disputes",
@@ -3271,13 +3413,14 @@ export class DisputesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EntitlementsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3289,7 +3432,7 @@ export class EntitlementsResource extends RpcTarget {
 	 *
 	 * `GET /v1/entitlements/active_entitlements` — risk: medium
 	 */
-	async listActiveEntitlements(body?: unknown): Promise<ProofResult<unknown>> {
+	async listActiveEntitlements(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetEntitlementsActiveEntitlements",
 			namespace: "entitlements",
@@ -3302,6 +3445,7 @@ export class EntitlementsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3310,7 +3454,7 @@ export class EntitlementsResource extends RpcTarget {
 	 *
 	 * `GET /v1/entitlements/active_entitlements/{id}` — risk: medium
 	 */
-	async retrieveActiveEntitlement(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveActiveEntitlement(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetEntitlementsActiveEntitlementsId",
 			namespace: "entitlements",
@@ -3323,6 +3467,7 @@ export class EntitlementsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3331,7 +3476,7 @@ export class EntitlementsResource extends RpcTarget {
 	 *
 	 * `GET /v1/entitlements/features` — risk: medium
 	 */
-	async listFeatures(body?: unknown): Promise<ProofResult<unknown>> {
+	async listFeatures(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetEntitlementsFeatures",
 			namespace: "entitlements",
@@ -3344,6 +3489,7 @@ export class EntitlementsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3352,7 +3498,7 @@ export class EntitlementsResource extends RpcTarget {
 	 *
 	 * `POST /v1/entitlements/features` — risk: medium
 	 */
-	async createFeature(body?: unknown): Promise<ProofResult<unknown>> {
+	async createFeature(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostEntitlementsFeatures",
 			namespace: "entitlements",
@@ -3365,6 +3511,7 @@ export class EntitlementsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3373,7 +3520,7 @@ export class EntitlementsResource extends RpcTarget {
 	 *
 	 * `GET /v1/entitlements/features/{id}` — risk: medium
 	 */
-	async retrieveFeature(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveFeature(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetEntitlementsFeaturesId",
 			namespace: "entitlements",
@@ -3386,6 +3533,7 @@ export class EntitlementsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3394,7 +3542,7 @@ export class EntitlementsResource extends RpcTarget {
 	 *
 	 * `POST /v1/entitlements/features/{id}` — risk: medium
 	 */
-	async updateFeature(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateFeature(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostEntitlementsFeaturesId",
 			namespace: "entitlements",
@@ -3407,13 +3555,14 @@ export class EntitlementsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EphemeralKeysResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3425,7 +3574,7 @@ export class EphemeralKeysResource extends RpcTarget {
 	 *
 	 * `POST /v1/ephemeral_keys` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostEphemeralKeys",
 			namespace: "ephemeral_keys",
@@ -3438,6 +3587,7 @@ export class EphemeralKeysResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3446,7 +3596,7 @@ export class EphemeralKeysResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/ephemeral_keys/{key}` — risk: medium
 	 */
-	async del(key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteEphemeralKeysKey",
 			namespace: "ephemeral_keys",
@@ -3459,13 +3609,14 @@ export class EphemeralKeysResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EventsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3477,7 +3628,7 @@ export class EventsResource extends RpcTarget {
 	 *
 	 * `GET /v1/events` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetEvents",
 			namespace: "events",
@@ -3490,6 +3641,7 @@ export class EventsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3498,7 +3650,7 @@ export class EventsResource extends RpcTarget {
 	 *
 	 * `GET /v1/events/{id}` — risk: low
 	 */
-	async retrieve(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetEventsId",
 			namespace: "events",
@@ -3511,13 +3663,14 @@ export class EventsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ExchangeRatesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3531,7 +3684,7 @@ export class ExchangeRatesResource extends RpcTarget {
 	 *
 	 * `GET /v1/exchange_rates` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetExchangeRates",
 			namespace: "exchange_rates",
@@ -3544,6 +3697,7 @@ export class ExchangeRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3554,7 +3708,7 @@ export class ExchangeRatesResource extends RpcTarget {
 	 *
 	 * `GET /v1/exchange_rates/{rate_id}` — risk: low
 	 */
-	async retrieve(rateId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(rateId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetExchangeRatesRateId",
 			namespace: "exchange_rates",
@@ -3567,13 +3721,14 @@ export class ExchangeRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FileLinksResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3585,7 +3740,7 @@ export class FileLinksResource extends RpcTarget {
 	 *
 	 * `GET /v1/file_links` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFileLinks",
 			namespace: "file_links",
@@ -3598,6 +3753,7 @@ export class FileLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3606,7 +3762,7 @@ export class FileLinksResource extends RpcTarget {
 	 *
 	 * `POST /v1/file_links` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostFileLinks",
 			namespace: "file_links",
@@ -3619,6 +3775,7 @@ export class FileLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3627,7 +3784,7 @@ export class FileLinksResource extends RpcTarget {
 	 *
 	 * `GET /v1/file_links/{link}` — risk: low
 	 */
-	async retrieve(link: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(link: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFileLinksLink",
 			namespace: "file_links",
@@ -3640,6 +3797,7 @@ export class FileLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3648,7 +3806,7 @@ export class FileLinksResource extends RpcTarget {
 	 *
 	 * `POST /v1/file_links/{link}` — risk: medium
 	 */
-	async update(link: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(link: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostFileLinksLink",
 			namespace: "file_links",
@@ -3661,13 +3819,14 @@ export class FileLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FilesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3679,7 +3838,7 @@ export class FilesResource extends RpcTarget {
 	 *
 	 * `GET /v1/files` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFiles",
 			namespace: "files",
@@ -3692,6 +3851,7 @@ export class FilesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3702,7 +3862,7 @@ export class FilesResource extends RpcTarget {
 	 *
 	 * `POST /v1/files` — risk: medium
 	 */
-	async create(): Promise<ProofResult<unknown>> {
+	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostFiles",
 			namespace: "files",
@@ -3715,6 +3875,7 @@ export class FilesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3723,7 +3884,7 @@ export class FilesResource extends RpcTarget {
 	 *
 	 * `GET /v1/files/{file}` — risk: low
 	 */
-	async retrieve(file: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(file: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFilesFile",
 			namespace: "files",
@@ -3736,13 +3897,14 @@ export class FilesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FinancialConnectionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3754,7 +3916,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `GET /v1/financial_connections/accounts` — risk: medium
 	 */
-	async listAccounts(body?: unknown): Promise<ProofResult<unknown>> {
+	async listAccounts(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFinancialConnectionsAccounts",
 			namespace: "financial_connections",
@@ -3767,6 +3929,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3775,7 +3938,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `GET /v1/financial_connections/accounts/{account}` — risk: medium
 	 */
-	async retrieveAccount(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveAccount(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFinancialConnectionsAccountsAccount",
 			namespace: "financial_connections",
@@ -3788,6 +3951,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3796,7 +3960,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `POST /v1/financial_connections/accounts/{account}/disconnect` — risk: medium
 	 */
-	async disconnect(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async disconnect(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostFinancialConnectionsAccountsAccountDisconnect",
 			namespace: "financial_connections",
@@ -3809,6 +3973,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3817,7 +3982,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `GET /v1/financial_connections/accounts/{account}/owners` — risk: medium
 	 */
-	async owners(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async owners(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFinancialConnectionsAccountsAccountOwners",
 			namespace: "financial_connections",
@@ -3830,6 +3995,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3838,7 +4004,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `POST /v1/financial_connections/accounts/{account}/refresh` — risk: medium
 	 */
-	async refresh(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async refresh(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostFinancialConnectionsAccountsAccountRefresh",
 			namespace: "financial_connections",
@@ -3851,6 +4017,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3859,7 +4026,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `POST /v1/financial_connections/accounts/{account}/subscribe` — risk: medium
 	 */
-	async subscribe(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async subscribe(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostFinancialConnectionsAccountsAccountSubscribe",
 			namespace: "financial_connections",
@@ -3872,6 +4039,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3880,7 +4048,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `POST /v1/financial_connections/accounts/{account}/unsubscribe` — risk: medium
 	 */
-	async unsubscribe(account: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async unsubscribe(account: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostFinancialConnectionsAccountsAccountUnsubscribe",
 			namespace: "financial_connections",
@@ -3893,6 +4061,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3901,7 +4070,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `POST /v1/financial_connections/sessions` — risk: medium
 	 */
-	async createSession(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSession(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostFinancialConnectionsSessions",
 			namespace: "financial_connections",
@@ -3914,6 +4083,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3922,7 +4092,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `GET /v1/financial_connections/sessions/{session}` — risk: medium
 	 */
-	async retrieveSession(session: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveSession(session: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFinancialConnectionsSessionsSession",
 			namespace: "financial_connections",
@@ -3935,6 +4105,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3943,7 +4114,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `GET /v1/financial_connections/transactions` — risk: medium
 	 */
-	async listTransactions(body?: unknown): Promise<ProofResult<unknown>> {
+	async listTransactions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFinancialConnectionsTransactions",
 			namespace: "financial_connections",
@@ -3956,6 +4127,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3964,7 +4136,7 @@ export class FinancialConnectionsResource extends RpcTarget {
 	 *
 	 * `GET /v1/financial_connections/transactions/{transaction}` — risk: medium
 	 */
-	async retrieveTransaction(transaction: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveTransaction(transaction: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetFinancialConnectionsTransactionsTransaction",
 			namespace: "financial_connections",
@@ -3977,13 +4149,14 @@ export class FinancialConnectionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ForwardingResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3995,7 +4168,7 @@ export class ForwardingResource extends RpcTarget {
 	 *
 	 * `GET /v1/forwarding/requests` — risk: medium
 	 */
-	async listRequests(body?: unknown): Promise<ProofResult<unknown>> {
+	async listRequests(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetForwardingRequests",
 			namespace: "forwarding",
@@ -4008,6 +4181,7 @@ export class ForwardingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4016,7 +4190,7 @@ export class ForwardingResource extends RpcTarget {
 	 *
 	 * `POST /v1/forwarding/requests` — risk: medium
 	 */
-	async createRequest(body?: unknown): Promise<ProofResult<unknown>> {
+	async createRequest(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostForwardingRequests",
 			namespace: "forwarding",
@@ -4029,6 +4203,7 @@ export class ForwardingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4037,7 +4212,7 @@ export class ForwardingResource extends RpcTarget {
 	 *
 	 * `GET /v1/forwarding/requests/{id}` — risk: medium
 	 */
-	async retrieveRequest(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveRequest(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetForwardingRequestsId",
 			namespace: "forwarding",
@@ -4050,13 +4225,14 @@ export class ForwardingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class IdentityResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4068,7 +4244,7 @@ export class IdentityResource extends RpcTarget {
 	 *
 	 * `GET /v1/identity/verification_reports` — risk: medium
 	 */
-	async listVerificationReports(body?: unknown): Promise<ProofResult<unknown>> {
+	async listVerificationReports(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIdentityVerificationReports",
 			namespace: "identity",
@@ -4081,6 +4257,7 @@ export class IdentityResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4089,7 +4266,7 @@ export class IdentityResource extends RpcTarget {
 	 *
 	 * `GET /v1/identity/verification_reports/{report}` — risk: medium
 	 */
-	async retrieveVerificationReport(report: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveVerificationReport(report: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIdentityVerificationReportsReport",
 			namespace: "identity",
@@ -4102,6 +4279,7 @@ export class IdentityResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4110,7 +4288,7 @@ export class IdentityResource extends RpcTarget {
 	 *
 	 * `GET /v1/identity/verification_sessions` — risk: medium
 	 */
-	async listVerificationSessions(body?: unknown): Promise<ProofResult<unknown>> {
+	async listVerificationSessions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIdentityVerificationSessions",
 			namespace: "identity",
@@ -4123,6 +4301,7 @@ export class IdentityResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4133,7 +4312,7 @@ export class IdentityResource extends RpcTarget {
 	 *
 	 * `POST /v1/identity/verification_sessions` — risk: medium
 	 */
-	async createVerificationSession(body?: unknown): Promise<ProofResult<unknown>> {
+	async createVerificationSession(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIdentityVerificationSessions",
 			namespace: "identity",
@@ -4146,6 +4325,7 @@ export class IdentityResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4157,7 +4337,7 @@ export class IdentityResource extends RpcTarget {
 	 *
 	 * `GET /v1/identity/verification_sessions/{session}` — risk: medium
 	 */
-	async retrieveVerificationSession(session: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveVerificationSession(session: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIdentityVerificationSessionsSession",
 			namespace: "identity",
@@ -4170,6 +4350,7 @@ export class IdentityResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4181,7 +4362,7 @@ verification check and options.</p>
 	 *
 	 * `POST /v1/identity/verification_sessions/{session}` — risk: medium
 	 */
-	async updateVerificationSession(session: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateVerificationSession(session: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIdentityVerificationSessionsSession",
 			namespace: "identity",
@@ -4194,6 +4375,7 @@ verification check and options.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4204,7 +4386,7 @@ verification check and options.</p>
 	 *
 	 * `POST /v1/identity/verification_sessions/{session}/cancel` — risk: medium
 	 */
-	async cancel(session: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(session: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIdentityVerificationSessionsSessionCancel",
 			namespace: "identity",
@@ -4217,6 +4399,7 @@ verification check and options.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4227,7 +4410,7 @@ request
 	 *
 	 * `POST /v1/identity/verification_sessions/{session}/redact` — risk: medium
 	 */
-	async redact(session: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async redact(session: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIdentityVerificationSessionsSessionRedact",
 			namespace: "identity",
@@ -4240,13 +4423,14 @@ request
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class InvoicePaymentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4258,7 +4442,7 @@ export class InvoicePaymentsResource extends RpcTarget {
 	 *
 	 * `GET /v1/invoice_payments` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoicePayments",
 			namespace: "invoice_payments",
@@ -4271,6 +4455,7 @@ export class InvoicePaymentsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4279,7 +4464,7 @@ export class InvoicePaymentsResource extends RpcTarget {
 	 *
 	 * `GET /v1/invoice_payments/{invoice_payment}` — risk: low
 	 */
-	async retrieve(invoicePayment: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(invoicePayment: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoicePaymentsInvoicePayment",
 			namespace: "invoice_payments",
@@ -4292,13 +4477,14 @@ export class InvoicePaymentsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class InvoiceRenderingTemplatesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4310,7 +4496,7 @@ export class InvoiceRenderingTemplatesResource extends RpcTarget {
 	 *
 	 * `GET /v1/invoice_rendering_templates` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoiceRenderingTemplates",
 			namespace: "invoice_rendering_templates",
@@ -4323,6 +4509,7 @@ export class InvoiceRenderingTemplatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4331,7 +4518,7 @@ export class InvoiceRenderingTemplatesResource extends RpcTarget {
 	 *
 	 * `GET /v1/invoice_rendering_templates/{template}` — risk: low
 	 */
-	async retrieve(template: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(template: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoiceRenderingTemplatesTemplate",
 			namespace: "invoice_rendering_templates",
@@ -4344,6 +4531,7 @@ export class InvoiceRenderingTemplatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4352,7 +4540,7 @@ export class InvoiceRenderingTemplatesResource extends RpcTarget {
 	 *
 	 * `POST /v1/invoice_rendering_templates/{template}/archive` — risk: medium
 	 */
-	async createArchive(template: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createArchive(template: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoiceRenderingTemplatesTemplateArchive",
 			namespace: "invoice_rendering_templates",
@@ -4365,6 +4553,7 @@ export class InvoiceRenderingTemplatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4373,7 +4562,7 @@ export class InvoiceRenderingTemplatesResource extends RpcTarget {
 	 *
 	 * `POST /v1/invoice_rendering_templates/{template}/unarchive` — risk: medium
 	 */
-	async createUnarchive(template: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createUnarchive(template: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoiceRenderingTemplatesTemplateUnarchive",
 			namespace: "invoice_rendering_templates",
@@ -4386,13 +4575,14 @@ export class InvoiceRenderingTemplatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class InvoiceitemsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4404,7 +4594,7 @@ export class InvoiceitemsResource extends RpcTarget {
 	 *
 	 * `GET /v1/invoiceitems` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoiceitems",
 			namespace: "invoiceitems",
@@ -4417,6 +4607,7 @@ export class InvoiceitemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4425,7 +4616,7 @@ export class InvoiceitemsResource extends RpcTarget {
 	 *
 	 * `POST /v1/invoiceitems` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoiceitems",
 			namespace: "invoiceitems",
@@ -4438,6 +4629,7 @@ export class InvoiceitemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4446,7 +4638,7 @@ export class InvoiceitemsResource extends RpcTarget {
 	 *
 	 * `GET /v1/invoiceitems/{invoiceitem}` — risk: low
 	 */
-	async retrieve(invoiceitem: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(invoiceitem: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoiceitemsInvoiceitem",
 			namespace: "invoiceitems",
@@ -4459,6 +4651,7 @@ export class InvoiceitemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4467,7 +4660,7 @@ export class InvoiceitemsResource extends RpcTarget {
 	 *
 	 * `POST /v1/invoiceitems/{invoiceitem}` — risk: medium
 	 */
-	async update(invoiceitem: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(invoiceitem: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoiceitemsInvoiceitem",
 			namespace: "invoiceitems",
@@ -4480,6 +4673,7 @@ export class InvoiceitemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4488,7 +4682,7 @@ export class InvoiceitemsResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/invoiceitems/{invoiceitem}` — risk: medium
 	 */
-	async del(invoiceitem: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(invoiceitem: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteInvoiceitemsInvoiceitem",
 			namespace: "invoiceitems",
@@ -4501,13 +4695,14 @@ export class InvoiceitemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class InvoicesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4519,7 +4714,7 @@ export class InvoicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/invoices` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoices",
 			namespace: "invoices",
@@ -4532,6 +4727,7 @@ export class InvoicesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4540,7 +4736,7 @@ export class InvoicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/invoices` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoices",
 			namespace: "invoices",
@@ -4553,6 +4749,7 @@ export class InvoicesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4561,7 +4758,7 @@ export class InvoicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/invoices/create_preview` — risk: high
 	 */
-	async createCreatePreview(body?: unknown): Promise<ProofResult<unknown>> {
+	async createCreatePreview(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesCreatePreview",
 			namespace: "invoices",
@@ -4574,6 +4771,7 @@ export class InvoicesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4583,7 +4781,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `GET /v1/invoices/search` — risk: high
 	 */
-	async listSearch(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSearch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoicesSearch",
 			namespace: "invoices",
@@ -4596,6 +4794,7 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4604,7 +4803,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `GET /v1/invoices/{invoice}` — risk: low
 	 */
-	async retrieve(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoicesInvoice",
 			namespace: "invoices",
@@ -4617,6 +4816,7 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4626,7 +4826,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 	 *
 	 * `POST /v1/invoices/{invoice}` — risk: high
 	 */
-	async update(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoice",
 			namespace: "invoices",
@@ -4639,6 +4839,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4647,7 +4848,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 	 *
 	 * `DELETE /v1/invoices/{invoice}` — risk: high
 	 */
-	async del(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteInvoicesInvoice",
 			namespace: "invoices",
@@ -4660,6 +4861,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4668,7 +4870,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 	 *
 	 * `POST /v1/invoices/{invoice}/add_lines` — risk: high
 	 */
-	async createAddLine(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createAddLine(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoiceAddLines",
 			namespace: "invoices",
@@ -4681,6 +4883,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4691,7 +4894,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 	 *
 	 * `POST /v1/invoices/{invoice}/attach_payment` — risk: high
 	 */
-	async createAttachPayment(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createAttachPayment(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoiceAttachPayment",
 			namespace: "invoices",
@@ -4704,6 +4907,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4712,7 +4916,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 	 *
 	 * `POST /v1/invoices/{invoice}/finalize` — risk: high
 	 */
-	async finalize(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async finalize(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoiceFinalize",
 			namespace: "invoices",
@@ -4725,6 +4929,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4733,7 +4938,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 	 *
 	 * `GET /v1/invoices/{invoice}/lines` — risk: high
 	 */
-	async listLines(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listLines(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetInvoicesInvoiceLines",
 			namespace: "invoices",
@@ -4746,6 +4951,7 @@ monetary values, as well as <code>collection_method</code>, become uneditabl
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4755,7 +4961,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 	 *
 	 * `POST /v1/invoices/{invoice}/lines/{line_item_id}` — risk: high
 	 */
-	async updateLine(invoice: string, lineItemId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateLine(invoice: string, lineItemId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoiceLinesLineItemId",
 			namespace: "invoices",
@@ -4768,6 +4974,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4776,7 +4983,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 	 *
 	 * `POST /v1/invoices/{invoice}/mark_uncollectible` — risk: high
 	 */
-	async markUncollectible(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async markUncollectible(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoiceMarkUncollectible",
 			namespace: "invoices",
@@ -4789,6 +4996,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4797,7 +5005,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 	 *
 	 * `POST /v1/invoices/{invoice}/pay` — risk: high
 	 */
-	async pay(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pay(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoicePay",
 			namespace: "invoices",
@@ -4810,6 +5018,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4818,7 +5027,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 	 *
 	 * `POST /v1/invoices/{invoice}/remove_lines` — risk: high
 	 */
-	async createRemoveLine(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createRemoveLine(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoiceRemoveLines",
 			namespace: "invoices",
@@ -4831,6 +5040,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4839,7 +5049,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 	 *
 	 * `POST /v1/invoices/{invoice}/send` — risk: high
 	 */
-	async send(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async send(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoiceSend",
 			namespace: "invoices",
@@ -4852,6 +5062,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4860,7 +5071,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 	 *
 	 * `POST /v1/invoices/{invoice}/update_lines` — risk: high
 	 */
-	async createUpdateLine(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createUpdateLine(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoiceUpdateLines",
 			namespace: "invoices",
@@ -4873,6 +5084,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4881,7 +5093,7 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 	 *
 	 * `POST /v1/invoices/{invoice}/void` — risk: high
 	 */
-	async void(invoice: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async void(invoice: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostInvoicesInvoiceVoid",
 			namespace: "invoices",
@@ -4894,13 +5106,14 @@ so they can only be updated through this endpoint. Other fields, such as <code>a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class IssuingResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4912,7 +5125,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/authorizations` — risk: medium
 	 */
-	async listAuthorizations(body?: unknown): Promise<ProofResult<unknown>> {
+	async listAuthorizations(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingAuthorizations",
 			namespace: "issuing",
@@ -4925,6 +5138,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4933,7 +5147,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/authorizations/{authorization}` — risk: medium
 	 */
-	async retrieveAuthorization(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveAuthorization(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingAuthorizationsAuthorization",
 			namespace: "issuing",
@@ -4946,6 +5160,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4954,7 +5169,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/authorizations/{authorization}` — risk: medium
 	 */
-	async updateAuthorization(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateAuthorization(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingAuthorizationsAuthorization",
 			namespace: "issuing",
@@ -4967,6 +5182,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4975,7 +5191,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/authorizations/{authorization}/approve` — risk: medium
 	 */
-	async approve(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async approve(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingAuthorizationsAuthorizationApprove",
 			namespace: "issuing",
@@ -4988,6 +5204,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4996,7 +5213,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/authorizations/{authorization}/decline` — risk: medium
 	 */
-	async decline(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async decline(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingAuthorizationsAuthorizationDecline",
 			namespace: "issuing",
@@ -5009,6 +5226,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5017,7 +5235,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/cardholders` — risk: medium
 	 */
-	async listCardholders(body?: unknown): Promise<ProofResult<unknown>> {
+	async listCardholders(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingCardholders",
 			namespace: "issuing",
@@ -5030,6 +5248,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5038,7 +5257,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/cardholders` — risk: medium
 	 */
-	async createCardholder(body?: unknown): Promise<ProofResult<unknown>> {
+	async createCardholder(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingCardholders",
 			namespace: "issuing",
@@ -5051,6 +5270,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5059,7 +5279,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/cardholders/{cardholder}` — risk: medium
 	 */
-	async retrieveCardholder(cardholder: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveCardholder(cardholder: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingCardholdersCardholder",
 			namespace: "issuing",
@@ -5072,6 +5292,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5080,7 +5301,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/cardholders/{cardholder}` — risk: medium
 	 */
-	async updateCardholder(cardholder: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateCardholder(cardholder: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingCardholdersCardholder",
 			namespace: "issuing",
@@ -5093,6 +5314,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5101,7 +5323,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/cards` — risk: medium
 	 */
-	async listCards(body?: unknown): Promise<ProofResult<unknown>> {
+	async listCards(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingCards",
 			namespace: "issuing",
@@ -5114,6 +5336,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5122,7 +5345,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/cards` — risk: medium
 	 */
-	async createCard(body?: unknown): Promise<ProofResult<unknown>> {
+	async createCard(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingCards",
 			namespace: "issuing",
@@ -5135,6 +5358,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5143,7 +5367,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/cards/{card}` — risk: medium
 	 */
-	async retrieveCard(card: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveCard(card: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingCardsCard",
 			namespace: "issuing",
@@ -5156,6 +5380,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5164,7 +5389,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/cards/{card}` — risk: medium
 	 */
-	async updateCard(card: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateCard(card: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingCardsCard",
 			namespace: "issuing",
@@ -5177,6 +5402,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5185,7 +5411,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/disputes` — risk: medium
 	 */
-	async listDisputes(body?: unknown): Promise<ProofResult<unknown>> {
+	async listDisputes(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingDisputes",
 			namespace: "issuing",
@@ -5198,6 +5424,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5206,7 +5433,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/disputes` — risk: medium
 	 */
-	async createDispute(body?: unknown): Promise<ProofResult<unknown>> {
+	async createDispute(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingDisputes",
 			namespace: "issuing",
@@ -5219,6 +5446,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5227,7 +5455,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/disputes/{dispute}` — risk: medium
 	 */
-	async retrieveDispute(dispute: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveDispute(dispute: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingDisputesDispute",
 			namespace: "issuing",
@@ -5240,6 +5468,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5248,7 +5477,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/disputes/{dispute}` — risk: medium
 	 */
-	async updateDispute(dispute: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateDispute(dispute: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingDisputesDispute",
 			namespace: "issuing",
@@ -5261,6 +5490,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5269,7 +5499,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/disputes/{dispute}/submit` — risk: medium
 	 */
-	async submit(dispute: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async submit(dispute: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingDisputesDisputeSubmit",
 			namespace: "issuing",
@@ -5282,6 +5512,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5290,7 +5521,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/personalization_designs` — risk: medium
 	 */
-	async listPersonalizationDesigns(body?: unknown): Promise<ProofResult<unknown>> {
+	async listPersonalizationDesigns(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingPersonalizationDesigns",
 			namespace: "issuing",
@@ -5303,6 +5534,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5311,7 +5543,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/personalization_designs` — risk: medium
 	 */
-	async createPersonalizationDesign(body?: unknown): Promise<ProofResult<unknown>> {
+	async createPersonalizationDesign(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingPersonalizationDesigns",
 			namespace: "issuing",
@@ -5324,6 +5556,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5332,7 +5565,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/personalization_designs/{personalization_design}` — risk: medium
 	 */
-	async retrievePersonalizationDesign(personalizationDesign: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrievePersonalizationDesign(personalizationDesign: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingPersonalizationDesignsPersonalizationDesign",
 			namespace: "issuing",
@@ -5345,6 +5578,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5353,7 +5587,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/personalization_designs/{personalization_design}` — risk: medium
 	 */
-	async updatePersonalizationDesign(personalizationDesign: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updatePersonalizationDesign(personalizationDesign: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingPersonalizationDesignsPersonalizationDesign",
 			namespace: "issuing",
@@ -5366,6 +5600,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5374,7 +5609,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/physical_bundles` — risk: medium
 	 */
-	async listPhysicalBundles(body?: unknown): Promise<ProofResult<unknown>> {
+	async listPhysicalBundles(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingPhysicalBundles",
 			namespace: "issuing",
@@ -5387,6 +5622,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5395,7 +5631,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/physical_bundles/{physical_bundle}` — risk: medium
 	 */
-	async retrievePhysicalBundle(physicalBundle: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrievePhysicalBundle(physicalBundle: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingPhysicalBundlesPhysicalBundle",
 			namespace: "issuing",
@@ -5408,6 +5644,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5416,7 +5653,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/tokens` — risk: medium
 	 */
-	async listTokens(body?: unknown): Promise<ProofResult<unknown>> {
+	async listTokens(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingTokens",
 			namespace: "issuing",
@@ -5429,6 +5666,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5437,7 +5675,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/tokens/{token}` — risk: medium
 	 */
-	async retrieveToken(token: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveToken(token: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingTokensToken",
 			namespace: "issuing",
@@ -5450,6 +5688,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5458,7 +5697,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/tokens/{token}` — risk: medium
 	 */
-	async updateToken(token: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateToken(token: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingTokensToken",
 			namespace: "issuing",
@@ -5471,6 +5710,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5479,7 +5719,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/transactions` — risk: medium
 	 */
-	async listTransactions(body?: unknown): Promise<ProofResult<unknown>> {
+	async listTransactions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingTransactions",
 			namespace: "issuing",
@@ -5492,6 +5732,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5500,7 +5741,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `GET /v1/issuing/transactions/{transaction}` — risk: medium
 	 */
-	async retrieveTransaction(transaction: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveTransaction(transaction: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetIssuingTransactionsTransaction",
 			namespace: "issuing",
@@ -5513,6 +5754,7 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5521,7 +5763,7 @@ export class IssuingResource extends RpcTarget {
 	 *
 	 * `POST /v1/issuing/transactions/{transaction}` — risk: medium
 	 */
-	async updateTransaction(transaction: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateTransaction(transaction: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostIssuingTransactionsTransaction",
 			namespace: "issuing",
@@ -5534,13 +5776,14 @@ export class IssuingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class MandatesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5552,7 +5795,7 @@ export class MandatesResource extends RpcTarget {
 	 *
 	 * `GET /v1/mandates/{mandate}` — risk: low
 	 */
-	async retrieve(mandate: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(mandate: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetMandatesMandate",
 			namespace: "mandates",
@@ -5565,13 +5808,14 @@ export class MandatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PaymentAttemptRecordsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5583,7 +5827,7 @@ export class PaymentAttemptRecordsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_attempt_records` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentAttemptRecords",
 			namespace: "payment_attempt_records",
@@ -5596,6 +5840,7 @@ export class PaymentAttemptRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5604,7 +5849,7 @@ export class PaymentAttemptRecordsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_attempt_records/{id}` — risk: low
 	 */
-	async retrieve(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentAttemptRecordsId",
 			namespace: "payment_attempt_records",
@@ -5617,13 +5862,14 @@ export class PaymentAttemptRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PaymentIntentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5635,7 +5881,7 @@ export class PaymentIntentsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_intents` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentIntents",
 			namespace: "payment_intents",
@@ -5648,6 +5894,7 @@ export class PaymentIntentsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5659,7 +5906,7 @@ to continue the payment. Learn more a
 	 *
 	 * `POST /v1/payment_intents` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentIntents",
 			namespace: "payment_intents",
@@ -5672,6 +5919,7 @@ to continue the payment. Learn more a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5681,7 +5929,7 @@ Don’t use search in read-after-write flows where strict co
 	 *
 	 * `GET /v1/payment_intents/search` — risk: high
 	 */
-	async listSearch(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSearch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentIntentsSearch",
 			namespace: "payment_intents",
@@ -5694,6 +5942,7 @@ Don’t use search in read-after-write flows where strict co
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5704,7 +5953,7 @@ Don’t use search in read-after-write flows where strict co
 	 *
 	 * `GET /v1/payment_intents/{intent}` — risk: low
 	 */
-	async retrieve(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentIntentsIntent",
 			namespace: "payment_intents",
@@ -5717,6 +5966,7 @@ Don’t use search in read-after-write flows where strict co
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5728,7 +5978,7 @@ PaymentIntent again. For example, updating the <code
 	 *
 	 * `POST /v1/payment_intents/{intent}` — risk: high
 	 */
-	async update(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentIntentsIntent",
 			namespace: "payment_intents",
@@ -5741,6 +5991,7 @@ PaymentIntent again. For example, updating the <code
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5749,7 +6000,7 @@ PaymentIntent again. For example, updating the <code
 	 *
 	 * `GET /v1/payment_intents/{intent}/amount_details_line_items` — risk: high
 	 */
-	async listAmountDetailsLineItems(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listAmountDetailsLineItems(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentIntentsIntentAmountDetailsLineItems",
 			namespace: "payment_intents",
@@ -5762,6 +6013,7 @@ PaymentIntent again. For example, updating the <code
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5770,7 +6022,7 @@ PaymentIntent again. For example, updating the <code
 	 *
 	 * `POST /v1/payment_intents/{intent}/apply_customer_balance` — risk: high
 	 */
-	async createApplyCustomerBalance(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createApplyCustomerBalance(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentIntentsIntentApplyCustomerBalance",
 			namespace: "payment_intents",
@@ -5783,6 +6035,7 @@ PaymentIntent again. For example, updating the <code
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5791,7 +6044,7 @@ PaymentIntent again. For example, updating the <code
 	 *
 	 * `POST /v1/payment_intents/{intent}/cancel` — risk: high
 	 */
-	async cancel(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentIntentsIntentCancel",
 			namespace: "payment_intents",
@@ -5804,6 +6057,7 @@ PaymentIntent again. For example, updating the <code
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5814,7 +6068,7 @@ PaymentIntent again. For example, updating the <code
 	 *
 	 * `POST /v1/payment_intents/{intent}/capture` — risk: high
 	 */
-	async capture(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async capture(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentIntentsIntentCapture",
 			namespace: "payment_intents",
@@ -5827,6 +6081,7 @@ PaymentIntent again. For example, updating the <code
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5839,7 +6094,7 @@ a payment.</p>
 	 *
 	 * `POST /v1/payment_intents/{intent}/confirm` — risk: high
 	 */
-	async confirm(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async confirm(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentIntentsIntentConfirm",
 			namespace: "payment_intents",
@@ -5852,6 +6107,7 @@ a payment.</p>
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5862,7 +6118,7 @@ PaymentIntent’s status must be <code>requires_capture</code> an
 	 *
 	 * `POST /v1/payment_intents/{intent}/increment_authorization` — risk: high
 	 */
-	async incrementAuthorization(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async incrementAuthorization(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentIntentsIntentIncrementAuthorization",
 			namespace: "payment_intents",
@@ -5875,6 +6131,7 @@ PaymentIntent’s status must be <code>requires_capture</code> an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5883,7 +6140,7 @@ PaymentIntent’s status must be <code>requires_capture</code> an
 	 *
 	 * `POST /v1/payment_intents/{intent}/verify_microdeposits` — risk: high
 	 */
-	async createVerifyMicrodeposit(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createVerifyMicrodeposit(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentIntentsIntentVerifyMicrodeposits",
 			namespace: "payment_intents",
@@ -5896,13 +6153,14 @@ PaymentIntent’s status must be <code>requires_capture</code> an
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PaymentLinksResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5914,7 +6172,7 @@ export class PaymentLinksResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_links` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentLinks",
 			namespace: "payment_links",
@@ -5927,6 +6185,7 @@ export class PaymentLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5935,7 +6194,7 @@ export class PaymentLinksResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_links` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentLinks",
 			namespace: "payment_links",
@@ -5948,6 +6207,7 @@ export class PaymentLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5956,7 +6216,7 @@ export class PaymentLinksResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_links/{payment_link}` — risk: low
 	 */
-	async retrieve(paymentLink: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(paymentLink: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentLinksPaymentLink",
 			namespace: "payment_links",
@@ -5969,6 +6229,7 @@ export class PaymentLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5977,7 +6238,7 @@ export class PaymentLinksResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_links/{payment_link}` — risk: medium
 	 */
-	async update(paymentLink: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(paymentLink: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentLinksPaymentLink",
 			namespace: "payment_links",
@@ -5990,6 +6251,7 @@ export class PaymentLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5998,7 +6260,7 @@ export class PaymentLinksResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_links/{payment_link}/line_items` — risk: medium
 	 */
-	async listLineItems(paymentLink: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listLineItems(paymentLink: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentLinksPaymentLinkLineItems",
 			namespace: "payment_links",
@@ -6011,13 +6273,14 @@ export class PaymentLinksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PaymentMethodConfigurationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6029,7 +6292,7 @@ export class PaymentMethodConfigurationsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_method_configurations` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentMethodConfigurations",
 			namespace: "payment_method_configurations",
@@ -6042,6 +6305,7 @@ export class PaymentMethodConfigurationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6050,7 +6314,7 @@ export class PaymentMethodConfigurationsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_method_configurations` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentMethodConfigurations",
 			namespace: "payment_method_configurations",
@@ -6063,6 +6327,7 @@ export class PaymentMethodConfigurationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6071,7 +6336,7 @@ export class PaymentMethodConfigurationsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_method_configurations/{configuration}` — risk: low
 	 */
-	async retrieve(configuration: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(configuration: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentMethodConfigurationsConfiguration",
 			namespace: "payment_method_configurations",
@@ -6084,6 +6349,7 @@ export class PaymentMethodConfigurationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6092,7 +6358,7 @@ export class PaymentMethodConfigurationsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_method_configurations/{configuration}` — risk: medium
 	 */
-	async update(configuration: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(configuration: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentMethodConfigurationsConfiguration",
 			namespace: "payment_method_configurations",
@@ -6105,13 +6371,14 @@ export class PaymentMethodConfigurationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PaymentMethodDomainsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6123,7 +6390,7 @@ export class PaymentMethodDomainsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_method_domains` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentMethodDomains",
 			namespace: "payment_method_domains",
@@ -6136,6 +6403,7 @@ export class PaymentMethodDomainsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6144,7 +6412,7 @@ export class PaymentMethodDomainsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_method_domains` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentMethodDomains",
 			namespace: "payment_method_domains",
@@ -6157,6 +6425,7 @@ export class PaymentMethodDomainsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6165,7 +6434,7 @@ export class PaymentMethodDomainsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_method_domains/{payment_method_domain}` — risk: low
 	 */
-	async retrieve(paymentMethodDomain: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(paymentMethodDomain: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentMethodDomainsPaymentMethodDomain",
 			namespace: "payment_method_domains",
@@ -6178,6 +6447,7 @@ export class PaymentMethodDomainsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6186,7 +6456,7 @@ export class PaymentMethodDomainsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_method_domains/{payment_method_domain}` — risk: medium
 	 */
-	async update(paymentMethodDomain: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(paymentMethodDomain: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentMethodDomainsPaymentMethodDomain",
 			namespace: "payment_method_domains",
@@ -6199,6 +6469,7 @@ export class PaymentMethodDomainsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6208,7 +6479,7 @@ The p
 	 *
 	 * `POST /v1/payment_method_domains/{payment_method_domain}/validate` — risk: medium
 	 */
-	async createValidate(paymentMethodDomain: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createValidate(paymentMethodDomain: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentMethodDomainsPaymentMethodDomainValidate",
 			namespace: "payment_method_domains",
@@ -6221,13 +6492,14 @@ The p
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PaymentMethodsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6239,7 +6511,7 @@ export class PaymentMethodsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_methods` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentMethods",
 			namespace: "payment_methods",
@@ -6252,6 +6524,7 @@ export class PaymentMethodsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6262,7 +6535,7 @@ export class PaymentMethodsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_methods` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentMethods",
 			namespace: "payment_methods",
@@ -6275,6 +6548,7 @@ export class PaymentMethodsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6283,7 +6557,7 @@ export class PaymentMethodsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_methods/{payment_method}` — risk: low
 	 */
-	async retrieve(paymentMethod: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(paymentMethod: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentMethodsPaymentMethod",
 			namespace: "payment_methods",
@@ -6296,6 +6570,7 @@ export class PaymentMethodsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6304,7 +6579,7 @@ export class PaymentMethodsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_methods/{payment_method}` — risk: medium
 	 */
-	async update(paymentMethod: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(paymentMethod: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentMethodsPaymentMethod",
 			namespace: "payment_methods",
@@ -6317,6 +6592,7 @@ export class PaymentMethodsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6328,7 +6604,7 @@ or a
 	 *
 	 * `POST /v1/payment_methods/{payment_method}/attach` — risk: medium
 	 */
-	async createAttach(paymentMethod: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createAttach(paymentMethod: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentMethodsPaymentMethodAttach",
 			namespace: "payment_methods",
@@ -6341,6 +6617,7 @@ or a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6349,7 +6626,7 @@ or a
 	 *
 	 * `POST /v1/payment_methods/{payment_method}/detach` — risk: medium
 	 */
-	async createDetach(paymentMethod: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createDetach(paymentMethod: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentMethodsPaymentMethodDetach",
 			namespace: "payment_methods",
@@ -6362,13 +6639,14 @@ or a
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PaymentRecordsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6382,7 +6660,7 @@ export class PaymentRecordsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_records/report_payment` — risk: medium
 	 */
-	async createReportPayment(body?: unknown): Promise<ProofResult<unknown>> {
+	async createReportPayment(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentRecordsReportPayment",
 			namespace: "payment_records",
@@ -6395,6 +6673,7 @@ export class PaymentRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6403,7 +6682,7 @@ export class PaymentRecordsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payment_records/{id}` — risk: low
 	 */
-	async retrieve(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPaymentRecordsId",
 			namespace: "payment_records",
@@ -6416,6 +6695,7 @@ export class PaymentRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6425,7 +6705,7 @@ export class PaymentRecordsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_records/{id}/report_payment_attempt` — risk: medium
 	 */
-	async createReportPaymentAttempt(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReportPaymentAttempt(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentRecordsIdReportPaymentAttempt",
 			namespace: "payment_records",
@@ -6438,6 +6718,7 @@ export class PaymentRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6447,7 +6728,7 @@ export class PaymentRecordsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_records/{id}/report_payment_attempt_canceled` — risk: medium
 	 */
-	async createReportPaymentAttemptCanceled(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReportPaymentAttemptCanceled(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentRecordsIdReportPaymentAttemptCanceled",
 			namespace: "payment_records",
@@ -6460,6 +6741,7 @@ export class PaymentRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6469,7 +6751,7 @@ export class PaymentRecordsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_records/{id}/report_payment_attempt_failed` — risk: medium
 	 */
-	async createReportPaymentAttemptFailed(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReportPaymentAttemptFailed(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentRecordsIdReportPaymentAttemptFailed",
 			namespace: "payment_records",
@@ -6482,6 +6764,7 @@ export class PaymentRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6491,7 +6774,7 @@ export class PaymentRecordsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_records/{id}/report_payment_attempt_guaranteed` — risk: medium
 	 */
-	async createReportPaymentAttemptGuaranteed(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReportPaymentAttemptGuaranteed(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentRecordsIdReportPaymentAttemptGuaranteed",
 			namespace: "payment_records",
@@ -6504,6 +6787,7 @@ export class PaymentRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6512,7 +6796,7 @@ export class PaymentRecordsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_records/{id}/report_payment_attempt_informational` — risk: medium
 	 */
-	async createReportPaymentAttemptInformational(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReportPaymentAttemptInformational(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentRecordsIdReportPaymentAttemptInformational",
 			namespace: "payment_records",
@@ -6525,6 +6809,7 @@ export class PaymentRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6534,7 +6819,7 @@ export class PaymentRecordsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payment_records/{id}/report_refund` — risk: medium
 	 */
-	async createReportRefund(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReportRefund(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPaymentRecordsIdReportRefund",
 			namespace: "payment_records",
@@ -6547,13 +6832,14 @@ export class PaymentRecordsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PayoutsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6565,7 +6851,7 @@ export class PayoutsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payouts` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPayouts",
 			namespace: "payouts",
@@ -6578,6 +6864,7 @@ export class PayoutsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6586,7 +6873,7 @@ export class PayoutsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payouts` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPayouts",
 			namespace: "payouts",
@@ -6599,6 +6886,7 @@ export class PayoutsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6607,7 +6895,7 @@ export class PayoutsResource extends RpcTarget {
 	 *
 	 * `GET /v1/payouts/{payout}` — risk: low
 	 */
-	async retrieve(payout: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(payout: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPayoutsPayout",
 			namespace: "payouts",
@@ -6620,6 +6908,7 @@ export class PayoutsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6628,7 +6917,7 @@ export class PayoutsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payouts/{payout}` — risk: high
 	 */
-	async update(payout: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(payout: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPayoutsPayout",
 			namespace: "payouts",
@@ -6641,6 +6930,7 @@ export class PayoutsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6649,7 +6939,7 @@ export class PayoutsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payouts/{payout}/cancel` — risk: high
 	 */
-	async cancel(payout: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(payout: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPayoutsPayoutCancel",
 			namespace: "payouts",
@@ -6662,6 +6952,7 @@ export class PayoutsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6670,7 +6961,7 @@ export class PayoutsResource extends RpcTarget {
 	 *
 	 * `POST /v1/payouts/{payout}/reverse` — risk: high
 	 */
-	async createReverse(payout: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReverse(payout: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPayoutsPayoutReverse",
 			namespace: "payouts",
@@ -6683,13 +6974,14 @@ export class PayoutsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PlansResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6701,7 +6993,7 @@ export class PlansResource extends RpcTarget {
 	 *
 	 * `GET /v1/plans` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPlans",
 			namespace: "plans",
@@ -6714,6 +7006,7 @@ export class PlansResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6722,7 +7015,7 @@ export class PlansResource extends RpcTarget {
 	 *
 	 * `POST /v1/plans` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPlans",
 			namespace: "plans",
@@ -6735,6 +7028,7 @@ export class PlansResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6743,7 +7037,7 @@ export class PlansResource extends RpcTarget {
 	 *
 	 * `GET /v1/plans/{plan}` — risk: low
 	 */
-	async retrieve(plan: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(plan: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPlansPlan",
 			namespace: "plans",
@@ -6756,6 +7050,7 @@ export class PlansResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6764,7 +7059,7 @@ export class PlansResource extends RpcTarget {
 	 *
 	 * `POST /v1/plans/{plan}` — risk: medium
 	 */
-	async update(plan: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(plan: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPlansPlan",
 			namespace: "plans",
@@ -6777,6 +7072,7 @@ export class PlansResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6785,7 +7081,7 @@ export class PlansResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/plans/{plan}` — risk: medium
 	 */
-	async del(plan: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(plan: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeletePlansPlan",
 			namespace: "plans",
@@ -6798,13 +7094,14 @@ export class PlansResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PricesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6816,7 +7113,7 @@ export class PricesResource extends RpcTarget {
 	 *
 	 * `GET /v1/prices` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPrices",
 			namespace: "prices",
@@ -6829,6 +7126,7 @@ export class PricesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6837,7 +7135,7 @@ export class PricesResource extends RpcTarget {
 	 *
 	 * `POST /v1/prices` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPrices",
 			namespace: "prices",
@@ -6850,6 +7148,7 @@ export class PricesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6859,7 +7158,7 @@ Don’t use search in read-after-write flows where strict consistenc
 	 *
 	 * `GET /v1/prices/search` — risk: medium
 	 */
-	async listSearch(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSearch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPricesSearch",
 			namespace: "prices",
@@ -6872,6 +7171,7 @@ Don’t use search in read-after-write flows where strict consistenc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6880,7 +7180,7 @@ Don’t use search in read-after-write flows where strict consistenc
 	 *
 	 * `GET /v1/prices/{price}` — risk: low
 	 */
-	async retrieve(price: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(price: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPricesPrice",
 			namespace: "prices",
@@ -6893,6 +7193,7 @@ Don’t use search in read-after-write flows where strict consistenc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6901,7 +7202,7 @@ Don’t use search in read-after-write flows where strict consistenc
 	 *
 	 * `POST /v1/prices/{price}` — risk: medium
 	 */
-	async update(price: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(price: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPricesPrice",
 			namespace: "prices",
@@ -6914,13 +7215,14 @@ Don’t use search in read-after-write flows where strict consistenc
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ProductsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6932,7 +7234,7 @@ export class ProductsResource extends RpcTarget {
 	 *
 	 * `GET /v1/products` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetProducts",
 			namespace: "products",
@@ -6945,6 +7247,7 @@ export class ProductsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6953,7 +7256,7 @@ export class ProductsResource extends RpcTarget {
 	 *
 	 * `POST /v1/products` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostProducts",
 			namespace: "products",
@@ -6966,6 +7269,7 @@ export class ProductsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6975,7 +7279,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `GET /v1/products/search` — risk: medium
 	 */
-	async listSearch(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSearch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetProductsSearch",
 			namespace: "products",
@@ -6988,6 +7292,7 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6996,7 +7301,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `GET /v1/products/{id}` — risk: low
 	 */
-	async retrieve(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetProductsId",
 			namespace: "products",
@@ -7009,6 +7314,7 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7017,7 +7323,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `POST /v1/products/{id}` — risk: medium
 	 */
-	async update(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostProductsId",
 			namespace: "products",
@@ -7030,6 +7336,7 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7038,7 +7345,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `DELETE /v1/products/{id}` — risk: medium
 	 */
-	async del(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteProductsId",
 			namespace: "products",
@@ -7051,6 +7358,7 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7059,7 +7367,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `GET /v1/products/{product}/features` — risk: medium
 	 */
-	async listFeatures(product: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listFeatures(product: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetProductsProductFeatures",
 			namespace: "products",
@@ -7072,6 +7380,7 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7080,7 +7389,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `POST /v1/products/{product}/features` — risk: medium
 	 */
-	async createFeature(product: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createFeature(product: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostProductsProductFeatures",
 			namespace: "products",
@@ -7093,6 +7402,7 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7101,7 +7411,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `GET /v1/products/{product}/features/{id}` — risk: medium
 	 */
-	async retrieveFeature(product: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveFeature(product: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetProductsProductFeaturesId",
 			namespace: "products",
@@ -7114,6 +7424,7 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7122,7 +7433,7 @@ Don’t use search in read-after-write flows where strict consiste
 	 *
 	 * `DELETE /v1/products/{product}/features/{id}` — risk: medium
 	 */
-	async deleteFeature(product: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteFeature(product: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteProductsProductFeaturesId",
 			namespace: "products",
@@ -7135,13 +7446,14 @@ Don’t use search in read-after-write flows where strict consiste
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PromotionCodesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -7153,7 +7465,7 @@ export class PromotionCodesResource extends RpcTarget {
 	 *
 	 * `GET /v1/promotion_codes` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPromotionCodes",
 			namespace: "promotion_codes",
@@ -7166,6 +7478,7 @@ export class PromotionCodesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7174,7 +7487,7 @@ export class PromotionCodesResource extends RpcTarget {
 	 *
 	 * `POST /v1/promotion_codes` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPromotionCodes",
 			namespace: "promotion_codes",
@@ -7187,6 +7500,7 @@ export class PromotionCodesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7195,7 +7509,7 @@ export class PromotionCodesResource extends RpcTarget {
 	 *
 	 * `GET /v1/promotion_codes/{promotion_code}` — risk: low
 	 */
-	async retrieve(promotionCode: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(promotionCode: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetPromotionCodesPromotionCode",
 			namespace: "promotion_codes",
@@ -7208,6 +7522,7 @@ export class PromotionCodesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7216,7 +7531,7 @@ export class PromotionCodesResource extends RpcTarget {
 	 *
 	 * `POST /v1/promotion_codes/{promotion_code}` — risk: medium
 	 */
-	async update(promotionCode: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(promotionCode: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostPromotionCodesPromotionCode",
 			namespace: "promotion_codes",
@@ -7229,13 +7544,14 @@ export class PromotionCodesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class QuotesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -7247,7 +7563,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `GET /v1/quotes` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetQuotes",
 			namespace: "quotes",
@@ -7260,6 +7576,7 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7268,7 +7585,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `POST /v1/quotes` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostQuotes",
 			namespace: "quotes",
@@ -7281,6 +7598,7 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7289,7 +7607,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `GET /v1/quotes/{quote}` — risk: low
 	 */
-	async retrieve(quote: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(quote: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetQuotesQuote",
 			namespace: "quotes",
@@ -7302,6 +7620,7 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7310,7 +7629,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `POST /v1/quotes/{quote}` — risk: medium
 	 */
-	async update(quote: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(quote: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostQuotesQuote",
 			namespace: "quotes",
@@ -7323,6 +7642,7 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7331,7 +7651,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `POST /v1/quotes/{quote}/accept` — risk: medium
 	 */
-	async createAccept(quote: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createAccept(quote: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostQuotesQuoteAccept",
 			namespace: "quotes",
@@ -7344,6 +7664,7 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7352,7 +7673,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `POST /v1/quotes/{quote}/cancel` — risk: medium
 	 */
-	async cancel(quote: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(quote: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostQuotesQuoteCancel",
 			namespace: "quotes",
@@ -7365,6 +7686,7 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7373,7 +7695,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `GET /v1/quotes/{quote}/computed_upfront_line_items` — risk: medium
 	 */
-	async listComputedUpfrontLineItems(quote: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listComputedUpfrontLineItems(quote: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetQuotesQuoteComputedUpfrontLineItems",
 			namespace: "quotes",
@@ -7386,6 +7708,7 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7394,7 +7717,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `POST /v1/quotes/{quote}/finalize` — risk: medium
 	 */
-	async finalize(quote: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async finalize(quote: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostQuotesQuoteFinalize",
 			namespace: "quotes",
@@ -7407,6 +7730,7 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7415,7 +7739,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `GET /v1/quotes/{quote}/line_items` — risk: medium
 	 */
-	async listLineItems(quote: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listLineItems(quote: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetQuotesQuoteLineItems",
 			namespace: "quotes",
@@ -7428,6 +7752,7 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7436,7 +7761,7 @@ export class QuotesResource extends RpcTarget {
 	 *
 	 * `GET /v1/quotes/{quote}/pdf` — risk: medium
 	 */
-	async listPdf(quote: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listPdf(quote: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetQuotesQuotePdf",
 			namespace: "quotes",
@@ -7449,13 +7774,14 @@ export class QuotesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RadarResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -7467,7 +7793,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `GET /v1/radar/early_fraud_warnings` — risk: medium
 	 */
-	async listEarlyFraudWarnings(body?: unknown): Promise<ProofResult<unknown>> {
+	async listEarlyFraudWarnings(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetRadarEarlyFraudWarnings",
 			namespace: "radar",
@@ -7480,6 +7806,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7490,7 +7817,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `GET /v1/radar/early_fraud_warnings/{early_fraud_warning}` — risk: medium
 	 */
-	async retrieveEarlyFraudWarning(earlyFraudWarning: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveEarlyFraudWarning(earlyFraudWarning: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetRadarEarlyFraudWarningsEarlyFraudWarning",
 			namespace: "radar",
@@ -7503,6 +7830,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7511,7 +7839,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `POST /v1/radar/payment_evaluations` — risk: medium
 	 */
-	async createPaymentEvaluation(body?: unknown): Promise<ProofResult<unknown>> {
+	async createPaymentEvaluation(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostRadarPaymentEvaluations",
 			namespace: "radar",
@@ -7524,6 +7852,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7532,7 +7861,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `GET /v1/radar/value_list_items` — risk: medium
 	 */
-	async listValueListItems(body?: unknown): Promise<ProofResult<unknown>> {
+	async listValueListItems(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetRadarValueListItems",
 			namespace: "radar",
@@ -7545,6 +7874,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7553,7 +7883,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `POST /v1/radar/value_list_items` — risk: medium
 	 */
-	async createValueListItem(body?: unknown): Promise<ProofResult<unknown>> {
+	async createValueListItem(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostRadarValueListItems",
 			namespace: "radar",
@@ -7566,6 +7896,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7574,7 +7905,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `GET /v1/radar/value_list_items/{item}` — risk: medium
 	 */
-	async retrieveValueListItem(item: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveValueListItem(item: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetRadarValueListItemsItem",
 			namespace: "radar",
@@ -7587,6 +7918,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7595,7 +7927,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/radar/value_list_items/{item}` — risk: medium
 	 */
-	async deleteValueListItem(item: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteValueListItem(item: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteRadarValueListItemsItem",
 			namespace: "radar",
@@ -7608,6 +7940,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7616,7 +7949,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `GET /v1/radar/value_lists` — risk: medium
 	 */
-	async listValueLists(body?: unknown): Promise<ProofResult<unknown>> {
+	async listValueLists(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetRadarValueLists",
 			namespace: "radar",
@@ -7629,6 +7962,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7637,7 +7971,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `POST /v1/radar/value_lists` — risk: medium
 	 */
-	async createValueList(body?: unknown): Promise<ProofResult<unknown>> {
+	async createValueList(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostRadarValueLists",
 			namespace: "radar",
@@ -7650,6 +7984,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7658,7 +7993,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `GET /v1/radar/value_lists/{value_list}` — risk: medium
 	 */
-	async retrieveValueList(valueList: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveValueList(valueList: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetRadarValueListsValueList",
 			namespace: "radar",
@@ -7671,6 +8006,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7679,7 +8015,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `POST /v1/radar/value_lists/{value_list}` — risk: medium
 	 */
-	async updateValueList(valueList: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateValueList(valueList: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostRadarValueListsValueList",
 			namespace: "radar",
@@ -7692,6 +8028,7 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7700,7 +8037,7 @@ export class RadarResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/radar/value_lists/{value_list}` — risk: medium
 	 */
-	async deleteValueList(valueList: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteValueList(valueList: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteRadarValueListsValueList",
 			namespace: "radar",
@@ -7713,13 +8050,14 @@ export class RadarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RefundsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -7731,7 +8069,7 @@ export class RefundsResource extends RpcTarget {
 	 *
 	 * `GET /v1/refunds` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetRefunds",
 			namespace: "refunds",
@@ -7744,6 +8082,7 @@ export class RefundsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7754,7 +8093,7 @@ export class RefundsResource extends RpcTarget {
 	 *
 	 * `POST /v1/refunds` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostRefunds",
 			namespace: "refunds",
@@ -7767,6 +8106,7 @@ export class RefundsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7775,7 +8115,7 @@ export class RefundsResource extends RpcTarget {
 	 *
 	 * `GET /v1/refunds/{refund}` — risk: low
 	 */
-	async retrieve(refund: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(refund: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetRefundsRefund",
 			namespace: "refunds",
@@ -7788,6 +8128,7 @@ export class RefundsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7798,7 +8139,7 @@ export class RefundsResource extends RpcTarget {
 	 *
 	 * `POST /v1/refunds/{refund}` — risk: high
 	 */
-	async update(refund: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(refund: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostRefundsRefund",
 			namespace: "refunds",
@@ -7811,6 +8152,7 @@ export class RefundsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7821,7 +8163,7 @@ export class RefundsResource extends RpcTarget {
 	 *
 	 * `POST /v1/refunds/{refund}/cancel` — risk: high
 	 */
-	async cancel(refund: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(refund: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostRefundsRefundCancel",
 			namespace: "refunds",
@@ -7834,13 +8176,14 @@ export class RefundsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ReportingResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -7852,7 +8195,7 @@ export class ReportingResource extends RpcTarget {
 	 *
 	 * `GET /v1/reporting/report_runs` — risk: medium
 	 */
-	async listReportRuns(body?: unknown): Promise<ProofResult<unknown>> {
+	async listReportRuns(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetReportingReportRuns",
 			namespace: "reporting",
@@ -7865,6 +8208,7 @@ export class ReportingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7873,7 +8217,7 @@ export class ReportingResource extends RpcTarget {
 	 *
 	 * `POST /v1/reporting/report_runs` — risk: medium
 	 */
-	async createReportRun(body?: unknown): Promise<ProofResult<unknown>> {
+	async createReportRun(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostReportingReportRuns",
 			namespace: "reporting",
@@ -7886,6 +8230,7 @@ export class ReportingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7894,7 +8239,7 @@ export class ReportingResource extends RpcTarget {
 	 *
 	 * `GET /v1/reporting/report_runs/{report_run}` — risk: medium
 	 */
-	async retrieveReportRun(reportRun: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveReportRun(reportRun: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetReportingReportRunsReportRun",
 			namespace: "reporting",
@@ -7907,6 +8252,7 @@ export class ReportingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7915,7 +8261,7 @@ export class ReportingResource extends RpcTarget {
 	 *
 	 * `GET /v1/reporting/report_types` — risk: medium
 	 */
-	async listReportTypes(body?: unknown): Promise<ProofResult<unknown>> {
+	async listReportTypes(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetReportingReportTypes",
 			namespace: "reporting",
@@ -7928,6 +8274,7 @@ export class ReportingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7936,7 +8283,7 @@ export class ReportingResource extends RpcTarget {
 	 *
 	 * `GET /v1/reporting/report_types/{report_type}` — risk: medium
 	 */
-	async retrieveReportType(reportType: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveReportType(reportType: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetReportingReportTypesReportType",
 			namespace: "reporting",
@@ -7949,13 +8296,14 @@ export class ReportingResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ReviewsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -7967,7 +8315,7 @@ export class ReviewsResource extends RpcTarget {
 	 *
 	 * `GET /v1/reviews` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetReviews",
 			namespace: "reviews",
@@ -7980,6 +8328,7 @@ export class ReviewsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7988,7 +8337,7 @@ export class ReviewsResource extends RpcTarget {
 	 *
 	 * `GET /v1/reviews/{review}` — risk: low
 	 */
-	async retrieve(review: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(review: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetReviewsReview",
 			namespace: "reviews",
@@ -8001,6 +8350,7 @@ export class ReviewsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8009,7 +8359,7 @@ export class ReviewsResource extends RpcTarget {
 	 *
 	 * `POST /v1/reviews/{review}/approve` — risk: medium
 	 */
-	async approve(review: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async approve(review: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostReviewsReviewApprove",
 			namespace: "reviews",
@@ -8022,13 +8372,14 @@ export class ReviewsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SetupAttemptsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -8040,7 +8391,7 @@ export class SetupAttemptsResource extends RpcTarget {
 	 *
 	 * `GET /v1/setup_attempts` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSetupAttempts",
 			namespace: "setup_attempts",
@@ -8053,13 +8404,14 @@ export class SetupAttemptsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SetupIntentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -8071,7 +8423,7 @@ export class SetupIntentsResource extends RpcTarget {
 	 *
 	 * `GET /v1/setup_intents` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSetupIntents",
 			namespace: "setup_intents",
@@ -8084,6 +8436,7 @@ export class SetupIntentsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8095,7 +8448,7 @@ it to collect any required permissions to c
 	 *
 	 * `POST /v1/setup_intents` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSetupIntents",
 			namespace: "setup_intents",
@@ -8108,6 +8461,7 @@ it to collect any required permissions to c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8118,7 +8472,7 @@ it to collect any required permissions to c
 	 *
 	 * `GET /v1/setup_intents/{intent}` — risk: low
 	 */
-	async retrieve(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSetupIntentsIntent",
 			namespace: "setup_intents",
@@ -8131,6 +8485,7 @@ it to collect any required permissions to c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8139,7 +8494,7 @@ it to collect any required permissions to c
 	 *
 	 * `POST /v1/setup_intents/{intent}` — risk: high
 	 */
-	async update(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSetupIntentsIntent",
 			namespace: "setup_intents",
@@ -8152,6 +8507,7 @@ it to collect any required permissions to c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8162,7 +8518,7 @@ it to collect any required permissions to c
 	 *
 	 * `POST /v1/setup_intents/{intent}/cancel` — risk: high
 	 */
-	async cancel(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSetupIntentsIntentCancel",
 			namespace: "setup_intents",
@@ -8175,6 +8531,7 @@ it to collect any required permissions to c
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8185,7 +8542,7 @@ when a customer hits the “Save” button on a payment method manageme
 	 *
 	 * `POST /v1/setup_intents/{intent}/confirm` — risk: high
 	 */
-	async confirm(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async confirm(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSetupIntentsIntentConfirm",
 			namespace: "setup_intents",
@@ -8198,6 +8555,7 @@ when a customer hits the “Save” button on a payment method manageme
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8206,7 +8564,7 @@ when a customer hits the “Save” button on a payment method manageme
 	 *
 	 * `POST /v1/setup_intents/{intent}/verify_microdeposits` — risk: high
 	 */
-	async createVerifyMicrodeposit(intent: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createVerifyMicrodeposit(intent: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSetupIntentsIntentVerifyMicrodeposits",
 			namespace: "setup_intents",
@@ -8219,13 +8577,14 @@ when a customer hits the “Save” button on a payment method manageme
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ShippingRatesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -8237,7 +8596,7 @@ export class ShippingRatesResource extends RpcTarget {
 	 *
 	 * `GET /v1/shipping_rates` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetShippingRates",
 			namespace: "shipping_rates",
@@ -8250,6 +8609,7 @@ export class ShippingRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8258,7 +8618,7 @@ export class ShippingRatesResource extends RpcTarget {
 	 *
 	 * `POST /v1/shipping_rates` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostShippingRates",
 			namespace: "shipping_rates",
@@ -8271,6 +8631,7 @@ export class ShippingRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8279,7 +8640,7 @@ export class ShippingRatesResource extends RpcTarget {
 	 *
 	 * `GET /v1/shipping_rates/{shipping_rate_token}` — risk: low
 	 */
-	async retrieve(shippingRateToken: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(shippingRateToken: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetShippingRatesShippingRateToken",
 			namespace: "shipping_rates",
@@ -8292,6 +8653,7 @@ export class ShippingRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8300,7 +8662,7 @@ export class ShippingRatesResource extends RpcTarget {
 	 *
 	 * `POST /v1/shipping_rates/{shipping_rate_token}` — risk: medium
 	 */
-	async update(shippingRateToken: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(shippingRateToken: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostShippingRatesShippingRateToken",
 			namespace: "shipping_rates",
@@ -8313,13 +8675,14 @@ export class ShippingRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SigmaResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -8331,7 +8694,7 @@ export class SigmaResource extends RpcTarget {
 	 *
 	 * `GET /v1/sigma/scheduled_query_runs` — risk: medium
 	 */
-	async listScheduledQueryRuns(body?: unknown): Promise<ProofResult<unknown>> {
+	async listScheduledQueryRuns(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSigmaScheduledQueryRuns",
 			namespace: "sigma",
@@ -8344,6 +8707,7 @@ export class SigmaResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8352,7 +8716,7 @@ export class SigmaResource extends RpcTarget {
 	 *
 	 * `GET /v1/sigma/scheduled_query_runs/{scheduled_query_run}` — risk: medium
 	 */
-	async retrieveScheduledQueryRun(scheduledQueryRun: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveScheduledQueryRun(scheduledQueryRun: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSigmaScheduledQueryRunsScheduledQueryRun",
 			namespace: "sigma",
@@ -8365,13 +8729,14 @@ export class SigmaResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SourcesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -8383,7 +8748,7 @@ export class SourcesResource extends RpcTarget {
 	 *
 	 * `POST /v1/sources` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSources",
 			namespace: "sources",
@@ -8396,6 +8761,7 @@ export class SourcesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8404,7 +8770,7 @@ export class SourcesResource extends RpcTarget {
 	 *
 	 * `GET /v1/sources/{source}` — risk: low
 	 */
-	async retrieve(source: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(source: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSourcesSource",
 			namespace: "sources",
@@ -8417,6 +8783,7 @@ export class SourcesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8427,7 +8794,7 @@ export class SourcesResource extends RpcTarget {
 	 *
 	 * `POST /v1/sources/{source}` — risk: high
 	 */
-	async update(source: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(source: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSourcesSource",
 			namespace: "sources",
@@ -8440,6 +8807,7 @@ export class SourcesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8448,7 +8816,7 @@ export class SourcesResource extends RpcTarget {
 	 *
 	 * `GET /v1/sources/{source}/source_transactions` — risk: high
 	 */
-	async listSourceTransactions(source: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listSourceTransactions(source: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSourcesSourceSourceTransactions",
 			namespace: "sources",
@@ -8461,6 +8829,7 @@ export class SourcesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8469,7 +8838,7 @@ export class SourcesResource extends RpcTarget {
 	 *
 	 * `POST /v1/sources/{source}/verify` — risk: high
 	 */
-	async verify(source: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async verify(source: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSourcesSourceVerify",
 			namespace: "sources",
@@ -8482,13 +8851,14 @@ export class SourcesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SubscriptionItemsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -8500,7 +8870,7 @@ export class SubscriptionItemsResource extends RpcTarget {
 	 *
 	 * `GET /v1/subscription_items` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSubscriptionItems",
 			namespace: "subscription_items",
@@ -8513,6 +8883,7 @@ export class SubscriptionItemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8521,7 +8892,7 @@ export class SubscriptionItemsResource extends RpcTarget {
 	 *
 	 * `POST /v1/subscription_items` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptionItems",
 			namespace: "subscription_items",
@@ -8534,6 +8905,7 @@ export class SubscriptionItemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8542,7 +8914,7 @@ export class SubscriptionItemsResource extends RpcTarget {
 	 *
 	 * `GET /v1/subscription_items/{item}` — risk: low
 	 */
-	async retrieve(item: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(item: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSubscriptionItemsItem",
 			namespace: "subscription_items",
@@ -8555,6 +8927,7 @@ export class SubscriptionItemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8563,7 +8936,7 @@ export class SubscriptionItemsResource extends RpcTarget {
 	 *
 	 * `POST /v1/subscription_items/{item}` — risk: medium
 	 */
-	async update(item: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(item: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptionItemsItem",
 			namespace: "subscription_items",
@@ -8576,6 +8949,7 @@ export class SubscriptionItemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8584,7 +8958,7 @@ export class SubscriptionItemsResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/subscription_items/{item}` — risk: medium
 	 */
-	async del(item: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(item: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSubscriptionItemsItem",
 			namespace: "subscription_items",
@@ -8597,13 +8971,14 @@ export class SubscriptionItemsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SubscriptionSchedulesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -8615,7 +8990,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 	 *
 	 * `GET /v1/subscription_schedules` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSubscriptionSchedules",
 			namespace: "subscription_schedules",
@@ -8628,6 +9003,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8636,7 +9012,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 	 *
 	 * `POST /v1/subscription_schedules` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptionSchedules",
 			namespace: "subscription_schedules",
@@ -8649,6 +9025,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8657,7 +9034,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 	 *
 	 * `GET /v1/subscription_schedules/{schedule}` — risk: low
 	 */
-	async retrieve(schedule: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(schedule: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSubscriptionSchedulesSchedule",
 			namespace: "subscription_schedules",
@@ -8670,6 +9047,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8678,7 +9056,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 	 *
 	 * `POST /v1/subscription_schedules/{schedule}` — risk: medium
 	 */
-	async update(schedule: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(schedule: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptionSchedulesSchedule",
 			namespace: "subscription_schedules",
@@ -8691,6 +9069,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8699,7 +9078,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 	 *
 	 * `POST /v1/subscription_schedules/{schedule}/cancel` — risk: medium
 	 */
-	async cancel(schedule: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(schedule: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptionSchedulesScheduleCancel",
 			namespace: "subscription_schedules",
@@ -8712,6 +9091,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8720,7 +9100,7 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 	 *
 	 * `POST /v1/subscription_schedules/{schedule}/release` — risk: medium
 	 */
-	async release(schedule: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async release(schedule: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptionSchedulesScheduleRelease",
 			namespace: "subscription_schedules",
@@ -8733,13 +9113,14 @@ export class SubscriptionSchedulesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SubscriptionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -8751,7 +9132,7 @@ export class SubscriptionsResource extends RpcTarget {
 	 *
 	 * `GET /v1/subscriptions` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSubscriptions",
 			namespace: "subscriptions",
@@ -8764,6 +9145,7 @@ export class SubscriptionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8774,7 +9156,7 @@ export class SubscriptionsResource extends RpcTarget {
 	 *
 	 * `POST /v1/subscriptions` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptions",
 			namespace: "subscriptions",
@@ -8787,6 +9169,7 @@ export class SubscriptionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8796,7 +9179,7 @@ Don’t use search in read-after-write flows where strict con
 	 *
 	 * `GET /v1/subscriptions/search` — risk: high
 	 */
-	async listSearch(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSearch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSubscriptionsSearch",
 			namespace: "subscriptions",
@@ -8809,6 +9192,7 @@ Don’t use search in read-after-write flows where strict con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8817,7 +9201,7 @@ Don’t use search in read-after-write flows where strict con
 	 *
 	 * `GET /v1/subscriptions/{subscription_exposed_id}` — risk: low
 	 */
-	async retrieve(subscriptionExposedId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(subscriptionExposedId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetSubscriptionsSubscriptionExposedId",
 			namespace: "subscriptions",
@@ -8830,6 +9214,7 @@ Don’t use search in read-after-write flows where strict con
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8840,7 +9225,7 @@ To pre
 	 *
 	 * `POST /v1/subscriptions/{subscription_exposed_id}` — risk: high
 	 */
-	async update(subscriptionExposedId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(subscriptionExposedId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptionsSubscriptionExposedId",
 			namespace: "subscriptions",
@@ -8853,6 +9238,7 @@ To pre
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8861,7 +9247,7 @@ To pre
 	 *
 	 * `DELETE /v1/subscriptions/{subscription_exposed_id}` — risk: high
 	 */
-	async del(subscriptionExposedId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(subscriptionExposedId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSubscriptionsSubscriptionExposedId",
 			namespace: "subscriptions",
@@ -8874,6 +9260,7 @@ To pre
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8882,7 +9269,7 @@ To pre
 	 *
 	 * `DELETE /v1/subscriptions/{subscription_exposed_id}/discount` — risk: high
 	 */
-	async discount(subscriptionExposedId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async discount(subscriptionExposedId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSubscriptionsSubscriptionExposedIdDiscount",
 			namespace: "subscriptions",
@@ -8895,6 +9282,7 @@ To pre
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8903,7 +9291,7 @@ To pre
 	 *
 	 * `POST /v1/subscriptions/{subscription}/migrate` — risk: high
 	 */
-	async createMigrate(subscription: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMigrate(subscription: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptionsSubscriptionMigrate",
 			namespace: "subscriptions",
@@ -8916,6 +9304,7 @@ To pre
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8924,7 +9313,7 @@ To pre
 	 *
 	 * `POST /v1/subscriptions/{subscription}/resume` — risk: high
 	 */
-	async createResume(subscription: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createResume(subscription: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostSubscriptionsSubscriptionResume",
 			namespace: "subscriptions",
@@ -8937,13 +9326,14 @@ To pre
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TaxResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -8955,7 +9345,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax/associations/find` — risk: medium
 	 */
-	async find(body?: unknown): Promise<ProofResult<unknown>> {
+	async find(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxAssociationsFind",
 			namespace: "tax",
@@ -8968,6 +9358,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8976,7 +9367,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `POST /v1/tax/calculations` — risk: medium
 	 */
-	async createCalculation(body?: unknown): Promise<ProofResult<unknown>> {
+	async createCalculation(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTaxCalculations",
 			namespace: "tax",
@@ -8989,6 +9380,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8997,7 +9389,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax/calculations/{calculation}` — risk: medium
 	 */
-	async retrieveCalculation(calculation: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveCalculation(calculation: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxCalculationsCalculation",
 			namespace: "tax",
@@ -9010,6 +9402,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9018,7 +9411,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax/calculations/{calculation}/line_items` — risk: medium
 	 */
-	async calculationsLineItems(calculation: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async calculationsLineItems(calculation: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxCalculationsCalculationLineItems",
 			namespace: "tax",
@@ -9031,6 +9424,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9039,7 +9433,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax/registrations` — risk: medium
 	 */
-	async listRegistrations(body?: unknown): Promise<ProofResult<unknown>> {
+	async listRegistrations(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxRegistrations",
 			namespace: "tax",
@@ -9052,6 +9446,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9060,7 +9455,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `POST /v1/tax/registrations` — risk: medium
 	 */
-	async createRegistration(body?: unknown): Promise<ProofResult<unknown>> {
+	async createRegistration(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTaxRegistrations",
 			namespace: "tax",
@@ -9073,6 +9468,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9081,7 +9477,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax/registrations/{id}` — risk: medium
 	 */
-	async retrieveRegistration(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveRegistration(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxRegistrationsId",
 			namespace: "tax",
@@ -9094,6 +9490,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9104,7 +9501,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `POST /v1/tax/registrations/{id}` — risk: medium
 	 */
-	async updateRegistration(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateRegistration(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTaxRegistrationsId",
 			namespace: "tax",
@@ -9117,6 +9514,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9125,7 +9523,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax/settings` — risk: medium
 	 */
-	async listSettings(body?: unknown): Promise<ProofResult<unknown>> {
+	async listSettings(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxSettings",
 			namespace: "tax",
@@ -9138,6 +9536,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9146,7 +9545,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `POST /v1/tax/settings` — risk: medium
 	 */
-	async createSetting(body?: unknown): Promise<ProofResult<unknown>> {
+	async createSetting(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTaxSettings",
 			namespace: "tax",
@@ -9159,6 +9558,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9167,7 +9567,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `POST /v1/tax/transactions/create_from_calculation` — risk: medium
 	 */
-	async createFromCalculation(body?: unknown): Promise<ProofResult<unknown>> {
+	async createFromCalculation(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTaxTransactionsCreateFromCalculation",
 			namespace: "tax",
@@ -9180,6 +9580,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9188,7 +9589,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `POST /v1/tax/transactions/create_reversal` — risk: medium
 	 */
-	async createReversal(body?: unknown): Promise<ProofResult<unknown>> {
+	async createReversal(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTaxTransactionsCreateReversal",
 			namespace: "tax",
@@ -9201,6 +9602,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9209,7 +9611,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax/transactions/{transaction}` — risk: medium
 	 */
-	async retrieveTransaction(transaction: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveTransaction(transaction: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxTransactionsTransaction",
 			namespace: "tax",
@@ -9222,6 +9624,7 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9230,7 +9633,7 @@ export class TaxResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax/transactions/{transaction}/line_items` — risk: medium
 	 */
-	async transactionsLineItems(transaction: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async transactionsLineItems(transaction: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxTransactionsTransactionLineItems",
 			namespace: "tax",
@@ -9243,13 +9646,14 @@ export class TaxResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TaxCodesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -9261,7 +9665,7 @@ export class TaxCodesResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax_codes` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxCodes",
 			namespace: "tax_codes",
@@ -9274,6 +9678,7 @@ export class TaxCodesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9282,7 +9687,7 @@ export class TaxCodesResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax_codes/{id}` — risk: low
 	 */
-	async retrieve(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxCodesId",
 			namespace: "tax_codes",
@@ -9295,13 +9700,14 @@ export class TaxCodesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TaxIdsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -9313,7 +9719,7 @@ export class TaxIdsResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax_ids` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxIds",
 			namespace: "tax_ids",
@@ -9326,6 +9732,7 @@ export class TaxIdsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9334,7 +9741,7 @@ export class TaxIdsResource extends RpcTarget {
 	 *
 	 * `POST /v1/tax_ids` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTaxIds",
 			namespace: "tax_ids",
@@ -9347,6 +9754,7 @@ export class TaxIdsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9355,7 +9763,7 @@ export class TaxIdsResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax_ids/{id}` — risk: low
 	 */
-	async retrieve(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxIdsId",
 			namespace: "tax_ids",
@@ -9368,6 +9776,7 @@ export class TaxIdsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9376,7 +9785,7 @@ export class TaxIdsResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/tax_ids/{id}` — risk: medium
 	 */
-	async del(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteTaxIdsId",
 			namespace: "tax_ids",
@@ -9389,13 +9798,14 @@ export class TaxIdsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TaxRatesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -9407,7 +9817,7 @@ export class TaxRatesResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax_rates` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxRates",
 			namespace: "tax_rates",
@@ -9420,6 +9830,7 @@ export class TaxRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9428,7 +9839,7 @@ export class TaxRatesResource extends RpcTarget {
 	 *
 	 * `POST /v1/tax_rates` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTaxRates",
 			namespace: "tax_rates",
@@ -9441,6 +9852,7 @@ export class TaxRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9449,7 +9861,7 @@ export class TaxRatesResource extends RpcTarget {
 	 *
 	 * `GET /v1/tax_rates/{tax_rate}` — risk: low
 	 */
-	async retrieve(taxRate: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(taxRate: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTaxRatesTaxRate",
 			namespace: "tax_rates",
@@ -9462,6 +9874,7 @@ export class TaxRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9470,7 +9883,7 @@ export class TaxRatesResource extends RpcTarget {
 	 *
 	 * `POST /v1/tax_rates/{tax_rate}` — risk: medium
 	 */
-	async update(taxRate: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(taxRate: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTaxRatesTaxRate",
 			namespace: "tax_rates",
@@ -9483,13 +9896,14 @@ export class TaxRatesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TerminalResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -9501,7 +9915,7 @@ export class TerminalResource extends RpcTarget {
 	 *
 	 * `GET /v1/terminal/configurations` — risk: medium
 	 */
-	async listConfigurations(body?: unknown): Promise<ProofResult<unknown>> {
+	async listConfigurations(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTerminalConfigurations",
 			namespace: "terminal",
@@ -9514,6 +9928,7 @@ export class TerminalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9522,7 +9937,7 @@ export class TerminalResource extends RpcTarget {
 	 *
 	 * `POST /v1/terminal/configurations` — risk: medium
 	 */
-	async createConfiguration(body?: unknown): Promise<ProofResult<unknown>> {
+	async createConfiguration(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalConfigurations",
 			namespace: "terminal",
@@ -9535,6 +9950,7 @@ export class TerminalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9543,7 +9959,7 @@ export class TerminalResource extends RpcTarget {
 	 *
 	 * `GET /v1/terminal/configurations/{configuration}` — risk: medium
 	 */
-	async retrieveConfiguration(configuration: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveConfiguration(configuration: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTerminalConfigurationsConfiguration",
 			namespace: "terminal",
@@ -9556,6 +9972,7 @@ export class TerminalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9564,7 +9981,7 @@ export class TerminalResource extends RpcTarget {
 	 *
 	 * `POST /v1/terminal/configurations/{configuration}` — risk: medium
 	 */
-	async updateConfiguration(configuration: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateConfiguration(configuration: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalConfigurationsConfiguration",
 			namespace: "terminal",
@@ -9577,6 +9994,7 @@ export class TerminalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9585,7 +10003,7 @@ export class TerminalResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/terminal/configurations/{configuration}` — risk: medium
 	 */
-	async deleteConfiguration(configuration: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteConfiguration(configuration: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteTerminalConfigurationsConfiguration",
 			namespace: "terminal",
@@ -9598,6 +10016,7 @@ export class TerminalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9606,7 +10025,7 @@ export class TerminalResource extends RpcTarget {
 	 *
 	 * `POST /v1/terminal/connection_tokens` — risk: medium
 	 */
-	async createConnectionToken(body?: unknown): Promise<ProofResult<unknown>> {
+	async createConnectionToken(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalConnectionTokens",
 			namespace: "terminal",
@@ -9619,6 +10038,7 @@ export class TerminalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9627,7 +10047,7 @@ export class TerminalResource extends RpcTarget {
 	 *
 	 * `GET /v1/terminal/locations` — risk: medium
 	 */
-	async listLocations(body?: unknown): Promise<ProofResult<unknown>> {
+	async listLocations(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTerminalLocations",
 			namespace: "terminal",
@@ -9640,6 +10060,7 @@ export class TerminalResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9649,7 +10070,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/locations` — risk: medium
 	 */
-	async createLocation(body?: unknown): Promise<ProofResult<unknown>> {
+	async createLocation(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalLocations",
 			namespace: "terminal",
@@ -9662,6 +10083,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9670,7 +10092,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `GET /v1/terminal/locations/{location}` — risk: medium
 	 */
-	async retrieveLocation(location: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveLocation(location: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTerminalLocationsLocation",
 			namespace: "terminal",
@@ -9683,6 +10105,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9691,7 +10114,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/locations/{location}` — risk: medium
 	 */
-	async updateLocation(location: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateLocation(location: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalLocationsLocation",
 			namespace: "terminal",
@@ -9704,6 +10127,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9712,7 +10136,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `DELETE /v1/terminal/locations/{location}` — risk: medium
 	 */
-	async deleteLocation(location: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteLocation(location: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteTerminalLocationsLocation",
 			namespace: "terminal",
@@ -9725,6 +10149,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9733,7 +10158,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/onboarding_links` — risk: medium
 	 */
-	async createOnboardingLink(body?: unknown): Promise<ProofResult<unknown>> {
+	async createOnboardingLink(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalOnboardingLinks",
 			namespace: "terminal",
@@ -9746,6 +10171,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9754,7 +10180,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `GET /v1/terminal/readers` — risk: medium
 	 */
-	async listReaders(body?: unknown): Promise<ProofResult<unknown>> {
+	async listReaders(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTerminalReaders",
 			namespace: "terminal",
@@ -9767,6 +10193,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9775,7 +10202,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers` — risk: medium
 	 */
-	async createReader(body?: unknown): Promise<ProofResult<unknown>> {
+	async createReader(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReaders",
 			namespace: "terminal",
@@ -9788,6 +10215,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9796,7 +10224,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `GET /v1/terminal/readers/{reader}` — risk: medium
 	 */
-	async retrieveReader(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveReader(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTerminalReadersReader",
 			namespace: "terminal",
@@ -9809,6 +10237,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9817,7 +10246,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers/{reader}` — risk: medium
 	 */
-	async updateReader(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateReader(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReadersReader",
 			namespace: "terminal",
@@ -9830,6 +10259,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9838,7 +10268,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `DELETE /v1/terminal/readers/{reader}` — risk: medium
 	 */
-	async deleteReader(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteReader(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteTerminalReadersReader",
 			namespace: "terminal",
@@ -9851,6 +10281,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9859,7 +10290,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers/{reader}/cancel_action` — risk: medium
 	 */
-	async cancelAction(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancelAction(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReadersReaderCancelAction",
 			namespace: "terminal",
@@ -9872,6 +10303,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9880,7 +10312,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers/{reader}/collect_inputs` — risk: medium
 	 */
-	async collectInputs(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async collectInputs(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReadersReaderCollectInputs",
 			namespace: "terminal",
@@ -9893,6 +10325,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9901,7 +10334,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers/{reader}/collect_payment_method` — risk: medium
 	 */
-	async collectPaymentMethod(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async collectPaymentMethod(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReadersReaderCollectPaymentMethod",
 			namespace: "terminal",
@@ -9914,6 +10347,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9922,7 +10356,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers/{reader}/confirm_payment_intent` — risk: medium
 	 */
-	async confirmPaymentIntent(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async confirmPaymentIntent(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReadersReaderConfirmPaymentIntent",
 			namespace: "terminal",
@@ -9935,6 +10369,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9943,7 +10378,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers/{reader}/process_payment_intent` — risk: medium
 	 */
-	async processPaymentIntent(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async processPaymentIntent(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReadersReaderProcessPaymentIntent",
 			namespace: "terminal",
@@ -9956,6 +10391,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9964,7 +10400,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers/{reader}/process_setup_intent` — risk: medium
 	 */
-	async processSetupIntent(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async processSetupIntent(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReadersReaderProcessSetupIntent",
 			namespace: "terminal",
@@ -9977,6 +10413,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9985,7 +10422,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers/{reader}/refund_payment` — risk: medium
 	 */
-	async refundPayment(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async refundPayment(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReadersReaderRefundPayment",
 			namespace: "terminal",
@@ -9998,6 +10435,7 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10006,7 +10444,7 @@ For further details, including which address fields are required in each country
 	 *
 	 * `POST /v1/terminal/readers/{reader}/set_reader_display` — risk: medium
 	 */
-	async setReaderDisplay(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async setReaderDisplay(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTerminalReadersReaderSetReaderDisplay",
 			namespace: "terminal",
@@ -10019,13 +10457,14 @@ For further details, including which address fields are required in each country
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TestHelpersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -10037,7 +10476,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/confirmation_tokens` — risk: medium
 	 */
-	async createConfirmationToken(body?: unknown): Promise<ProofResult<unknown>> {
+	async createConfirmationToken(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersConfirmationTokens",
 			namespace: "test_helpers",
@@ -10050,6 +10489,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10058,7 +10498,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/customers/{customer}/fund_cash_balance` — risk: medium
 	 */
-	async fundCashBalance(customer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async fundCashBalance(customer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersCustomersCustomerFundCashBalance",
 			namespace: "test_helpers",
@@ -10071,6 +10511,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10079,7 +10520,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/authorizations` — risk: medium
 	 */
-	async authorizations(body?: unknown): Promise<ProofResult<unknown>> {
+	async authorizations(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingAuthorizations",
 			namespace: "test_helpers",
@@ -10092,6 +10533,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10100,7 +10542,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/authorizations/{authorization}/capture` — risk: medium
 	 */
-	async capture(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async capture(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingAuthorizationsAuthorizationCapture",
 			namespace: "test_helpers",
@@ -10113,6 +10555,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10121,7 +10564,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/authorizations/{authorization}/expire` — risk: medium
 	 */
-	async issuingauthorizationsExpire(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issuingauthorizationsExpire(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingAuthorizationsAuthorizationExpire",
 			namespace: "test_helpers",
@@ -10134,6 +10577,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10142,7 +10586,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/authorizations/{authorization}/finalize_amount` — risk: medium
 	 */
-	async finalizeAmount(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async finalizeAmount(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingAuthorizationsAuthorizationFinalizeAmount",
 			namespace: "test_helpers",
@@ -10155,6 +10599,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10163,7 +10608,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/authorizations/{authorization}/fraud_challenges/respond` — risk: medium
 	 */
-	async respond(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async respond(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingAuthorizationsAuthorizationFraudChallengesRespond",
 			namespace: "test_helpers",
@@ -10176,6 +10621,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10184,7 +10630,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/authorizations/{authorization}/increment` — risk: medium
 	 */
-	async increment(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async increment(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingAuthorizationsAuthorizationIncrement",
 			namespace: "test_helpers",
@@ -10197,6 +10643,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10205,7 +10652,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/authorizations/{authorization}/reverse` — risk: medium
 	 */
-	async reverse(authorization: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async reverse(authorization: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingAuthorizationsAuthorizationReverse",
 			namespace: "test_helpers",
@@ -10218,6 +10665,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10226,7 +10674,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/cards/{card}/shipping/deliver` — risk: medium
 	 */
-	async deliver(card: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deliver(card: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingCardsCardShippingDeliver",
 			namespace: "test_helpers",
@@ -10239,6 +10687,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10247,7 +10696,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/cards/{card}/shipping/fail` — risk: medium
 	 */
-	async issuingcardsshippingFail(card: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issuingcardsshippingFail(card: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingCardsCardShippingFail",
 			namespace: "test_helpers",
@@ -10260,6 +10709,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10268,7 +10718,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/cards/{card}/shipping/return` — risk: medium
 	 */
-	async issuingcardsshippingReturn(card: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issuingcardsshippingReturn(card: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingCardsCardShippingReturn",
 			namespace: "test_helpers",
@@ -10281,6 +10731,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10289,7 +10740,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/cards/{card}/shipping/ship` — risk: medium
 	 */
-	async ship(card: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async ship(card: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingCardsCardShippingShip",
 			namespace: "test_helpers",
@@ -10302,6 +10753,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10310,7 +10762,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/cards/{card}/shipping/submit` — risk: medium
 	 */
-	async submit(card: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async submit(card: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingCardsCardShippingSubmit",
 			namespace: "test_helpers",
@@ -10323,6 +10775,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10331,7 +10784,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/personalization_designs/{personalization_design}/activate` — risk: medium
 	 */
-	async activate(personalizationDesign: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async activate(personalizationDesign: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignActivate",
 			namespace: "test_helpers",
@@ -10344,6 +10797,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10352,7 +10806,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/personalization_designs/{personalization_design}/deactivate` — risk: medium
 	 */
-	async deactivate(personalizationDesign: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deactivate(personalizationDesign: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignDeactivate",
 			namespace: "test_helpers",
@@ -10365,6 +10819,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10373,7 +10828,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/personalization_designs/{personalization_design}/reject` — risk: medium
 	 */
-	async reject(personalizationDesign: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async reject(personalizationDesign: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignReject",
 			namespace: "test_helpers",
@@ -10386,6 +10841,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10394,7 +10850,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/transactions/create_force_capture` — risk: medium
 	 */
-	async createForceCapture(body?: unknown): Promise<ProofResult<unknown>> {
+	async createForceCapture(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingTransactionsCreateForceCapture",
 			namespace: "test_helpers",
@@ -10407,6 +10863,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10415,7 +10872,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/transactions/create_unlinked_refund` — risk: medium
 	 */
-	async createUnlinkedRefund(body?: unknown): Promise<ProofResult<unknown>> {
+	async createUnlinkedRefund(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingTransactionsCreateUnlinkedRefund",
 			namespace: "test_helpers",
@@ -10428,6 +10885,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10436,7 +10894,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/issuing/transactions/{transaction}/refund` — risk: medium
 	 */
-	async refund(transaction: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async refund(transaction: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersIssuingTransactionsTransactionRefund",
 			namespace: "test_helpers",
@@ -10449,6 +10907,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10457,7 +10916,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/refunds/{refund}/expire` — risk: medium
 	 */
-	async refundsExpire(refund: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async refundsExpire(refund: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersRefundsRefundExpire",
 			namespace: "test_helpers",
@@ -10470,6 +10929,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10478,7 +10938,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/terminal/readers/{reader}/present_payment_method` — risk: medium
 	 */
-	async presentPaymentMethod(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async presentPaymentMethod(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTerminalReadersReaderPresentPaymentMethod",
 			namespace: "test_helpers",
@@ -10491,6 +10951,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10499,7 +10960,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/terminal/readers/{reader}/succeed_input_collection` — risk: medium
 	 */
-	async succeedInputCollection(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async succeedInputCollection(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTerminalReadersReaderSucceedInputCollection",
 			namespace: "test_helpers",
@@ -10512,6 +10973,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10520,7 +10982,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/terminal/readers/{reader}/timeout_input_collection` — risk: medium
 	 */
-	async timeoutInputCollection(reader: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async timeoutInputCollection(reader: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTerminalReadersReaderTimeoutInputCollection",
 			namespace: "test_helpers",
@@ -10533,6 +10995,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10541,7 +11004,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `GET /v1/test_helpers/test_clocks` — risk: medium
 	 */
-	async listTestClocks(body?: unknown): Promise<ProofResult<unknown>> {
+	async listTestClocks(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTestHelpersTestClocks",
 			namespace: "test_helpers",
@@ -10554,6 +11017,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10562,7 +11026,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/test_clocks` — risk: medium
 	 */
-	async createTestClock(body?: unknown): Promise<ProofResult<unknown>> {
+	async createTestClock(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTestClocks",
 			namespace: "test_helpers",
@@ -10575,6 +11039,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10583,7 +11048,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `GET /v1/test_helpers/test_clocks/{test_clock}` — risk: medium
 	 */
-	async retrieveTestClock(testClock: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveTestClock(testClock: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTestHelpersTestClocksTestClock",
 			namespace: "test_helpers",
@@ -10596,6 +11061,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10604,7 +11070,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/test_helpers/test_clocks/{test_clock}` — risk: medium
 	 */
-	async deleteTestClock(testClock: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deleteTestClock(testClock: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteTestHelpersTestClocksTestClock",
 			namespace: "test_helpers",
@@ -10617,6 +11083,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10625,7 +11092,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/test_clocks/{test_clock}/advance` — risk: medium
 	 */
-	async advance(testClock: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async advance(testClock: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTestClocksTestClockAdvance",
 			namespace: "test_helpers",
@@ -10638,6 +11105,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10646,7 +11114,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/inbound_transfers/{id}/fail` — risk: medium
 	 */
-	async treasuryinboundTransfersFail(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async treasuryinboundTransfersFail(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryInboundTransfersIdFail",
 			namespace: "test_helpers",
@@ -10659,6 +11127,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10667,7 +11136,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/inbound_transfers/{id}/return` — risk: medium
 	 */
-	async treasuryinboundTransfersReturn(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async treasuryinboundTransfersReturn(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryInboundTransfersIdReturn",
 			namespace: "test_helpers",
@@ -10680,6 +11149,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10688,7 +11158,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/inbound_transfers/{id}/succeed` — risk: medium
 	 */
-	async succeed(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async succeed(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryInboundTransfersIdSucceed",
 			namespace: "test_helpers",
@@ -10701,6 +11171,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10709,7 +11180,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/outbound_payments/{id}` — risk: medium
 	 */
-	async updateOutboundPayment(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateOutboundPayment(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryOutboundPaymentsId",
 			namespace: "test_helpers",
@@ -10722,6 +11193,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10730,7 +11202,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/outbound_payments/{id}/fail` — risk: medium
 	 */
-	async treasuryoutboundPaymentsFail(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async treasuryoutboundPaymentsFail(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryOutboundPaymentsIdFail",
 			namespace: "test_helpers",
@@ -10743,6 +11215,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10751,7 +11224,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/outbound_payments/{id}/post` — risk: medium
 	 */
-	async outboundPaymentsPost(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async outboundPaymentsPost(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryOutboundPaymentsIdPost",
 			namespace: "test_helpers",
@@ -10764,6 +11237,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10772,7 +11246,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/outbound_payments/{id}/return` — risk: medium
 	 */
-	async treasuryoutboundPaymentsReturn(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async treasuryoutboundPaymentsReturn(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryOutboundPaymentsIdReturn",
 			namespace: "test_helpers",
@@ -10785,6 +11259,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10793,7 +11268,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}` — risk: medium
 	 */
-	async updateOutboundTransfer(outboundTransfer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateOutboundTransfer(outboundTransfer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryOutboundTransfersOutboundTransfer",
 			namespace: "test_helpers",
@@ -10806,6 +11281,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10814,7 +11290,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}/fail` — risk: medium
 	 */
-	async treasuryoutboundTransfersFail(outboundTransfer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async treasuryoutboundTransfersFail(outboundTransfer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryOutboundTransfersOutboundTransferFail",
 			namespace: "test_helpers",
@@ -10827,6 +11303,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10835,7 +11312,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}/post` — risk: medium
 	 */
-	async outboundTransfersPost(outboundTransfer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async outboundTransfersPost(outboundTransfer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryOutboundTransfersOutboundTransferPost",
 			namespace: "test_helpers",
@@ -10848,6 +11325,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10856,7 +11334,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}/return` — risk: medium
 	 */
-	async treasuryoutboundTransfersReturn(outboundTransfer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async treasuryoutboundTransfersReturn(outboundTransfer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturn",
 			namespace: "test_helpers",
@@ -10869,6 +11347,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10877,7 +11356,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/received_credits` — risk: medium
 	 */
-	async receivedCredits(body?: unknown): Promise<ProofResult<unknown>> {
+	async receivedCredits(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryReceivedCredits",
 			namespace: "test_helpers",
@@ -10890,6 +11369,7 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10898,7 +11378,7 @@ export class TestHelpersResource extends RpcTarget {
 	 *
 	 * `POST /v1/test_helpers/treasury/received_debits` — risk: medium
 	 */
-	async receivedDebits(body?: unknown): Promise<ProofResult<unknown>> {
+	async receivedDebits(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTestHelpersTreasuryReceivedDebits",
 			namespace: "test_helpers",
@@ -10911,13 +11391,14 @@ export class TestHelpersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TokensResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -10930,7 +11411,7 @@ You can use this token with any v1 API method in place of a bank account diction
 	 *
 	 * `POST /v1/tokens` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTokens",
 			namespace: "tokens",
@@ -10943,6 +11424,7 @@ You can use this token with any v1 API method in place of a bank account diction
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10951,7 +11433,7 @@ You can use this token with any v1 API method in place of a bank account diction
 	 *
 	 * `GET /v1/tokens/{token}` — risk: low
 	 */
-	async retrieve(token: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(token: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTokensToken",
 			namespace: "tokens",
@@ -10964,13 +11446,14 @@ You can use this token with any v1 API method in place of a bank account diction
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TopupsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -10982,7 +11465,7 @@ export class TopupsResource extends RpcTarget {
 	 *
 	 * `GET /v1/topups` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTopups",
 			namespace: "topups",
@@ -10995,6 +11478,7 @@ export class TopupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11003,7 +11487,7 @@ export class TopupsResource extends RpcTarget {
 	 *
 	 * `POST /v1/topups` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTopups",
 			namespace: "topups",
@@ -11016,6 +11500,7 @@ export class TopupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11024,7 +11509,7 @@ export class TopupsResource extends RpcTarget {
 	 *
 	 * `GET /v1/topups/{topup}` — risk: low
 	 */
-	async retrieve(topup: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(topup: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTopupsTopup",
 			namespace: "topups",
@@ -11037,6 +11522,7 @@ export class TopupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11045,7 +11531,7 @@ export class TopupsResource extends RpcTarget {
 	 *
 	 * `POST /v1/topups/{topup}` — risk: medium
 	 */
-	async update(topup: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(topup: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTopupsTopup",
 			namespace: "topups",
@@ -11058,6 +11544,7 @@ export class TopupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11066,7 +11553,7 @@ export class TopupsResource extends RpcTarget {
 	 *
 	 * `POST /v1/topups/{topup}/cancel` — risk: medium
 	 */
-	async cancel(topup: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(topup: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTopupsTopupCancel",
 			namespace: "topups",
@@ -11079,13 +11566,14 @@ export class TopupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TransfersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -11097,7 +11585,7 @@ export class TransfersResource extends RpcTarget {
 	 *
 	 * `GET /v1/transfers` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTransfers",
 			namespace: "transfers",
@@ -11110,6 +11598,7 @@ export class TransfersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11118,7 +11607,7 @@ export class TransfersResource extends RpcTarget {
 	 *
 	 * `POST /v1/transfers` — risk: high
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTransfers",
 			namespace: "transfers",
@@ -11131,6 +11620,7 @@ export class TransfersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11139,7 +11629,7 @@ export class TransfersResource extends RpcTarget {
 	 *
 	 * `GET /v1/transfers/{id}/reversals` — risk: high
 	 */
-	async listReversals(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async listReversals(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTransfersIdReversals",
 			namespace: "transfers",
@@ -11152,6 +11642,7 @@ export class TransfersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11162,7 +11653,7 @@ export class TransfersResource extends RpcTarget {
 	 *
 	 * `POST /v1/transfers/{id}/reversals` — risk: high
 	 */
-	async createReversal(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReversal(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTransfersIdReversals",
 			namespace: "transfers",
@@ -11175,6 +11666,7 @@ export class TransfersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11183,7 +11675,7 @@ export class TransfersResource extends RpcTarget {
 	 *
 	 * `GET /v1/transfers/{transfer}` — risk: low
 	 */
-	async retrieve(transfer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(transfer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTransfersTransfer",
 			namespace: "transfers",
@@ -11196,6 +11688,7 @@ export class TransfersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11206,7 +11699,7 @@ export class TransfersResource extends RpcTarget {
 	 *
 	 * `POST /v1/transfers/{transfer}` — risk: high
 	 */
-	async update(transfer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(transfer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTransfersTransfer",
 			namespace: "transfers",
@@ -11219,6 +11712,7 @@ export class TransfersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11227,7 +11721,7 @@ export class TransfersResource extends RpcTarget {
 	 *
 	 * `GET /v1/transfers/{transfer}/reversals/{id}` — risk: high
 	 */
-	async retrieveReversal(transfer: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveReversal(transfer: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTransfersTransferReversalsId",
 			namespace: "transfers",
@@ -11240,6 +11734,7 @@ export class TransfersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11250,7 +11745,7 @@ export class TransfersResource extends RpcTarget {
 	 *
 	 * `POST /v1/transfers/{transfer}/reversals/{id}` — risk: high
 	 */
-	async updateReversal(transfer: string, id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateReversal(transfer: string, id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTransfersTransferReversalsId",
 			namespace: "transfers",
@@ -11263,13 +11758,14 @@ export class TransfersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TreasuryResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -11281,7 +11777,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/credit_reversals` — risk: medium
 	 */
-	async listCreditReversals(body?: unknown): Promise<ProofResult<unknown>> {
+	async listCreditReversals(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryCreditReversals",
 			namespace: "treasury",
@@ -11294,6 +11790,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11302,7 +11799,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/credit_reversals` — risk: medium
 	 */
-	async createCreditReversal(body?: unknown): Promise<ProofResult<unknown>> {
+	async createCreditReversal(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryCreditReversals",
 			namespace: "treasury",
@@ -11315,6 +11812,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11323,7 +11821,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/credit_reversals/{credit_reversal}` — risk: medium
 	 */
-	async retrieveCreditReversal(creditReversal: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveCreditReversal(creditReversal: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryCreditReversalsCreditReversal",
 			namespace: "treasury",
@@ -11336,6 +11834,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11344,7 +11843,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/debit_reversals` — risk: medium
 	 */
-	async listDebitReversals(body?: unknown): Promise<ProofResult<unknown>> {
+	async listDebitReversals(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryDebitReversals",
 			namespace: "treasury",
@@ -11357,6 +11856,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11365,7 +11865,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/debit_reversals` — risk: medium
 	 */
-	async createDebitReversal(body?: unknown): Promise<ProofResult<unknown>> {
+	async createDebitReversal(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryDebitReversals",
 			namespace: "treasury",
@@ -11378,6 +11878,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11386,7 +11887,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/debit_reversals/{debit_reversal}` — risk: medium
 	 */
-	async retrieveDebitReversal(debitReversal: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveDebitReversal(debitReversal: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryDebitReversalsDebitReversal",
 			namespace: "treasury",
@@ -11399,6 +11900,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11407,7 +11909,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/financial_accounts` — risk: medium
 	 */
-	async listFinancialAccounts(body?: unknown): Promise<ProofResult<unknown>> {
+	async listFinancialAccounts(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryFinancialAccounts",
 			namespace: "treasury",
@@ -11420,6 +11922,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11428,7 +11931,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/financial_accounts` — risk: medium
 	 */
-	async createFinancialAccount(body?: unknown): Promise<ProofResult<unknown>> {
+	async createFinancialAccount(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryFinancialAccounts",
 			namespace: "treasury",
@@ -11441,6 +11944,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11449,7 +11953,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/financial_accounts/{financial_account}` — risk: medium
 	 */
-	async retrieveFinancialAccount(financialAccount: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveFinancialAccount(financialAccount: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryFinancialAccountsFinancialAccount",
 			namespace: "treasury",
@@ -11462,6 +11966,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11470,7 +11975,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/financial_accounts/{financial_account}` — risk: medium
 	 */
-	async updateFinancialAccount(financialAccount: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateFinancialAccount(financialAccount: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryFinancialAccountsFinancialAccount",
 			namespace: "treasury",
@@ -11483,6 +11988,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11491,7 +11997,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/financial_accounts/{financial_account}/close` — risk: medium
 	 */
-	async close(financialAccount: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async close(financialAccount: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryFinancialAccountsFinancialAccountClose",
 			namespace: "treasury",
@@ -11504,6 +12010,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11512,7 +12019,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/financial_accounts/{financial_account}/features` — risk: medium
 	 */
-	async features_0(financialAccount: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async features_0(financialAccount: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryFinancialAccountsFinancialAccountFeatures",
 			namespace: "treasury",
@@ -11525,6 +12032,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11533,7 +12041,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/financial_accounts/{financial_account}/features` — risk: medium
 	 */
-	async features_1(financialAccount: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async features_1(financialAccount: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryFinancialAccountsFinancialAccountFeatures",
 			namespace: "treasury",
@@ -11546,6 +12054,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11554,7 +12063,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/inbound_transfers` — risk: medium
 	 */
-	async listInboundTransfers(body?: unknown): Promise<ProofResult<unknown>> {
+	async listInboundTransfers(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryInboundTransfers",
 			namespace: "treasury",
@@ -11567,6 +12076,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11575,7 +12085,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/inbound_transfers` — risk: medium
 	 */
-	async createInboundTransfer(body?: unknown): Promise<ProofResult<unknown>> {
+	async createInboundTransfer(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryInboundTransfers",
 			namespace: "treasury",
@@ -11588,6 +12098,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11596,7 +12107,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/inbound_transfers/{id}` — risk: medium
 	 */
-	async retrieveInboundTransfer(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveInboundTransfer(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryInboundTransfersId",
 			namespace: "treasury",
@@ -11609,6 +12120,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11617,7 +12129,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/inbound_transfers/{inbound_transfer}/cancel` — risk: medium
 	 */
-	async inboundTransfersCancel(inboundTransfer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async inboundTransfersCancel(inboundTransfer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryInboundTransfersInboundTransferCancel",
 			namespace: "treasury",
@@ -11630,6 +12142,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11638,7 +12151,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/outbound_payments` — risk: medium
 	 */
-	async listOutboundPayments(body?: unknown): Promise<ProofResult<unknown>> {
+	async listOutboundPayments(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryOutboundPayments",
 			namespace: "treasury",
@@ -11651,6 +12164,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11659,7 +12173,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/outbound_payments` — risk: medium
 	 */
-	async createOutboundPayment(body?: unknown): Promise<ProofResult<unknown>> {
+	async createOutboundPayment(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryOutboundPayments",
 			namespace: "treasury",
@@ -11672,6 +12186,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11680,7 +12195,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/outbound_payments/{id}` — risk: medium
 	 */
-	async retrieveOutboundPayment(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveOutboundPayment(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryOutboundPaymentsId",
 			namespace: "treasury",
@@ -11693,6 +12208,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11701,7 +12217,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/outbound_payments/{id}/cancel` — risk: medium
 	 */
-	async outboundPaymentsCancel(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async outboundPaymentsCancel(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryOutboundPaymentsIdCancel",
 			namespace: "treasury",
@@ -11714,6 +12230,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11722,7 +12239,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/outbound_transfers` — risk: medium
 	 */
-	async listOutboundTransfers(body?: unknown): Promise<ProofResult<unknown>> {
+	async listOutboundTransfers(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryOutboundTransfers",
 			namespace: "treasury",
@@ -11735,6 +12252,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11743,7 +12261,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/outbound_transfers` — risk: medium
 	 */
-	async createOutboundTransfer(body?: unknown): Promise<ProofResult<unknown>> {
+	async createOutboundTransfer(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryOutboundTransfers",
 			namespace: "treasury",
@@ -11756,6 +12274,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11764,7 +12283,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/outbound_transfers/{outbound_transfer}` — risk: medium
 	 */
-	async retrieveOutboundTransfer(outboundTransfer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveOutboundTransfer(outboundTransfer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryOutboundTransfersOutboundTransfer",
 			namespace: "treasury",
@@ -11777,6 +12296,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11785,7 +12305,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `POST /v1/treasury/outbound_transfers/{outbound_transfer}/cancel` — risk: medium
 	 */
-	async outboundTransfersCancel(outboundTransfer: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async outboundTransfersCancel(outboundTransfer: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostTreasuryOutboundTransfersOutboundTransferCancel",
 			namespace: "treasury",
@@ -11798,6 +12318,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11806,7 +12327,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/received_credits` — risk: medium
 	 */
-	async listReceivedCredits(body?: unknown): Promise<ProofResult<unknown>> {
+	async listReceivedCredits(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryReceivedCredits",
 			namespace: "treasury",
@@ -11819,6 +12340,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11827,7 +12349,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/received_credits/{id}` — risk: medium
 	 */
-	async retrieveReceivedCredit(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveReceivedCredit(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryReceivedCreditsId",
 			namespace: "treasury",
@@ -11840,6 +12362,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11848,7 +12371,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/received_debits` — risk: medium
 	 */
-	async listReceivedDebits(body?: unknown): Promise<ProofResult<unknown>> {
+	async listReceivedDebits(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryReceivedDebits",
 			namespace: "treasury",
@@ -11861,6 +12384,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11869,7 +12393,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/received_debits/{id}` — risk: medium
 	 */
-	async retrieveReceivedDebit(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveReceivedDebit(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryReceivedDebitsId",
 			namespace: "treasury",
@@ -11882,6 +12406,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11890,7 +12415,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/transaction_entries` — risk: medium
 	 */
-	async listTransactionEntries(body?: unknown): Promise<ProofResult<unknown>> {
+	async listTransactionEntries(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryTransactionEntries",
 			namespace: "treasury",
@@ -11903,6 +12428,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11911,7 +12437,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/transaction_entries/{id}` — risk: medium
 	 */
-	async retrieveTransactionEntry(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveTransactionEntry(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryTransactionEntriesId",
 			namespace: "treasury",
@@ -11924,6 +12450,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11932,7 +12459,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/transactions` — risk: medium
 	 */
-	async listTransactions(body?: unknown): Promise<ProofResult<unknown>> {
+	async listTransactions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryTransactions",
 			namespace: "treasury",
@@ -11945,6 +12472,7 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11953,7 +12481,7 @@ export class TreasuryResource extends RpcTarget {
 	 *
 	 * `GET /v1/treasury/transactions/{id}` — risk: medium
 	 */
-	async retrieveTransaction(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieveTransaction(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetTreasuryTransactionsId",
 			namespace: "treasury",
@@ -11966,13 +12494,14 @@ export class TreasuryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class WebhookEndpointsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -11984,7 +12513,7 @@ export class WebhookEndpointsResource extends RpcTarget {
 	 *
 	 * `GET /v1/webhook_endpoints` — risk: low
 	 */
-	async list(body?: unknown): Promise<ProofResult<unknown>> {
+	async list(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetWebhookEndpoints",
 			namespace: "webhook_endpoints",
@@ -11997,6 +12526,7 @@ export class WebhookEndpointsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12005,7 +12535,7 @@ export class WebhookEndpointsResource extends RpcTarget {
 	 *
 	 * `POST /v1/webhook_endpoints` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostWebhookEndpoints",
 			namespace: "webhook_endpoints",
@@ -12018,6 +12548,7 @@ export class WebhookEndpointsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12026,7 +12557,7 @@ export class WebhookEndpointsResource extends RpcTarget {
 	 *
 	 * `GET /v1/webhook_endpoints/{webhook_endpoint}` — risk: low
 	 */
-	async retrieve(webhookEndpoint: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async retrieve(webhookEndpoint: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "GetWebhookEndpointsWebhookEndpoint",
 			namespace: "webhook_endpoints",
@@ -12039,6 +12570,7 @@ export class WebhookEndpointsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12047,7 +12579,7 @@ export class WebhookEndpointsResource extends RpcTarget {
 	 *
 	 * `POST /v1/webhook_endpoints/{webhook_endpoint}` — risk: medium
 	 */
-	async update(webhookEndpoint: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(webhookEndpoint: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "PostWebhookEndpointsWebhookEndpoint",
 			namespace: "webhook_endpoints",
@@ -12060,6 +12592,7 @@ export class WebhookEndpointsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12068,7 +12601,7 @@ export class WebhookEndpointsResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/webhook_endpoints/{webhook_endpoint}` — risk: medium
 	 */
-	async del(webhookEndpoint: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async del(webhookEndpoint: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteWebhookEndpointsWebhookEndpoint",
 			namespace: "webhook_endpoints",
@@ -12081,12 +12614,13 @@ export class WebhookEndpointsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 interface Env {
-	STRIPE_API_KEY: string;
+	STRIPE_API_KEY?: string;
 }
 
 export class StripeCapability extends WorkerEntrypoint<Env> {

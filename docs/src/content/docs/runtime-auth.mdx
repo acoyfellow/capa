@@ -1,0 +1,106 @@
+---
+title: Runtime auth
+description: Multi-tenant capa Workers and provider-specific auth headers.
+---
+
+capa's default deployment stays simple: one capability Worker, one upstream credential stored as a Worker secret.
+
+```bash
+wrangler secret put STRIPE_API_KEY
+```
+
+That is a good fit when you deploy the capability for yourself.
+
+## Multi-tenant target
+
+Workflow builders and SaaS platforms need a second mode: deploy one shared capability Worker, then choose the tenant credential for each RPC call.
+
+```ts
+await env.STRIPE.paymentIntents.create(
+  { amount: 2500, currency: "usd" },
+  { auth: { apiKey: tenant.stripeKey } },
+);
+```
+
+Static Worker secrets remain the default. Runtime auth is an opt-in override for that single call.
+
+| Deployment mode | Credential source | Fit |
+|---|---|---|
+| Static secret | `STRIPE_API_KEY` Worker secret | one app / one provider account |
+| Runtime auth | `options.auth.apiKey` | one shared capability / many tenant accounts |
+
+## Target call contract
+
+The options bag should stay small:
+
+```ts
+interface CallOptions {
+  auth?: {
+    apiKey?: string;
+    headers?: Record<string, string>;
+  };
+}
+```
+
+Generated methods keep their current shape and add `options?` at the end:
+
+```ts
+retrieve(id, options?)
+create(body, options?)
+update(id, body, options?)
+```
+
+## Providers with extra auth headers
+
+Some APIs need more than the primary token. Twitch Helix requires both:
+
+```txt
+Authorization: Bearer <token>
+Client-Id: <client id>
+```
+
+The target runtime shape is:
+
+```ts
+await env.TWITCH.channels.list(input, {
+  auth: {
+    apiKey: tenant.twitchToken,
+    headers: { "Client-Id": tenant.twitchClientId },
+  },
+});
+```
+
+The same pattern covers provider-specific secondary auth/context headers without inventing a new auth mode for every API.
+
+## Intentional boundaries
+
+Runtime auth is for credentials, not arbitrary request routing.
+
+| Allowed | Not part of this feature |
+|---|---|
+| Per-call provider API key/token | Per-call upstream base URL |
+| Per-call provider-required auth headers | Tenant database inside capa |
+| Existing Worker secret fallback | OAuth refresh orchestration |
+| Credentials excluded from returned receipts | Credential values echoed in evidence |
+
+## Security posture
+
+Per-call provider secrets already exist in the calling platform, so capa should avoid amplifying exposure:
+
+- never include `auth.apiKey` or `auth.headers` values in evidence receipts
+- never echo credential values in runtime errors
+- keep per-call headers constrained to auth/context use, not a generic proxy feature
+- use narrowly scoped provider credentials where the provider supports them
+
+## What this unlocks
+
+A workflow product can model each capability as a node:
+
+```txt
+Stripe node
+GitHub node
+Slack node
+Twitch node
+```
+
+and run them through one deployed capability Worker per API, while each workflow invocation uses that customer's provider credential.

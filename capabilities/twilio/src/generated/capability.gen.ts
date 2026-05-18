@@ -6,12 +6,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 
 export class AccountsJsonResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23,7 +23,7 @@ export class AccountsJsonResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts.json` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAccount",
 			namespace: "Accounts.json",
@@ -36,6 +36,7 @@ export class AccountsJsonResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -44,7 +45,7 @@ export class AccountsJsonResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts.json` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateAccount",
 			namespace: "Accounts.json",
@@ -57,13 +58,14 @@ export class AccountsJsonResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AccountsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -75,7 +77,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{Sid}.json` — risk: low
 	 */
-	async retrieve(Sid: string): Promise<ProofResult<unknown>> {
+	async retrieve(Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchAccount",
 			namespace: "Accounts",
@@ -88,6 +90,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -96,7 +99,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{Sid}.json` — risk: medium
 	 */
-	async update(Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateAccount",
 			namespace: "Accounts",
@@ -109,6 +112,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -117,7 +121,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Addresses.json` — risk: medium
 	 */
-	async listAddressesJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listAddressesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAddress",
 			namespace: "Accounts",
@@ -130,6 +134,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -138,7 +143,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Addresses.json` — risk: medium
 	 */
-	async createAddressesJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createAddressesJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateAddress",
 			namespace: "Accounts",
@@ -151,6 +156,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -159,7 +165,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json` — risk: medium
 	 */
-	async retrieveAddress(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveAddress(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchAddress",
 			namespace: "Accounts",
@@ -172,6 +178,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -180,7 +187,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json` — risk: medium
 	 */
-	async updateAddress(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateAddress(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateAddress",
 			namespace: "Accounts",
@@ -193,6 +200,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -201,7 +209,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json` — risk: medium
 	 */
-	async deleteAddress(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteAddress(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteAddress",
 			namespace: "Accounts",
@@ -214,6 +222,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -222,7 +231,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Applications.json` — risk: medium
 	 */
-	async listApplicationsJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listApplicationsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListApplication",
 			namespace: "Accounts",
@@ -235,6 +244,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -243,7 +253,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Applications.json` — risk: medium
 	 */
-	async createApplicationsJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createApplicationsJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateApplication",
 			namespace: "Accounts",
@@ -256,6 +266,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -264,7 +275,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json` — risk: medium
 	 */
-	async retrieveApplication(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveApplication(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchApplication",
 			namespace: "Accounts",
@@ -277,6 +288,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -285,7 +297,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json` — risk: medium
 	 */
-	async updateApplication(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateApplication(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateApplication",
 			namespace: "Accounts",
@@ -298,6 +310,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -306,7 +319,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json` — risk: medium
 	 */
-	async deleteApplication(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteApplication(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteApplication",
 			namespace: "Accounts",
@@ -319,6 +332,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -327,7 +341,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AuthorizedConnectApps/{ConnectAppSid}.json` — risk: medium
 	 */
-	async retrieveAuthorizedConnectApp(AccountSid: string, ConnectAppSid: string): Promise<ProofResult<unknown>> {
+	async retrieveAuthorizedConnectApp(AccountSid: string, ConnectAppSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchAuthorizedConnectApp",
 			namespace: "Accounts",
@@ -340,6 +354,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -348,7 +363,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AuthorizedConnectApps.json` — risk: medium
 	 */
-	async listAuthorizedConnectAppsJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listAuthorizedConnectAppsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAuthorizedConnectApp",
 			namespace: "Accounts",
@@ -361,6 +376,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -369,7 +385,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers.json` — risk: medium
 	 */
-	async listAvailablePhoneNumbersJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listAvailablePhoneNumbersJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAvailablePhoneNumberCountry",
 			namespace: "Accounts",
@@ -382,6 +398,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -390,7 +407,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}.json` — risk: medium
 	 */
-	async retrieveAvailablePhoneNumber(AccountSid: string, CountryCode: string): Promise<ProofResult<unknown>> {
+	async retrieveAvailablePhoneNumber(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchAvailablePhoneNumberCountry",
 			namespace: "Accounts",
@@ -403,6 +420,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -411,7 +429,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Local.json` — risk: medium
 	 */
-	async availablePhoneNumbersLocalJson(AccountSid: string, CountryCode: string): Promise<ProofResult<unknown>> {
+	async availablePhoneNumbersLocalJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAvailablePhoneNumberLocal",
 			namespace: "Accounts",
@@ -424,6 +442,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -432,7 +451,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/MachineToMachine.json` — risk: medium
 	 */
-	async MachineToMachineJson(AccountSid: string, CountryCode: string): Promise<ProofResult<unknown>> {
+	async MachineToMachineJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAvailablePhoneNumberMachineToMachine",
 			namespace: "Accounts",
@@ -445,6 +464,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -453,7 +473,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Mobile.json` — risk: medium
 	 */
-	async availablePhoneNumbersMobileJson(AccountSid: string, CountryCode: string): Promise<ProofResult<unknown>> {
+	async availablePhoneNumbersMobileJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAvailablePhoneNumberMobile",
 			namespace: "Accounts",
@@ -466,6 +486,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -474,7 +495,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json` — risk: medium
 	 */
-	async NationalJson(AccountSid: string, CountryCode: string): Promise<ProofResult<unknown>> {
+	async NationalJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAvailablePhoneNumberNational",
 			namespace: "Accounts",
@@ -487,6 +508,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -495,7 +517,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json` — risk: medium
 	 */
-	async SharedCostJson(AccountSid: string, CountryCode: string): Promise<ProofResult<unknown>> {
+	async SharedCostJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAvailablePhoneNumberSharedCost",
 			namespace: "Accounts",
@@ -508,6 +530,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -516,7 +539,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/TollFree.json` — risk: medium
 	 */
-	async availablePhoneNumbersTollFreeJson(AccountSid: string, CountryCode: string): Promise<ProofResult<unknown>> {
+	async availablePhoneNumbersTollFreeJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAvailablePhoneNumberTollFree",
 			namespace: "Accounts",
@@ -529,6 +552,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -537,7 +561,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json` — risk: medium
 	 */
-	async VoipJson(AccountSid: string, CountryCode: string): Promise<ProofResult<unknown>> {
+	async VoipJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListAvailablePhoneNumberVoip",
 			namespace: "Accounts",
@@ -550,6 +574,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -558,7 +583,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Balance.json` — risk: medium
 	 */
-	async listBalanceJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listBalanceJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchBalance",
 			namespace: "Accounts",
@@ -571,6 +596,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -579,7 +605,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls.json` — risk: medium
 	 */
-	async listCallsJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listCallsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListCall",
 			namespace: "Accounts",
@@ -592,6 +618,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -600,7 +627,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls.json` — risk: medium
 	 */
-	async createCallsJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createCallsJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateCall",
 			namespace: "Accounts",
@@ -613,6 +640,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -621,7 +649,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json` — risk: medium
 	 */
-	async retrieveCall(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveCall(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchCall",
 			namespace: "Accounts",
@@ -634,6 +662,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -642,7 +671,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json` — risk: medium
 	 */
-	async updateCall(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateCall(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateCall",
 			namespace: "Accounts",
@@ -655,6 +684,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -663,7 +693,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json` — risk: medium
 	 */
-	async deleteCall(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteCall(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteCall",
 			namespace: "Accounts",
@@ -676,6 +706,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -684,7 +715,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Events.json` — risk: medium
 	 */
-	async EventsJson(AccountSid: string, CallSid: string): Promise<ProofResult<unknown>> {
+	async EventsJson(AccountSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListCallEvent",
 			namespace: "Accounts",
@@ -697,6 +728,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -705,7 +737,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications/{Sid}.json` — risk: medium
 	 */
-	async callsNotificationsRetrieveNotification(AccountSid: string, CallSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async callsNotificationsRetrieveNotification(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchCallNotification",
 			namespace: "Accounts",
@@ -718,6 +750,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -726,7 +759,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json` — risk: medium
 	 */
-	async NotificationsJson(AccountSid: string, CallSid: string): Promise<ProofResult<unknown>> {
+	async NotificationsJson(AccountSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListCallNotification",
 			namespace: "Accounts",
@@ -739,6 +772,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -747,7 +781,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json` — risk: medium
 	 */
-	async getCallsRecordingsJson(AccountSid: string, CallSid: string): Promise<ProofResult<unknown>> {
+	async getCallsRecordingsJson(AccountSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListCallRecording",
 			namespace: "Accounts",
@@ -760,6 +794,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -768,7 +803,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json` — risk: medium
 	 */
-	async postCallsRecordingsJson(AccountSid: string, CallSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postCallsRecordingsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateCallRecording",
 			namespace: "Accounts",
@@ -781,6 +816,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -789,7 +825,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async callsRecordingsRetrieveRecording(AccountSid: string, CallSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async callsRecordingsRetrieveRecording(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchCallRecording",
 			namespace: "Accounts",
@@ -802,6 +838,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -810,7 +847,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async callsRecordingsUpdateRecording(AccountSid: string, CallSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async callsRecordingsUpdateRecording(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateCallRecording",
 			namespace: "Accounts",
@@ -823,6 +860,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -831,7 +869,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async callsRecordingsDeleteRecording(AccountSid: string, CallSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async callsRecordingsDeleteRecording(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteCallRecording",
 			namespace: "Accounts",
@@ -844,6 +882,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -852,7 +891,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{Sid}.json` — risk: medium
 	 */
-	async retrieveConference(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveConference(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchConference",
 			namespace: "Accounts",
@@ -865,6 +904,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -873,7 +913,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Conferences/{Sid}.json` — risk: medium
 	 */
-	async updateConference(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateConference(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateConference",
 			namespace: "Accounts",
@@ -886,6 +926,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -894,7 +935,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences.json` — risk: medium
 	 */
-	async listConferencesJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listConferencesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListConference",
 			namespace: "Accounts",
@@ -907,6 +948,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -915,7 +957,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings.json` — risk: medium
 	 */
-	async conferencesRecordingsJson(AccountSid: string, ConferenceSid: string): Promise<ProofResult<unknown>> {
+	async conferencesRecordingsJson(AccountSid: string, ConferenceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListConferenceRecording",
 			namespace: "Accounts",
@@ -928,6 +970,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -936,7 +979,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async conferencesRecordingsRetrieveRecording(AccountSid: string, ConferenceSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async conferencesRecordingsRetrieveRecording(AccountSid: string, ConferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchConferenceRecording",
 			namespace: "Accounts",
@@ -949,6 +992,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -957,7 +1001,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async conferencesRecordingsUpdateRecording(AccountSid: string, ConferenceSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async conferencesRecordingsUpdateRecording(AccountSid: string, ConferenceSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateConferenceRecording",
 			namespace: "Accounts",
@@ -970,6 +1014,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -978,7 +1023,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async conferencesRecordingsDeleteRecording(AccountSid: string, ConferenceSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async conferencesRecordingsDeleteRecording(AccountSid: string, ConferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteConferenceRecording",
 			namespace: "Accounts",
@@ -991,6 +1036,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -999,7 +1045,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json` — risk: medium
 	 */
-	async retrieveConnectApp(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveConnectApp(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchConnectApp",
 			namespace: "Accounts",
@@ -1012,6 +1058,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1020,7 +1067,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json` — risk: medium
 	 */
-	async updateConnectApp(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateConnectApp(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateConnectApp",
 			namespace: "Accounts",
@@ -1033,6 +1080,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1041,7 +1089,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json` — risk: medium
 	 */
-	async deleteConnectApp(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteConnectApp(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteConnectApp",
 			namespace: "Accounts",
@@ -1054,6 +1102,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1062,7 +1111,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/ConnectApps.json` — risk: medium
 	 */
-	async listConnectAppsJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listConnectAppsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListConnectApp",
 			namespace: "Accounts",
@@ -1075,6 +1124,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1083,7 +1133,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Addresses/{AddressSid}/DependentPhoneNumbers.json` — risk: medium
 	 */
-	async DependentPhoneNumbersJson(AccountSid: string, AddressSid: string): Promise<ProofResult<unknown>> {
+	async DependentPhoneNumbersJson(AccountSid: string, AddressSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListDependentPhoneNumber",
 			namespace: "Accounts",
@@ -1096,6 +1146,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1104,7 +1155,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json` — risk: medium
 	 */
-	async retrieveIncomingPhoneNumber(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveIncomingPhoneNumber(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchIncomingPhoneNumber",
 			namespace: "Accounts",
@@ -1117,6 +1168,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1125,7 +1177,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json` — risk: medium
 	 */
-	async updateIncomingPhoneNumber(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateIncomingPhoneNumber(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateIncomingPhoneNumber",
 			namespace: "Accounts",
@@ -1138,6 +1190,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1146,7 +1199,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json` — risk: medium
 	 */
-	async deleteIncomingPhoneNumber(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteIncomingPhoneNumber(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteIncomingPhoneNumber",
 			namespace: "Accounts",
@@ -1159,6 +1212,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1167,7 +1221,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json` — risk: medium
 	 */
-	async listIncomingPhoneNumbersJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listIncomingPhoneNumbersJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListIncomingPhoneNumber",
 			namespace: "Accounts",
@@ -1180,6 +1234,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1188,7 +1243,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json` — risk: medium
 	 */
-	async createIncomingPhoneNumbersJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createIncomingPhoneNumbersJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateIncomingPhoneNumber",
 			namespace: "Accounts",
@@ -1201,6 +1256,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1209,7 +1265,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{Sid}.json` — risk: medium
 	 */
-	async retrieveAssignedAddOn(AccountSid: string, ResourceSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveAssignedAddOn(AccountSid: string, ResourceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchIncomingPhoneNumberAssignedAddOn",
 			namespace: "Accounts",
@@ -1222,6 +1278,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1230,7 +1287,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{Sid}.json` — risk: medium
 	 */
-	async deleteAssignedAddOn(AccountSid: string, ResourceSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteAssignedAddOn(AccountSid: string, ResourceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteIncomingPhoneNumberAssignedAddOn",
 			namespace: "Accounts",
@@ -1243,6 +1300,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1251,7 +1309,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json` — risk: medium
 	 */
-	async AssignedAddOnsJson_0(AccountSid: string, ResourceSid: string): Promise<ProofResult<unknown>> {
+	async AssignedAddOnsJson_0(AccountSid: string, ResourceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListIncomingPhoneNumberAssignedAddOn",
 			namespace: "Accounts",
@@ -1264,6 +1322,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1272,7 +1331,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json` — risk: medium
 	 */
-	async AssignedAddOnsJson_1(AccountSid: string, ResourceSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async AssignedAddOnsJson_1(AccountSid: string, ResourceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateIncomingPhoneNumberAssignedAddOn",
 			namespace: "Accounts",
@@ -1285,6 +1344,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1293,7 +1353,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions/{Sid}.json` — risk: medium
 	 */
-	async retrieveExtension(AccountSid: string, ResourceSid: string, AssignedAddOnSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveExtension(AccountSid: string, ResourceSid: string, AssignedAddOnSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchIncomingPhoneNumberAssignedAddOnExtension",
 			namespace: "Accounts",
@@ -1306,6 +1366,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1314,7 +1375,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions.json` — risk: medium
 	 */
-	async ExtensionsJson(AccountSid: string, ResourceSid: string, AssignedAddOnSid: string): Promise<ProofResult<unknown>> {
+	async ExtensionsJson(AccountSid: string, ResourceSid: string, AssignedAddOnSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListIncomingPhoneNumberAssignedAddOnExtension",
 			namespace: "Accounts",
@@ -1327,6 +1388,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1335,7 +1397,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json` — risk: medium
 	 */
-	async getIncomingPhoneNumbersLocalJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async getIncomingPhoneNumbersLocalJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListIncomingPhoneNumberLocal",
 			namespace: "Accounts",
@@ -1348,6 +1410,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1356,7 +1419,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json` — risk: medium
 	 */
-	async postIncomingPhoneNumbersLocalJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIncomingPhoneNumbersLocalJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateIncomingPhoneNumberLocal",
 			namespace: "Accounts",
@@ -1369,6 +1432,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1377,7 +1441,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json` — risk: medium
 	 */
-	async getIncomingPhoneNumbersMobileJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async getIncomingPhoneNumbersMobileJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListIncomingPhoneNumberMobile",
 			namespace: "Accounts",
@@ -1390,6 +1454,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1398,7 +1463,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json` — risk: medium
 	 */
-	async postIncomingPhoneNumbersMobileJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIncomingPhoneNumbersMobileJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateIncomingPhoneNumberMobile",
 			namespace: "Accounts",
@@ -1411,6 +1476,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1419,7 +1485,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json` — risk: medium
 	 */
-	async getIncomingPhoneNumbersTollFreeJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async getIncomingPhoneNumbersTollFreeJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListIncomingPhoneNumberTollFree",
 			namespace: "Accounts",
@@ -1432,6 +1498,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1440,7 +1507,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json` — risk: medium
 	 */
-	async postIncomingPhoneNumbersTollFreeJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIncomingPhoneNumbersTollFreeJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateIncomingPhoneNumberTollFree",
 			namespace: "Accounts",
@@ -1453,6 +1520,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1461,7 +1529,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json` — risk: medium
 	 */
-	async retrieveKey(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchKey",
 			namespace: "Accounts",
@@ -1474,6 +1542,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1482,7 +1551,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json` — risk: medium
 	 */
-	async updateKey(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateKey(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateKey",
 			namespace: "Accounts",
@@ -1495,6 +1564,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1503,7 +1573,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json` — risk: medium
 	 */
-	async deleteKey(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteKey",
 			namespace: "Accounts",
@@ -1516,6 +1586,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1524,7 +1595,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Keys.json` — risk: medium
 	 */
-	async listKeysJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listKeysJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListKey",
 			namespace: "Accounts",
@@ -1537,6 +1608,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1545,7 +1617,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Keys.json` — risk: medium
 	 */
-	async createKeysJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createKeysJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateNewKey",
 			namespace: "Accounts",
@@ -1558,6 +1630,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1566,7 +1639,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media/{Sid}.json` — risk: medium
 	 */
-	async retrieveMedia(AccountSid: string, MessageSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveMedia(AccountSid: string, MessageSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchMedia",
 			namespace: "Accounts",
@@ -1579,6 +1652,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1587,7 +1661,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media/{Sid}.json` — risk: medium
 	 */
-	async deleteMedia(AccountSid: string, MessageSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteMedia(AccountSid: string, MessageSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteMedia",
 			namespace: "Accounts",
@@ -1600,6 +1674,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1608,7 +1683,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media.json` — risk: medium
 	 */
-	async MediaJson(AccountSid: string, MessageSid: string): Promise<ProofResult<unknown>> {
+	async MediaJson(AccountSid: string, MessageSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListMedia",
 			namespace: "Accounts",
@@ -1621,6 +1696,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1629,7 +1705,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members/{CallSid}.json` — risk: medium
 	 */
-	async retrieveMember(AccountSid: string, QueueSid: string, CallSid: string): Promise<ProofResult<unknown>> {
+	async retrieveMember(AccountSid: string, QueueSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchMember",
 			namespace: "Accounts",
@@ -1642,6 +1718,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1650,7 +1727,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members/{CallSid}.json` — risk: medium
 	 */
-	async updateMember(AccountSid: string, QueueSid: string, CallSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateMember(AccountSid: string, QueueSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateMember",
 			namespace: "Accounts",
@@ -1663,6 +1740,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1671,7 +1749,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members.json` — risk: medium
 	 */
-	async MembersJson(AccountSid: string, QueueSid: string): Promise<ProofResult<unknown>> {
+	async MembersJson(AccountSid: string, QueueSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListMember",
 			namespace: "Accounts",
@@ -1684,6 +1762,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1692,7 +1771,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Messages.json` — risk: medium
 	 */
-	async listMessagesJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listMessagesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListMessage",
 			namespace: "Accounts",
@@ -1705,6 +1784,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1713,7 +1793,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Messages.json` — risk: medium
 	 */
-	async createMessagesJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMessagesJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateMessage",
 			namespace: "Accounts",
@@ -1726,6 +1806,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1734,7 +1815,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json` — risk: medium
 	 */
-	async retrieveMessage(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveMessage(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchMessage",
 			namespace: "Accounts",
@@ -1747,6 +1828,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1755,7 +1837,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json` — risk: medium
 	 */
-	async updateMessage(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateMessage(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateMessage",
 			namespace: "Accounts",
@@ -1768,6 +1850,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1776,7 +1859,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json` — risk: medium
 	 */
-	async deleteMessage(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteMessage(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteMessage",
 			namespace: "Accounts",
@@ -1789,6 +1872,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1797,7 +1881,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Feedback.json` — risk: medium
 	 */
-	async FeedbackJson(AccountSid: string, MessageSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async FeedbackJson(AccountSid: string, MessageSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateMessageFeedback",
 			namespace: "Accounts",
@@ -1810,6 +1894,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1818,7 +1903,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SigningKeys.json` — risk: medium
 	 */
-	async listSigningKeysJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listSigningKeysJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSigningKey",
 			namespace: "Accounts",
@@ -1831,6 +1916,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1839,7 +1925,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SigningKeys.json` — risk: medium
 	 */
-	async createSigningKeysJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createSigningKeysJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateNewSigningKey",
 			namespace: "Accounts",
@@ -1852,6 +1938,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1860,7 +1947,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Notifications/{Sid}.json` — risk: medium
 	 */
-	async notificationsRetrieveNotification(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async notificationsRetrieveNotification(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchNotification",
 			namespace: "Accounts",
@@ -1873,6 +1960,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1881,7 +1969,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Notifications.json` — risk: medium
 	 */
-	async listNotificationsJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listNotificationsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListNotification",
 			namespace: "Accounts",
@@ -1894,6 +1982,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1902,7 +1991,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json` — risk: medium
 	 */
-	async retrieveOutgoingCallerId(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveOutgoingCallerId(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchOutgoingCallerId",
 			namespace: "Accounts",
@@ -1915,6 +2004,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1923,7 +2013,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json` — risk: medium
 	 */
-	async updateOutgoingCallerId(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateOutgoingCallerId(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateOutgoingCallerId",
 			namespace: "Accounts",
@@ -1936,6 +2026,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1944,7 +2035,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json` — risk: medium
 	 */
-	async deleteOutgoingCallerId(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteOutgoingCallerId(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteOutgoingCallerId",
 			namespace: "Accounts",
@@ -1957,6 +2048,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1965,7 +2057,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json` — risk: medium
 	 */
-	async listOutgoingCallerIdsJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listOutgoingCallerIdsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListOutgoingCallerId",
 			namespace: "Accounts",
@@ -1978,6 +2070,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1986,7 +2079,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json` — risk: medium
 	 */
-	async createOutgoingCallerIdsJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createOutgoingCallerIdsJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateValidationRequest",
 			namespace: "Accounts",
@@ -1999,6 +2092,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2007,7 +2101,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json` — risk: medium
 	 */
-	async retrieveParticipant(AccountSid: string, ConferenceSid: string, CallSid: string): Promise<ProofResult<unknown>> {
+	async retrieveParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchParticipant",
 			namespace: "Accounts",
@@ -2020,6 +2114,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2028,7 +2123,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json` — risk: medium
 	 */
-	async updateParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateParticipant",
 			namespace: "Accounts",
@@ -2041,6 +2136,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2049,7 +2145,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json` — risk: medium
 	 */
-	async deleteParticipant(AccountSid: string, ConferenceSid: string, CallSid: string): Promise<ProofResult<unknown>> {
+	async deleteParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteParticipant",
 			namespace: "Accounts",
@@ -2062,6 +2158,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2070,7 +2167,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json` — risk: medium
 	 */
-	async ParticipantsJson_0(AccountSid: string, ConferenceSid: string): Promise<ProofResult<unknown>> {
+	async ParticipantsJson_0(AccountSid: string, ConferenceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListParticipant",
 			namespace: "Accounts",
@@ -2083,6 +2180,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2091,7 +2189,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json` — risk: medium
 	 */
-	async ParticipantsJson_1(AccountSid: string, ConferenceSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async ParticipantsJson_1(AccountSid: string, ConferenceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateParticipant",
 			namespace: "Accounts",
@@ -2104,6 +2202,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2112,7 +2211,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments.json` — risk: medium
 	 */
-	async PaymentsJson(AccountSid: string, CallSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async PaymentsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreatePayments",
 			namespace: "Accounts",
@@ -2125,6 +2224,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2133,7 +2233,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments/{Sid}.json` — risk: medium
 	 */
-	async updatePayment(AccountSid: string, CallSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updatePayment(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdatePayments",
 			namespace: "Accounts",
@@ -2146,6 +2246,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2154,7 +2255,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json` — risk: medium
 	 */
-	async retrieveQueue(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveQueue(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchQueue",
 			namespace: "Accounts",
@@ -2167,6 +2268,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2175,7 +2277,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json` — risk: medium
 	 */
-	async updateQueue(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateQueue(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateQueue",
 			namespace: "Accounts",
@@ -2188,6 +2290,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2196,7 +2299,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json` — risk: medium
 	 */
-	async deleteQueue(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteQueue(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteQueue",
 			namespace: "Accounts",
@@ -2209,6 +2312,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2217,7 +2321,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Queues.json` — risk: medium
 	 */
-	async listQueuesJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listQueuesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListQueue",
 			namespace: "Accounts",
@@ -2230,6 +2334,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2238,7 +2343,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Queues.json` — risk: medium
 	 */
-	async createQueuesJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createQueuesJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateQueue",
 			namespace: "Accounts",
@@ -2251,6 +2356,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2259,7 +2365,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions.json` — risk: medium
 	 */
-	async callsTranscriptionsJson(AccountSid: string, CallSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async callsTranscriptionsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateRealtimeTranscription",
 			namespace: "Accounts",
@@ -2272,6 +2378,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2280,7 +2387,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async updateTranscription(AccountSid: string, CallSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateTranscription(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateRealtimeTranscription",
 			namespace: "Accounts",
@@ -2293,6 +2400,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2301,7 +2409,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async recordingsRetrieveRecording(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async recordingsRetrieveRecording(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchRecording",
 			namespace: "Accounts",
@@ -2314,6 +2422,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2322,7 +2431,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async recordingsDeleteRecording(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async recordingsDeleteRecording(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteRecording",
 			namespace: "Accounts",
@@ -2335,6 +2444,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2343,7 +2453,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings.json` — risk: medium
 	 */
-	async listRecordingsJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listRecordingsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListRecording",
 			namespace: "Accounts",
@@ -2356,6 +2466,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2364,7 +2475,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{Sid}.json` — risk: medium
 	 */
-	async retrieveAddOnResult(AccountSid: string, ReferenceSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveAddOnResult(AccountSid: string, ReferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchRecordingAddOnResult",
 			namespace: "Accounts",
@@ -2377,6 +2488,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2385,7 +2497,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{Sid}.json` — risk: medium
 	 */
-	async deleteAddOnResult(AccountSid: string, ReferenceSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteAddOnResult(AccountSid: string, ReferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteRecordingAddOnResult",
 			namespace: "Accounts",
@@ -2398,6 +2510,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2406,7 +2519,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults.json` — risk: medium
 	 */
-	async AddOnResultsJson(AccountSid: string, ReferenceSid: string): Promise<ProofResult<unknown>> {
+	async AddOnResultsJson(AccountSid: string, ReferenceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListRecordingAddOnResult",
 			namespace: "Accounts",
@@ -2419,6 +2532,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2427,7 +2541,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json` — risk: medium
 	 */
-	async retrievePayload(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrievePayload(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchRecordingAddOnResultPayload",
 			namespace: "Accounts",
@@ -2440,6 +2554,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2448,7 +2563,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json` — risk: medium
 	 */
-	async deletePayload(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deletePayload(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteRecordingAddOnResultPayload",
 			namespace: "Accounts",
@@ -2461,6 +2576,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2469,7 +2585,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads.json` — risk: medium
 	 */
-	async PayloadsJson(AccountSid: string, ReferenceSid: string, AddOnResultSid: string): Promise<ProofResult<unknown>> {
+	async PayloadsJson(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListRecordingAddOnResultPayload",
 			namespace: "Accounts",
@@ -2482,6 +2598,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2490,7 +2607,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{PayloadSid}/Data.json` — risk: medium
 	 */
-	async DataJson(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, PayloadSid: string): Promise<ProofResult<unknown>> {
+	async DataJson(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, PayloadSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchRecordingAddOnResultPayloadData",
 			namespace: "Accounts",
@@ -2503,6 +2620,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2511,7 +2629,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async recordingsTranscriptionsRetrieveTranscription(AccountSid: string, RecordingSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async recordingsTranscriptionsRetrieveTranscription(AccountSid: string, RecordingSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchRecordingTranscription",
 			namespace: "Accounts",
@@ -2524,6 +2642,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2532,7 +2651,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async recordingsTranscriptionsDeleteTranscription(AccountSid: string, RecordingSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async recordingsTranscriptionsDeleteTranscription(AccountSid: string, RecordingSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteRecordingTranscription",
 			namespace: "Accounts",
@@ -2545,6 +2664,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2553,7 +2673,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions.json` — risk: medium
 	 */
-	async recordingsTranscriptionsJson(AccountSid: string, RecordingSid: string): Promise<ProofResult<unknown>> {
+	async recordingsTranscriptionsJson(AccountSid: string, RecordingSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListRecordingTranscription",
 			namespace: "Accounts",
@@ -2566,6 +2686,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2574,7 +2695,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes/{Sid}.json` — risk: medium
 	 */
-	async retrieveShortCode(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveShortCode(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchShortCode",
 			namespace: "Accounts",
@@ -2587,6 +2708,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2595,7 +2717,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes/{Sid}.json` — risk: medium
 	 */
-	async updateShortCode(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateShortCode(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateShortCode",
 			namespace: "Accounts",
@@ -2608,6 +2730,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2616,7 +2739,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes.json` — risk: medium
 	 */
-	async ShortCodesJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async ShortCodesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListShortCode",
 			namespace: "Accounts",
@@ -2629,6 +2752,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2637,7 +2761,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json` — risk: medium
 	 */
-	async retrieveSigningKey(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveSigningKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSigningKey",
 			namespace: "Accounts",
@@ -2650,6 +2774,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2658,7 +2783,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json` — risk: medium
 	 */
-	async updateSigningKey(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateSigningKey(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateSigningKey",
 			namespace: "Accounts",
@@ -2671,6 +2796,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2679,7 +2805,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json` — risk: medium
 	 */
-	async deleteSigningKey(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteSigningKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSigningKey",
 			namespace: "Accounts",
@@ -2692,6 +2818,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2700,7 +2827,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json` — risk: medium
 	 */
-	async getAuthCallsCredentialListMappingsJson(AccountSid: string, DomainSid: string): Promise<ProofResult<unknown>> {
+	async getAuthCallsCredentialListMappingsJson(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipAuthCallsCredentialListMapping",
 			namespace: "Accounts",
@@ -2713,6 +2840,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2721,7 +2849,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json` — risk: medium
 	 */
-	async postAuthCallsCredentialListMappingsJson(AccountSid: string, DomainSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postAuthCallsCredentialListMappingsJson(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipAuthCallsCredentialListMapping",
 			namespace: "Accounts",
@@ -2734,6 +2862,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2742,7 +2871,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async authCallsCredentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async authCallsCredentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipAuthCallsCredentialListMapping",
 			namespace: "Accounts",
@@ -2755,6 +2884,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2763,7 +2893,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async authCallsCredentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async authCallsCredentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipAuthCallsCredentialListMapping",
 			namespace: "Accounts",
@@ -2776,6 +2906,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2784,7 +2915,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json` — risk: medium
 	 */
-	async getAuthCallsIpAccessControlListMappingsJson(AccountSid: string, DomainSid: string): Promise<ProofResult<unknown>> {
+	async getAuthCallsIpAccessControlListMappingsJson(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipAuthCallsIpAccessControlListMapping",
 			namespace: "Accounts",
@@ -2797,6 +2928,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2805,7 +2937,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json` — risk: medium
 	 */
-	async postAuthCallsIpAccessControlListMappingsJson(AccountSid: string, DomainSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postAuthCallsIpAccessControlListMappingsJson(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipAuthCallsIpAccessControlListMapping",
 			namespace: "Accounts",
@@ -2818,6 +2950,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2826,7 +2959,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings/{Sid}.json` — risk: medium
 	 */
-	async authCallsIpAccessControlListMappingsRetrieveIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async authCallsIpAccessControlListMappingsRetrieveIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipAuthCallsIpAccessControlListMapping",
 			namespace: "Accounts",
@@ -2839,6 +2972,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2847,7 +2981,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings/{Sid}.json` — risk: medium
 	 */
-	async authCallsIpAccessControlListMappingsDeleteIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async authCallsIpAccessControlListMappingsDeleteIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipAuthCallsIpAccessControlListMapping",
 			namespace: "Accounts",
@@ -2860,6 +2994,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2868,7 +3003,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json` — risk: medium
 	 */
-	async getAuthRegistrationsCredentialListMappingsJson(AccountSid: string, DomainSid: string): Promise<ProofResult<unknown>> {
+	async getAuthRegistrationsCredentialListMappingsJson(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipAuthRegistrationsCredentialListMapping",
 			namespace: "Accounts",
@@ -2881,6 +3016,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2889,7 +3025,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json` — risk: medium
 	 */
-	async postAuthRegistrationsCredentialListMappingsJson(AccountSid: string, DomainSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postAuthRegistrationsCredentialListMappingsJson(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipAuthRegistrationsCredentialListMapping",
 			namespace: "Accounts",
@@ -2902,6 +3038,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2910,7 +3047,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async authRegistrationsCredentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async authRegistrationsCredentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipAuthRegistrationsCredentialListMapping",
 			namespace: "Accounts",
@@ -2923,6 +3060,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2931,7 +3069,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async authRegistrationsCredentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async authRegistrationsCredentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipAuthRegistrationsCredentialListMapping",
 			namespace: "Accounts",
@@ -2944,6 +3082,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2952,7 +3091,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json` — risk: medium
 	 */
-	async CredentialsJson_0(AccountSid: string, CredentialListSid: string): Promise<ProofResult<unknown>> {
+	async CredentialsJson_0(AccountSid: string, CredentialListSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipCredential",
 			namespace: "Accounts",
@@ -2965,6 +3104,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2973,7 +3113,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json` — risk: medium
 	 */
-	async CredentialsJson_1(AccountSid: string, CredentialListSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async CredentialsJson_1(AccountSid: string, CredentialListSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipCredential",
 			namespace: "Accounts",
@@ -2986,6 +3126,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2994,7 +3135,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json` — risk: medium
 	 */
-	async retrieveCredential(AccountSid: string, CredentialListSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveCredential(AccountSid: string, CredentialListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipCredential",
 			namespace: "Accounts",
@@ -3007,6 +3148,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3015,7 +3157,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json` — risk: medium
 	 */
-	async updateCredential(AccountSid: string, CredentialListSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateCredential(AccountSid: string, CredentialListSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateSipCredential",
 			namespace: "Accounts",
@@ -3028,6 +3170,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3036,7 +3179,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json` — risk: medium
 	 */
-	async deleteCredential(AccountSid: string, CredentialListSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteCredential(AccountSid: string, CredentialListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipCredential",
 			namespace: "Accounts",
@@ -3049,6 +3192,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3057,7 +3201,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json` — risk: medium
 	 */
-	async CredentialListsJson_0(AccountSid: string): Promise<ProofResult<unknown>> {
+	async CredentialListsJson_0(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipCredentialList",
 			namespace: "Accounts",
@@ -3070,6 +3214,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3078,7 +3223,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json` — risk: medium
 	 */
-	async CredentialListsJson_1(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async CredentialListsJson_1(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipCredentialList",
 			namespace: "Accounts",
@@ -3091,6 +3236,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3099,7 +3245,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json` — risk: medium
 	 */
-	async retrieveCredentialList(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveCredentialList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipCredentialList",
 			namespace: "Accounts",
@@ -3112,6 +3258,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3120,7 +3267,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json` — risk: medium
 	 */
-	async updateCredentialList(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateCredentialList(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateSipCredentialList",
 			namespace: "Accounts",
@@ -3133,6 +3280,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3141,7 +3289,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json` — risk: medium
 	 */
-	async deleteCredentialList(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteCredentialList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipCredentialList",
 			namespace: "Accounts",
@@ -3154,6 +3302,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3162,7 +3311,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json` — risk: medium
 	 */
-	async CredentialListMappingsJson_4(AccountSid: string, DomainSid: string): Promise<ProofResult<unknown>> {
+	async CredentialListMappingsJson_4(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipCredentialListMapping",
 			namespace: "Accounts",
@@ -3175,6 +3324,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3183,7 +3333,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json` — risk: medium
 	 */
-	async CredentialListMappingsJson_5(AccountSid: string, DomainSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async CredentialListMappingsJson_5(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipCredentialListMapping",
 			namespace: "Accounts",
@@ -3196,6 +3346,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3204,7 +3355,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async credentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async credentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipCredentialListMapping",
 			namespace: "Accounts",
@@ -3217,6 +3368,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3225,7 +3377,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async credentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async credentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipCredentialListMapping",
 			namespace: "Accounts",
@@ -3238,6 +3390,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3246,7 +3399,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains.json` — risk: medium
 	 */
-	async DomainsJson_0(AccountSid: string): Promise<ProofResult<unknown>> {
+	async DomainsJson_0(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipDomain",
 			namespace: "Accounts",
@@ -3259,6 +3412,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3267,7 +3421,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains.json` — risk: medium
 	 */
-	async DomainsJson_1(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async DomainsJson_1(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipDomain",
 			namespace: "Accounts",
@@ -3280,6 +3434,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3288,7 +3443,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json` — risk: medium
 	 */
-	async retrieveDomain(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveDomain(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipDomain",
 			namespace: "Accounts",
@@ -3301,6 +3456,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3309,7 +3465,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json` — risk: medium
 	 */
-	async updateDomain(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateDomain(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateSipDomain",
 			namespace: "Accounts",
@@ -3322,6 +3478,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3330,7 +3487,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json` — risk: medium
 	 */
-	async deleteDomain(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteDomain(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipDomain",
 			namespace: "Accounts",
@@ -3343,6 +3500,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3351,7 +3509,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json` — risk: medium
 	 */
-	async IpAccessControlListsJson_0(AccountSid: string): Promise<ProofResult<unknown>> {
+	async IpAccessControlListsJson_0(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipIpAccessControlList",
 			namespace: "Accounts",
@@ -3364,6 +3522,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3372,7 +3531,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json` — risk: medium
 	 */
-	async IpAccessControlListsJson_1(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async IpAccessControlListsJson_1(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipIpAccessControlList",
 			namespace: "Accounts",
@@ -3385,6 +3544,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3393,7 +3553,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json` — risk: medium
 	 */
-	async retrieveIpAccessControlList(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveIpAccessControlList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipIpAccessControlList",
 			namespace: "Accounts",
@@ -3406,6 +3566,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3414,7 +3575,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json` — risk: medium
 	 */
-	async updateIpAccessControlList(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateIpAccessControlList(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateSipIpAccessControlList",
 			namespace: "Accounts",
@@ -3427,6 +3588,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3435,7 +3597,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json` — risk: medium
 	 */
-	async deleteIpAccessControlList(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteIpAccessControlList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipIpAccessControlList",
 			namespace: "Accounts",
@@ -3448,6 +3610,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3456,7 +3619,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings/{Sid}.json` — risk: medium
 	 */
-	async ipAccessControlListMappingsRetrieveIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async ipAccessControlListMappingsRetrieveIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipIpAccessControlListMapping",
 			namespace: "Accounts",
@@ -3469,6 +3632,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3477,7 +3641,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings/{Sid}.json` — risk: medium
 	 */
-	async ipAccessControlListMappingsDeleteIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async ipAccessControlListMappingsDeleteIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipIpAccessControlListMapping",
 			namespace: "Accounts",
@@ -3490,6 +3654,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3498,7 +3663,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json` — risk: medium
 	 */
-	async IpAccessControlListMappingsJson_2(AccountSid: string, DomainSid: string): Promise<ProofResult<unknown>> {
+	async IpAccessControlListMappingsJson_2(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipIpAccessControlListMapping",
 			namespace: "Accounts",
@@ -3511,6 +3676,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3519,7 +3685,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json` — risk: medium
 	 */
-	async IpAccessControlListMappingsJson_3(AccountSid: string, DomainSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async IpAccessControlListMappingsJson_3(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipIpAccessControlListMapping",
 			namespace: "Accounts",
@@ -3532,6 +3698,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3540,7 +3707,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json` — risk: medium
 	 */
-	async IpAddressesJson_0(AccountSid: string, IpAccessControlListSid: string): Promise<ProofResult<unknown>> {
+	async IpAddressesJson_0(AccountSid: string, IpAccessControlListSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListSipIpAddress",
 			namespace: "Accounts",
@@ -3553,6 +3720,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3561,7 +3729,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json` — risk: medium
 	 */
-	async IpAddressesJson_1(AccountSid: string, IpAccessControlListSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async IpAddressesJson_1(AccountSid: string, IpAccessControlListSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSipIpAddress",
 			namespace: "Accounts",
@@ -3574,6 +3742,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3582,7 +3751,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json` — risk: medium
 	 */
-	async retrieveIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchSipIpAddress",
 			namespace: "Accounts",
@@ -3595,6 +3764,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3603,7 +3773,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json` — risk: medium
 	 */
-	async updateIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateSipIpAddress",
 			namespace: "Accounts",
@@ -3616,6 +3786,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3624,7 +3795,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json` — risk: medium
 	 */
-	async deleteIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteSipIpAddress",
 			namespace: "Accounts",
@@ -3637,6 +3808,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3645,7 +3817,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec.json` — risk: medium
 	 */
-	async SiprecJson(AccountSid: string, CallSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async SiprecJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateSiprec",
 			namespace: "Accounts",
@@ -3658,6 +3830,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3666,7 +3839,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec/{Sid}.json` — risk: medium
 	 */
-	async updateSiprec(AccountSid: string, CallSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateSiprec(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateSiprec",
 			namespace: "Accounts",
@@ -3679,6 +3852,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3687,7 +3861,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams.json` — risk: medium
 	 */
-	async StreamsJson(AccountSid: string, CallSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async StreamsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateStream",
 			namespace: "Accounts",
@@ -3700,6 +3874,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3708,7 +3883,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams/{Sid}.json` — risk: medium
 	 */
-	async updateStream(AccountSid: string, CallSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateStream(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateStream",
 			namespace: "Accounts",
@@ -3721,6 +3896,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3729,7 +3905,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Tokens.json` — risk: medium
 	 */
-	async createTokensJson(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createTokensJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateToken",
 			namespace: "Accounts",
@@ -3742,6 +3918,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3750,7 +3927,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async transcriptionsRetrieveTranscription(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async transcriptionsRetrieveTranscription(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchTranscription",
 			namespace: "Accounts",
@@ -3763,6 +3940,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3771,7 +3949,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async transcriptionsDeleteTranscription(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async transcriptionsDeleteTranscription(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteTranscription",
 			namespace: "Accounts",
@@ -3784,6 +3962,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3792,7 +3971,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Transcriptions.json` — risk: medium
 	 */
-	async listTranscriptionsJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async listTranscriptionsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListTranscription",
 			namespace: "Accounts",
@@ -3805,6 +3984,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3813,7 +3993,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records.json` — risk: medium
 	 */
-	async RecordsJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async RecordsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageRecord",
 			namespace: "Accounts",
@@ -3826,6 +4006,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3834,7 +4015,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/AllTime.json` — risk: medium
 	 */
-	async AllTimeJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async AllTimeJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageRecordAllTime",
 			namespace: "Accounts",
@@ -3847,6 +4028,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3855,7 +4037,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Daily.json` — risk: medium
 	 */
-	async DailyJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async DailyJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageRecordDaily",
 			namespace: "Accounts",
@@ -3868,6 +4050,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3876,7 +4059,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/LastMonth.json` — risk: medium
 	 */
-	async LastMonthJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async LastMonthJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageRecordLastMonth",
 			namespace: "Accounts",
@@ -3889,6 +4072,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3897,7 +4081,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json` — risk: medium
 	 */
-	async MonthlyJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async MonthlyJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageRecordMonthly",
 			namespace: "Accounts",
@@ -3910,6 +4094,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3918,7 +4103,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/ThisMonth.json` — risk: medium
 	 */
-	async ThisMonthJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async ThisMonthJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageRecordThisMonth",
 			namespace: "Accounts",
@@ -3931,6 +4116,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3939,7 +4125,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Today.json` — risk: medium
 	 */
-	async TodayJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async TodayJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageRecordToday",
 			namespace: "Accounts",
@@ -3952,6 +4138,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3960,7 +4147,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json` — risk: medium
 	 */
-	async YearlyJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async YearlyJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageRecordYearly",
 			namespace: "Accounts",
@@ -3973,6 +4160,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3981,7 +4169,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json` — risk: medium
 	 */
-	async YesterdayJson(AccountSid: string): Promise<ProofResult<unknown>> {
+	async YesterdayJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageRecordYesterday",
 			namespace: "Accounts",
@@ -3994,6 +4182,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4002,7 +4191,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json` — risk: medium
 	 */
-	async retrieveTrigger(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async retrieveTrigger(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "FetchUsageTrigger",
 			namespace: "Accounts",
@@ -4015,6 +4204,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4023,7 +4213,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json` — risk: medium
 	 */
-	async updateTrigger(AccountSid: string, Sid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateTrigger(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "UpdateUsageTrigger",
 			namespace: "Accounts",
@@ -4036,6 +4226,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4044,7 +4235,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json` — risk: medium
 	 */
-	async deleteTrigger(AccountSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteTrigger(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteUsageTrigger",
 			namespace: "Accounts",
@@ -4057,6 +4248,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4065,7 +4257,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json` — risk: medium
 	 */
-	async TriggersJson_0(AccountSid: string): Promise<ProofResult<unknown>> {
+	async TriggersJson_0(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "ListUsageTrigger",
 			namespace: "Accounts",
@@ -4078,6 +4270,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4086,7 +4279,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json` — risk: medium
 	 */
-	async TriggersJson_1(AccountSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async TriggersJson_1(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateUsageTrigger",
 			namespace: "Accounts",
@@ -4099,6 +4292,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4107,7 +4301,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessages.json` — risk: medium
 	 */
-	async UserDefinedMessagesJson(AccountSid: string, CallSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async UserDefinedMessagesJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateUserDefinedMessage",
 			namespace: "Accounts",
@@ -4120,6 +4314,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4128,7 +4323,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessageSubscriptions.json` — risk: medium
 	 */
-	async UserDefinedMessageSubscriptionsJson(AccountSid: string, CallSid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async UserDefinedMessageSubscriptionsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "CreateUserDefinedMessageSubscription",
 			namespace: "Accounts",
@@ -4141,6 +4336,7 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4149,7 +4345,7 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessageSubscriptions/{Sid}.json` — risk: medium
 	 */
-	async deleteUserDefinedMessageSubscription(AccountSid: string, CallSid: string, Sid: string): Promise<ProofResult<unknown>> {
+	async deleteUserDefinedMessageSubscription(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "DeleteUserDefinedMessageSubscription",
 			namespace: "Accounts",
@@ -4162,12 +4358,13 @@ export class AccountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 interface Env {
-	TWILIO_API_KEY: string;
+	TWILIO_API_KEY?: string;
 }
 
 export class TwilioCapability extends WorkerEntrypoint<Env> {

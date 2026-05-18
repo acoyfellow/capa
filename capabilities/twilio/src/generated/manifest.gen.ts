@@ -6,7 +6,7 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 export const manifest = {
 	"ListAccount": {"namespace":"Accounts.json","method":"list","http":"get","path":"/2010-04-01/Accounts.json","risk":"low"},

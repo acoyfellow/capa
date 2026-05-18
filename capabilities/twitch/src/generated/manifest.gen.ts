@@ -6,7 +6,7 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 export const manifest = {
 	"start-commercial": {"namespace":"channels","method":"createCommercial","http":"post","path":"/channels/commercial","risk":"medium"},

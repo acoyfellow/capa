@@ -22,7 +22,7 @@ export class TwitchCapability extends GeneratedTwitchCapability {
 
 interface Env {
 	/** OAuth app/user token used as Authorization: Bearer <token>. */
-	TWITCH_API_KEY: string;
+	TWITCH_API_KEY?: string;
 	/** Twitch application client id required by every Helix API request. */
 	TWITCH_CLIENT_ID: string;
 }

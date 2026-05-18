@@ -5,27 +5,66 @@ description: Capabilities, codegen CLI, and the receipt returned with each API r
 
 ## Capabilities
 
-| Capability | Operations | Namespaces | Bundle (gz) | Auth | Body | Deploy |
-|---|---|---|---|---|---|---|
-| **stripe** | 534 | 73 | 38 KiB | Bearer | Form | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/stripe) |
-| **gitlab** | 1,047 | 51 | 54 KiB | Private-Token | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/gitlab) |
-| **jira** | 601 | 76 | 48 KiB | Basic | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/jira) |
+| Capability | Operations | Namespaces | Auth | Body | Deploy |
+|---|---:|---:|---|---|---|
+| **box** | 294 | 56 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/box) |
+| **discord** | 233 | 16 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/discord) |
+| **github** | 1,183 | 36 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/github) |
+| **gitlab** | 1,047 | 51 | Private-Token | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/gitlab) |
+| **jira** | 601 | 76 | Basic | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/jira) |
+| **kubernetes** | 1,111 | 6 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/kubernetes) |
+| **sentry** | 209 | 6 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/sentry) |
+| **slack** | 174 | 174 | Bearer | Form | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/slack) |
+| **stripe** | 534 | 73 | Bearer | Form | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/stripe) |
+| **twilio-messaging** | 58 | 5 | Basic | Form | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/twilio-messaging) |
+| **twilio-verify** | 57 | 5 | Basic | Form | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/twilio-verify) |
+| **twilio** | 197 | 2 | Basic | Form | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/twilio) |
+| **twitch** | 144 | 30 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/twitch) |
+| **zoom** | 155 | 14 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/zoom) |
+
+### Authentication modes
+
+The reference stays short: capa uses Worker secrets by default. The planned multi-tenant runtime-auth contract and provider-header shape live on [Runtime auth](/runtime-auth/).
 
 ### Secret names
 
 | Capability | Required | Optional |
 |---|---|---|
-| stripe | `STRIPE_API_KEY` | — |
+| box | `BOX_API_KEY` | — |
+| discord | `DISCORD_API_KEY` | — |
+| github | `GITHUB_API_KEY` | — |
 | gitlab | `GITLAB_API_KEY` | `GITLAB_BASE_URL_OVERRIDE`, `CF_ACCESS_CLIENT_ID`, `CF_ACCESS_CLIENT_SECRET` |
 | jira | `JIRA_API_KEY` (format: `email:token`) | `JIRA_BASE_URL_OVERRIDE` |
+| kubernetes | `KUBERNETES_API_KEY` | — |
+| sentry | `SENTRY_API_KEY` | — |
+| slack | `SLACK_API_KEY` | — |
+| stripe | `STRIPE_API_KEY` | — |
+| twilio-messaging | `TWILIO_MESSAGING_API_KEY` | — |
+| twilio-verify | `TWILIO_VERIFY_API_KEY` | — |
+| twilio | `TWILIO_API_KEY` | — |
+| twitch | `TWITCH_API_KEY`, `TWITCH_CLIENT_ID` | — |
+| zoom | `ZOOM_API_KEY` | — |
 
 ### Entrypoint classes
 
-| Capability | Entrypoint |
+The entrypoint class is the exported Worker RPC class named in a caller Worker’s `services[].entrypoint`. It tells Wrangler which generated capability surface the binding should expose.
+
+| Capability | Entrypoint class |
 |---|---|
-| stripe | `StripeCapability` |
+| box | `BoxCapability` |
+| discord | `DiscordCapability` |
+| github | `GithubCapability` |
 | gitlab | `GitlabCapability` |
 | jira | `JiraCapability` |
+| kubernetes | `KubernetesCapability` |
+| sentry | `SentryCapability` |
+| slack | `SlackCapability` |
+| stripe | `StripeCapability` |
+| twilio-messaging | `TwilioMessagingCapability` |
+| twilio-verify | `TwilioVerifyCapability` |
+| twilio | `TwilioCapability` |
+| twitch | `TwitchCapability` |
+| zoom | `ZoomCapability` |
 
 ## Codegen CLI
 

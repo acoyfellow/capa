@@ -24,6 +24,7 @@ export default defineConfig({
 				{ label: 'Catalog', slug: 'catalog' },
 				{ label: 'Tutorial', slug: 'tutorial' },
 				{ label: 'How It Works', slug: 'how-it-works' },
+				{ label: 'Runtime Auth', slug: 'runtime-auth' },
 				{ label: 'Reference', slug: 'reference' },
 			],
 		}),

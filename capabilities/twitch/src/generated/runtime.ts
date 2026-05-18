@@ -55,6 +55,14 @@ export interface RuntimeConfig {
 	prefixOverride?: string;
 }
 
+/** Optional credential override for one generated RPC call. */
+export interface CallOptions {
+	auth?: {
+		apiKey?: string;
+		headers?: Record<string, string>;
+	};
+}
+
 export interface FetchProofArgs {
 	operationId: string;
 	namespace: string;
@@ -70,6 +78,8 @@ export interface FetchProofArgs {
 	extraHeaders?: Record<string, string>;
 	/** Optional prefix replacement (e.g. /rest/api/3 → /rest/api/2). */
 	prefixOverride?: string;
+	/** Optional per-call provider auth override for multi-tenant callers. */
+	options?: CallOptions;
 }
 
 function formEncode(body: Record<string, unknown>): string {
@@ -109,7 +119,7 @@ function authHeader(secret: string): { name: string; value: string } {
 }
 
 export async function fetchProof(
-	apiKey: string,
+	apiKey: string | undefined,
 	args: FetchProofArgs,
 ): Promise<ProofResult<unknown>> {
 	const startedAt = new Date().toISOString();
@@ -121,11 +131,14 @@ export async function fetchProof(
 	}
 	const url = `${baseUrl}${path}`;
 	const assertions: AssertResult[] = [];
-	const auth = authHeader(apiKey);
+	const effectiveApiKey = args.options?.auth?.apiKey ?? apiKey;
+	if (!effectiveApiKey) throw new Error(`${CAPABILITY_NAME}: set the capability API key secret or pass options.auth.apiKey`);
+	const auth = authHeader(effectiveApiKey);
 
 	const headers: Record<string, string> = {
-		[auth.name]: auth.value,
 		...(args.extraHeaders || {}),
+		...(args.options?.auth?.headers || {}),
+		[auth.name]: auth.value,
 	};
 
 	const init: RequestInit = {

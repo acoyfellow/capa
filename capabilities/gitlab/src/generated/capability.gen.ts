@@ -6,12 +6,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 
 export class GroupsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -23,7 +23,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/access_requests` — risk: medium
 	 */
-	async listAccessRequests(id: string): Promise<ProofResult<unknown>> {
+	async listAccessRequests(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdAccessRequests",
 			namespace: "groups",
@@ -36,6 +36,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -44,7 +45,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/access_requests` — risk: medium
 	 */
-	async createAccessRequest(id: string): Promise<ProofResult<unknown>> {
+	async createAccessRequest(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdAccessRequests",
 			namespace: "groups",
@@ -57,6 +58,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -65,7 +67,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/access_requests/{user_id}/approve` — risk: medium
 	 */
-	async accessRequestsApprove(id: string, userId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async accessRequestsApprove(id: string, userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdAccessRequestsUserIdApprove",
 			namespace: "groups",
@@ -78,6 +80,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -86,7 +89,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/access_requests/{user_id}` — risk: medium
 	 */
-	async deleteAccessRequest(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async deleteAccessRequest(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdAccessRequestsUserId",
 			namespace: "groups",
@@ -99,6 +102,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -107,7 +111,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/epics/{epic_iid}/award_emoji` — risk: medium
 	 */
-	async awardEmoji_0(id: string, epicIid: string): Promise<ProofResult<unknown>> {
+	async awardEmoji_0(id: string, epicIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdEpicsEpicIidAwardEmoji",
 			namespace: "groups",
@@ -120,6 +124,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -128,7 +133,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/epics/{epic_iid}/award_emoji` — risk: medium
 	 */
-	async awardEmoji_1(id: string, epicIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async awardEmoji_1(id: string, epicIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdEpicsEpicIidAwardEmoji",
 			namespace: "groups",
@@ -141,6 +146,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -149,7 +155,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/epics/{epic_iid}/award_emoji/{award_id}` — risk: medium
 	 */
-	async awardEmojiRetrieveAwardEmoji(id: string, epicIid: string, awardId: string): Promise<ProofResult<unknown>> {
+	async awardEmojiRetrieveAwardEmoji(id: string, epicIid: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdEpicsEpicIidAwardEmojiAwardId",
 			namespace: "groups",
@@ -162,6 +168,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -170,7 +177,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/epics/{epic_iid}/award_emoji/{award_id}` — risk: medium
 	 */
-	async awardEmojiDeleteAwardEmoji(id: string, epicIid: string, awardId: string): Promise<ProofResult<unknown>> {
+	async awardEmojiDeleteAwardEmoji(id: string, epicIid: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdEpicsEpicIidAwardEmojiAwardId",
 			namespace: "groups",
@@ -183,6 +190,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -191,7 +199,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/epics/{epic_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
-	async getNotesAwardEmoji(id: string, epicIid: string, noteId: string): Promise<ProofResult<unknown>> {
+	async getNotesAwardEmoji(id: string, epicIid: string, noteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdEpicsEpicIidNotesNoteIdAwardEmoji",
 			namespace: "groups",
@@ -204,6 +212,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -212,7 +221,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/epics/{epic_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
-	async postNotesAwardEmoji(id: string, epicIid: string, noteId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postNotesAwardEmoji(id: string, epicIid: string, noteId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdEpicsEpicIidNotesNoteIdAwardEmoji",
 			namespace: "groups",
@@ -225,6 +234,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -233,7 +243,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/epics/{epic_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async notesawardEmojiRetrieveAwardEmoji(id: string, epicIid: string, noteId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async notesawardEmojiRetrieveAwardEmoji(id: string, epicIid: string, noteId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdEpicsEpicIidNotesNoteIdAwardEmojiAwardId",
 			namespace: "groups",
@@ -246,6 +256,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -254,7 +265,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/epics/{epic_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async notesawardEmojiDeleteAwardEmoji(id: string, epicIid: string, noteId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async notesawardEmojiDeleteAwardEmoji(id: string, epicIid: string, noteId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdEpicsEpicIidNotesNoteIdAwardEmojiAwardId",
 			namespace: "groups",
@@ -267,6 +278,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -275,7 +287,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/badges` — risk: medium
 	 */
-	async listBadges(id: string): Promise<ProofResult<unknown>> {
+	async listBadges(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdBadges",
 			namespace: "groups",
@@ -288,6 +300,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -296,7 +309,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/badges` — risk: medium
 	 */
-	async createBadge(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createBadge(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdBadges",
 			namespace: "groups",
@@ -309,6 +322,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -317,7 +331,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/badges/render` — risk: medium
 	 */
-	async render(id: string): Promise<ProofResult<unknown>> {
+	async render(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdBadgesRender",
 			namespace: "groups",
@@ -330,6 +344,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -338,7 +353,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/badges/{badge_id}` — risk: medium
 	 */
-	async retrieveBadge(id: string, badgeId: string): Promise<ProofResult<unknown>> {
+	async retrieveBadge(id: string, badgeId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdBadgesBadgeId",
 			namespace: "groups",
@@ -351,6 +366,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -359,7 +375,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/badges/{badge_id}` — risk: medium
 	 */
-	async badges(id: string, badgeId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async badges(id: string, badgeId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdBadgesBadgeId",
 			namespace: "groups",
@@ -372,6 +388,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -380,7 +397,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/badges/{badge_id}` — risk: medium
 	 */
-	async deleteBadge(id: string, badgeId: string): Promise<ProofResult<unknown>> {
+	async deleteBadge(id: string, badgeId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdBadgesBadgeId",
 			namespace: "groups",
@@ -393,6 +410,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -401,7 +419,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/custom_attributes` — risk: medium
 	 */
-	async listCustomAttributes(id: string): Promise<ProofResult<unknown>> {
+	async listCustomAttributes(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdCustomAttributes",
 			namespace: "groups",
@@ -414,6 +432,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -422,7 +441,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/custom_attributes/{key}` — risk: medium
 	 */
-	async retrieveCustomAttribute(id: string, key: string): Promise<ProofResult<unknown>> {
+	async retrieveCustomAttribute(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdCustomAttributesKey",
 			namespace: "groups",
@@ -435,6 +454,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -443,7 +463,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/custom_attributes/{key}` — risk: medium
 	 */
-	async customAttributes(id: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async customAttributes(id: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdCustomAttributesKey",
 			namespace: "groups",
@@ -456,6 +476,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -464,7 +485,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/custom_attributes/{key}` — risk: medium
 	 */
-	async deleteCustomAttribute(id: string, key: string): Promise<ProofResult<unknown>> {
+	async deleteCustomAttribute(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdCustomAttributesKey",
 			namespace: "groups",
@@ -477,6 +498,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -485,7 +507,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Groups",
 			namespace: "groups",
@@ -498,6 +520,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -506,7 +529,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Groups",
 			namespace: "groups",
@@ -519,6 +542,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -527,7 +551,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsId",
 			namespace: "groups",
@@ -540,6 +564,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -548,7 +573,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}` — risk: medium
 	 */
-	async put(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsId",
 			namespace: "groups",
@@ -561,6 +586,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -569,7 +595,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}` — risk: medium
 	 */
-	async del(id: string): Promise<ProofResult<unknown>> {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsId",
 			namespace: "groups",
@@ -582,6 +608,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -590,7 +617,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/archive` — risk: medium
 	 */
-	async createArchive(id: string): Promise<ProofResult<unknown>> {
+	async createArchive(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdArchive",
 			namespace: "groups",
@@ -603,6 +630,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -611,7 +639,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/unarchive` — risk: medium
 	 */
-	async createUnarchive(id: string): Promise<ProofResult<unknown>> {
+	async createUnarchive(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdUnarchive",
 			namespace: "groups",
@@ -624,6 +652,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -632,7 +661,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/restore` — risk: medium
 	 */
-	async createRestore(id: string): Promise<ProofResult<unknown>> {
+	async createRestore(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdRestore",
 			namespace: "groups",
@@ -645,6 +674,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -653,7 +683,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/groups/shared` — risk: medium
 	 */
-	async groupsShared(id: string): Promise<ProofResult<unknown>> {
+	async groupsShared(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdGroupsShared",
 			namespace: "groups",
@@ -666,6 +696,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -674,7 +705,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/invited_groups` — risk: medium
 	 */
-	async listInvitedGroups(id: string): Promise<ProofResult<unknown>> {
+	async listInvitedGroups(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdInvitedGroups",
 			namespace: "groups",
@@ -687,6 +718,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -695,7 +727,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/projects` — risk: medium
 	 */
-	async listProjects(id: string): Promise<ProofResult<unknown>> {
+	async listProjects(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdProjects",
 			namespace: "groups",
@@ -708,6 +740,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -716,7 +749,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/projects/shared` — risk: medium
 	 */
-	async projectsShared(id: string): Promise<ProofResult<unknown>> {
+	async projectsShared(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdProjectsShared",
 			namespace: "groups",
@@ -729,6 +762,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -737,7 +771,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/subgroups` — risk: medium
 	 */
-	async listSubgroups(id: string): Promise<ProofResult<unknown>> {
+	async listSubgroups(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdSubgroups",
 			namespace: "groups",
@@ -750,6 +784,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -758,7 +793,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/descendant_groups` — risk: medium
 	 */
-	async listDescendantGroups(id: string): Promise<ProofResult<unknown>> {
+	async listDescendantGroups(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdDescendantGroups",
 			namespace: "groups",
@@ -771,6 +806,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -779,7 +815,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/projects/{project_id}` — risk: medium
 	 */
-	async updateProject(id: string, projectId: string): Promise<ProofResult<unknown>> {
+	async updateProject(id: string, projectId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdProjectsProjectId",
 			namespace: "groups",
@@ -792,6 +828,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -800,7 +837,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/transfer_locations` — risk: medium
 	 */
-	async listTransferLocations(id: string): Promise<ProofResult<unknown>> {
+	async listTransferLocations(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdTransferLocations",
 			namespace: "groups",
@@ -813,6 +850,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -821,7 +859,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/transfer` — risk: medium
 	 */
-	async createTransfer(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createTransfer(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdTransfer",
 			namespace: "groups",
@@ -834,6 +872,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -842,7 +881,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/transfer_to_organization` — risk: medium
 	 */
-	async createTransferToOrganization(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createTransferToOrganization(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdTransferToOrganization",
 			namespace: "groups",
@@ -855,6 +894,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -863,7 +903,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/share` — risk: medium
 	 */
-	async createShare(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createShare(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdShare",
 			namespace: "groups",
@@ -876,6 +916,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -884,7 +925,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/share/{group_id}` — risk: medium
 	 */
-	async deleteShare(id: string, groupId: string): Promise<ProofResult<unknown>> {
+	async deleteShare(id: string, groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdShareGroupId",
 			namespace: "groups",
@@ -897,6 +938,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -905,7 +947,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/ldap_sync` — risk: medium
 	 */
-	async createLdapSync(id: string): Promise<ProofResult<unknown>> {
+	async createLdapSync(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdLdapSync",
 			namespace: "groups",
@@ -918,6 +960,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -926,7 +969,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/audit_events` — risk: medium
 	 */
-	async listAuditEvents(id: string): Promise<ProofResult<unknown>> {
+	async listAuditEvents(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdAuditEvents",
 			namespace: "groups",
@@ -939,6 +982,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -947,7 +991,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/audit_events/{audit_event_id}` — risk: medium
 	 */
-	async retrieveAuditEvent(id: string, auditEventId: string): Promise<ProofResult<unknown>> {
+	async retrieveAuditEvent(id: string, auditEventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdAuditEventsAuditEventId",
 			namespace: "groups",
@@ -960,6 +1004,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -968,7 +1013,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/saml_users` — risk: medium
 	 */
-	async listSamlUsers(id: string): Promise<ProofResult<unknown>> {
+	async listSamlUsers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdSamlUsers",
 			namespace: "groups",
@@ -981,6 +1026,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -989,7 +1035,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/provisioned_users` — risk: medium
 	 */
-	async listProvisionedUsers(id: string): Promise<ProofResult<unknown>> {
+	async listProvisionedUsers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdProvisionedUsers",
 			namespace: "groups",
@@ -1002,6 +1048,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1010,7 +1057,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/ssh_certificates` — risk: medium
 	 */
-	async listSshCertificates(id: string): Promise<ProofResult<unknown>> {
+	async listSshCertificates(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdSshCertificates",
 			namespace: "groups",
@@ -1023,6 +1070,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1031,7 +1079,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/ssh_certificates` — risk: medium
 	 */
-	async createSshCertificate(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createSshCertificate(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdSshCertificates",
 			namespace: "groups",
@@ -1044,6 +1092,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1052,7 +1101,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/ssh_certificates/{ssh_certificates_id}` — risk: medium
 	 */
-	async deleteSshCertificate(id: string, sshCertificatesId: string): Promise<ProofResult<unknown>> {
+	async deleteSshCertificate(id: string, sshCertificatesId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdSshCertificatesSshCertificatesId",
 			namespace: "groups",
@@ -1065,6 +1114,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1073,7 +1123,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/runners` — risk: medium
 	 */
-	async listRunners(id: string): Promise<ProofResult<unknown>> {
+	async listRunners(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdRunners",
 			namespace: "groups",
@@ -1086,6 +1136,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1094,7 +1145,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/runners/reset_registration_token` — risk: medium
 	 */
-	async resetRegistrationToken(id: string): Promise<ProofResult<unknown>> {
+	async resetRegistrationToken(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdRunnersResetRegistrationToken",
 			namespace: "groups",
@@ -1107,6 +1158,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1115,7 +1167,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/-/packages/debian/pool/{distribution}/{project_id}/{letter}/{package_name}/{package_version}/{file_name}` — risk: medium
 	 */
-	async retrievePool(id: string, distribution: string, projectId: string, letter: string, packageName: string, packageVersion: string, fileName: string): Promise<ProofResult<unknown>> {
+	async retrievePool(id: string, distribution: string, projectId: string, letter: string, packageName: string, packageVersion: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdPackagesDebianPoolDistributionProjectIdLetterPackageNamePackageVersionFileName",
 			namespace: "groups",
@@ -1128,6 +1180,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1136,7 +1189,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/dependency_proxy/cache` — risk: medium
 	 */
-	async cache(id: string): Promise<ProofResult<unknown>> {
+	async cache(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdDependencyProxyCache",
 			namespace: "groups",
@@ -1149,6 +1202,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1157,7 +1211,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/deploy_tokens` — risk: medium
 	 */
-	async listDeployTokens(id: string): Promise<ProofResult<unknown>> {
+	async listDeployTokens(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdDeployTokens",
 			namespace: "groups",
@@ -1170,6 +1224,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1178,7 +1233,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/deploy_tokens` — risk: medium
 	 */
-	async createDeployToken(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createDeployToken(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdDeployTokens",
 			namespace: "groups",
@@ -1191,6 +1246,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1199,7 +1255,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/deploy_tokens/{token_id}` — risk: medium
 	 */
-	async retrieveDeployToken(id: string, tokenId: string): Promise<ProofResult<unknown>> {
+	async retrieveDeployToken(id: string, tokenId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdDeployTokensTokenId",
 			namespace: "groups",
@@ -1212,6 +1268,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1220,7 +1277,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/deploy_tokens/{token_id}` — risk: medium
 	 */
-	async deleteDeployToken(id: string, tokenId: string): Promise<ProofResult<unknown>> {
+	async deleteDeployToken(id: string, tokenId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdDeployTokensTokenId",
 			namespace: "groups",
@@ -1233,6 +1290,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1241,7 +1299,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/avatar` — risk: medium
 	 */
-	async listAvatar(id: string): Promise<ProofResult<unknown>> {
+	async listAvatar(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdAvatar",
 			namespace: "groups",
@@ -1254,6 +1312,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1262,7 +1321,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/clusters` — risk: medium
 	 */
-	async listClusters(id: string): Promise<ProofResult<unknown>> {
+	async listClusters(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdClusters",
 			namespace: "groups",
@@ -1275,6 +1334,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1283,7 +1343,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/clusters/{cluster_id}` — risk: medium
 	 */
-	async retrieveCluster(id: string, clusterId: string): Promise<ProofResult<unknown>> {
+	async retrieveCluster(id: string, clusterId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdClustersClusterId",
 			namespace: "groups",
@@ -1296,6 +1356,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1304,7 +1365,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/clusters/{cluster_id}` — risk: medium
 	 */
-	async clusters(id: string, clusterId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async clusters(id: string, clusterId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdClustersClusterId",
 			namespace: "groups",
@@ -1317,6 +1378,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1325,7 +1387,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/clusters/{cluster_id}` — risk: medium
 	 */
-	async deleteCluster(id: string, clusterId: string): Promise<ProofResult<unknown>> {
+	async deleteCluster(id: string, clusterId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdClustersClusterId",
 			namespace: "groups",
@@ -1338,6 +1400,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1346,7 +1409,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/clusters/user` — risk: medium
 	 */
-	async user(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async user(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdClustersUser",
 			namespace: "groups",
@@ -1359,6 +1422,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1367,7 +1431,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/registry/repositories` — risk: medium
 	 */
-	async repositories(id: string): Promise<ProofResult<unknown>> {
+	async repositories(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdRegistryRepositories",
 			namespace: "groups",
@@ -1380,6 +1444,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1388,7 +1453,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/-/debian_distributions` — risk: medium
 	 */
-	async debianDistributions_0(id: string): Promise<ProofResult<unknown>> {
+	async debianDistributions_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdDebianDistributions",
 			namespace: "groups",
@@ -1401,6 +1466,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1409,7 +1475,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/-/debian_distributions` — risk: medium
 	 */
-	async debianDistributions_1(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async debianDistributions_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdDebianDistributions",
 			namespace: "groups",
@@ -1422,6 +1488,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1430,7 +1497,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/-/debian_distributions/{codename}` — risk: medium
 	 */
-	async retrieveDebianDistribution(id: string, codename: string): Promise<ProofResult<unknown>> {
+	async retrieveDebianDistribution(id: string, codename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdDebianDistributionsCodename",
 			namespace: "groups",
@@ -1443,6 +1510,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1451,7 +1519,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/-/debian_distributions/{codename}` — risk: medium
 	 */
-	async debianDistributions_2(id: string, codename: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async debianDistributions_2(id: string, codename: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdDebianDistributionsCodename",
 			namespace: "groups",
@@ -1464,6 +1532,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1472,7 +1541,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/-/debian_distributions/{codename}` — risk: medium
 	 */
-	async deleteDebianDistribution(id: string, codename: string): Promise<ProofResult<unknown>> {
+	async deleteDebianDistribution(id: string, codename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdDebianDistributionsCodename",
 			namespace: "groups",
@@ -1485,6 +1554,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1493,7 +1563,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/-/debian_distributions/{codename}/key.asc` — risk: medium
 	 */
-	async keyAsc(id: string, codename: string): Promise<ProofResult<unknown>> {
+	async keyAsc(id: string, codename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdDebianDistributionsCodenameKeyAsc",
 			namespace: "groups",
@@ -1506,6 +1576,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1514,7 +1585,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/export/download` — risk: medium
 	 */
-	async exportDownload(id: string): Promise<ProofResult<unknown>> {
+	async exportDownload(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdExportDownload",
 			namespace: "groups",
@@ -1527,6 +1598,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1535,7 +1607,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/export` — risk: medium
 	 */
-	async createExport(id: string): Promise<ProofResult<unknown>> {
+	async createExport(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdExport",
 			namespace: "groups",
@@ -1548,6 +1620,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1556,7 +1629,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/export_relations` — risk: medium
 	 */
-	async createExportRelation(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createExportRelation(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdExportRelations",
 			namespace: "groups",
@@ -1569,6 +1642,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1577,7 +1651,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/export_relations/download` — risk: medium
 	 */
-	async exportRelationsDownload(id: string): Promise<ProofResult<unknown>> {
+	async exportRelationsDownload(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdExportRelationsDownload",
 			namespace: "groups",
@@ -1590,6 +1664,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1598,7 +1673,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/export_relations/status` — risk: medium
 	 */
-	async status(id: string): Promise<ProofResult<unknown>> {
+	async status(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdExportRelationsStatus",
 			namespace: "groups",
@@ -1611,6 +1686,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1619,7 +1695,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/import/authorize` — risk: medium
 	 */
-	async importAuthorize(): Promise<ProofResult<unknown>> {
+	async importAuthorize(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsImportAuthorize",
 			namespace: "groups",
@@ -1632,6 +1708,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1640,7 +1717,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/import` — risk: medium
 	 */
-	async createImport(): Promise<ProofResult<unknown>> {
+	async createImport(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsImport",
 			namespace: "groups",
@@ -1653,6 +1730,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1661,7 +1739,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/packages` — risk: medium
 	 */
-	async listPackages(id: string): Promise<ProofResult<unknown>> {
+	async listPackages(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdPackages",
 			namespace: "groups",
@@ -1674,6 +1752,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1683,7 +1762,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/placeholder_reassignments` — risk: medium
 	 */
-	async listPlaceholderReassignments(id: string): Promise<ProofResult<unknown>> {
+	async listPlaceholderReassignments(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdPlaceholderReassignments",
 			namespace: "groups",
@@ -1696,6 +1775,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1704,7 +1784,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/placeholder_reassignments` — risk: medium
 	 */
-	async createPlaceholderReassignment(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createPlaceholderReassignment(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdPlaceholderReassignments",
 			namespace: "groups",
@@ -1717,6 +1797,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1726,7 +1807,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/placeholder_reassignments/authorize` — risk: medium
 	 */
-	async placeholderReassignmentsAuthorize(id: string): Promise<ProofResult<unknown>> {
+	async placeholderReassignmentsAuthorize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdPlaceholderReassignmentsAuthorize",
 			namespace: "groups",
@@ -1739,6 +1820,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1747,7 +1829,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/variables` — risk: medium
 	 */
-	async listVariables(id: string): Promise<ProofResult<unknown>> {
+	async listVariables(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdVariables",
 			namespace: "groups",
@@ -1760,6 +1842,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1768,7 +1851,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/variables` — risk: medium
 	 */
-	async createVariable(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createVariable(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdVariables",
 			namespace: "groups",
@@ -1781,6 +1864,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1789,7 +1873,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/variables/{key}` — risk: medium
 	 */
-	async retrieveVariable(id: string, key: string): Promise<ProofResult<unknown>> {
+	async retrieveVariable(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdVariablesKey",
 			namespace: "groups",
@@ -1802,6 +1886,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1810,7 +1895,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/variables/{key}` — risk: medium
 	 */
-	async variables(id: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async variables(id: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdVariablesKey",
 			namespace: "groups",
@@ -1823,6 +1908,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1831,7 +1917,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/variables/{key}` — risk: medium
 	 */
-	async deleteVariable(id: string, key: string): Promise<ProofResult<unknown>> {
+	async deleteVariable(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdVariablesKey",
 			namespace: "groups",
@@ -1844,6 +1930,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1852,7 +1939,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/integrations` — risk: medium
 	 */
-	async listIntegrations(id: string): Promise<ProofResult<unknown>> {
+	async listIntegrations(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdIntegrations",
 			namespace: "groups",
@@ -1865,6 +1952,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1873,7 +1961,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/apple-app-store` — risk: medium
 	 */
-	async appleAppStore(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async appleAppStore(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsAppleAppStore",
 			namespace: "groups",
@@ -1886,6 +1974,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1894,7 +1983,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/asana` — risk: medium
 	 */
-	async asana(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async asana(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsAsana",
 			namespace: "groups",
@@ -1907,6 +1996,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1915,7 +2005,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/assembla` — risk: medium
 	 */
-	async assembla(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async assembla(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsAssembla",
 			namespace: "groups",
@@ -1928,6 +2018,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1936,7 +2027,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/bamboo` — risk: medium
 	 */
-	async bamboo(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async bamboo(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsBamboo",
 			namespace: "groups",
@@ -1949,6 +2040,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1957,7 +2049,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/bugzilla` — risk: medium
 	 */
-	async bugzilla(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async bugzilla(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsBugzilla",
 			namespace: "groups",
@@ -1970,6 +2062,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1978,7 +2071,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/buildkite` — risk: medium
 	 */
-	async buildkite(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async buildkite(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsBuildkite",
 			namespace: "groups",
@@ -1991,6 +2084,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -1999,7 +2093,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/campfire` — risk: medium
 	 */
-	async campfire(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async campfire(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsCampfire",
 			namespace: "groups",
@@ -2012,6 +2106,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2020,7 +2115,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/confluence` — risk: medium
 	 */
-	async confluence(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async confluence(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsConfluence",
 			namespace: "groups",
@@ -2033,6 +2128,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2041,7 +2137,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/custom-issue-tracker` — risk: medium
 	 */
-	async customIssueTracker(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async customIssueTracker(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsCustomIssueTracker",
 			namespace: "groups",
@@ -2054,6 +2150,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2062,7 +2159,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/datadog` — risk: medium
 	 */
-	async datadog(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async datadog(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsDatadog",
 			namespace: "groups",
@@ -2075,6 +2172,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2083,7 +2181,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/diffblue-cover` — risk: medium
 	 */
-	async diffblueCover(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async diffblueCover(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsDiffblueCover",
 			namespace: "groups",
@@ -2096,6 +2194,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2104,7 +2203,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/discord` — risk: medium
 	 */
-	async discord(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async discord(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsDiscord",
 			namespace: "groups",
@@ -2117,6 +2216,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2125,7 +2225,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/drone-ci` — risk: medium
 	 */
-	async droneCi(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async droneCi(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsDroneCi",
 			namespace: "groups",
@@ -2138,6 +2238,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2146,7 +2247,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/emails-on-push` — risk: medium
 	 */
-	async emailsOnPush(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async emailsOnPush(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsEmailsOnPush",
 			namespace: "groups",
@@ -2159,6 +2260,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2167,7 +2269,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/external-wiki` — risk: medium
 	 */
-	async externalWiki(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async externalWiki(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsExternalWiki",
 			namespace: "groups",
@@ -2180,6 +2282,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2188,7 +2291,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/gitlab-slack-application` — risk: medium
 	 */
-	async gitlabSlackApplication(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async gitlabSlackApplication(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsGitlabSlackApplication",
 			namespace: "groups",
@@ -2201,6 +2304,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2209,7 +2313,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/google-play` — risk: medium
 	 */
-	async googlePlay(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async googlePlay(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsGooglePlay",
 			namespace: "groups",
@@ -2222,6 +2326,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2230,7 +2335,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/hangouts-chat` — risk: medium
 	 */
-	async hangoutsChat(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async hangoutsChat(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsHangoutsChat",
 			namespace: "groups",
@@ -2243,6 +2348,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2251,7 +2357,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/harbor` — risk: medium
 	 */
-	async harbor(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async harbor(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsHarbor",
 			namespace: "groups",
@@ -2264,6 +2370,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2272,7 +2379,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/irker` — risk: medium
 	 */
-	async irker(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async irker(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsIrker",
 			namespace: "groups",
@@ -2285,6 +2392,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2293,7 +2401,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/jenkins` — risk: medium
 	 */
-	async jenkins(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async jenkins(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsJenkins",
 			namespace: "groups",
@@ -2306,6 +2414,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2314,7 +2423,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/jira` — risk: medium
 	 */
-	async jira(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async jira(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsJira",
 			namespace: "groups",
@@ -2327,6 +2436,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2335,7 +2445,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/jira-cloud-app` — risk: medium
 	 */
-	async jiraCloudApp(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async jiraCloudApp(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsJiraCloudApp",
 			namespace: "groups",
@@ -2348,6 +2458,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2356,7 +2467,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/linear` — risk: medium
 	 */
-	async linear(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async linear(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsLinear",
 			namespace: "groups",
@@ -2369,6 +2480,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2377,7 +2489,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/matrix` — risk: medium
 	 */
-	async matrix(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async matrix(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsMatrix",
 			namespace: "groups",
@@ -2390,6 +2502,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2398,7 +2511,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/mattermost-slash-commands` — risk: medium
 	 */
-	async mattermostSlashCommands(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async mattermostSlashCommands(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsMattermostSlashCommands",
 			namespace: "groups",
@@ -2411,6 +2524,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2419,7 +2533,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/packagist` — risk: medium
 	 */
-	async packagist(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async packagist(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsPackagist",
 			namespace: "groups",
@@ -2432,6 +2546,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2440,7 +2555,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/phorge` — risk: medium
 	 */
-	async phorge(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async phorge(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsPhorge",
 			namespace: "groups",
@@ -2453,6 +2568,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2461,7 +2577,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/pipelines-email` — risk: medium
 	 */
-	async pipelinesEmail(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pipelinesEmail(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsPipelinesEmail",
 			namespace: "groups",
@@ -2474,6 +2590,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2482,7 +2599,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/pivotaltracker` — risk: medium
 	 */
-	async pivotaltracker(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pivotaltracker(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsPivotaltracker",
 			namespace: "groups",
@@ -2495,6 +2612,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2503,7 +2621,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/pumble` — risk: medium
 	 */
-	async pumble(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pumble(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsPumble",
 			namespace: "groups",
@@ -2516,6 +2634,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2524,7 +2643,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/pushover` — risk: medium
 	 */
-	async pushover(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pushover(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsPushover",
 			namespace: "groups",
@@ -2537,6 +2656,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2545,7 +2665,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/redmine` — risk: medium
 	 */
-	async redmine(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async redmine(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsRedmine",
 			namespace: "groups",
@@ -2558,6 +2678,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2566,7 +2687,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/ewm` — risk: medium
 	 */
-	async ewm(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async ewm(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsEwm",
 			namespace: "groups",
@@ -2579,6 +2700,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2587,7 +2709,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/youtrack` — risk: medium
 	 */
-	async youtrack(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async youtrack(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsYoutrack",
 			namespace: "groups",
@@ -2600,6 +2722,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2608,7 +2731,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/clickup` — risk: medium
 	 */
-	async clickup(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async clickup(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsClickup",
 			namespace: "groups",
@@ -2621,6 +2744,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2629,7 +2753,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/slack` — risk: medium
 	 */
-	async slack(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async slack(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsSlack",
 			namespace: "groups",
@@ -2642,6 +2766,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2650,7 +2775,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/microsoft-teams` — risk: medium
 	 */
-	async microsoftTeams(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async microsoftTeams(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsMicrosoftTeams",
 			namespace: "groups",
@@ -2663,6 +2788,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2671,7 +2797,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/mattermost` — risk: medium
 	 */
-	async mattermost(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async mattermost(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsMattermost",
 			namespace: "groups",
@@ -2684,6 +2810,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2692,7 +2819,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/teamcity` — risk: medium
 	 */
-	async teamcity(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async teamcity(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsTeamcity",
 			namespace: "groups",
@@ -2705,6 +2832,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2713,7 +2841,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/telegram` — risk: medium
 	 */
-	async telegram(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async telegram(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsTelegram",
 			namespace: "groups",
@@ -2726,6 +2854,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2734,7 +2863,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/unify-circuit` — risk: medium
 	 */
-	async unifyCircuit(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async unifyCircuit(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsUnifyCircuit",
 			namespace: "groups",
@@ -2747,6 +2876,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2755,7 +2885,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/webex-teams` — risk: medium
 	 */
-	async webexTeams(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async webexTeams(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsWebexTeams",
 			namespace: "groups",
@@ -2768,6 +2898,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2776,7 +2907,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/zentao` — risk: medium
 	 */
-	async zentao(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async zentao(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsZentao",
 			namespace: "groups",
@@ -2789,6 +2920,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2797,7 +2929,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/squash-tm` — risk: medium
 	 */
-	async squashTm(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async squashTm(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsSquashTm",
 			namespace: "groups",
@@ -2810,6 +2942,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2818,7 +2951,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/github` — risk: medium
 	 */
-	async github(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async github(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsGithub",
 			namespace: "groups",
@@ -2831,6 +2964,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2839,7 +2973,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/git-guardian` — risk: medium
 	 */
-	async gitGuardian(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async gitGuardian(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsGitGuardian",
 			namespace: "groups",
@@ -2852,6 +2986,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2860,7 +2995,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/google-cloud-platform-artifact-registry` — risk: medium
 	 */
-	async googleCloudPlatformArtifactRegistry(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async googleCloudPlatformArtifactRegistry(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsGoogleCloudPlatformArtifactRegistry",
 			namespace: "groups",
@@ -2873,6 +3008,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2881,7 +3017,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/google-cloud-platform-workload-identity-federation` — risk: medium
 	 */
-	async googleCloudPlatformWorkloadIdentityFederation(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async googleCloudPlatformWorkloadIdentityFederation(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsGoogleCloudPlatformWorkloadIdentityFederation",
 			namespace: "groups",
@@ -2894,6 +3030,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2902,7 +3039,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/mock-ci` — risk: medium
 	 */
-	async mockCi(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async mockCi(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsMockCi",
 			namespace: "groups",
@@ -2915,6 +3052,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2923,7 +3061,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/mock-monitoring` — risk: medium
 	 */
-	async mockMonitoring(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async mockMonitoring(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdIntegrationsMockMonitoring",
 			namespace: "groups",
@@ -2936,6 +3074,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2944,7 +3083,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/integrations/{slug}` — risk: medium
 	 */
-	async retrieveIntegration(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async retrieveIntegration(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdIntegrationsSlug",
 			namespace: "groups",
@@ -2957,6 +3096,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2965,7 +3105,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/integrations/{slug}` — risk: medium
 	 */
-	async deleteIntegration(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async deleteIntegration(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdIntegrationsSlug",
 			namespace: "groups",
@@ -2978,6 +3118,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -2986,7 +3127,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/invitations` — risk: medium
 	 */
-	async listInvitations(id: string): Promise<ProofResult<unknown>> {
+	async listInvitations(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdInvitations",
 			namespace: "groups",
@@ -2999,6 +3140,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3007,7 +3149,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/invitations` — risk: medium
 	 */
-	async createInvitation(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createInvitation(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdInvitations",
 			namespace: "groups",
@@ -3020,6 +3162,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3028,7 +3171,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/invitations/{email}` — risk: medium
 	 */
-	async invitations(id: string, email: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async invitations(id: string, email: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdInvitationsEmail",
 			namespace: "groups",
@@ -3041,6 +3184,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3049,7 +3193,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/invitations/{email}` — risk: medium
 	 */
-	async deleteInvitation(id: string, email: string): Promise<ProofResult<unknown>> {
+	async deleteInvitation(id: string, email: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdInvitationsEmail",
 			namespace: "groups",
@@ -3062,6 +3206,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3070,7 +3215,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/issues` — risk: medium
 	 */
-	async listIssues(id: string): Promise<ProofResult<unknown>> {
+	async listIssues(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdIssues",
 			namespace: "groups",
@@ -3083,6 +3228,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3091,7 +3237,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/issues_statistics` — risk: medium
 	 */
-	async listIssuesStatistics(id: string): Promise<ProofResult<unknown>> {
+	async listIssuesStatistics(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdIssuesStatistics",
 			namespace: "groups",
@@ -3104,6 +3250,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3112,7 +3259,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/uploads/authorize` — risk: medium
 	 */
-	async uploadsAuthorize(id: string): Promise<ProofResult<unknown>> {
+	async uploadsAuthorize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdUploadsAuthorize",
 			namespace: "groups",
@@ -3125,6 +3272,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3133,7 +3281,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/uploads` — risk: medium
 	 */
-	async listUploads(id: string): Promise<ProofResult<unknown>> {
+	async listUploads(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdUploads",
 			namespace: "groups",
@@ -3146,6 +3294,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3154,7 +3303,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/uploads` — risk: medium
 	 */
-	async createUpload(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createUpload(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdUploads",
 			namespace: "groups",
@@ -3167,6 +3316,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3175,7 +3325,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/uploads/{upload_id}` — risk: medium
 	 */
-	async retrieveUpload_0(id: string, uploadId: string): Promise<ProofResult<unknown>> {
+	async retrieveUpload_0(id: string, uploadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdUploadsUploadId",
 			namespace: "groups",
@@ -3188,6 +3338,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3196,7 +3347,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/uploads/{upload_id}` — risk: medium
 	 */
-	async deleteUpload_0(id: string, uploadId: string): Promise<ProofResult<unknown>> {
+	async deleteUpload_0(id: string, uploadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdUploadsUploadId",
 			namespace: "groups",
@@ -3209,6 +3360,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3217,7 +3369,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/uploads/{secret}/{filename}` — risk: medium
 	 */
-	async retrieveUpload_1(id: string, secret: string, filename: string): Promise<ProofResult<unknown>> {
+	async retrieveUpload_1(id: string, secret: string, filename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdUploadsSecretFilename",
 			namespace: "groups",
@@ -3230,6 +3382,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3238,7 +3391,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/uploads/{secret}/{filename}` — risk: medium
 	 */
-	async deleteUpload_1(id: string, secret: string, filename: string): Promise<ProofResult<unknown>> {
+	async deleteUpload_1(id: string, secret: string, filename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdUploadsSecretFilename",
 			namespace: "groups",
@@ -3251,6 +3404,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3260,7 +3414,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/members` — risk: medium
 	 */
-	async listMembers(id: string): Promise<ProofResult<unknown>> {
+	async listMembers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdMembers",
 			namespace: "groups",
@@ -3273,6 +3427,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3281,7 +3436,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/members` — risk: medium
 	 */
-	async createMember(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMember(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdMembers",
 			namespace: "groups",
@@ -3294,6 +3449,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3303,7 +3459,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/members/all` — risk: medium
 	 */
-	async all(id: string): Promise<ProofResult<unknown>> {
+	async all(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdMembersAll",
 			namespace: "groups",
@@ -3316,6 +3472,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3324,7 +3481,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/members/{user_id}` — risk: medium
 	 */
-	async retrieveMember(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async retrieveMember(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdMembersUserId",
 			namespace: "groups",
@@ -3337,6 +3494,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3345,7 +3503,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/members/{user_id}` — risk: medium
 	 */
-	async members(id: string, userId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async members(id: string, userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdMembersUserId",
 			namespace: "groups",
@@ -3358,6 +3516,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3366,7 +3525,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/members/{user_id}` — risk: medium
 	 */
-	async deleteMember(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async deleteMember(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdMembersUserId",
 			namespace: "groups",
@@ -3379,6 +3538,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3387,7 +3547,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/members/all/{user_id}` — risk: medium
 	 */
-	async retrieveAll(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async retrieveAll(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdMembersAllUserId",
 			namespace: "groups",
@@ -3400,6 +3560,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3408,7 +3569,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/members/{user_id}/override` — risk: medium
 	 */
-	async override_0(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async override_0(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdMembersUserIdOverride",
 			namespace: "groups",
@@ -3421,6 +3582,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3429,7 +3591,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/members/{user_id}/override` — risk: medium
 	 */
-	async override_1(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async override_1(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdMembersUserIdOverride",
 			namespace: "groups",
@@ -3442,6 +3604,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3450,7 +3613,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/members/{member_id}/approve` — risk: medium
 	 */
-	async membersApprove(id: string, memberId: string): Promise<ProofResult<unknown>> {
+	async membersApprove(id: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdMembersMemberIdApprove",
 			namespace: "groups",
@@ -3463,6 +3626,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3471,7 +3635,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/members/approve_all` — risk: medium
 	 */
-	async approveAll(id: string): Promise<ProofResult<unknown>> {
+	async approveAll(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdMembersApproveAll",
 			namespace: "groups",
@@ -3484,6 +3648,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3492,7 +3657,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/pending_members` — risk: medium
 	 */
-	async listPendingMembers(id: string): Promise<ProofResult<unknown>> {
+	async listPendingMembers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdPendingMembers",
 			namespace: "groups",
@@ -3505,6 +3670,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3513,7 +3679,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/billable_members` — risk: medium
 	 */
-	async listBillableMembers(id: string): Promise<ProofResult<unknown>> {
+	async listBillableMembers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdBillableMembers",
 			namespace: "groups",
@@ -3526,6 +3692,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3534,7 +3701,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/members/{user_id}/state` — risk: medium
 	 */
-	async state(id: string, userId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async state(id: string, userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdMembersUserIdState",
 			namespace: "groups",
@@ -3547,6 +3714,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3555,7 +3723,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/billable_members/{user_id}/memberships` — risk: medium
 	 */
-	async memberships(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async memberships(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdBillableMembersUserIdMemberships",
 			namespace: "groups",
@@ -3568,6 +3736,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3576,7 +3745,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/billable_members/{user_id}/indirect` — risk: medium
 	 */
-	async indirect(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async indirect(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdBillableMembersUserIdIndirect",
 			namespace: "groups",
@@ -3589,6 +3758,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3597,7 +3767,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/billable_members/{user_id}` — risk: medium
 	 */
-	async deleteBillableMember(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async deleteBillableMember(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdBillableMembersUserId",
 			namespace: "groups",
@@ -3610,6 +3780,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3618,7 +3789,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/merge_requests` — risk: medium
 	 */
-	async listMergeRequests(id: string): Promise<ProofResult<unknown>> {
+	async listMergeRequests(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdMergeRequests",
 			namespace: "groups",
@@ -3631,6 +3802,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3639,7 +3811,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/-/packages/npm/-/npm/v1/security/advisories/bulk` — risk: medium
 	 */
-	async bulk(id: string): Promise<ProofResult<unknown>> {
+	async bulk(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdPackagesNpmNpmV1SecurityAdvisoriesBulk",
 			namespace: "groups",
@@ -3652,6 +3824,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3660,7 +3833,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/-/packages/npm/-/npm/v1/security/audits/quick` — risk: medium
 	 */
-	async quick(id: string): Promise<ProofResult<unknown>> {
+	async quick(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdPackagesNpmNpmV1SecurityAuditsQuick",
 			namespace: "groups",
@@ -3673,6 +3846,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3681,7 +3855,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/-/packages/nuget/index` — risk: medium
 	 */
-	async index(id: string): Promise<ProofResult<unknown>> {
+	async index(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdPackagesNugetIndex",
 			namespace: "groups",
@@ -3694,6 +3868,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3702,7 +3877,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/-/packages/nuget/v2` — risk: medium
 	 */
-	async v2(id: string): Promise<ProofResult<unknown>> {
+	async v2(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdPackagesNugetV2",
 			namespace: "groups",
@@ -3715,6 +3890,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3723,7 +3899,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/-/packages/nuget/v2/$metadata` — risk: medium
 	 */
-	async Metadata(id: string): Promise<ProofResult<unknown>> {
+	async Metadata(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdPackagesNugetV2$metadata",
 			namespace: "groups",
@@ -3736,6 +3912,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3744,7 +3921,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/-/packages/nuget/query` — risk: medium
 	 */
-	async query(id: string): Promise<ProofResult<unknown>> {
+	async query(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdPackagesNugetQuery",
 			namespace: "groups",
@@ -3757,6 +3934,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3765,7 +3943,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/-/packages/pypi/simple` — risk: medium
 	 */
-	async simple(id: string): Promise<ProofResult<unknown>> {
+	async simple(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdPackagesPypiSimple",
 			namespace: "groups",
@@ -3778,6 +3956,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3786,7 +3965,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/releases` — risk: medium
 	 */
-	async listReleases(id: string): Promise<ProofResult<unknown>> {
+	async listReleases(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdReleases",
 			namespace: "groups",
@@ -3799,6 +3978,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3807,7 +3987,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/access_tokens/self/rotate` — risk: medium
 	 */
-	async rotate(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async rotate(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdAccessTokensSelfRotate",
 			namespace: "groups",
@@ -3820,6 +4000,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3828,7 +4009,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/(-/)search` — risk: medium
 	 */
-	async Search(id: string): Promise<ProofResult<unknown>> {
+	async Search(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsId(-)search",
 			namespace: "groups",
@@ -3841,6 +4022,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3849,7 +4031,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/wikis` — risk: medium
 	 */
-	async listWikis(id: string): Promise<ProofResult<unknown>> {
+	async listWikis(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdWikis",
 			namespace: "groups",
@@ -3862,6 +4044,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3870,7 +4053,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/wikis` — risk: medium
 	 */
-	async createWiki(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createWiki(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdWikis",
 			namespace: "groups",
@@ -3883,6 +4066,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3891,7 +4075,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/groups/{id}/wikis/{slug}` — risk: medium
 	 */
-	async retrieveWiki(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async retrieveWiki(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupsIdWikisSlug",
 			namespace: "groups",
@@ -3904,6 +4088,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3912,7 +4097,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/groups/{id}/wikis/{slug}` — risk: medium
 	 */
-	async wikis(id: string, slug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async wikis(id: string, slug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4GroupsIdWikisSlug",
 			namespace: "groups",
@@ -3925,6 +4110,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3933,7 +4119,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/groups/{id}/wikis/{slug}` — risk: medium
 	 */
-	async deleteWiki(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async deleteWiki(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4GroupsIdWikisSlug",
 			namespace: "groups",
@@ -3946,6 +4132,7 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -3954,7 +4141,7 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/groups/{id}/wikis/attachments` — risk: medium
 	 */
-	async attachments(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async attachments(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GroupsIdWikisAttachments",
 			namespace: "groups",
@@ -3967,13 +4154,14 @@ export class GroupsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ProjectsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3985,7 +4173,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/access_requests` — risk: medium
 	 */
-	async listAccessRequests(id: string): Promise<ProofResult<unknown>> {
+	async listAccessRequests(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdAccessRequests",
 			namespace: "projects",
@@ -3998,6 +4186,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4006,7 +4195,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/access_requests` — risk: medium
 	 */
-	async createAccessRequest(id: string): Promise<ProofResult<unknown>> {
+	async createAccessRequest(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdAccessRequests",
 			namespace: "projects",
@@ -4019,6 +4208,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4027,7 +4217,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/access_requests/{user_id}/approve` — risk: medium
 	 */
-	async accessRequestsApprove(id: string, userId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async accessRequestsApprove(id: string, userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdAccessRequestsUserIdApprove",
 			namespace: "projects",
@@ -4040,6 +4230,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4048,7 +4239,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/access_requests/{user_id}` — risk: medium
 	 */
-	async deleteAccessRequest(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async deleteAccessRequest(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdAccessRequestsUserId",
 			namespace: "projects",
@@ -4061,6 +4252,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4069,7 +4261,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/authorize` — risk: medium
 	 */
-	async alertManagementAlertsmetricImagesAuthorize(id: string, alertIid: string): Promise<ProofResult<unknown>> {
+	async alertManagementAlertsmetricImagesAuthorize(id: string, alertIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdAlertManagementAlertsAlertIidMetricImagesAuthorize",
 			namespace: "projects",
@@ -4082,6 +4274,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4090,7 +4283,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images` — risk: medium
 	 */
-	async getAlertManagementAlertsMetricImages(id: string, alertIid: string): Promise<ProofResult<unknown>> {
+	async getAlertManagementAlertsMetricImages(id: string, alertIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdAlertManagementAlertsAlertIidMetricImages",
 			namespace: "projects",
@@ -4103,6 +4296,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4111,7 +4305,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images` — risk: medium
 	 */
-	async postAlertManagementAlertsMetricImages(id: string, alertIid: string): Promise<ProofResult<unknown>> {
+	async postAlertManagementAlertsMetricImages(id: string, alertIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdAlertManagementAlertsAlertIidMetricImages",
 			namespace: "projects",
@@ -4124,6 +4318,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4132,7 +4327,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/{metric_image_id}` — risk: medium
 	 */
-	async putAlertManagementAlertsMetricImages(id: string, alertIid: string, metricImageId: string): Promise<ProofResult<unknown>> {
+	async putAlertManagementAlertsMetricImages(id: string, alertIid: string, metricImageId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdAlertManagementAlertsAlertIidMetricImagesMetricImageId",
 			namespace: "projects",
@@ -4145,6 +4340,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4153,7 +4349,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/{metric_image_id}` — risk: medium
 	 */
-	async alertManagementAlertsmetricImagesDeleteMetricImage(id: string, alertIid: string, metricImageId: string): Promise<ProofResult<unknown>> {
+	async alertManagementAlertsmetricImagesDeleteMetricImage(id: string, alertIid: string, metricImageId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdAlertManagementAlertsAlertIidMetricImagesMetricImageId",
 			namespace: "projects",
@@ -4166,6 +4362,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4174,7 +4371,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/award_emoji` — risk: medium
 	 */
-	async getIssuesAwardEmoji(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async getIssuesAwardEmoji(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidAwardEmoji",
 			namespace: "projects",
@@ -4187,6 +4384,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4195,7 +4393,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/award_emoji` — risk: medium
 	 */
-	async postIssuesAwardEmoji(id: string, issueIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIssuesAwardEmoji(id: string, issueIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidAwardEmoji",
 			namespace: "projects",
@@ -4208,6 +4406,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4216,7 +4415,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/award_emoji/{award_id}` — risk: medium
 	 */
-	async issuesawardEmojiRetrieveAwardEmoji(id: string, issueIid: string, awardId: string): Promise<ProofResult<unknown>> {
+	async issuesawardEmojiRetrieveAwardEmoji(id: string, issueIid: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidAwardEmojiAwardId",
 			namespace: "projects",
@@ -4229,6 +4428,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4237,7 +4437,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}/award_emoji/{award_id}` — risk: medium
 	 */
-	async issuesawardEmojiDeleteAwardEmoji(id: string, issueIid: string, awardId: string): Promise<ProofResult<unknown>> {
+	async issuesawardEmojiDeleteAwardEmoji(id: string, issueIid: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdIssuesIssueIidAwardEmojiAwardId",
 			namespace: "projects",
@@ -4250,6 +4450,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4258,7 +4459,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
-	async getIssuesnotesAwardEmoji(id: string, issueIid: string, noteId: string): Promise<ProofResult<unknown>> {
+	async getIssuesnotesAwardEmoji(id: string, issueIid: string, noteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidNotesNoteIdAwardEmoji",
 			namespace: "projects",
@@ -4271,6 +4472,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4279,7 +4481,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
-	async postIssuesnotesAwardEmoji(id: string, issueIid: string, noteId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIssuesnotesAwardEmoji(id: string, issueIid: string, noteId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidNotesNoteIdAwardEmoji",
 			namespace: "projects",
@@ -4292,6 +4494,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4300,7 +4503,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async issuesnotesawardEmojiRetrieveAwardEmoji(id: string, issueIid: string, noteId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async issuesnotesawardEmojiRetrieveAwardEmoji(id: string, issueIid: string, noteId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidNotesNoteIdAwardEmojiAwardId",
 			namespace: "projects",
@@ -4313,6 +4516,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4321,7 +4525,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async issuesnotesawardEmojiDeleteAwardEmoji(id: string, issueIid: string, noteId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async issuesnotesawardEmojiDeleteAwardEmoji(id: string, issueIid: string, noteId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdIssuesIssueIidNotesNoteIdAwardEmojiAwardId",
 			namespace: "projects",
@@ -4334,6 +4538,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4342,7 +4547,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/award_emoji` — risk: medium
 	 */
-	async getMergeRequestsAwardEmoji(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async getMergeRequestsAwardEmoji(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidAwardEmoji",
 			namespace: "projects",
@@ -4355,6 +4560,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4363,7 +4569,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/award_emoji` — risk: medium
 	 */
-	async postMergeRequestsAwardEmoji(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postMergeRequestsAwardEmoji(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidAwardEmoji",
 			namespace: "projects",
@@ -4376,6 +4582,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4384,7 +4591,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/award_emoji/{award_id}` — risk: medium
 	 */
-	async mergeRequestsawardEmojiRetrieveAwardEmoji(id: string, mergeRequestIid: string, awardId: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsawardEmojiRetrieveAwardEmoji(id: string, mergeRequestIid: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidAwardEmojiAwardId",
 			namespace: "projects",
@@ -4397,6 +4604,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4405,7 +4613,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}/award_emoji/{award_id}` — risk: medium
 	 */
-	async mergeRequestsawardEmojiDeleteAwardEmoji(id: string, mergeRequestIid: string, awardId: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsawardEmojiDeleteAwardEmoji(id: string, mergeRequestIid: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdMergeRequestsMergeRequestIidAwardEmojiAwardId",
 			namespace: "projects",
@@ -4418,6 +4626,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4426,7 +4635,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
-	async getMergeRequestsnotesAwardEmoji(id: string, mergeRequestIid: string, noteId: string): Promise<ProofResult<unknown>> {
+	async getMergeRequestsnotesAwardEmoji(id: string, mergeRequestIid: string, noteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmoji",
 			namespace: "projects",
@@ -4439,6 +4648,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4447,7 +4657,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
-	async postMergeRequestsnotesAwardEmoji(id: string, mergeRequestIid: string, noteId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postMergeRequestsnotesAwardEmoji(id: string, mergeRequestIid: string, noteId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmoji",
 			namespace: "projects",
@@ -4460,6 +4670,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4468,7 +4679,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async mergeRequestsnotesawardEmojiRetrieveAwardEmoji(id: string, mergeRequestIid: string, noteId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsnotesawardEmojiRetrieveAwardEmoji(id: string, mergeRequestIid: string, noteId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmojiAwardId",
 			namespace: "projects",
@@ -4481,6 +4692,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4489,7 +4701,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async mergeRequestsnotesawardEmojiDeleteAwardEmoji(id: string, mergeRequestIid: string, noteId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsnotesawardEmojiDeleteAwardEmoji(id: string, mergeRequestIid: string, noteId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdMergeRequestsMergeRequestIidNotesNoteIdAwardEmojiAwardId",
 			namespace: "projects",
@@ -4502,6 +4714,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4510,7 +4723,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/award_emoji` — risk: medium
 	 */
-	async getSnippetsAwardEmoji(id: string, snippetId: string): Promise<ProofResult<unknown>> {
+	async getSnippetsAwardEmoji(id: string, snippetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnippetsSnippetIdAwardEmoji",
 			namespace: "projects",
@@ -4523,6 +4736,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4531,7 +4745,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/snippets/{snippet_id}/award_emoji` — risk: medium
 	 */
-	async postSnippetsAwardEmoji(id: string, snippetId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postSnippetsAwardEmoji(id: string, snippetId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdSnippetsSnippetIdAwardEmoji",
 			namespace: "projects",
@@ -4544,6 +4758,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4552,7 +4767,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async snippetsawardEmojiRetrieveAwardEmoji(id: string, snippetId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async snippetsawardEmojiRetrieveAwardEmoji(id: string, snippetId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnippetsSnippetIdAwardEmojiAwardId",
 			namespace: "projects",
@@ -4565,6 +4780,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4573,7 +4789,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/snippets/{snippet_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async snippetsawardEmojiDeleteAwardEmoji(id: string, snippetId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async snippetsawardEmojiDeleteAwardEmoji(id: string, snippetId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdSnippetsSnippetIdAwardEmojiAwardId",
 			namespace: "projects",
@@ -4586,6 +4802,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4594,7 +4811,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/notes/{note_id}/award_emoji` — risk: medium
 	 */
-	async getSnippetsnotesAwardEmoji(id: string, snippetId: string, noteId: string): Promise<ProofResult<unknown>> {
+	async getSnippetsnotesAwardEmoji(id: string, snippetId: string, noteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmoji",
 			namespace: "projects",
@@ -4607,6 +4824,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4615,7 +4833,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/snippets/{snippet_id}/notes/{note_id}/award_emoji` — risk: medium
 	 */
-	async postSnippetsnotesAwardEmoji(id: string, snippetId: string, noteId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postSnippetsnotesAwardEmoji(id: string, snippetId: string, noteId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmoji",
 			namespace: "projects",
@@ -4628,6 +4846,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4636,7 +4855,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async snippetsnotesawardEmojiRetrieveAwardEmoji(id: string, snippetId: string, noteId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async snippetsnotesawardEmojiRetrieveAwardEmoji(id: string, snippetId: string, noteId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmojiAwardId",
 			namespace: "projects",
@@ -4649,6 +4868,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4657,7 +4877,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/snippets/{snippet_id}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
-	async snippetsnotesawardEmojiDeleteAwardEmoji(id: string, snippetId: string, noteId: string, awardId: string): Promise<ProofResult<unknown>> {
+	async snippetsnotesawardEmojiDeleteAwardEmoji(id: string, snippetId: string, noteId: string, awardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdSnippetsSnippetIdNotesNoteIdAwardEmojiAwardId",
 			namespace: "projects",
@@ -4670,6 +4890,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4678,7 +4899,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/badges` — risk: medium
 	 */
-	async listBadges(id: string): Promise<ProofResult<unknown>> {
+	async listBadges(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdBadges",
 			namespace: "projects",
@@ -4691,6 +4912,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4699,7 +4921,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/badges` — risk: medium
 	 */
-	async createBadge(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createBadge(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdBadges",
 			namespace: "projects",
@@ -4712,6 +4934,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4720,7 +4943,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/badges/render` — risk: medium
 	 */
-	async render(id: string): Promise<ProofResult<unknown>> {
+	async render(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdBadgesRender",
 			namespace: "projects",
@@ -4733,6 +4956,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4741,7 +4965,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/badges/{badge_id}` — risk: medium
 	 */
-	async retrieveBadge(id: string, badgeId: string): Promise<ProofResult<unknown>> {
+	async retrieveBadge(id: string, badgeId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdBadgesBadgeId",
 			namespace: "projects",
@@ -4754,6 +4978,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4762,7 +4987,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/badges/{badge_id}` — risk: medium
 	 */
-	async badges(id: string, badgeId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async badges(id: string, badgeId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdBadgesBadgeId",
 			namespace: "projects",
@@ -4775,6 +5000,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4783,7 +5009,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/badges/{badge_id}` — risk: medium
 	 */
-	async deleteBadge(id: string, badgeId: string): Promise<ProofResult<unknown>> {
+	async deleteBadge(id: string, badgeId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdBadgesBadgeId",
 			namespace: "projects",
@@ -4796,6 +5022,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4804,7 +5031,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/branches` — risk: medium
 	 */
-	async branches_0(id: string): Promise<ProofResult<unknown>> {
+	async branches_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryBranches",
 			namespace: "projects",
@@ -4817,6 +5044,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4825,7 +5053,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/repository/branches` — risk: medium
 	 */
-	async branches_1(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async branches_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRepositoryBranches",
 			namespace: "projects",
@@ -4838,6 +5066,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4846,7 +5075,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/branches/{branch}` — risk: medium
 	 */
-	async retrieveBranche(id: string, branch: string): Promise<ProofResult<unknown>> {
+	async retrieveBranche(id: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryBranchesBranch",
 			namespace: "projects",
@@ -4859,6 +5088,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4867,7 +5097,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/repository/branches/{branch}` — risk: medium
 	 */
-	async deleteBranche(id: string, branch: string): Promise<ProofResult<unknown>> {
+	async deleteBranche(id: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRepositoryBranchesBranch",
 			namespace: "projects",
@@ -4880,6 +5110,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4888,7 +5119,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/repository/branches/{branch}/protect` — risk: medium
 	 */
-	async protect(id: string, branch: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async protect(id: string, branch: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdRepositoryBranchesBranchProtect",
 			namespace: "projects",
@@ -4901,6 +5132,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4909,7 +5141,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/repository/branches/{branch}/unprotect` — risk: medium
 	 */
-	async unprotect(id: string, branch: string): Promise<ProofResult<unknown>> {
+	async unprotect(id: string, branch: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdRepositoryBranchesBranchUnprotect",
 			namespace: "projects",
@@ -4922,6 +5154,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4930,7 +5163,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/repository/merged_branches` — risk: medium
 	 */
-	async mergedBranches(id: string): Promise<ProofResult<unknown>> {
+	async mergedBranches(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRepositoryMergedBranches",
 			namespace: "projects",
@@ -4943,6 +5176,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4951,7 +5185,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/catalog/publish` — risk: medium
 	 */
-	async catalogPublish(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async catalogPublish(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdCatalogPublish",
 			namespace: "projects",
@@ -4964,6 +5198,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4972,7 +5207,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/jobs/artifacts/{ref_name}/download` — risk: medium
 	 */
-	async jobsartifactsDownload(id: string, refName: string): Promise<ProofResult<unknown>> {
+	async jobsartifactsDownload(id: string, refName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdJobsArtifactsRefNameDownload",
 			namespace: "projects",
@@ -4985,6 +5220,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -4993,7 +5229,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/jobs/{job_id}/artifacts` — risk: medium
 	 */
-	async getJobsArtifacts(id: string, jobId: string): Promise<ProofResult<unknown>> {
+	async getJobsArtifacts(id: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdJobsJobIdArtifacts",
 			namespace: "projects",
@@ -5006,6 +5242,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5014,7 +5251,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/jobs/{job_id}/artifacts` — risk: medium
 	 */
-	async deleteJobsArtifacts(id: string, jobId: string): Promise<ProofResult<unknown>> {
+	async deleteJobsArtifacts(id: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdJobsJobIdArtifacts",
 			namespace: "projects",
@@ -5027,6 +5264,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5035,7 +5273,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/jobs/{job_id}/artifacts/tree` — risk: medium
 	 */
-	async jobsartifactsTree(id: string, jobId: string): Promise<ProofResult<unknown>> {
+	async jobsartifactsTree(id: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdJobsJobIdArtifactsTree",
 			namespace: "projects",
@@ -5048,6 +5286,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5056,7 +5295,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/artifacts/keep` — risk: medium
 	 */
-	async keep(id: string, jobId: string): Promise<ProofResult<unknown>> {
+	async keep(id: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdJobsJobIdArtifactsKeep",
 			namespace: "projects",
@@ -5069,6 +5308,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5077,7 +5317,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/artifacts` — risk: medium
 	 */
-	async artifacts_2(id: string): Promise<ProofResult<unknown>> {
+	async artifacts_2(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdArtifacts",
 			namespace: "projects",
@@ -5090,6 +5330,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5098,7 +5339,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/jobs` — risk: medium
 	 */
-	async listJobs(id: string): Promise<ProofResult<unknown>> {
+	async listJobs(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdJobs",
 			namespace: "projects",
@@ -5111,6 +5352,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5119,7 +5361,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/jobs/{job_id}` — risk: medium
 	 */
-	async retrieveJob(id: string, jobId: string): Promise<ProofResult<unknown>> {
+	async retrieveJob(id: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdJobsJobId",
 			namespace: "projects",
@@ -5132,6 +5374,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5140,7 +5383,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/jobs/{job_id}/trace` — risk: medium
 	 */
-	async trace(id: string, jobId: string): Promise<ProofResult<unknown>> {
+	async trace(id: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdJobsJobIdTrace",
 			namespace: "projects",
@@ -5153,6 +5396,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5161,7 +5405,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/cancel` — risk: medium
 	 */
-	async jobsCancel(id: string, jobId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async jobsCancel(id: string, jobId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdJobsJobIdCancel",
 			namespace: "projects",
@@ -5174,6 +5418,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5182,7 +5427,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/retry` — risk: medium
 	 */
-	async jobsRetry(id: string, jobId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async jobsRetry(id: string, jobId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdJobsJobIdRetry",
 			namespace: "projects",
@@ -5195,6 +5440,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5203,7 +5449,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/erase` — risk: medium
 	 */
-	async erase(id: string, jobId: string): Promise<ProofResult<unknown>> {
+	async erase(id: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdJobsJobIdErase",
 			namespace: "projects",
@@ -5216,6 +5462,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5224,7 +5471,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/play` — risk: medium
 	 */
-	async jobsPlay(id: string, jobId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async jobsPlay(id: string, jobId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdJobsJobIdPlay",
 			namespace: "projects",
@@ -5237,6 +5484,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5245,7 +5493,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/resource_groups` — risk: medium
 	 */
-	async listResourceGroups(id: string): Promise<ProofResult<unknown>> {
+	async listResourceGroups(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdResourceGroups",
 			namespace: "projects",
@@ -5258,6 +5506,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5266,7 +5515,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/resource_groups/{key}` — risk: medium
 	 */
-	async retrieveResourceGroup(id: string, key: string): Promise<ProofResult<unknown>> {
+	async retrieveResourceGroup(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdResourceGroupsKey",
 			namespace: "projects",
@@ -5279,6 +5528,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5287,7 +5537,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/resource_groups/{key}` — risk: medium
 	 */
-	async resourceGroups(id: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async resourceGroups(id: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdResourceGroupsKey",
 			namespace: "projects",
@@ -5300,6 +5550,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5308,7 +5559,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/resource_groups/{key}/current_job` — risk: medium
 	 */
-	async currentJob(id: string, key: string): Promise<ProofResult<unknown>> {
+	async currentJob(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdResourceGroupsKeyCurrentJob",
 			namespace: "projects",
@@ -5321,6 +5572,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5329,7 +5581,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/resource_groups/{key}/upcoming_jobs` — risk: medium
 	 */
-	async upcomingJobs(id: string, key: string): Promise<ProofResult<unknown>> {
+	async upcomingJobs(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdResourceGroupsKeyUpcomingJobs",
 			namespace: "projects",
@@ -5342,6 +5594,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5350,7 +5603,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/runners` — risk: medium
 	 */
-	async listRunners(id: string): Promise<ProofResult<unknown>> {
+	async listRunners(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRunners",
 			namespace: "projects",
@@ -5363,6 +5616,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5371,7 +5625,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/runners` — risk: medium
 	 */
-	async createRunner(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createRunner(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRunners",
 			namespace: "projects",
@@ -5384,6 +5638,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5392,7 +5647,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/runners/{runner_id}` — risk: medium
 	 */
-	async deleteRunner(id: string, runnerId: string): Promise<ProofResult<unknown>> {
+	async deleteRunner(id: string, runnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRunnersRunnerId",
 			namespace: "projects",
@@ -5405,6 +5660,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5413,7 +5669,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/runners/reset_registration_token` — risk: medium
 	 */
-	async resetRegistrationToken(id: string): Promise<ProofResult<unknown>> {
+	async resetRegistrationToken(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRunnersResetRegistrationToken",
 			namespace: "projects",
@@ -5426,6 +5682,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5434,7 +5691,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/secure_files` — risk: medium
 	 */
-	async listSecureFiles(id: string): Promise<ProofResult<unknown>> {
+	async listSecureFiles(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSecureFiles",
 			namespace: "projects",
@@ -5447,6 +5704,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5455,7 +5713,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/secure_files` — risk: medium
 	 */
-	async createSecureFile(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createSecureFile(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdSecureFiles",
 			namespace: "projects",
@@ -5468,6 +5726,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5476,7 +5735,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/secure_files/{secure_file_id}` — risk: medium
 	 */
-	async retrieveSecureFile(id: string, secureFileId: string): Promise<ProofResult<unknown>> {
+	async retrieveSecureFile(id: string, secureFileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSecureFilesSecureFileId",
 			namespace: "projects",
@@ -5489,6 +5748,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5497,7 +5757,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/secure_files/{secure_file_id}` — risk: medium
 	 */
-	async deleteSecureFile(id: string, secureFileId: string): Promise<ProofResult<unknown>> {
+	async deleteSecureFile(id: string, secureFileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdSecureFilesSecureFileId",
 			namespace: "projects",
@@ -5510,6 +5770,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5518,7 +5779,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/secure_files/{secure_file_id}/download` — risk: medium
 	 */
-	async secureFilesDownload(id: string, secureFileId: string): Promise<ProofResult<unknown>> {
+	async secureFilesDownload(id: string, secureFileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSecureFilesSecureFileIdDownload",
 			namespace: "projects",
@@ -5531,6 +5792,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5539,7 +5801,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines` — risk: medium
 	 */
-	async listPipelines(id: string): Promise<ProofResult<unknown>> {
+	async listPipelines(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelines",
 			namespace: "projects",
@@ -5552,6 +5814,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5560,7 +5823,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline` — risk: medium
 	 */
-	async createPipeline(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createPipeline(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPipeline",
 			namespace: "projects",
@@ -5573,6 +5836,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5581,7 +5845,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/latest` — risk: medium
 	 */
-	async pipelinesLatest(id: string): Promise<ProofResult<unknown>> {
+	async pipelinesLatest(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelinesLatest",
 			namespace: "projects",
@@ -5594,6 +5858,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5602,7 +5867,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}` — risk: medium
 	 */
-	async retrievePipeline(id: string, pipelineId: string): Promise<ProofResult<unknown>> {
+	async retrievePipeline(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelinesPipelineId",
 			namespace: "projects",
@@ -5615,6 +5880,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5623,7 +5889,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/pipelines/{pipeline_id}` — risk: medium
 	 */
-	async deletePipeline(id: string, pipelineId: string): Promise<ProofResult<unknown>> {
+	async deletePipeline(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPipelinesPipelineId",
 			namespace: "projects",
@@ -5636,6 +5902,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5644,7 +5911,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/jobs` — risk: medium
 	 */
-	async jobs(id: string, pipelineId: string): Promise<ProofResult<unknown>> {
+	async jobs(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelinesPipelineIdJobs",
 			namespace: "projects",
@@ -5657,6 +5924,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5665,7 +5933,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/bridges` — risk: medium
 	 */
-	async bridges(id: string, pipelineId: string): Promise<ProofResult<unknown>> {
+	async bridges(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelinesPipelineIdBridges",
 			namespace: "projects",
@@ -5678,6 +5946,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5686,7 +5955,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/variables` — risk: medium
 	 */
-	async pipelinesVariables(id: string, pipelineId: string): Promise<ProofResult<unknown>> {
+	async pipelinesVariables(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelinesPipelineIdVariables",
 			namespace: "projects",
@@ -5699,6 +5968,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5707,7 +5977,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/test_report` — risk: medium
 	 */
-	async testReport(id: string, pipelineId: string): Promise<ProofResult<unknown>> {
+	async testReport(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelinesPipelineIdTestReport",
 			namespace: "projects",
@@ -5720,6 +5990,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5728,7 +5999,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/test_report_summary` — risk: medium
 	 */
-	async testReportSummary(id: string, pipelineId: string): Promise<ProofResult<unknown>> {
+	async testReportSummary(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelinesPipelineIdTestReportSummary",
 			namespace: "projects",
@@ -5741,6 +6012,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5749,7 +6021,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/pipelines/{pipeline_id}/metadata` — risk: medium
 	 */
-	async metadata(id: string, pipelineId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async metadata(id: string, pipelineId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPipelinesPipelineIdMetadata",
 			namespace: "projects",
@@ -5762,6 +6034,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5770,7 +6043,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/pipelines/{pipeline_id}/retry` — risk: medium
 	 */
-	async pipelinesRetry(id: string, pipelineId: string): Promise<ProofResult<unknown>> {
+	async pipelinesRetry(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPipelinesPipelineIdRetry",
 			namespace: "projects",
@@ -5783,6 +6056,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5791,7 +6065,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/pipelines/{pipeline_id}/cancel` — risk: medium
 	 */
-	async pipelinesCancel(id: string, pipelineId: string): Promise<ProofResult<unknown>> {
+	async pipelinesCancel(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPipelinesPipelineIdCancel",
 			namespace: "projects",
@@ -5804,6 +6078,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5812,7 +6087,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules` — risk: medium
 	 */
-	async listPipelineSchedules(id: string): Promise<ProofResult<unknown>> {
+	async listPipelineSchedules(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelineSchedules",
 			namespace: "projects",
@@ -5825,6 +6100,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5833,7 +6109,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules` — risk: medium
 	 */
-	async createPipelineSchedule(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createPipelineSchedule(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPipelineSchedules",
 			namespace: "projects",
@@ -5846,6 +6122,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5854,7 +6131,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}` — risk: medium
 	 */
-	async retrievePipelineSchedule(id: string, pipelineScheduleId: string): Promise<ProofResult<unknown>> {
+	async retrievePipelineSchedule(id: string, pipelineScheduleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelineSchedulesPipelineScheduleId",
 			namespace: "projects",
@@ -5867,6 +6144,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5875,7 +6153,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}` — risk: medium
 	 */
-	async pipelineSchedules(id: string, pipelineScheduleId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pipelineSchedules(id: string, pipelineScheduleId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPipelineSchedulesPipelineScheduleId",
 			namespace: "projects",
@@ -5888,6 +6166,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5896,7 +6175,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}` — risk: medium
 	 */
-	async deletePipelineSchedule(id: string, pipelineScheduleId: string): Promise<ProofResult<unknown>> {
+	async deletePipelineSchedule(id: string, pipelineScheduleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPipelineSchedulesPipelineScheduleId",
 			namespace: "projects",
@@ -5909,6 +6188,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5917,7 +6197,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/pipelines` — risk: medium
 	 */
-	async pipelineSchedulesPipelines(id: string, pipelineScheduleId: string): Promise<ProofResult<unknown>> {
+	async pipelineSchedulesPipelines(id: string, pipelineScheduleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdPipelines",
 			namespace: "projects",
@@ -5930,6 +6210,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5938,7 +6219,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/take_ownership` — risk: medium
 	 */
-	async takeOwnership(id: string, pipelineScheduleId: string): Promise<ProofResult<unknown>> {
+	async takeOwnership(id: string, pipelineScheduleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnership",
 			namespace: "projects",
@@ -5951,6 +6232,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5959,7 +6241,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/play` — risk: medium
 	 */
-	async pipelineSchedulesPlay(id: string, pipelineScheduleId: string): Promise<ProofResult<unknown>> {
+	async pipelineSchedulesPlay(id: string, pipelineScheduleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdPlay",
 			namespace: "projects",
@@ -5972,6 +6254,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -5980,7 +6263,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables` — risk: medium
 	 */
-	async postPipelineSchedulesVariables(id: string, pipelineScheduleId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postPipelineSchedulesVariables(id: string, pipelineScheduleId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariables",
 			namespace: "projects",
@@ -5993,6 +6276,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6001,7 +6285,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}` — risk: medium
 	 */
-	async pipelineSchedulesvariablesRetrieveVariable(id: string, pipelineScheduleId: string, key: string): Promise<ProofResult<unknown>> {
+	async pipelineSchedulesvariablesRetrieveVariable(id: string, pipelineScheduleId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey",
 			namespace: "projects",
@@ -6014,6 +6298,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6022,7 +6307,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}` — risk: medium
 	 */
-	async putPipelineSchedulesVariables(id: string, pipelineScheduleId: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putPipelineSchedulesVariables(id: string, pipelineScheduleId: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey",
 			namespace: "projects",
@@ -6035,6 +6320,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6043,7 +6329,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}` — risk: medium
 	 */
-	async pipelineSchedulesvariablesDeleteVariable(id: string, pipelineScheduleId: string, key: string): Promise<ProofResult<unknown>> {
+	async pipelineSchedulesvariablesDeleteVariable(id: string, pipelineScheduleId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey",
 			namespace: "projects",
@@ -6056,6 +6342,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6064,7 +6351,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/(ref/{ref}/)trigger/pipeline` — risk: medium
 	 */
-	async pipeline(id: string, ref: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pipeline(id: string, ref: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsId(refRef)triggerPipeline",
 			namespace: "projects",
@@ -6077,6 +6364,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6085,7 +6373,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/triggers` — risk: medium
 	 */
-	async listTriggers(id: string): Promise<ProofResult<unknown>> {
+	async listTriggers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdTriggers",
 			namespace: "projects",
@@ -6098,6 +6386,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6106,7 +6395,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/triggers` — risk: medium
 	 */
-	async createTrigger(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createTrigger(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdTriggers",
 			namespace: "projects",
@@ -6119,6 +6408,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6127,7 +6417,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/triggers/{trigger_id}` — risk: medium
 	 */
-	async retrieveTrigger(id: string, triggerId: string): Promise<ProofResult<unknown>> {
+	async retrieveTrigger(id: string, triggerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdTriggersTriggerId",
 			namespace: "projects",
@@ -6140,6 +6430,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6148,7 +6439,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/triggers/{trigger_id}` — risk: medium
 	 */
-	async triggers(id: string, triggerId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async triggers(id: string, triggerId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdTriggersTriggerId",
 			namespace: "projects",
@@ -6161,6 +6452,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6169,7 +6461,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/triggers/{trigger_id}` — risk: medium
 	 */
-	async deleteTrigger(id: string, triggerId: string): Promise<ProofResult<unknown>> {
+	async deleteTrigger(id: string, triggerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdTriggersTriggerId",
 			namespace: "projects",
@@ -6182,6 +6474,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6190,7 +6483,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/variables` — risk: medium
 	 */
-	async listVariables(id: string): Promise<ProofResult<unknown>> {
+	async listVariables(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdVariables",
 			namespace: "projects",
@@ -6203,6 +6496,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6211,7 +6505,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/variables` — risk: medium
 	 */
-	async createVariable(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createVariable(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdVariables",
 			namespace: "projects",
@@ -6224,6 +6518,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6232,7 +6527,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/variables/{key}` — risk: medium
 	 */
-	async variablesRetrieveVariable(id: string, key: string): Promise<ProofResult<unknown>> {
+	async variablesRetrieveVariable(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdVariablesKey",
 			namespace: "projects",
@@ -6245,6 +6540,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6253,7 +6549,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/variables/{key}` — risk: medium
 	 */
-	async variables_3(id: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async variables_3(id: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdVariablesKey",
 			namespace: "projects",
@@ -6266,6 +6562,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6274,7 +6571,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/variables/{key}` — risk: medium
 	 */
-	async variablesDeleteVariable(id: string, key: string): Promise<ProofResult<unknown>> {
+	async variablesDeleteVariable(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdVariablesKey",
 			namespace: "projects",
@@ -6287,6 +6584,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6295,7 +6593,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/cluster_agents/{agent_id}/tokens` — risk: medium
 	 */
-	async tokens_0(id: string, agentId: string): Promise<ProofResult<unknown>> {
+	async tokens_0(id: string, agentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdClusterAgentsAgentIdTokens",
 			namespace: "projects",
@@ -6308,6 +6606,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6316,7 +6615,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/cluster_agents/{agent_id}/tokens` — risk: medium
 	 */
-	async tokens_1(id: string, agentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async tokens_1(id: string, agentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdClusterAgentsAgentIdTokens",
 			namespace: "projects",
@@ -6329,6 +6628,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6337,7 +6637,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/cluster_agents/{agent_id}/tokens/{token_id}` — risk: medium
 	 */
-	async retrieveToken(id: string, agentId: string, tokenId: string): Promise<ProofResult<unknown>> {
+	async retrieveToken(id: string, agentId: string, tokenId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdClusterAgentsAgentIdTokensTokenId",
 			namespace: "projects",
@@ -6350,6 +6650,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6358,7 +6659,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/cluster_agents/{agent_id}/tokens/{token_id}` — risk: medium
 	 */
-	async deleteToken(id: string, agentId: string, tokenId: string): Promise<ProofResult<unknown>> {
+	async deleteToken(id: string, agentId: string, tokenId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdClusterAgentsAgentIdTokensTokenId",
 			namespace: "projects",
@@ -6371,6 +6672,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6379,7 +6681,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/cluster_agents` — risk: medium
 	 */
-	async listClusterAgents(id: string): Promise<ProofResult<unknown>> {
+	async listClusterAgents(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdClusterAgents",
 			namespace: "projects",
@@ -6392,6 +6694,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6400,7 +6703,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/cluster_agents` — risk: medium
 	 */
-	async createClusterAgent(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createClusterAgent(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdClusterAgents",
 			namespace: "projects",
@@ -6413,6 +6716,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6421,7 +6725,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/cluster_agents/{agent_id}` — risk: medium
 	 */
-	async retrieveClusterAgent(id: string, agentId: string): Promise<ProofResult<unknown>> {
+	async retrieveClusterAgent(id: string, agentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdClusterAgentsAgentId",
 			namespace: "projects",
@@ -6434,6 +6738,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6442,7 +6747,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/cluster_agents/{agent_id}` — risk: medium
 	 */
-	async deleteClusterAgent(id: string, agentId: string): Promise<ProofResult<unknown>> {
+	async deleteClusterAgent(id: string, agentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdClusterAgentsAgentId",
 			namespace: "projects",
@@ -6455,6 +6760,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6463,7 +6769,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/cargo/config.json` — risk: medium
 	 */
-	async configJson(id: string): Promise<ProofResult<unknown>> {
+	async configJson(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesCargoConfigJson",
 			namespace: "projects",
@@ -6476,6 +6782,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6484,7 +6791,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits` — risk: medium
 	 */
-	async getRepositoryCommits(id: string): Promise<ProofResult<unknown>> {
+	async getRepositoryCommits(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCommits",
 			namespace: "projects",
@@ -6497,6 +6804,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6505,7 +6813,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/repository/commits` — risk: medium
 	 */
-	async postRepositoryCommits(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postRepositoryCommits(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRepositoryCommits",
 			namespace: "projects",
@@ -6518,6 +6826,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6526,7 +6835,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}` — risk: medium
 	 */
-	async retrieveCommit(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async retrieveCommit(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCommitsSha",
 			namespace: "projects",
@@ -6539,6 +6848,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6547,7 +6857,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/diff` — risk: medium
 	 */
-	async diff(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async diff(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCommitsShaDiff",
 			namespace: "projects",
@@ -6560,6 +6870,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6568,7 +6879,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/comments` — risk: medium
 	 */
-	async comments_0(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async comments_0(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCommitsShaComments",
 			namespace: "projects",
@@ -6581,6 +6892,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6589,7 +6901,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/repository/commits/{sha}/comments` — risk: medium
 	 */
-	async comments_1(id: string, sha: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async comments_1(id: string, sha: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRepositoryCommitsShaComments",
 			namespace: "projects",
@@ -6602,6 +6914,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6610,7 +6923,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/sequence` — risk: medium
 	 */
-	async sequence(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async sequence(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCommitsShaSequence",
 			namespace: "projects",
@@ -6623,6 +6936,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6631,7 +6945,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/repository/commits/{sha}/cherry_pick` — risk: medium
 	 */
-	async cherryPick(id: string, sha: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async cherryPick(id: string, sha: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRepositoryCommitsShaCherryPick",
 			namespace: "projects",
@@ -6644,6 +6958,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6652,7 +6967,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/repository/commits/{sha}/revert` — risk: medium
 	 */
-	async revert(id: string, sha: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async revert(id: string, sha: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRepositoryCommitsShaRevert",
 			namespace: "projects",
@@ -6665,6 +6980,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6673,7 +6989,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/refs` — risk: medium
 	 */
-	async refs(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async refs(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCommitsShaRefs",
 			namespace: "projects",
@@ -6686,6 +7002,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6694,7 +7011,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/merge_requests` — risk: medium
 	 */
-	async repositorycommitsMergeRequests(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async repositorycommitsMergeRequests(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCommitsShaMergeRequests",
 			namespace: "projects",
@@ -6707,6 +7024,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6715,7 +7033,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/signature` — risk: medium
 	 */
-	async commitsSignature(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async commitsSignature(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCommitsShaSignature",
 			namespace: "projects",
@@ -6728,6 +7046,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6736,7 +7055,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/statuses` — risk: medium
 	 */
-	async statuses(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async statuses(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCommitsShaStatuses",
 			namespace: "projects",
@@ -6749,6 +7068,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6757,7 +7077,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/statuses/{sha}` — risk: medium
 	 */
-	async updateStatus(id: string, sha: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateStatus(id: string, sha: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdStatusesSha",
 			namespace: "projects",
@@ -6770,6 +7090,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6778,7 +7099,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/composer` — risk: medium
 	 */
-	async composer(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async composer(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesComposer",
 			namespace: "projects",
@@ -6791,6 +7112,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6799,7 +7121,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/users/authenticate` — risk: medium
 	 */
-	async v1usersAuthenticate(id: string): Promise<ProofResult<unknown>> {
+	async v1usersAuthenticate(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1UsersAuthenticate",
 			namespace: "projects",
@@ -6812,6 +7134,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6820,7 +7143,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/users/check_credentials` — risk: medium
 	 */
-	async v1usersCheckCredentials(id: string): Promise<ProofResult<unknown>> {
+	async v1usersCheckCredentials(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1UsersCheckCredentials",
 			namespace: "projects",
@@ -6833,6 +7156,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6841,7 +7165,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/search` — risk: low
 	 */
-	async getV1conansSearch(id: string): Promise<ProofResult<unknown>> {
+	async getV1conansSearch(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1ConansSearch",
 			namespace: "projects",
@@ -6854,6 +7178,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6862,7 +7187,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/search` — risk: low
 	 */
-	async getV1conansSearch_0(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async getV1conansSearch_0(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearch",
 			namespace: "projects",
@@ -6875,6 +7200,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6883,7 +7209,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/ping` — risk: medium
 	 */
-	async ping(id: string): Promise<ProofResult<unknown>> {
+	async ping(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1Ping",
 			namespace: "projects",
@@ -6896,6 +7222,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6904,7 +7231,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}` — risk: medium
 	 */
-	async conanv1conanspackagesRetrievePackage(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async conanv1conanspackagesRetrievePackage(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference",
 			namespace: "projects",
@@ -6917,6 +7244,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6925,7 +7253,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}` — risk: medium
 	 */
-	async retrieveConan(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async retrieveConan(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel",
 			namespace: "projects",
@@ -6938,6 +7266,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6946,7 +7275,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}` — risk: medium
 	 */
-	async deleteConan(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async deleteConan(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel",
 			namespace: "projects",
@@ -6959,6 +7288,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6967,7 +7297,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest` — risk: medium
 	 */
-	async packagesDigest(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async packagesDigest(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigest",
 			namespace: "projects",
@@ -6980,6 +7310,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -6988,7 +7319,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/digest` — risk: medium
 	 */
-	async digest_1(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async digest_1(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigest",
 			namespace: "projects",
@@ -7001,6 +7332,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7009,7 +7341,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls` — risk: medium
 	 */
-	async packagesDownloadUrls(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async packagesDownloadUrls(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrls",
 			namespace: "projects",
@@ -7022,6 +7354,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7030,7 +7363,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/download_urls` — risk: medium
 	 */
-	async downloadUrls_1(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async downloadUrls_1(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls",
 			namespace: "projects",
@@ -7043,6 +7376,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7051,7 +7385,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls` — risk: medium
 	 */
-	async packagesUploadUrls(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async packagesUploadUrls(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls",
 			namespace: "projects",
@@ -7064,6 +7398,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7072,7 +7407,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/upload_urls` — risk: medium
 	 */
-	async uploadUrls_1(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async uploadUrls_1(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls",
 			namespace: "projects",
@@ -7085,6 +7420,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7093,7 +7429,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}` — risk: medium
 	 */
-	async retrieveExport(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async retrieveExport(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName",
 			namespace: "projects",
@@ -7106,6 +7442,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7114,7 +7451,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}` — risk: medium
 	 */
-	async export(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async export(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName",
 			namespace: "projects",
@@ -7127,6 +7464,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7135,7 +7473,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize` — risk: medium
 	 */
-	async packagesconanv1filesexportAuthorize(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async packagesconanv1filesexportAuthorize(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize",
 			namespace: "projects",
@@ -7148,6 +7486,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7156,7 +7495,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}` — risk: medium
 	 */
-	async conanv1filespackageRetrievePackage(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async conanv1filespackageRetrievePackage(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName",
 			namespace: "projects",
@@ -7169,6 +7508,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7177,7 +7517,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}` — risk: medium
 	 */
-	async package(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async package(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName",
 			namespace: "projects",
@@ -7190,6 +7530,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7198,7 +7539,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize` — risk: medium
 	 */
-	async packagesconanv1filespackageAuthorize(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async packagesconanv1filespackageAuthorize(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize",
 			namespace: "projects",
@@ -7211,6 +7552,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7219,7 +7561,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/users/authenticate` — risk: medium
 	 */
-	async v2usersAuthenticate(id: string): Promise<ProofResult<unknown>> {
+	async v2usersAuthenticate(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2UsersAuthenticate",
 			namespace: "projects",
@@ -7232,6 +7574,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7240,7 +7583,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/users/check_credentials` — risk: medium
 	 */
-	async v2usersCheckCredentials(id: string): Promise<ProofResult<unknown>> {
+	async v2usersCheckCredentials(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2UsersCheckCredentials",
 			namespace: "projects",
@@ -7253,6 +7596,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7261,7 +7605,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/search` — risk: low
 	 */
-	async getV2conansSearch(id: string): Promise<ProofResult<unknown>> {
+	async getV2conansSearch(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansSearch",
 			namespace: "projects",
@@ -7274,6 +7618,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7282,7 +7627,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/search` — risk: low
 	 */
-	async getV2conansSearch_0(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async getV2conansSearch_0(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelSearch",
 			namespace: "projects",
@@ -7295,6 +7640,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7303,7 +7649,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/latest` — risk: medium
 	 */
-	async packagesconanv2conansLatest(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async packagesconanv2conansLatest(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelLatest",
 			namespace: "projects",
@@ -7316,6 +7662,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7324,7 +7671,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions` — risk: medium
 	 */
-	async revisions_0(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async revisions_0(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisions",
 			namespace: "projects",
@@ -7337,6 +7684,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7345,7 +7693,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}` — risk: medium
 	 */
-	async deleteRevision_0(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string): Promise<ProofResult<unknown>> {
+	async deleteRevision_0(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevision",
 			namespace: "projects",
@@ -7358,6 +7706,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7366,7 +7715,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files` — risk: medium
 	 */
-	async getPackagesconanv2conansrevisionsFiles(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string): Promise<ProofResult<unknown>> {
+	async getPackagesconanv2conansrevisionsFiles(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFiles",
 			namespace: "projects",
@@ -7379,6 +7728,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7387,7 +7737,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}` — risk: medium
 	 */
-	async packagesconanv2conansrevisionsfilesRetrieveFile(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async packagesconanv2conansrevisionsfilesRetrieveFile(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileName",
 			namespace: "projects",
@@ -7400,6 +7750,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7408,7 +7759,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}` — risk: medium
 	 */
-	async putPackagesconanv2conansrevisionsFiles(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putPackagesconanv2conansrevisionsFiles(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileName",
 			namespace: "projects",
@@ -7421,6 +7772,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7429,7 +7781,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}/authorize` — risk: medium
 	 */
-	async packagesconanv2conansrevisionsfilesAuthorize(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async packagesconanv2conansrevisionsfilesAuthorize(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionFilesFileNameAuthorize",
 			namespace: "projects",
@@ -7442,6 +7794,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7450,7 +7803,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/search` — risk: low
 	 */
-	async v2conansrevisionsSearch(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string): Promise<ProofResult<unknown>> {
+	async v2conansrevisionsSearch(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionSearch",
 			namespace: "projects",
@@ -7463,6 +7816,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7471,7 +7825,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/latest` — risk: medium
 	 */
-	async packagesconanv2conansrevisionspackagesLatest(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async packagesconanv2conansrevisionspackagesLatest(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceLatest",
 			namespace: "projects",
@@ -7484,6 +7838,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7492,7 +7847,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions` — risk: medium
 	 */
-	async packagesRevisions(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async packagesRevisions(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisions",
 			namespace: "projects",
@@ -7505,6 +7860,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7513,7 +7869,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}` — risk: medium
 	 */
-	async packagesrevisionsDeleteRevision(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string): Promise<ProofResult<unknown>> {
+	async packagesrevisionsDeleteRevision(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevision",
 			namespace: "projects",
@@ -7526,6 +7882,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7534,7 +7891,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files` — risk: medium
 	 */
-	async getPackagesconanv2conansrevisionspackagesrevisionsFiles(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string): Promise<ProofResult<unknown>> {
+	async getPackagesconanv2conansrevisionspackagesrevisionsFiles(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFiles",
 			namespace: "projects",
@@ -7547,6 +7904,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7555,7 +7913,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files/{file_name}` — risk: medium
 	 */
-	async packagesconanv2conansrevisionspackagesrevisionsfilesRetrieveFile(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async packagesconanv2conansrevisionspackagesrevisionsfilesRetrieveFile(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileName",
 			namespace: "projects",
@@ -7568,6 +7926,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7576,7 +7935,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files/{file_name}` — risk: medium
 	 */
-	async putPackagesconanv2conansrevisionspackagesrevisionsFiles(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putPackagesconanv2conansrevisionspackagesrevisionsFiles(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileName",
 			namespace: "projects",
@@ -7589,6 +7948,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7597,7 +7957,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files/{file_name}/authorize` — risk: medium
 	 */
-	async packagesconanv2conansrevisionspackagesrevisionsfilesAuthorize(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async packagesconanv2conansrevisionspackagesrevisionsfilesAuthorize(id: string, packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesConanV2ConansPackageNamePackageVersionPackageUsernamePackageChannelRevisionsRecipeRevisionPackagesConanPackageReferenceRevisionsPackageRevisionFilesFileNameAuthorize",
 			namespace: "projects",
@@ -7610,6 +7970,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7618,7 +7979,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/debian/pool/{distribution}/{letter}/{package_name}/{package_version}/{file_name}` — risk: medium
 	 */
-	async retrievePool(id: string, distribution: string, letter: string, packageName: string, packageVersion: string, fileName: string): Promise<ProofResult<unknown>> {
+	async retrievePool(id: string, distribution: string, letter: string, packageName: string, packageVersion: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesDebianPoolDistributionLetterPackageNamePackageVersionFileName",
 			namespace: "projects",
@@ -7631,6 +7992,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7639,7 +8001,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/debian/{file_name}` — risk: medium
 	 */
-	async debian(id: string, fileName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async debian(id: string, fileName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesDebianFileName",
 			namespace: "projects",
@@ -7652,6 +8014,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7660,7 +8023,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/debian/{file_name}/authorize` — risk: medium
 	 */
-	async packagesdebianAuthorize(id: string, fileName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async packagesdebianAuthorize(id: string, fileName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesDebianFileNameAuthorize",
 			namespace: "projects",
@@ -7673,6 +8036,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7681,7 +8045,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/deploy_keys` — risk: medium
 	 */
-	async listDeployKeys(id: string): Promise<ProofResult<unknown>> {
+	async listDeployKeys(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDeployKeys",
 			namespace: "projects",
@@ -7694,6 +8058,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7702,7 +8067,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/deploy_keys` — risk: medium
 	 */
-	async createDeployKey(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createDeployKey(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdDeployKeys",
 			namespace: "projects",
@@ -7715,6 +8080,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7723,7 +8089,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/deploy_keys/{key_id}` — risk: medium
 	 */
-	async retrieveDeployKey(id: string, keyId: string): Promise<ProofResult<unknown>> {
+	async retrieveDeployKey(id: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDeployKeysKeyId",
 			namespace: "projects",
@@ -7736,6 +8102,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7744,7 +8111,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/deploy_keys/{key_id}` — risk: medium
 	 */
-	async deployKeys(id: string, keyId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deployKeys(id: string, keyId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdDeployKeysKeyId",
 			namespace: "projects",
@@ -7757,6 +8124,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7765,7 +8133,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/deploy_keys/{key_id}` — risk: medium
 	 */
-	async deleteDeployKey(id: string, keyId: string): Promise<ProofResult<unknown>> {
+	async deleteDeployKey(id: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdDeployKeysKeyId",
 			namespace: "projects",
@@ -7778,6 +8146,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7786,7 +8155,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/deploy_keys/{key_id}/enable` — risk: medium
 	 */
-	async enable(id: string, keyId: string): Promise<ProofResult<unknown>> {
+	async enable(id: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdDeployKeysKeyIdEnable",
 			namespace: "projects",
@@ -7799,6 +8168,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7807,7 +8177,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/deploy_tokens` — risk: medium
 	 */
-	async listDeployTokens(id: string): Promise<ProofResult<unknown>> {
+	async listDeployTokens(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDeployTokens",
 			namespace: "projects",
@@ -7820,6 +8190,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7828,7 +8199,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/deploy_tokens` — risk: medium
 	 */
-	async createDeployToken(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createDeployToken(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdDeployTokens",
 			namespace: "projects",
@@ -7841,6 +8212,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7849,7 +8221,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/deploy_tokens/{token_id}` — risk: medium
 	 */
-	async retrieveDeployToken(id: string, tokenId: string): Promise<ProofResult<unknown>> {
+	async retrieveDeployToken(id: string, tokenId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDeployTokensTokenId",
 			namespace: "projects",
@@ -7862,6 +8234,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7870,7 +8243,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/deploy_tokens/{token_id}` — risk: medium
 	 */
-	async deleteDeployToken(id: string, tokenId: string): Promise<ProofResult<unknown>> {
+	async deleteDeployToken(id: string, tokenId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdDeployTokensTokenId",
 			namespace: "projects",
@@ -7883,6 +8256,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7891,7 +8265,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/deployments` — risk: medium
 	 */
-	async listDeployments(id: string): Promise<ProofResult<unknown>> {
+	async listDeployments(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDeployments",
 			namespace: "projects",
@@ -7904,6 +8278,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7912,7 +8287,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/deployments` — risk: medium
 	 */
-	async createDeployment(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createDeployment(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdDeployments",
 			namespace: "projects",
@@ -7925,6 +8300,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7933,7 +8309,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/deployments/{deployment_id}` — risk: medium
 	 */
-	async retrieveDeployment(id: string, deploymentId: string): Promise<ProofResult<unknown>> {
+	async retrieveDeployment(id: string, deploymentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDeploymentsDeploymentId",
 			namespace: "projects",
@@ -7946,6 +8322,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7954,7 +8331,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/deployments/{deployment_id}` — risk: medium
 	 */
-	async deployments(id: string, deploymentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async deployments(id: string, deploymentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdDeploymentsDeploymentId",
 			namespace: "projects",
@@ -7967,6 +8344,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7975,7 +8353,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/deployments/{deployment_id}` — risk: medium
 	 */
-	async deleteDeployment(id: string, deploymentId: string): Promise<ProofResult<unknown>> {
+	async deleteDeployment(id: string, deploymentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdDeploymentsDeploymentId",
 			namespace: "projects",
@@ -7988,6 +8366,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -7996,7 +8375,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/deployments/{deployment_id}/merge_requests` — risk: medium
 	 */
-	async deploymentsMergeRequests(id: string, deploymentId: string): Promise<ProofResult<unknown>> {
+	async deploymentsMergeRequests(id: string, deploymentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDeploymentsDeploymentIdMergeRequests",
 			namespace: "projects",
@@ -8009,6 +8388,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8017,7 +8397,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/deployments/{deployment_id}/approval` — risk: medium
 	 */
-	async approval(id: string, deploymentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async approval(id: string, deploymentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdDeploymentsDeploymentIdApproval",
 			namespace: "projects",
@@ -8030,6 +8410,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8038,7 +8419,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes` — risk: medium
 	 */
-	async draftNotes_0(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async draftNotes_0(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotes",
 			namespace: "projects",
@@ -8051,6 +8432,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8059,7 +8441,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes` — risk: medium
 	 */
-	async draftNotes_1(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async draftNotes_1(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotes",
 			namespace: "projects",
@@ -8072,6 +8454,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8080,7 +8463,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}` — risk: medium
 	 */
-	async retrieveDraftNote(id: string, mergeRequestIid: string, draftNoteId: string): Promise<ProofResult<unknown>> {
+	async retrieveDraftNote(id: string, mergeRequestIid: string, draftNoteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId",
 			namespace: "projects",
@@ -8093,6 +8476,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8101,7 +8485,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}` — risk: medium
 	 */
-	async draftNotes_2(id: string, mergeRequestIid: string, draftNoteId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async draftNotes_2(id: string, mergeRequestIid: string, draftNoteId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId",
 			namespace: "projects",
@@ -8114,6 +8498,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8122,7 +8507,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}` — risk: medium
 	 */
-	async deleteDraftNote(id: string, mergeRequestIid: string, draftNoteId: string): Promise<ProofResult<unknown>> {
+	async deleteDraftNote(id: string, mergeRequestIid: string, draftNoteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteId",
 			namespace: "projects",
@@ -8135,6 +8520,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8143,7 +8529,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}/publish` — risk: medium
 	 */
-	async mergeRequestsdraftNotesPublish(id: string, mergeRequestIid: string, draftNoteId: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsdraftNotesPublish(id: string, mergeRequestIid: string, draftNoteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesDraftNoteIdPublish",
 			namespace: "projects",
@@ -8156,6 +8542,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8164,7 +8551,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/bulk_publish` — risk: medium
 	 */
-	async bulkPublish(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async bulkPublish(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublish",
 			namespace: "projects",
@@ -8177,6 +8564,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8185,7 +8573,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/environments` — risk: medium
 	 */
-	async listEnvironments(id: string): Promise<ProofResult<unknown>> {
+	async listEnvironments(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdEnvironments",
 			namespace: "projects",
@@ -8198,6 +8586,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8206,7 +8595,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/environments` — risk: medium
 	 */
-	async createEnvironment(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createEnvironment(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdEnvironments",
 			namespace: "projects",
@@ -8219,6 +8608,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8227,7 +8617,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/environments/{environment_id}` — risk: medium
 	 */
-	async retrieveEnvironment(id: string, environmentId: string): Promise<ProofResult<unknown>> {
+	async retrieveEnvironment(id: string, environmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdEnvironmentsEnvironmentId",
 			namespace: "projects",
@@ -8240,6 +8630,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8248,7 +8639,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/environments/{environment_id}` — risk: medium
 	 */
-	async environments(id: string, environmentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async environments(id: string, environmentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdEnvironmentsEnvironmentId",
 			namespace: "projects",
@@ -8261,6 +8652,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8269,7 +8661,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/environments/{environment_id}` — risk: medium
 	 */
-	async deleteEnvironment(id: string, environmentId: string): Promise<ProofResult<unknown>> {
+	async deleteEnvironment(id: string, environmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdEnvironmentsEnvironmentId",
 			namespace: "projects",
@@ -8282,6 +8674,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8290,7 +8683,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/environments/review_apps` — risk: medium
 	 */
-	async reviewApps(id: string): Promise<ProofResult<unknown>> {
+	async reviewApps(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdEnvironmentsReviewApps",
 			namespace: "projects",
@@ -8303,6 +8696,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8311,7 +8705,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/environments/{environment_id}/stop` — risk: medium
 	 */
-	async stop(id: string, environmentId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async stop(id: string, environmentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdEnvironmentsEnvironmentIdStop",
 			namespace: "projects",
@@ -8324,6 +8718,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8332,7 +8727,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/environments/stop_stale` — risk: medium
 	 */
-	async stopStale(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async stopStale(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdEnvironmentsStopStale",
 			namespace: "projects",
@@ -8345,6 +8740,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8353,7 +8749,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/error_tracking/client_keys` — risk: medium
 	 */
-	async clientKeys_0(id: string): Promise<ProofResult<unknown>> {
+	async clientKeys_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdErrorTrackingClientKeys",
 			namespace: "projects",
@@ -8366,6 +8762,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8374,7 +8771,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/error_tracking/client_keys` — risk: medium
 	 */
-	async clientKeys_1(id: string): Promise<ProofResult<unknown>> {
+	async clientKeys_1(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdErrorTrackingClientKeys",
 			namespace: "projects",
@@ -8387,6 +8784,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8395,7 +8793,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/error_tracking/client_keys/{key_id}` — risk: medium
 	 */
-	async deleteClientKey(id: string, keyId: string): Promise<ProofResult<unknown>> {
+	async deleteClientKey(id: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdErrorTrackingClientKeysKeyId",
 			namespace: "projects",
@@ -8408,6 +8806,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8416,7 +8815,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/error_tracking/settings` — risk: medium
 	 */
-	async settings_0(id: string): Promise<ProofResult<unknown>> {
+	async settings_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdErrorTrackingSettings",
 			namespace: "projects",
@@ -8429,6 +8828,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8437,7 +8837,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/error_tracking/settings` — risk: medium
 	 */
-	async settings_1(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async settings_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdErrorTrackingSettings",
 			namespace: "projects",
@@ -8450,6 +8850,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8458,7 +8859,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v4/projects/{id}/error_tracking/settings` — risk: medium
 	 */
-	async settings_2(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async settings_2(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiV4ProjectsIdErrorTrackingSettings",
 			namespace: "projects",
@@ -8471,6 +8872,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8479,7 +8881,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/feature_flags` — risk: medium
 	 */
-	async listFeatureFlags(id: string): Promise<ProofResult<unknown>> {
+	async listFeatureFlags(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdFeatureFlags",
 			namespace: "projects",
@@ -8492,6 +8894,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8500,7 +8903,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/feature_flags` — risk: medium
 	 */
-	async createFeatureFlag(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createFeatureFlag(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdFeatureFlags",
 			namespace: "projects",
@@ -8513,6 +8916,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8521,7 +8925,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/feature_flags/{feature_flag_name}` — risk: medium
 	 */
-	async retrieveFeatureFlag(id: string, featureFlagName: string): Promise<ProofResult<unknown>> {
+	async retrieveFeatureFlag(id: string, featureFlagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdFeatureFlagsFeatureFlagName",
 			namespace: "projects",
@@ -8534,6 +8938,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8542,7 +8947,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/feature_flags/{feature_flag_name}` — risk: medium
 	 */
-	async featureFlags(id: string, featureFlagName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async featureFlags(id: string, featureFlagName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdFeatureFlagsFeatureFlagName",
 			namespace: "projects",
@@ -8555,6 +8960,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8563,7 +8969,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/feature_flags/{feature_flag_name}` — risk: medium
 	 */
-	async deleteFeatureFlag(id: string, featureFlagName: string): Promise<ProofResult<unknown>> {
+	async deleteFeatureFlag(id: string, featureFlagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdFeatureFlagsFeatureFlagName",
 			namespace: "projects",
@@ -8576,6 +8982,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8584,7 +8991,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/feature_flags_user_lists` — risk: medium
 	 */
-	async listFeatureFlagsUserLists(id: string): Promise<ProofResult<unknown>> {
+	async listFeatureFlagsUserLists(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdFeatureFlagsUserLists",
 			namespace: "projects",
@@ -8597,6 +9004,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8605,7 +9013,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/feature_flags_user_lists` — risk: medium
 	 */
-	async createFeatureFlagsUserList(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createFeatureFlagsUserList(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdFeatureFlagsUserLists",
 			namespace: "projects",
@@ -8618,6 +9026,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8626,7 +9035,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/feature_flags_user_lists/{iid}` — risk: medium
 	 */
-	async retrieveFeatureFlagsUserList(id: string, iid: string): Promise<ProofResult<unknown>> {
+	async retrieveFeatureFlagsUserList(id: string, iid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdFeatureFlagsUserListsIid",
 			namespace: "projects",
@@ -8639,6 +9048,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8647,7 +9057,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/feature_flags_user_lists/{iid}` — risk: medium
 	 */
-	async featureFlagsUserLists(id: string, iid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async featureFlagsUserLists(id: string, iid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdFeatureFlagsUserListsIid",
 			namespace: "projects",
@@ -8660,6 +9070,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8668,7 +9079,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/feature_flags_user_lists/{iid}` — risk: medium
 	 */
-	async deleteFeatureFlagsUserList(id: string, iid: string): Promise<ProofResult<unknown>> {
+	async deleteFeatureFlagsUserList(id: string, iid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdFeatureFlagsUserListsIid",
 			namespace: "projects",
@@ -8681,6 +9092,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8689,7 +9101,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/files/{file_path}/blame` — risk: medium
 	 */
-	async blame(id: string, filePath: string): Promise<ProofResult<unknown>> {
+	async blame(id: string, filePath: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryFilesFilePathBlame",
 			namespace: "projects",
@@ -8702,6 +9114,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8710,7 +9123,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/files/{file_path}/raw` — risk: medium
 	 */
-	async repositoryfilesRaw(id: string, filePath: string): Promise<ProofResult<unknown>> {
+	async repositoryfilesRaw(id: string, filePath: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryFilesFilePathRaw",
 			namespace: "projects",
@@ -8723,6 +9136,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8731,7 +9145,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/files/{file_path}` — risk: medium
 	 */
-	async repositoryfilesRetrieveFile(id: string, filePath: string): Promise<ProofResult<unknown>> {
+	async repositoryfilesRetrieveFile(id: string, filePath: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryFilesFilePath",
 			namespace: "projects",
@@ -8744,6 +9158,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8752,7 +9167,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/repository/files/{file_path}` — risk: medium
 	 */
-	async updateFile(id: string, filePath: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateFile(id: string, filePath: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRepositoryFilesFilePath",
 			namespace: "projects",
@@ -8765,6 +9180,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8773,7 +9189,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/repository/files/{file_path}` — risk: medium
 	 */
-	async repositoryFiles(id: string, filePath: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async repositoryFiles(id: string, filePath: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdRepositoryFilesFilePath",
 			namespace: "projects",
@@ -8786,6 +9202,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8794,7 +9211,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/repository/files/{file_path}` — risk: medium
 	 */
-	async deleteFile(id: string, filePath: string): Promise<ProofResult<unknown>> {
+	async deleteFile(id: string, filePath: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRepositoryFilesFilePath",
 			namespace: "projects",
@@ -8807,6 +9224,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8815,7 +9233,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/freeze_periods` — risk: medium
 	 */
-	async listFreezePeriods(id: string): Promise<ProofResult<unknown>> {
+	async listFreezePeriods(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdFreezePeriods",
 			namespace: "projects",
@@ -8828,6 +9246,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8836,7 +9255,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/freeze_periods` — risk: medium
 	 */
-	async createFreezePeriod(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createFreezePeriod(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdFreezePeriods",
 			namespace: "projects",
@@ -8849,6 +9268,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8857,7 +9277,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/freeze_periods/{freeze_period_id}` — risk: medium
 	 */
-	async retrieveFreezePeriod(id: string, freezePeriodId: string): Promise<ProofResult<unknown>> {
+	async retrieveFreezePeriod(id: string, freezePeriodId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdFreezePeriodsFreezePeriodId",
 			namespace: "projects",
@@ -8870,6 +9290,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8878,7 +9299,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/freeze_periods/{freeze_period_id}` — risk: medium
 	 */
-	async freezePeriods(id: string, freezePeriodId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async freezePeriods(id: string, freezePeriodId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdFreezePeriodsFreezePeriodId",
 			namespace: "projects",
@@ -8891,6 +9312,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8899,7 +9321,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/freeze_periods/{freeze_period_id}` — risk: medium
 	 */
-	async deleteFreezePeriod(id: string, freezePeriodId: string): Promise<ProofResult<unknown>> {
+	async deleteFreezePeriod(id: string, freezePeriodId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdFreezePeriodsFreezePeriodId",
 			namespace: "projects",
@@ -8912,6 +9334,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8920,7 +9343,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/helm/{channel}/index.yaml` — risk: medium
 	 */
-	async indexYaml(id: string, channel: string): Promise<ProofResult<unknown>> {
+	async indexYaml(id: string, channel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesHelmChannelIndexYaml",
 			namespace: "projects",
@@ -8933,6 +9356,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8941,7 +9365,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/helm/{channel}/charts/{file_name}.tgz` — risk: medium
 	 */
-	async retrieveChart(id: string, channel: string, fileName: string): Promise<ProofResult<unknown>> {
+	async retrieveChart(id: string, channel: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesHelmChannelChartsFileNameTgz",
 			namespace: "projects",
@@ -8954,6 +9378,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8962,7 +9387,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/helm/api/{channel}/charts/authorize` — risk: medium
 	 */
-	async packageshelmapichartsAuthorize(id: string, channel: string): Promise<ProofResult<unknown>> {
+	async packageshelmapichartsAuthorize(id: string, channel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesHelmApiChannelChartsAuthorize",
 			namespace: "projects",
@@ -8975,6 +9400,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -8983,7 +9409,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/helm/api/{channel}/charts` — risk: medium
 	 */
-	async charts(id: string, channel: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async charts(id: string, channel: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesHelmApiChannelCharts",
 			namespace: "projects",
@@ -8996,6 +9422,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9004,7 +9431,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/services` — risk: medium
 	 */
-	async listServices(id: string): Promise<ProofResult<unknown>> {
+	async listServices(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdServices",
 			namespace: "projects",
@@ -9017,6 +9444,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9025,7 +9453,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/apple-app-store` — risk: medium
 	 */
-	async servicesAppleAppStore(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesAppleAppStore(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesAppleAppStore",
 			namespace: "projects",
@@ -9038,6 +9466,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9046,7 +9475,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/asana` — risk: medium
 	 */
-	async servicesAsana(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesAsana(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesAsana",
 			namespace: "projects",
@@ -9059,6 +9488,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9067,7 +9497,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/assembla` — risk: medium
 	 */
-	async servicesAssembla(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesAssembla(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesAssembla",
 			namespace: "projects",
@@ -9080,6 +9510,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9088,7 +9519,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/bamboo` — risk: medium
 	 */
-	async servicesBamboo(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesBamboo(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesBamboo",
 			namespace: "projects",
@@ -9101,6 +9532,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9109,7 +9541,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/bugzilla` — risk: medium
 	 */
-	async servicesBugzilla(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesBugzilla(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesBugzilla",
 			namespace: "projects",
@@ -9122,6 +9554,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9130,7 +9563,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/buildkite` — risk: medium
 	 */
-	async servicesBuildkite(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesBuildkite(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesBuildkite",
 			namespace: "projects",
@@ -9143,6 +9576,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9151,7 +9585,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/campfire` — risk: medium
 	 */
-	async servicesCampfire(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesCampfire(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesCampfire",
 			namespace: "projects",
@@ -9164,6 +9598,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9172,7 +9607,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/confluence` — risk: medium
 	 */
-	async servicesConfluence(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesConfluence(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesConfluence",
 			namespace: "projects",
@@ -9185,6 +9620,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9193,7 +9629,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/custom-issue-tracker` — risk: medium
 	 */
-	async servicesCustomIssueTracker(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesCustomIssueTracker(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesCustomIssueTracker",
 			namespace: "projects",
@@ -9206,6 +9642,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9214,7 +9651,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/datadog` — risk: medium
 	 */
-	async servicesDatadog(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesDatadog(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesDatadog",
 			namespace: "projects",
@@ -9227,6 +9664,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9235,7 +9673,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/diffblue-cover` — risk: medium
 	 */
-	async servicesDiffblueCover(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesDiffblueCover(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesDiffblueCover",
 			namespace: "projects",
@@ -9248,6 +9686,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9256,7 +9695,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/discord` — risk: medium
 	 */
-	async servicesDiscord(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesDiscord(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesDiscord",
 			namespace: "projects",
@@ -9269,6 +9708,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9277,7 +9717,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/drone-ci` — risk: medium
 	 */
-	async servicesDroneCi(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesDroneCi(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesDroneCi",
 			namespace: "projects",
@@ -9290,6 +9730,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9298,7 +9739,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/emails-on-push` — risk: medium
 	 */
-	async servicesEmailsOnPush(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesEmailsOnPush(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesEmailsOnPush",
 			namespace: "projects",
@@ -9311,6 +9752,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9319,7 +9761,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/external-wiki` — risk: medium
 	 */
-	async servicesExternalWiki(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesExternalWiki(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesExternalWiki",
 			namespace: "projects",
@@ -9332,6 +9774,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9340,7 +9783,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/gitlab-slack-application` — risk: medium
 	 */
-	async servicesGitlabSlackApplication(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesGitlabSlackApplication(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesGitlabSlackApplication",
 			namespace: "projects",
@@ -9353,6 +9796,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9361,7 +9805,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/google-play` — risk: medium
 	 */
-	async servicesGooglePlay(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesGooglePlay(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesGooglePlay",
 			namespace: "projects",
@@ -9374,6 +9818,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9382,7 +9827,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/hangouts-chat` — risk: medium
 	 */
-	async servicesHangoutsChat(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesHangoutsChat(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesHangoutsChat",
 			namespace: "projects",
@@ -9395,6 +9840,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9403,7 +9849,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/harbor` — risk: medium
 	 */
-	async servicesHarbor(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesHarbor(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesHarbor",
 			namespace: "projects",
@@ -9416,6 +9862,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9424,7 +9871,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/irker` — risk: medium
 	 */
-	async servicesIrker(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesIrker(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesIrker",
 			namespace: "projects",
@@ -9437,6 +9884,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9445,7 +9893,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/jenkins` — risk: medium
 	 */
-	async servicesJenkins(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesJenkins(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesJenkins",
 			namespace: "projects",
@@ -9458,6 +9906,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9466,7 +9915,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/jira` — risk: medium
 	 */
-	async servicesJira(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesJira(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesJira",
 			namespace: "projects",
@@ -9479,6 +9928,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9487,7 +9937,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/jira-cloud-app` — risk: medium
 	 */
-	async servicesJiraCloudApp(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesJiraCloudApp(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesJiraCloudApp",
 			namespace: "projects",
@@ -9500,6 +9950,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9508,7 +9959,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/linear` — risk: medium
 	 */
-	async servicesLinear(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesLinear(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesLinear",
 			namespace: "projects",
@@ -9521,6 +9972,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9529,7 +9981,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/matrix` — risk: medium
 	 */
-	async servicesMatrix(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesMatrix(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesMatrix",
 			namespace: "projects",
@@ -9542,6 +9994,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9550,7 +10003,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/mattermost-slash-commands` — risk: medium
 	 */
-	async servicesMattermostSlashCommands(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesMattermostSlashCommands(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesMattermostSlashCommands",
 			namespace: "projects",
@@ -9563,6 +10016,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9571,7 +10025,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/packagist` — risk: medium
 	 */
-	async servicesPackagist(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesPackagist(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesPackagist",
 			namespace: "projects",
@@ -9584,6 +10038,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9592,7 +10047,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/phorge` — risk: medium
 	 */
-	async servicesPhorge(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesPhorge(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesPhorge",
 			namespace: "projects",
@@ -9605,6 +10060,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9613,7 +10069,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/pipelines-email` — risk: medium
 	 */
-	async servicesPipelinesEmail(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesPipelinesEmail(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesPipelinesEmail",
 			namespace: "projects",
@@ -9626,6 +10082,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9634,7 +10091,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/pivotaltracker` — risk: medium
 	 */
-	async servicesPivotaltracker(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesPivotaltracker(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesPivotaltracker",
 			namespace: "projects",
@@ -9647,6 +10104,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9655,7 +10113,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/pumble` — risk: medium
 	 */
-	async servicesPumble(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesPumble(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesPumble",
 			namespace: "projects",
@@ -9668,6 +10126,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9676,7 +10135,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/pushover` — risk: medium
 	 */
-	async servicesPushover(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesPushover(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesPushover",
 			namespace: "projects",
@@ -9689,6 +10148,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9697,7 +10157,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/redmine` — risk: medium
 	 */
-	async servicesRedmine(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesRedmine(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesRedmine",
 			namespace: "projects",
@@ -9710,6 +10170,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9718,7 +10179,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/ewm` — risk: medium
 	 */
-	async servicesEwm(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesEwm(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesEwm",
 			namespace: "projects",
@@ -9731,6 +10192,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9739,7 +10201,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/youtrack` — risk: medium
 	 */
-	async servicesYoutrack(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesYoutrack(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesYoutrack",
 			namespace: "projects",
@@ -9752,6 +10214,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9760,7 +10223,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/clickup` — risk: medium
 	 */
-	async servicesClickup(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesClickup(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesClickup",
 			namespace: "projects",
@@ -9773,6 +10236,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9781,7 +10245,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/slack` — risk: medium
 	 */
-	async servicesSlack(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesSlack(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesSlack",
 			namespace: "projects",
@@ -9794,6 +10258,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9802,7 +10267,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/microsoft-teams` — risk: medium
 	 */
-	async servicesMicrosoftTeams(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesMicrosoftTeams(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesMicrosoftTeams",
 			namespace: "projects",
@@ -9815,6 +10280,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9823,7 +10289,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/mattermost` — risk: medium
 	 */
-	async servicesMattermost(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesMattermost(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesMattermost",
 			namespace: "projects",
@@ -9836,6 +10302,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9844,7 +10311,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/teamcity` — risk: medium
 	 */
-	async servicesTeamcity(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesTeamcity(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesTeamcity",
 			namespace: "projects",
@@ -9857,6 +10324,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9865,7 +10333,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/telegram` — risk: medium
 	 */
-	async servicesTelegram(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesTelegram(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesTelegram",
 			namespace: "projects",
@@ -9878,6 +10346,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9886,7 +10355,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/unify-circuit` — risk: medium
 	 */
-	async servicesUnifyCircuit(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesUnifyCircuit(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesUnifyCircuit",
 			namespace: "projects",
@@ -9899,6 +10368,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9907,7 +10377,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/webex-teams` — risk: medium
 	 */
-	async servicesWebexTeams(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesWebexTeams(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesWebexTeams",
 			namespace: "projects",
@@ -9920,6 +10390,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9928,7 +10399,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/zentao` — risk: medium
 	 */
-	async servicesZentao(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesZentao(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesZentao",
 			namespace: "projects",
@@ -9941,6 +10412,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9949,7 +10421,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/squash-tm` — risk: medium
 	 */
-	async servicesSquashTm(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesSquashTm(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesSquashTm",
 			namespace: "projects",
@@ -9962,6 +10434,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9970,7 +10443,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/github` — risk: medium
 	 */
-	async servicesGithub(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesGithub(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesGithub",
 			namespace: "projects",
@@ -9983,6 +10456,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -9991,7 +10465,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/git-guardian` — risk: medium
 	 */
-	async servicesGitGuardian(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesGitGuardian(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesGitGuardian",
 			namespace: "projects",
@@ -10004,6 +10478,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10012,7 +10487,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/google-cloud-platform-artifact-registry` — risk: medium
 	 */
-	async servicesGoogleCloudPlatformArtifactRegistry(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesGoogleCloudPlatformArtifactRegistry(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesGoogleCloudPlatformArtifactRegistry",
 			namespace: "projects",
@@ -10025,6 +10500,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10033,7 +10509,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/google-cloud-platform-workload-identity-federation` — risk: medium
 	 */
-	async servicesGoogleCloudPlatformWorkloadIdentityFederation(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesGoogleCloudPlatformWorkloadIdentityFederation(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesGoogleCloudPlatformWorkloadIdentityFederation",
 			namespace: "projects",
@@ -10046,6 +10522,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10054,7 +10531,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/mock-ci` — risk: medium
 	 */
-	async servicesMockCi(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesMockCi(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesMockCi",
 			namespace: "projects",
@@ -10067,6 +10544,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10075,7 +10553,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/services/mock-monitoring` — risk: medium
 	 */
-	async servicesMockMonitoring(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesMockMonitoring(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdServicesMockMonitoring",
 			namespace: "projects",
@@ -10088,6 +10566,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10096,7 +10575,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/services/{slug}` — risk: medium
 	 */
-	async retrieveService(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async retrieveService(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdServicesSlug",
 			namespace: "projects",
@@ -10109,6 +10588,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10117,7 +10597,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/services/{slug}` — risk: medium
 	 */
-	async deleteService(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async deleteService(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdServicesSlug",
 			namespace: "projects",
@@ -10130,6 +10610,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10138,7 +10619,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/services/mattermost_slash_commands/trigger` — risk: medium
 	 */
-	async servicesmattermostSlashCommandsTrigger(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async servicesmattermostSlashCommandsTrigger(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdServicesMattermostSlashCommandsTrigger",
 			namespace: "projects",
@@ -10151,6 +10632,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10159,7 +10641,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/integrations` — risk: medium
 	 */
-	async listIntegrations(id: string): Promise<ProofResult<unknown>> {
+	async listIntegrations(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIntegrations",
 			namespace: "projects",
@@ -10172,6 +10654,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10180,7 +10663,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/apple-app-store` — risk: medium
 	 */
-	async integrationsAppleAppStore(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsAppleAppStore(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsAppleAppStore",
 			namespace: "projects",
@@ -10193,6 +10676,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10201,7 +10685,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/asana` — risk: medium
 	 */
-	async integrationsAsana(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsAsana(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsAsana",
 			namespace: "projects",
@@ -10214,6 +10698,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10222,7 +10707,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/assembla` — risk: medium
 	 */
-	async integrationsAssembla(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsAssembla(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsAssembla",
 			namespace: "projects",
@@ -10235,6 +10720,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10243,7 +10729,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/bamboo` — risk: medium
 	 */
-	async integrationsBamboo(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsBamboo(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsBamboo",
 			namespace: "projects",
@@ -10256,6 +10742,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10264,7 +10751,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/bugzilla` — risk: medium
 	 */
-	async integrationsBugzilla(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsBugzilla(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsBugzilla",
 			namespace: "projects",
@@ -10277,6 +10764,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10285,7 +10773,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/buildkite` — risk: medium
 	 */
-	async integrationsBuildkite(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsBuildkite(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsBuildkite",
 			namespace: "projects",
@@ -10298,6 +10786,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10306,7 +10795,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/campfire` — risk: medium
 	 */
-	async integrationsCampfire(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsCampfire(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsCampfire",
 			namespace: "projects",
@@ -10319,6 +10808,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10327,7 +10817,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/confluence` — risk: medium
 	 */
-	async integrationsConfluence(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsConfluence(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsConfluence",
 			namespace: "projects",
@@ -10340,6 +10830,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10348,7 +10839,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/custom-issue-tracker` — risk: medium
 	 */
-	async integrationsCustomIssueTracker(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsCustomIssueTracker(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsCustomIssueTracker",
 			namespace: "projects",
@@ -10361,6 +10852,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10369,7 +10861,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/datadog` — risk: medium
 	 */
-	async integrationsDatadog(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsDatadog(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsDatadog",
 			namespace: "projects",
@@ -10382,6 +10874,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10390,7 +10883,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/diffblue-cover` — risk: medium
 	 */
-	async integrationsDiffblueCover(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsDiffblueCover(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsDiffblueCover",
 			namespace: "projects",
@@ -10403,6 +10896,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10411,7 +10905,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/discord` — risk: medium
 	 */
-	async integrationsDiscord(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsDiscord(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsDiscord",
 			namespace: "projects",
@@ -10424,6 +10918,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10432,7 +10927,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/drone-ci` — risk: medium
 	 */
-	async integrationsDroneCi(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsDroneCi(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsDroneCi",
 			namespace: "projects",
@@ -10445,6 +10940,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10453,7 +10949,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/emails-on-push` — risk: medium
 	 */
-	async integrationsEmailsOnPush(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsEmailsOnPush(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsEmailsOnPush",
 			namespace: "projects",
@@ -10466,6 +10962,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10474,7 +10971,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/external-wiki` — risk: medium
 	 */
-	async integrationsExternalWiki(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsExternalWiki(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsExternalWiki",
 			namespace: "projects",
@@ -10487,6 +10984,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10495,7 +10993,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/gitlab-slack-application` — risk: medium
 	 */
-	async integrationsGitlabSlackApplication(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsGitlabSlackApplication(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsGitlabSlackApplication",
 			namespace: "projects",
@@ -10508,6 +11006,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10516,7 +11015,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/google-play` — risk: medium
 	 */
-	async integrationsGooglePlay(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsGooglePlay(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsGooglePlay",
 			namespace: "projects",
@@ -10529,6 +11028,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10537,7 +11037,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/hangouts-chat` — risk: medium
 	 */
-	async integrationsHangoutsChat(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsHangoutsChat(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsHangoutsChat",
 			namespace: "projects",
@@ -10550,6 +11050,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10558,7 +11059,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/harbor` — risk: medium
 	 */
-	async integrationsHarbor(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsHarbor(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsHarbor",
 			namespace: "projects",
@@ -10571,6 +11072,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10579,7 +11081,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/irker` — risk: medium
 	 */
-	async integrationsIrker(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsIrker(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsIrker",
 			namespace: "projects",
@@ -10592,6 +11094,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10600,7 +11103,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/jenkins` — risk: medium
 	 */
-	async integrationsJenkins(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsJenkins(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsJenkins",
 			namespace: "projects",
@@ -10613,6 +11116,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10621,7 +11125,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/jira` — risk: medium
 	 */
-	async integrationsJira(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsJira(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsJira",
 			namespace: "projects",
@@ -10634,6 +11138,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10642,7 +11147,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/jira-cloud-app` — risk: medium
 	 */
-	async integrationsJiraCloudApp(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsJiraCloudApp(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsJiraCloudApp",
 			namespace: "projects",
@@ -10655,6 +11160,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10663,7 +11169,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/linear` — risk: medium
 	 */
-	async integrationsLinear(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsLinear(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsLinear",
 			namespace: "projects",
@@ -10676,6 +11182,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10684,7 +11191,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/matrix` — risk: medium
 	 */
-	async integrationsMatrix(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsMatrix(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsMatrix",
 			namespace: "projects",
@@ -10697,6 +11204,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10705,7 +11213,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/mattermost-slash-commands` — risk: medium
 	 */
-	async integrationsMattermostSlashCommands(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsMattermostSlashCommands(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsMattermostSlashCommands",
 			namespace: "projects",
@@ -10718,6 +11226,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10726,7 +11235,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/packagist` — risk: medium
 	 */
-	async integrationsPackagist(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsPackagist(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsPackagist",
 			namespace: "projects",
@@ -10739,6 +11248,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10747,7 +11257,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/phorge` — risk: medium
 	 */
-	async integrationsPhorge(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsPhorge(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsPhorge",
 			namespace: "projects",
@@ -10760,6 +11270,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10768,7 +11279,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/pipelines-email` — risk: medium
 	 */
-	async integrationsPipelinesEmail(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsPipelinesEmail(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsPipelinesEmail",
 			namespace: "projects",
@@ -10781,6 +11292,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10789,7 +11301,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/pivotaltracker` — risk: medium
 	 */
-	async integrationsPivotaltracker(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsPivotaltracker(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsPivotaltracker",
 			namespace: "projects",
@@ -10802,6 +11314,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10810,7 +11323,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/pumble` — risk: medium
 	 */
-	async integrationsPumble(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsPumble(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsPumble",
 			namespace: "projects",
@@ -10823,6 +11336,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10831,7 +11345,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/pushover` — risk: medium
 	 */
-	async integrationsPushover(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsPushover(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsPushover",
 			namespace: "projects",
@@ -10844,6 +11358,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10852,7 +11367,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/redmine` — risk: medium
 	 */
-	async integrationsRedmine(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsRedmine(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsRedmine",
 			namespace: "projects",
@@ -10865,6 +11380,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10873,7 +11389,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/ewm` — risk: medium
 	 */
-	async integrationsEwm(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsEwm(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsEwm",
 			namespace: "projects",
@@ -10886,6 +11402,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10894,7 +11411,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/youtrack` — risk: medium
 	 */
-	async integrationsYoutrack(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsYoutrack(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsYoutrack",
 			namespace: "projects",
@@ -10907,6 +11424,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10915,7 +11433,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/clickup` — risk: medium
 	 */
-	async integrationsClickup(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsClickup(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsClickup",
 			namespace: "projects",
@@ -10928,6 +11446,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10936,7 +11455,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/slack` — risk: medium
 	 */
-	async integrationsSlack(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsSlack(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsSlack",
 			namespace: "projects",
@@ -10949,6 +11468,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10957,7 +11477,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/microsoft-teams` — risk: medium
 	 */
-	async integrationsMicrosoftTeams(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsMicrosoftTeams(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsMicrosoftTeams",
 			namespace: "projects",
@@ -10970,6 +11490,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10978,7 +11499,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/mattermost` — risk: medium
 	 */
-	async integrationsMattermost(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsMattermost(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsMattermost",
 			namespace: "projects",
@@ -10991,6 +11512,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -10999,7 +11521,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/teamcity` — risk: medium
 	 */
-	async integrationsTeamcity(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsTeamcity(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsTeamcity",
 			namespace: "projects",
@@ -11012,6 +11534,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11020,7 +11543,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/telegram` — risk: medium
 	 */
-	async integrationsTelegram(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsTelegram(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsTelegram",
 			namespace: "projects",
@@ -11033,6 +11556,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11041,7 +11565,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/unify-circuit` — risk: medium
 	 */
-	async integrationsUnifyCircuit(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsUnifyCircuit(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsUnifyCircuit",
 			namespace: "projects",
@@ -11054,6 +11578,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11062,7 +11587,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/webex-teams` — risk: medium
 	 */
-	async integrationsWebexTeams(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsWebexTeams(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsWebexTeams",
 			namespace: "projects",
@@ -11075,6 +11600,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11083,7 +11609,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/zentao` — risk: medium
 	 */
-	async integrationsZentao(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsZentao(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsZentao",
 			namespace: "projects",
@@ -11096,6 +11622,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11104,7 +11631,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/squash-tm` — risk: medium
 	 */
-	async integrationsSquashTm(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsSquashTm(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsSquashTm",
 			namespace: "projects",
@@ -11117,6 +11644,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11125,7 +11653,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/github` — risk: medium
 	 */
-	async integrationsGithub(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsGithub(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsGithub",
 			namespace: "projects",
@@ -11138,6 +11666,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11146,7 +11675,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/git-guardian` — risk: medium
 	 */
-	async integrationsGitGuardian(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsGitGuardian(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsGitGuardian",
 			namespace: "projects",
@@ -11159,6 +11688,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11167,7 +11697,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/google-cloud-platform-artifact-registry` — risk: medium
 	 */
-	async integrationsGoogleCloudPlatformArtifactRegistry(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsGoogleCloudPlatformArtifactRegistry(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsGoogleCloudPlatformArtifactRegistry",
 			namespace: "projects",
@@ -11180,6 +11710,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11188,7 +11719,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/google-cloud-platform-workload-identity-federation` — risk: medium
 	 */
-	async integrationsGoogleCloudPlatformWorkloadIdentityFederation(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsGoogleCloudPlatformWorkloadIdentityFederation(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsGoogleCloudPlatformWorkloadIdentityFederation",
 			namespace: "projects",
@@ -11201,6 +11732,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11209,7 +11741,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/mock-ci` — risk: medium
 	 */
-	async integrationsMockCi(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsMockCi(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsMockCi",
 			namespace: "projects",
@@ -11222,6 +11754,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11230,7 +11763,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/mock-monitoring` — risk: medium
 	 */
-	async integrationsMockMonitoring(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsMockMonitoring(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIntegrationsMockMonitoring",
 			namespace: "projects",
@@ -11243,6 +11776,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11251,7 +11785,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/integrations/{slug}` — risk: medium
 	 */
-	async retrieveIntegration(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async retrieveIntegration(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIntegrationsSlug",
 			namespace: "projects",
@@ -11264,6 +11798,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11272,7 +11807,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/integrations/{slug}` — risk: medium
 	 */
-	async deleteIntegration(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async deleteIntegration(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdIntegrationsSlug",
 			namespace: "projects",
@@ -11285,6 +11820,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11293,7 +11829,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/integrations/mattermost_slash_commands/trigger` — risk: medium
 	 */
-	async integrationsmattermostSlashCommandsTrigger(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async integrationsmattermostSlashCommandsTrigger(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIntegrationsMattermostSlashCommandsTrigger",
 			namespace: "projects",
@@ -11306,6 +11842,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11314,7 +11851,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/invitations` — risk: medium
 	 */
-	async listInvitations(id: string): Promise<ProofResult<unknown>> {
+	async listInvitations(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdInvitations",
 			namespace: "projects",
@@ -11327,6 +11864,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11335,7 +11873,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/invitations` — risk: medium
 	 */
-	async createInvitation(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createInvitation(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdInvitations",
 			namespace: "projects",
@@ -11348,6 +11886,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11356,7 +11895,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/invitations/{email}` — risk: medium
 	 */
-	async invitations(id: string, email: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async invitations(id: string, email: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdInvitationsEmail",
 			namespace: "projects",
@@ -11369,6 +11908,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11377,7 +11917,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/invitations/{email}` — risk: medium
 	 */
-	async deleteInvitation(id: string, email: string): Promise<ProofResult<unknown>> {
+	async deleteInvitation(id: string, email: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdInvitationsEmail",
 			namespace: "projects",
@@ -11390,6 +11930,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11398,7 +11939,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/links` — risk: medium
 	 */
-	async getIssuesLinks(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async getIssuesLinks(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidLinks",
 			namespace: "projects",
@@ -11411,6 +11952,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11419,7 +11961,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/links` — risk: medium
 	 */
-	async postIssuesLinks(id: string, issueIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIssuesLinks(id: string, issueIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidLinks",
 			namespace: "projects",
@@ -11432,6 +11974,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11440,7 +11983,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/links/{issue_link_id}` — risk: medium
 	 */
-	async issueslinksRetrieveLink(id: string, issueIid: string, issueLinkId: string): Promise<ProofResult<unknown>> {
+	async issueslinksRetrieveLink(id: string, issueIid: string, issueLinkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidLinksIssueLinkId",
 			namespace: "projects",
@@ -11453,6 +11996,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11461,7 +12005,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}/links/{issue_link_id}` — risk: medium
 	 */
-	async issueslinksDeleteLink(id: string, issueIid: string, issueLinkId: string): Promise<ProofResult<unknown>> {
+	async issueslinksDeleteLink(id: string, issueIid: string, issueLinkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdIssuesIssueIidLinksIssueLinkId",
 			namespace: "projects",
@@ -11474,6 +12018,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11482,7 +12027,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/time_estimate` — risk: medium
 	 */
-	async issuesTimeEstimate(id: string, issueIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issuesTimeEstimate(id: string, issueIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidTimeEstimate",
 			namespace: "projects",
@@ -11495,6 +12040,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11503,7 +12049,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/reset_time_estimate` — risk: medium
 	 */
-	async issuesResetTimeEstimate(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async issuesResetTimeEstimate(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidResetTimeEstimate",
 			namespace: "projects",
@@ -11516,6 +12062,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11524,7 +12071,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/add_spent_time` — risk: medium
 	 */
-	async issuesAddSpentTime(id: string, issueIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issuesAddSpentTime(id: string, issueIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidAddSpentTime",
 			namespace: "projects",
@@ -11537,6 +12084,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11545,7 +12093,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/reset_spent_time` — risk: medium
 	 */
-	async issuesResetSpentTime(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async issuesResetSpentTime(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidResetSpentTime",
 			namespace: "projects",
@@ -11558,6 +12106,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11566,7 +12115,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/time_stats` — risk: medium
 	 */
-	async issuesTimeStats(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async issuesTimeStats(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidTimeStats",
 			namespace: "projects",
@@ -11579,6 +12128,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11587,7 +12137,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues` — risk: medium
 	 */
-	async listIssues(id: string): Promise<ProofResult<unknown>> {
+	async listIssues(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssues",
 			namespace: "projects",
@@ -11600,6 +12150,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11608,7 +12159,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues` — risk: medium
 	 */
-	async createIssue(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createIssue(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssues",
 			namespace: "projects",
@@ -11621,6 +12172,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11629,7 +12181,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues_statistics` — risk: medium
 	 */
-	async listIssuesStatistics(id: string): Promise<ProofResult<unknown>> {
+	async listIssuesStatistics(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesStatistics",
 			namespace: "projects",
@@ -11642,6 +12194,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11650,7 +12203,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}` — risk: medium
 	 */
-	async retrieveIssue(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async retrieveIssue(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIid",
 			namespace: "projects",
@@ -11663,6 +12216,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11671,7 +12225,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/issues/{issue_iid}` — risk: medium
 	 */
-	async issues(id: string, issueIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async issues(id: string, issueIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIssuesIssueIid",
 			namespace: "projects",
@@ -11684,6 +12238,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11692,7 +12247,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}` — risk: medium
 	 */
-	async deleteIssue(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async deleteIssue(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdIssuesIssueIid",
 			namespace: "projects",
@@ -11705,6 +12260,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11713,7 +12269,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/issues/{issue_iid}/reorder` — risk: medium
 	 */
-	async reorder(id: string, issueIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async reorder(id: string, issueIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIssuesIssueIidReorder",
 			namespace: "projects",
@@ -11726,6 +12282,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11734,7 +12291,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/move` — risk: medium
 	 */
-	async move(id: string, issueIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async move(id: string, issueIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidMove",
 			namespace: "projects",
@@ -11747,6 +12304,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11755,7 +12313,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/clone` — risk: medium
 	 */
-	async clone(id: string, issueIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async clone(id: string, issueIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidClone",
 			namespace: "projects",
@@ -11768,6 +12326,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11776,7 +12335,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/related_merge_requests` — risk: medium
 	 */
-	async relatedMergeRequests(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async relatedMergeRequests(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidRelatedMergeRequests",
 			namespace: "projects",
@@ -11789,6 +12348,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11797,7 +12357,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/closed_by` — risk: medium
 	 */
-	async closedBy(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async closedBy(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidClosedBy",
 			namespace: "projects",
@@ -11810,6 +12370,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11818,7 +12379,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/participants` — risk: medium
 	 */
-	async issuesParticipants(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async issuesParticipants(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidParticipants",
 			namespace: "projects",
@@ -11831,6 +12392,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11839,7 +12401,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/user_agent_detail` — risk: medium
 	 */
-	async issuesUserAgentDetail(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async issuesUserAgentDetail(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidUserAgentDetail",
 			namespace: "projects",
@@ -11852,6 +12414,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11860,7 +12423,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/metric_images/authorize` — risk: medium
 	 */
-	async issuesmetricImagesAuthorize(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async issuesmetricImagesAuthorize(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidMetricImagesAuthorize",
 			namespace: "projects",
@@ -11873,6 +12436,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11881,7 +12445,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/metric_images` — risk: medium
 	 */
-	async getIssuesMetricImages(id: string, issueIid: string): Promise<ProofResult<unknown>> {
+	async getIssuesMetricImages(id: string, issueIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesIssueIidMetricImages",
 			namespace: "projects",
@@ -11894,6 +12458,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11902,7 +12467,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/metric_images` — risk: medium
 	 */
-	async postIssuesMetricImages(id: string, issueIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postIssuesMetricImages(id: string, issueIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdIssuesIssueIidMetricImages",
 			namespace: "projects",
@@ -11915,6 +12480,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11923,7 +12489,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/issues/{issue_iid}/metric_images/{metric_image_id}` — risk: medium
 	 */
-	async putIssuesMetricImages(id: string, issueIid: string, metricImageId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putIssuesMetricImages(id: string, issueIid: string, metricImageId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdIssuesIssueIidMetricImagesMetricImageId",
 			namespace: "projects",
@@ -11936,6 +12502,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11944,7 +12511,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}/metric_images/{metric_image_id}` — risk: medium
 	 */
-	async issuesmetricImagesDeleteMetricImage(id: string, issueIid: string, metricImageId: string): Promise<ProofResult<unknown>> {
+	async issuesmetricImagesDeleteMetricImage(id: string, issueIid: string, metricImageId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdIssuesIssueIidMetricImagesMetricImageId",
 			namespace: "projects",
@@ -11957,6 +12524,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11966,7 +12534,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/ci/lint` — risk: medium
 	 */
-	async lint_0(id: string): Promise<ProofResult<unknown>> {
+	async lint_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdCiLint",
 			namespace: "projects",
@@ -11979,6 +12547,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -11987,7 +12556,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/ci/lint` — risk: medium
 	 */
-	async lint_1(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async lint_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdCiLint",
 			namespace: "projects",
@@ -12000,6 +12569,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12008,7 +12578,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/uploads/authorize` — risk: medium
 	 */
-	async uploadsAuthorize(id: string): Promise<ProofResult<unknown>> {
+	async uploadsAuthorize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdUploadsAuthorize",
 			namespace: "projects",
@@ -12021,6 +12591,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12029,7 +12600,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/uploads` — risk: medium
 	 */
-	async listUploads(id: string): Promise<ProofResult<unknown>> {
+	async listUploads(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdUploads",
 			namespace: "projects",
@@ -12042,6 +12613,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12050,7 +12622,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/uploads` — risk: medium
 	 */
-	async createUpload(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createUpload(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdUploads",
 			namespace: "projects",
@@ -12063,6 +12635,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12071,7 +12644,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/uploads/{upload_id}` — risk: medium
 	 */
-	async retrieveUpload_0(id: string, uploadId: string): Promise<ProofResult<unknown>> {
+	async retrieveUpload_0(id: string, uploadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdUploadsUploadId",
 			namespace: "projects",
@@ -12084,6 +12657,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12092,7 +12666,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/uploads/{upload_id}` — risk: medium
 	 */
-	async deleteUpload_0(id: string, uploadId: string): Promise<ProofResult<unknown>> {
+	async deleteUpload_0(id: string, uploadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdUploadsUploadId",
 			namespace: "projects",
@@ -12105,6 +12679,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12113,7 +12688,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/uploads/{secret}/{filename}` — risk: medium
 	 */
-	async retrieveUpload_1(id: string, secret: string, filename: string): Promise<ProofResult<unknown>> {
+	async retrieveUpload_1(id: string, secret: string, filename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdUploadsSecretFilename",
 			namespace: "projects",
@@ -12126,6 +12701,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12134,7 +12710,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/uploads/{secret}/{filename}` — risk: medium
 	 */
-	async deleteUpload_1(id: string, secret: string, filename: string): Promise<ProofResult<unknown>> {
+	async deleteUpload_1(id: string, secret: string, filename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdUploadsSecretFilename",
 			namespace: "projects",
@@ -12147,6 +12723,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12156,7 +12733,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/members` — risk: medium
 	 */
-	async listMembers(id: string): Promise<ProofResult<unknown>> {
+	async listMembers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMembers",
 			namespace: "projects",
@@ -12169,6 +12746,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12177,7 +12755,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/members` — risk: medium
 	 */
-	async createMember(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMember(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMembers",
 			namespace: "projects",
@@ -12190,6 +12768,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12199,7 +12778,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/members/all` — risk: medium
 	 */
-	async all(id: string): Promise<ProofResult<unknown>> {
+	async all(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMembersAll",
 			namespace: "projects",
@@ -12212,6 +12791,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12220,7 +12800,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/members/{user_id}` — risk: medium
 	 */
-	async retrieveMember(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async retrieveMember(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMembersUserId",
 			namespace: "projects",
@@ -12233,6 +12813,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12241,7 +12822,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/members/{user_id}` — risk: medium
 	 */
-	async members(id: string, userId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async members(id: string, userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdMembersUserId",
 			namespace: "projects",
@@ -12254,6 +12835,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12262,7 +12844,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/members/{user_id}` — risk: medium
 	 */
-	async deleteMember(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async deleteMember(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdMembersUserId",
 			namespace: "projects",
@@ -12275,6 +12857,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12283,7 +12866,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/members/all/{user_id}` — risk: medium
 	 */
-	async retrieveAll(id: string, userId: string): Promise<ProofResult<unknown>> {
+	async retrieveAll(id: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMembersAllUserId",
 			namespace: "projects",
@@ -12296,6 +12879,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12304,7 +12888,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/create_ci_config` — risk: medium
 	 */
-	async createCreateCiConfig(id: string): Promise<ProofResult<unknown>> {
+	async createCreateCiConfig(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdCreateCiConfig",
 			namespace: "projects",
@@ -12317,6 +12901,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12325,7 +12910,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/time_estimate` — risk: medium
 	 */
-	async mergeRequestsTimeEstimate(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async mergeRequestsTimeEstimate(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidTimeEstimate",
 			namespace: "projects",
@@ -12338,6 +12923,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12346,7 +12932,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/reset_time_estimate` — risk: medium
 	 */
-	async mergeRequestsResetTimeEstimate(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsResetTimeEstimate(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidResetTimeEstimate",
 			namespace: "projects",
@@ -12359,6 +12945,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12367,7 +12954,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/add_spent_time` — risk: medium
 	 */
-	async mergeRequestsAddSpentTime(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async mergeRequestsAddSpentTime(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidAddSpentTime",
 			namespace: "projects",
@@ -12380,6 +12967,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12388,7 +12976,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/reset_spent_time` — risk: medium
 	 */
-	async mergeRequestsResetSpentTime(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsResetSpentTime(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidResetSpentTime",
 			namespace: "projects",
@@ -12401,6 +12989,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12409,7 +12998,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/time_stats` — risk: medium
 	 */
-	async mergeRequestsTimeStats(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsTimeStats(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidTimeStats",
 			namespace: "projects",
@@ -12422,6 +13011,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12430,7 +13020,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests` — risk: medium
 	 */
-	async listMergeRequests(id: string): Promise<ProofResult<unknown>> {
+	async listMergeRequests(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequests",
 			namespace: "projects",
@@ -12443,6 +13033,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12451,7 +13042,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests` — risk: medium
 	 */
-	async createMergeRequest(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createMergeRequest(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequests",
 			namespace: "projects",
@@ -12464,6 +13055,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12472,7 +13064,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}` — risk: medium
 	 */
-	async retrieveMergeRequest(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async retrieveMergeRequest(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIid",
 			namespace: "projects",
@@ -12485,6 +13077,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12493,7 +13086,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}` — risk: medium
 	 */
-	async mergeRequests_2(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async mergeRequests_2(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdMergeRequestsMergeRequestIid",
 			namespace: "projects",
@@ -12506,6 +13099,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12514,7 +13108,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}` — risk: medium
 	 */
-	async deleteMergeRequest(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async deleteMergeRequest(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdMergeRequestsMergeRequestIid",
 			namespace: "projects",
@@ -12527,6 +13121,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12535,7 +13130,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/participants` — risk: medium
 	 */
-	async mergeRequestsParticipants(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsParticipants(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidParticipants",
 			namespace: "projects",
@@ -12548,6 +13143,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12556,7 +13152,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/reviewers` — risk: medium
 	 */
-	async reviewers(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async reviewers(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidReviewers",
 			namespace: "projects",
@@ -12569,6 +13165,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12577,7 +13174,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/commits` — risk: medium
 	 */
-	async mergeRequestsCommits(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsCommits(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidCommits",
 			namespace: "projects",
@@ -12590,6 +13187,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12598,7 +13196,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits` — risk: medium
 	 */
-	async contextCommits_0(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async contextCommits_0(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidContextCommits",
 			namespace: "projects",
@@ -12611,6 +13209,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12619,7 +13218,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits` — risk: medium
 	 */
-	async contextCommits_1(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async contextCommits_1(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidContextCommits",
 			namespace: "projects",
@@ -12632,6 +13231,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12640,7 +13240,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits` — risk: medium
 	 */
-	async contextCommits_2(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async contextCommits_2(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdMergeRequestsMergeRequestIidContextCommits",
 			namespace: "projects",
@@ -12653,6 +13253,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12661,7 +13262,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/changes` — risk: medium
 	 */
-	async changes(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async changes(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidChanges",
 			namespace: "projects",
@@ -12674,6 +13275,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12682,7 +13284,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/diffs` — risk: medium
 	 */
-	async diffs(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async diffs(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidDiffs",
 			namespace: "projects",
@@ -12695,6 +13297,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12703,7 +13306,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/raw_diffs` — risk: medium
 	 */
-	async rawDiffs(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async rawDiffs(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidRawDiffs",
 			namespace: "projects",
@@ -12716,6 +13319,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12724,7 +13328,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/pipelines` — risk: medium
 	 */
-	async getMergeRequestsPipelines(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async getMergeRequestsPipelines(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidPipelines",
 			namespace: "projects",
@@ -12737,6 +13341,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12745,7 +13350,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/pipelines` — risk: medium
 	 */
-	async postMergeRequestsPipelines(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postMergeRequestsPipelines(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidPipelines",
 			namespace: "projects",
@@ -12758,6 +13363,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12766,7 +13372,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge` — risk: medium
 	 */
-	async merge(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async merge(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdMergeRequestsMergeRequestIidMerge",
 			namespace: "projects",
@@ -12779,6 +13385,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12787,7 +13394,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge_ref` — risk: medium
 	 */
-	async mergeRef(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async mergeRef(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidMergeRef",
 			namespace: "projects",
@@ -12800,6 +13407,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12808,7 +13416,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/cancel_merge_when_pipeline_succeeds` — risk: medium
 	 */
-	async cancelMergeWhenPipelineSucceeds(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async cancelMergeWhenPipelineSucceeds(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidCancelMergeWhenPipelineSucceeds",
 			namespace: "projects",
@@ -12821,6 +13429,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12829,7 +13438,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/rebase` — risk: medium
 	 */
-	async rebase(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async rebase(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdMergeRequestsMergeRequestIidRebase",
 			namespace: "projects",
@@ -12842,6 +13451,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12850,7 +13460,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/closes_issues` — risk: medium
 	 */
-	async closesIssues(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async closesIssues(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidClosesIssues",
 			namespace: "projects",
@@ -12863,6 +13473,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12871,7 +13482,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/related_issues` — risk: medium
 	 */
-	async relatedIssues(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async relatedIssues(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidRelatedIssues",
 			namespace: "projects",
@@ -12884,6 +13495,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12892,7 +13504,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/approvals` — risk: medium
 	 */
-	async approvals_0(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async approvals_0(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidApprovals",
 			namespace: "projects",
@@ -12905,6 +13517,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12913,7 +13526,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/approvals` — risk: medium
 	 */
-	async approvals_1(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async approvals_1(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidApprovals",
 			namespace: "projects",
@@ -12926,6 +13539,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12934,7 +13548,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/approve` — risk: medium
 	 */
-	async mergeRequestsApprove(id: string, mergeRequestIid: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async mergeRequestsApprove(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidApprove",
 			namespace: "projects",
@@ -12947,6 +13561,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12955,7 +13570,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/unapprove` — risk: medium
 	 */
-	async unapprove(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async unapprove(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidUnapprove",
 			namespace: "projects",
@@ -12968,6 +13583,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12976,7 +13592,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/reset_approvals` — risk: medium
 	 */
-	async resetApprovals(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async resetApprovals(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdMergeRequestsMergeRequestIidResetApprovals",
 			namespace: "projects",
@@ -12989,6 +13605,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -12997,7 +13614,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/approval_state` — risk: medium
 	 */
-	async approvalState(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async approvalState(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidApprovalState",
 			namespace: "projects",
@@ -13010,6 +13627,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13018,7 +13636,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/versions` — risk: medium
 	 */
-	async versions(id: string, mergeRequestIid: string): Promise<ProofResult<unknown>> {
+	async versions(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidVersions",
 			namespace: "projects",
@@ -13031,6 +13649,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13039,7 +13658,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/versions/{version_id}` — risk: medium
 	 */
-	async mergeRequestsversionsRetrieveVersion(id: string, mergeRequestIid: string, versionId: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsversionsRetrieveVersion(id: string, mergeRequestIid: string, versionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsMergeRequestIidVersionsVersionId",
 			namespace: "projects",
@@ -13052,6 +13671,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13060,7 +13680,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/npm/-/npm/v1/security/advisories/bulk` — risk: medium
 	 */
-	async bulk(id: string): Promise<ProofResult<unknown>> {
+	async bulk(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesNpmNpmV1SecurityAdvisoriesBulk",
 			namespace: "projects",
@@ -13073,6 +13693,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13081,7 +13702,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/npm/-/npm/v1/security/audits/quick` — risk: medium
 	 */
-	async quick(id: string): Promise<ProofResult<unknown>> {
+	async quick(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesNpmNpmV1SecurityAuditsQuick",
 			namespace: "projects",
@@ -13094,6 +13715,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13102,7 +13724,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/npm/{package_name}` — risk: medium
 	 */
-	async npm(id: string, packageName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async npm(id: string, packageName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesNpmPackageName",
 			namespace: "projects",
@@ -13115,6 +13737,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13123,7 +13746,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/nuget/index` — risk: medium
 	 */
-	async index(id: string): Promise<ProofResult<unknown>> {
+	async index(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesNugetIndex",
 			namespace: "projects",
@@ -13136,6 +13759,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13144,7 +13768,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/nuget/v2` — risk: medium
 	 */
-	async v2_0(id: string): Promise<ProofResult<unknown>> {
+	async v2_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesNugetV2",
 			namespace: "projects",
@@ -13157,6 +13781,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13165,7 +13790,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/nuget/v2` — risk: medium
 	 */
-	async v2_1(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async v2_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesNugetV2",
 			namespace: "projects",
@@ -13178,6 +13803,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13186,7 +13812,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/nuget/v2/$metadata` — risk: medium
 	 */
-	async Metadata(id: string): Promise<ProofResult<unknown>> {
+	async Metadata(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesNugetV2$metadata",
 			namespace: "projects",
@@ -13199,6 +13825,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13207,7 +13834,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/nuget/query` — risk: medium
 	 */
-	async query(id: string): Promise<ProofResult<unknown>> {
+	async query(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesNugetQuery",
 			namespace: "projects",
@@ -13220,6 +13847,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13228,7 +13856,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/nuget` — risk: medium
 	 */
-	async nuget(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async nuget(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesNuget",
 			namespace: "projects",
@@ -13241,6 +13869,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13249,7 +13878,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/nuget/authorize` — risk: medium
 	 */
-	async packagesnugetAuthorize(id: string): Promise<ProofResult<unknown>> {
+	async packagesnugetAuthorize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesNugetAuthorize",
 			namespace: "projects",
@@ -13262,6 +13891,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13270,7 +13900,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/nuget/symbolpackage` — risk: medium
 	 */
-	async symbolpackage(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async symbolpackage(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesNugetSymbolpackage",
 			namespace: "projects",
@@ -13283,6 +13913,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13291,7 +13922,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/nuget/symbolpackage/authorize` — risk: medium
 	 */
-	async packagesnugetsymbolpackageAuthorize(id: string): Promise<ProofResult<unknown>> {
+	async packagesnugetsymbolpackageAuthorize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesNugetSymbolpackageAuthorize",
 			namespace: "projects",
@@ -13304,6 +13935,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13312,7 +13944,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/nuget/v2/authorize` — risk: medium
 	 */
-	async packagesnugetv2Authorize(id: string): Promise<ProofResult<unknown>> {
+	async packagesnugetv2Authorize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPackagesNugetV2Authorize",
 			namespace: "projects",
@@ -13325,6 +13957,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13333,7 +13966,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{project_id}/packages/nuget/v2/FindPackagesById\(\)` — risk: medium
 	 */
-	async FindPackagesById(projectId: string): Promise<ProofResult<unknown>> {
+	async FindPackagesById(projectId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsProjectIdPackagesNugetV2Findpackagesbyid\\(\\)",
 			namespace: "projects",
@@ -13346,6 +13979,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13354,7 +13988,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{project_id}/packages/nuget/v2/Packages\(\)` — risk: medium
 	 */
-	async Packages(projectId: string): Promise<ProofResult<unknown>> {
+	async Packages(projectId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsProjectIdPackagesNugetV2Packages\\(\\)",
 			namespace: "projects",
@@ -13367,6 +14001,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13375,7 +14010,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/{package_id}/package_files` — risk: medium
 	 */
-	async packageFiles(id: string, packageId: string): Promise<ProofResult<unknown>> {
+	async packageFiles(id: string, packageId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesPackageIdPackageFiles",
 			namespace: "projects",
@@ -13388,6 +14023,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13396,7 +14032,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/{package_id}/package_files/{package_file_id}` — risk: medium
 	 */
-	async deletePackageFile(id: string, packageId: string, packageFileId: string): Promise<ProofResult<unknown>> {
+	async deletePackageFile(id: string, packageId: string, packageFileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPackagesPackageIdPackageFilesPackageFileId",
 			namespace: "projects",
@@ -13409,6 +14045,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13417,7 +14054,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/{package_id}/package_files/{package_file_id}/download` — risk: medium
 	 */
-	async packagespackageFilesDownload(id: string, packageId: string, packageFileId: string): Promise<ProofResult<unknown>> {
+	async packagespackageFilesDownload(id: string, packageId: string, packageFileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesPackageIdPackageFilesPackageFileIdDownload",
 			namespace: "projects",
@@ -13430,6 +14067,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13438,7 +14076,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pages` — risk: medium
 	 */
-	async listPages(id: string): Promise<ProofResult<unknown>> {
+	async listPages(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPages",
 			namespace: "projects",
@@ -13451,6 +14089,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13459,7 +14098,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v4/projects/{id}/pages` — risk: medium
 	 */
-	async pages_0(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pages_0(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiV4ProjectsIdPages",
 			namespace: "projects",
@@ -13472,6 +14111,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13480,7 +14120,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/pages` — risk: medium
 	 */
-	async pages_1(id: string): Promise<ProofResult<unknown>> {
+	async pages_1(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPages",
 			namespace: "projects",
@@ -13493,6 +14133,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13501,7 +14142,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pages/domains` — risk: medium
 	 */
-	async domains_0(id: string): Promise<ProofResult<unknown>> {
+	async domains_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPagesDomains",
 			namespace: "projects",
@@ -13514,6 +14155,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13522,7 +14164,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/pages/domains` — risk: medium
 	 */
-	async domains_1(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async domains_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPagesDomains",
 			namespace: "projects",
@@ -13535,6 +14177,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13543,7 +14186,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pages/domains/{domain}` — risk: medium
 	 */
-	async retrieveDomain(id: string, domain: string): Promise<ProofResult<unknown>> {
+	async retrieveDomain(id: string, domain: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPagesDomainsDomain",
 			namespace: "projects",
@@ -13556,6 +14199,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13564,7 +14208,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/pages/domains/{domain}` — risk: medium
 	 */
-	async domains_2(id: string, domain: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async domains_2(id: string, domain: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPagesDomainsDomain",
 			namespace: "projects",
@@ -13577,6 +14221,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13585,7 +14230,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/pages/domains/{domain}` — risk: medium
 	 */
-	async deleteDomain(id: string, domain: string): Promise<ProofResult<unknown>> {
+	async deleteDomain(id: string, domain: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPagesDomainsDomain",
 			namespace: "projects",
@@ -13598,6 +14243,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13606,7 +14252,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/pages/domains/{domain}/verify` — risk: medium
 	 */
-	async verify(id: string, domain: string): Promise<ProofResult<unknown>> {
+	async verify(id: string, domain: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdPagesDomainsDomainVerify",
 			namespace: "projects",
@@ -13619,6 +14265,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13627,7 +14274,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/avatar` — risk: medium
 	 */
-	async listAvatar(id: string): Promise<ProofResult<unknown>> {
+	async listAvatar(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdAvatar",
 			namespace: "projects",
@@ -13640,6 +14287,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13648,7 +14296,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/clusters` — risk: medium
 	 */
-	async listClusters(id: string): Promise<ProofResult<unknown>> {
+	async listClusters(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdClusters",
 			namespace: "projects",
@@ -13661,6 +14309,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13669,7 +14318,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/clusters/{cluster_id}` — risk: medium
 	 */
-	async retrieveCluster(id: string, clusterId: string): Promise<ProofResult<unknown>> {
+	async retrieveCluster(id: string, clusterId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdClustersClusterId",
 			namespace: "projects",
@@ -13682,6 +14331,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13690,7 +14340,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/clusters/{cluster_id}` — risk: medium
 	 */
-	async clusters(id: string, clusterId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async clusters(id: string, clusterId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdClustersClusterId",
 			namespace: "projects",
@@ -13703,6 +14353,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13711,7 +14362,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/clusters/{cluster_id}` — risk: medium
 	 */
-	async deleteCluster(id: string, clusterId: string): Promise<ProofResult<unknown>> {
+	async deleteCluster(id: string, clusterId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdClustersClusterId",
 			namespace: "projects",
@@ -13724,6 +14375,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13732,7 +14384,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/clusters/user` — risk: medium
 	 */
-	async user(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async user(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdClustersUser",
 			namespace: "projects",
@@ -13745,6 +14397,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13753,7 +14406,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/registry/repositories` — risk: medium
 	 */
-	async repositories(id: string): Promise<ProofResult<unknown>> {
+	async repositories(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRegistryRepositories",
 			namespace: "projects",
@@ -13766,6 +14419,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13774,7 +14428,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/repositories/{repository_id}` — risk: medium
 	 */
-	async deleteRepository(id: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async deleteRepository(id: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRegistryRepositoriesRepositoryId",
 			namespace: "projects",
@@ -13787,6 +14441,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13795,7 +14450,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/registry/repositories/{repository_id}/tags` — risk: medium
 	 */
-	async getRegistryrepositoriesTags(id: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async getRegistryrepositoriesTags(id: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRegistryRepositoriesRepositoryIdTags",
 			namespace: "projects",
@@ -13808,6 +14463,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13816,7 +14472,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/repositories/{repository_id}/tags` — risk: medium
 	 */
-	async deleteRegistryrepositoriesTags(id: string, repositoryId: string): Promise<ProofResult<unknown>> {
+	async deleteRegistryrepositoriesTags(id: string, repositoryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRegistryRepositoriesRepositoryIdTags",
 			namespace: "projects",
@@ -13829,6 +14485,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13837,7 +14494,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/registry/repositories/{repository_id}/tags/{tag_name}` — risk: medium
 	 */
-	async registryrepositoriestagsRetrieveTag(id: string, repositoryId: string, tagName: string): Promise<ProofResult<unknown>> {
+	async registryrepositoriestagsRetrieveTag(id: string, repositoryId: string, tagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRegistryRepositoriesRepositoryIdTagsTagName",
 			namespace: "projects",
@@ -13850,6 +14507,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13858,7 +14516,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/repositories/{repository_id}/tags/{tag_name}` — risk: medium
 	 */
-	async registryrepositoriestagsDeleteTag(id: string, repositoryId: string, tagName: string): Promise<ProofResult<unknown>> {
+	async registryrepositoriestagsDeleteTag(id: string, repositoryId: string, tagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRegistryRepositoriesRepositoryIdTagsTagName",
 			namespace: "projects",
@@ -13871,6 +14529,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13879,7 +14538,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/registry/protection/repository/rules` — risk: medium
 	 */
-	async getRegistryprotectionrepositoryRules(id: string): Promise<ProofResult<unknown>> {
+	async getRegistryprotectionrepositoryRules(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRegistryProtectionRepositoryRules",
 			namespace: "projects",
@@ -13892,6 +14551,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13900,7 +14560,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/registry/protection/repository/rules` — risk: medium
 	 */
-	async postRegistryprotectionrepositoryRules(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postRegistryprotectionrepositoryRules(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRegistryProtectionRepositoryRules",
 			namespace: "projects",
@@ -13913,6 +14573,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13921,7 +14582,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v4/projects/{id}/registry/protection/repository/rules/{protection_rule_id}` — risk: medium
 	 */
-	async patchRegistryprotectionrepositoryRules(id: string, protectionRuleId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchRegistryprotectionrepositoryRules(id: string, protectionRuleId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiV4ProjectsIdRegistryProtectionRepositoryRulesProtectionRuleId",
 			namespace: "projects",
@@ -13934,6 +14595,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13942,7 +14604,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/protection/repository/rules/{protection_rule_id}` — risk: medium
 	 */
-	async registryprotectionrepositoryrulesDeleteRule(id: string, protectionRuleId: string): Promise<ProofResult<unknown>> {
+	async registryprotectionrepositoryrulesDeleteRule(id: string, protectionRuleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRegistryProtectionRepositoryRulesProtectionRuleId",
 			namespace: "projects",
@@ -13955,6 +14617,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13963,7 +14626,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/registry/protection/tag/rules` — risk: medium
 	 */
-	async getRegistryprotectiontagRules(id: string): Promise<ProofResult<unknown>> {
+	async getRegistryprotectiontagRules(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRegistryProtectionTagRules",
 			namespace: "projects",
@@ -13976,6 +14639,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -13984,7 +14648,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/registry/protection/tag/rules` — risk: medium
 	 */
-	async postRegistryprotectiontagRules(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postRegistryprotectiontagRules(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRegistryProtectionTagRules",
 			namespace: "projects",
@@ -13997,6 +14661,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14005,7 +14670,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v4/projects/{id}/registry/protection/tag/rules/{protection_rule_id}` — risk: medium
 	 */
-	async patchRegistryprotectiontagRules(id: string, protectionRuleId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchRegistryprotectiontagRules(id: string, protectionRuleId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiV4ProjectsIdRegistryProtectionTagRulesProtectionRuleId",
 			namespace: "projects",
@@ -14018,6 +14683,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14026,7 +14692,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/protection/tag/rules/{protection_rule_id}` — risk: medium
 	 */
-	async registryprotectiontagrulesDeleteRule(id: string, protectionRuleId: string): Promise<ProofResult<unknown>> {
+	async registryprotectiontagrulesDeleteRule(id: string, protectionRuleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRegistryProtectionTagRulesProtectionRuleId",
 			namespace: "projects",
@@ -14039,6 +14705,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14047,7 +14714,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/debian_distributions` — risk: medium
 	 */
-	async listDebianDistributions(id: string): Promise<ProofResult<unknown>> {
+	async listDebianDistributions(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDebianDistributions",
 			namespace: "projects",
@@ -14060,6 +14727,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14068,7 +14736,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/debian_distributions` — risk: medium
 	 */
-	async createDebianDistribution(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createDebianDistribution(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdDebianDistributions",
 			namespace: "projects",
@@ -14081,6 +14749,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14089,7 +14758,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/debian_distributions/{codename}` — risk: medium
 	 */
-	async retrieveDebianDistribution(id: string, codename: string): Promise<ProofResult<unknown>> {
+	async retrieveDebianDistribution(id: string, codename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDebianDistributionsCodename",
 			namespace: "projects",
@@ -14102,6 +14771,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14110,7 +14780,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/debian_distributions/{codename}` — risk: medium
 	 */
-	async debianDistributions(id: string, codename: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async debianDistributions(id: string, codename: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdDebianDistributionsCodename",
 			namespace: "projects",
@@ -14123,6 +14793,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14131,7 +14802,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/debian_distributions/{codename}` — risk: medium
 	 */
-	async deleteDebianDistribution(id: string, codename: string): Promise<ProofResult<unknown>> {
+	async deleteDebianDistribution(id: string, codename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdDebianDistributionsCodename",
 			namespace: "projects",
@@ -14144,6 +14815,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14152,7 +14824,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/debian_distributions/{codename}/key.asc` — risk: medium
 	 */
-	async keyAsc(id: string, codename: string): Promise<ProofResult<unknown>> {
+	async keyAsc(id: string, codename: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdDebianDistributionsCodenameKeyAsc",
 			namespace: "projects",
@@ -14165,6 +14837,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14173,7 +14846,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/events` — risk: medium
 	 */
-	async listEvents(id: string): Promise<ProofResult<unknown>> {
+	async listEvents(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdEvents",
 			namespace: "projects",
@@ -14186,6 +14859,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14194,7 +14868,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/export` — risk: medium
 	 */
-	async listExport(id: string): Promise<ProofResult<unknown>> {
+	async listExport(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdExport",
 			namespace: "projects",
@@ -14207,6 +14881,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14215,7 +14890,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/export` — risk: medium
 	 */
-	async createExport(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createExport(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdExport",
 			namespace: "projects",
@@ -14228,6 +14903,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14236,7 +14912,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/export/download` — risk: medium
 	 */
-	async exportDownload(id: string): Promise<ProofResult<unknown>> {
+	async exportDownload(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdExportDownload",
 			namespace: "projects",
@@ -14249,6 +14925,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14257,7 +14934,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/export_relations` — risk: medium
 	 */
-	async createExportRelation(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createExportRelation(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdExportRelations",
 			namespace: "projects",
@@ -14270,6 +14947,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14278,7 +14956,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/export_relations/download` — risk: medium
 	 */
-	async exportRelationsDownload(id: string): Promise<ProofResult<unknown>> {
+	async exportRelationsDownload(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdExportRelationsDownload",
 			namespace: "projects",
@@ -14291,6 +14969,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14299,7 +14978,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/export_relations/status` — risk: medium
 	 */
-	async status(id: string): Promise<ProofResult<unknown>> {
+	async status(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdExportRelationsStatus",
 			namespace: "projects",
@@ -14312,6 +14991,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14320,7 +15000,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/hooks/{hook_id}/url_variables/{key}` — risk: medium
 	 */
-	async urlVariables(id: string, hookId: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async urlVariables(id: string, hookId: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdHooksHookIdUrlVariablesKey",
 			namespace: "projects",
@@ -14333,6 +15013,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14341,7 +15022,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/hooks/{hook_id}/url_variables/{key}` — risk: medium
 	 */
-	async deleteUrlVariable(id: string, hookId: string, key: string): Promise<ProofResult<unknown>> {
+	async deleteUrlVariable(id: string, hookId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdHooksHookIdUrlVariablesKey",
 			namespace: "projects",
@@ -14354,6 +15035,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14362,7 +15044,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/hooks/{hook_id}/custom_headers/{key}` — risk: medium
 	 */
-	async customHeaders(id: string, hookId: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async customHeaders(id: string, hookId: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdHooksHookIdCustomHeadersKey",
 			namespace: "projects",
@@ -14375,6 +15057,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14383,7 +15066,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/hooks/{hook_id}/custom_headers/{key}` — risk: medium
 	 */
-	async deleteCustomHeader(id: string, hookId: string, key: string): Promise<ProofResult<unknown>> {
+	async deleteCustomHeader(id: string, hookId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdHooksHookIdCustomHeadersKey",
 			namespace: "projects",
@@ -14396,6 +15079,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14404,7 +15088,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/hooks` — risk: medium
 	 */
-	async listHooks(id: string): Promise<ProofResult<unknown>> {
+	async listHooks(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdHooks",
 			namespace: "projects",
@@ -14417,6 +15101,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14425,7 +15110,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/hooks` — risk: medium
 	 */
-	async createHook(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createHook(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdHooks",
 			namespace: "projects",
@@ -14438,6 +15123,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14446,7 +15132,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/hooks/{hook_id}` — risk: medium
 	 */
-	async retrieveHook(id: string, hookId: string): Promise<ProofResult<unknown>> {
+	async retrieveHook(id: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdHooksHookId",
 			namespace: "projects",
@@ -14459,6 +15145,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14467,7 +15154,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/hooks/{hook_id}` — risk: medium
 	 */
-	async hooks(id: string, hookId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async hooks(id: string, hookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdHooksHookId",
 			namespace: "projects",
@@ -14480,6 +15167,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14488,7 +15176,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/hooks/{hook_id}` — risk: medium
 	 */
-	async deleteHook(id: string, hookId: string): Promise<ProofResult<unknown>> {
+	async deleteHook(id: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdHooksHookId",
 			namespace: "projects",
@@ -14501,6 +15189,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14509,7 +15198,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/hooks/{hook_id}/events` — risk: medium
 	 */
-	async events(id: string, hookId: string): Promise<ProofResult<unknown>> {
+	async events(id: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdHooksHookIdEvents",
 			namespace: "projects",
@@ -14522,6 +15211,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14530,7 +15220,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/hooks/{hook_id}/test/{trigger}` — risk: medium
 	 */
-	async updateTest(id: string, hookId: string, trigger: string): Promise<ProofResult<unknown>> {
+	async updateTest(id: string, hookId: string, trigger: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdHooksHookIdTestTrigger",
 			namespace: "projects",
@@ -14543,6 +15233,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14551,7 +15242,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/hooks/{hook_id}/events/{hook_log_id}/resend` — risk: medium
 	 */
-	async resend(id: string, hookId: string, hookLogId: string): Promise<ProofResult<unknown>> {
+	async resend(id: string, hookId: string, hookLogId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdHooksHookIdEventsHookLogIdResend",
 			namespace: "projects",
@@ -14564,6 +15255,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14572,7 +15264,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/import/authorize` — risk: medium
 	 */
-	async importAuthorize(): Promise<ProofResult<unknown>> {
+	async importAuthorize(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsImportAuthorize",
 			namespace: "projects",
@@ -14585,6 +15277,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14593,7 +15286,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/import` — risk: medium
 	 */
-	async createImport(): Promise<ProofResult<unknown>> {
+	async createImport(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsImport",
 			namespace: "projects",
@@ -14606,6 +15299,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14614,7 +15308,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/import` — risk: medium
 	 */
-	async listImport(id: string): Promise<ProofResult<unknown>> {
+	async listImport(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdImport",
 			namespace: "projects",
@@ -14627,6 +15321,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14635,7 +15330,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/import/git` — risk: medium
 	 */
-	async git(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async git(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdImportGit",
 			namespace: "projects",
@@ -14648,6 +15343,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14656,7 +15352,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/remote-import` — risk: medium
 	 */
-	async createRemoteImport(): Promise<ProofResult<unknown>> {
+	async createRemoteImport(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsRemoteImport",
 			namespace: "projects",
@@ -14669,6 +15365,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14677,7 +15374,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/import-relation/authorize` — risk: medium
 	 */
-	async importRelationAuthorize(): Promise<ProofResult<unknown>> {
+	async importRelationAuthorize(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsImportRelationAuthorize",
 			namespace: "projects",
@@ -14690,6 +15387,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14698,7 +15396,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/import-relation` — risk: medium
 	 */
-	async createImportRelation(): Promise<ProofResult<unknown>> {
+	async createImportRelation(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsImportRelation",
 			namespace: "projects",
@@ -14711,6 +15409,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14719,7 +15418,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/relation-imports` — risk: medium
 	 */
-	async listRelationImports(id: string): Promise<ProofResult<unknown>> {
+	async listRelationImports(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRelationImports",
 			namespace: "projects",
@@ -14732,6 +15431,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14740,7 +15440,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/remote-import-s3` — risk: medium
 	 */
-	async createRemoteImportS3(): Promise<ProofResult<unknown>> {
+	async createRemoteImportS3(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsRemoteImportS3",
 			namespace: "projects",
@@ -14753,6 +15453,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14761,7 +15462,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/job_token_scope` — risk: medium
 	 */
-	async listJobTokenScope(id: string): Promise<ProofResult<unknown>> {
+	async listJobTokenScope(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdJobTokenScope",
 			namespace: "projects",
@@ -14774,6 +15475,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14782,7 +15484,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v4/projects/{id}/job_token_scope` — risk: medium
 	 */
-	async jobTokenScope(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async jobTokenScope(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiV4ProjectsIdJobTokenScope",
 			namespace: "projects",
@@ -14795,6 +15497,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14803,7 +15506,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/job_token_scope/allowlist` — risk: medium
 	 */
-	async allowlist_0(id: string): Promise<ProofResult<unknown>> {
+	async allowlist_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdJobTokenScopeAllowlist",
 			namespace: "projects",
@@ -14816,6 +15519,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14824,7 +15528,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/job_token_scope/allowlist` — risk: medium
 	 */
-	async allowlist_1(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async allowlist_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdJobTokenScopeAllowlist",
 			namespace: "projects",
@@ -14837,6 +15541,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14845,7 +15550,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/job_token_scope/groups_allowlist` — risk: medium
 	 */
-	async groupsAllowlist_0(id: string): Promise<ProofResult<unknown>> {
+	async groupsAllowlist_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdJobTokenScopeGroupsAllowlist",
 			namespace: "projects",
@@ -14858,6 +15563,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14866,7 +15572,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/job_token_scope/groups_allowlist` — risk: medium
 	 */
-	async groupsAllowlist_1(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async groupsAllowlist_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdJobTokenScopeGroupsAllowlist",
 			namespace: "projects",
@@ -14879,6 +15585,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14887,7 +15594,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/job_token_scope/groups_allowlist/{target_group_id}` — risk: medium
 	 */
-	async deleteGroupsAllowlist(id: string, targetGroupId: string): Promise<ProofResult<unknown>> {
+	async deleteGroupsAllowlist(id: string, targetGroupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdJobTokenScopeGroupsAllowlistTargetGroupId",
 			namespace: "projects",
@@ -14900,6 +15607,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14908,7 +15616,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/job_token_scope/allowlist/{target_project_id}` — risk: medium
 	 */
-	async deleteAllowlist(id: string, targetProjectId: string): Promise<ProofResult<unknown>> {
+	async deleteAllowlist(id: string, targetProjectId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdJobTokenScopeAllowlistTargetProjectId",
 			namespace: "projects",
@@ -14921,6 +15629,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14929,7 +15638,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages` — risk: medium
 	 */
-	async listPackages(id: string): Promise<ProofResult<unknown>> {
+	async listPackages(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackages",
 			namespace: "projects",
@@ -14942,6 +15651,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14950,7 +15660,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/{package_id}` — risk: medium
 	 */
-	async retrievePackage_2(id: string, packageId: string): Promise<ProofResult<unknown>> {
+	async retrievePackage_2(id: string, packageId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesPackageId",
 			namespace: "projects",
@@ -14963,6 +15673,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14971,7 +15682,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/{package_id}` — risk: medium
 	 */
-	async deletePackage(id: string, packageId: string): Promise<ProofResult<unknown>> {
+	async deletePackage(id: string, packageId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPackagesPackageId",
 			namespace: "projects",
@@ -14984,6 +15695,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -14992,7 +15704,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/{package_id}/pipelines` — risk: medium
 	 */
-	async packagesPipelines(id: string, packageId: string): Promise<ProofResult<unknown>> {
+	async packagesPipelines(id: string, packageId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesPackageIdPipelines",
 			namespace: "projects",
@@ -15005,6 +15717,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15013,7 +15726,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/protection/rules` — risk: medium
 	 */
-	async getPackagesprotectionRules(id: string): Promise<ProofResult<unknown>> {
+	async getPackagesprotectionRules(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesProtectionRules",
 			namespace: "projects",
@@ -15026,6 +15739,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15034,7 +15748,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/protection/rules` — risk: medium
 	 */
-	async postPackagesprotectionRules(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postPackagesprotectionRules(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesProtectionRules",
 			namespace: "projects",
@@ -15047,6 +15761,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15055,7 +15770,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v4/projects/{id}/packages/protection/rules/{package_protection_rule_id}` — risk: medium
 	 */
-	async patchPackagesprotectionRules(id: string, packageProtectionRuleId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async patchPackagesprotectionRules(id: string, packageProtectionRuleId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiV4ProjectsIdPackagesProtectionRulesPackageProtectionRuleId",
 			namespace: "projects",
@@ -15068,6 +15783,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15076,7 +15792,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/protection/rules/{package_protection_rule_id}` — risk: medium
 	 */
-	async packagesprotectionrulesDeleteRule(id: string, packageProtectionRuleId: string): Promise<ProofResult<unknown>> {
+	async packagesprotectionrulesDeleteRule(id: string, packageProtectionRuleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdPackagesProtectionRulesPackageProtectionRuleId",
 			namespace: "projects",
@@ -15089,6 +15805,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15097,7 +15814,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snapshot` — risk: medium
 	 */
-	async listSnapshot(id: string): Promise<ProofResult<unknown>> {
+	async listSnapshot(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnapshot",
 			namespace: "projects",
@@ -15110,6 +15827,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15118,7 +15836,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snippets` — risk: medium
 	 */
-	async listSnippets(id: string): Promise<ProofResult<unknown>> {
+	async listSnippets(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnippets",
 			namespace: "projects",
@@ -15131,6 +15849,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15139,7 +15858,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/snippets` — risk: medium
 	 */
-	async createSnippet(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createSnippet(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdSnippets",
 			namespace: "projects",
@@ -15152,6 +15871,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15160,7 +15880,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}` — risk: medium
 	 */
-	async retrieveSnippet(id: string, snippetId: string): Promise<ProofResult<unknown>> {
+	async retrieveSnippet(id: string, snippetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnippetsSnippetId",
 			namespace: "projects",
@@ -15173,6 +15893,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15181,7 +15902,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/snippets/{snippet_id}` — risk: medium
 	 */
-	async snippets(id: string, snippetId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async snippets(id: string, snippetId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdSnippetsSnippetId",
 			namespace: "projects",
@@ -15194,6 +15915,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15202,7 +15924,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/snippets/{snippet_id}` — risk: medium
 	 */
-	async deleteSnippet(id: string, snippetId: string): Promise<ProofResult<unknown>> {
+	async deleteSnippet(id: string, snippetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdSnippetsSnippetId",
 			namespace: "projects",
@@ -15215,6 +15937,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15223,7 +15946,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/raw` — risk: medium
 	 */
-	async snippetsRaw(id: string, snippetId: string): Promise<ProofResult<unknown>> {
+	async snippetsRaw(id: string, snippetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnippetsSnippetIdRaw",
 			namespace: "projects",
@@ -15236,6 +15959,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15244,7 +15968,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/files/{ref}/{file_path}/raw` — risk: medium
 	 */
-	async snippetsfilesRaw(id: string, snippetId: string, ref: string, filePath: string): Promise<ProofResult<unknown>> {
+	async snippetsfilesRaw(id: string, snippetId: string, ref: string, filePath: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnippetsSnippetIdFilesRefFilePathRaw",
 			namespace: "projects",
@@ -15257,6 +15981,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15265,7 +15990,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/user_agent_detail` — risk: medium
 	 */
-	async snippetsUserAgentDetail(id: string, snippetId: string): Promise<ProofResult<unknown>> {
+	async snippetsUserAgentDetail(id: string, snippetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdSnippetsSnippetIdUserAgentDetail",
 			namespace: "projects",
@@ -15278,6 +16003,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15286,7 +16012,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/statistics` — risk: medium
 	 */
-	async listStatistics(id: string): Promise<ProofResult<unknown>> {
+	async listStatistics(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdStatistics",
 			namespace: "projects",
@@ -15299,6 +16025,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15307,7 +16034,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/templates/{type}` — risk: medium
 	 */
-	async retrieveTemplate_0(id: string, type: string): Promise<ProofResult<unknown>> {
+	async retrieveTemplate_0(id: string, type: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdTemplatesType",
 			namespace: "projects",
@@ -15320,6 +16047,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15328,7 +16056,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/templates/{type}/{name}` — risk: medium
 	 */
-	async retrieveTemplate_1(id: string, type: string, name: string): Promise<ProofResult<unknown>> {
+	async retrieveTemplate_1(id: string, type: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdTemplatesTypeName",
 			namespace: "projects",
@@ -15341,6 +16069,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15349,7 +16078,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/custom_attributes` — risk: medium
 	 */
-	async listCustomAttributes(id: string): Promise<ProofResult<unknown>> {
+	async listCustomAttributes(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdCustomAttributes",
 			namespace: "projects",
@@ -15362,6 +16091,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15370,7 +16100,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/custom_attributes/{key}` — risk: medium
 	 */
-	async retrieveCustomAttribute(id: string, key: string): Promise<ProofResult<unknown>> {
+	async retrieveCustomAttribute(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdCustomAttributesKey",
 			namespace: "projects",
@@ -15383,6 +16113,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15391,7 +16122,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/custom_attributes/{key}` — risk: medium
 	 */
-	async customAttributes(id: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async customAttributes(id: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdCustomAttributesKey",
 			namespace: "projects",
@@ -15404,6 +16135,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15412,7 +16144,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/custom_attributes/{key}` — risk: medium
 	 */
-	async deleteCustomAttribute(id: string, key: string): Promise<ProofResult<unknown>> {
+	async deleteCustomAttribute(id: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdCustomAttributesKey",
 			namespace: "projects",
@@ -15425,6 +16157,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15433,7 +16166,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/restore` — risk: medium
 	 */
-	async createRestore(id: string): Promise<ProofResult<unknown>> {
+	async createRestore(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRestore",
 			namespace: "projects",
@@ -15446,6 +16179,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15454,7 +16188,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Projects",
 			namespace: "projects",
@@ -15467,6 +16201,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15475,7 +16210,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Projects",
 			namespace: "projects",
@@ -15488,6 +16223,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15496,7 +16232,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/user/{user_id}` — risk: medium
 	 */
-	async updateUser(userId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateUser(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsUserUserId",
 			namespace: "projects",
@@ -15509,6 +16245,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15517,7 +16254,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/share_locations` — risk: medium
 	 */
-	async listShareLocations(id: string): Promise<ProofResult<unknown>> {
+	async listShareLocations(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdShareLocations",
 			namespace: "projects",
@@ -15530,6 +16267,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15538,7 +16276,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsId",
 			namespace: "projects",
@@ -15551,6 +16289,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15559,7 +16298,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}` — risk: medium
 	 */
-	async put(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsId",
 			namespace: "projects",
@@ -15572,6 +16311,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15580,7 +16320,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}` — risk: medium
 	 */
-	async del(id: string): Promise<ProofResult<unknown>> {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsId",
 			namespace: "projects",
@@ -15593,6 +16333,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15601,7 +16342,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/fork` — risk: medium
 	 */
-	async createFork(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createFork(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdFork",
 			namespace: "projects",
@@ -15614,6 +16355,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15622,7 +16364,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/fork` — risk: medium
 	 */
-	async fork(id: string): Promise<ProofResult<unknown>> {
+	async fork(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdFork",
 			namespace: "projects",
@@ -15635,6 +16377,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15643,7 +16386,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/forks` — risk: medium
 	 */
-	async listForks(id: string): Promise<ProofResult<unknown>> {
+	async listForks(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdForks",
 			namespace: "projects",
@@ -15656,6 +16399,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15664,7 +16408,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/pages_access` — risk: medium
 	 */
-	async listPagesAccess(id: string): Promise<ProofResult<unknown>> {
+	async listPagesAccess(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPagesAccess",
 			namespace: "projects",
@@ -15677,6 +16421,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15685,7 +16430,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/archive` — risk: medium
 	 */
-	async createArchive(id: string): Promise<ProofResult<unknown>> {
+	async createArchive(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdArchive",
 			namespace: "projects",
@@ -15698,6 +16443,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15706,7 +16452,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/unarchive` — risk: medium
 	 */
-	async createUnarchive(id: string): Promise<ProofResult<unknown>> {
+	async createUnarchive(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdUnarchive",
 			namespace: "projects",
@@ -15719,6 +16465,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15727,7 +16474,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/star` — risk: medium
 	 */
-	async createStar(id: string): Promise<ProofResult<unknown>> {
+	async createStar(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdStar",
 			namespace: "projects",
@@ -15740,6 +16487,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15748,7 +16496,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/unstar` — risk: medium
 	 */
-	async createUnstar(id: string): Promise<ProofResult<unknown>> {
+	async createUnstar(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdUnstar",
 			namespace: "projects",
@@ -15761,6 +16509,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15769,7 +16518,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/starrers` — risk: medium
 	 */
-	async listStarrers(id: string): Promise<ProofResult<unknown>> {
+	async listStarrers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdStarrers",
 			namespace: "projects",
@@ -15782,6 +16531,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15790,7 +16540,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/languages` — risk: medium
 	 */
-	async listLanguages(id: string): Promise<ProofResult<unknown>> {
+	async listLanguages(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdLanguages",
 			namespace: "projects",
@@ -15803,6 +16553,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15811,7 +16562,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/fork/{forked_from_id}` — risk: medium
 	 */
-	async updateFork(id: string, forkedFromId: string): Promise<ProofResult<unknown>> {
+	async updateFork(id: string, forkedFromId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdForkForkedFromId",
 			namespace: "projects",
@@ -15824,6 +16575,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15832,7 +16584,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/share` — risk: medium
 	 */
-	async createShare(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createShare(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdShare",
 			namespace: "projects",
@@ -15845,6 +16597,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15853,7 +16606,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/share/{group_id}` — risk: medium
 	 */
-	async deleteShare(id: string, groupId: string): Promise<ProofResult<unknown>> {
+	async deleteShare(id: string, groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdShareGroupId",
 			namespace: "projects",
@@ -15866,6 +16619,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15874,7 +16628,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/import_project_members/{project_id}` — risk: medium
 	 */
-	async updateImportProjectMember(id: string, projectId: string): Promise<ProofResult<unknown>> {
+	async updateImportProjectMember(id: string, projectId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdImportProjectMembersProjectId",
 			namespace: "projects",
@@ -15887,6 +16641,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15895,7 +16650,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/users` — risk: medium
 	 */
-	async listUsers(id: string): Promise<ProofResult<unknown>> {
+	async listUsers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdUsers",
 			namespace: "projects",
@@ -15908,6 +16663,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15916,7 +16672,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/groups` — risk: medium
 	 */
-	async listGroups(id: string): Promise<ProofResult<unknown>> {
+	async listGroups(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdGroups",
 			namespace: "projects",
@@ -15929,6 +16685,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15937,7 +16694,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/invited_groups` — risk: medium
 	 */
-	async listInvitedGroups(id: string): Promise<ProofResult<unknown>> {
+	async listInvitedGroups(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdInvitedGroups",
 			namespace: "projects",
@@ -15950,6 +16707,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15958,7 +16716,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/housekeeping` — risk: medium
 	 */
-	async createHousekeeping(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createHousekeeping(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdHousekeeping",
 			namespace: "projects",
@@ -15971,6 +16729,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -15979,7 +16738,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/repository_size` — risk: medium
 	 */
-	async createRepositorySize(id: string): Promise<ProofResult<unknown>> {
+	async createRepositorySize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRepositorySize",
 			namespace: "projects",
@@ -15992,6 +16751,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16000,7 +16760,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/transfer` — risk: medium
 	 */
-	async transfer(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async transfer(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdTransfer",
 			namespace: "projects",
@@ -16013,6 +16773,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16021,7 +16782,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/transfer_locations` — risk: medium
 	 */
-	async listTransferLocations(id: string): Promise<ProofResult<unknown>> {
+	async listTransferLocations(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdTransferLocations",
 			namespace: "projects",
@@ -16034,6 +16795,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16042,7 +16804,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/storage` — risk: medium
 	 */
-	async listStorage(id: string): Promise<ProofResult<unknown>> {
+	async listStorage(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdStorage",
 			namespace: "projects",
@@ -16055,6 +16817,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16063,7 +16826,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/audit_events` — risk: medium
 	 */
-	async listAuditEvents(id: string): Promise<ProofResult<unknown>> {
+	async listAuditEvents(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdAuditEvents",
 			namespace: "projects",
@@ -16076,6 +16839,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16084,7 +16848,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/audit_events/{audit_event_id}` — risk: medium
 	 */
-	async retrieveAuditEvent(id: string, auditEventId: string): Promise<ProofResult<unknown>> {
+	async retrieveAuditEvent(id: string, auditEventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdAuditEventsAuditEventId",
 			namespace: "projects",
@@ -16097,6 +16861,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16105,7 +16870,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/protected_branches` — risk: medium
 	 */
-	async listProtectedBranches(id: string): Promise<ProofResult<unknown>> {
+	async listProtectedBranches(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdProtectedBranches",
 			namespace: "projects",
@@ -16118,6 +16883,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16126,7 +16892,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/protected_branches` — risk: medium
 	 */
-	async createProtectedBranche(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createProtectedBranche(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdProtectedBranches",
 			namespace: "projects",
@@ -16139,6 +16905,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16147,7 +16914,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/protected_branches/{name}` — risk: medium
 	 */
-	async retrieveProtectedBranche(id: string, name: string): Promise<ProofResult<unknown>> {
+	async retrieveProtectedBranche(id: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdProtectedBranchesName",
 			namespace: "projects",
@@ -16160,6 +16927,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16168,7 +16936,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v4/projects/{id}/protected_branches/{name}` — risk: medium
 	 */
-	async protectedBranches(id: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async protectedBranches(id: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiV4ProjectsIdProtectedBranchesName",
 			namespace: "projects",
@@ -16181,6 +16949,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16189,7 +16958,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/protected_branches/{name}` — risk: medium
 	 */
-	async deleteProtectedBranche(id: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteProtectedBranche(id: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdProtectedBranchesName",
 			namespace: "projects",
@@ -16202,6 +16971,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16210,7 +16980,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/protected_tags` — risk: medium
 	 */
-	async listProtectedTags(id: string): Promise<ProofResult<unknown>> {
+	async listProtectedTags(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdProtectedTags",
 			namespace: "projects",
@@ -16223,6 +16993,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16231,7 +17002,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/protected_tags` — risk: medium
 	 */
-	async createProtectedTag(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createProtectedTag(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdProtectedTags",
 			namespace: "projects",
@@ -16244,6 +17015,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16252,7 +17024,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/protected_tags/{name}` — risk: medium
 	 */
-	async retrieveProtectedTag(id: string, name: string): Promise<ProofResult<unknown>> {
+	async retrieveProtectedTag(id: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdProtectedTagsName",
 			namespace: "projects",
@@ -16265,6 +17037,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16273,7 +17046,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/protected_tags/{name}` — risk: medium
 	 */
-	async deleteProtectedTag(id: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteProtectedTag(id: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdProtectedTagsName",
 			namespace: "projects",
@@ -16286,6 +17059,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16294,7 +17068,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/pypi/simple` — risk: medium
 	 */
-	async simple(id: string): Promise<ProofResult<unknown>> {
+	async simple(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesPypiSimple",
 			namespace: "projects",
@@ -16307,6 +17081,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16315,7 +17090,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/pypi` — risk: medium
 	 */
-	async pypi(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pypi(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesPypi",
 			namespace: "projects",
@@ -16328,6 +17103,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16336,7 +17112,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/pypi/authorize` — risk: medium
 	 */
-	async packagespypiAuthorize(id: string): Promise<ProofResult<unknown>> {
+	async packagespypiAuthorize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesPypiAuthorize",
 			namespace: "projects",
@@ -16349,6 +17125,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16357,7 +17134,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/releases` — risk: medium
 	 */
-	async listReleases(id: string): Promise<ProofResult<unknown>> {
+	async listReleases(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdReleases",
 			namespace: "projects",
@@ -16370,6 +17147,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16378,7 +17156,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/releases` — risk: medium
 	 */
-	async createReleas(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createReleas(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdReleases",
 			namespace: "projects",
@@ -16391,6 +17169,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16399,7 +17178,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/releases/{tag_name}` — risk: medium
 	 */
-	async retrieveReleas(id: string, tagName: string): Promise<ProofResult<unknown>> {
+	async retrieveReleas(id: string, tagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdReleasesTagName",
 			namespace: "projects",
@@ -16412,6 +17191,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16420,7 +17200,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/releases/{tag_name}` — risk: medium
 	 */
-	async releases(id: string, tagName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async releases(id: string, tagName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdReleasesTagName",
 			namespace: "projects",
@@ -16433,6 +17213,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16441,7 +17222,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/releases/{tag_name}` — risk: medium
 	 */
-	async deleteReleas(id: string, tagName: string): Promise<ProofResult<unknown>> {
+	async deleteReleas(id: string, tagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdReleasesTagName",
 			namespace: "projects",
@@ -16454,6 +17235,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16462,7 +17244,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/releases/{tag_name}/evidence` — risk: medium
 	 */
-	async evidence(id: string, tagName: string): Promise<ProofResult<unknown>> {
+	async evidence(id: string, tagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdReleasesTagNameEvidence",
 			namespace: "projects",
@@ -16475,6 +17257,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16483,7 +17266,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/releases/{tag_name}/assets/links` — risk: medium
 	 */
-	async getReleasesassetsLinks(id: string, tagName: string): Promise<ProofResult<unknown>> {
+	async getReleasesassetsLinks(id: string, tagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdReleasesTagNameAssetsLinks",
 			namespace: "projects",
@@ -16496,6 +17279,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16504,7 +17288,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/releases/{tag_name}/assets/links` — risk: medium
 	 */
-	async postReleasesassetsLinks(id: string, tagName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postReleasesassetsLinks(id: string, tagName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdReleasesTagNameAssetsLinks",
 			namespace: "projects",
@@ -16517,6 +17301,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16525,7 +17310,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}` — risk: medium
 	 */
-	async releasesassetslinksRetrieveLink(id: string, tagName: string, linkId: string): Promise<ProofResult<unknown>> {
+	async releasesassetslinksRetrieveLink(id: string, tagName: string, linkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdReleasesTagNameAssetsLinksLinkId",
 			namespace: "projects",
@@ -16538,6 +17323,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16546,7 +17332,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}` — risk: medium
 	 */
-	async putReleasesassetsLinks(id: string, tagName: string, linkId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async putReleasesassetsLinks(id: string, tagName: string, linkId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdReleasesTagNameAssetsLinksLinkId",
 			namespace: "projects",
@@ -16559,6 +17345,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16567,7 +17354,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}` — risk: medium
 	 */
-	async releasesassetslinksDeleteLink(id: string, tagName: string, linkId: string): Promise<ProofResult<unknown>> {
+	async releasesassetslinksDeleteLink(id: string, tagName: string, linkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdReleasesTagNameAssetsLinksLinkId",
 			namespace: "projects",
@@ -16580,6 +17367,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16588,7 +17376,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/remote_mirrors` — risk: medium
 	 */
-	async listRemoteMirrors(id: string): Promise<ProofResult<unknown>> {
+	async listRemoteMirrors(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRemoteMirrors",
 			namespace: "projects",
@@ -16601,6 +17389,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16609,7 +17398,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/remote_mirrors` — risk: medium
 	 */
-	async createRemoteMirror(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createRemoteMirror(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRemoteMirrors",
 			namespace: "projects",
@@ -16622,6 +17411,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16630,7 +17420,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/remote_mirrors/{mirror_id}` — risk: medium
 	 */
-	async retrieveRemoteMirror(id: string, mirrorId: string): Promise<ProofResult<unknown>> {
+	async retrieveRemoteMirror(id: string, mirrorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRemoteMirrorsMirrorId",
 			namespace: "projects",
@@ -16643,6 +17433,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16651,7 +17442,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/remote_mirrors/{mirror_id}` — risk: medium
 	 */
-	async remoteMirrors(id: string, mirrorId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async remoteMirrors(id: string, mirrorId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdRemoteMirrorsMirrorId",
 			namespace: "projects",
@@ -16664,6 +17455,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16672,7 +17464,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/remote_mirrors/{mirror_id}` — risk: medium
 	 */
-	async deleteRemoteMirror(id: string, mirrorId: string): Promise<ProofResult<unknown>> {
+	async deleteRemoteMirror(id: string, mirrorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRemoteMirrorsMirrorId",
 			namespace: "projects",
@@ -16685,6 +17477,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16693,7 +17486,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/remote_mirrors/{mirror_id}/sync` — risk: medium
 	 */
-	async sync(id: string, mirrorId: string): Promise<ProofResult<unknown>> {
+	async sync(id: string, mirrorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRemoteMirrorsMirrorIdSync",
 			namespace: "projects",
@@ -16706,6 +17499,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16714,7 +17508,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/remote_mirrors/{mirror_id}/public_key` — risk: medium
 	 */
-	async publicKey(id: string, mirrorId: string): Promise<ProofResult<unknown>> {
+	async publicKey(id: string, mirrorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRemoteMirrorsMirrorIdPublicKey",
 			namespace: "projects",
@@ -16727,6 +17521,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16735,7 +17530,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/tree` — risk: medium
 	 */
-	async repositoryTree(id: string): Promise<ProofResult<unknown>> {
+	async repositoryTree(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryTree",
 			namespace: "projects",
@@ -16748,6 +17543,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16756,7 +17552,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/blobs/{sha}/raw` — risk: medium
 	 */
-	async repositoryblobsRaw(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async repositoryblobsRaw(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryBlobsShaRaw",
 			namespace: "projects",
@@ -16769,6 +17565,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16777,7 +17574,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/blobs/{sha}` — risk: medium
 	 */
-	async retrieveBlob(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async retrieveBlob(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryBlobsSha",
 			namespace: "projects",
@@ -16790,6 +17587,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16798,7 +17596,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/archive` — risk: medium
 	 */
-	async archive(id: string): Promise<ProofResult<unknown>> {
+	async archive(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryArchive",
 			namespace: "projects",
@@ -16811,6 +17609,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16819,7 +17618,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/compare` — risk: medium
 	 */
-	async compare(id: string): Promise<ProofResult<unknown>> {
+	async compare(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryCompare",
 			namespace: "projects",
@@ -16832,6 +17631,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16840,7 +17640,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/health` — risk: medium
 	 */
-	async health(id: string): Promise<ProofResult<unknown>> {
+	async health(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryHealth",
 			namespace: "projects",
@@ -16853,6 +17653,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16861,7 +17662,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/contributors` — risk: medium
 	 */
-	async contributors(id: string): Promise<ProofResult<unknown>> {
+	async contributors(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryContributors",
 			namespace: "projects",
@@ -16874,6 +17675,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16882,7 +17684,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/merge_base` — risk: medium
 	 */
-	async mergeBase(id: string): Promise<ProofResult<unknown>> {
+	async mergeBase(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryMergeBase",
 			namespace: "projects",
@@ -16895,6 +17697,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16903,7 +17706,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/changelog` — risk: medium
 	 */
-	async changelog_0(id: string): Promise<ProofResult<unknown>> {
+	async changelog_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryChangelog",
 			namespace: "projects",
@@ -16916,6 +17719,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16924,7 +17728,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/repository/changelog` — risk: medium
 	 */
-	async changelog_1(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async changelog_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRepositoryChangelog",
 			namespace: "projects",
@@ -16937,6 +17741,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16945,7 +17750,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/access_tokens/self/rotate` — risk: medium
 	 */
-	async rotate(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async rotate(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdAccessTokensSelfRotate",
 			namespace: "projects",
@@ -16958,6 +17763,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16966,7 +17772,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{eventable_id}/resource_milestone_events` — risk: medium
 	 */
-	async issuesResourceMilestoneEvents(id: string, eventableId: string): Promise<ProofResult<unknown>> {
+	async issuesResourceMilestoneEvents(id: string, eventableId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesEventableIdResourceMilestoneEvents",
 			namespace: "projects",
@@ -16979,6 +17785,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -16987,7 +17794,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{eventable_id}/resource_milestone_events/{event_id}` — risk: medium
 	 */
-	async issuesresourceMilestoneEventsRetrieveResourceMilestoneEvent(id: string, eventableId: string, eventId: string): Promise<ProofResult<unknown>> {
+	async issuesresourceMilestoneEventsRetrieveResourceMilestoneEvent(id: string, eventableId: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdIssuesEventableIdResourceMilestoneEventsEventId",
 			namespace: "projects",
@@ -17000,6 +17807,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17008,7 +17816,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{eventable_id}/resource_milestone_events` — risk: medium
 	 */
-	async mergeRequestsResourceMilestoneEvents(id: string, eventableId: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsResourceMilestoneEvents(id: string, eventableId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsEventableIdResourceMilestoneEvents",
 			namespace: "projects",
@@ -17021,6 +17829,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17029,7 +17838,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{eventable_id}/resource_milestone_events/{event_id}` — risk: medium
 	 */
-	async mergeRequestsresourceMilestoneEventsRetrieveResourceMilestoneEvent(id: string, eventableId: string, eventId: string): Promise<ProofResult<unknown>> {
+	async mergeRequestsresourceMilestoneEventsRetrieveResourceMilestoneEvent(id: string, eventableId: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdMergeRequestsEventableIdResourceMilestoneEventsEventId",
 			namespace: "projects",
@@ -17042,6 +17851,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17050,7 +17860,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/rpm` — risk: medium
 	 */
-	async rpm(id: string): Promise<ProofResult<unknown>> {
+	async rpm(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesRpm",
 			namespace: "projects",
@@ -17063,6 +17873,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17071,7 +17882,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/rpm/authorize` — risk: medium
 	 */
-	async packagesrpmAuthorize(id: string): Promise<ProofResult<unknown>> {
+	async packagesrpmAuthorize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesRpmAuthorize",
 			namespace: "projects",
@@ -17084,6 +17895,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17092,7 +17904,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/rubygems/{file_name}` — risk: medium
 	 */
-	async retrieveRubygem(id: string, fileName: string): Promise<ProofResult<unknown>> {
+	async retrieveRubygem(id: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesRubygemsFileName",
 			namespace: "projects",
@@ -17105,6 +17917,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17113,7 +17926,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/rubygems/quick/Marshal.4.8/{file_name}` — risk: medium
 	 */
-	async retrieveMarshal48(id: string, fileName: string): Promise<ProofResult<unknown>> {
+	async retrieveMarshal48(id: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesRubygemsQuickMarshal48FileName",
 			namespace: "projects",
@@ -17126,6 +17939,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17134,7 +17948,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/rubygems/gems/{file_name}` — risk: medium
 	 */
-	async retrieveGem(id: string, fileName: string): Promise<ProofResult<unknown>> {
+	async retrieveGem(id: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesRubygemsGemsFileName",
 			namespace: "projects",
@@ -17147,6 +17961,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17155,7 +17970,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/rubygems/api/v1/gems/authorize` — risk: medium
 	 */
-	async packagesrubygemsapiv1gemsAuthorize(id: string): Promise<ProofResult<unknown>> {
+	async packagesrubygemsapiv1gemsAuthorize(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesRubygemsApiV1GemsAuthorize",
 			namespace: "projects",
@@ -17168,6 +17983,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17176,7 +17992,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/packages/rubygems/api/v1/gems` — risk: medium
 	 */
-	async gems(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async gems(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdPackagesRubygemsApiV1Gems",
 			namespace: "projects",
@@ -17189,6 +18005,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17197,7 +18014,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/rubygems/api/v1/dependencies` — risk: medium
 	 */
-	async dependencies(id: string): Promise<ProofResult<unknown>> {
+	async dependencies(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesRubygemsApiV1Dependencies",
 			namespace: "projects",
@@ -17210,6 +18027,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17218,7 +18036,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/(-/)search` — risk: medium
 	 */
-	async Search(id: string): Promise<ProofResult<unknown>> {
+	async Search(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsId(-)search",
 			namespace: "projects",
@@ -17231,6 +18049,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17239,7 +18058,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/repository/submodules/{submodule}` — risk: medium
 	 */
-	async submodules(id: string, submodule: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async submodules(id: string, submodule: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdRepositorySubmodulesSubmodule",
 			namespace: "projects",
@@ -17252,6 +18071,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17260,7 +18080,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/attestations/{subject_digest}` — risk: medium
 	 */
-	async retrieveAttestation(id: string, subjectDigest: string): Promise<ProofResult<unknown>> {
+	async retrieveAttestation(id: string, subjectDigest: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdAttestationsSubjectDigest",
 			namespace: "projects",
@@ -17273,6 +18093,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17281,7 +18102,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/attestations/{attestation_iid}/download` — risk: medium
 	 */
-	async attestationsDownload(id: string, attestationIid: string): Promise<ProofResult<unknown>> {
+	async attestationsDownload(id: string, attestationIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdAttestationsAttestationIidDownload",
 			namespace: "projects",
@@ -17294,6 +18115,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17302,7 +18124,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/tags` — risk: medium
 	 */
-	async getRepositoryTags(id: string): Promise<ProofResult<unknown>> {
+	async getRepositoryTags(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryTags",
 			namespace: "projects",
@@ -17315,6 +18137,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17323,7 +18146,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/repository/tags` — risk: medium
 	 */
-	async postRepositoryTags(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async postRepositoryTags(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdRepositoryTags",
 			namespace: "projects",
@@ -17336,6 +18159,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17344,7 +18168,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/tags/{tag_name}` — risk: medium
 	 */
-	async repositorytagsRetrieveTag(id: string, tagName: string): Promise<ProofResult<unknown>> {
+	async repositorytagsRetrieveTag(id: string, tagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryTagsTagName",
 			namespace: "projects",
@@ -17357,6 +18181,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17365,7 +18190,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/repository/tags/{tag_name}` — risk: medium
 	 */
-	async repositorytagsDeleteTag(id: string, tagName: string): Promise<ProofResult<unknown>> {
+	async repositorytagsDeleteTag(id: string, tagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdRepositoryTagsTagName",
 			namespace: "projects",
@@ -17378,6 +18203,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17386,7 +18212,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/repository/tags/{tag_name}/signature` — risk: medium
 	 */
-	async tagsSignature(id: string, tagName: string): Promise<ProofResult<unknown>> {
+	async tagsSignature(id: string, tagName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdRepositoryTagsTagNameSignature",
 			namespace: "projects",
@@ -17399,6 +18225,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17407,7 +18234,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}` — risk: medium
 	 */
-	async retrieveModule(id: string, moduleName: string, moduleSystem: string): Promise<ProofResult<unknown>> {
+	async retrieveModule(id: string, moduleName: string, moduleSystem: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdPackagesTerraformModulesModuleNameModuleSystem",
 			namespace: "projects",
@@ -17420,6 +18247,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17428,7 +18256,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/terraform/state/{name}` — risk: medium
 	 */
-	async retrieveState(id: string, name: string): Promise<ProofResult<unknown>> {
+	async retrieveState(id: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdTerraformStateName",
 			namespace: "projects",
@@ -17441,6 +18269,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17449,7 +18278,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/terraform/state/{name}` — risk: medium
 	 */
-	async updateState(id: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async updateState(id: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdTerraformStateName",
 			namespace: "projects",
@@ -17462,6 +18291,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17470,7 +18300,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/terraform/state/{name}` — risk: medium
 	 */
-	async deleteState(id: string, name: string): Promise<ProofResult<unknown>> {
+	async deleteState(id: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdTerraformStateName",
 			namespace: "projects",
@@ -17483,6 +18313,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17491,7 +18322,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/terraform/state/{name}/authorize` — risk: medium
 	 */
-	async terraformstateAuthorize(id: string, name: string): Promise<ProofResult<unknown>> {
+	async terraformstateAuthorize(id: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdTerraformStateNameAuthorize",
 			namespace: "projects",
@@ -17504,6 +18335,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17512,7 +18344,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/terraform/state/{name}/lock` — risk: medium
 	 */
-	async lock_0(id: string, name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async lock_0(id: string, name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdTerraformStateNameLock",
 			namespace: "projects",
@@ -17525,6 +18357,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17533,7 +18366,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/terraform/state/{name}/lock` — risk: medium
 	 */
-	async lock_1(id: string, name: string): Promise<ProofResult<unknown>> {
+	async lock_1(id: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdTerraformStateNameLock",
 			namespace: "projects",
@@ -17546,6 +18379,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17554,7 +18388,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/terraform/state_protection_rules` — risk: medium
 	 */
-	async stateProtectionRules(id: string): Promise<ProofResult<unknown>> {
+	async stateProtectionRules(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdTerraformStateProtectionRules",
 			namespace: "projects",
@@ -17567,6 +18401,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17575,7 +18410,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/terraform/state/{name}/versions/{serial}` — risk: medium
 	 */
-	async terraformstateversionsRetrieveVersion(id: string, name: string, serial: string): Promise<ProofResult<unknown>> {
+	async terraformstateversionsRetrieveVersion(id: string, name: string, serial: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdTerraformStateNameVersionsSerial",
 			namespace: "projects",
@@ -17588,6 +18423,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17596,7 +18432,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/terraform/state/{name}/versions/{serial}` — risk: medium
 	 */
-	async deleteVersion(id: string, name: string, serial: string): Promise<ProofResult<unknown>> {
+	async deleteVersion(id: string, name: string, serial: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdTerraformStateNameVersionsSerial",
 			namespace: "projects",
@@ -17609,6 +18445,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17617,7 +18454,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/wikis` — risk: medium
 	 */
-	async listWikis(id: string): Promise<ProofResult<unknown>> {
+	async listWikis(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdWikis",
 			namespace: "projects",
@@ -17630,6 +18467,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17638,7 +18476,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/wikis` — risk: medium
 	 */
-	async createWiki(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createWiki(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdWikis",
 			namespace: "projects",
@@ -17651,6 +18489,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17659,7 +18498,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/wikis/{slug}` — risk: medium
 	 */
-	async retrieveWiki(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async retrieveWiki(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdWikisSlug",
 			namespace: "projects",
@@ -17672,6 +18511,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17680,7 +18520,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/projects/{id}/wikis/{slug}` — risk: medium
 	 */
-	async wikis(id: string, slug: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async wikis(id: string, slug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ProjectsIdWikisSlug",
 			namespace: "projects",
@@ -17693,6 +18533,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17701,7 +18542,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/projects/{id}/wikis/{slug}` — risk: medium
 	 */
-	async deleteWiki(id: string, slug: string): Promise<ProofResult<unknown>> {
+	async deleteWiki(id: string, slug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ProjectsIdWikisSlug",
 			namespace: "projects",
@@ -17714,6 +18555,7 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17722,7 +18564,7 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/projects/{id}/wikis/attachments` — risk: medium
 	 */
-	async attachments(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async attachments(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdWikisAttachments",
 			namespace: "projects",
@@ -17735,13 +18577,14 @@ export class ProjectsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AdminResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -17753,7 +18596,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/admin/batched_background_migrations/{id}` — risk: medium
 	 */
-	async retrieveBatchedBackgroundMigration(id: string): Promise<ProofResult<unknown>> {
+	async retrieveBatchedBackgroundMigration(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4AdminBatchedBackgroundMigrationsId",
 			namespace: "admin",
@@ -17766,6 +18609,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17774,7 +18618,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/admin/batched_background_migrations/{id}/resume` — risk: medium
 	 */
-	async resume(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async resume(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4AdminBatchedBackgroundMigrationsIdResume",
 			namespace: "admin",
@@ -17787,6 +18631,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17795,7 +18640,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/admin/batched_background_migrations/{id}/pause` — risk: medium
 	 */
-	async pause(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async pause(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4AdminBatchedBackgroundMigrationsIdPause",
 			namespace: "admin",
@@ -17808,6 +18653,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17816,7 +18662,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/admin/batched_background_migrations` — risk: medium
 	 */
-	async listBatchedBackgroundMigrations(): Promise<ProofResult<unknown>> {
+	async listBatchedBackgroundMigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4AdminBatchedBackgroundMigrations",
 			namespace: "admin",
@@ -17829,6 +18675,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17837,7 +18684,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/admin/ci/variables` — risk: medium
 	 */
-	async variables_0(): Promise<ProofResult<unknown>> {
+	async variables_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4AdminCiVariables",
 			namespace: "admin",
@@ -17850,6 +18697,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17858,7 +18706,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/admin/ci/variables` — risk: medium
 	 */
-	async variables_1(body?: unknown): Promise<ProofResult<unknown>> {
+	async variables_1(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4AdminCiVariables",
 			namespace: "admin",
@@ -17871,6 +18719,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17879,7 +18728,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/admin/ci/variables/{key}` — risk: medium
 	 */
-	async retrieveVariable(key: string): Promise<ProofResult<unknown>> {
+	async retrieveVariable(key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4AdminCiVariablesKey",
 			namespace: "admin",
@@ -17892,6 +18741,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17900,7 +18750,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/admin/ci/variables/{key}` — risk: medium
 	 */
-	async variables_2(key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async variables_2(key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4AdminCiVariablesKey",
 			namespace: "admin",
@@ -17913,6 +18763,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17921,7 +18772,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/admin/ci/variables/{key}` — risk: medium
 	 */
-	async deleteVariable(key: string): Promise<ProofResult<unknown>> {
+	async deleteVariable(key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4AdminCiVariablesKey",
 			namespace: "admin",
@@ -17934,6 +18785,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17942,7 +18794,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/admin/databases/{database_name}/dictionary/tables/{table_name}` — risk: medium
 	 */
-	async retrieveTable(databaseName: string, tableName: string): Promise<ProofResult<unknown>> {
+	async retrieveTable(databaseName: string, tableName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4AdminDatabasesDatabaseNameDictionaryTablesTableName",
 			namespace: "admin",
@@ -17955,6 +18807,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17963,7 +18816,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/admin/clusters` — risk: medium
 	 */
-	async listClusters(): Promise<ProofResult<unknown>> {
+	async listClusters(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4AdminClusters",
 			namespace: "admin",
@@ -17976,6 +18829,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -17984,7 +18838,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/admin/clusters/{cluster_id}` — risk: medium
 	 */
-	async retrieveCluster(clusterId: string): Promise<ProofResult<unknown>> {
+	async retrieveCluster(clusterId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4AdminClustersClusterId",
 			namespace: "admin",
@@ -17997,6 +18851,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18005,7 +18860,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/admin/clusters/{cluster_id}` — risk: medium
 	 */
-	async clusters(clusterId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async clusters(clusterId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4AdminClustersClusterId",
 			namespace: "admin",
@@ -18018,6 +18873,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18026,7 +18882,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/admin/clusters/{cluster_id}` — risk: medium
 	 */
-	async deleteCluster(clusterId: string): Promise<ProofResult<unknown>> {
+	async deleteCluster(clusterId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4AdminClustersClusterId",
 			namespace: "admin",
@@ -18039,6 +18895,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18047,7 +18904,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/admin/clusters/add` — risk: medium
 	 */
-	async add(body?: unknown): Promise<ProofResult<unknown>> {
+	async add(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4AdminClustersAdd",
 			namespace: "admin",
@@ -18060,6 +18917,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18068,7 +18926,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/admin/migrations/pending` — risk: medium
 	 */
-	async pending(): Promise<ProofResult<unknown>> {
+	async pending(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4AdminMigrationsPending",
 			namespace: "admin",
@@ -18081,6 +18939,7 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18089,7 +18948,7 @@ export class AdminResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/admin/migrations/{timestamp}/mark` — risk: medium
 	 */
-	async mark(timestamp: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async mark(timestamp: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4AdminMigrationsTimestampMark",
 			namespace: "admin",
@@ -18102,13 +18961,14 @@ export class AdminResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class BroadcastMessagesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -18120,7 +18980,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/broadcast_messages` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4BroadcastMessages",
 			namespace: "broadcast_messages",
@@ -18133,6 +18993,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18141,7 +19002,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/broadcast_messages` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4BroadcastMessages",
 			namespace: "broadcast_messages",
@@ -18154,6 +19015,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18162,7 +19024,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/broadcast_messages/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4BroadcastMessagesId",
 			namespace: "broadcast_messages",
@@ -18175,6 +19037,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18183,7 +19046,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/broadcast_messages/{id}` — risk: medium
 	 */
-	async put(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4BroadcastMessagesId",
 			namespace: "broadcast_messages",
@@ -18196,6 +19059,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18204,7 +19068,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/broadcast_messages/{id}` — risk: medium
 	 */
-	async del(id: string): Promise<ProofResult<unknown>> {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4BroadcastMessagesId",
 			namespace: "broadcast_messages",
@@ -18217,13 +19081,14 @@ export class BroadcastMessagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ApplicationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -18235,7 +19100,7 @@ export class ApplicationsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/applications` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Applications",
 			namespace: "applications",
@@ -18248,6 +19113,7 @@ export class ApplicationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18256,7 +19122,7 @@ export class ApplicationsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/applications` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Applications",
 			namespace: "applications",
@@ -18269,6 +19135,7 @@ export class ApplicationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18277,7 +19144,7 @@ export class ApplicationsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/applications/{id}` — risk: medium
 	 */
-	async del(id: string): Promise<ProofResult<unknown>> {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4ApplicationsId",
 			namespace: "applications",
@@ -18290,6 +19157,7 @@ export class ApplicationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18298,7 +19166,7 @@ export class ApplicationsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/applications/{id}/renew-secret` — risk: medium
 	 */
-	async createRenewSecret(id: string): Promise<ProofResult<unknown>> {
+	async createRenewSecret(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ApplicationsIdRenewSecret",
 			namespace: "applications",
@@ -18311,13 +19179,14 @@ export class ApplicationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class AvatarResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -18329,7 +19198,7 @@ export class AvatarResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/avatar` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Avatar",
 			namespace: "avatar",
@@ -18342,13 +19211,14 @@ export class AvatarResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class BulkImportsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -18360,7 +19230,7 @@ export class BulkImportsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/bulk_imports` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4BulkImports",
 			namespace: "bulk_imports",
@@ -18373,6 +19243,7 @@ export class BulkImportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18381,7 +19252,7 @@ export class BulkImportsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/bulk_imports` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4BulkImports",
 			namespace: "bulk_imports",
@@ -18394,6 +19265,7 @@ export class BulkImportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18402,7 +19274,7 @@ export class BulkImportsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/bulk_imports/entities` — risk: medium
 	 */
-	async listEntities_0(): Promise<ProofResult<unknown>> {
+	async listEntities_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4BulkImportsEntities",
 			namespace: "bulk_imports",
@@ -18415,6 +19287,7 @@ export class BulkImportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18423,7 +19296,7 @@ export class BulkImportsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/bulk_imports/{import_id}` — risk: low
 	 */
-	async retrieve(importId: string): Promise<ProofResult<unknown>> {
+	async retrieve(importId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4BulkImportsImportId",
 			namespace: "bulk_imports",
@@ -18436,6 +19309,7 @@ export class BulkImportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18444,7 +19318,7 @@ export class BulkImportsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/bulk_imports/{import_id}/entities` — risk: medium
 	 */
-	async listEntities_1(importId: string): Promise<ProofResult<unknown>> {
+	async listEntities_1(importId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4BulkImportsImportIdEntities",
 			namespace: "bulk_imports",
@@ -18457,6 +19331,7 @@ export class BulkImportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18465,7 +19340,7 @@ export class BulkImportsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/bulk_imports/{import_id}/entities/{entity_id}` — risk: medium
 	 */
-	async retrieveEntity(importId: string, entityId: string): Promise<ProofResult<unknown>> {
+	async retrieveEntity(importId: string, entityId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4BulkImportsImportIdEntitiesEntityId",
 			namespace: "bulk_imports",
@@ -18478,6 +19353,7 @@ export class BulkImportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18486,7 +19362,7 @@ export class BulkImportsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/bulk_imports/{import_id}/entities/{entity_id}/failures` — risk: medium
 	 */
-	async failures(importId: string, entityId: string): Promise<ProofResult<unknown>> {
+	async failures(importId: string, entityId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4BulkImportsImportIdEntitiesEntityIdFailures",
 			namespace: "bulk_imports",
@@ -18499,6 +19375,7 @@ export class BulkImportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18507,7 +19384,7 @@ export class BulkImportsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/bulk_imports/{import_id}/cancel` — risk: medium
 	 */
-	async cancel(importId: string): Promise<ProofResult<unknown>> {
+	async cancel(importId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4BulkImportsImportIdCancel",
 			namespace: "bulk_imports",
@@ -18520,13 +19397,14 @@ export class BulkImportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class JobResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -18538,7 +19416,7 @@ export class JobResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/job` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Job",
 			namespace: "job",
@@ -18551,6 +19429,7 @@ export class JobResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18559,7 +19438,7 @@ export class JobResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/job/allowed_agents` — risk: medium
 	 */
-	async listAllowedAgents(): Promise<ProofResult<unknown>> {
+	async listAllowedAgents(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4JobAllowedAgents",
 			namespace: "job",
@@ -18572,13 +19451,14 @@ export class JobResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RunnersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -18590,7 +19470,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/runners` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Runners",
 			namespace: "runners",
@@ -18603,6 +19483,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18611,7 +19492,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/runners` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Runners",
 			namespace: "runners",
@@ -18624,6 +19505,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18632,7 +19514,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/runners` — risk: medium
 	 */
-	async delete(): Promise<ProofResult<unknown>> {
+	async delete(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4Runners",
 			namespace: "runners",
@@ -18645,6 +19527,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18653,7 +19536,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/runners/managers` — risk: medium
 	 */
-	async managers(): Promise<ProofResult<unknown>> {
+	async managers(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4RunnersManagers",
 			namespace: "runners",
@@ -18666,6 +19549,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18674,7 +19558,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/runners/verify` — risk: medium
 	 */
-	async createVerify(body?: unknown): Promise<ProofResult<unknown>> {
+	async createVerify(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4RunnersVerify",
 			namespace: "runners",
@@ -18687,6 +19571,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18695,7 +19580,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/runners/reset_authentication_token` — risk: medium
 	 */
-	async createResetAuthenticationToken_0(body?: unknown): Promise<ProofResult<unknown>> {
+	async createResetAuthenticationToken_0(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4RunnersResetAuthenticationToken",
 			namespace: "runners",
@@ -18708,6 +19593,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18716,7 +19602,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/runners/router/discovery` — risk: medium
 	 */
-	async discovery(): Promise<ProofResult<unknown>> {
+	async discovery(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4RunnersRouterDiscovery",
 			namespace: "runners",
@@ -18729,6 +19615,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18737,7 +19624,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/runners/all` — risk: medium
 	 */
-	async listAll(): Promise<ProofResult<unknown>> {
+	async listAll(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4RunnersAll",
 			namespace: "runners",
@@ -18750,6 +19637,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18758,7 +19646,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/runners/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4RunnersId",
 			namespace: "runners",
@@ -18771,6 +19659,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18779,7 +19668,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/runners/{id}` — risk: medium
 	 */
-	async put(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4RunnersId",
 			namespace: "runners",
@@ -18792,6 +19681,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18800,7 +19690,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/runners/{id}` — risk: medium
 	 */
-	async del(id: string): Promise<ProofResult<unknown>> {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4RunnersId",
 			namespace: "runners",
@@ -18813,6 +19703,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18821,7 +19712,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/runners/{id}/managers` — risk: medium
 	 */
-	async listManagers(id: string): Promise<ProofResult<unknown>> {
+	async listManagers(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4RunnersIdManagers",
 			namespace: "runners",
@@ -18834,6 +19725,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18842,7 +19734,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/runners/{id}/projects` — risk: medium
 	 */
-	async listProjects(id: string): Promise<ProofResult<unknown>> {
+	async listProjects(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4RunnersIdProjects",
 			namespace: "runners",
@@ -18855,6 +19747,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18863,7 +19756,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/runners/{id}/jobs` — risk: medium
 	 */
-	async listJobs(id: string): Promise<ProofResult<unknown>> {
+	async listJobs(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4RunnersIdJobs",
 			namespace: "runners",
@@ -18876,6 +19769,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18884,7 +19778,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/runners/{id}/reset_authentication_token` — risk: medium
 	 */
-	async createResetAuthenticationToken_1(id: string): Promise<ProofResult<unknown>> {
+	async createResetAuthenticationToken_1(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4RunnersIdResetAuthenticationToken",
 			namespace: "runners",
@@ -18897,6 +19791,7 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18905,7 +19800,7 @@ export class RunnersResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/runners/reset_registration_token` — risk: medium
 	 */
-	async createResetRegistrationToken(): Promise<ProofResult<unknown>> {
+	async createResetRegistrationToken(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4RunnersResetRegistrationToken",
 			namespace: "runners",
@@ -18918,13 +19813,14 @@ export class RunnersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class JobsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -18936,7 +19832,7 @@ export class JobsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/jobs/request` — risk: medium
 	 */
-	async createRequest(body?: unknown): Promise<ProofResult<unknown>> {
+	async createRequest(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4JobsRequest",
 			namespace: "jobs",
@@ -18949,6 +19845,7 @@ export class JobsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18957,7 +19854,7 @@ export class JobsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/jobs/{id}` — risk: medium
 	 */
-	async put(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4JobsId",
 			namespace: "jobs",
@@ -18970,6 +19867,7 @@ export class JobsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18978,7 +19876,7 @@ export class JobsResource extends RpcTarget {
 	 *
 	 * `PATCH /api/v4/jobs/{id}/trace` — risk: medium
 	 */
-	async trace(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async trace(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchApiV4JobsIdTrace",
 			namespace: "jobs",
@@ -18991,6 +19889,7 @@ export class JobsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -18999,7 +19898,7 @@ export class JobsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/jobs/{id}/artifacts/authorize` — risk: medium
 	 */
-	async authorize(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async authorize(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4JobsIdArtifactsAuthorize",
 			namespace: "jobs",
@@ -19012,6 +19911,7 @@ export class JobsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19020,7 +19920,7 @@ export class JobsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/jobs/{id}/artifacts` — risk: medium
 	 */
-	async listArtifacts(id: string): Promise<ProofResult<unknown>> {
+	async listArtifacts(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4JobsIdArtifacts",
 			namespace: "jobs",
@@ -19033,6 +19933,7 @@ export class JobsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19041,7 +19942,7 @@ export class JobsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/jobs/{id}/artifacts` — risk: medium
 	 */
-	async createArtifact(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createArtifact(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4JobsIdArtifacts",
 			namespace: "jobs",
@@ -19054,13 +19955,14 @@ export class JobsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ChaosResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -19075,7 +19977,7 @@ a 300ms delay. Returns 200 OK otherwise.
 	 *
 	 * `GET /api/v4/chaos/test` — risk: medium
 	 */
-	async listTest(): Promise<ProofResult<unknown>> {
+	async listTest(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ChaosTest",
 			namespace: "chaos",
@@ -19088,13 +19990,14 @@ a 300ms delay. Returns 200 OK otherwise.
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class GroupResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -19106,7 +20009,7 @@ export class GroupResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/group/{id}/-/packages/composer/packages` — risk: medium
 	 */
-	async packages(id: string): Promise<ProofResult<unknown>> {
+	async packages(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupIdPackagesComposerPackages",
 			namespace: "group",
@@ -19119,6 +20022,7 @@ export class GroupResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19127,7 +20031,7 @@ export class GroupResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/group/{id}/-/packages/composer/p/{sha}` — risk: medium
 	 */
-	async retrieveP(id: string, sha: string): Promise<ProofResult<unknown>> {
+	async retrieveP(id: string, sha: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GroupIdPackagesComposerPSha",
 			namespace: "group",
@@ -19140,13 +20044,14 @@ export class GroupResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PackagesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -19158,7 +20063,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/users/authenticate` — risk: medium
 	 */
-	async authenticate(): Promise<ProofResult<unknown>> {
+	async authenticate(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1UsersAuthenticate",
 			namespace: "packages",
@@ -19171,6 +20076,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19179,7 +20085,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/users/check_credentials` — risk: medium
 	 */
-	async checkCredentials(): Promise<ProofResult<unknown>> {
+	async checkCredentials(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1UsersCheckCredentials",
 			namespace: "packages",
@@ -19192,6 +20098,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19200,7 +20107,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/search` — risk: low
 	 */
-	async search_0(): Promise<ProofResult<unknown>> {
+	async search_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1ConansSearch",
 			namespace: "packages",
@@ -19213,6 +20120,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19221,7 +20129,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/search` — risk: low
 	 */
-	async search_1(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async search_1(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelSearch",
 			namespace: "packages",
@@ -19234,6 +20142,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19242,7 +20151,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/ping` — risk: medium
 	 */
-	async ping(): Promise<ProofResult<unknown>> {
+	async ping(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1Ping",
 			namespace: "packages",
@@ -19255,6 +20164,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19263,7 +20173,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}` — risk: medium
 	 */
-	async conanspackagesRetrievePackage(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async conanspackagesRetrievePackage(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReference",
 			namespace: "packages",
@@ -19276,6 +20186,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19284,7 +20195,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}` — risk: medium
 	 */
-	async retrieveConan(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async retrieveConan(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel",
 			namespace: "packages",
@@ -19297,6 +20208,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19305,7 +20217,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}` — risk: medium
 	 */
-	async deleteConan(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async deleteConan(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannel",
 			namespace: "packages",
@@ -19318,6 +20230,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19326,7 +20239,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest` — risk: medium
 	 */
-	async packagesDigest(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async packagesDigest(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDigest",
 			namespace: "packages",
@@ -19339,6 +20252,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19347,7 +20261,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/digest` — risk: medium
 	 */
-	async digest_1(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async digest_1(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDigest",
 			namespace: "packages",
@@ -19360,6 +20274,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19368,7 +20283,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls` — risk: medium
 	 */
-	async packagesDownloadUrls(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async packagesDownloadUrls(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceDownloadUrls",
 			namespace: "packages",
@@ -19381,6 +20296,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19389,7 +20305,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/download_urls` — risk: medium
 	 */
-	async downloadUrls_1(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async downloadUrls_1(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelDownloadUrls",
 			namespace: "packages",
@@ -19402,6 +20318,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19410,7 +20327,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls` — risk: medium
 	 */
-	async packagesUploadUrls(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string): Promise<ProofResult<unknown>> {
+	async packagesUploadUrls(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, conanPackageReference: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelPackagesConanPackageReferenceUploadUrls",
 			namespace: "packages",
@@ -19423,6 +20340,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19431,7 +20349,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/upload_urls` — risk: medium
 	 */
-	async uploadUrls_1(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string): Promise<ProofResult<unknown>> {
+	async uploadUrls_1(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4PackagesConanV1ConansPackageNamePackageVersionPackageUsernamePackageChannelUploadUrls",
 			namespace: "packages",
@@ -19444,6 +20362,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19452,7 +20371,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}` — risk: medium
 	 */
-	async retrieveExport(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async retrieveExport(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName",
 			namespace: "packages",
@@ -19465,6 +20384,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19473,7 +20393,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}` — risk: medium
 	 */
-	async export(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async export(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName",
 			namespace: "packages",
@@ -19486,6 +20406,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19494,7 +20415,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize` — risk: medium
 	 */
-	async exportAuthorize(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async exportAuthorize(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileNameAuthorize",
 			namespace: "packages",
@@ -19507,6 +20428,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19515,7 +20437,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}` — risk: medium
 	 */
-	async filespackageRetrievePackage(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async filespackageRetrievePackage(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName",
 			namespace: "packages",
@@ -19528,6 +20450,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19536,7 +20459,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}` — risk: medium
 	 */
-	async package(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async package(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName",
 			namespace: "packages",
@@ -19549,6 +20472,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19557,7 +20481,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize` — risk: medium
 	 */
-	async packageAuthorize(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string): Promise<ProofResult<unknown>> {
+	async packageAuthorize(packageName: string, packageVersion: string, packageUsername: string, packageChannel: string, recipeRevision: string, conanPackageReference: string, packageRevision: string, fileName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileNameAuthorize",
 			namespace: "packages",
@@ -19570,6 +20494,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19578,7 +20503,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/packages/npm/-/npm/v1/security/advisories/bulk` — risk: medium
 	 */
-	async bulk(): Promise<ProofResult<unknown>> {
+	async bulk(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4PackagesNpmNpmV1SecurityAdvisoriesBulk",
 			namespace: "packages",
@@ -19591,6 +20516,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19599,7 +20525,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/packages/npm/-/npm/v1/security/audits/quick` — risk: medium
 	 */
-	async quick(): Promise<ProofResult<unknown>> {
+	async quick(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4PackagesNpmNpmV1SecurityAuditsQuick",
 			namespace: "packages",
@@ -19612,6 +20538,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19620,7 +20547,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/versions` — risk: medium
 	 */
-	async versions(moduleNamespace: string, moduleName: string, moduleSystem: string): Promise<ProofResult<unknown>> {
+	async versions(moduleNamespace: string, moduleName: string, moduleSystem: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemVersions",
 			namespace: "packages",
@@ -19633,6 +20560,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19641,7 +20569,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/download` — risk: medium
 	 */
-	async download(moduleNamespace: string, moduleName: string, moduleSystem: string): Promise<ProofResult<unknown>> {
+	async download(moduleNamespace: string, moduleName: string, moduleSystem: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystemDownload",
 			namespace: "packages",
@@ -19654,6 +20582,7 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19662,7 +20591,7 @@ export class PackagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}` — risk: medium
 	 */
-	async retrieveV1(moduleNamespace: string, moduleName: string, moduleSystem: string): Promise<ProofResult<unknown>> {
+	async retrieveV1(moduleNamespace: string, moduleName: string, moduleSystem: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PackagesTerraformModulesV1ModuleNamespaceModuleNameModuleSystem",
 			namespace: "packages",
@@ -19675,13 +20604,14 @@ export class PackagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ContainerRegistryEventResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -19693,7 +20623,7 @@ export class ContainerRegistryEventResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/container_registry_event/events` — risk: medium
 	 */
-	async createEvent(): Promise<ProofResult<unknown>> {
+	async createEvent(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ContainerRegistryEventEvents",
 			namespace: "container_registry_event",
@@ -19706,13 +20636,14 @@ export class ContainerRegistryEventResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class RegistryResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -19724,7 +20655,7 @@ export class RegistryResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/registry/repositories/{id}` — risk: medium
 	 */
-	async retrieveRepository(id: string): Promise<ProofResult<unknown>> {
+	async retrieveRepository(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4RegistryRepositoriesId",
 			namespace: "registry",
@@ -19737,13 +20668,14 @@ export class RegistryResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DatabasesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -19755,7 +20687,7 @@ export class DatabasesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/databases/{database_name}/dictionary/tables` — risk: medium
 	 */
-	async tables(databaseName: string): Promise<ProofResult<unknown>> {
+	async tables(databaseName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4DatabasesDatabaseNameDictionaryTables",
 			namespace: "databases",
@@ -19768,13 +20700,14 @@ export class DatabasesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class EventsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -19786,7 +20719,7 @@ export class EventsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/events` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Events",
 			namespace: "events",
@@ -19799,13 +20732,14 @@ export class EventsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -19817,7 +20751,7 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/users/{id}/events` — risk: medium
 	 */
-	async listEvents(id: string): Promise<ProofResult<unknown>> {
+	async listEvents(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4UsersIdEvents",
 			namespace: "users",
@@ -19830,6 +20764,7 @@ export class UsersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19838,7 +20773,7 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/users/{user_id}/projects` — risk: medium
 	 */
-	async listProjects(userId: string): Promise<ProofResult<unknown>> {
+	async listProjects(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4UsersUserIdProjects",
 			namespace: "users",
@@ -19851,6 +20786,7 @@ export class UsersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19859,7 +20795,7 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/users/{user_id}/contributed_projects` — risk: medium
 	 */
-	async listContributedProjects(userId: string): Promise<ProofResult<unknown>> {
+	async listContributedProjects(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4UsersUserIdContributedProjects",
 			namespace: "users",
@@ -19872,6 +20808,7 @@ export class UsersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19880,7 +20817,7 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/users/{user_id}/starred_projects` — risk: medium
 	 */
-	async listStarredProjects(userId: string): Promise<ProofResult<unknown>> {
+	async listStarredProjects(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4UsersUserIdStarredProjects",
 			namespace: "users",
@@ -19893,13 +20830,14 @@ export class UsersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FeaturesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -19911,7 +20849,7 @@ export class FeaturesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/features` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Features",
 			namespace: "features",
@@ -19924,6 +20862,7 @@ export class FeaturesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19932,7 +20871,7 @@ export class FeaturesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/features/definitions` — risk: medium
 	 */
-	async listDefinitions(): Promise<ProofResult<unknown>> {
+	async listDefinitions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4FeaturesDefinitions",
 			namespace: "features",
@@ -19945,6 +20884,7 @@ export class FeaturesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19953,7 +20893,7 @@ export class FeaturesResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/features/{name}` — risk: medium
 	 */
-	async update(name: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async update(name: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4FeaturesName",
 			namespace: "features",
@@ -19966,6 +20906,7 @@ export class FeaturesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -19974,7 +20915,7 @@ export class FeaturesResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/features/{name}` — risk: medium
 	 */
-	async del(name: string): Promise<ProofResult<unknown>> {
+	async del(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4FeaturesName",
 			namespace: "features",
@@ -19987,13 +20928,14 @@ export class FeaturesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class GeoResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20005,7 +20947,7 @@ export class GeoResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/geo/proxy` — risk: medium
 	 */
-	async listProxy(): Promise<ProofResult<unknown>> {
+	async listProxy(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GeoProxy",
 			namespace: "geo",
@@ -20018,6 +20960,7 @@ export class GeoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20026,7 +20969,7 @@ export class GeoResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/geo/retrieve/{replicable_name}/{replicable_id}` — risk: medium
 	 */
-	async retrieveRetrieve(replicableName: string, replicableId: string): Promise<ProofResult<unknown>> {
+	async retrieveRetrieve(replicableName: string, replicableId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GeoRetrieveReplicableNameReplicableId",
 			namespace: "geo",
@@ -20039,6 +20982,7 @@ export class GeoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20047,7 +20991,7 @@ export class GeoResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/geo/repositories/{gl_repository}/pipeline_refs` — risk: medium
 	 */
-	async pipelineRefs(glRepository: string): Promise<ProofResult<unknown>> {
+	async pipelineRefs(glRepository: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4GeoRepositoriesGlRepositoryPipelineRefs",
 			namespace: "geo",
@@ -20060,6 +21004,7 @@ export class GeoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20068,7 +21013,7 @@ export class GeoResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/geo/status` — risk: medium
 	 */
-	async createStatu(body?: unknown): Promise<ProofResult<unknown>> {
+	async createStatu(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GeoStatus",
 			namespace: "geo",
@@ -20081,6 +21026,7 @@ export class GeoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20090,7 +21036,7 @@ export class GeoResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/geo/proxy_git_ssh/info_refs_upload_pack` — risk: medium
 	 */
-	async infoRefsUploadPack(body?: unknown): Promise<ProofResult<unknown>> {
+	async infoRefsUploadPack(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GeoProxyGitSshInfoRefsUploadPack",
 			namespace: "geo",
@@ -20103,6 +21049,7 @@ export class GeoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20112,7 +21059,7 @@ export class GeoResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/geo/proxy_git_ssh/upload_pack` — risk: medium
 	 */
-	async uploadPack(body?: unknown): Promise<ProofResult<unknown>> {
+	async uploadPack(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GeoProxyGitSshUploadPack",
 			namespace: "geo",
@@ -20125,6 +21072,7 @@ export class GeoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20134,7 +21082,7 @@ export class GeoResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/geo/proxy_git_ssh/info_refs_receive_pack` — risk: medium
 	 */
-	async infoRefsReceivePack(body?: unknown): Promise<ProofResult<unknown>> {
+	async infoRefsReceivePack(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GeoProxyGitSshInfoRefsReceivePack",
 			namespace: "geo",
@@ -20147,6 +21095,7 @@ export class GeoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20156,7 +21105,7 @@ export class GeoResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/geo/proxy_git_ssh/receive_pack` — risk: medium
 	 */
-	async receivePack(body?: unknown): Promise<ProofResult<unknown>> {
+	async receivePack(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GeoProxyGitSshReceivePack",
 			namespace: "geo",
@@ -20169,6 +21118,7 @@ export class GeoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20177,7 +21127,7 @@ export class GeoResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/geo/node_proxy/{id}/graphql` — risk: medium
 	 */
-	async graphql(id: string): Promise<ProofResult<unknown>> {
+	async graphql(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4GeoNodeProxyIdGraphql",
 			namespace: "geo",
@@ -20190,13 +21140,14 @@ export class GeoResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class GlqlResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20208,7 +21159,7 @@ export class GlqlResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/glql` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Glql",
 			namespace: "glql",
@@ -20221,13 +21172,14 @@ export class GlqlResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class IntegrationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20239,7 +21191,7 @@ export class IntegrationsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/integrations/slack/events` — risk: medium
 	 */
-	async events(body?: unknown): Promise<ProofResult<unknown>> {
+	async events(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4IntegrationsSlackEvents",
 			namespace: "integrations",
@@ -20252,6 +21204,7 @@ export class IntegrationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20260,7 +21213,7 @@ export class IntegrationsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/integrations/slack/interactions` — risk: medium
 	 */
-	async interactions(): Promise<ProofResult<unknown>> {
+	async interactions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4IntegrationsSlackInteractions",
 			namespace: "integrations",
@@ -20273,6 +21226,7 @@ export class IntegrationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20281,7 +21235,7 @@ export class IntegrationsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/integrations/slack/options` — risk: medium
 	 */
-	async options(): Promise<ProofResult<unknown>> {
+	async options(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4IntegrationsSlackOptions",
 			namespace: "integrations",
@@ -20294,6 +21248,7 @@ export class IntegrationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20302,7 +21257,7 @@ export class IntegrationsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/integrations/jira_connect/subscriptions` — risk: medium
 	 */
-	async subscriptions(body?: unknown): Promise<ProofResult<unknown>> {
+	async subscriptions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4IntegrationsJiraConnectSubscriptions",
 			namespace: "integrations",
@@ -20315,13 +21270,14 @@ export class IntegrationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class IssuesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20333,7 +21289,7 @@ export class IssuesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/issues` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Issues",
 			namespace: "issues",
@@ -20346,6 +21302,7 @@ export class IssuesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20354,7 +21311,7 @@ export class IssuesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/issues/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4IssuesId",
 			namespace: "issues",
@@ -20367,13 +21324,14 @@ export class IssuesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class KeysResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20386,7 +21344,7 @@ export class KeysResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/keys/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4KeysId",
 			namespace: "keys",
@@ -20399,6 +21357,7 @@ export class KeysResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20408,7 +21367,7 @@ export class KeysResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/keys` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Keys",
 			namespace: "keys",
@@ -20421,13 +21380,14 @@ export class KeysResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class MarkdownResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20439,7 +21399,7 @@ export class MarkdownResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/markdown` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Markdown",
 			namespace: "markdown",
@@ -20452,13 +21412,14 @@ export class MarkdownResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class MergeRequestsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20470,7 +21431,7 @@ export class MergeRequestsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/merge_requests` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4MergeRequests",
 			namespace: "merge_requests",
@@ -20483,13 +21444,14 @@ export class MergeRequestsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class NamespacesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20501,7 +21463,7 @@ export class NamespacesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/namespaces/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4NamespacesId",
 			namespace: "namespaces",
@@ -20514,6 +21476,7 @@ export class NamespacesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20522,7 +21485,7 @@ export class NamespacesResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/namespaces/{id}` — risk: medium
 	 */
-	async put(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4NamespacesId",
 			namespace: "namespaces",
@@ -20535,6 +21498,7 @@ export class NamespacesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20543,7 +21507,7 @@ export class NamespacesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/namespaces/{id}/gitlab_subscription` — risk: medium
 	 */
-	async listGitlabSubscription(id: string): Promise<ProofResult<unknown>> {
+	async listGitlabSubscription(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4NamespacesIdGitlabSubscription",
 			namespace: "namespaces",
@@ -20556,6 +21520,7 @@ export class NamespacesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20564,7 +21529,7 @@ export class NamespacesResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/namespaces/{id}/storage/limit_exclusion` — risk: medium
 	 */
-	async limitExclusion_0(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async limitExclusion_0(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4NamespacesIdStorageLimitExclusion",
 			namespace: "namespaces",
@@ -20577,6 +21542,7 @@ export class NamespacesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20585,7 +21551,7 @@ export class NamespacesResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/namespaces/{id}/storage/limit_exclusion` — risk: medium
 	 */
-	async limitExclusion_1(id: string): Promise<ProofResult<unknown>> {
+	async limitExclusion_1(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4NamespacesIdStorageLimitExclusion",
 			namespace: "namespaces",
@@ -20598,6 +21564,7 @@ export class NamespacesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20606,7 +21573,7 @@ export class NamespacesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/namespaces/storage/limit_exclusions` — risk: medium
 	 */
-	async limitExclusions(): Promise<ProofResult<unknown>> {
+	async limitExclusions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4NamespacesStorageLimitExclusions",
 			namespace: "namespaces",
@@ -20619,6 +21586,7 @@ export class NamespacesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20627,7 +21595,7 @@ export class NamespacesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/namespaces` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Namespaces",
 			namespace: "namespaces",
@@ -20640,6 +21608,7 @@ export class NamespacesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20648,7 +21617,7 @@ export class NamespacesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/namespaces/{id}/exists` — risk: medium
 	 */
-	async listExists(id: string): Promise<ProofResult<unknown>> {
+	async listExists(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4NamespacesIdExists",
 			namespace: "namespaces",
@@ -20661,13 +21630,14 @@ export class NamespacesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OfflineExportsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20679,7 +21649,7 @@ export class OfflineExportsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/offline_exports` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4OfflineExports",
 			namespace: "offline_exports",
@@ -20692,6 +21662,7 @@ export class OfflineExportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20700,7 +21671,7 @@ export class OfflineExportsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/offline_exports` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4OfflineExports",
 			namespace: "offline_exports",
@@ -20713,6 +21684,7 @@ export class OfflineExportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20721,7 +21693,7 @@ export class OfflineExportsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/offline_exports/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4OfflineExportsId",
 			namespace: "offline_exports",
@@ -20734,13 +21706,14 @@ export class OfflineExportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OfflineImportsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20752,7 +21725,7 @@ export class OfflineImportsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/offline_imports` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4OfflineImports",
 			namespace: "offline_imports",
@@ -20765,13 +21738,14 @@ export class OfflineImportsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class OrganizationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20785,7 +21759,7 @@ export class OrganizationsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/organizations` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Organizations",
 			namespace: "organizations",
@@ -20798,13 +21772,14 @@ export class OrganizationsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PagesResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20816,7 +21791,7 @@ export class PagesResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/pages/domains` — risk: medium
 	 */
-	async listDomains(): Promise<ProofResult<unknown>> {
+	async listDomains(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PagesDomains",
 			namespace: "pages",
@@ -20829,13 +21804,14 @@ export class PagesResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class PersonalAccessTokensResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20847,7 +21823,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/personal_access_tokens/self` — risk: medium
 	 */
-	async listSelf(): Promise<ProofResult<unknown>> {
+	async listSelf(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PersonalAccessTokensSelf",
 			namespace: "personal_access_tokens",
@@ -20860,6 +21836,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20868,7 +21845,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/personal_access_tokens/self` — risk: medium
 	 */
-	async self(): Promise<ProofResult<unknown>> {
+	async self(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4PersonalAccessTokensSelf",
 			namespace: "personal_access_tokens",
@@ -20881,6 +21858,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20889,7 +21867,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/personal_access_tokens/self/associations` — risk: medium
 	 */
-	async associations(): Promise<ProofResult<unknown>> {
+	async associations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PersonalAccessTokensSelfAssociations",
 			namespace: "personal_access_tokens",
@@ -20902,6 +21880,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20910,7 +21889,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/personal_access_tokens/self/rotate` — risk: medium
 	 */
-	async rotate(body?: unknown): Promise<ProofResult<unknown>> {
+	async rotate(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4PersonalAccessTokensSelfRotate",
 			namespace: "personal_access_tokens",
@@ -20923,6 +21902,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20931,7 +21911,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/personal_access_tokens` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PersonalAccessTokens",
 			namespace: "personal_access_tokens",
@@ -20944,6 +21924,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20952,7 +21933,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/personal_access_tokens/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4PersonalAccessTokensId",
 			namespace: "personal_access_tokens",
@@ -20965,6 +21946,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20973,7 +21955,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/personal_access_tokens/{id}` — risk: medium
 	 */
-	async del(id: string): Promise<ProofResult<unknown>> {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4PersonalAccessTokensId",
 			namespace: "personal_access_tokens",
@@ -20986,6 +21968,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -20994,7 +21977,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/personal_access_tokens/{id}/rotate` — risk: medium
 	 */
-	async createRotate(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async createRotate(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4PersonalAccessTokensIdRotate",
 			namespace: "personal_access_tokens",
@@ -21007,13 +21990,14 @@ export class PersonalAccessTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SearchResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21021,11 +22005,11 @@ export class SearchResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.5.
+	 * Searches for a term across the entire GitLab instance. The response depends on the requested scope.
 	 *
 	 * `GET /api/v4/search` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Search",
 			namespace: "search",
@@ -21038,13 +22022,14 @@ export class SearchResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SnippetsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21056,7 +22041,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/snippets` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Snippets",
 			namespace: "snippets",
@@ -21069,6 +22054,7 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21077,7 +22063,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/snippets` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Snippets",
 			namespace: "snippets",
@@ -21090,6 +22076,7 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21098,7 +22085,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/snippets/public` — risk: medium
 	 */
-	async listPublic(): Promise<ProofResult<unknown>> {
+	async listPublic(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4SnippetsPublic",
 			namespace: "snippets",
@@ -21111,6 +22098,7 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21119,7 +22107,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/snippets/all` — risk: medium
 	 */
-	async listAll(): Promise<ProofResult<unknown>> {
+	async listAll(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4SnippetsAll",
 			namespace: "snippets",
@@ -21132,6 +22120,7 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21140,7 +22129,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/snippets/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4SnippetsId",
 			namespace: "snippets",
@@ -21153,6 +22142,7 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21161,7 +22151,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/snippets/{id}` — risk: medium
 	 */
-	async put(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4SnippetsId",
 			namespace: "snippets",
@@ -21174,6 +22164,7 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21182,7 +22173,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/snippets/{id}` — risk: medium
 	 */
-	async del(id: string): Promise<ProofResult<unknown>> {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4SnippetsId",
 			namespace: "snippets",
@@ -21195,6 +22186,7 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21203,7 +22195,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/snippets/{id}/raw` — risk: medium
 	 */
-	async listRaw(id: string): Promise<ProofResult<unknown>> {
+	async listRaw(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4SnippetsIdRaw",
 			namespace: "snippets",
@@ -21216,6 +22208,7 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21224,7 +22217,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/snippets/{id}/files/{ref}/{file_path}/raw` — risk: medium
 	 */
-	async raw(id: string, ref: string, filePath: string): Promise<ProofResult<unknown>> {
+	async raw(id: string, ref: string, filePath: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4SnippetsIdFilesRefFilePathRaw",
 			namespace: "snippets",
@@ -21237,6 +22230,7 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21245,7 +22239,7 @@ export class SnippetsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/snippets/{id}/user_agent_detail` — risk: medium
 	 */
-	async listUserAgentDetail(id: string): Promise<ProofResult<unknown>> {
+	async listUserAgentDetail(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4SnippetsIdUserAgentDetail",
 			namespace: "snippets",
@@ -21258,13 +22252,14 @@ export class SnippetsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SuggestionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21276,7 +22271,7 @@ export class SuggestionsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/suggestions/{id}/apply` — risk: medium
 	 */
-	async apply(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async apply(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4SuggestionsIdApply",
 			namespace: "suggestions",
@@ -21289,6 +22284,7 @@ export class SuggestionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21297,7 +22293,7 @@ export class SuggestionsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/suggestions/batch_apply` — risk: medium
 	 */
-	async batchApply(body?: unknown): Promise<ProofResult<unknown>> {
+	async batchApply(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4SuggestionsBatchApply",
 			namespace: "suggestions",
@@ -21310,13 +22306,14 @@ export class SuggestionsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class HooksResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21328,7 +22325,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/hooks/{hook_id}/url_variables/{key}` — risk: medium
 	 */
-	async urlVariables(hookId: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async urlVariables(hookId: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4HooksHookIdUrlVariablesKey",
 			namespace: "hooks",
@@ -21341,6 +22338,7 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21349,7 +22347,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/hooks/{hook_id}/url_variables/{key}` — risk: medium
 	 */
-	async deleteUrlVariable(hookId: string, key: string): Promise<ProofResult<unknown>> {
+	async deleteUrlVariable(hookId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4HooksHookIdUrlVariablesKey",
 			namespace: "hooks",
@@ -21362,6 +22360,7 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21370,7 +22369,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/hooks/{hook_id}/custom_headers/{key}` — risk: medium
 	 */
-	async customHeaders(hookId: string, key: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async customHeaders(hookId: string, key: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4HooksHookIdCustomHeadersKey",
 			namespace: "hooks",
@@ -21383,6 +22382,7 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21391,7 +22391,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/hooks/{hook_id}/custom_headers/{key}` — risk: medium
 	 */
-	async deleteCustomHeader(hookId: string, key: string): Promise<ProofResult<unknown>> {
+	async deleteCustomHeader(hookId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4HooksHookIdCustomHeadersKey",
 			namespace: "hooks",
@@ -21404,6 +22404,7 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21412,7 +22413,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/hooks` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Hooks",
 			namespace: "hooks",
@@ -21425,6 +22426,7 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21433,7 +22435,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/hooks` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Hooks",
 			namespace: "hooks",
@@ -21446,6 +22448,7 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21454,7 +22457,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/hooks/{hook_id}` — risk: low
 	 */
-	async retrieve(hookId: string): Promise<ProofResult<unknown>> {
+	async retrieve(hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4HooksHookId",
 			namespace: "hooks",
@@ -21467,6 +22470,7 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21475,7 +22479,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/hooks/{hook_id}` — risk: medium
 	 */
-	async update(hookId: string): Promise<ProofResult<unknown>> {
+	async update(hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4HooksHookId",
 			namespace: "hooks",
@@ -21488,6 +22492,7 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21496,7 +22501,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/hooks/{hook_id}` — risk: medium
 	 */
-	async put(hookId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(hookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4HooksHookId",
 			namespace: "hooks",
@@ -21509,6 +22514,7 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21517,7 +22523,7 @@ export class HooksResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/hooks/{hook_id}` — risk: medium
 	 */
-	async del(hookId: string): Promise<ProofResult<unknown>> {
+	async del(hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4HooksHookId",
 			namespace: "hooks",
@@ -21530,13 +22536,14 @@ export class HooksResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class FeatureFlagsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21548,7 +22555,7 @@ export class FeatureFlagsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/feature_flags/unleash/{project_id}` — risk: medium
 	 */
-	async retrieveUnleash(projectId: string): Promise<ProofResult<unknown>> {
+	async retrieveUnleash(projectId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4FeatureFlagsUnleashProjectId",
 			namespace: "feature_flags",
@@ -21561,6 +22568,7 @@ export class FeatureFlagsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21569,7 +22577,7 @@ export class FeatureFlagsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/feature_flags/unleash/{project_id}/features` — risk: medium
 	 */
-	async features_0(projectId: string): Promise<ProofResult<unknown>> {
+	async features_0(projectId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4FeatureFlagsUnleashProjectIdFeatures",
 			namespace: "feature_flags",
@@ -21582,6 +22590,7 @@ export class FeatureFlagsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21590,7 +22599,7 @@ export class FeatureFlagsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/feature_flags/unleash/{project_id}/client/features` — risk: medium
 	 */
-	async clientFeatures(projectId: string): Promise<ProofResult<unknown>> {
+	async clientFeatures(projectId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4FeatureFlagsUnleashProjectIdClientFeatures",
 			namespace: "feature_flags",
@@ -21603,6 +22612,7 @@ export class FeatureFlagsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21611,7 +22621,7 @@ export class FeatureFlagsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/feature_flags/unleash/{project_id}/client/register` — risk: medium
 	 */
-	async register(projectId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async register(projectId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4FeatureFlagsUnleashProjectIdClientRegister",
 			namespace: "feature_flags",
@@ -21624,6 +22634,7 @@ export class FeatureFlagsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21632,7 +22643,7 @@ export class FeatureFlagsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/feature_flags/unleash/{project_id}/client/metrics` — risk: medium
 	 */
-	async metrics(projectId: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async metrics(projectId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4FeatureFlagsUnleashProjectIdClientMetrics",
 			namespace: "feature_flags",
@@ -21645,13 +22656,14 @@ export class FeatureFlagsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UsageDataResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21663,7 +22675,7 @@ export class UsageDataResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/usage_data/increment_counter` — risk: medium
 	 */
-	async createIncrementCounter(body?: unknown): Promise<ProofResult<unknown>> {
+	async createIncrementCounter(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4UsageDataIncrementCounter",
 			namespace: "usage_data",
@@ -21676,6 +22688,7 @@ export class UsageDataResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21684,7 +22697,7 @@ export class UsageDataResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/usage_data/increment_unique_users` — risk: medium
 	 */
-	async createIncrementUniqueUser(body?: unknown): Promise<ProofResult<unknown>> {
+	async createIncrementUniqueUser(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4UsageDataIncrementUniqueUsers",
 			namespace: "usage_data",
@@ -21697,6 +22710,7 @@ export class UsageDataResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21705,7 +22719,7 @@ export class UsageDataResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/usage_data/track_events` — risk: medium
 	 */
-	async trackEventsCreateTrackEvent(body?: unknown): Promise<ProofResult<unknown>> {
+	async trackEventsCreateTrackEvent(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4UsageDataTrackEvents",
 			namespace: "usage_data",
@@ -21718,6 +22732,7 @@ export class UsageDataResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21726,7 +22741,7 @@ export class UsageDataResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/usage_data/metric_definitions` — risk: medium
 	 */
-	async listMetricDefinitions(): Promise<ProofResult<unknown>> {
+	async listMetricDefinitions(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4UsageDataMetricDefinitions",
 			namespace: "usage_data",
@@ -21739,6 +22754,7 @@ export class UsageDataResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21747,7 +22763,7 @@ export class UsageDataResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/usage_data/service_ping` — risk: medium
 	 */
-	async listServicePing(): Promise<ProofResult<unknown>> {
+	async listServicePing(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4UsageDataServicePing",
 			namespace: "usage_data",
@@ -21760,6 +22776,7 @@ export class UsageDataResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21768,7 +22785,7 @@ export class UsageDataResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/usage_data/track_event` — risk: medium
 	 */
-	async trackEventCreateTrackEvent(body?: unknown): Promise<ProofResult<unknown>> {
+	async trackEventCreateTrackEvent(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4UsageDataTrackEvent",
 			namespace: "usage_data",
@@ -21781,6 +22798,7 @@ export class UsageDataResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21789,7 +22807,7 @@ export class UsageDataResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/usage_data/non_sql_metrics` — risk: medium
 	 */
-	async listNonSqlMetrics(): Promise<ProofResult<unknown>> {
+	async listNonSqlMetrics(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4UsageDataNonSqlMetrics",
 			namespace: "usage_data",
@@ -21802,6 +22820,7 @@ export class UsageDataResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21810,7 +22829,7 @@ export class UsageDataResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/usage_data/queries` — risk: medium
 	 */
-	async listQueries(): Promise<ProofResult<unknown>> {
+	async listQueries(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4UsageDataQueries",
 			namespace: "usage_data",
@@ -21823,13 +22842,14 @@ export class UsageDataResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UserCountsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21841,7 +22861,7 @@ export class UserCountsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/user_counts` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4UserCounts",
 			namespace: "user_counts",
@@ -21854,13 +22874,14 @@ export class UserCountsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class UserResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21872,7 +22893,7 @@ export class UserResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/user/runners` — risk: medium
 	 */
-	async createRunner(body?: unknown): Promise<ProofResult<unknown>> {
+	async createRunner(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4UserRunners",
 			namespace: "user",
@@ -21885,13 +22906,14 @@ export class UserResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class ApplicationResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21903,7 +22925,7 @@ export class ApplicationResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/application/plan_limits` — risk: medium
 	 */
-	async listPlanLimits(): Promise<ProofResult<unknown>> {
+	async listPlanLimits(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ApplicationPlanLimits",
 			namespace: "application",
@@ -21916,6 +22938,7 @@ export class ApplicationResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21924,7 +22947,7 @@ export class ApplicationResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/application/plan_limits` — risk: medium
 	 */
-	async planLimits(body?: unknown): Promise<ProofResult<unknown>> {
+	async planLimits(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ApplicationPlanLimits",
 			namespace: "application",
@@ -21937,6 +22960,7 @@ export class ApplicationResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21945,7 +22969,7 @@ export class ApplicationResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/application/appearance` — risk: medium
 	 */
-	async listAppearance(): Promise<ProofResult<unknown>> {
+	async listAppearance(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ApplicationAppearance",
 			namespace: "application",
@@ -21958,6 +22982,7 @@ export class ApplicationResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21966,7 +22991,7 @@ export class ApplicationResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/application/appearance` — risk: medium
 	 */
-	async appearance(): Promise<ProofResult<unknown>> {
+	async appearance(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4ApplicationAppearance",
 			namespace: "application",
@@ -21979,6 +23004,7 @@ export class ApplicationResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -21987,7 +23013,7 @@ export class ApplicationResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/application/statistics` — risk: medium
 	 */
-	async listStatistics(): Promise<ProofResult<unknown>> {
+	async listStatistics(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ApplicationStatistics",
 			namespace: "application",
@@ -22000,13 +23026,14 @@ export class ApplicationResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DiscoverCertBasedClustersResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22018,7 +23045,7 @@ export class DiscoverCertBasedClustersResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/discover-cert-based-clusters` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4DiscoverCertBasedClusters",
 			namespace: "discover-cert-based-clusters",
@@ -22031,13 +23058,14 @@ export class DiscoverCertBasedClustersResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DeployKeysResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22049,7 +23077,7 @@ export class DeployKeysResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/deploy_keys` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4DeployKeys",
 			namespace: "deploy_keys",
@@ -22062,6 +23090,7 @@ export class DeployKeysResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22070,7 +23099,7 @@ export class DeployKeysResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/deploy_keys` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4DeployKeys",
 			namespace: "deploy_keys",
@@ -22083,13 +23112,14 @@ export class DeployKeysResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class DeployTokensResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22101,7 +23131,7 @@ export class DeployTokensResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/deploy_tokens` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4DeployTokens",
 			namespace: "deploy_tokens",
@@ -22114,13 +23144,14 @@ export class DeployTokensResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class Import_Resource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22132,7 +23163,7 @@ export class Import_Resource extends RpcTarget {
 	 *
 	 * `POST /api/v4/import/bitbucket` — risk: medium
 	 */
-	async createBitbucket(body?: unknown): Promise<ProofResult<unknown>> {
+	async createBitbucket(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ImportBitbucket",
 			namespace: "import",
@@ -22145,6 +23176,7 @@ export class Import_Resource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22153,7 +23185,7 @@ export class Import_Resource extends RpcTarget {
 	 *
 	 * `POST /api/v4/import/bitbucket_server` — risk: medium
 	 */
-	async createBitbucketServer(body?: unknown): Promise<ProofResult<unknown>> {
+	async createBitbucketServer(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ImportBitbucketServer",
 			namespace: "import",
@@ -22166,6 +23198,7 @@ export class Import_Resource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22174,7 +23207,7 @@ export class Import_Resource extends RpcTarget {
 	 *
 	 * `POST /api/v4/import/github` — risk: medium
 	 */
-	async createGithub(body?: unknown): Promise<ProofResult<unknown>> {
+	async createGithub(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ImportGithub",
 			namespace: "import",
@@ -22187,6 +23220,7 @@ export class Import_Resource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22195,7 +23229,7 @@ export class Import_Resource extends RpcTarget {
 	 *
 	 * `POST /api/v4/import/github/cancel` — risk: medium
 	 */
-	async cancel(body?: unknown): Promise<ProofResult<unknown>> {
+	async cancel(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ImportGithubCancel",
 			namespace: "import",
@@ -22208,6 +23242,7 @@ export class Import_Resource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22216,7 +23251,7 @@ export class Import_Resource extends RpcTarget {
 	 *
 	 * `POST /api/v4/import/github/gists` — risk: medium
 	 */
-	async gists(body?: unknown): Promise<ProofResult<unknown>> {
+	async gists(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ImportGithubGists",
 			namespace: "import",
@@ -22229,13 +23264,14 @@ export class Import_Resource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class SlackResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22247,7 +23283,7 @@ export class SlackResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/slack/trigger` — risk: medium
 	 */
-	async createTrigger(body?: unknown): Promise<ProofResult<unknown>> {
+	async createTrigger(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4SlackTrigger",
 			namespace: "slack",
@@ -22260,13 +23296,14 @@ export class SlackResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class IssuesStatisticsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22278,7 +23315,7 @@ export class IssuesStatisticsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/issues_statistics` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4IssuesStatistics",
 			namespace: "issues_statistics",
@@ -22291,13 +23328,14 @@ export class IssuesStatisticsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class MetadataResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22309,7 +23347,7 @@ export class MetadataResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/metadata` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Metadata",
 			namespace: "metadata",
@@ -22322,13 +23360,14 @@ export class MetadataResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class VersionResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22340,7 +23379,7 @@ export class VersionResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/version` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Version",
 			namespace: "version",
@@ -22353,13 +23392,14 @@ export class VersionResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class TopicsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22371,7 +23411,7 @@ export class TopicsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/topics` — risk: low
 	 */
-	async list(): Promise<ProofResult<unknown>> {
+	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4Topics",
 			namespace: "topics",
@@ -22384,6 +23424,7 @@ export class TopicsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22392,7 +23433,7 @@ export class TopicsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/topics` — risk: medium
 	 */
-	async create(body?: unknown): Promise<ProofResult<unknown>> {
+	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4Topics",
 			namespace: "topics",
@@ -22405,6 +23446,7 @@ export class TopicsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22413,7 +23455,7 @@ export class TopicsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/topics/{id}` — risk: low
 	 */
-	async retrieve(id: string): Promise<ProofResult<unknown>> {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4TopicsId",
 			namespace: "topics",
@@ -22426,6 +23468,7 @@ export class TopicsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22434,7 +23477,7 @@ export class TopicsResource extends RpcTarget {
 	 *
 	 * `PUT /api/v4/topics/{id}` — risk: medium
 	 */
-	async put(id: string, body?: unknown): Promise<ProofResult<unknown>> {
+	async put(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "putApiV4TopicsId",
 			namespace: "topics",
@@ -22447,6 +23490,7 @@ export class TopicsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22455,7 +23499,7 @@ export class TopicsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/v4/topics/{id}` — risk: medium
 	 */
-	async del(id: string): Promise<ProofResult<unknown>> {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteApiV4TopicsId",
 			namespace: "topics",
@@ -22468,6 +23512,7 @@ export class TopicsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 
@@ -22476,7 +23521,7 @@ export class TopicsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/topics/merge` — risk: medium
 	 */
-	async createMerge(body?: unknown): Promise<ProofResult<unknown>> {
+	async createMerge(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4TopicsMerge",
 			namespace: "topics",
@@ -22489,13 +23534,14 @@ export class TopicsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 export class WebCommitsResource extends RpcTarget {
 	constructor(
-		private apiKey: string,
+		private apiKey: string | undefined,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -22507,7 +23553,7 @@ export class WebCommitsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/web_commits/public_key` — risk: medium
 	 */
-	async listPublicKey(): Promise<ProofResult<unknown>> {
+	async listPublicKey(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4WebCommitsPublicKey",
 			namespace: "web_commits",
@@ -22520,12 +23566,13 @@ export class WebCommitsResource extends RpcTarget {
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
 		});
 	}
 }
 
 interface Env {
-	GITLAB_API_KEY: string;
+	GITLAB_API_KEY?: string;
 }
 
 export class GitlabCapability extends WorkerEntrypoint<Env> {

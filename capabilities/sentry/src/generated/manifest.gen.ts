@@ -2,11 +2,11 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: API Reference vv0
-// Operations:  209
+// Operations:  210
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
 export const manifest = {
 	"List Your Organizations": {"namespace":"organizations","method":"list","http":"get","path":"/api/0/organizations/","risk":"low"},
@@ -163,7 +163,8 @@ export const manifest = {
 	"Retrieve Check-Ins for a Monitor by Project": {"namespace":"projects","method":"checkins","http":"get","path":"/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/","risk":"medium"},
 	"Retrieve Ownership Configuration for a Project": {"namespace":"projects","method":"listOwnership","http":"get","path":"/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/","risk":"medium"},
 	"Update Ownership Configuration for a Project": {"namespace":"projects","method":"ownership","http":"put","path":"/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/","risk":"medium"},
-	"Retrieve Size Analysis status check rules for a project": {"namespace":"projects","method":"statusCheckRules","http":"get","path":"/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-check-rules/","risk":"medium"},
+	"Retrieve Size Analysis status check rules for a project": {"namespace":"projects","method":"sizeAnalysisStatusCheckRules","http":"get","path":"/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-check-rules/","risk":"medium"},
+	"Retrieve Snapshot status check rules for a project": {"namespace":"projects","method":"snapshotsStatusCheckRules","http":"get","path":"/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-check-rules/","risk":"medium"},
 	"Get the latest installable build for a project": {"namespace":"projects","method":"latest","http":"get","path":"/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/build-distribution/latest/","risk":"medium"},
 	"Delete a Replay Instance": {"namespace":"projects","method":"deleteReplay","http":"delete","path":"/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/","risk":"medium"},
 	"List Clicked Nodes": {"namespace":"projects","method":"clicks","http":"get","path":"/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/clicks/","risk":"medium"},
