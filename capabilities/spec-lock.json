@@ -98,6 +98,13 @@
 			"sha256": "9f9f06e9b9782c87b546661bac26d16ebca0a0c54bd23ab54ef5aa5409fcc823",
 			"version": "helix",
 			"checkedAt": "2026-05-18T22:28:28.139Z"
+		},
+		"blooio": {
+			"name": "blooio",
+			"spec": "https://backend.blooio.com/v2/api/openapi.json",
+			"sha256": "fd24316362e994ba085bec15ef5851d40f0cbea8e58c38c27a2913784f35a1b6",
+			"version": "2.0.0",
+			"checkedAt": "2026-05-19T16:06:00.000Z"
 		}
 	}
 }

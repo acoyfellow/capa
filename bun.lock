@@ -5,6 +5,15 @@
     "": {
       "name": "capa",
     },
+    "capabilities/blooio": {
+      "name": "@capa/blooio",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260425.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.85.0",
+      },
+    },
     "capabilities/box": {
       "name": "@capa/box",
       "version": "0.0.1",
@@ -210,6 +219,8 @@
     "@babel/runtime": ["@babel/runtime@7.29.2", "", {}, "sha512-JiDShH45zKHWyGe4ZNVRrCjBz8Nh9TMmZG1kh4QTK8hCBTWBi8Da+i7s1fJw7/lYpM4ccepSNfqzZ/QvABBi5g=="],
 
     "@babel/types": ["@babel/types@7.29.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.28.5" } }, "sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A=="],
+
+    "@capa/blooio": ["@capa/blooio@workspace:capabilities/blooio"],
 
     "@capa/box": ["@capa/box@workspace:capabilities/box"],
 

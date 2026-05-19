@@ -7,6 +7,7 @@ description: Capabilities, codegen CLI, and the receipt returned with each API r
 
 | Capability | Operations | Namespaces | Auth | Body | Deploy |
 |---|---:|---:|---|---|---|
+| **blooio** | 54 | 8 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/blooio) |
 | **box** | 294 | 56 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/box) |
 | **discord** | 233 | 16 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/discord) |
 | **github** | 1,183 | 36 | Bearer | JSON | [Deploy](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/capa/tree/main/capabilities/github) |
@@ -30,6 +31,7 @@ The reference stays short: capa uses Worker secrets by default. The planned mult
 
 | Capability | Required | Optional |
 |---|---|---|
+| blooio | `BLOOIO_API_KEY` | — |
 | box | `BOX_API_KEY` | — |
 | discord | `DISCORD_API_KEY` | — |
 | github | `GITHUB_API_KEY` | — |
@@ -51,6 +53,7 @@ The entrypoint class is the exported Worker RPC class named in a caller Worker�
 
 | Capability | Entrypoint class |
 |---|---|
+| blooio | `BlooioCapability` |
 | box | `BoxCapability` |
 | discord | `DiscordCapability` |
 | github | `GithubCapability` |

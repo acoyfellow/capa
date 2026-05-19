@@ -39,6 +39,7 @@ Bindings are generated from OpenAPI specs. The hand-written layer is `src/index.
 
 | Capability | Operations | Namespaces | Auth | Body |
 |---|---:|---:|---|---|
+| [blooio](capabilities/blooio) | 54 | 8 | bearer | json |
 | [box](capabilities/box) | 294 | 56 | bearer | json |
 | [discord](capabilities/discord) | 233 | 16 | bearer | json |
 | [github](capabilities/github) | 1,182 | 36 | bearer | json |
