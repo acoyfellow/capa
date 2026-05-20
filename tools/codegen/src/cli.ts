@@ -45,6 +45,7 @@ import swagger2openapi from "swagger2openapi";
 import yaml from "js-yaml";
 import { parseSpec } from "./parse-spec.ts";
 import { emit } from "./emit.ts";
+import type { ResourceBackend } from "./types.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -59,15 +60,28 @@ interface CliArgs {
 	baseUrl: string;
 	auth: AuthShape;
 	contentType: ContentType;
+	resourceBackends: ResourceBackend[];
+}
+
+function parseResourceBackend(value: string): ResourceBackend {
+	const [namespace, className, importPath] = value.split(":");
+	if (!namespace || !className || !importPath) {
+		console.error(`✗ --resource-backend must be namespace:ClassName:importPath (got: ${value})`);
+		process.exit(1);
+	}
+	return { namespace, className, importPath };
 }
 
 function parseArgs(argv: string[]): CliArgs {
 	const args: Record<string, string> = {};
+	const resourceBackendArgs: string[] = [];
 	for (let i = 0; i < argv.length; i++) {
 		const arg = argv[i]!;
 		if (arg.startsWith("--")) {
 			const key = arg.slice(2);
-			args[key] = argv[i + 1] || "";
+			const value = argv[i + 1] || "";
+			if (key === "resource-backend") resourceBackendArgs.push(value);
+			else args[key] = value;
 			i++;
 		}
 	}
@@ -79,7 +93,8 @@ function parseArgs(argv: string[]): CliArgs {
   --base-url <upstream-base-url> \\
   [--prefix /v1] \\
   [--auth bearer|private-token|basic] \\
-  [--content-type form|json]`);
+  [--content-type form|json] \\
+  [--resource-backend namespace:ClassName:importPath]`);
 		process.exit(1);
 	}
 	const auth = (args.auth || "bearer") as AuthShape;
@@ -100,6 +115,7 @@ function parseArgs(argv: string[]): CliArgs {
 		baseUrl: args["base-url"]!,
 		auth,
 		contentType,
+		resourceBackends: resourceBackendArgs.map(parseResourceBackend),
 	};
 }
 
@@ -195,7 +211,7 @@ async function main() {
 	const schemaTs = astToString(ast);
 
 	console.log(`→ emitting capability code`);
-	const { capability, manifest } = emit(codegen, args.name);
+	const { capability, manifest } = emit(codegen, args.name, args.resourceBackends);
 	const capabilityManifest = {
 		name: args.name,
 		entrypoint: `${toPascalCase(args.name)}Capability`,

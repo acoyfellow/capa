@@ -6,6 +6,11 @@ export interface CapabilityRegistryEntry {
 	prefix: string;
 	auth: "bearer" | "private-token" | "basic";
 	contentType: "form" | "json";
+	resourceBackends?: Array<{
+		namespace: string;
+		className: string;
+		importPath: string;
+	}>;
 }
 
 /**
@@ -24,6 +29,11 @@ export const capabilityRegistry: CapabilityRegistryEntry[] = [
 		prefix: "/v1",
 		auth: "bearer",
 		contentType: "form",
+		resourceBackends: [{
+			namespace: "payment_intents",
+			className: "DistilledPaymentIntents",
+			importPath: "../distilled-payment-intents.ts",
+		}],
 	},
 	{
 		name: "gitlab",

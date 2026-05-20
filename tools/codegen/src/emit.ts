@@ -1,4 +1,4 @@
-import type { CodegenResult, Operation } from "./types.ts";
+import type { CodegenResult, Operation, ResourceBackend } from "./types.ts";
 
 /**
  * Emit the generated capability TypeScript file.
@@ -73,10 +73,12 @@ ${ops.map(emitMethod).join("\n")}
 function emitWorkerEntrypoint(
 	namespaces: Record<string, Operation[]>,
 	capabilityName: string,
+	resourceBackends: ResourceBackend[],
 ): string {
 	const apiKeyBinding = `${toEnvName(capabilityName)}_API_KEY`;
+	const backendByNamespace = new Map(resourceBackends.map(backend => [backend.namespace, backend]));
 	const getterDecls = Object.keys(namespaces).map(ns => {
-		const className = toPascalCase(ns) + "Resource";
+		const className = backendByNamespace.get(ns)?.className || toPascalCase(ns) + "Resource";
 		const safeNs = toJsName(ns);
 		return `\tget ${safeNs}(): ${className} {\n\t\treturn new ${className}(this.env.${apiKeyBinding}, this.overrides[${JSON.stringify(ns)}] || {}, this.runtimeConfig);\n\t}`;
 	});
@@ -109,20 +111,24 @@ export type OperationId = keyof typeof manifest;
 export function emit(
 	codegen: CodegenResult,
 	capabilityName: string,
+	resourceBackends: ResourceBackend[] = [],
 ): { capability: string; manifest: string } {
 	const header = HEADER
 		.replace("{SPEC_TITLE}", codegen.specTitle)
 		.replace("{SPEC_VERSION}", codegen.specVersion)
 		.replace("{OP_COUNT}", String(codegen.operationCount));
+	const backendImports = resourceBackends
+		.map(backend => `import { ${backend.className} } from ${JSON.stringify(backend.importPath)};`)
+		.join("\n");
 
 	const namespaceClasses = Object.entries(codegen.namespaces)
 		.map(([ns, ops]) => emitNamespaceClass(ns, ops))
 		.join("\n");
 
-	const entrypoint = emitWorkerEntrypoint(codegen.namespaces, capabilityName);
+	const entrypoint = emitWorkerEntrypoint(codegen.namespaces, capabilityName, resourceBackends);
 	const manifestSrc = emitManifest(codegen.namespaces);
 
-	const capability = [header, namespaceClasses, entrypoint].join("\n");
+	const capability = [header, backendImports, namespaceClasses, entrypoint].filter(Boolean).join("\n");
 
 	return { capability, manifest: header + manifestSrc };
 }

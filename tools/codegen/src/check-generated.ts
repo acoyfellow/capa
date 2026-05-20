@@ -11,6 +11,10 @@ const repoRoot = resolve(__dirname, "../../..");
 
 for (const check of capabilityRegistry) {
 	console.log(`→ regenerate ${check.name}`);
+	const resourceBackendArgs = (check.resourceBackends || []).flatMap(backend => [
+		"--resource-backend",
+		`${backend.namespace}:${backend.className}:${backend.importPath}`,
+	]);
 	const result = spawnSync(
 		"bun",
 		[
@@ -22,6 +26,7 @@ for (const check of capabilityRegistry) {
 			"--prefix", check.prefix,
 			"--auth", check.auth,
 			"--content-type", check.contentType,
+			...resourceBackendArgs,
 		],
 		{ cwd: repoRoot, stdio: "inherit" },
 	);

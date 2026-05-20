@@ -29,6 +29,15 @@ export interface Operation {
 	risk: "low" | "medium" | "high";
 }
 
+export interface ResourceBackend {
+	/** OpenAPI-derived namespace, e.g. payment_intents. */
+	namespace: string;
+	/** Source file relative to src/generated/*. */
+	importPath: string;
+	/** Class that is constructor-compatible with the generated resource. */
+	className: string;
+}
+
 export interface CodegenResult {
 	specVersion: string;
 	specTitle: string;

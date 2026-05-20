@@ -25,21 +25,11 @@
 
 import { StripeCapability as GeneratedStripeCapability } from "./generated/capability.gen.ts";
 import { overrides } from "./overrides.ts";
-import { DistilledPaymentIntents } from "./distilled-payment-intents.ts";
 
 export class StripeCapability extends GeneratedStripeCapability {
 	constructor(ctx: ExecutionContext, env: Env) {
 		super(ctx, env);
 		this.overrides = overrides;
-	}
-
-	/** Distilled-backed first production slice of the Stripe capability. */
-	get paymentIntents(): DistilledPaymentIntents {
-		return new DistilledPaymentIntents(
-			this.env.STRIPE_API_KEY,
-			this.overrides["payment_intents"] || {},
-			this.runtimeConfig,
-		);
 	}
 }
 

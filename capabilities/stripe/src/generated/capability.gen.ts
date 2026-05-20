@@ -8,6 +8,7 @@ import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
 import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
 
+import { DistilledPaymentIntents } from "../distilled-payment-intents.ts";
 
 export class AccountResource extends RpcTarget {
 	constructor(
@@ -12779,8 +12780,8 @@ export class StripeCapability extends WorkerEntrypoint<Env> {
 		return new PaymentAttemptRecordsResource(this.env.STRIPE_API_KEY, this.overrides["payment_attempt_records"] || {}, this.runtimeConfig);
 	}
 
-	get paymentIntents(): PaymentIntentsResource {
-		return new PaymentIntentsResource(this.env.STRIPE_API_KEY, this.overrides["payment_intents"] || {}, this.runtimeConfig);
+	get paymentIntents(): DistilledPaymentIntents {
+		return new DistilledPaymentIntents(this.env.STRIPE_API_KEY, this.overrides["payment_intents"] || {}, this.runtimeConfig);
 	}
 
 	get paymentLinks(): PaymentLinksResource {
