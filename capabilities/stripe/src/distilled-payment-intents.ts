@@ -57,12 +57,12 @@ const confirmMeta: Meta = {
 type DistilledOperation<Input, Output> = (input: Input) => Effect.Effect<Output, unknown, unknown>;
 type InputBody<Input, Key extends keyof Input = never> = Omit<Input, Key>;
 
-function stripeLayer(apiKey: string) {
+function stripeLayer(apiKey: string, runtimeConfig?: RuntimeConfig) {
 	return Layer.mergeAll(
 		FetchHttpClient.layer,
 		Layer.succeed(Credentials, {
 			apiKey: Redacted.make(apiKey),
-			apiBaseUrl: DEFAULT_API_BASE_URL,
+			apiBaseUrl: runtimeConfig?.baseUrl || DEFAULT_API_BASE_URL,
 		}),
 	);
 }
@@ -150,7 +150,7 @@ async function runDistilled<Input, Output>(args: {
 	const t0 = Date.now();
 	const url = requestUrl(args.path, args.runtimeConfig);
 	try {
-		const effect = args.operation(args.input).pipe(Effect.provide(stripeLayer(effectiveApiKey))) as Effect.Effect<Output, unknown, never>;
+		const effect = args.operation(args.input).pipe(Effect.provide(stripeLayer(effectiveApiKey, args.runtimeConfig))) as Effect.Effect<Output, unknown, never>;
 		const result = await Effect.runPromise(effect);
 		const assert = assertionsForSuccess(result, args.override);
 		const proof = evidence(args.meta, args.path, url, startedAt, Date.now() - t0, assert, 200);
