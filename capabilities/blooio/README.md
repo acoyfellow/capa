@@ -14,10 +14,10 @@ wrangler deploy
 Bind `capa-blooio` from a caller Worker with entrypoint `BlooioCapability`. Every call returns `{ result, evidence }`.
 
 ```ts
-const { result, evidence } = await env.BLOOIO.chats.createMessage({
-  chatId: "<chat-id>",
-  body: { text: "hello from a Cloudflare Worker" },
-});
+const { result, evidence } = await env.BLOOIO.chats.createMessage(
+  "<chat-id>",
+  { text: "hello from a Cloudflare Worker" },
+);
 
 if (evidence.verdict === "fail") {
   return Response.json({ error: "send failed", evidence }, { status: 502 });
