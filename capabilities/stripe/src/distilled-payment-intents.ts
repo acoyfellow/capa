@@ -33,13 +33,13 @@ function errorActual(error: any) {
 	};
 }
 
-async function run(input: Record<string, unknown>, options: CallOptions | undefined, meta: Meta, operation: (input: any) => Effect.Effect<any, any, any>, realizedPath = meta.path): Promise<ProofResult<unknown>> {
-	const apiKey = options?.auth?.apiKey;
-	if (!apiKey) throw new Error(`stripe distilled POC: pass options.auth.apiKey`);
+async function run(input: Record<string, unknown>, apiKey: string | undefined, options: CallOptions | undefined, meta: Meta, operation: (input: any) => Effect.Effect<any, any, any>, realizedPath = meta.path): Promise<ProofResult<unknown>> {
+	const effectiveApiKey = options?.auth?.apiKey ?? apiKey;
+	if (!effectiveApiKey) throw new Error(`stripe distilled POC: set STRIPE_API_KEY or pass options.auth.apiKey`);
 	const startedAt = new Date().toISOString();
 	const t0 = Date.now();
 	try {
-		const effect = operation(input).pipe(Effect.provide(layer(apiKey))) as Effect.Effect<unknown, unknown, never>;
+		const effect = operation(input).pipe(Effect.provide(layer(effectiveApiKey))) as Effect.Effect<unknown, unknown, never>;
 		const result = await Effect.runPromise(effect);
 		return proof(result, meta, realizedPath, startedAt, Date.now() - t0, 200, [{ kind: "distilled", expected: "success", actual: "success", passed: true }]);
 	} catch (error) {
@@ -68,8 +68,8 @@ function proof(result: unknown, meta: Meta, path: string, startedAt: string, dur
 	};
 }
 
-export const distilledPaymentIntents = {
-	create: (body: Record<string, unknown>, options?: CallOptions) => run(body, options, createMeta, PostPaymentIntents),
-	retrieve: (intent: string, body: Record<string, unknown> = {}, options?: CallOptions) => run({ intent, ...body }, options, retrieveMeta, GetPaymentIntentsIntent, `/v1/payment_intents/${intent}`),
-	confirm: (intent: string, body: Record<string, unknown> = {}, options?: CallOptions) => run({ intent, ...body }, options, confirmMeta, PostPaymentIntentsIntentConfirm, `/v1/payment_intents/${intent}/confirm`),
-};
+export const makeDistilledPaymentIntents = (apiKey?: string) => ({
+	create: (body: Record<string, unknown>, options?: CallOptions) => run(body, apiKey, options, createMeta, PostPaymentIntents),
+	retrieve: (intent: string, body: Record<string, unknown> = {}, options?: CallOptions) => run({ intent, ...body }, apiKey, options, retrieveMeta, GetPaymentIntentsIntent, `/v1/payment_intents/${intent}`),
+	confirm: (intent: string, body: Record<string, unknown> = {}, options?: CallOptions) => run({ intent, ...body }, apiKey, options, confirmMeta, PostPaymentIntentsIntentConfirm, `/v1/payment_intents/${intent}/confirm`),
+});
