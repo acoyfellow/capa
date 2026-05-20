@@ -15413,6 +15413,8 @@ export type components = {
         };
         /** @description The default value for a Date custom field. */
         CustomFieldContextDefaultValueDate: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default date in ISO format. Ignored if `useCurrent` is true. */
             date?: string;
             /**
@@ -15428,6 +15430,8 @@ export type components = {
         };
         /** @description The default value for a date time custom field. */
         CustomFieldContextDefaultValueDateTime: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default date-time in ISO format. Ignored if `useCurrent` is true. */
             dateTime?: string;
             /**
@@ -15443,6 +15447,8 @@ export type components = {
         };
         /** @description Default value for a float (number) custom field. */
         CustomFieldContextDefaultValueFloat: {
+            /** @description The ID of the context. */
+            contextId: string;
             /**
              * Format: double
              * @description The default floating-point number.
@@ -15497,6 +15503,8 @@ export type components = {
         };
         /** @description The default text for a Forge collection of strings custom field. */
         CustomFieldContextDefaultValueForgeMultiStringField: {
+            /** @description The ID of the context. */
+            contextId: string;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -15534,6 +15542,8 @@ export type components = {
         };
         /** @description The default value for a Forge object custom field. */
         CustomFieldContextDefaultValueForgeObjectField: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default JSON object. */
             object?: Record<string, never>;
             /**
@@ -15569,6 +15579,8 @@ export type components = {
         };
         /** @description Default value for a labels custom field. */
         CustomFieldContextDefaultValueLabels: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default labels value. */
             labels: string[];
             /**
@@ -15603,6 +15615,8 @@ export type components = {
         };
         /** @description The default value for a multiple version picker custom field. */
         CustomFieldContextDefaultValueMultipleVersionPicker: {
+            /** @description The ID of the context. */
+            contextId: string;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -15639,6 +15653,8 @@ export type components = {
         };
         /** @description The default text for a read only custom field. */
         CustomFieldContextDefaultValueReadOnly: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default text. The maximum length is 255 characters. */
             text?: string;
             /**
@@ -15673,6 +15689,8 @@ export type components = {
         };
         /** @description The default value for a version picker custom field. */
         CustomFieldContextDefaultValueSingleVersionPicker: {
+            /** @description The ID of the context. */
+            contextId: string;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -15685,6 +15703,8 @@ export type components = {
         };
         /** @description The default text for a text area custom field. */
         CustomFieldContextDefaultValueTextArea: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default text. The maximum length is 32767 characters. */
             text?: string;
             /**
@@ -15695,6 +15715,8 @@ export type components = {
         };
         /** @description The default text for a text custom field. */
         CustomFieldContextDefaultValueTextField: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default text. The maximum length is 254 characters. */
             text?: string;
             /**
@@ -27448,6 +27470,8 @@ export interface operations {
     updateMultipleCustomFieldValues: {
         parameters: {
             query?: {
+                /** @description Whether to generate app events for this update. Suppresses Forge, Connect, OAuth 2.0, and admin-configured webhooks (registered via the Jira admin UI). Note: Suppressing events means that "issue updated" events will not be emitted for your app or any other apps installed in Jira. This may cause other apps to retain stale data for the updated field, resulting in potentially confusing behaviour. We do not recommend using this flag in a Marketplace app as it may result in incompatibilities with other apps that depend on up-to-date issue data. */
+                generateAppEvents?: boolean;
                 /** @description Whether to generate a changelog for this update. */
                 generateChangelog?: boolean;
             };

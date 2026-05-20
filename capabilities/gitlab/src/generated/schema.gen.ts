@@ -20592,6 +20592,19 @@ export type components = {
             uploads_verification_total_count: string;
             uploads_verified_count: string;
             uploads_verified_in_percentage: string;
+            user_permission_export_upload_uploads_checksum_failed_count: string;
+            user_permission_export_upload_uploads_checksum_total_count: string;
+            user_permission_export_upload_uploads_checksummed_count: string;
+            user_permission_export_upload_uploads_count: string;
+            user_permission_export_upload_uploads_failed_count: string;
+            user_permission_export_upload_uploads_oldest_unsynced_time: string;
+            user_permission_export_upload_uploads_registry_count: string;
+            user_permission_export_upload_uploads_synced_count: string;
+            user_permission_export_upload_uploads_synced_in_percentage: string;
+            user_permission_export_upload_uploads_verification_failed_count: string;
+            user_permission_export_upload_uploads_verification_total_count: string;
+            user_permission_export_upload_uploads_verified_count: string;
+            user_permission_export_upload_uploads_verified_in_percentage: string;
             user_uploads_checksum_failed_count: string;
             user_uploads_checksum_total_count: string;
             user_uploads_checksummed_count: string;
@@ -21608,6 +21621,7 @@ export type components = {
             read_vulnerability: boolean;
             remove_group: boolean;
             remove_project: boolean;
+            update_sast_vulnerability_resolution_setting: boolean;
         };
         /** @description API_Entities_MergeRequest model */
         API_Entities_MergeRequest: {
@@ -28769,6 +28783,8 @@ export type components = {
              * @description The IID of a merge request for which to resolve discussions
              */
             merge_request_to_resolve_discussions_of?: number;
+            /** @description The title of a project or ancestor-group milestone to assign the issue to. Mutually exclusive with `milestone_id`. */
+            milestone?: string;
             /**
              * Format: int32
              * @description The ID of a milestone to assign issue
@@ -28962,6 +28978,8 @@ export type components = {
             labels?: string[];
             /** @description Date after which the merge request can be merged. */
             merge_after?: string;
+            /** @description The title of a project or ancestor-group milestone to assign the merge request to. Mutually exclusive with `milestone_id`. */
+            milestone?: string;
             /**
              * Format: int32
              * @description The global ID of a milestone to assign the merge request to.
@@ -34508,6 +34526,8 @@ export type components = {
             issue_type?: "issue" | "incident" | "test_case" | "requirement" | "task" | "ticket";
             /** @description Comma-separated list of label names */
             labels?: string[];
+            /** @description The title of a project or ancestor-group milestone to assign the issue to. Mutually exclusive with `milestone_id`. */
+            milestone?: string;
             /**
              * Format: int32
              * @description The ID of a milestone to assign issue
@@ -34599,6 +34619,8 @@ export type components = {
             labels?: string[];
             /** @description Date after which the merge request can be merged. */
             merge_after?: string;
+            /** @description The title of a project or ancestor-group milestone to assign the merge request to. Mutually exclusive with `milestone_id`. */
+            milestone?: string;
             /**
              * Format: int32
              * @description The global ID of a milestone to assign the merge request to.
