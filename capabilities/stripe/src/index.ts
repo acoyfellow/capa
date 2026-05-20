@@ -25,11 +25,20 @@
 
 import { StripeCapability as GeneratedStripeCapability } from "./generated/capability.gen.ts";
 import { overrides } from "./overrides.ts";
+import { distilledPaymentIntents } from "./distilled-payment-intents.ts";
 
 export class StripeCapability extends GeneratedStripeCapability {
 	constructor(ctx: ExecutionContext, env: Env) {
 		super(ctx, env);
 		this.overrides = overrides;
+	}
+
+	/**
+	 * Branch-only POC: same public capa surface, Distilled-backed internals.
+	 * Use env.STRIPE.distilledPaymentIntents.create/retrieve/confirm(...).
+	 */
+	get distilledPaymentIntents() {
+		return distilledPaymentIntents;
 	}
 }
 
