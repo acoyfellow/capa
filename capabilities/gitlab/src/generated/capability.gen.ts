@@ -1825,7 +1825,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of group-level variables
+	 * Lists all variables for a specified group. Use the `page` and `per_page` pagination parameters to control the pagination of results.
 	 *
 	 * `GET /api/v4/groups/{id}/variables` — risk: medium
 	 */
@@ -1847,7 +1847,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new variable in a group
+	 * Creates a group variable.
 	 *
 	 * `POST /api/v4/groups/{id}/variables` — risk: medium
 	 */
@@ -1869,7 +1869,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the details of a group’s specific variable
+	 * Retrieves details of a specified group variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `GET /api/v4/groups/{id}/variables/{key}` — risk: medium
 	 */
@@ -1891,7 +1891,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an existing variable from a group
+	 * Updates a specified group variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `PUT /api/v4/groups/{id}/variables/{key}` — risk: medium
 	 */
@@ -1913,7 +1913,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete an existing variable from a group
+	 * Deletes a specified group variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `DELETE /api/v4/groups/{id}/variables/{key}` — risk: medium
 	 */
@@ -5687,7 +5687,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get list of secure files in a project
+	 * Lists all secure files for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/secure_files` — risk: medium
 	 */
@@ -5709,7 +5709,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a secure file
+	 * Creates a secure file in a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/secure_files` — risk: medium
 	 */
@@ -5731,7 +5731,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the details of a specific secure file in a project
+	 * Retrieves details of a specified secure file in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/secure_files/{secure_file_id}` — risk: medium
 	 */
@@ -5753,7 +5753,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove a secure file
+	 * Deletes a specified secure file from a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/secure_files/{secure_file_id}` — risk: medium
 	 */
@@ -5775,7 +5775,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Download secure file
+	 * Downloads the contents of a specified secure file in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/secure_files/{secure_file_id}/download` — risk: medium
 	 */
@@ -6061,7 +6061,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Cancels all jobs in a specified pipeline.
 	 *
 	 * `POST /api/v4/projects/{id}/pipelines/{pipeline_id}/cancel` — risk: medium
 	 */
@@ -6083,7 +6083,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all pipeline schedules
+	 * Lists all pipeline schedules for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules` — risk: medium
 	 */
@@ -6105,7 +6105,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new pipeline schedule
+	 * Creates a pipeline schedule.
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules` — risk: medium
 	 */
@@ -6127,7 +6127,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single pipeline schedule
+	 * Retrieves a pipeline schedule for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}` — risk: medium
 	 */
@@ -6149,7 +6149,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Edit a pipeline schedule
+	 * Updates a pipeline schedule for a project. After the update is done, it is rescheduled automatically.
 	 *
 	 * `PUT /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}` — risk: medium
 	 */
@@ -6171,7 +6171,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a pipeline schedule
+	 * Deletes a pipeline schedule for a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}` — risk: medium
 	 */
@@ -6193,7 +6193,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all pipelines triggered from a pipeline schedule
+	 * Lists all pipelines triggered by a pipeline schedule in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/pipelines` — risk: medium
 	 */
@@ -6215,7 +6215,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Take ownership of a pipeline schedule
+	 * Creates or updates the owner of a pipeline schedule for a project.
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/take_ownership` — risk: medium
 	 */
@@ -6237,7 +6237,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was added in GitLab 12.8
+	 * Runs a pipeline schedule immediately. The next scheduled run of this pipeline is not affected.
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/play` — risk: medium
 	 */
@@ -6259,7 +6259,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new pipeline schedule variable
+	 * Creates a variable for a pipeline schedule.
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables` — risk: medium
 	 */
@@ -6281,7 +6281,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single pipeline schedule variable
+	 * Retrieves a specified variable for a pipeline schedule.
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}` — risk: medium
 	 */
@@ -6303,7 +6303,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Edit a pipeline schedule variable
+	 * Updates a variable for a pipeline schedule.
 	 *
 	 * `PUT /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}` — risk: medium
 	 */
@@ -6325,7 +6325,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a pipeline schedule variable
+	 * Deletes a specified variable for a pipeline schedule.
 	 *
 	 * `DELETE /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}` — risk: medium
 	 */
@@ -6479,7 +6479,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get project variables
+	 * Lists all variables for a project. Use the `page` and `per_page` pagination parameters to control the pagination of results.
 	 *
 	 * `GET /api/v4/projects/{id}/variables` — risk: medium
 	 */
@@ -6501,7 +6501,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new variable in a project
+	 * Creates a variable. If a variable with the same `key` already exists, the variable must have a different `environment_scope`. Otherwise, GitLab returns a message similar to: `VARIABLE_NAME has already
 	 *
 	 * `POST /api/v4/projects/{id}/variables` — risk: medium
 	 */
@@ -6523,7 +6523,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the details of a single variable from a project
+	 * Retrieves details of a specified variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `GET /api/v4/projects/{id}/variables/{key}` — risk: medium
 	 */
@@ -6545,7 +6545,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an existing variable from a project
+	 * Updates a project variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `PUT /api/v4/projects/{id}/variables/{key}` — risk: medium
 	 */
@@ -6567,7 +6567,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete an existing variable from a project
+	 * Deletes a project variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `DELETE /api/v4/projects/{id}/variables/{key}` — risk: medium
 	 */
@@ -12552,7 +12552,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Checks if CI/CD YAML configuration is valid. This endpoint has namespace specific context
+	 * Validates a provided CI/CD configuration in the context of a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/ci/lint` — risk: medium
 	 */
@@ -15458,7 +15458,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Fetch CI_JOB_TOKEN access settings.
+	 * Retrieves the CI/CD job token access settings (job token scope) of a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/job_token_scope` — risk: medium
 	 */
@@ -15480,7 +15480,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Patch CI_JOB_TOKEN access settings.
+	 * Updates the **Authorized groups and projects** setting (job token scope) of a specified project.
 	 *
 	 * `PATCH /api/v4/projects/{id}/job_token_scope` — risk: medium
 	 */
@@ -15502,7 +15502,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Fetch project inbound allowlist for CI_JOB_TOKEN access settings.
+	 * Lists all projects in the CI/CD job token allowlist of a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/job_token_scope/allowlist` — risk: medium
 	 */
@@ -15524,7 +15524,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add target project to allowlist.
+	 * Adds a project to the CI/CD job token allowlist of a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/job_token_scope/allowlist` — risk: medium
 	 */
@@ -15546,7 +15546,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Fetch project groups allowlist for CI_JOB_TOKEN access settings.
+	 * Lists all groups in the CI/CD job token allowlist of a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/job_token_scope/groups_allowlist` — risk: medium
 	 */
@@ -15568,7 +15568,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add target group to allowlist.
+	 * Adds a group to the CI/CD job token allowlist of a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/job_token_scope/groups_allowlist` — risk: medium
 	 */
@@ -15590,7 +15590,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete target group from allowlist.
+	 * Deletes a group from the CI/CD job token allowlist of a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/job_token_scope/groups_allowlist/{target_group_id}` — risk: medium
 	 */
@@ -15612,7 +15612,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete project from allowlist.
+	 * Deletes a project from the CI/CD job token allowlist of a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/job_token_scope/allowlist/{target_project_id}` — risk: medium
 	 */
@@ -18076,7 +18076,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.7
+	 * Lists all attestations for a specified project and artifact hash. This feature was introduced in GitLab 18.7.
 	 *
 	 * `GET /api/v4/projects/{id}/attestations/{subject_digest}` — risk: medium
 	 */
@@ -18680,7 +18680,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * List all instance-level variables
+	 * Lists all instance-level variables. Use the `page` and `per_page` pagination parameters to control the pagination of results.
 	 *
 	 * `GET /api/v4/admin/ci/variables` — risk: medium
 	 */
@@ -18702,7 +18702,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new instance-level variable
+	 * Creates a instance-level variable. The maximum number of instance-level variables can be changed.
 	 *
 	 * `POST /api/v4/admin/ci/variables` — risk: medium
 	 */
@@ -18724,7 +18724,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the details of a specific instance-level variable
+	 * Retrieves details of a specified instance-level variable.
 	 *
 	 * `GET /api/v4/admin/ci/variables/{key}` — risk: medium
 	 */
@@ -18746,7 +18746,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an instance-level variable
+	 * Updates a specified instance variable.
 	 *
 	 * `PUT /api/v4/admin/ci/variables/{key}` — risk: medium
 	 */
@@ -18768,7 +18768,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete an existing instance-level variable
+	 * Deletes a specified instance variable.
 	 *
 	 * `DELETE /api/v4/admin/ci/variables/{key}` — risk: medium
 	 */

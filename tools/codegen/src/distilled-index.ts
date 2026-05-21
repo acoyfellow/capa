@@ -94,7 +94,7 @@ function indexProvider(provider: DistilledProvider): Map<string, IndexedOperatio
 			packageName: provider.packageName,
 			operationImport: provider.packageName === "@distilled.cloud/stripe"
 				? "@distilled.cloud/stripe/Operations"
-				: `${provider.packageName}/${operationImport.replace(/^\.\//, "").replace(/\.ts$/, "")}`,
+				: `${provider.packageName}/${operationImport.replace(/^\.\//, "").replace(/\.ts$/, "")}`, 
 			operationExport,
 			inputType,
 			outputType,
