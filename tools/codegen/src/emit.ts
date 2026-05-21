@@ -56,6 +56,9 @@ function emitMethod(op: Operation, distilled?: DistilledBinding): string {
 }
 
 function emitDistilledMethod(op: Operation, distilled: DistilledBinding, args: string, pathExpr: string): string {
+	const operation = distilled.operationDynamicImport
+		? `loadDistilled(${JSON.stringify(distilled.operationDynamicImport)}, ${JSON.stringify(distilled.operationExport)})`
+		: distilled.operationExport;
 	const inputParts = [
 		...op.pathParams.map(param => `${JSON.stringify(param)}: ${toJsName(param)}`),
 		...(op.hasBody ? ["...(body as Record<string, unknown> || {})"] : []),
@@ -78,7 +81,7 @@ function emitDistilledMethod(op: Operation, distilled: DistilledBinding, args: s
 			risk: ${JSON.stringify(op.risk)},
 			body${op.hasBody ? "" : ": undefined"},
 			input,
-			operation: operationInput => runDistilled(${distilled.operationExport}, operationInput, this.apiKey, options, this.runtimeConfig),
+			operation: async operationInput => runDistilled(await ${operation}, operationInput, this.apiKey, options, this.runtimeConfig),
 			overrides: this.overrides[${JSON.stringify(op.method)}],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
@@ -108,7 +111,7 @@ function emitDistilledRuntime(bindings: Map<string, DistilledBinding>, provider:
 	const imports = new Map<string, Set<string>>();
 	for (const binding of bindings.values()) {
 		const exports = imports.get(binding.operationImport) || new Set<string>();
-		exports.add(binding.operationExport);
+		if (!binding.operationDynamicImport) exports.add(binding.operationExport);
 		exports.add(`type ${binding.inputType}`);
 		exports.add(`type ${binding.outputType}`);
 		imports.set(binding.operationImport, exports);
@@ -122,6 +125,11 @@ import * as Layer from "effect/Layer";
 import * as Redacted from "effect/Redacted";
 import * as FetchHttpClient from "effect/unstable/http/FetchHttpClient";
 import { Credentials } from ${JSON.stringify(provider.credentialsImport)};
+
+async function loadDistilled<Input, Output>(modulePath: string, exportName: string): Promise<(input: Input) => Effect.Effect<Output, unknown, unknown>> {
+\tconst module = await import(modulePath) as Record<string, unknown>;
+\treturn module[exportName] as (input: Input) => Effect.Effect<Output, unknown, unknown>;
+}
 
 function distilledLayer(apiKey: string, runtimeConfig?: import("./runtime.ts").RuntimeConfig) {
 \treturn Layer.mergeAll(

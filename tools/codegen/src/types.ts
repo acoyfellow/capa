@@ -32,6 +32,7 @@ export interface Operation {
 export interface DistilledBinding {
 	packageName: string;
 	operationImport: string;
+	operationDynamicImport?: string;
 	operationExport: string;
 	inputType: string;
 	outputType: string;

@@ -95,6 +95,9 @@ function indexProvider(provider: DistilledProvider): Map<string, IndexedOperatio
 			operationImport: provider.packageName === "@distilled.cloud/stripe"
 				? "@distilled.cloud/stripe/Operations"
 				: `${provider.packageName}/${operationImport.replace(/^\.\//, "").replace(/\.ts$/, "")}`, 
+			operationDynamicImport: provider.packageName === "@distilled.cloud/stripe"
+				? `../../node_modules/@distilled.cloud/stripe/lib/operations/${operationExport}.js`
+				: `../../node_modules/${provider.packageName}/lib/services/${operationImport.replace(/^\.\//, "").replace(/\.ts$/, ".js")}`,
 			operationExport,
 			inputType,
 			outputType,
