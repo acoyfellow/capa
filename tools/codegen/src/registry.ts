@@ -142,4 +142,13 @@ export const capabilityRegistry: CapabilityRegistryEntry[] = [
 		auth: "bearer",
 		contentType: "json",
 	},
+	{
+		name: "blooio",
+		spec: "https://backend.blooio.com/v2/api/openapi.json",
+		out: "capabilities/blooio",
+		baseUrl: "https://backend.blooio.com/v2/api",
+		prefix: "/",
+		auth: "bearer",
+		contentType: "json",
+	},
 ];

@@ -1,0 +1,11 @@
+{
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "capa-blooio",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-04-17",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": false,
+	"observability": { "enabled": true }
+	// Required secret: wrangler secret put BLOOIO_API_KEY
+	// Service binding entrypoint: BlooioCapability
+}

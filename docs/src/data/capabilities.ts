@@ -63,6 +63,10 @@ export interface CapabilityDisplay {
 }
 
 const DISPLAY: Record<string, CapabilityDisplay> = {
+	blooio: {
+		tagline: 'Send iMessage from anywhere — chats, messages, contacts, groups, FaceTime, and webhooks.',
+		requiredSecrets: ['BLOOIO_API_KEY'],
+	},
 	box: {
 		tagline: 'Files, folders, collaboration, and metadata from the Box Platform API.',
 		requiredSecrets: ['BOX_API_KEY'],
