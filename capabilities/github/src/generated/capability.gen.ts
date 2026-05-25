@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitHub v3 REST API v1.1.4
-// Operations:  1183
+// Operations:  1185
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -167,7 +167,7 @@ Returns a list of tasks for the authenticated user
 
 **Fine-grained access tokens for "List tasks"**
 
-This endpoint works with 
+This endpoint works with
 	 *
 	 * `GET /agents/tasks` — risk: medium
 	 */
@@ -196,7 +196,7 @@ Returns a task by ID with its associated sessions
 
 **Fine-grained access tokens for "Get a task by ID"**
 
-This endpoint works 
+This endpoint works
 	 *
 	 * `GET /agents/tasks/{task_id}` — risk: medium
 	 */
@@ -252,7 +252,7 @@ export class AppResource extends RpcTarget {
 	/**
 	 * Returns the webhook configuration for a GitHub App. For more information about configuring a webhook for your app, see "[Creating a GitHub App](/developers/apps/creating-a-github-app)."
 
-You must use 
+You must use
 	 *
 	 * `GET /app/hook/config` — risk: medium
 	 */
@@ -276,7 +276,7 @@ You must use
 	/**
 	 * Updates the webhook configuration for a GitHub App. For more information about configuring a webhook for your app, see "[Creating a GitHub App](/developers/apps/creating-a-github-app)."
 
-You must use 
+You must use
 	 *
 	 * `PATCH /app/hook/config` — risk: medium
 	 */
@@ -748,7 +748,7 @@ export class AssignmentsResource extends RpcTarget {
 	}
 
 	/**
-	 * Lists any assignment repositories that have been created by students accepting a GitHub Classroom assignment. Accepted assignments will only be returned if the current user is an administrator of the 
+	 * Lists any assignment repositories that have been created by students accepting a GitHub Classroom assignment. Accepted assignments will only be returned if the current user is an administrator of the
 	 *
 	 * `GET /assignments/{assignment_id}/accepted_assignments` — risk: medium
 	 */
@@ -1122,7 +1122,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:enterprise
 	/**
 	 * Adds a repository custom property to be included in the OIDC token for repository actions in an enterprise.
 
-OAuth app tokens and personal access tokens (classic) need the `admin:enterprise` scope to 
+OAuth app tokens and personal access tokens (classic) need the `admin:enterprise` scope to
 	 *
 	 * `POST /enterprises/{enterprise}/actions/oidc/customization/properties/repo` — risk: medium
 	 */
@@ -1444,7 +1444,7 @@ Th
 	}
 
 	/**
-	 * Use this endpoint to retrieve download links for the Copilot enterprise user-teams report for a specific day. The report provides user-team join data for Copilot across the enterprise, with one entry 
+	 * Use this endpoint to retrieve download links for the Copilot enterprise user-teams report for a specific day. The report provides user-team join data for Copilot across the enterprise, with one entry
 	 *
 	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day` — risk: medium
 	 */
@@ -1488,7 +1488,7 @@ Th
 	}
 
 	/**
-	 * Use this endpoint to retrieve download links for the latest 28-day enterprise users Copilot usage metrics report. The report provides detailed user-level usage data and engagement metrics for Copilot 
+	 * Use this endpoint to retrieve download links for the latest 28-day enterprise users Copilot usage metrics report. The report provides detailed user-level usage data and engagement metrics for Copilot
 	 *
 	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/users-28-day/latest` — risk: medium
 	 */
@@ -1660,7 +1660,7 @@ The authent
 
 	/**
 	 * Sets the default level of repository access Dependabot will have while performing an update across organizations in the enterprise. Available values are:
-- 'public' - Dependabot will only have access 
+- 'public' - Dependabot will only have access
 	 *
 	 * `PUT /enterprises/{enterprise}/dependabot/repository-access/default-level` — risk: medium
 	 */
@@ -3346,7 +3346,7 @@ OAuth tokens and personal access tokens (classic) n
 	 * Gets GitHub Actions cache storage limit for an organization. All repositories under this
 organization may not set a higher cache storage limit.
 
-OAuth tokens and personal access tokens (classic) need 
+OAuth tokens and personal access tokens (classic) need
 	 *
 	 * `GET /organizations/{org}/actions/cache/storage-limit` — risk: medium
 	 */
@@ -3496,7 +3496,7 @@ Deletes a budget by ID for an organization. The authenticated user must be an or
 	/**
 	 * Gets a report of premium request usage for an organization. To use this endpoint, you must be an administrator of an organization within an enterprise or an organization account.
 
-**Note:** Only data 
+**Note:** Only data
 	 *
 	 * `GET /organizations/{org}/settings/billing/premium_request/usage` — risk: medium
 	 */
@@ -3674,7 +3674,7 @@ The data fetched using this API is refreshed approximately every 5 minutes, so v
 
 	/**
 	 * Lists repositories and their GitHub Actions cache usage for an organization.
-The data fetched using this API is refreshed approximately every 5 minutes, so values returned from this endpoint may take 
+The data fetched using this API is refreshed approximately every 5 minutes, so values returned from this endpoint may take
 	 *
 	 * `GET /orgs/{org}/actions/cache/usage-by-repository` — risk: medium
 	 */
@@ -4116,7 +4116,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	/**
 	 * Removes a repository custom property from being included in the OIDC token for repository actions in an organization.
 
-OAuth app tokens and personal access tokens (classic) need the `admin:org` scope 
+OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	 *
 	 * `DELETE /orgs/{org}/actions/oidc/customization/properties/repo/{custom_property_name}` — risk: medium
 	 */
@@ -4418,7 +4418,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	}
 
 	/**
-	 * Adds a repository to the list of selected repositories that are enabled for GitHub Actions in an organization. To use this endpoint, the organization permission policy for `enabled_repositories` must 
+	 * Adds a repository to the list of selected repositories that are enabled for GitHub Actions in an organization. To use this endpoint, the organization permission policy for `enabled_repositories` must
 	 *
 	 * `PUT /orgs/{org}/actions/permissions/repositories/{repository_id}` — risk: medium
 	 */
@@ -4440,7 +4440,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	}
 
 	/**
-	 * Removes a repository from the list of selected repositories that are enabled for GitHub Actions in an organization. To use this endpoint, the organization permission policy for `enabled_repositories` 
+	 * Removes a repository from the list of selected repositories that are enabled for GitHub Actions in an organization. To use this endpoint, the organization permission policy for `enabled_repositories`
 	 *
 	 * `DELETE /orgs/{org}/actions/permissions/repositories/{repository_id}` — risk: medium
 	 */
@@ -4628,7 +4628,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	/**
 	 * Removes a repository from the list of repositories that are allowed to use self-hosted runners in an organization.
 
-OAuth app tokens and personal access tokens (classic) need the `admin:org` scope or 
+OAuth app tokens and personal access tokens (classic) need the `admin:org` scope or
 	 *
 	 * `DELETE /orgs/{org}/actions/permissions/self-hosted-runners/repositories/{repository_id}` — risk: medium
 	 */
@@ -4910,7 +4910,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	}
 
 	/**
-	 * Removes a repository from the list of selected repositories that can access a self-hosted runner group. The runner group must have `visibility` set to `selected`. For more information, see "[Create a 
+	 * Removes a repository from the list of selected repositories that can access a self-hosted runner group. The runner group must have `visibility` set to `selected`. For more information, see "[Create a
 	 *
 	 * `DELETE /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories/{repository_id}` — risk: medium
 	 */
@@ -5108,7 +5108,7 @@ OAuth tokens and personal access tokens (classic
 	/**
 	 * Returns a token that you can pass to the `config` script. The token expires after one hour.
 
-For example, you can replace `TOKEN` in the following example with the registration token provided by this 
+For example, you can replace `TOKEN` in the following example with the registration token provided by this
 	 *
 	 * `POST /orgs/{org}/actions/runners/registration-token` — risk: medium
 	 */
@@ -5259,7 +5259,7 @@ OAuth tokens and personal access tokens
 	 * Remove all previous custom labels and set the new custom labels for a specific
 self-hosted runner configured in an organization.
 
-Authenticated users must have admin access to the organization to use 
+Authenticated users must have admin access to the organization to use
 	 *
 	 * `PUT /orgs/{org}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
@@ -5362,7 +5362,7 @@ OAuth a
 	 * Gets your public key, which you need to encrypt secrets. You need to
 encrypt a secret before you can create or update secrets.
 
-The authenticated user must have collaborator access to a repository to 
+The authenticated user must have collaborator access to a repository to
 	 *
 	 * `GET /orgs/{org}/actions/secrets/public-key` — risk: medium
 	 */
@@ -5713,7 +5713,7 @@ Authenticated users must have collaborator access to a repository to create, upd
 	/**
 	 * Replaces all repositories for an organization variable that is available
 to selected repositories. Organization variables that are available to selected
-repositories have their `visibility` field set 
+repositories have their `visibility` field set
 	 *
 	 * `PUT /orgs/{org}/actions/variables/{name}/repositories` — risk: medium
 	 */
@@ -6061,7 +6061,7 @@ OA
 
 The authenticated user must have collaborator access to a repository to create, update, or read variables.
 
-OAuth tokens and personal access tokens 
+OAuth tokens and personal access tokens
 	 *
 	 * `GET /orgs/{org}/agents/variables/{name}` — risk: medium
 	 */
@@ -6138,7 +6138,7 @@ OAuth tokens and personal acce
 	 * Lists all repositories that can access an organization agent variable
 that is available to selected repositories.
 
-Authenticated users must have collaborator access to a repository to create, update, 
+Authenticated users must have collaborator access to a repository to create, update,
 	 *
 	 * `GET /orgs/{org}/agents/variables/{name}/repositories` — risk: medium
 	 */
@@ -6185,7 +6185,7 @@ repositories have their `visibility` fiel
 
 	/**
 	 * Adds a repository to an organization agent variable that is available to selected repositories.
-Organization variables that are available to selected repositories have their `visibility` field set to 
+Organization variables that are available to selected repositories have their `visibility` field set to
 	 *
 	 * `PUT /orgs/{org}/agents/variables/{name}/repositories/{repository_id}` — risk: medium
 	 */
@@ -6579,7 +6579,7 @@ The collection of attestations returned by this endpoint is filt
 
 The authenticated user must be an owner or security manager for the organization to use this endpoint.
 
-OAuth app tokens and personal access tokens (classic) need 
+OAuth app tokens and personal access tokens (classic) need
 	 *
 	 * `GET /orgs/{org}/campaigns` — risk: medium
 	 */
@@ -6934,7 +6934,7 @@ If insuff
 	/**
 	 * Sets a code security configuration as a default to be applied to new repositories in your organization.
 
-This configuration will be applied to the matching repository type (all, none, public, private 
+This configuration will be applied to the matching repository type (all, none, public, private
 	 *
 	 * `PUT /orgs/{org}/code-security/configurations/{configuration_id}/defaults` — risk: medium
 	 */
@@ -7413,7 +7413,7 @@ Organization members with appropriate permissions can update Copil
 	/**
 	 * Lists all collaborators for a specific Copilot Space owned by an organization. The authenticated user must have appropriate permissions to view collaborators.
 
-Each collaborator entry specifies which 
+Each collaborator entry specifies which
 	 *
 	 * `GET /orgs/{org}/copilot-spaces/{space_number}/collaborators` — risk: medium
 	 */
@@ -7437,7 +7437,7 @@ Each collaborator entry specifies which
 	/**
 	 * Adds a collaborator (user or team) to a specific Copilot Space owned by an organization. The authenticated user must have appropriate permissions to manage collaborators.
 
-**Note:** When adding users 
+**Note:** When adding users
 	 *
 	 * `POST /orgs/{org}/copilot-spaces/{space_number}/collaborators` — risk: medium
 	 */
@@ -7560,7 +7560,7 @@ The following resource types are supported: `repository`,
 	 * Gets a specific resource attached to a Copilot Space owned by an organization.
 The authenticated user must have appropriate permissions to view the space.
 
-OAuth app tokens and personal access tokens 
+OAuth app tokens and personal access tokens
 	 *
 	 * `GET /orgs/{org}/copilot-spaces/{space_number}/resources/{space_resource_id}` — risk: medium
 	 */
@@ -7610,7 +7610,7 @@ OAuth app tokens and personal access tokens (
 	 * Deletes a resource from a specific Copilot Space owned by an organization.
 The authenticated user must have write permissions on the space.
 
-OAuth app tokens and personal access tokens (classic) need 
+OAuth app tokens and personal access tokens (classic) need
 	 *
 	 * `DELETE /orgs/{org}/copilot-spaces/{space_number}/resources/{space_resource_id}` — risk: medium
 	 */
@@ -7687,7 +7687,7 @@ Lists all Copilot seats for which an organization with a Copilot Business or Cop
 > This endpoint is in public preview and is subject to change.
 
 Purchases a GitHub Copilot seat for all users within each specified team.
-The organization will be billed for each seat based 
+The organization will be billed for each seat based
 	 *
 	 * `POST /orgs/{org}/copilot/billing/selected_teams` — risk: medium
 	 */
@@ -7977,7 +7977,7 @@ To configure these settings, go to the organiza
 > This endpoint is in public preview and is subject to change.
 
 Sets Copilot content exclusion path rules for an organization.
-To configure these settings, go to the organization's settings 
+To configure these settings, go to the organization's settings
 	 *
 	 * `PUT /orgs/{org}/copilot/content_exclusion` — risk: medium
 	 */
@@ -8211,7 +8211,7 @@ Unauth
 
 	/**
 	 * Sets the default level of repository access Dependabot will have while performing an update.  Available values are:
-- 'public' - Dependabot will only have access to public repositories, unless access 
+- 'public' - Dependabot will only have access to public repositories, unless access
 	 *
 	 * `PUT /orgs/{org}/dependabot/repository-access/default-level` — risk: medium
 	 */
@@ -8745,7 +8745,7 @@ OAuth app tokens and personal access tokens (classic) need `admin:org_hook` sc
 
 You must be an organization owner to use this endpoint.
 
-OAuth app tokens and personal access tokens (classic) need `admin:org_hook` 
+OAuth app tokens and personal access tokens (classic) need `admin:org_hook`
 	 *
 	 * `POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts` — risk: medium
 	 */
@@ -9606,7 +9606,7 @@ The seat obj
 	/**
 	 * Only authenticated organization owners can add a member to the organization or update the member's role.
 
-*   If the authenticated user is _adding_ a member to the organization, the invited user will 
+*   If the authenticated user is _adding_ a member to the organization, the invited user will
 	 *
 	 * `PUT /orgs/{org}/memberships/{username}` — risk: medium
 	 */
@@ -10055,7 +10055,7 @@ The `state` of a migration can be one of the following values:
 	}
 
 	/**
-	 * When an organization member is converted to an outside collaborator, they'll only have access to the repositories that their current team membership allows. The user will no longer be a member of the 
+	 * When an organization member is converted to an outside collaborator, they'll only have access to the repositories that their current team membership allows. The user will no longer be a member of the
 	 *
 	 * `PUT /orgs/{org}/outside_collaborators/{username}` — risk: medium
 	 */
@@ -10243,7 +10243,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	}
 
 	/**
-	 * Deletes a specific package version in an organization. If the package is public and the package version has more than 5,000 downloads, you cannot delete the package version. In this scenario, contact 
+	 * Deletes a specific package version in an organization. If the package is public and the package version has more than 5,000 downloads, you cannot delete the package version. In this scenario, contact
 	 *
 	 * `DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}` — risk: medium
 	 */
@@ -10481,7 +10481,7 @@ Only GitHub Apps can use this endpoint.
 	}
 
 	/**
-	 * 
+	 *
 Lists all private registry configurations available at the organization-level without revealing their encrypted
 values.
 
@@ -10507,7 +10507,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` sco
 	}
 
 	/**
-	 * 
+	 *
 Creates a private registry configuration with an encrypted value for an organization. Encrypt your secret using [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages). For more in
 	 *
 	 * `POST /orgs/{org}/private-registries` — risk: medium
@@ -10530,10 +10530,10 @@ Creates a private registry configuration with an encrypted value for an organiza
 	}
 
 	/**
-	 * 
+	 *
 Gets the org public key, which is needed to encrypt private registry secrets. You need to encrypt a secret before you can create or update secrets.
 
-OAuth tokens and personal access tokens (classic) 
+OAuth tokens and personal access tokens (classic)
 	 *
 	 * `GET /orgs/{org}/private-registries/public-key` — risk: medium
 	 */
@@ -10555,10 +10555,10 @@ OAuth tokens and personal access tokens (classic)
 	}
 
 	/**
-	 * 
+	 *
 Get the configuration of a single private registry defined for an organization, omitting its encrypted value.
 
-OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use 
+OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use
 	 *
 	 * `GET /orgs/{org}/private-registries/{secret_name}` — risk: medium
 	 */
@@ -10580,7 +10580,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:org` scope
 	}
 
 	/**
-	 * 
+	 *
 Updates a private registry configuration with an encrypted value for an organization. Encrypt your secret using [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages). For more in
 	 *
 	 * `PATCH /orgs/{org}/private-registries/{secret_name}` — risk: medium
@@ -10603,7 +10603,7 @@ Updates a private registry configuration with an encrypted value for an organiza
 	}
 
 	/**
-	 * 
+	 *
 Delete a private registry configuration at the organization-level.
 
 OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoint.
@@ -10940,7 +10940,7 @@ Organization members can read these properties.
 	 * Creates new or updates existing custom properties defined for an organization in a batch.
 
 If the property already exists, the existing property will be replaced with the new values.
-Missing optional 
+Missing optional
 	 *
 	 * `PATCH /orgs/{org}/properties/schema` — risk: medium
 	 */
@@ -11176,7 +11176,7 @@ Note that you'll need to set `Content-Length` to zero when calling out to this e
 	 * Lists repositories for the specified organization.
 
 > [!NOTE]
-> In order to see the `security_and_analysis` block for a repository you must have admin permissions for the repository or be an owner or 
+> In order to see the `security_and_analysis` block for a repository you must have admin permissions for the repository or be an owner or
 	 *
 	 * `GET /orgs/{org}/repos` — risk: medium
 	 */
@@ -11315,7 +11315,7 @@ For more information, see "[Managing rulesets for repositories in your organizat
 	 * Get a repository ruleset for an organization.
 
 **Note:** To prevent leaking sensitive information, the `bypass_actors` property is only returned if the user
-making the API request has write access to 
+making the API request has write access to
 	 *
 	 * `GET /orgs/{org}/rulesets/{ruleset_id}` — risk: medium
 	 */
@@ -11427,7 +11427,7 @@ making the API request has write access to
 	/**
 	 * Lists secret scanning alerts for eligible repositories in an organization, from newest to oldest.
 
-The authenticated user must be an administrator or security manager for the organization to use this 
+The authenticated user must be an administrator or security manager for the organization to use this
 	 *
 	 * `GET /orgs/{org}/secret-scanning/alerts` — risk: medium
 	 */
@@ -11501,7 +11501,7 @@ Personal access tokens (classic) need the `write:org` scope to use this endpoint
 
 The authenticated user must be an owner or security manager for the organization to use this endpoint.
 
-OAuth app tokens and personal access 
+OAuth app tokens and personal access
 	 *
 	 * `GET /orgs/{org}/security-advisories` — risk: medium
 	 */
@@ -12067,7 +12067,7 @@ To list members in a team, the team must be visible to the authenticated user.
 To get a user's membership with a team, the team must be visible to the authenticated user.
 
 > [!NOTE]
-> You can also specify a team by `org_id` 
+> You can also specify a team by `org_id`
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}/memberships/{username}` — risk: medium
 	 */
@@ -12091,7 +12091,7 @@ To get a user's membership with a team, the team must be visible to the authenti
 	/**
 	 * Adds an organization member to a team. An authenticated organization owner or team maintainer can add organization members to a team.
 
-Team synchronization is available for organizations using GitHub 
+Team synchronization is available for organizations using GitHub
 	 *
 	 * `PUT /orgs/{org}/teams/{team_slug}/memberships/{username}` — risk: medium
 	 */
@@ -12371,7 +12371,7 @@ export class ReposResource extends RpcTarget {
 	 * Deleting a repository requires admin access.
 
 If an organization owner has configured the organization to prevent members from deleting organization-owned
-repositories, you will get a `403 Forbidden` 
+repositories, you will get a `403 Forbidden`
 	 *
 	 * `DELETE /repos/{owner}/{repo}` — risk: medium
 	 */
@@ -12544,7 +12544,7 @@ OAuth tokens and personal
 	 * Gets GitHub Actions cache storage limit for a repository. This determines the maximum size of caches that can be
 stored before eviction occurs.
 
-OAuth tokens and personal access tokens (classic) need 
+OAuth tokens and personal access tokens (classic) need
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/cache/storage-limit` — risk: medium
 	 */
@@ -12569,7 +12569,7 @@ OAuth tokens and personal access tokens (classic) need
 	 * Sets GitHub Actions cache storage limit for a repository. This determines the maximum size of caches that can be
 stored before eviction occurs.
 
-OAuth tokens and personal access tokens (classic) need 
+OAuth tokens and personal access tokens (classic) need
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/cache/storage-limit` — risk: medium
 	 */
@@ -13147,7 +13147,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	}
 
 	/**
-	 * Gets the settings for selected actions and reusable workflows that are allowed in a repository. To use this endpoint, the repository policy for `allowed_actions` must be configured to `selected`. For 
+	 * Gets the settings for selected actions and reusable workflows that are allowed in a repository. To use this endpoint, the repository policy for `allowed_actions` must be configured to `selected`. For
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/permissions/selected-actions` — risk: medium
 	 */
@@ -13217,7 +13217,7 @@ For more information
 	/**
 	 * Sets the default workflow permissions granted to the `GITHUB_TOKEN` when running workflows in a repository, and sets if GitHub Actions
 can submit approving pull request reviews.
-For more information, 
+For more information,
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/permissions/workflow` — risk: medium
 	 */
@@ -13295,7 +13295,7 @@ OAuth app tokens and personal access token
 
 The authenticated user must have admin access to the repository.
 
-OAuth tokens and personal access tokens (classic) 
+OAuth tokens and personal access tokens (classic)
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runners/generate-jitconfig` — risk: medium
 	 */
@@ -13319,7 +13319,7 @@ OAuth tokens and personal access tokens (classic)
 	/**
 	 * Returns a token that you can pass to the `config` script. The token expires after one hour.
 
-For example, you can replace `TOKEN` in the following example with the registration token provided by this 
+For example, you can replace `TOKEN` in the following example with the registration token provided by this
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runners/registration-token` — risk: medium
 	 */
@@ -13470,7 +13470,7 @@ OAuth tokens and personal access tokens (c
 	 * Remove all previous custom labels and set the new custom labels for a specific
 self-hosted runner configured in a repository.
 
-Authenticated users must have admin access to the repository to use this 
+Authenticated users must have admin access to the repository to use this
 	 *
 	 * `PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
@@ -13495,7 +13495,7 @@ Authenticated users must have admin access to the repository to use this
 	 * Remove all custom labels from a self-hosted runner configured in a
 repository. Returns the remaining read-only labels from the runner.
 
-Authenticated users must have admin access to the repository to 
+Authenticated users must have admin access to the repository to
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels` — risk: medium
 	 */
@@ -13667,7 +13667,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 
 Anyone with read access to the repository can use this endpoint.
 
-OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint 
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts` — risk: medium
 	 */
@@ -14027,7 +14027,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	}
 
 	/**
-	 * > [!WARNING]  
+	 * > [!WARNING]
 > This endpoint is in the process of closing down. Refer to "[Actions Get workflow usage and Get workflow run usage endpoints closing down](https://github.blog/changelog/2025-02-02-acti
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/runs/{run_id}/timing` — risk: medium
@@ -14055,7 +14055,7 @@ values.
 
 Authenticated users must have collaborator access to a repository to create, update, or read secrets.
 
-OAuth app 
+OAuth app
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/secrets` — risk: medium
 	 */
@@ -14157,7 +14157,7 @@ OAuth app tokens and personal acce
 
 Authenticated users must have collaborator access to a repository to create, update, or read secrets.
 
-OAuth tokens and personal access tokens 
+OAuth tokens and personal access tokens
 	 *
 	 * `DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}` — risk: medium
 	 */
@@ -14235,7 +14235,7 @@ OAuth token
 
 The authenticated user must have collaborator access to the repository to use this endpoint.
 
-OAuth app tokens and personal access tokens (classic) need the 
+OAuth app tokens and personal access tokens (classic) need the
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/variables/{name}` — risk: medium
 	 */
@@ -14456,7 +14456,7 @@ OAuth tokens and personal acces
 	}
 
 	/**
-	 * > [!WARNING]  
+	 * > [!WARNING]
 > This endpoint is in the process of closing down. Refer to "[Actions Get workflow usage and Get workflow run usage endpoints closing down](https://github.blog/changelog/2025-02-02-acti
 	 *
 	 * `GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing` — risk: medium
@@ -14481,7 +14481,7 @@ OAuth tokens and personal acces
 	/**
 	 * Lists a detailed history of changes to a repository, such as pushes, merges, force pushes, and branch changes, and associates these changes with commits and users.
 
-For more information about viewing 
+For more information about viewing
 	 *
 	 * `GET /repos/{owner}/{repo}/activity` — risk: medium
 	 */
@@ -14559,7 +14559,7 @@ values.
 
 Authenticated users must have collaborator access to a repository to create, update, or read secrets.
 
-OAuth app 
+OAuth app
 	 *
 	 * `GET /repos/{owner}/{repo}/agents/secrets` — risk: medium
 	 */
@@ -14661,7 +14661,7 @@ OAuth app tokens and personal acce
 
 Authenticated users must have collaborator access to a repository to create, update, or read secrets.
 
-OAuth tokens and personal access tokens 
+OAuth tokens and personal access tokens
 	 *
 	 * `DELETE /repos/{owner}/{repo}/agents/secrets/{secret_name}` — risk: medium
 	 */
@@ -14739,7 +14739,7 @@ OAuth token
 
 The authenticated user must have collaborator access to the repository to use this endpoint.
 
-OAuth app tokens and personal access tokens (classic) need the 
+OAuth app tokens and personal access tokens (classic) need the
 	 *
 	 * `GET /repos/{owner}/{repo}/agents/variables/{name}` — risk: medium
 	 */
@@ -14839,7 +14839,7 @@ OAuth tokens and personal access tokens
 
 If the `assignee` can be assigned to issues in the repository, a `204` header with no content is returned.
 
-Otherwise a 
+Otherwise a
 	 *
 	 * `GET /repos/{owner}/{repo}/assignees/{assignee}` — risk: medium
 	 */
@@ -16102,6 +16102,54 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	}
 
 	/**
+	 * Gets a code quality setup configuration.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` sco
+	 *
+	 * `GET /repos/{owner}/{repo}/code-quality/setup` — risk: medium
+	 */
+	async setup_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-quality/get-setup",
+			namespace: "repos",
+			method: "setup_0",
+			http: "get",
+			path: `/repos/${owner}/${repo}/code-quality/setup`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["setup_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Updates a code quality setup configuration.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo`
+	 *
+	 * `PATCH /repos/{owner}/{repo}/code-quality/setup` — risk: medium
+	 */
+	async setup_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-quality/update-setup",
+			namespace: "repos",
+			method: "setup_1",
+			http: "patch",
+			path: `/repos/${owner}/${repo}/code-quality/setup`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["setup_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Lists code scanning alerts.
 
 The response includes a `most_recent_instance` object.
@@ -16153,7 +16201,7 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 
 	/**
 	 * Updates the status of a single code scanning alert.
-OAuth app tokens and personal access tokens (classic) need the `security_events` scope to use this endpoint with private or public repositories, or 
+OAuth app tokens and personal access tokens (classic) need the `security_events` scope to use this endpoint with private or public repositories, or
 	 *
 	 * `PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}` — risk: medium
 	 */
@@ -16402,7 +16450,7 @@ download the CodeQL database binary content, set the `Accept` heade
 	/**
 	 * Deletes a CodeQL database for a language in a repository.
 
-OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the 
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the
 	 *
 	 * `DELETE /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}` — risk: medium
 	 */
@@ -16450,7 +16498,7 @@ Get started by learning more about [running CodeQL queries at scale with Multi-R
 	/**
 	 * Gets the summary of a CodeQL variant analysis.
 
-OAuth app tokens and personal access tokens (classic) need the `security_events` scope to use this endpoint with private or public repositories, or the 
+OAuth app tokens and personal access tokens (classic) need the `security_events` scope to use this endpoint with private or public repositories, or the
 	 *
 	 * `GET /repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}` — risk: medium
 	 */
@@ -17001,7 +17049,7 @@ This endpoint also:
 	 * Checks the repository permission and role of a collaborator.
 
 The `permission` attribute provides the legacy base roles of `admin`, `write`, `read`, and `none`, where the
-`maintain` role is mapped to 
+`maintain` role is mapped to
 	 *
 	 * `GET /repos/{owner}/{repo}/collaborators/{username}/permission` — risk: medium
 	 */
@@ -18052,7 +18100,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo_deployment`
 	}
 
 	/**
-	 * You can use this endpoint to trigger a webhook event called `repository_dispatch` when you want activity that happens outside of GitHub to trigger a GitHub Actions workflow or GitHub App webhook. You 
+	 * You can use this endpoint to trigger a webhook event called `repository_dispatch` when you want activity that happens outside of GitHub to trigger a GitHub Actions workflow or GitHub App webhook. You
 	 *
 	 * `POST /repos/{owner}/{repo}/dispatches` — risk: medium
 	 */
@@ -18171,7 +18219,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 
 Anyone with read access to the repository can use this endpoint.
 
-OAuth app tokens and personal access tokens (classic) need the `repo` scope 
+OAuth app tokens and personal access tokens (classic) need the `repo` scope
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies` — risk: medium
 	 */
@@ -18317,7 +18365,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 
 The authenticated user must have admin or owner permissions to the repository to use this endpoint.
 
-For more information about the app 
+For more information about the app
 	 *
 	 * `POST /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules` — risk: medium
 	 */
@@ -18596,7 +18644,7 @@ OAuth toke
 
 Authenticated users must have collaborator access to a repository to create, update, or read variables.
 
-OAuth tokens and personal access tokens (classic) 
+OAuth tokens and personal access tokens (classic)
 	 *
 	 * `GET /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}` — risk: medium
 	 */
@@ -19018,7 +19066,7 @@ The response will include a `verification` object that describes the result of v
 	/**
 	 * Returns a single tree using the SHA1 value or ref name for that tree.
 
-If `truncated` is `true` in the response then the number of items in the `tree` array exceeded our maximum limit. If you need to 
+If `truncated` is `true` in the response then the number of items in the `tree` array exceeded our maximum limit. If you need to
 	 *
 	 * `GET /repos/{owner}/{repo}/git/trees/{tree_sha}` — risk: medium
 	 */
@@ -19401,7 +19449,7 @@ enforced by the repository owner.  The authenticated user must have admin read a
 	/**
 	 * Start a source import to a GitHub repository using GitHub Importer.
 Importing into a GitHub repository with GitHub Actions enabled is not supported and will
-return a status `422 Unprocessable Entity` 
+return a status `422 Unprocessable Entity`
 	 *
 	 * `PUT /repos/{owner}/{repo}/import` — risk: medium
 	 */
@@ -19473,7 +19521,7 @@ Some servers (
 	}
 
 	/**
-	 * Each type of source control system represents authors in a different way. For example, a Git commit author has a display name and an email address, but a Subversion commit author just has a username. 
+	 * Each type of source control system represents authors in a different way. For example, a Git commit author has a display name and an email address, but a Subversion commit author just has a username.
 	 *
 	 * `GET /repos/{owner}/{repo}/import/authors` — risk: medium
 	 */
@@ -19637,7 +19685,7 @@ You can learn more about our LFS featu
 	}
 
 	/**
-	 * Removes all interaction restrictions from the given repository. You must have owner or admin access to remove restrictions. If the interaction limit is set for the user or organization that owns this 
+	 * Removes all interaction restrictions from the given repository. You must have owner or admin access to remove restrictions. If the interaction limit is set for the user or organization that owns this
 	 *
 	 * `DELETE /repos/{owner}/{repo}/interaction-limits` — risk: medium
 	 */
@@ -19936,7 +19984,7 @@ This endpoint supports the following custom media types. For more information, s
 	}
 
 	/**
-	 * Create a reaction to an [issue comment](https://docs.github.com/rest/issues/comments#get-an-issue-comment). A response with an HTTP `200` status means that you already added the reaction type to this 
+	 * Create a reaction to an [issue comment](https://docs.github.com/rest/issues/comments#get-an-issue-comment). A response with an HTTP `200` status means that you already added the reaction type to this
 	 *
 	 * `POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions` — risk: medium
 	 */
@@ -19961,7 +20009,7 @@ This endpoint supports the following custom media types. For more information, s
 	 * > [!NOTE]
 > You can also specify a repository by `repository_id` using the route `DELETE delete /repositories/:repository_id/issues/comments/:comment_id/reactions/:reaction_id`.
 
-Delete a reaction to 
+Delete a reaction to
 	 *
 	 * `DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}` — risk: medium
 	 */
@@ -21357,7 +21405,7 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	}
 
 	/**
-	 * You can request that your site be built from the latest revision on the default branch. This has the same effect as pushing a commit to your default branch, but does not require an additional commit. 
+	 * You can request that your site be built from the latest revision on the default branch. This has the same effect as pushing a commit to your default branch, but does not require an additional commit.
 	 *
 	 * `POST /repos/{owner}/{repo}/pages/builds` — risk: medium
 	 */
@@ -21826,7 +21874,7 @@ This endpoint supports the following custom media types. For more information, s
 	 * > [!NOTE]
 > You can also specify a repository by `repository_id` using the route `DELETE /repositories/:repository_id/pulls/comments/:comment_id/reactions/:reaction_id.`
 
-Delete a reaction to a [pull 
+Delete a reaction to a [pull
 	 *
 	 * `DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}` — risk: medium
 	 */
@@ -22013,7 +22061,7 @@ commit list for pull requests with more than 250 commits, use the [List commits]
 > [!NOTE]
 > Responses include a maximum of 3000 files. The paginated response returns 30 files per page by default.
 
-This endpoint supports the following 
+This endpoint supports the following
 	 *
 	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/files` — risk: medium
 	 */
@@ -22775,7 +22823,7 @@ Delete a reaction to a [rele
 
 	/**
 	 * Returns all active rules that apply to the specified branch. The branch does not need to exist; rules that would apply
-to a branch with that name will be returned. All active rules that apply will be 
+to a branch with that name will be returned. All active rules that apply will be
 	 *
 	 * `GET /repos/{owner}/{repo}/rules/branches/{branch}` — risk: medium
 	 */
@@ -23002,7 +23050,7 @@ making the API request has write access to the ruleset.
 	/**
 	 * Lists secret scanning alerts for an eligible repository, from newest to oldest.
 
-The authenticated user must be an administrator for the repository or for the organization that owns the repository to 
+The authenticated user must be an administrator for the repository or for the organization that owns the repository to
 	 *
 	 * `GET /repos/{owner}/{repo}/secret-scanning/alerts` — risk: medium
 	 */
@@ -23177,7 +23225,7 @@ The authenticated user can access unpublished security advisories from a reposit
 
 In order to create a draft repository security advisory, the authenticated user must be a security manager or administrator of that repository.
 
-OAuth app 
+OAuth app
 	 *
 	 * `POST /repos/{owner}/{repo}/security-advisories` — risk: medium
 	 */
@@ -23390,7 +23438,7 @@ This endpoint supports the following custom media types. For more information, s
 	}
 
 	/**
-	 * 
+	 *
 Returns the `total` number of commits authored by the contributor. In addition, the response includes a Weekly Hash (`weeks` array) with the following information:
 
 *   `w` - Start of the week, given
@@ -23846,7 +23894,7 @@ For a public repository, a team is listed only if that team added the public rep
 	/**
 	 * Disables dependency alerts and the dependency graph for a repository.
 The authenticated user must have admin access to the repository. For more information,
-see "[About security alerts for vulnerable 
+see "[About security alerts for vulnerable
 	 *
 	 * `DELETE /repos/{owner}/{repo}/vulnerability-alerts` — risk: medium
 	 */
@@ -23985,7 +24033,7 @@ When searching for code, you can get
 	/**
 	 * Find commits via various criteria on the default branch (usually `main`). This method returns up to 100 results [per page](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api).
 
-When 
+When
 	 *
 	 * `GET /search/commits` — risk: medium
 	 */
@@ -25000,7 +25048,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	/**
 	 * Triggers an export of the specified codespace and returns a URL and ID where the status of the export can be monitored.
 
-If changes cannot be pushed to the codespace's repository, they will be pushed 
+If changes cannot be pushed to the codespace's repository, they will be pushed
 	 *
 	 * `POST /user/codespaces/{codespace_name}/exports` — risk: medium
 	 */
@@ -25072,7 +25120,7 @@ OAuth app tokens and personal access tokens (classic) need the `codespace` scope
 	/**
 	 * Publishes an unpublished codespace, creating a new repository and assigning it to the codespace.
 
-The codespace's token is granted write permissions to the repository, allowing the user to push their 
+The codespace's token is granted write permissions to the repository, allowing the user to push their
 	 *
 	 * `POST /user/codespaces/{codespace_name}/publish` — risk: medium
 	 */
@@ -25903,7 +25951,7 @@ OAuth app tokens and personal access tokens (classic) need the `admin:public_key
 	 * Fetches a single user migration. The response includes the `state` of the migration, which can be one of the following values:
 
 *   `pending` - the migration hasn't started yet.
-*   `exporting` - the 
+*   `exporting` - the
 	 *
 	 * `GET /user/migrations/{migration_id}` — risk: medium
 	 */
@@ -26087,7 +26135,7 @@ OAuth app tokens and personal access tokens (classic) need the `read:packages` s
 	}
 
 	/**
-	 * Deletes a package owned by the authenticated user. You cannot delete a public package if any version of the package has more than 5,000 downloads. In this scenario, contact GitHub support for further 
+	 * Deletes a package owned by the authenticated user. You cannot delete a public package if any version of the package has more than 5,000 downloads. In this scenario, contact GitHub support for further
 	 *
 	 * `DELETE /user/packages/{package_type}/{package_name}` — risk: medium
 	 */
@@ -26137,7 +26185,7 @@ You can restore a deleted package under the following conditions:
 	/**
 	 * Lists package versions for a package owned by the authenticated user.
 
-OAuth app tokens and personal access tokens (classic) need the `read:packages` scope to use this endpoint. For more information, 
+OAuth app tokens and personal access tokens (classic) need the `read:packages` scope to use this endpoint. For more information,
 	 *
 	 * `GET /user/packages/{package_type}/{package_name}/versions` — risk: medium
 	 */
@@ -26939,7 +26987,7 @@ Only Spaces that are readable by the authenticated user are returned. This inclu
 
 Users can create personal Copilot Spaces for their individual use.
 
-OAuth app tokens 
+OAuth app tokens
 	 *
 	 * `POST /users/{username}/copilot-spaces` — risk: medium
 	 */
@@ -27037,7 +27085,7 @@ OAuth app tokens and personal access tok
 	/**
 	 * Lists all collaborators for a specific Copilot Space owned by a user. The authenticated user must be the owner of the space or have admin access to the space.
 
-Each collaborator entry specifies which 
+Each collaborator entry specifies which
 	 *
 	 * `GET /users/{username}/copilot-spaces/{space_number}/collaborators` — risk: medium
 	 */
@@ -27209,7 +27257,7 @@ OAuth app tokens and personal access tokens (classic)
 	 * Updates the metadata of a resource in a specific Copilot Space owned by a user.
 The authenticated user must have write permissions on the space.
 
-OAuth app tokens and personal access tokens (classic) 
+OAuth app tokens and personal access tokens (classic)
 	 *
 	 * `PUT /users/{username}/copilot-spaces/{space_number}/resources/{space_resource_id}` — risk: medium
 	 */
@@ -27556,7 +27604,7 @@ This method only lists _public_ memberships, regardl
 	/**
 	 * Lists all packages in a user's namespace for which the requesting user has access.
 
-OAuth app tokens and personal access tokens (classic) need the `read:packages` scope to use this endpoint. For more 
+OAuth app tokens and personal access tokens (classic) need the `read:packages` scope to use this endpoint. For more
 	 *
 	 * `GET /users/{username}/packages` — risk: medium
 	 */

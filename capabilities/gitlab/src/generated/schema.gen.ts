@@ -74,10 +74,16 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description List all instance-level variables */
+        /**
+         * List all instance variables
+         * @description Lists all instance-level variables. Use the `page` and `per_page` pagination parameters to control the pagination of results.
+         */
         get: operations["getApiV4AdminCiVariables"];
         put?: never;
-        /** @description Create a new instance-level variable */
+        /**
+         * Create instance variable
+         * @description Creates a instance-level variable. The maximum number of instance-level variables can be changed.
+         */
         post: operations["postApiV4AdminCiVariables"];
         delete?: never;
         options?: never;
@@ -92,12 +98,21 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get the details of a specific instance-level variable */
+        /**
+         * Retrieve instance variable details
+         * @description Retrieves details of a specified instance-level variable.
+         */
         get: operations["getApiV4AdminCiVariablesKey"];
-        /** @description Update an instance-level variable */
+        /**
+         * Update an instance variable
+         * @description Updates a specified instance variable.
+         */
         put: operations["putApiV4AdminCiVariablesKey"];
         post?: never;
-        /** @description Delete an existing instance-level variable */
+        /**
+         * Delete instance variable
+         * @description Deletes a specified instance variable.
+         */
         delete: operations["deleteApiV4AdminCiVariablesKey"];
         options?: never;
         head?: never;
@@ -4344,10 +4359,16 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a list of group-level variables */
+        /**
+         * List all group variables
+         * @description Lists all variables for a specified group. Use the `page` and `per_page` pagination parameters to control the pagination of results.
+         */
         get: operations["getApiV4GroupsIdVariables"];
         put?: never;
-        /** @description Create a new variable in a group */
+        /**
+         * Create a group variable
+         * @description Creates a group variable.
+         */
         post: operations["postApiV4GroupsIdVariables"];
         delete?: never;
         options?: never;
@@ -4362,12 +4383,21 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get the details of a group’s specific variable */
+        /**
+         * Retrieve details of a group variable
+         * @description Retrieves details of a specified group variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
+         */
         get: operations["getApiV4GroupsIdVariablesKey"];
-        /** @description Update an existing variable from a group */
+        /**
+         * Update a group variable
+         * @description Updates a specified group variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
+         */
         put: operations["putApiV4GroupsIdVariablesKey"];
         post?: never;
-        /** @description Delete an existing variable from a group */
+        /**
+         * Delete a group variable
+         * @description Deletes a specified group variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
+         */
         delete: operations["deleteApiV4GroupsIdVariablesKey"];
         options?: never;
         head?: never;
@@ -6233,7 +6263,7 @@ export type paths = {
             cookie?: never;
         };
         /**
-         * Fetch a specific bundle by iid
+         * Retrieve an attestation bundle
          * @description This feature was introduced in GitLab 18.7
          */
         get: operations["getApiV4ProjectsIdAttestationsAttestationIidDownload"];
@@ -6253,8 +6283,8 @@ export type paths = {
             cookie?: never;
         };
         /**
-         * Fetch the list of all attestations for a specific project and artifact hash
-         * @description This feature was introduced in GitLab 18.7
+         * List all attestations for a project
+         * @description Lists all attestations for a specified project and artifact hash. This feature was introduced in GitLab 18.7.
          */
         get: operations["getApiV4ProjectsIdAttestationsSubjectDigest"];
         put?: never;
@@ -6426,8 +6456,8 @@ export type paths = {
         get: operations["getApiV4ProjectsIdCiLint"];
         put?: never;
         /**
-         * Validate a CI YAML configuration with a namespace
-         * @description Checks if CI/CD YAML configuration is valid. This endpoint has namespace specific context
+         * Validate a CI/CD configuration
+         * @description Validates a provided CI/CD configuration in the context of a specified project.
          */
         post: operations["postApiV4ProjectsIdCiLint"];
         delete?: never;
@@ -9367,14 +9397,20 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch CI_JOB_TOKEN access settings. */
+        /**
+         * Retrieve the CI/CD job token access settings for a project
+         * @description Retrieves the CI/CD job token access settings (job token scope) of a specified project.
+         */
         get: operations["getApiV4ProjectsIdJobTokenScope"];
         put?: never;
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
-        /** @description Patch CI_JOB_TOKEN access settings. */
+        /**
+         * Update the CI/CD job token access settings for a project
+         * @description Updates the **Authorized groups and projects** setting (job token scope) of a specified project.
+         */
         patch: operations["patchApiV4ProjectsIdJobTokenScope"];
         trace?: never;
     };
@@ -9385,10 +9421,16 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch project inbound allowlist for CI_JOB_TOKEN access settings. */
+        /**
+         * List all projects in a CI/CD job token allowlist
+         * @description Lists all projects in the CI/CD job token allowlist of a specified project.
+         */
         get: operations["getApiV4ProjectsIdJobTokenScopeAllowlist"];
         put?: never;
-        /** @description Add target project to allowlist. */
+        /**
+         * Add a project to a CI/CD job token allowlist
+         * @description Adds a project to the CI/CD job token allowlist of a specified project.
+         */
         post: operations["postApiV4ProjectsIdJobTokenScopeAllowlist"];
         delete?: never;
         options?: never;
@@ -9406,7 +9448,10 @@ export type paths = {
         get?: never;
         put?: never;
         post?: never;
-        /** @description Delete project from allowlist. */
+        /**
+         * Delete a project from a CI/CD job token allowlist
+         * @description Deletes a project from the CI/CD job token allowlist of a specified project.
+         */
         delete: operations["deleteApiV4ProjectsIdJobTokenScopeAllowlistTargetProjectId"];
         options?: never;
         head?: never;
@@ -9420,10 +9465,16 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch project groups allowlist for CI_JOB_TOKEN access settings. */
+        /**
+         * List all groups in a CI/CD job token allowlist
+         * @description Lists all groups in the CI/CD job token allowlist of a specified project.
+         */
         get: operations["getApiV4ProjectsIdJobTokenScopeGroupsAllowlist"];
         put?: never;
-        /** @description Add target group to allowlist. */
+        /**
+         * Add a group to a CI/CD job token allowlist
+         * @description Adds a group to the CI/CD job token allowlist of a specified project.
+         */
         post: operations["postApiV4ProjectsIdJobTokenScopeGroupsAllowlist"];
         delete?: never;
         options?: never;
@@ -9441,7 +9492,10 @@ export type paths = {
         get?: never;
         put?: never;
         post?: never;
-        /** @description Delete target group from allowlist. */
+        /**
+         * Delete a group from a CI/CD job token allowlist
+         * @description Deletes a group from the CI/CD job token allowlist of a specified project.
+         */
         delete: operations["deleteApiV4ProjectsIdJobTokenScopeGroupsAllowlistTargetGroupId"];
         options?: never;
         head?: never;
@@ -12975,10 +13029,16 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get all pipeline schedules */
+        /**
+         * List all pipeline schedules
+         * @description Lists all pipeline schedules for a project.
+         */
         get: operations["getApiV4ProjectsIdPipelineSchedules"];
         put?: never;
-        /** @description Create a new pipeline schedule */
+        /**
+         * Create a pipeline schedule
+         * @description Creates a pipeline schedule.
+         */
         post: operations["postApiV4ProjectsIdPipelineSchedules"];
         delete?: never;
         options?: never;
@@ -12993,12 +13053,21 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a single pipeline schedule */
+        /**
+         * Retrieve a pipeline schedule
+         * @description Retrieves a pipeline schedule for a project.
+         */
         get: operations["getApiV4ProjectsIdPipelineSchedulesPipelineScheduleId"];
-        /** @description Edit a pipeline schedule */
+        /**
+         * Update a pipeline schedule
+         * @description Updates a pipeline schedule for a project. After the update is done, it is rescheduled automatically.
+         */
         put: operations["putApiV4ProjectsIdPipelineSchedulesPipelineScheduleId"];
         post?: never;
-        /** @description Delete a pipeline schedule */
+        /**
+         * Delete a pipeline schedule
+         * @description Deletes a pipeline schedule for a project.
+         */
         delete: operations["deleteApiV4ProjectsIdPipelineSchedulesPipelineScheduleId"];
         options?: never;
         head?: never;
@@ -13012,7 +13081,10 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get all pipelines triggered from a pipeline schedule */
+        /**
+         * List all pipelines triggered by a pipeline schedule
+         * @description Lists all pipelines triggered by a pipeline schedule in a project.
+         */
         get: operations["getApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdPipelines"];
         put?: never;
         post?: never;
@@ -13032,8 +13104,8 @@ export type paths = {
         get?: never;
         put?: never;
         /**
-         * Play a scheduled pipeline immediately
-         * @description This feature was added in GitLab 12.8
+         * Run a pipeline schedule
+         * @description Runs a pipeline schedule immediately. The next scheduled run of this pipeline is not affected.
          */
         post: operations["postApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdPlay"];
         delete?: never;
@@ -13051,7 +13123,10 @@ export type paths = {
         };
         get?: never;
         put?: never;
-        /** @description Take ownership of a pipeline schedule */
+        /**
+         * Create or update ownership of a pipeline schedule
+         * @description Creates or updates the owner of a pipeline schedule for a project.
+         */
         post: operations["postApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdTakeOwnership"];
         delete?: never;
         options?: never;
@@ -13068,7 +13143,10 @@ export type paths = {
         };
         get?: never;
         put?: never;
-        /** @description Create a new pipeline schedule variable */
+        /**
+         * Create a variable for a pipeline schedule
+         * @description Creates a variable for a pipeline schedule.
+         */
         post: operations["postApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariables"];
         delete?: never;
         options?: never;
@@ -13083,12 +13161,21 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a single pipeline schedule variable */
+        /**
+         * Retrieve a variable for a pipeline schedule
+         * @description Retrieves a specified variable for a pipeline schedule.
+         */
         get: operations["getApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey"];
-        /** @description Edit a pipeline schedule variable */
+        /**
+         * Update a variable for a pipeline schedule
+         * @description Updates a variable for a pipeline schedule.
+         */
         put: operations["putApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey"];
         post?: never;
-        /** @description Delete a pipeline schedule variable */
+        /**
+         * Delete a variable for a pipeline schedule
+         * @description Deletes a specified variable for a pipeline schedule.
+         */
         delete: operations["deleteApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey"];
         options?: never;
         head?: never;
@@ -13166,8 +13253,8 @@ export type paths = {
         get?: never;
         put?: never;
         /**
-         * Cancel all builds in the pipeline
-         * @description This feature was introduced in GitLab 8.11.
+         * Cancel all jobs for a pipeline
+         * @description Cancels all jobs in a specified pipeline.
          */
         post: operations["postApiV4ProjectsIdPipelinesPipelineIdCancel"];
         delete?: never;
@@ -14583,10 +14670,16 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get list of secure files in a project */
+        /**
+         * List all secure files for a project
+         * @description Lists all secure files for a specified project.
+         */
         get: operations["getApiV4ProjectsIdSecureFiles"];
         put?: never;
-        /** @description Create a secure file */
+        /**
+         * Create a secure file
+         * @description Creates a secure file in a specified project.
+         */
         post: operations["postApiV4ProjectsIdSecureFiles"];
         delete?: never;
         options?: never;
@@ -14601,11 +14694,17 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get the details of a specific secure file in a project */
+        /**
+         * Retrieve details of a secure file
+         * @description Retrieves details of a specified secure file in a project.
+         */
         get: operations["getApiV4ProjectsIdSecureFilesSecureFileId"];
         put?: never;
         post?: never;
-        /** @description Remove a secure file */
+        /**
+         * Delete a secure file
+         * @description Deletes a specified secure file from a project.
+         */
         delete: operations["deleteApiV4ProjectsIdSecureFilesSecureFileId"];
         options?: never;
         head?: never;
@@ -14619,7 +14718,10 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Download secure file */
+        /**
+         * Download a secure file
+         * @description Downloads the contents of a specified secure file in a project.
+         */
         get: operations["getApiV4ProjectsIdSecureFilesSecureFileIdDownload"];
         put?: never;
         post?: never;
@@ -16412,10 +16514,16 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get project variables */
+        /**
+         * List all project variables
+         * @description Lists all variables for a project. Use the `page` and `per_page` pagination parameters to control the pagination of results.
+         */
         get: operations["getApiV4ProjectsIdVariables"];
         put?: never;
-        /** @description Create a new variable in a project */
+        /**
+         * Create a variable
+         * @description Creates a variable. If a variable with the same `key` already exists, the variable must have a different `environment_scope`. Otherwise, GitLab returns a message similar to: `VARIABLE_NAME has already been taken`.
+         */
         post: operations["postApiV4ProjectsIdVariables"];
         delete?: never;
         options?: never;
@@ -16430,12 +16538,21 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        /** @description Get the details of a single variable from a project */
+        /**
+         * Retrieve a single variable
+         * @description Retrieves details of a specified variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
+         */
         get: operations["getApiV4ProjectsIdVariablesKey"];
-        /** @description Update an existing variable from a project */
+        /**
+         * Update a variable
+         * @description Updates a project variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
+         */
         put: operations["putApiV4ProjectsIdVariablesKey"];
         post?: never;
-        /** @description Delete an existing variable from a project */
+        /**
+         * Delete a variable
+         * @description Deletes a project variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
+         */
         delete: operations["deleteApiV4ProjectsIdVariablesKey"];
         options?: never;
         head?: never;
@@ -20363,6 +20480,19 @@ export type components = {
             import_export_upload_uploads_verification_total_count: string;
             import_export_upload_uploads_verified_count: string;
             import_export_upload_uploads_verified_in_percentage: string;
+            issuable_metric_image_uploads_checksum_failed_count: string;
+            issuable_metric_image_uploads_checksum_total_count: string;
+            issuable_metric_image_uploads_checksummed_count: string;
+            issuable_metric_image_uploads_count: string;
+            issuable_metric_image_uploads_failed_count: string;
+            issuable_metric_image_uploads_oldest_unsynced_time: string;
+            issuable_metric_image_uploads_registry_count: string;
+            issuable_metric_image_uploads_synced_count: string;
+            issuable_metric_image_uploads_synced_in_percentage: string;
+            issuable_metric_image_uploads_verification_failed_count: string;
+            issuable_metric_image_uploads_verification_total_count: string;
+            issuable_metric_image_uploads_verified_count: string;
+            issuable_metric_image_uploads_verified_in_percentage: string;
             job_artifacts_checksum_failed_count: string;
             job_artifacts_checksum_total_count: string;
             job_artifacts_checksummed_count: string;
@@ -20592,6 +20722,19 @@ export type components = {
             uploads_verification_total_count: string;
             uploads_verified_count: string;
             uploads_verified_in_percentage: string;
+            user_permission_export_upload_uploads_checksum_failed_count: string;
+            user_permission_export_upload_uploads_checksum_total_count: string;
+            user_permission_export_upload_uploads_checksummed_count: string;
+            user_permission_export_upload_uploads_count: string;
+            user_permission_export_upload_uploads_failed_count: string;
+            user_permission_export_upload_uploads_oldest_unsynced_time: string;
+            user_permission_export_upload_uploads_registry_count: string;
+            user_permission_export_upload_uploads_synced_count: string;
+            user_permission_export_upload_uploads_synced_in_percentage: string;
+            user_permission_export_upload_uploads_verification_failed_count: string;
+            user_permission_export_upload_uploads_verification_total_count: string;
+            user_permission_export_upload_uploads_verified_count: string;
+            user_permission_export_upload_uploads_verified_in_percentage: string;
             user_uploads_checksum_failed_count: string;
             user_uploads_checksum_total_count: string;
             user_uploads_checksummed_count: string;
@@ -21608,6 +21751,7 @@ export type components = {
             read_vulnerability: boolean;
             remove_group: boolean;
             remove_project: boolean;
+            update_sast_vulnerability_resolution_setting: boolean;
         };
         /** @description API_Entities_MergeRequest model */
         API_Entities_MergeRequest: {
@@ -25759,7 +25903,7 @@ export type components = {
             /** @description Pass true to enable the integrated Error Tracking backend. Available in GitLab 14.2 and later. */
             integrated?: boolean;
         };
-        /** @description Patch CI_JOB_TOKEN access settings. */
+        /** @description Update the CI/CD job token access settings for a project */
         patchApiV4ProjectsIdJobTokenScope: {
             /** @description Indicates CI/CD job tokens generated in other projects have restricted access to this project. */
             enabled: boolean;
@@ -25937,7 +26081,7 @@ export type components = {
             /** @description Container tag name pattern protected by the protection rule. For example, `v*-release`. Wildcard character `*` allowed. */
             tag_name_pattern?: string;
         };
-        /** @description Create a new instance-level variable */
+        /** @description Create instance variable */
         postApiV4AdminCiVariables: {
             /** @description The description of the variable */
             description?: string;
@@ -27428,7 +27572,7 @@ export type components = {
              */
             file: string;
         };
-        /** @description Create a new variable in a group */
+        /** @description Create a group variable */
         postApiV4GroupsIdVariables: {
             /** @description The description of the variable */
             description?: string;
@@ -28239,7 +28383,7 @@ export type components = {
             /** @description The version of the catalog resource / tag of the release to publish */
             version: string;
         };
-        /** @description Validate a CI YAML configuration with a namespace */
+        /** @description Validate a CI/CD configuration */
         postApiV4ProjectsIdCiLint: {
             /** @description Content of .gitlab-ci.yml */
             content: string;
@@ -28769,6 +28913,8 @@ export type components = {
              * @description The IID of a merge request for which to resolve discussions
              */
             merge_request_to_resolve_discussions_of?: number;
+            /** @description The title of a project or ancestor-group milestone to assign the issue to. Mutually exclusive with `milestone_id`. */
+            milestone?: string;
             /**
              * Format: int32
              * @description The ID of a milestone to assign issue
@@ -28893,7 +29039,7 @@ export type components = {
              */
             inputs?: Record<string, never>;
         };
-        /** @description Add target project to allowlist. */
+        /** @description Add a project to a CI/CD job token allowlist */
         postApiV4ProjectsIdJobTokenScopeAllowlist: {
             /**
              * Format: int32
@@ -28902,7 +29048,7 @@ export type components = {
              */
             target_project_id: number;
         };
-        /** @description Add target group to allowlist. */
+        /** @description Add a group to a CI/CD job token allowlist */
         postApiV4ProjectsIdJobTokenScopeGroupsAllowlist: {
             /**
              * Format: int32
@@ -28962,6 +29108,8 @@ export type components = {
             labels?: string[];
             /** @description Date after which the merge request can be merged. */
             merge_after?: string;
+            /** @description The title of a project or ancestor-group milestone to assign the merge request to. Mutually exclusive with `milestone_id`. */
+            milestone?: string;
             /**
              * Format: int32
              * @description The global ID of a milestone to assign the merge request to.
@@ -29303,7 +29451,7 @@ export type components = {
                 variable_type: "env_var" | "file";
             }[];
         };
-        /** @description Create a new pipeline schedule */
+        /** @description Create a pipeline schedule */
         postApiV4ProjectsIdPipelineSchedules: {
             /**
              * @description The activation of pipeline schedule
@@ -29361,7 +29509,7 @@ export type components = {
              */
             ref: string;
         };
-        /** @description Create a new pipeline schedule variable */
+        /** @description Create a variable for a pipeline schedule */
         postApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariables: {
             /**
              * @description The key of the variable
@@ -29988,7 +30136,7 @@ export type components = {
              */
             file: string;
         };
-        /** @description Create a new variable in a project */
+        /** @description Create a variable */
         postApiV4ProjectsIdVariables: {
             /** @description The description of the variable */
             description?: string;
@@ -30691,7 +30839,7 @@ export type components = {
              */
             database: "main" | "ci" | "sec" | "embedding" | "geo";
         };
-        /** @description Update an instance-level variable */
+        /** @description Update an instance variable */
         putApiV4AdminCiVariablesKey: {
             /** @description The description of the variable */
             description?: string;
@@ -32460,7 +32608,7 @@ export type components = {
             /** @description Package name */
             package_name: string;
         };
-        /** @description Update an existing variable from a group */
+        /** @description Update a group variable */
         putApiV4GroupsIdVariablesKey: {
             /** @description The description of the variable */
             description?: string;
@@ -34508,6 +34656,8 @@ export type components = {
             issue_type?: "issue" | "incident" | "test_case" | "requirement" | "task" | "ticket";
             /** @description Comma-separated list of label names */
             labels?: string[];
+            /** @description The title of a project or ancestor-group milestone to assign the issue to. Mutually exclusive with `milestone_id`. */
+            milestone?: string;
             /**
              * Format: int32
              * @description The ID of a milestone to assign issue
@@ -34599,6 +34749,8 @@ export type components = {
             labels?: string[];
             /** @description Date after which the merge request can be merged. */
             merge_after?: string;
+            /** @description The title of a project or ancestor-group milestone to assign the merge request to. Mutually exclusive with `milestone_id`. */
+            milestone?: string;
             /**
              * Format: int32
              * @description The global ID of a milestone to assign the merge request to.
@@ -34924,7 +35076,7 @@ export type components = {
              */
             key?: string;
         };
-        /** @description Edit a pipeline schedule */
+        /** @description Update a pipeline schedule */
         putApiV4ProjectsIdPipelineSchedulesPipelineScheduleId: {
             /**
              * @description The activation of pipeline schedule
@@ -34978,7 +35130,7 @@ export type components = {
              */
             ref?: string;
         };
-        /** @description Edit a pipeline schedule variable */
+        /** @description Update a variable for a pipeline schedule */
         putApiV4ProjectsIdPipelineSchedulesPipelineScheduleIdVariablesKey: {
             /**
              * @description The value of the variable
@@ -36235,7 +36387,7 @@ export type components = {
             /** @description The trigger token description */
             description?: string;
         };
-        /** @description Update an existing variable from a project */
+        /** @description Update a variable */
         putApiV4ProjectsIdVariablesKey: {
             /** @description The description of the variable */
             description?: string;
@@ -36756,7 +36908,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description List all instance-level variables */
+            /** @description List all instance variables */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -36780,7 +36932,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Create a new instance-level variable */
+            /** @description Create instance variable */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -36810,7 +36962,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get the details of a specific instance-level variable */
+            /** @description Retrieve instance variable details */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -36844,7 +36996,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Update an instance-level variable */
+            /** @description Update an instance variable */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -48256,7 +48408,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get a list of group-level variables */
+            /** @description List all group variables */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -48286,7 +48438,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Create a new variable in a group */
+            /** @description Create a group variable */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -48321,7 +48473,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get the details of a group’s specific variable */
+            /** @description Retrieve details of a group variable */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -48360,7 +48512,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Update an existing variable from a group */
+            /** @description Update a group variable */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -48402,7 +48554,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Delete an existing variable from a group */
+            /** @description Delete a group variable */
             204: {
                 headers: {
                     [name: string]: unknown;
@@ -53938,7 +54090,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Fetch a specific bundle by iid */
+            /** @description Retrieve an attestation bundle */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -53968,7 +54120,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Fetch the list of all attestations for a specific project and artifact hash */
+            /** @description List all attestations for a project */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -54356,7 +54508,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Validate a CI YAML configuration with a namespace */
+            /** @description Validate a CI/CD configuration */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -63293,7 +63445,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Fetch CI_JOB_TOKEN access settings. */
+            /** @description Retrieve the CI/CD job token access settings for a project */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -63340,7 +63492,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Patch CI_JOB_TOKEN access settings. */
+            /** @description Update the CI/CD job token access settings for a project */
             204: {
                 headers: {
                     [name: string]: unknown;
@@ -63399,7 +63551,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Fetch project inbound allowlist for CI_JOB_TOKEN access settings. */
+            /** @description List all projects in a CI/CD job token allowlist */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -63450,7 +63602,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Add target project to allowlist. */
+            /** @description Add a project to a CI/CD job token allowlist */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -63516,7 +63668,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Delete project from allowlist. */
+            /** @description Delete a project from a CI/CD job token allowlist */
             204: {
                 headers: {
                     [name: string]: unknown;
@@ -63575,7 +63727,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Fetch project groups allowlist for CI_JOB_TOKEN access settings. */
+            /** @description List all groups in a CI/CD job token allowlist */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -63626,7 +63778,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Add target group to allowlist. */
+            /** @description Add a group to a CI/CD job token allowlist */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -63692,7 +63844,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Delete target group from allowlist. */
+            /** @description Delete a group from a CI/CD job token allowlist */
             204: {
                 headers: {
                     [name: string]: unknown;
@@ -74367,7 +74519,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get all pipeline schedules */
+            /** @description List all pipeline schedules */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -74418,7 +74570,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Create a new pipeline schedule */
+            /** @description Create a pipeline schedule */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -74477,7 +74629,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get a single pipeline schedule */
+            /** @description Retrieve a pipeline schedule */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -74533,7 +74685,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Edit a pipeline schedule */
+            /** @description Update a pipeline schedule */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -74695,7 +74847,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get all pipelines triggered from a pipeline schedule */
+            /** @description List all pipelines triggered by a pipeline schedule */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -74747,7 +74899,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Play a scheduled pipeline immediately */
+            /** @description Run a pipeline schedule */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -74797,7 +74949,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Take ownership of a pipeline schedule */
+            /** @description Create or update ownership of a pipeline schedule */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -74860,7 +75012,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Create a new pipeline schedule variable */
+            /** @description Create a variable for a pipeline schedule */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -74924,7 +75076,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get a single pipeline schedule variable */
+            /** @description Retrieve a variable for a pipeline schedule */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -74985,7 +75137,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Edit a pipeline schedule variable */
+            /** @description Update a variable for a pipeline schedule */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -75049,7 +75201,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Delete a pipeline schedule variable */
+            /** @description Delete a variable for a pipeline schedule */
             202: {
                 headers: {
                     [name: string]: unknown;
@@ -75378,7 +75530,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Cancel all builds in the pipeline */
+            /** @description Cancel all jobs for a pipeline */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -80404,7 +80556,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get list of secure files in a project */
+            /** @description List all secure files for a project */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -80469,7 +80621,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get the details of a specific secure file in a project */
+            /** @description Retrieve details of a secure file */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -80503,7 +80655,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Remove a secure file */
+            /** @description Delete a secure file */
             204: {
                 headers: {
                     [name: string]: unknown;
@@ -80536,7 +80688,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Download secure file */
+            /** @description Download a secure file */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -85793,7 +85945,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get project variables */
+            /** @description List all project variables */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -85820,7 +85972,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Create a new variable in a project */
+            /** @description Create a variable */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -85855,7 +86007,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Get the details of a single variable from a project */
+            /** @description Retrieve a single variable */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -85891,7 +86043,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Update an existing variable from a project */
+            /** @description Update a variable */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -85926,7 +86078,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Delete an existing variable from a project */
+            /** @description Delete a variable */
             204: {
                 headers: {
                     [name: string]: unknown;

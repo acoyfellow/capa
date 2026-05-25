@@ -118,6 +118,76 @@ function authHeader(secret: string): { name: string; value: string } {
 	}
 }
 
+export interface DistilledProofArgs<Input, Output> extends FetchProofArgs {
+	input: Input;
+	operation: (input: Input) => Promise<Output>;
+}
+
+export async function distilledProof<Input, Output>(args: DistilledProofArgs<Input, Output>): Promise<ProofResult<Output>> {
+	const startedAt = new Date().toISOString();
+	const t0 = Date.now();
+	const baseUrl = args.baseUrl || BASE_URL;
+	let path = args.path;
+	if (args.prefixOverride && PREFIX) path = path.replace(PREFIX, args.prefixOverride);
+	const url = `${baseUrl}${path}`;
+	const assertions: AssertResult[] = [];
+	try {
+		const body = await args.operation(args.input);
+		assertions.push({ kind: "distilled", expected: "success", actual: "success", passed: true });
+		if (args.overrides?.asserts) {
+			for (const fn of args.overrides.asserts) {
+				try {
+					assertions.push(fn(body));
+				} catch (error) {
+					assertions.push({ kind: "override:throw", expected: "no-throw", actual: String(error), passed: false });
+				}
+			}
+		}
+		const verdict: Verdict = assertions.every(assertion => assertion.passed) ? "pass" : "fail";
+		return { result: verdict === "pass" ? body : null, evidence: proofEvidence(args, path, url, startedAt, Date.now() - t0, assertions, 200, verdict) };
+	} catch (error) {
+		assertions.push({ kind: "providerError", expected: "none", actual: providerErrorActual(error), passed: false });
+		return { result: null, evidence: proofEvidence(args, path, url, startedAt, Date.now() - t0, assertions, 0, "fail") };
+	}
+}
+
+function providerErrorActual(error: unknown): Record<string, unknown> {
+	const value = error && typeof error === "object" ? error as Record<string, unknown> : undefined;
+	return {
+		tag: value?._tag ?? (error instanceof Error ? error.name : "UnknownProviderError"),
+		message: error instanceof Error ? error.message : value?.message,
+		code: value?.code,
+		param: value?.param,
+		declineCode: value?.decline_code,
+	};
+}
+
+function proofEvidence(
+	args: Pick<FetchProofArgs, "operationId" | "namespace" | "method" | "http" | "risk">,
+	path: string,
+	url: string,
+	startedAt: string,
+	durationMs: number,
+	assert: AssertResult[],
+	status: number,
+	verdict: Verdict,
+): EvidenceBundle {
+	return {
+		capability: CAPABILITY_NAME,
+		operationId: args.operationId,
+		namespace: args.namespace,
+		method: args.method,
+		http: args.http,
+		path,
+		risk: args.risk,
+		startedAt,
+		durationMs,
+		act: { request: { method: args.http.toUpperCase(), url }, status },
+		assert,
+		verdict,
+	};
+}
+
 export async function fetchProof(
 	apiKey: string | undefined,
 	args: FetchProofArgs,
@@ -239,4 +309,4 @@ export async function fetchProof(
 	};
 }
 
-export const Evidence = { fetchProof };
+export const Evidence = { distilledProof, fetchProof };

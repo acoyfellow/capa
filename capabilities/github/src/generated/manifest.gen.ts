@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitHub v3 REST API v1.1.4
-// Operations:  1183
+// Operations:  1185
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -674,6 +674,8 @@ export const manifest = {
 	"checks/get-suite": {"namespace":"repos","method":"retrieveCheckSuite","http":"get","path":"/repos/{owner}/{repo}/check-suites/{check_suite_id}","risk":"medium"},
 	"checks/list-for-suite": {"namespace":"repos","method":"checkSuitesCheckRuns","http":"get","path":"/repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs","risk":"medium"},
 	"checks/rerequest-suite": {"namespace":"repos","method":"checkSuitesRerequest","http":"post","path":"/repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest","risk":"medium"},
+	"code-quality/get-setup": {"namespace":"repos","method":"setup_0","http":"get","path":"/repos/{owner}/{repo}/code-quality/setup","risk":"medium"},
+	"code-quality/update-setup": {"namespace":"repos","method":"setup_1","http":"patch","path":"/repos/{owner}/{repo}/code-quality/setup","risk":"medium"},
 	"code-scanning/list-alerts-for-repo": {"namespace":"repos","method":"getCodeScanningAlerts","http":"get","path":"/repos/{owner}/{repo}/code-scanning/alerts","risk":"medium"},
 	"code-scanning/get-alert": {"namespace":"repos","method":"codeScanningalertsRetrieveAlert","http":"get","path":"/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}","risk":"medium"},
 	"code-scanning/update-alert": {"namespace":"repos","method":"patchCodeScanningAlerts","http":"patch","path":"/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}","risk":"medium"},

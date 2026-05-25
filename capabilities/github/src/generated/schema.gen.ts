@@ -11800,6 +11800,34 @@ export type paths = {
         patch: operations["checks/set-suites-preferences"];
         trace?: never;
     };
+    "/repos/{owner}/{repo}/code-quality/setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a code quality setup configuration
+         * @description Gets a code quality setup configuration.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
+         */
+        get: operations["code-quality/get-setup"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update a code quality setup configuration
+         * @description Updates a code quality setup configuration.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
+         */
+        patch: operations["code-quality/update-setup"];
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/code-scanning/alerts": {
         parameters: {
             query?: never;
@@ -23917,6 +23945,67 @@ export type components = {
              * @example https://api.github.com/repos/github/docs/community/code_of_conduct
              */
             url: string;
+        };
+        /** @description Configuration for code quality setup. */
+        "code-quality-setup": {
+            /** @description Languages to be analyzed. */
+            languages?: ("csharp" | "go" | "java-kotlin" | "javascript-typescript" | "python" | "ruby" | "rust")[];
+            /**
+             * @description Runner label to be used if the runner type is labeled.
+             * @example code-scanning
+             */
+            runner_label?: string | null;
+            /**
+             * @description Runner type to be used.
+             * @enum {string|null}
+             */
+            runner_type?: "standard" | "labeled" | null;
+            /**
+             * @description The frequency of the periodic analysis.
+             * @enum {string|null}
+             */
+            schedule?: "weekly" | null;
+            /**
+             * @description Code quality setup has been configured or not.
+             * @enum {string}
+             */
+            state?: "configured" | "not-configured";
+            /**
+             * Format: date-time
+             * @description Timestamp of latest configuration update.
+             * @example 2023-12-06T14:20:20.000Z
+             */
+            updated_at?: string | null;
+        };
+        /** @description Configuration for code quality setup. */
+        "code-quality-setup-update": {
+            /** @description Languages to be analyzed. */
+            languages?: ("csharp" | "go" | "java-kotlin" | "javascript-typescript" | "python" | "ruby")[];
+            /**
+             * @description Runner label to be used if the runner type is labeled.
+             * @example code-scanning
+             */
+            runner_label?: string | null;
+            /**
+             * @description Runner type to be used.
+             * @enum {string}
+             */
+            runner_type?: "standard" | "labeled";
+            /**
+             * @description The desired state of code quality setup.
+             * @enum {string}
+             */
+            state?: "configured" | "not-configured";
+        } | unknown | unknown | unknown | unknown;
+        /**
+         * @description You can use `run_url` to track the status of the run. This includes a property status and conclusion.
+         *     You should not rely on this always being an actions workflow run object.
+         */
+        "code-quality-setup-update-response": {
+            /** @description ID of the corresponding run. */
+            run_id?: number;
+            /** @description URL of the corresponding run. */
+            run_url?: string;
         };
         "code-scanning-alert": {
             assignees?: components["schemas"]["simple-user"][];
@@ -95311,6 +95400,42 @@ export type components = {
                 "application/json": components["schemas"]["get-budget"];
             };
         };
+        /** @description Response if there is already a code quality setup configuration update in progress */
+        code_quality_conflict: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
+            };
+        };
+        /** @description Response if the user is not authorized to access Code quality for this repository. */
+        code_quality_forbidden_read: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
+            };
+        };
+        /** @description Response if the repository is archived or if Code quality is not enabled for this repository */
+        code_quality_forbidden_write: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
+            };
+        };
+        /** @description Response if the configuration change cannot be made */
+        code_quality_invalid_state: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
+            };
+        };
         /** @description Response if the repository is archived, if GitHub Advanced Security is not enabled for this repository or if rate limit is exceeded */
         code_scanning_autofix_create_forbidden: {
             headers: {
@@ -120453,6 +120578,77 @@ export interface operations {
                     "application/json": components["schemas"]["check-suite-preference"];
                 };
             };
+        };
+    };
+    "code-quality/get-setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-quality-setup"];
+                };
+            };
+            403: components["responses"]["code_quality_forbidden_read"];
+            404: components["responses"]["not_found"];
+            503: components["responses"]["service_unavailable"];
+        };
+    };
+    "code-quality/update-setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["code-quality-setup-update"];
+            };
+        };
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["empty-object"];
+                };
+            };
+            /** @description Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-quality-setup-update-response"];
+                };
+            };
+            403: components["responses"]["code_quality_forbidden_write"];
+            404: components["responses"]["not_found"];
+            409: components["responses"]["code_quality_conflict"];
+            422: components["responses"]["code_quality_invalid_state"];
+            503: components["responses"]["service_unavailable"];
         };
     };
     "code-scanning/list-alerts-for-repo": {
