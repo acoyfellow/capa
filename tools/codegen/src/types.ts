@@ -29,6 +29,21 @@ export interface Operation {
 	risk: "low" | "medium" | "high";
 }
 
+export interface DistilledBinding {
+	packageName: string;
+	operationImport: string;
+	operationDynamicImport?: string;
+	operationExport: string;
+	inputType: string;
+	outputType: string;
+}
+
+export interface DistilledProviderRuntime {
+	credentialsImport: string;
+	secretField: "apiKey" | "token";
+	defaultBaseUrl: string;
+}
+
 export interface CodegenResult {
 	specVersion: string;
 	specTitle: string;
