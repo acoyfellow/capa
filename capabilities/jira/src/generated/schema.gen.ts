@@ -1080,6 +1080,10 @@ export type paths = {
          * Create field scheme
          * @description Endpoint for creating a new field association scheme.
          *
+         *     A new scheme is **not** copied from, or based on, any existing field association scheme. Instead, it is initialised with a minimal default set of critical fields sourced from the instance's own *system* and *product* fields (the fields returned by the product's field API), rather than from a scheme you specify.
+         *
+         *     To create a scheme that is based on an existing one, use the *Clone field scheme* endpoint instead.
+         *
          *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
         post: operations["createFieldAssociationScheme"];
@@ -2394,6 +2398,34 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/rest/api/3/field/{fieldId}/context/defaultValues": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get default values for a custom field grouped by context and issue type
+         * @description Returns a paginated list of default values grouped by custom field context.
+         *
+         *     Each returned `ContextDefaultValuesBean` has a `contextId` and a `defaultValues` list of `IssueTypeDefaultValueBean` entries - one per issue-type-scoped default value configured for the context. An entry with `"isAnyIssueType": true` represents the catch-all default that applies to every issue type covered by the context that is not covered by a more specific entry; a non-null `issueTypeId` represents a default that only applies to that issue type.
+         *
+         *     For contexts that have not been converted to the multiple-contexts data model, exactly one entry is returned per context with `isAnyIssueType=true`. For converted contexts, one entry is returned per configured per-issue-type default.
+         *
+         *     The value object on each entry is the same polymorphic `CustomFieldContextDefaultValueBean` exposed by the deprecated `GET /defaultValue` endpoint - its concrete subtype depends on the custom field's type (see the list of supported types on that endpoint).
+         *
+         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
+         */
+        get: operations["getContextDefaultValues"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/rest/api/3/field/{fieldId}/context/issuetypemapping": {
         parameters: {
             query?: never;
@@ -2454,6 +2486,8 @@ export type paths = {
         /**
          * Get project mappings for custom field context
          * @description Returns a [paginated](#pagination) list of context to project mappings for a custom field. The result can be filtered by `contextId`. Otherwise, all mappings are returned. Invalid IDs are ignored.
+         *
+         *     **Note:** Jira is adding support for multiple field contexts per project. On sites where this is enabled, a custom field can have more than one context associated with the same project, so this operation can return several mappings that share the same `projectId`, each with a different `contextId`. Do not assume that a project appears at most once in the response. See [CHANGE-3082](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-3082) for more details.
          *
          *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
@@ -3542,6 +3576,30 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/rest/api/3/forge/panel/action/bulk/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Get issue panel pin status for projects
+         * @description Get the pin status of an issue panel (added by a Forge app) for multiple projects.
+         *
+         *     The operation is read-only and runs synchronously. Projects that do not exist, or that you do not have permission to access, are returned in the response with the panel reported as not pinned and the reason in the `error` field; the request itself still succeeds.
+         *
+         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
+         */
+        post: operations["getBulkPinStatus"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/rest/api/3/group": {
         parameters: {
             query?: never;
@@ -3810,6 +3868,8 @@ export type paths = {
          * @description Edits an issue. Issue properties may be updated as part of the edit. Please note that issue transition is not supported and is ignored here. To transition an issue, please use [Transition issue](#api-rest-api-3-issue-issueIdOrKey-transitions-post).
          *
          *     The edits to the issue's fields are defined using `update` and `fields`. The fields that can be edited are determined using [ Get edit issue metadata](#api-rest-api-3-issue-issueIdOrKey-editmeta-get).
+         *
+         *     **Note:** This endpoint doesn't check screen configurations to determine if a field is editable. For more context, see the [Deprecation of override screen security](https://community.developer.atlassian.com/t/deprecation-of-override-screen-security/97153) announcement.
          *
          *     The parent field may be set by key or ID. For standard issue types, the parent may be removed by setting `update.parent.set.none` to *true*. Note that the `description`, `environment`, and any `textarea` type custom fields (multi-line text fields) take Atlassian Document Format content. Single line custom fields (`textfield`) accept a string and don't handle Atlassian Document Format content.
          *
@@ -4935,7 +4995,16 @@ export type paths = {
         put?: never;
         /**
          * Bulk fetch issues
-         * @description Returns the details for a set of requested issues. You can request up to 100 issues.
+         * @description Returns the details for a set of requested issues.
+         *
+         *     By default you can request up to 100 issues in a single call. You can request up to 1000 issues in a single call when the request is shaped so that it can be served efficiently, that is, when *all* of the following are true:
+         *
+         *      *  the `fields` parameter explicitly names at least one field to include — a request that contains only exclusions is **not** eligible, and neither are the `*all` and `*navigable` wildcards or the default navigable field set, because the number of resolved fields depends on the site's configuration;
+         *      *  no more than 100 fields are explicitly included;
+         *      *  none of the included fields returns multiple values (for example `comment`, `worklog`, or `attachment`); and
+         *      *  the `expand` parameter does not include `changelog`, `editmeta`, `operations`, `renderedFields`, `transitions`, or `versionedRepresentations`.
+         *
+         *     Requests that do not meet all of these conditions can include at most 100 issues; larger requests are rejected with a 400 error.
          *
          *     Each issue is identified by its ID or key, however, if the identifier doesn't match an issue, a case-insensitive search and check for moved issues is performed. If a matching issue is found its details are returned, a 302 or other redirect is **not** returned.
          *
@@ -5024,6 +5093,33 @@ export type paths = {
          *     **[Permissions](#permissions) required:** *Create issues* [project permission](https://confluence.atlassian.com/x/yodKLg) in the requested projects.
          */
         get: operations["getCreateIssueMetaIssueTypeId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/rest/api/3/issue/limit/adf/report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get issue adf limit report
+         * @description Returns all issues whose ADF (rich text) field data breaches the universal ADF size limit.
+         *
+         *     Unlike the issue limit report, which reports issues breaching per-issue entity *count* limits, this endpoint reports issues whose ADF field *byte size* exceeds that limit. The reported ADF field types are `comment_adf`, `worklog_adf`, `customfield_adf`, `description_adf` and `environment_adf`. The reported value for each issue is the number of breaching entities for that field (always 1 for the single-value description and environment fields).
+         *
+         *     **[Permissions](#permissions) required:**
+         *
+         *      *  *Browse projects* [project permission](https://confluence.atlassian.com/x/yodKLg) is required for the project the issues are in. Results may be incomplete otherwise
+         *      *  *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
+         */
+        get: operations["getIssueAdfLimitReport"];
         put?: never;
         post?: never;
         delete?: never;
@@ -6551,7 +6647,7 @@ export type paths = {
         put?: never;
         /**
          * Check issues against JQL
-         * @description Checks whether one or more issues would be returned by one or more JQL queries.
+         * @description Checks whether one or more issues would be returned by one or more JQL queries. Up to 10 JQL queries can be specified and up to 50 issue IDs included in the request.
          *
          *     **[Permissions](#permissions) required:** None, however, issues are only matched against JQL queries where the user has:
          *
@@ -7661,16 +7757,15 @@ export type paths = {
          * @deprecated
          * @description Returns the list of all issue priorities.
          *
-         *     **[Permissions](#permissions) required:** Permission to access Jira.
+         *     **Deprecated:** Use [Search priorities](#api-rest-api-3-priority-search-get) instead. **[Permissions](#permissions) required:** Permission to access Jira.
          */
         get: operations["getPriorities"];
         put?: never;
         /**
          * Create priority
-         * @deprecated
          * @description Creates an issue priority.
          *
-         *     Deprecation applies to iconUrl param in request body which will be sunset on 16th Mar 2025. For more details refer to [changelog](https://developer.atlassian.com/changelog/#CHANGE-1525).
+         *     **Deprecation notice:** The `iconUrl` parameter was sunset on 16th Mar 2025, and replaced with `avatarId`. See [CHANGE-1525](https://developer.atlassian.com/changelog/#CHANGE-1525).
          *
          *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
@@ -7690,19 +7785,18 @@ export type paths = {
         };
         /**
          * Get priority
-         * @description Returns an issue priority.
+         * @description Returns an issue priority. To fetch multiple priorities at once, use [Search priorities](#api-rest-api-3-priority-search-get) instead.
          *
          *     **[Permissions](#permissions) required:** Permission to access Jira.
          */
         get: operations["getPriority"];
         /**
          * Update priority
-         * @deprecated
          * @description Updates an issue priority.
          *
          *     At least one request body parameter must be defined.
          *
-         *     Deprecation applies to iconUrl param in request body which will be sunset on 16th Mar 2025. For more details refer to [changelog](https://developer.atlassian.com/changelog/#CHANGE-1525).
+         *     **Deprecation notice:** The `iconUrl` parameter was sunset on 16th Mar 2025, and replaced with `avatarId`. See [CHANGE-1525](https://developer.atlassian.com/changelog/#CHANGE-1525).
          *
          *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
@@ -7775,12 +7869,15 @@ export type paths = {
         };
         /**
          * Search priorities
-         * @deprecated
          * @description Returns a [paginated](#pagination) list of priorities. The list can contain all priorities or a subset determined by any combination of these criteria:
          *
          *      *  a list of priority IDs. Any invalid priority IDs are ignored.
          *      *  a list of project IDs. Only priorities that are available in these projects will be returned. Any invalid project IDs are ignored.
          *      *  whether the field configuration is a default. This returns priorities from company-managed (classic) projects only, as there is no concept of default priorities in team-managed projects.
+         *
+         *     **Deprecation notice:** The `onlyDefault` parameter is deprecated and will be removed at a later date. See [CHANGE-1655](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-1655).
+         *
+         *     **Deprecation notice:** The `isDefault` property of priorities is deprecated and will be removed at a later date. See [CHANGE-1655](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-1655).
          *
          *     **[Permissions](#permissions) required:** Permission to access Jira.
          */
@@ -7804,7 +7901,7 @@ export type paths = {
          * Get priority schemes
          * @description Returns a [paginated](#pagination) list of priority schemes.
          *
-         *     **[Permissions](#permissions) required:** Permission to access Jira.
+         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
         get: operations["getPrioritySchemes"];
         put?: never;
@@ -7862,7 +7959,7 @@ export type paths = {
          * Get priorities by priority scheme
          * @description Returns a [paginated](#pagination) list of priorities by scheme.
          *
-         *     **[Permissions](#permissions) required:** Permission to access Jira.
+         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
         get: operations["getPrioritiesByPriorityScheme"];
         put?: never;
@@ -7884,7 +7981,7 @@ export type paths = {
          * Get projects by priority scheme
          * @description Returns a [paginated](#pagination) list of projects by scheme.
          *
-         *     **[Permissions](#permissions) required:** Permission to access Jira.
+         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
         get: operations["getProjectsByPriorityScheme"];
         put?: never;
@@ -7908,7 +8005,7 @@ export type paths = {
          * Suggested priorities for mappings
          * @description Returns a [paginated](#pagination) list of priorities that would require mapping, given a change in priorities or projects associated with a priority scheme.
          *
-         *     **[Permissions](#permissions) required:** Permission to access Jira.
+         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
         post: operations["suggestedPrioritiesForMappings"];
         delete?: never;
@@ -7928,7 +8025,7 @@ export type paths = {
          * Get available priorities by priority scheme
          * @description Returns a [paginated](#pagination) list of priorities available for adding to a priority scheme.
          *
-         *     **[Permissions](#permissions) required:** Permission to access Jira.
+         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
         get: operations["getAvailablePrioritiesByPriorityScheme"];
         put?: never;
@@ -7972,6 +8069,7 @@ export type paths = {
          *      *  Jira Core, the default, enables `business` projects.
          *      *  Jira Service Management enables `service_desk` projects.
          *      *  Jira Software enables `software` projects.
+         *      *  Jira Customer Service enables `customer_service` projects.
          *
          *     To determine which features are installed, go to **Jira settings** > **Apps** > **Manage apps** and review the System Apps list. To add Jira Software or Jira Service Management into a JIRA instance, use **Jira settings** > **Apps** > **Finding new apps**. For more information, see [ Managing add-ons](https://confluence.atlassian.com/x/S31NLg).
          *
@@ -10395,6 +10493,11 @@ export type paths = {
          *      *  **Jira Service Management contexts:** For Jira Service Management view types, use `portalId` and `requestTypeId`. Wildcards are not supported. Supported JSM views:
          *
          *          *  `JSMRequestCreate` \- Jira Service Management request create portal view
+         *      *  **Agent view contexts:** For Agent view types, use `projectId` and `issueTypeId` like Jira contexts, and optionally set `requestTypeId`. `portalId` must not be set. One of `projectId`, `issueTypeId`, or `viewType` can act as a wildcard. Supported Agent views:
+         *
+         *          *  `GICAgentView` \- Agent view variant of Jira global issue create
+         *          *  `IssueViewAgentView` \- Agent view variant of Jira issue view
+         *          *  `IssueTransitionAgentView` \- Agent view variant of Jira issue transition
          *
          *     **[Permissions](#permissions) required:**
          *
@@ -10434,6 +10537,11 @@ export type paths = {
          *      *  **Jira Service Management contexts:** For Jira Service Management view types, use `portalId` and `requestTypeId`. Wildcards are not supported. Supported JSM views:
          *
          *          *  `JSMRequestCreate` \- Jira Service Management request create portal view
+         *      *  **Agent view contexts:** For Agent view types, use `projectId` and `issueTypeId` like Jira contexts, and optionally set `requestTypeId`. `portalId` must not be set. One of `projectId`, `issueTypeId`, or `viewType` can act as a wildcard. Supported Agent views:
+         *
+         *          *  `GICAgentView` \- Agent view variant of Jira global issue create
+         *          *  `IssueViewAgentView` \- Agent view variant of Jira issue view
+         *          *  `IssueTransitionAgentView` \- Agent view variant of Jira issue transition
          *
          *     **[Permissions](#permissions) required:**
          *
@@ -10648,7 +10756,7 @@ export type paths = {
          *
          *     **Note:** This API does not support Forge apps.
          *
-         *     If the user exists and has access to Jira, the operation returns a 201 status. If the user exists but does not have access to Jira, the operation returns a 400 status.
+         *     If the user exists and has access to Jira, the operation returns a 201 status. If the user exists but does not have access to Jira & no new jira-products are requested, the operation returns a 400 status.
          *
          *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg). The caller has to be an **organization admin**.
          */
@@ -11807,58 +11915,6 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
-    "/rest/api/3/workflow/transitions/{transitionId}/properties": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get workflow transition properties
-         * @deprecated
-         * @description This will be removed on [June 1, 2026](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2570); fetch transition properties from [Bulk get workflows](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/#api-rest-api-3-workflows-post) instead.
-         *
-         *     Returns the properties on a workflow transition. Transition properties are used to change the behavior of a transition. For more information, see [Transition properties](https://confluence.atlassian.com/x/zIhKLg#Advancedworkflowconfiguration-transitionproperties) and [Workflow properties](https://confluence.atlassian.com/x/JYlKLg).
-         *
-         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
-         */
-        get: operations["getWorkflowTransitionProperties"];
-        /**
-         * Update workflow transition property
-         * @deprecated
-         * @description This will be removed on [June 1, 2026](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2570); update transition properties using [Bulk update workflows](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/#api-rest-api-3-workflows-update-post) instead.
-         *
-         *     Updates a workflow transition by changing the property value. Trying to update a property that does not exist results in a new property being added to the transition. Transition properties are used to change the behavior of a transition. For more information, see [Transition properties](https://confluence.atlassian.com/x/zIhKLg#Advancedworkflowconfiguration-transitionproperties) and [Workflow properties](https://confluence.atlassian.com/x/JYlKLg).
-         *
-         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
-         */
-        put: operations["updateWorkflowTransitionProperty"];
-        /**
-         * Create workflow transition property
-         * @deprecated
-         * @description This will be removed on [June 1, 2026](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2570); add transition properties using [Bulk update workflows](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/#api-rest-api-3-workflows-update-post) instead.
-         *
-         *     Adds a property to a workflow transition. Transition properties are used to change the behavior of a transition. For more information, see [Transition properties](https://confluence.atlassian.com/x/zIhKLg#Advancedworkflowconfiguration-transitionproperties) and [Workflow properties](https://confluence.atlassian.com/x/JYlKLg).
-         *
-         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
-         */
-        post: operations["createWorkflowTransitionProperty"];
-        /**
-         * Delete workflow transition property
-         * @deprecated
-         * @description This will be removed on [June 1, 2026](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2570); delete transition properties using [Bulk update workflows](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflows/#api-rest-api-3-workflows-update-post) instead.
-         *
-         *     Deletes a property from a workflow transition. Transition properties are used to change the behavior of a transition. For more information, see [Transition properties](https://confluence.atlassian.com/x/zIhKLg#Advancedworkflowconfiguration-transitionproperties) and [Workflow properties](https://confluence.atlassian.com/x/JYlKLg).
-         *
-         *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
-         */
-        delete: operations["deleteWorkflowTransitionProperty"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/rest/api/3/workflows": {
         parameters: {
             query?: never;
@@ -12020,14 +12076,16 @@ export type paths = {
          *            "parameters": {
          *              "ruleType": "fieldMatchesRegularExpression",
          *              "regexp": "[0-9]{4}",
-         *              "fieldKey": "description"
+         *              "fieldKey": "description",
+         *              "errorMessage": "Description must contain a 4-digit year"
          *            }
          *          }
          *
          *     Parameters:
          *
-         *      *  `regexp` the regular expression used to validate the field\\u2019s content.
+         *      *  `regexp` the regular expression used to validate the field's content.
          *      *  `fieldKey` the ID of the field to validate. For a custom field, it would look like `customfield_123`.
+         *      *  `errorMessage` the error message to display if the field value does not match the regular expression. A default error message will be shown if you don't provide one (Optional).
          *
          *     ###### Date field comparison ######
          *
@@ -12449,6 +12507,33 @@ export type paths = {
         get: operations["workflowCapabilities"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/rest/api/3/workflows/copy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Copy workflow
+         * @description Copies an existing workflow, and the statuses it uses, into a new workflow with the given name. The copy is created in the same scope as the workflow it is copied from. If no description is provided, the copy is created with an empty description.
+         *
+         *     Copying a workflow requires permission both to read the workflow being copied and to create the copy, which is created in the same scope as its source.
+         *
+         *     **[Permissions](#permissions) required:**
+         *
+         *      *  *Administer Jira* global permission to copy all, including project-scoped, workflows
+         *      *  To copy a project-scoped workflow, either the *Edit workflows* project permission, or both the *View (read-only) workflow* and *Administer projects* project permissions
+         */
+        post: operations["copyWorkflow"];
         delete?: never;
         options?: never;
         head?: never;
@@ -14195,6 +14280,8 @@ export type components = {
             cardLayouts?: components["schemas"]["CardLayoutField"][];
             /** @description The columns of the board */
             columns?: components["schemas"]["BoardColumnPayload"][];
+            /** @description Whether to enable the card cover option on this board */
+            enableCardCover?: boolean;
             /**
              * @deprecated
              * @description Feature settings for the board. Deprecated: use boardFeatures capability instead.
@@ -14327,6 +14414,8 @@ export type components = {
              *      *  `editmeta` Returns information about how each field can be edited.
              *      *  `changelog` Returns a list of recent updates to an issue, sorted by date, starting from the most recent. This returns a maximum of 40 changelogs. If you require more, please refer to [Bulk fetch changelogs](#api-rest-api-3-changelog-bulkfetch-post).
              *      *  `versionedRepresentations` Instead of `fields`, returns `versionedRepresentations` a JSON array containing each version of a field's value, with the highest numbered item representing the most recent version.
+             *
+             *     To request up to 1000 issues in a single call, do not include `changelog`, `editmeta`, `operations`, `renderedFields`, `transitions`, or `versionedRepresentations` in `expand`. Requests that include any of these can include at most 100 issues; larger requests are rejected with a 400 error.
              */
             expand?: string[];
             /**
@@ -14347,11 +14436,13 @@ export type components = {
              *     Multiple `fields` parameters can be included in a request.
              *
              *     Note: All navigable fields are returned by default. This differs from [GET issue](#api-rest-api-3-issue-issueIdOrKey-get) where the default is all fields.
+             *
+             *     To request up to 1000 issues in a single call, explicitly list the fields you need: at least one field must be a positive include (a request containing only exclusions is not eligible), the `*all` and `*navigable` wildcards and the default navigable field set are not eligible for the higher limit, no more than 100 fields may be listed, and none of the included fields returns multiple values (for example `comment`, `worklog`, or `attachment`). Requests that do not meet these conditions can include at most 100 issues; larger requests are rejected with a 400 error.
              */
             fields?: string[];
             /** @description Reference fields by their key (rather than ID). The default is `false`. */
             fieldsByKeys?: boolean;
-            /** @description An array of issue IDs or issue keys to fetch. You can mix issue IDs and keys in the same query. */
+            /** @description An array of issue IDs or issue keys to fetch. You can mix issue IDs and keys in the same query. You can request up to 100 issues per call. Requests can include up to 1000 issues per call when they meet all of the conditions described for the `fields` and `expand` parameters. Requests that exceed the applicable limit are rejected with a 400 error. */
             issueIdsOrKeys: string[];
             /** @description A list of issue property keys of issue properties to be included in the results. A maximum of 5 issue property keys can be specified. */
             properties?: string[];
@@ -14973,6 +15064,16 @@ export type components = {
             /** @description The scope of the context. */
             scope?: components["schemas"]["Scope"];
         };
+        /** @description Default values grouped by custom field context. */
+        ContextDefaultValues: {
+            /**
+             * Format: int64
+             * @description The ID of the context.
+             */
+            contextId: number;
+            /** @description Per-issue-type default values for this context. May contain a single entry for unconverted contexts, or one entry per issue type for converted contexts. */
+            defaultValues?: components["schemas"]["IssueTypeDefaultValue"][];
+        };
         /** @description The project and issue type mapping with a matching custom field context. */
         ContextForProjectAndIssueType: {
             /** @description The ID of the custom field context. */
@@ -15313,12 +15414,12 @@ export type components = {
              * @description A predefined configuration for a project. The type of the `projectTemplateKey` must match with the type of the `projectTypeKey`.
              * @enum {string}
              */
-            projectTemplateKey?: "com.pyxis.greenhopper.jira:gh-simplified-agility-kanban" | "com.pyxis.greenhopper.jira:gh-simplified-agility-scrum" | "com.pyxis.greenhopper.jira:gh-simplified-basic" | "com.pyxis.greenhopper.jira:gh-simplified-kanban-classic" | "com.pyxis.greenhopper.jira:gh-simplified-scrum-classic" | "com.pyxis.greenhopper.jira:gh-cross-team-template" | "com.pyxis.greenhopper.jira:gh-cross-team-planning-template" | "com.atlassian.servicedesk:simplified-it-service-management" | "com.atlassian.servicedesk:simplified-it-service-management-basic" | "com.atlassian.servicedesk:simplified-it-service-management-operations" | "com.atlassian.servicedesk:simplified-internal-service-desk" | "com.atlassian.servicedesk:simplified-external-service-desk" | "com.atlassian.servicedesk:simplified-hr-service-desk" | "com.atlassian.servicedesk:simplified-facilities-service-desk" | "com.atlassian.servicedesk:simplified-legal-service-desk" | "com.atlassian.servicedesk:simplified-marketing-service-desk" | "com.atlassian.servicedesk:simplified-finance-service-desk" | "com.atlassian.servicedesk:simplified-analytics-service-desk" | "com.atlassian.servicedesk:simplified-design-service-desk" | "com.atlassian.servicedesk:simplified-sales-service-desk" | "com.atlassian.servicedesk:simplified-halp-service-desk" | "com.atlassian.servicedesk:next-gen-it-service-desk" | "com.atlassian.servicedesk:next-gen-hr-service-desk" | "com.atlassian.servicedesk:next-gen-legal-service-desk" | "com.atlassian.servicedesk:next-gen-marketing-service-desk" | "com.atlassian.servicedesk:next-gen-facilities-service-desk" | "com.atlassian.servicedesk:next-gen-general-service-desk" | "com.atlassian.servicedesk:next-gen-analytics-service-desk" | "com.atlassian.servicedesk:next-gen-finance-service-desk" | "com.atlassian.servicedesk:next-gen-design-service-desk" | "com.atlassian.servicedesk:next-gen-sales-service-desk" | "com.atlassian.jira-core-project-templates:jira-core-simplified-content-management" | "com.atlassian.jira-core-project-templates:jira-core-simplified-document-approval" | "com.atlassian.jira-core-project-templates:jira-core-simplified-lead-tracking" | "com.atlassian.jira-core-project-templates:jira-core-simplified-process-control" | "com.atlassian.jira-core-project-templates:jira-core-simplified-procurement" | "com.atlassian.jira-core-project-templates:jira-core-simplified-project-management" | "com.atlassian.jira-core-project-templates:jira-core-simplified-recruitment" | "com.atlassian.jira-core-project-templates:jira-core-simplified-task-" | "com.atlassian.jcs:customer-service-management";
+            projectTemplateKey?: "com.pyxis.greenhopper.jira:gh-simplified-agility-kanban" | "com.pyxis.greenhopper.jira:gh-simplified-agility-scrum" | "com.pyxis.greenhopper.jira:gh-simplified-basic" | "com.pyxis.greenhopper.jira:gh-simplified-kanban-classic" | "com.pyxis.greenhopper.jira:gh-simplified-scrum-classic" | "com.pyxis.greenhopper.jira:gh-cross-team-template" | "com.pyxis.greenhopper.jira:gh-cross-team-planning-template" | "com.atlassian.servicedesk:simplified-it-service-management" | "com.atlassian.servicedesk:simplified-it-service-management-basic" | "com.atlassian.servicedesk:simplified-it-service-management-operations" | "com.atlassian.servicedesk:simplified-internal-service-desk" | "com.atlassian.servicedesk:simplified-external-service-desk" | "com.atlassian.servicedesk:simplified-hr-service-desk" | "com.atlassian.servicedesk:simplified-facilities-service-desk" | "com.atlassian.servicedesk:simplified-legal-service-desk" | "com.atlassian.servicedesk:simplified-marketing-service-desk" | "com.atlassian.servicedesk:simplified-finance-service-desk" | "com.atlassian.servicedesk:simplified-analytics-service-desk" | "com.atlassian.servicedesk:simplified-design-service-desk" | "com.atlassian.servicedesk:simplified-sales-service-desk" | "com.atlassian.servicedesk:simplified-halp-service-desk" | "com.atlassian.servicedesk:next-gen-it-service-desk" | "com.atlassian.servicedesk:next-gen-hr-service-desk" | "com.atlassian.servicedesk:next-gen-legal-service-desk" | "com.atlassian.servicedesk:next-gen-marketing-service-desk" | "com.atlassian.servicedesk:next-gen-facilities-service-desk" | "com.atlassian.servicedesk:next-gen-analytics-service-desk" | "com.atlassian.servicedesk:next-gen-finance-service-desk" | "com.atlassian.servicedesk:next-gen-design-service-desk" | "com.atlassian.servicedesk:next-gen-sales-service-desk" | "com.atlassian.servicedesk:company-managed-blank-service-project" | "com.atlassian.servicedesk:company-managed-general-service-project" | "com.atlassian.servicedesk:team-managed-general-service-project" | "com.atlassian.jira-core-project-templates:jira-core-simplified-content-management" | "com.atlassian.jira-core-project-templates:jira-core-simplified-document-approval" | "com.atlassian.jira-core-project-templates:jira-core-simplified-lead-tracking" | "com.atlassian.jira-core-project-templates:jira-core-simplified-process-control" | "com.atlassian.jira-core-project-templates:jira-core-simplified-procurement" | "com.atlassian.jira-core-project-templates:jira-core-simplified-project-management" | "com.atlassian.jira-core-project-templates:jira-core-simplified-recruitment" | "com.atlassian.jira-core-project-templates:jira-core-simplified-task-" | "com.atlassian.jcs:customer-service-management";
             /**
              * @description The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes), which defines the application-specific feature set. If you don't specify the project template you have to specify the project type.
              * @enum {string}
              */
-            projectTypeKey?: "software" | "service_desk" | "business";
+            projectTypeKey?: "software" | "service_desk" | "business" | "customer_service";
             /** @description A link to information about this project, such as project documentation */
             url?: string;
             /**
@@ -15413,6 +15514,8 @@ export type components = {
         };
         /** @description The default value for a Date custom field. */
         CustomFieldContextDefaultValueDate: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default date in ISO format. Ignored if `useCurrent` is true. */
             date?: string;
             /**
@@ -15428,6 +15531,8 @@ export type components = {
         };
         /** @description The default value for a date time custom field. */
         CustomFieldContextDefaultValueDateTime: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default date-time in ISO format. Ignored if `useCurrent` is true. */
             dateTime?: string;
             /**
@@ -15443,6 +15548,8 @@ export type components = {
         };
         /** @description Default value for a float (number) custom field. */
         CustomFieldContextDefaultValueFloat: {
+            /** @description The ID of the context. */
+            contextId: string;
             /**
              * Format: double
              * @description The default floating-point number.
@@ -15497,6 +15604,8 @@ export type components = {
         };
         /** @description The default text for a Forge collection of strings custom field. */
         CustomFieldContextDefaultValueForgeMultiStringField: {
+            /** @description The ID of the context. */
+            contextId: string;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -15534,6 +15643,8 @@ export type components = {
         };
         /** @description The default value for a Forge object custom field. */
         CustomFieldContextDefaultValueForgeObjectField: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default JSON object. */
             object?: Record<string, never>;
             /**
@@ -15569,6 +15680,8 @@ export type components = {
         };
         /** @description Default value for a labels custom field. */
         CustomFieldContextDefaultValueLabels: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default labels value. */
             labels: string[];
             /**
@@ -15603,6 +15716,8 @@ export type components = {
         };
         /** @description The default value for a multiple version picker custom field. */
         CustomFieldContextDefaultValueMultipleVersionPicker: {
+            /** @description The ID of the context. */
+            contextId: string;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -15639,6 +15754,8 @@ export type components = {
         };
         /** @description The default text for a read only custom field. */
         CustomFieldContextDefaultValueReadOnly: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default text. The maximum length is 255 characters. */
             text?: string;
             /**
@@ -15673,6 +15790,8 @@ export type components = {
         };
         /** @description The default value for a version picker custom field. */
         CustomFieldContextDefaultValueSingleVersionPicker: {
+            /** @description The ID of the context. */
+            contextId: string;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -15685,6 +15804,8 @@ export type components = {
         };
         /** @description The default text for a text area custom field. */
         CustomFieldContextDefaultValueTextArea: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default text. The maximum length is 32767 characters. */
             text?: string;
             /**
@@ -15695,6 +15816,8 @@ export type components = {
         };
         /** @description The default text for a text custom field. */
         CustomFieldContextDefaultValueTextField: {
+            /** @description The ID of the context. */
+            contextId: string;
             /** @description The default text. The maximum length is 254 characters. */
             text?: string;
             /**
@@ -16438,6 +16561,10 @@ export type components = {
             searcherKey?: string;
             /** @description The stable ID of the field. */
             stableId?: string;
+            /** @description The translated (i18n) description of the field for the current locale. Returned for custom fields. */
+            translatedDescription?: string;
+            /** @description The translated (i18n) name of the field for the current locale. Returned for custom fields. */
+            translatedName?: string;
             /** @description The display name of the field type */
             typeDisplayName?: string;
         };
@@ -16462,6 +16589,7 @@ export type components = {
         FieldAssociationParameters: {
             description?: string;
             isRequired: boolean;
+            rendererType?: string;
         };
         /** @description Field association scheme field search results. */
         FieldAssociationSchemeFieldSearchResult: {
@@ -16892,6 +17020,11 @@ export type components = {
             description?: string;
             /** @description Whether the field is required, null to preserve current requirement setting */
             isRequired?: boolean;
+            /**
+             * @description The renderer type for the field, null to preserve current renderer type
+             * @enum {string}
+             */
+            rendererType?: "jira-text-renderer" | "atlassian-wiki-renderer";
         };
         /** @description The list of work type-specific parameter overrides, may be empty if only default parameters are being updated */
         FieldsSchemeItemWorkTypeParameter: {
@@ -16899,6 +17032,11 @@ export type components = {
             description?: string;
             /** @description Whether the field is required for this work type, null to use default or preserve current */
             isRequired?: boolean;
+            /**
+             * @description The renderer type for the field for this work type, null to use default or preserve current
+             * @enum {string}
+             */
+            rendererType?: "jira-text-renderer" | "atlassian-wiki-renderer";
             /**
              * Format: int64
              * @description The ID of the work type (issue type) for which these parameters apply
@@ -17108,6 +17246,32 @@ export type components = {
             /** @description The list of projects to pin or unpin the issue panel to or from. */
             projectList: components["schemas"]["ProjectPinAction"][];
         };
+        /** @description The pin status of an issue panel (added by a Forge app) for a single project. */
+        ForgePanelProjectPinStatus: {
+            /** @description The reason the pin status could not be read for the project. Null if the pin status was read successfully. */
+            error?: string;
+            /** @description Whether the issue panel is currently pinned to the project. */
+            pinned?: boolean;
+            /**
+             * Format: int64
+             * @description The time the issue panel was pinned to the project, in epoch milliseconds.
+             */
+            pinnedAt?: number;
+            /** @description The project ID or key supplied in the request. */
+            projectIdOrKey?: string;
+        };
+        ForgePanelProjectPinStatusRequest: {
+            /** @description The moduleId of the Forge panel in the format `ari:cloud:ecosystem::extension/{app-id}/{environment-id}/static/{module-key}` */
+            moduleId: string;
+            /** @description The IDs or keys of the projects to check the issue panel pin status for. */
+            projectList: string[];
+        };
+        ForgePanelProjectPinStatusResponse: {
+            /** @description The moduleId of the Forge panel that was requested. */
+            moduleId?: string;
+            /** @description The pin status of the issue panel, with one entry per requested project. */
+            statuses?: components["schemas"]["ForgePanelProjectPinStatus"][];
+        };
         /** @description A group found in a search. */
         FoundGroup: {
             /** @description Avatar url for the group/team if present. */
@@ -17283,6 +17447,8 @@ export type components = {
         /** @description Response object for getting a field association scheme by ID. */
         GetFieldAssociationSchemeByIdResponse: {
             description?: string;
+            /** Format: int64 */
+            fieldsCount?: number;
             id?: string;
             isDefault?: boolean;
             links?: components["schemas"]["FieldAssociationSchemeLinks"];
@@ -17941,6 +18107,12 @@ export type components = {
             pcri?: components["schemas"]["ProjectCreateResourceIdentifier"];
         } | null;
         IssueLimitReportResponseBean: {
+            /** @description For each field, the ids of the individual entities breaching the limit, grouped by the id or key of the issue they belong to. Fields that hold a single value, such as description and environment, map to an empty list because the issue itself identifies the breaching content */
+            entitiesBreachingLimit?: {
+                [key: string]: {
+                    [key: string]: number[];
+                };
+            };
             /** @description A list of ids of issues approaching the limit and their field count */
             issuesApproachingLimit?: {
                 [key: string]: {
@@ -18056,9 +18228,9 @@ export type components = {
         };
         /** @description List of issues and JQL queries. */
         IssuesAndJQLQueries: {
-            /** @description A list of issue IDs. */
+            /** @description A list of up to 50 issue IDs. */
             issueIds: number[];
-            /** @description A list of JQL queries. */
+            /** @description A list of up to 10 JQL queries. */
             jqls: string[];
         };
         /** @description Issue security level member. */
@@ -18176,6 +18348,14 @@ export type components = {
              * @enum {string}
              */
             type?: "subtask" | "standard";
+        };
+        /** @description A default value associated with an issue type within a context. */
+        IssueTypeDefaultValue: {
+            /** @description True when this default value applies to every issue type covered by the context (no specific issue type). Only present when true; omitted otherwise. */
+            isAnyIssueType?: boolean | null;
+            /** @description The ID of the issue type this default value applies to. Null when isAnyIssueType is true. */
+            issueTypeId?: string | null;
+            value?: components["schemas"]["CustomFieldContextDefaultValue"];
         };
         /** @description Details about an issue type. */
         IssueTypeDetails: {
@@ -19486,6 +19666,17 @@ export type components = {
             /** @description The calculated value of a licence metric linked to the key. An example licence metric is the approximate number of user accounts. */
             value?: string;
         };
+        LimitExceededResponseBean: {
+            /** Format: int32 */
+            current_count?: number;
+            entity_type?: string;
+            error_code?: string;
+            limit_type?: string;
+            /** Format: int32 */
+            max_allowed_limit?: number;
+            message?: string;
+            scope_id?: string;
+        };
         /** @description The ID or key of a linked issue. */
         LinkedIssue: {
             /** @description The fields associated with the issue. */
@@ -20303,6 +20494,38 @@ export type components = {
             readonly total?: number;
             /** @description The list of items. */
             readonly values?: components["schemas"]["Context"][];
+        };
+        /** @description A page of items. */
+        PageBeanContextDefaultValues: {
+            /** @description Whether this is the last page. */
+            readonly isLast?: boolean;
+            /**
+             * Format: int32
+             * @description The maximum number of items that could be returned.
+             */
+            readonly maxResults?: number;
+            /**
+             * Format: uri
+             * @description If there is another page of results, the URL of the next page.
+             */
+            readonly nextPage?: string;
+            /**
+             * Format: uri
+             * @description The URL of the page.
+             */
+            readonly self?: string;
+            /**
+             * Format: int64
+             * @description The index of the first item returned.
+             */
+            readonly startAt?: number;
+            /**
+             * Format: int64
+             * @description The number of items returned.
+             */
+            readonly total?: number;
+            /** @description The list of items. */
+            readonly values?: components["schemas"]["ContextDefaultValues"][];
         };
         /** @description A page of items. */
         PageBeanContextForProjectAndIssueType: {
@@ -22477,8 +22700,8 @@ export type components = {
              * @description The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes) of the project.
              * @enum {string}
              */
-            readonly projectTypeKey?: "software" | "service_desk" | "business";
-            /** @description Map of project properties */
+            readonly projectTypeKey?: "software" | "service_desk" | "business" | "product_discovery";
+            /** @description Map of project properties. Only the properties named in the request's properties query parameter are returned, so this is an empty object when that parameter is omitted. */
             readonly properties?: {
                 [key: string]: unknown;
             };
@@ -22655,7 +22878,7 @@ export type components = {
              * @description The [project type](https://confluence.atlassian.com/x/GwiiLQ#Jiraapplicationsoverview-Productfeaturesandprojecttypes) of the project.
              * @enum {string}
              */
-            readonly projectTypeKey?: "software" | "service_desk" | "business";
+            readonly projectTypeKey?: "software" | "service_desk" | "business" | "product_discovery";
             /** @description The URL of the project details. */
             readonly self?: string;
             /** @description Whether or not the project is simplified. */
@@ -22964,7 +23187,7 @@ export type components = {
              * @description The type of the project role. This is "DEFAULT" or "GUEST\_ROLE".
              * @enum {string}
              */
-            readonly type?: "DEFAULT" | "GUEST_ROLE";
+            readonly type?: "DEFAULT" | "GUEST_ROLE" | "AI_AGENT_ROLE";
         };
         /** @description Details of the group associated with the role. */
         ProjectRoleGroup: {
@@ -23343,7 +23566,7 @@ export type components = {
              * @example EDITABLE
              * @enum {string}
              */
-            type?: "HIDDEN" | "VIEWABLE" | "EDITABLE" | "GUEST";
+            type?: "HIDDEN" | "VIEWABLE" | "AI_AGENT" | "EDITABLE" | "GUEST";
         };
         RolesCapabilityPayload: {
             /** @description The list of roles to create. */
@@ -23621,6 +23844,8 @@ export type components = {
             fields?: string[];
             /** @description Reference fields by their key (rather than ID). The default is `false`. */
             fieldsByKeys?: boolean;
+            /** @description Whether to also return issues that belong to archived projects. Archived projects are excluded by default. Requires *Browse projects* permission on the archived project. The default is `false`. */
+            includeArchivedProjects?: boolean;
             /**
              * @description A [JQL](https://confluence.atlassian.com/x/egORLQ) expression. For performance reasons, this parameter requires a bounded query. A bounded query is a query with a search restriction.
              *
@@ -23659,6 +23884,8 @@ export type components = {
             readonly schema?: {
                 [key: string]: components["schemas"]["JsonTypeBean"];
             };
+            /** @description Experimental. Warnings generated during the search, e.g. when a JQL clause exceeded its argument limit or when the result set was truncated due to an ingestion limit. This field is currently rolling out behind a feature flag and may be absent, empty, or change shape without notice until generally available. */
+            readonly warnings?: components["schemas"]["SearchWarning"][];
         };
         /** @description Details of how to filter and list search auto complete information. */
         SearchAutoCompleteFilter: {
@@ -23740,6 +23967,7 @@ export type components = {
         SearchResultFieldParameters: {
             description?: string;
             isRequired?: boolean;
+            rendererType?: string;
         };
         /** @description The result of a JQL search. */
         SearchResults: {
@@ -23776,7 +24004,34 @@ export type components = {
         SearchResultWorkTypeParameters: {
             description?: string;
             isRequired?: boolean;
+            rendererType?: string;
             workTypeId?: string;
+        };
+        /** @description Experimental. A warning returned alongside successful search results. */
+        SearchWarning: {
+            /** @description Structured details about the warning, if available. */
+            details?: components["schemas"]["SearchWarningLimitDetails"];
+            /** @description A human-readable explanation of the warning suitable for surfacing to end users. */
+            readonly message?: string;
+            /** @description The type of warning, e.g. CLAUSE\_LIMIT\_EXCEEDED. */
+            readonly type?: string;
+        };
+        /** @description Experimental. Structured details about a JQL clause exceeding its argument limit. */
+        SearchWarningLimitDetails: {
+            /**
+             * Format: int64
+             * @description The actual number of arguments supplied that exceeded the limit.
+             */
+            readonly actual?: number;
+            /** @description The arguments passed to the JQL clause. */
+            readonly arguments?: string;
+            /** @description The JQL clause that triggered the limit, e.g. issueHistory(). */
+            readonly clause?: string;
+            /**
+             * Format: int64
+             * @description The maximum number of arguments allowed for the clause.
+             */
+            readonly limit?: number;
         };
         /** @description Details of an issue level security item. */
         SecurityLevel: {
@@ -23834,6 +24089,7 @@ export type components = {
              * @example New Security Level
              */
             name?: string;
+            pcri?: components["schemas"]["ProjectCreateResourceIdentifier"];
             /** @description The members of the security level */
             securityLevelMembers?: components["schemas"]["SecurityLevelMemberPayload"][];
         };
@@ -24356,6 +24612,11 @@ export type components = {
              */
             onConflict?: "FAIL" | "USE" | "NEW";
             pcri?: components["schemas"]["ProjectCreateResourceIdentifier"];
+            /**
+             * @description The scope of the status. Set to GLOBAL to make the status shared across projects. Leave null for the default (project-scoped) behaviour.
+             * @enum {string}
+             */
+            scope?: "GLOBAL";
             /**
              * @description The status category of the status. The value is case-sensitive.
              * @enum {string}
@@ -25090,7 +25351,7 @@ export type components = {
             portalId?: string;
             /** @description The project ID of the context. Null is treated as a wildcard, meaning the UI modification will be applied to all projects. Each UI modification context can have a maximum of one wildcard. */
             projectId?: string;
-            /** @description The request type ID of the context. Only required for Jira Service Management request create portal view (`JSMRequestCreate`). */
+            /** @description The request type ID of the context. Required for Jira Service Management request create portal view (`JSMRequestCreate`). Optional for Agent view types (`GICAgentView`, `IssueViewAgentView`, `IssueTransitionAgentView`): when set on an agent view context, the UI modification applies only to issues with that request type. Omitting `requestTypeId` does not create a wildcard — it means the context is not scoped to any specific request type. */
             requestTypeId?: string;
             /**
              * @description The view type of the context.
@@ -25100,13 +25361,18 @@ export type components = {
              *      *  `IssueView` \- Jira issue view
              *      *  `IssueTransition` \- Jira issue transition
              *      *  `JSMRequestCreate` \- Jira Service Management request create portal view
+             *      *  `GICAgentView` \- Agent view variant of Jira global issue create
+             *      *  `IssueViewAgentView` \- Agent view variant of Jira issue view
+             *      *  `IssueTransitionAgentView` \- Agent view variant of Jira issue transition
              *
-             *     For Jira view types (`GIC`, `IssueView`, `IssueTransition`), null is treated as a wildcard, meaning the UI modification will be applied to all view types. Each Jira context can have a maximum of one wildcard.
+             *     For Jira and Agent view types (`GIC`, `IssueView`, `IssueTransition`, `GICAgentView`, `IssueViewAgentView`, `IssueTransitionAgentView`), null is treated as a wildcard, meaning the UI modification will be applied to all view types. Each Jira or Agent context can have a maximum of one wildcard.
+             *
+             *     Agent view contexts use `projectId` and `issueTypeId` like Jira contexts, and may optionally also set `requestTypeId`. Agent view contexts must not set `portalId`.
              *
              *     Wildcards are not applicable for JSM contexts.
              * @enum {string}
              */
-            viewType?: "GIC" | "IssueView" | "IssueTransition" | "JSMRequestCreate";
+            viewType?: "GIC" | "IssueView" | "IssueTransition" | "JSMRequestCreate" | "GICAgentView" | "IssueViewAgentView" | "IssueTransitionAgentView";
         };
         /** @description The details of a UI modification. */
         UiModificationDetails: {
@@ -26083,6 +26349,15 @@ export type components = {
         };
         /** @description The workflow transition rule conditions tree. */
         WorkflowCondition: components["schemas"]["WorkflowSimpleCondition"] | components["schemas"]["WorkflowCompoundCondition"];
+        /** @description The copy workflow payload. */
+        WorkflowCopyRequest: {
+            /** @description The description of the new workflow to create. Defaults to an empty description. */
+            description?: string;
+            /** @description The ID of the workflow to copy. */
+            workflowId: string;
+            /** @description The name of the new workflow to create. */
+            workflowName: string;
+        };
         /** @description The details of the workflows to create. */
         WorkflowCreate: {
             /** @description The description of the workflow to create. */
@@ -26774,17 +27049,6 @@ export type components = {
              */
             toPort?: number | null;
         } | null;
-        /** @description Details about the server Jira is running on. */
-        WorkflowTransitionProperty: {
-            /** @description The ID of the transition property. */
-            readonly id?: string;
-            /** @description The key of the transition property. Also known as the name of the transition property. */
-            readonly key?: string;
-            /** @description The value of the transition property. */
-            value: string;
-        } & {
-            [key: string]: unknown;
-        };
         /** @description A workflow transition rule. */
         WorkflowTransitionRule: {
             /** @description EXPERIMENTAL. The configuration of the transition rule. */
@@ -27039,6 +27303,7 @@ export type components = {
         WorkTypeParameters: {
             description?: string;
             isRequired: boolean;
+            rendererType?: string;
             /** Format: int64 */
             workTypeId: number;
         };
@@ -27448,6 +27713,8 @@ export interface operations {
     updateMultipleCustomFieldValues: {
         parameters: {
             query?: {
+                /** @description Whether to generate app events for this update. Suppresses Forge, Connect, OAuth 2.0, and admin-configured webhooks (registered via the Jira admin UI). Note: Suppressing events means that "issue updated" events will not be emitted for your app or any other apps installed in Jira. This may cause other apps to retain stale data for the updated field, resulting in potentially confusing behaviour. We do not recommend using this flag in a Marketplace app as it may result in incompatibilities with other apps that depend on up-to-date issue data. */
+                generateAppEvents?: boolean;
                 /** @description Whether to generate a changelog for this update. */
                 generateChangelog?: boolean;
             };
@@ -29278,6 +29545,15 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description 422 response */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LimitExceededResponseBean"];
+                };
+            };
         };
     };
     getComponent: {
@@ -29630,7 +29906,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {"description":"This is a field association scheme","id":"123","isDefault":false,"links":{"associations":"rest/api/3/config/fieldschemes/10000/fields","projects":"rest/api/3/config/fieldschemes/10000/projects"},"name":"Scheme"} */
+                    /** @example {"description":"This is a field association scheme","fieldsCount":5,"id":"123","isDefault":false,"links":{"associations":"rest/api/3/config/fieldschemes/10000/fields","projects":"rest/api/3/config/fieldschemes/10000/projects"},"name":"Scheme"} */
                     "application/json": components["schemas"]["GetFieldAssociationSchemeByIdResponse"];
                 };
             };
@@ -29889,7 +30165,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {"allowedOperations":["REMOVE","CHANGE_REQUIRED","CHANGE_DESCRIPTION"],"fieldId":"customfield_10000","parameters":{"description":"text","isRequired":true},"restrictedToWorkTypes":["1","2"],"workTypeParameters":[{"description":"text","isRequired":true,"workTypeId":"1"},{"description":"textarea","isRequired":false,"workTypeId":"2"}]} */
+                    /** @example {"allowedOperations":["REMOVE","CHANGE_REQUIRED","CHANGE_DESCRIPTION"],"fieldId":"customfield_10000","parameters":{"description":"text","isRequired":true,"rendererType":"atlassian-wiki-renderer"},"restrictedToWorkTypes":["1","2"],"workTypeParameters":[{"description":"text","isRequired":true,"rendererType":"jira-text-renderer","workTypeId":"1"},{"description":"textarea","isRequired":false,"rendererType":"atlassian-wiki-renderer","workTypeId":"2"}]} */
                     "application/json": components["schemas"]["PageBean2FieldAssociationSchemeFieldSearchResult"];
                 };
             };
@@ -29951,7 +30227,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {"fieldId":"customfield_10000","parameters":{"description":"Teams field","isRequired":true},"workTypeParameters":[{"description":"Teams field","isRequired":false,"workTypeId":10010}]} */
+                    /** @example {"fieldId":"customfield_10000","parameters":{"description":"Teams field","isRequired":true,"rendererType":"atlassian-wiki-renderer"},"workTypeParameters":[{"description":"Teams field","isRequired":false,"rendererType":"jira-text-renderer","workTypeId":10010}]} */
                     "application/json": components["schemas"]["GetFieldAssociationParametersResponse"];
                 };
             };
@@ -30254,7 +30530,8 @@ export interface operations {
                  *         {
                  *           "parameters": {
                  *             "description": "Field description",
-                 *             "isRequired": true
+                 *             "isRequired": true,
+                 *             "rendererType": "atlassian-wiki-renderer"
                  *           },
                  *           "schemeIds": [
                  *             10000,
@@ -30264,6 +30541,7 @@ export interface operations {
                  *             {
                  *               "description": "Description for Bug",
                  *               "isRequired": false,
+                 *               "rendererType": "jira-text-renderer",
                  *               "workTypeId": 10002
                  *             }
                  *           ]
@@ -30283,6 +30561,7 @@ export interface operations {
                  *             {
                  *               "description": "Description for Task",
                  *               "isRequired": true,
+                 *               "rendererType": "atlassian-wiki-renderer",
                  *               "workTypeId": 10003
                  *             }
                  *           ]
@@ -33575,6 +33854,13 @@ export interface operations {
                     "application/json": components["schemas"]["PageBeanCustomFieldContextDefaultValue"];
                 };
             };
+            /** @description Returned if one or more of the field's contexts have different default values per issue type, which this endpoint cannot represent. Use `GET /rest/api/3/field/{fieldId}/context/defaultvalues` instead. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
             /** @description Returned if the authentication credentials are incorrect or missing. */
             401: {
                 headers: {
@@ -33684,6 +33970,65 @@ export interface operations {
                 };
                 content: {
                     /** @example {"errorMessages":["The context was not found."],"errors":{}} */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    getContextDefaultValues: {
+        parameters: {
+            query?: {
+                /** @description The IDs of the contexts to return default values for. If omitted, default values for every context the custom field has are returned. */
+                contextId?: number[];
+                /** @description The IDs of the issue types to restrict the returned per-issue-type default values to. If omitted, default values for every issue type are returned. This filter never removes the catch-all `isAnyIssueType` entry of a context. */
+                issueTypeId?: string[];
+                /** @description The maximum number of items to return per page. */
+                maxResults?: number;
+                /** @description The index of the first item to return in a page of results (page offset). */
+                startAt?: number;
+            };
+            header?: never;
+            path: {
+                /** @description The ID of the custom field, for example `customfield\_10000`. */
+                fieldId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returned if the request is successful. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageBeanContextDefaultValues"];
+                };
+            };
+            /** @description Returned if the authentication credentials are incorrect or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Returned if the user does not have the required permissions. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {"errorMessages":["Only Jira administrators can access custom field contexts."],"errors":{}} */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Returned if the custom field is not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {"errorMessages":["The custom field was not found."],"errors":{}} */
                     "application/json": unknown;
                 };
             };
@@ -36808,6 +37153,58 @@ export interface operations {
             };
         };
     };
+    getBulkPinStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Forge module ID and the list of projects to check. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ForgePanelProjectPinStatusRequest"];
+            };
+        };
+        responses: {
+            /** @description Returned if the request is successful. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ForgePanelProjectPinStatusResponse"];
+                };
+            };
+            /** @description Returned if the request body is invalid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorCollection"];
+                };
+            };
+            /** @description Returned if the user does not have permission to administer Jira. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorCollection"];
+                };
+            };
+            /** @description Returned if the pin status could not be read (server error). */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorCollection"];
+                };
+            };
+        };
+    };
     getGroup: {
         parameters: {
             query?: {
@@ -37304,6 +37701,8 @@ export interface operations {
                 excludeConnectAddons?: boolean;
                 /** @description The custom field ID of the field this request is for. */
                 fieldId?: string;
+                /** @description Whether AI Agents should be included in the search results. If an invalid value is provided, the default value is used. */
+                includeAiAgents?: boolean;
                 /** @description The ID of an issue type that returned users and groups must have permission to view. To include multiple issue types, provide an ampersand-separated list. For example, `issueTypeId=10000&issueTypeId=10001`. Special values, such as `-1` (all standard issue types) and `-2` (all subtask issue types), are supported. This parameter is only used when `fieldId` is present. */
                 issueTypeId?: string[];
                 /** @description The maximum number of items to return in each list. */
@@ -37816,7 +38215,7 @@ export interface operations {
              *
              *      *  the request body is missing.
              *      *  the user does not have the necessary permission to edit one or more fields.
-             *      *  the request includes one or more fields that are not found or are not associated with the issue's edit screen.
+             *      *  the request includes one or more fields that don't exist or aren't associated with the project and issue type.
              *      *  the request includes an invalid transition.
              */
             400: {
@@ -40979,7 +41378,7 @@ export interface operations {
                     "application/json": components["schemas"]["BulkIssueResults"];
                 };
             };
-            /** @description Returned if no issue IDs/keys were present, or more than 100 issue IDs/keys were requested. */
+            /** @description Returned if no issue IDs/keys were present, more than the maximum number of issue IDs/keys were requested (100, or up to 1000 for eligible requests), or more than 5 issue property keys were requested. */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -41121,6 +41520,63 @@ export interface operations {
             };
             /** @description Returned if the authentication credentials are incorrect or missing. */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getIssueAdfLimitReport: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Restrict the report to the given ADF field types. Defaults to every ADF field type.
+                 *
+                 *     For sites with a high issue volume, consider requesting field types individually to avoid timeouts.
+                 *
+                 *     Usage: Add `?fieldType=comment_adf&fieldType=worklog_adf` to the end of the path to report on comments and worklogs only.
+                 */
+                fieldType?: string[];
+                /**
+                 * @description Return issue keys instead of issue ids in the response.
+                 *
+                 *     Usage: Add `?isReturningKeys=true` to the end of the path to request issue keys.
+                 */
+                isReturningKeys?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returned if the request is successful. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {"entitiesBreachingLimit":{"comment_adf":{"10059":[30401]},"customfield_adf":{"10051":[20301,20302]},"description_adf":{"10058":[],"10059":[]},"environment_adf":{"10058":[]},"worklog_adf":{"10056":[40501],"10058":[40502,40503]}},"issuesBreachingLimit":{"comment_adf":{"10059":1},"customfield_adf":{"10051":2},"description_adf":{"10058":1,"10059":1},"environment_adf":{"10058":1},"worklog_adf":{"10056":1,"10058":2}},"limits":{"comment_adf":1048576,"customfield_adf":1048576,"description_adf":1048576,"environment_adf":1048576,"worklog_adf":1048576}} */
+                    "application/json": components["schemas"]["IssueLimitReportResponseBean"];
+                };
+            };
+            /** @description Returned if a requested field type is not a valid ADF field type. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Returned if the authentication credentials are incorrect or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Returned if the user does not have permission to complete this request. */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -42567,6 +43023,15 @@ export interface operations {
                 content: {
                     /** @example {"errorMessages":["Issue security scheme with ID 10000 not found."],"errors":{}} */
                     "application/json": components["schemas"]["ErrorCollection"];
+                };
+            };
+            /** @description 422 response */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LimitExceededResponseBean"];
                 };
             };
         };
@@ -45684,7 +46149,7 @@ export interface operations {
                     "application/json": components["schemas"]["IssueMatches"];
                 };
             };
-            /** @description Returned if `jqls` exceeds the maximum number of JQL queries or `issueIds` exceeds the maximum number of issue IDs. */
+            /** @description Returned if `jqls` contains more than 10 JQL queries or `issueIds` contains more than 50 issue IDs. */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -47192,6 +47657,15 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description 422 response */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LimitExceededResponseBean"];
+                };
+            };
         };
     };
     deletePermissionScheme: {
@@ -47355,6 +47829,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description 422 response */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LimitExceededResponseBean"];
+                };
             };
         };
     };
@@ -49176,6 +49659,15 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description 422 response */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LimitExceededResponseBean"];
+                };
+            };
         };
     };
     updatePriorityScheme: {
@@ -49293,6 +49785,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description 422 response */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LimitExceededResponseBean"];
+                };
             };
         };
     };
@@ -49652,6 +50153,441 @@ export interface operations {
         /** @description The JSON payload containing the project details and capabilities */
         requestBody: {
             content: {
+                /**
+                 * @example {
+                 *       "details": {
+                 *         "additionalProperties": {},
+                 *         "assigneeType": "PROJECT_LEAD",
+                 *         "avatarId": 1,
+                 *         "categoryId": 1,
+                 *         "currencyCode": "USD",
+                 *         "description": "description",
+                 *         "enableComponents": false,
+                 *         "key": "key",
+                 *         "language": "EN-US",
+                 *         "leadAccountId": "leadAccountId",
+                 *         "name": "name",
+                 *         "projectTypeKey": "software",
+                 *         "url": "url",
+                 *         "useSystemDefaultPermissionSchemeAndRole": false
+                 *       },
+                 *       "template": {
+                 *         "boardFeatures": {
+                 *           "boardFeatures": {
+                 *             "pcri:board:ref:board1": [
+                 *               {
+                 *                 "featureKey": "SPRINTS",
+                 *                 "state": true
+                 *               }
+                 *             ]
+                 *           }
+                 *         },
+                 *         "boards": {
+                 *           "boards": [
+                 *             {
+                 *               "boardFilterJQL": "project = 'My Project'",
+                 *               "cardLayout": {
+                 *                 "showDaysInColumn": true
+                 *               },
+                 *               "columns": [
+                 *                 {
+                 *                   "name": "TODO",
+                 *                   "statusIds": [
+                 *                     "pcri:status:ref:todo"
+                 *                   ]
+                 *                 }
+                 *               ],
+                 *               "name": "My Board",
+                 *               "pcri": "pcri:board:ref:board1",
+                 *               "quickFilters": [
+                 *                 {
+                 *                   "description": "This is a quick filter for my project",
+                 *                   "jqlQuery": "project = 'My Project'",
+                 *                   "name": "My Quick Filter"
+                 *                 }
+                 *               ],
+                 *               "setupFutureSprint": true,
+                 *               "supportsSprint": true,
+                 *               "swimlanes": {
+                 *                 "customSwimlanes": [
+                 *                   {
+                 *                     "description": "This is a swimlane for my project",
+                 *                     "jqlQuery": "project = 'My Project'",
+                 *                     "name": "My Swimlane"
+                 *                   }
+                 *                 ],
+                 *                 "defaultCustomSwimlaneName": "My Swimlane",
+                 *                 "swimlaneStrategy": "none"
+                 *               }
+                 *             }
+                 *           ]
+                 *         },
+                 *         "field": {
+                 *           "customFieldDefinitions": [
+                 *             {
+                 *               "cfType": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+                 *               "description": "This is a custom field",
+                 *               "name": "Custom Field 1",
+                 *               "onConflict": "FAIL",
+                 *               "pcri": "pcri:field:ref:customField1",
+                 *               "searcherKey": "com.atlassian.jira.plugin.system.customfieldtypes:textsearcher"
+                 *             }
+                 *           ],
+                 *           "fieldContexts": [],
+                 *           "fieldLayoutScheme": {
+                 *             "defaultFieldLayout": "pcri:fieldLayout:ref:fieldLayout1",
+                 *             "description": "This is a field layout scheme",
+                 *             "explicitMappings": {
+                 *               "pcri:issueType:ref:default": "pcri:fieldLayout:ref:fieldLayout2"
+                 *             },
+                 *             "name": "Field Layout Scheme 1",
+                 *             "pcri": "pcri:fieldLayoutScheme:ref:fls1"
+                 *           },
+                 *           "fieldLayouts": [
+                 *             {
+                 *               "configuration": [
+                 *                 {
+                 *                   "pcri": "pcri:field:id:summary",
+                 *                   "required": false,
+                 *                   "show": true
+                 *                 }
+                 *               ],
+                 *               "description": "This is a field layout",
+                 *               "name": "Field Layout 1",
+                 *               "pcri": "pcri:fieldLayout:ref:fieldLayout1"
+                 *             }
+                 *           ],
+                 *           "fieldScheme": {
+                 *             "description": "This is a field scheme",
+                 *             "items": [],
+                 *             "name": "Field Scheme 1",
+                 *             "onConflict": "USE",
+                 *             "pcri": "pcri:fieldScheme:id:fieldScheme1"
+                 *           },
+                 *           "issueLayouts": [
+                 *             {
+                 *               "containerId": "pcri:issueType:ref:epic",
+                 *               "issueLayoutType": "ISSUE_VIEW",
+                 *               "items": [
+                 *                 {
+                 *                   "itemKey": "pcri:field:id:summary",
+                 *                   "properties": {
+                 *                     "jsd.field.displayName": "sd.premade.project.servicedesk.common.requesttype.email.field.summary"
+                 *                   },
+                 *                   "sectionType": "content",
+                 *                   "type": "FIELD"
+                 *                 }
+                 *               ],
+                 *               "pcri": "pcri:issueLayout:ref:issueLayout1"
+                 *             }
+                 *           ],
+                 *           "issueTypeScreenScheme": {
+                 *             "defaultScreenScheme": "pcri:screenScheme:ref:defaultScreenScheme",
+                 *             "description": "This is an issue type screen scheme",
+                 *             "explicitMappings": {
+                 *               "pcri:issueType:ref:issueType1": "pcri:screenScheme:ref:screenScheme1"
+                 *             },
+                 *             "name": "Issue Type Screen Scheme 1",
+                 *             "pcri": "pcri:issuetypeScreenScheme:ref:issuetypeScreenSchemeRef1"
+                 *           },
+                 *           "projectTemplateSource": "LIVE",
+                 *           "screenScheme": [
+                 *             {
+                 *               "defaultScreen": "pcri:screen:ref:default",
+                 *               "description": "This is a screen scheme",
+                 *               "explicitMappings": {
+                 *                 "create": "pcri:screen:ref:createScreen",
+                 *                 "edit": "pcri:screen:ref:editScreen",
+                 *                 "view": "pcri:screen:ref:viewScreen"
+                 *               },
+                 *               "name": "Screen Scheme 1",
+                 *               "pcri": "pcri:screenScheme:ref:screenScheme1"
+                 *             }
+                 *           ],
+                 *           "screens": [
+                 *             {
+                 *               "description": "This is a screen",
+                 *               "name": "Screen 1",
+                 *               "pcri": "pcri:screen:ref:screen1",
+                 *               "tabs": [
+                 *                 {
+                 *                   "fields": [
+                 *                     "pcri:field:ref:field1",
+                 *                     "pcri:field:ref:field2"
+                 *                   ],
+                 *                   "name": "Tab 1"
+                 *                 }
+                 *               ]
+                 *             }
+                 *           ]
+                 *         },
+                 *         "issueType": {
+                 *           "issueTypeHierarchy": [
+                 *             {
+                 *               "hierarchyLevel": 0,
+                 *               "name": "Task issue type hierachy",
+                 *               "onConflict": "USE",
+                 *               "pcri": "pcri:issueTypeHierachy:ref:issueTypeHierachy1"
+                 *             }
+                 *           ],
+                 *           "issueTypeScheme": {
+                 *             "defaultIssueTypeId": "pcri:issueType:ref:default",
+                 *             "description": "Test Issue Type Scheme description",
+                 *             "issueTypeIds": [
+                 *               "pcri:issueType:ref:default",
+                 *               "pcri:issueType:id:10000"
+                 *             ],
+                 *             "name": "Test Issue Type Scheme",
+                 *             "pcri": "pcri:issueTypeScheme:ref:its"
+                 *           },
+                 *           "issueTypes": [
+                 *             {
+                 *               "avatarId": 10,
+                 *               "description": "Test issue type description",
+                 *               "hierarchyLevel": 0,
+                 *               "name": "Test issue type",
+                 *               "onConflict": "USE",
+                 *               "pcri": "pcri:issueType:ref:default",
+                 *               "permitedOperations": {
+                 *                 "deletable": false,
+                 *                 "editable": true
+                 *               }
+                 *             }
+                 *           ]
+                 *         },
+                 *         "notification": {
+                 *           "description": "Description",
+                 *           "name": "Simplified Notification Scheme",
+                 *           "notificationSchemeEvents": [
+                 *             {
+                 *               "event": {
+                 *                 "id": "1"
+                 *               },
+                 *               "notifications": [
+                 *                 {
+                 *                   "notificationType": "CurrentAssignee"
+                 *                 }
+                 *               ]
+                 *             }
+                 *           ],
+                 *           "onConflict": "USE",
+                 *           "pcri": "pcri:notificationScheme:ref:notification1"
+                 *         },
+                 *         "permissionScheme": {
+                 *           "addAddonRole": true,
+                 *           "description": "This is an example permission scheme",
+                 *           "grants": [
+                 *             {
+                 *               "applicationAccess": [],
+                 *               "groupCustomFields": [],
+                 *               "groups": [],
+                 *               "permissionKeys": [
+                 *                 "ADMINISTER_PROJECTS",
+                 *                 "BROWSE_PROJECTS"
+                 *               ],
+                 *               "projectRoles": [
+                 *                 "pcri:role:ref:admin"
+                 *               ],
+                 *               "specialGrants": [],
+                 *               "userCustomFields": [],
+                 *               "users": []
+                 *             }
+                 *           ],
+                 *           "name": "Example Permission Scheme",
+                 *           "onConflict": "USE",
+                 *           "pcri": "pcri:permissionScheme:ref:scheme"
+                 *         },
+                 *         "project": {
+                 *           "fieldLayoutSchemeId": "pcri:fieldLayoutScheme:id:10001",
+                 *           "issueSecuritySchemeId": "pcri:issueSecurityScheme:id:10001",
+                 *           "issueTypeSchemeId": "pcri:issueTypeScheme:id:10001",
+                 *           "issueTypeScreenSchemeId": "pcri:issueTypeScreenScheme:id:10001",
+                 *           "notificationSchemeId": "pcri:notificationScheme:id:10001",
+                 *           "pcri": "pcri:project:ref:newProject1",
+                 *           "permissionSchemeId": "pcri:permissionScheme:id:10001",
+                 *           "projectTypeKey": "software",
+                 *           "workflowSchemeId": "pcri:workflowScheme:id:10001"
+                 *         },
+                 *         "role": {
+                 *           "roleToProjectActors": {
+                 *             "pcri:role:ref:role1": [
+                 *               "pcri:user:id:1"
+                 *             ],
+                 *             "pcri:role:ref:role2": [
+                 *               "pcri:user:id:2"
+                 *             ]
+                 *           },
+                 *           "roles": [
+                 *             {
+                 *               "defaultActors": [
+                 *                 "pcri:user:id:1",
+                 *                 "pcri:user:id:2"
+                 *               ],
+                 *               "description": "Administrator role with all permissions",
+                 *               "name": "Admin Role",
+                 *               "onConflict": "FAIL",
+                 *               "pcri": "pcri:role:ref:role1",
+                 *               "type": "EDITABLE"
+                 *             },
+                 *             {
+                 *               "description": "Regular user role with limited permissions",
+                 *               "name": "User Role",
+                 *               "onConflict": "FAIL",
+                 *               "pcri": "pcri:role:ref:role2",
+                 *               "type": "VIEWABLE"
+                 *             }
+                 *           ]
+                 *         },
+                 *         "scope": {
+                 *           "type": "GLOBAL"
+                 *         },
+                 *         "security": {
+                 *           "description": "Newly created issue security scheme",
+                 *           "name": "New Security Scheme",
+                 *           "pcri": "pcri:issueSecurityScheme:ref:newIssueSecurityScheme",
+                 *           "securityLevels": [
+                 *             {
+                 *               "description": "Newly created issue security level",
+                 *               "isDefault": true,
+                 *               "name": "New Security Level",
+                 *               "pcri": "pcri:issueSecurityLevel:ref:new-security-level",
+                 *               "securityLevelMembers": [
+                 *                 {
+                 *                   "parameter": "administrators",
+                 *                   "type": "group"
+                 *                 }
+                 *               ]
+                 *             }
+                 *           ]
+                 *         },
+                 *         "workflow": {
+                 *           "statuses": [
+                 *             {
+                 *               "description": "To Do Status",
+                 *               "name": "To Do",
+                 *               "onConflict": "USE",
+                 *               "pcri": "pcri:status:ref:todo",
+                 *               "statusCategory": "TODO"
+                 *             },
+                 *             {
+                 *               "description": "In Progress Status",
+                 *               "name": "In Progress",
+                 *               "onConflict": "USE",
+                 *               "pcri": "pcri:status:ref:inprogress",
+                 *               "statusCategory": "IN_PROGRESS"
+                 *             },
+                 *             {
+                 *               "description": "Done Status",
+                 *               "name": "Done",
+                 *               "onConflict": "USE",
+                 *               "pcri": "pcri:status:ref:done",
+                 *               "statusCategory": "DONE"
+                 *             }
+                 *           ],
+                 *           "workflowScheme": {
+                 *             "defaultWorkflow": "pcri:workflow:ref:workflow1",
+                 *             "description": "Description",
+                 *             "name": "New Workflow scheme for Project Custom Template",
+                 *             "pcri": "pcri:workflowScheme:ref:workflowSchemeRef1"
+                 *           },
+                 *           "workflows": [
+                 *             {
+                 *               "description": "a software workflow",
+                 *               "loopedTransitionContainerLayout": {
+                 *                 "x": 1,
+                 *                 "y": 2
+                 *               },
+                 *               "name": "Software Simplified Workflow for Project",
+                 *               "onConflict": "NEW",
+                 *               "pcri": "pcri:workflow:ref:workflow",
+                 *               "startPointLayout": {
+                 *                 "x": 1,
+                 *                 "y": 2
+                 *               },
+                 *               "statuses": [
+                 *                 {
+                 *                   "layout": {
+                 *                     "x": 1,
+                 *                     "y": 2
+                 *                   },
+                 *                   "pcri": "pcri:status:ref:todo",
+                 *                   "properties": {
+                 *                     "key": "value"
+                 *                   }
+                 *                 }
+                 *               ],
+                 *               "transitions": [
+                 *                 {
+                 *                   "actions": [],
+                 *                   "description": "To do transition",
+                 *                   "from": [],
+                 *                   "id": 11,
+                 *                   "name": "To Do",
+                 *                   "properties": {
+                 *                     "jira.i18n.title": "gh.workflow.preset.todo"
+                 *                   },
+                 *                   "to": {
+                 *                     "status": "pcri:status:ref:todo"
+                 *                   },
+                 *                   "triggers": [],
+                 *                   "type": "GLOBAL",
+                 *                   "validators": []
+                 *                 },
+                 *                 {
+                 *                   "actions": [],
+                 *                   "description": "In Progress Transition",
+                 *                   "from": [],
+                 *                   "id": 21,
+                 *                   "name": "In Progress",
+                 *                   "properties": {
+                 *                     "jira.i18n.title": "gh.workflow.preset.inprogress"
+                 *                   },
+                 *                   "to": {
+                 *                     "status": "pcri:status:ref:inprogress"
+                 *                   },
+                 *                   "triggers": [],
+                 *                   "type": "GLOBAL",
+                 *                   "validators": []
+                 *                 },
+                 *                 {
+                 *                   "actions": [],
+                 *                   "description": "Done Transition",
+                 *                   "from": [],
+                 *                   "id": 31,
+                 *                   "name": "Done",
+                 *                   "properties": {
+                 *                     "jira.i18n.title": "gh.workflow.preset.done"
+                 *                   },
+                 *                   "to": {
+                 *                     "status": "pcri:status:ref:done"
+                 *                   },
+                 *                   "triggers": [],
+                 *                   "type": "GLOBAL",
+                 *                   "validators": []
+                 *                 },
+                 *                 {
+                 *                   "actions": [],
+                 *                   "description": "Start transition",
+                 *                   "from": [],
+                 *                   "id": 1,
+                 *                   "name": "Create",
+                 *                   "properties": {
+                 *                     "jira.i18n.title": "gh.workflow.preset.todo"
+                 *                   },
+                 *                   "to": {
+                 *                     "status": "pcri:status:ref:todo"
+                 *                   },
+                 *                   "triggers": [],
+                 *                   "type": "INITIAL",
+                 *                   "validators": []
+                 *                 }
+                 *               ]
+                 *             }
+                 *           ]
+                 *         }
+                 *       }
+                 *     }
+                 */
                 "application/json": components["schemas"]["ProjectCustomTemplateCreateRequestDTO"];
             };
         };
@@ -49929,7 +50865,7 @@ export interface operations {
                  *      *  `issueTypeHierarchy` The project issue type hierarchy.
                  */
                 expand?: string;
-                /** @description A list of project properties to return for the project. This parameter accepts a comma-separated list. */
+                /** @description A list of project properties to return for the project. This parameter accepts a comma-separated list. Note that only the properties named here are returned in `properties` in the response; that object is empty when this parameter is omitted. */
                 properties?: string[];
             };
             header?: never;
@@ -54890,6 +55826,8 @@ export interface operations {
                 fields?: string[];
                 /** @description Reference fields by their key (rather than ID). The default is `false`. */
                 fieldsByKeys?: boolean;
+                /** @description Whether to also return issues that belong to [archived projects](https://support.atlassian.com/jira-cloud-administration/docs/archive-a-project/). Issues in archived projects are excluded by default. Setting this to `true` returns them alongside issues from active projects; the *Browse projects* permission is still required on the archived project. The default is `false`. */
+                includeArchivedProjects?: boolean;
                 /**
                  * @description A [JQL](https://confluence.atlassian.com/x/egORLQ) expression. For performance reasons, this parameter requires a bounded query. A bounded query is a query with a search restriction.
                  *
@@ -55700,6 +56638,8 @@ export interface operations {
     search: {
         parameters: {
             query?: {
+                /** @description Whether to include global statuses (scope = null, not tied to any project) in the response. Defaults to false. Only relevant for project scoped queries. */
+                includeGlobalStatuses?: boolean;
                 /** @description The maximum number of items to return per page. */
                 maxResults?: number;
                 /** @description The project the status is part of or null for global statuses. */
@@ -55874,7 +56814,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {"isLast":true,"maxResults":100,"startAt":0,"total":3,"values":[{"id":"d7dbda8a-6239-4b63-8e13-a5ef975c8e61","name":"Reveal Story Points","description":"Reveals Story Points field when any Sprint is selected.","self":"https://api.atlassian.com/ex/jira/{cloudid}/rest/api/2/uiModifications/d7dbda8a-6239-4b63-8e13-a5ef975c8e61","data":"{field: 'Story Points', config: {hidden: false}}","contexts":[{"id":"1533537a-bda3-4ac6-8481-846128cd9ef4","projectId":"10000","issueTypeId":"10000","viewType":"GIC","isAvailable":true},{"id":"c016fefa-6eb3-40c9-8596-4c4ef273e67c","projectId":"10000","issueTypeId":"10001","viewType":"IssueView","isAvailable":true},{"id":"1016defa-7ew3-40c5-8696-4c1efg73e67s","projectId":"10000","issueTypeId":"10002","viewType":"IssueTransition","isAvailable":true}]},{"id":"e4fe8db5-f82f-416b-a3aa-b260b55da577","name":"Set Assignee","description":"Sets the Assignee field automatically.","self":"https://api.atlassian.com/ex/jira/{cloudid}/rest/api/2/uiModifications/e4fe8db5-f82f-416b-a3aa-b260b55da577","contexts":[{"id":"8b3740f9-8780-4958-8228-69dcfbda11d9","projectId":"10000","issueTypeId":"10000","viewType":"GIC","isAvailable":true}]},{"id":"d3f4097e-8d8e-451e-9fb6-27c3c8c3bfff","name":"Wildcard example","description":"This context is applied to all issue types","self":"https://api.atlassian.com/ex/jira/{cloudid}/rest/api/2/uiModifications/d3f4097e-8d8e-451e-9fb6-27c3c8c3bfff","contexts":[{"id":"521f2181-5d5e-46ea-9fc9-871bbf245b8b","projectId":"10000","issueTypeId":null,"viewType":"GIC","isAvailable":true}]},{"id":"1453f993-79ce-4389-a36d-eb72d5c85dd6","name":"JSM Context","description":"JSM context doesn't support wildcards.","self":"https://api.atlassian.com/ex/jira/{cloudid}/rest/api/2/uiModifications/1453f993-79ce-4389-a36d-eb72d5c85dd6","contexts":[{"id":"521f2181-8780-4958-9fc9-871bbf245b8b","projectId":null,"portalId":"5","issueTypeId":null,"requestTypeId":"100","viewType":"JSMRequestCreate","isAvailable":true}]}]} */
+                    /** @example {"isLast":true,"maxResults":100,"startAt":0,"total":5,"values":[{"id":"d7dbda8a-6239-4b63-8e13-a5ef975c8e61","name":"Reveal Story Points","description":"Reveals Story Points field when any Sprint is selected.","self":"https://api.atlassian.com/ex/jira/{cloudid}/rest/api/2/uiModifications/d7dbda8a-6239-4b63-8e13-a5ef975c8e61","data":"{field: 'Story Points', config: {hidden: false}}","contexts":[{"id":"1533537a-bda3-4ac6-8481-846128cd9ef4","projectId":"10000","issueTypeId":"10000","viewType":"GIC","isAvailable":true},{"id":"c016fefa-6eb3-40c9-8596-4c4ef273e67c","projectId":"10000","issueTypeId":"10001","viewType":"IssueView","isAvailable":true},{"id":"1016defa-7ew3-40c5-8696-4c1efg73e67s","projectId":"10000","issueTypeId":"10002","viewType":"IssueTransition","isAvailable":true}]},{"id":"e4fe8db5-f82f-416b-a3aa-b260b55da577","name":"Set Assignee","description":"Sets the Assignee field automatically.","self":"https://api.atlassian.com/ex/jira/{cloudid}/rest/api/2/uiModifications/e4fe8db5-f82f-416b-a3aa-b260b55da577","contexts":[{"id":"8b3740f9-8780-4958-8228-69dcfbda11d9","projectId":"10000","issueTypeId":"10000","viewType":"GIC","isAvailable":true}]},{"id":"d3f4097e-8d8e-451e-9fb6-27c3c8c3bfff","name":"Wildcard example","description":"This context is applied to all issue types","self":"https://api.atlassian.com/ex/jira/{cloudid}/rest/api/2/uiModifications/d3f4097e-8d8e-451e-9fb6-27c3c8c3bfff","contexts":[{"id":"521f2181-5d5e-46ea-9fc9-871bbf245b8b","projectId":"10000","issueTypeId":null,"viewType":"GIC","isAvailable":true}]},{"id":"1453f993-79ce-4389-a36d-eb72d5c85dd6","name":"JSM Context","description":"JSM context doesn't support wildcards.","self":"https://api.atlassian.com/ex/jira/{cloudid}/rest/api/2/uiModifications/1453f993-79ce-4389-a36d-eb72d5c85dd6","contexts":[{"id":"521f2181-8780-4958-9fc9-871bbf245b8b","projectId":null,"portalId":"5","issueTypeId":null,"requestTypeId":"100","viewType":"JSMRequestCreate","isAvailable":true}]},{"id":"b83f4e12-2c1a-4d9b-a6e5-3f7c8d2e9b44","name":"Agent View Context","description":"Agent view context with project and issue type scope.","self":"https://api.atlassian.com/ex/jira/{cloudid}/rest/api/2/uiModifications/b83f4e12-2c1a-4d9b-a6e5-3f7c8d2e9b44","contexts":[{"id":"a92c6e34-1b4d-4f7e-8a3c-9d5f0e1c2b78","projectId":"10000","issueTypeId":"10004","viewType":"IssueViewAgentView","isAvailable":true}]}]} */
                     "application/json": components["schemas"]["PageBeanUiModificationDetails"];
                 };
             };
@@ -55940,6 +56880,17 @@ export interface operations {
                  *           "projectId": null,
                  *           "requestTypeId": "10",
                  *           "viewType": "JSMRequestCreate"
+                 *         },
+                 *         {
+                 *           "issueTypeId": "10004",
+                 *           "projectId": "10000",
+                 *           "viewType": "IssueViewAgentView"
+                 *         },
+                 *         {
+                 *           "issueTypeId": "10004",
+                 *           "projectId": "10000",
+                 *           "requestTypeId": "20",
+                 *           "viewType": "GICAgentView"
                  *         }
                  *       ],
                  *       "data": "{field: 'Story Points', config: {hidden: false}}",
@@ -56031,6 +56982,17 @@ export interface operations {
                  *           "projectId": null,
                  *           "requestTypeId": "100",
                  *           "viewType": "JSMRequestCreate"
+                 *         },
+                 *         {
+                 *           "issueTypeId": "10004",
+                 *           "projectId": "10000",
+                 *           "viewType": "IssueViewAgentView"
+                 *         },
+                 *         {
+                 *           "issueTypeId": "10004",
+                 *           "projectId": "10000",
+                 *           "requestTypeId": "20",
+                 *           "viewType": "GICAgentView"
                  *         }
                  *       ],
                  *       "data": "{field: 'Story Points', config: {hidden: true}}",
@@ -56624,6 +57586,15 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Returned if the user already exists and already has the requested Jira product access. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                };
+            };
             /** @description Returned if the request is successful. */
             201: {
                 headers: {
@@ -56634,7 +57605,7 @@ export interface operations {
                     "application/json": components["schemas"]["User"];
                 };
             };
-            /** @description Returned if the request is invalid, the user already exists but does not have access to jira, or the number of licensed users is exceeded. */
+            /** @description Returned if the request is invalid, or the number of licensed users is exceeded, or if the user already exists and has no access to jira & no new jira-products are requested */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -58075,6 +59046,15 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description 422 response */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LimitExceededResponseBean"];
+                };
+            };
         };
     };
     getVersion: {
@@ -59074,7 +60054,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {"issueTypes":{"nextPageToken":"eyJvIjoyfQ==","values":[{"id":"1000"}]},"projectId":"6e2bde9f-f213-4920-95cd-28e015af59a1","workflowId":"2000"} */
+                    /** @example {"issueTypes":{"nextPageToken":"eyJvIjoyfQ==","values":[{"id":"1000"}]},"projectId":"6e2bde9f-f213-4920-95cd-28e015af59a1","workflowId":"fb759d53-a3a4-45ff-9de4-547c4b638dde"} */
                     "application/json": components["schemas"]["WorkflowProjectIssueTypeUsageDTO"];
                 };
             };
@@ -59600,273 +60580,6 @@ export interface operations {
             };
         };
     };
-    getWorkflowTransitionProperties: {
-        parameters: {
-            query: {
-                /** @description Some properties with keys that have the *jira.* prefix are reserved, which means they are not editable. To include these properties in the results, set this parameter to *true*. */
-                includeReservedKeys?: boolean;
-                /** @description The key of the property being returned, also known as the name of the property. If this parameter is not specified, all properties on the transition are returned. */
-                key?: string;
-                /** @description The workflow status. Set to *live* for active and inactive workflows, or *draft* for draft workflows. */
-                workflowMode?: "live" | "draft";
-                /** @description The name of the workflow that the transition belongs to. */
-                workflowName: string;
-            };
-            header?: never;
-            path: {
-                /** @description The ID of the transition. To get the ID, view the workflow in text mode in the Jira administration console. The ID is shown next to the transition. */
-                transitionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 200 response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example [{"id":"jira.i18n.title","key":"jira.i18n.title","value":"some.title"},{"id":"jira.permission","key":"jira.permission","value":"createissue"}] */
-                    "application/json": components["schemas"]["WorkflowTransitionProperty"];
-                };
-            };
-            /** @description Returned if the request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the authentication credentials are incorrect or missing. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the user does not have admin permission */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the workflow transition or property is not found. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    updateWorkflowTransitionProperty: {
-        parameters: {
-            query: {
-                /** @description The key of the property being updated, also known as the name of the property. Set this to the same value as the `key` defined in the request body. */
-                key: string;
-                /** @description The workflow status. Set to `live` for inactive workflows or `draft` for draft workflows. Active workflows cannot be edited. */
-                workflowMode?: "live" | "draft";
-                /** @description The name of the workflow that the transition belongs to. */
-                workflowName: string;
-            };
-            header?: never;
-            path: {
-                /** @description The ID of the transition. To get the ID, view the workflow in text mode in the Jira admin settings. The ID is shown next to the transition. */
-                transitionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "value": "createissue"
-                 *     }
-                 */
-                "application/json": components["schemas"]["WorkflowTransitionProperty"];
-            };
-        };
-        responses: {
-            /** @description 200 response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {"key":"jira.i18n.title","value":"some.title","id":"jira.i18n.title"} */
-                    "application/json": components["schemas"]["WorkflowTransitionProperty"];
-                };
-            };
-            /** @description Returned if no changes were made by the request. For example, attempting to update a property with its current value. */
-            304: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the authentication credentials are incorrect or missing. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the user does not have the necessary permission. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the workflow transition is not found. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    createWorkflowTransitionProperty: {
-        parameters: {
-            query: {
-                /** @description The key of the property being added, also known as the name of the property. Set this to the same value as the `key` defined in the request body. */
-                key: string;
-                /** @description The workflow status. Set to *live* for inactive workflows or *draft* for draft workflows. Active workflows cannot be edited. */
-                workflowMode?: "live" | "draft";
-                /** @description The name of the workflow that the transition belongs to. */
-                workflowName: string;
-            };
-            header?: never;
-            path: {
-                /** @description The ID of the transition. To get the ID, view the workflow in text mode in the Jira admin settings. The ID is shown next to the transition. */
-                transitionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                /**
-                 * @example {
-                 *       "value": "createissue"
-                 *     }
-                 */
-                "application/json": components["schemas"]["WorkflowTransitionProperty"];
-            };
-        };
-        responses: {
-            /** @description 200 response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {"key":"jira.i18n.title","value":"some.title","id":"jira.i18n.title"} */
-                    "application/json": components["schemas"]["WorkflowTransitionProperty"];
-                };
-            };
-            /** @description Returned if a workflow property with the same key is present on the transition. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the authentication credentials are incorrect or missing. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the user does not have the necessary permission. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the workflow transition is not found. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    deleteWorkflowTransitionProperty: {
-        parameters: {
-            query: {
-                /** @description The name of the transition property to delete, also known as the name of the property. */
-                key: string;
-                /** @description The workflow status. Set to `live` for inactive workflows or `draft` for draft workflows. Active workflows cannot be edited. */
-                workflowMode?: "live" | "draft";
-                /** @description The name of the workflow that the transition belongs to. */
-                workflowName: string;
-            };
-            header?: never;
-            path: {
-                /** @description The ID of the transition. To get the ID, view the workflow in text mode in the Jira admin settings. The ID is shown next to the transition. */
-                transitionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 200 response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if no changes were made by the request. For example, trying to delete a property that cannot be found. */
-            304: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the request is invalid. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the authentication credentials are incorrect or missing. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the user does not have the necessary permission. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Returned if the workflow transition is not found. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     readWorkflows: {
         parameters: {
             query?: never;
@@ -59948,6 +60661,66 @@ export interface operations {
             };
             /** @description Returned if the authentication credentials are incorrect or missing, or the caller doesn't have permissions to perform the operation. */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    copyWorkflow: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                /**
+                 * @example {
+                 *       "description": "A copy of the software workflow",
+                 *       "workflowId": "b9ff2384-d3b6-4d4e-9509-3ee19f607168",
+                 *       "workflowName": "Copy of Software workflow 1"
+                 *     }
+                 */
+                "application/json": components["schemas"]["WorkflowCopyRequest"];
+            };
+        };
+        responses: {
+            /** @description Returned if the request is successful. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {"statuses":[{"description":"","id":"10003","name":"Done","scope":{"type":"GLOBAL"},"statusCategory":"DONE","statusReference":"10003"},{"description":"","id":"10001","name":"To Do","scope":{"type":"GLOBAL"},"statusCategory":"TODO","statusReference":"10001"},{"description":"","id":"10002","name":"In Progress","scope":{"type":"GLOBAL"},"statusCategory":"IN_PROGRESS","statusReference":"10002"}],"workflows":[{"description":"","id":"b9ff2384-d3b6-4d4e-9509-3ee19f607168","isEditable":true,"name":"Software workflow 1","scope":{"type":"GLOBAL"},"startPointLayout":{"x":-100.00030899047852,"y":-153.00020599365234},"statuses":[{"deprecated":false,"layout":{"x":317.0000915527344,"y":-16.0},"properties":{},"statusReference":"10002"},{"deprecated":false,"layout":{"x":508.000244140625,"y":-16.0},"properties":{},"statusReference":"10003"},{"deprecated":false,"layout":{"x":114.99993896484375,"y":-16.0},"properties":{},"statusReference":"10001"}],"transitions":[{"actions":[],"description":"","id":"11","links":[],"name":"To Do","properties":{},"toStatusReference":"10001","triggers":[],"type":"GLOBAL","validators":[]},{"actions":[],"description":"","id":"21","links":[],"name":"In Progress","properties":{},"toStatusReference":"10002","triggers":[],"type":"GLOBAL","validators":[]},{"actions":[],"description":"","id":"1","links":[],"name":"Create","properties":{},"toStatusReference":"10001","triggers":[],"type":"INITIAL","validators":[]},{"actions":[],"description":"Move a work item from in progress to done","id":"31","links":[{"fromPort":0,"fromStatusReference":"10002","toPort":1}],"name":"Done","properties":{},"toStatusReference":"10003","triggers":[],"type":"DIRECTED","validators":[]}],"version":{"id":"f010ac1b-3dd3-43a3-aa66-0ee8a447f76e","versionNumber":0}}]} */
+                    "application/json": components["schemas"]["WorkflowCreateResponse"];
+                };
+            };
+            /** @description Returned if the request is not valid. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Returned if the authentication credentials are incorrect or missing, or the caller doesn't have permissions to perform the operation. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Returned if the workflow to copy is not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Returned if another workflow configuration update task is ongoing. */
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -60385,6 +61158,8 @@ export interface operations {
                  *      *  `updated` Sorts by update time.
                  */
                 orderBy?: string;
+                /** @description The ID of the project to filter the workflows by. Only workflows associated with the given project are returned. */
+                projectId?: number;
                 /** @description String used to perform a case-insensitive partial match with workflow name. */
                 queryString?: string;
                 /** @description The scope of the workflow. Global for company-managed projects and Project for team-managed projects. */
@@ -63505,7 +64280,10 @@ export interface operations {
     };
     "ConnectToForgeMigrationTaskSubmissionResource.submitTask_post": {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Whether to retrigger the migration if it has already completed. */
+                retriggerCompletedMigration?: boolean;
+            };
             header?: never;
             path: {
                 /**

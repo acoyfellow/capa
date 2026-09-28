@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Blooio API v2 v2.0.0
-// Operations:  54
+// Operations:  58
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -88,6 +88,8 @@ Get the personal contact card (Name & Photo) for the specified phone number. Thi
 
 	/**
 	 * Update the personal contact card (Name & Photo) for the specified phone number. All fields are optional — only provided fields are updated.
+
+⚠️ **Plan requirement:** Setting the `first_name`, `last_na
 	 *
 	 * `PUT /me/numbers/{number}/contact-card` — risk: medium
 	 */
@@ -101,6 +103,30 @@ Get the personal contact card (Name & Photo) for the specified phone number. Thi
 			risk: "medium",
 			body,
 			overrides: this.overrides["contactCard_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Open a request to forward calls from one of your numbers to another phone number.
+
+This does **not** instantly reconfigure forwarding — it opens a support request that the Blooio team fulfils, and the
+	 *
+	 * `POST /me/numbers/{number}/call-forwarding` — risk: medium
+	 */
+	async callForwarding(number: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "requestCallForwarding",
+			namespace: "me",
+			method: "callForwarding",
+			http: "post",
+			path: `/me/numbers/${number}/call-forwarding`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["callForwarding"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -699,7 +725,7 @@ export class WebhooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new webhook subscription.
+	 * Registration through this endpoint is closed and returns 410. Use POST /v4/webhooks to create new subscriptions. Existing webhooks keep working and can still be listed, updated, and deleted here. Re-p
 	 *
 	 * `POST /webhooks` — risk: medium
 	 */
@@ -908,6 +934,8 @@ export class ChatsResource extends RpcTarget {
 
 	/**
 	 * List all messages in a conversation with optional filtering.
+
+A conversation must already exist: this returns `404` for an address the organization has never exchanged a message with, rather than an e
 	 *
 	 * `GET /chats/{chatId}/messages` — risk: medium
 	 */
@@ -1063,9 +1091,7 @@ The messageId can be an explicit messa
 	}
 
 	/**
-	 * Start the typing indicator for a chat. The indicator shows the recipient that you are typing.
-
-**RCS limitation:** typing indicators are only delivered for iMessage chats — the RCS protocol does not c
+	 * Start the typing indicator for a chat. The indicator shows the recipient that you are typing. Works for both 1:1 chats (pass a phone number or email as `chatId`) and group chats (pass the group ID, e.
 	 *
 	 * `POST /chats/{chatId}/typing` — risk: medium
 	 */
@@ -1087,9 +1113,9 @@ The messageId can be an explicit messa
 	}
 
 	/**
-	 * Stop the typing indicator for a chat.
+	 * Stop the typing indicator for a chat. Works for both 1:1 chats (pass a phone number or email as `chatId`) and group chats (pass the group ID, e.g. `grp_...`).
 
-**RCS limitation:** typing indicators are only delivered for iMessage chats — the RCS protocol does not carry composing state. Calls against RCS-routed chats ret
+**RCS limitation:** typing indicators ar
 	 *
 	 * `DELETE /chats/{chatId}/typing` — risk: medium
 	 */
@@ -1179,7 +1205,7 @@ The messageId can be an explicit messa
 	/**
 	 * Set or update the background image for a conversation. Works for both 1-on-1 and group chats.
 
-The uploaded image is converted into a PosterKit-compatible archive and applied to the iMessage conversat
+The request body must be `multipart/form-data` with a single `background` field containing the **raw imag
 	 *
 	 * `PUT /chats/{chatId}/background` — risk: medium
 	 */
@@ -1303,6 +1329,82 @@ export class PhoneNumbersResource extends RpcTarget {
 	}
 }
 
+export class AnalyticsResource extends RpcTarget {
+	constructor(
+		private apiKey: string | undefined,
+		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
+	) {
+		super();
+	}
+
+	/**
+	 * Returns the per-number risk-tolerance report for every dedicated and inbound number in the organization over a bounded time window. Numbers are returned sorted by descending risk score (riskiest first
+	 *
+	 * `GET /analytics/risk-tolerance` — risk: medium
+	 */
+	async listRiskTolerance(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getRiskTolerance",
+			namespace: "analytics",
+			method: "listRiskTolerance",
+			http: "get",
+			path: `/analytics/risk-tolerance`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listRiskTolerance"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Returns a lightweight cached rollup of the organization's most recent risk scores (highest score/level and the count of high-risk numbers). Read from a cache populated by the full report; returns zero
+	 *
+	 * `GET /analytics/risk-tolerance/summary` — risk: medium
+	 */
+	async summary(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getRiskSummary",
+			namespace: "analytics",
+			method: "summary",
+			http: "get",
+			path: `/analytics/risk-tolerance/summary`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["summary"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Returns the risk-tolerance report for a single number in the organization: its `risk_score`, `risk_level`, `line_type`, `metrics`, `risk_factors`, and `daily_data` time series, computed over the reque
+	 *
+	 * `GET /analytics/risk-tolerance/{number}` — risk: medium
+	 */
+	async retrieveRiskTolerance(number: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getNumberRiskTolerance",
+			namespace: "analytics",
+			method: "retrieveRiskTolerance",
+			http: "get",
+			path: `/analytics/risk-tolerance/${number}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveRiskTolerance"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+}
+
 interface Env {
 	BLOOIO_API_KEY?: string;
 }
@@ -1341,5 +1443,9 @@ export class BlooioCapability extends WorkerEntrypoint<Env> {
 
 	get phoneNumbers(): PhoneNumbersResource {
 		return new PhoneNumbersResource(this.env.BLOOIO_API_KEY, this.overrides["phone-numbers"] || {}, this.runtimeConfig);
+	}
+
+	get analytics(): AnalyticsResource {
+		return new AnalyticsResource(this.env.BLOOIO_API_KEY, this.overrides["analytics"] || {}, this.runtimeConfig);
 	}
 }

@@ -4,7 +4,7 @@
 	"source": {
 		"spec": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.sdk.json",
 		"title": "Stripe API",
-		"version": "2026-04-22.dahlia"
+		"version": "2026-09-30.endive"
 	},
 	"upstream": {
 		"baseUrl": "https://api.stripe.com",
@@ -12,8 +12,8 @@
 	},
 	"auth": "bearer",
 	"contentType": "form",
-	"operations": 534,
-	"namespaces": 73,
+	"operations": 559,
+	"namespaces": 75,
 	"publicHttpRoute": false,
 	"evidenceContract": "capa.evidence.v0"
 }

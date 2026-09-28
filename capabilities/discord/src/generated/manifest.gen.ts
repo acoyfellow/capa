@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Discord HTTP API (Preview) v10
-// Operations:  233
+// Operations:  246
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -114,6 +114,7 @@ export const manifest = {
 	"get_guild_emoji": {"namespace":"guilds","method":"retrieveEmoji","http":"get","path":"/guilds/{guild_id}/emojis/{emoji_id}","risk":"medium"},
 	"update_guild_emoji": {"namespace":"guilds","method":"emojis","http":"patch","path":"/guilds/{guild_id}/emojis/{emoji_id}","risk":"medium"},
 	"delete_guild_emoji": {"namespace":"guilds","method":"deleteEmoji","http":"delete","path":"/guilds/{guild_id}/emojis/{emoji_id}","risk":"medium"},
+	"update_guild_incident_actions": {"namespace":"guilds","method":"incidentActions","http":"put","path":"/guilds/{guild_id}/incident-actions","risk":"medium"},
 	"list_guild_integrations": {"namespace":"guilds","method":"listIntegrations","http":"get","path":"/guilds/{guild_id}/integrations","risk":"medium"},
 	"delete_guild_integration": {"namespace":"guilds","method":"deleteIntegration","http":"delete","path":"/guilds/{guild_id}/integrations/{integration_id}","risk":"medium"},
 	"list_guild_invites": {"namespace":"guilds","method":"listInvites","http":"get","path":"/guilds/{guild_id}/invites","risk":"medium"},
@@ -148,7 +149,12 @@ export const manifest = {
 	"get_guild_scheduled_event": {"namespace":"guilds","method":"retrieveScheduledEvent","http":"get","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}","risk":"medium"},
 	"update_guild_scheduled_event": {"namespace":"guilds","method":"scheduledEvents","http":"patch","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}","risk":"medium"},
 	"delete_guild_scheduled_event": {"namespace":"guilds","method":"deleteScheduledEvent","http":"delete","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}","risk":"medium"},
-	"list_guild_scheduled_event_users": {"namespace":"guilds","method":"users","http":"get","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/users","risk":"medium"},
+	"create_guild_scheduled_event_exception": {"namespace":"guilds","method":"exceptions_0","http":"post","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/exceptions","risk":"medium"},
+	"update_guild_scheduled_event_exception": {"namespace":"guilds","method":"exceptions_1","http":"patch","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/exceptions/{exception_id}","risk":"medium"},
+	"delete_guild_scheduled_event_exception": {"namespace":"guilds","method":"deleteException","http":"delete","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/exceptions/{exception_id}","risk":"medium"},
+	"list_guild_scheduled_event_users": {"namespace":"guilds","method":"users_0","http":"get","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/users","risk":"medium"},
+	"count_guild_scheduled_event_users": {"namespace":"guilds","method":"counts","http":"get","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/users/counts","risk":"medium"},
+	"list_guild_scheduled_event_exception_users": {"namespace":"guilds","method":"users_1","http":"get","path":"/guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/{guild_scheduled_event_exception_id}/users","risk":"medium"},
 	"list_guild_soundboard_sounds": {"namespace":"guilds","method":"listSoundboardSounds","http":"get","path":"/guilds/{guild_id}/soundboard-sounds","risk":"medium"},
 	"create_guild_soundboard_sound": {"namespace":"guilds","method":"createSoundboardSound","http":"post","path":"/guilds/{guild_id}/soundboard-sounds","risk":"medium"},
 	"get_guild_soundboard_sound": {"namespace":"guilds","method":"retrieveSoundboardSound","http":"get","path":"/guilds/{guild_id}/soundboard-sounds/{sound_id}","risk":"medium"},
@@ -181,12 +187,17 @@ export const manifest = {
 	"invite_resolve": {"namespace":"invites","method":"retrieve","http":"get","path":"/invites/{code}","risk":"low"},
 	"invite_revoke": {"namespace":"invites","method":"del","http":"delete","path":"/invites/{code}","risk":"medium"},
 	"get_invite_target_users": {"namespace":"invites","method":"listTargetUsers","http":"get","path":"/invites/{code}/target-users","risk":"medium"},
-	"update_invite_target_users": {"namespace":"invites","method":"targetUsers","http":"put","path":"/invites/{code}/target-users","risk":"medium"},
+	"update_invite_target_users": {"namespace":"invites","method":"targetUsers_0","http":"put","path":"/invites/{code}/target-users","risk":"medium"},
+	"bulk_add_invite_target_users": {"namespace":"invites","method":"bulkAdd","http":"post","path":"/invites/{code}/target-users/bulk-add","risk":"medium"},
+	"bulk_remove_invite_target_users": {"namespace":"invites","method":"bulkDelete","http":"post","path":"/invites/{code}/target-users/bulk-delete","risk":"medium"},
 	"get_invite_target_users_job_status": {"namespace":"invites","method":"jobStatus","http":"get","path":"/invites/{code}/target-users/job-status","risk":"medium"},
+	"add_invite_target_user": {"namespace":"invites","method":"targetUsers_1","http":"put","path":"/invites/{code}/target-users/{user_id}","risk":"medium"},
+	"remove_invite_target_user": {"namespace":"invites","method":"deleteTargetUser","http":"delete","path":"/invites/{code}/target-users/{user_id}","risk":"medium"},
 	"create_lobby": {"namespace":"lobbies","method":"create","http":"post","path":"/lobbies","risk":"medium"},
 	"create_or_join_lobby": {"namespace":"lobbies","method":"put","http":"put","path":"/lobbies","risk":"medium"},
 	"get_lobby": {"namespace":"lobbies","method":"retrieve","http":"get","path":"/lobbies/{lobby_id}","risk":"low"},
 	"edit_lobby": {"namespace":"lobbies","method":"patch","http":"patch","path":"/lobbies/{lobby_id}","risk":"medium"},
+	"delete_lobby": {"namespace":"lobbies","method":"del","http":"delete","path":"/lobbies/{lobby_id}","risk":"medium"},
 	"edit_lobby_channel_link": {"namespace":"lobbies","method":"channelLinking","http":"patch","path":"/lobbies/{lobby_id}/channel-linking","risk":"medium"},
 	"leave_lobby": {"namespace":"lobbies","method":"Me","http":"delete","path":"/lobbies/{lobby_id}/members/@me","risk":"medium"},
 	"create_linked_lobby_guild_invite_for_self": {"namespace":"lobbies","method":"meInvites","http":"post","path":"/lobbies/{lobby_id}/members/@me/invites","risk":"medium"},
@@ -206,6 +217,8 @@ export const manifest = {
 	"bot_partner_sdk_unmerge_provisional_account": {"namespace":"partner-sdk","method":"provisionalAccountsunmergeBot","http":"post","path":"/partner-sdk/provisional-accounts/unmerge/bot","risk":"medium"},
 	"partner_sdk_token": {"namespace":"partner-sdk","method":"createToken","http":"post","path":"/partner-sdk/token","risk":"medium"},
 	"bot_partner_sdk_token": {"namespace":"partner-sdk","method":"tokenBot","http":"post","path":"/partner-sdk/token/bot","risk":"medium"},
+	"get_sku_subscriptions": {"namespace":"skus","method":"listSubscriptions","http":"get","path":"/skus/{sku_id}/subscriptions","risk":"medium"},
+	"get_sku_subscription": {"namespace":"skus","method":"retrieveSubscription","http":"get","path":"/skus/{sku_id}/subscriptions/{subscription_id}","risk":"medium"},
 	"get_soundboard_default_sounds": {"namespace":"soundboard-default-sounds","method":"list","http":"get","path":"/soundboard-default-sounds","risk":"low"},
 	"create_stage_instance": {"namespace":"stage-instances","method":"create","http":"post","path":"/stage-instances","risk":"medium"},
 	"get_stage_instance": {"namespace":"stage-instances","method":"retrieve","http":"get","path":"/stage-instances/{channel_id}","risk":"low"},

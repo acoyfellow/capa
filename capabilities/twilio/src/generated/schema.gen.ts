@@ -4465,6 +4465,35 @@ export type components = {
             /** @description The URI of the resource, relative to `https://api.twilio.com`. */
             uri?: string | null;
         };
+        "api.v2010.account.outgoing_caller_id.sms_verification": {
+            /**
+             * Format: phone-number
+             * @description The phone number being verified in [E.164](https://www.twilio.com/docs/glossary/what-e164) format.
+             */
+            phone_number?: string | null;
+            /** @description An array of verification attempt objects containing the channel attempted and the channel-specific transaction SID. */
+            send_code_attempts?: {
+                /** @description The SID of the verification attempt. */
+                attempt_sid?: string;
+                /** @description The date and time of the attempt in ISO 8601 format. */
+                time?: string;
+            }[] | null;
+            /** @description The SID that uniquely identifies the verification. */
+            verification_sid?: string | null;
+        };
+        "api.v2010.account.outgoing_caller_id.verification_check": {
+            /** @description The SID of the OutgoingCallerId resource created when verification is approved. */
+            caller_id_sid?: string | null;
+            /**
+             * Format: phone-number
+             * @description The phone number being verified in [E.164](https://www.twilio.com/docs/glossary/what-e164) format.
+             */
+            phone_number?: string | null;
+            /** @description The status of the verification. Can be: `pending`, `approved`, or `failed`. */
+            status?: string | null;
+            /** @description The SID that uniquely identifies the verification. */
+            verification_sid?: string | null;
+        };
         "api.v2010.account.queue": {
             /** @description The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created this Queue resource. */
             account_sid?: string | null;
@@ -7758,6 +7787,8 @@ export interface operations {
                      * @enum {string}
                      */
                     Method?: "GET" | "POST";
+                    /** @description The STIR/SHAKEN passport for this call, provided as a base64 encoded string. Multiple passports (at max 5) are comma separated and provided as base64 encoded string */
+                    Passports?: string;
                     /** @description Whether to record the call. Can be `true` to record the phone call, or `false` to not. The default is `false`. The `recording_url` is sent to the `status_callback` URL. */
                     Record?: boolean;
                     /** @description The number of channels in the final recording. Can be: `mono` or `dual`. The default is `mono`. `mono` records both legs of the call in a single channel of the recording file. `dual` records each leg to a separate channel of the recording file. The first channel of a dual-channel recording contains the parent call and the second channel contains the child call. */
@@ -10198,6 +10229,60 @@ export interface operations {
                     ConferenceTrim?: string;
                     /** @description Whether to allow an agent to hear the state of the outbound call, including ringing or disconnect messages. Can be: `true` or `false` and defaults to `true`. */
                     EarlyMedia?: boolean;
+                    /**
+                     * @description The emergency caller's street address including street number and street name.
+                     *
+                     *     Note: If the value exceeds 60 characters, only the first 60 characters will be used.
+                     */
+                    EmergencyAddress?: string;
+                    /**
+                     * @description The emergency caller's physical location description within a building or facility.
+                     *
+                     *     Note: If the value exceeds 20 characters, only the first 20 characters will be used.
+                     */
+                    EmergencyCallerLocation?: string;
+                    /**
+                     * @description The emergency caller's GPS coordinates in decimal degrees format.
+                     *     Format: "latitude longitude" (space-separated)
+                     *     - Latitude: decimal degrees, range -90.0 to +90.0 (negative for South, positive for North)
+                     *     - Longitude: decimal degrees, range -180.0 to +180.0 (negative for West, positive for East)
+                     *     - Precision: up to 6 decimal places recommended for meter-level accuracy
+                     *
+                     *     Note: If the value exceeds 150 characters, only the first 150 characters will be used.
+                     */
+                    EmergencyCallerPosition?: string;
+                    /**
+                     * @description The emergency caller's city or municipality name.
+                     *     Should be the official city name as recognized by local authorities.
+                     *     Used in combination with state and country for emergency call routing.
+                     *
+                     *     Note: If the value exceeds 20 characters, only the first 20 characters will be used.
+                     */
+                    EmergencyCity?: string;
+                    /**
+                     * @description The emergency caller's country. Currently supported US and CA only.
+                     *
+                     *     Note: If the value exceeds 20 characters, only the first 20 characters will be used.
+                     */
+                    EmergencyCountry?: string;
+                    /**
+                     * @description The emergency caller's organization or entity name.
+                     *
+                     *     Note: If the value exceeds 20 characters, only the first 20 characters will be used.
+                     */
+                    EmergencyName?: string;
+                    /**
+                     * @description The emergency caller's state or province.
+                     *
+                     *     Note: If the value exceeds 20 characters, only the first 20 characters will be used.
+                     */
+                    EmergencyState?: string;
+                    /**
+                     * @description The emergency caller's postal code or ZIP code.
+                     *
+                     *     Note: If the value exceeds 20 characters, only the first 20 characters will be used.
+                     */
+                    EmergencyZipCode?: string;
                     /** @description Whether to end the conference when the participant leaves. Can be: `true` or `false` and defaults to `false`. */
                     EndConferenceOnExit?: boolean;
                     /**
@@ -10223,6 +10308,8 @@ export interface operations {
                     MaxParticipants?: number;
                     /** @description Whether the agent is muted in the conference. Can be `true` or `false` and the default is `false`. */
                     Muted?: boolean;
+                    /** @description The STIR/SHAKEN passport for this call, provided as a base64 encoded string. Multiple passports (at max 5) are comma separated and provided as base64 encoded string */
+                    Passports?: string;
                     /** @description Whether to record the participant and their conferences, including the time between conferences. Can be `true` or `false` and the default is `false`. */
                     Record?: boolean;
                     /** @description The recording channels for the final recording. Can be: `mono` or `dual` and the default is `mono`. */
@@ -12640,6 +12727,8 @@ export interface operations {
                     MaxPrice?: number;
                     /** @description The URL of media to include in the Message content. `jpeg`, `jpg`, `gif`, and `png` file types are fully supported by Twilio and content is formatted for delivery on destination devices. The media size limit is 5 MB for supported file types (`jpeg`, `jpg`, `png`, `gif`) and 500 KB for [other types](https://www.twilio.com/docs/messaging/guides/accepted-mime-types) of accepted media. To send more than one image in the message, provide multiple `media_url` parameters in the POST request. You can include up to ten `media_url` parameters per message. [International](https://support.twilio.com/hc/en-us/articles/223179808-Sending-and-receiving-MMS-messages) and [carrier](https://support.twilio.com/hc/en-us/articles/223133707-Is-MMS-supported-for-all-carriers-in-US-and-Canada-) limits apply. */
                     MediaUrl?: string[];
+                    /** @description Specifies the purpose or use case of the outbound communication. This parameter is used by Twilio's [Traffic Shaping](https://www.twilio.com/docs/messaging/features/traffic-shaping) and [Compliance Toolkit](https://www.twilio.com/docs/messaging/features/compliance-toolkit) products. Possible values include: `otp`, `notifications`, `marketing`, `fraud`, `security`, `customercare`, `delivery`, `education`, `polling`, `announcements`, and `events`. */
+                    MessageIntent?: string;
                     /** @description The SID of the [Messaging Service](https://www.twilio.com/docs/messaging/services) you want to associate with the Message. When this parameter is provided and the `from` parameter is omitted, Twilio selects the optimal sender from the Messaging Service's Sender Pool. You may also provide a `from` parameter if you want to use a specific Sender from the Sender Pool. */
                     MessagingServiceSid?: string;
                     /** @description Rich actions for non-SMS/MMS channels. Used for [sending location in WhatsApp messages](https://www.twilio.com/docs/whatsapp/message-features#location-messages-with-whatsapp). */
@@ -18183,6 +18272,30 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["api.v2010.account"];
+                };
+            };
+            /** @description The account was modified by another request */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * Format: int32
+                         * @description Twilio-specific error code
+                         */
+                        code?: number;
+                        /** @description Error message */
+                        message?: string;
+                        /** @description Link to Error Code References */
+                        more_info?: string;
+                        /**
+                         * Format: int32
+                         * @description HTTP response status code
+                         */
+                        status?: number;
+                    };
                 };
             };
         };

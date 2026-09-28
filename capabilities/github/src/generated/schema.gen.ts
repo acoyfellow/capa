@@ -446,6 +446,9 @@ export type paths = {
          * Create an installation access token for an app
          * @description Creates an installation access token that enables a GitHub App to make authenticated API requests for the app's installation on an organization or individual account. Installation tokens expire one hour from the time you create them. Using an expired token produces a status code of `401 - Unauthorized`, and requires creating a new installation token. By default the installation token has access to all repositories that the installation can access.
          *
+         *     > [!NOTE]
+         *     > Starting April 27, 2026, GitHub began a staged rollout of a stateless format (`ghs_APPID_JWT`) to all newly minted GitHub App installation tokens, making them more performant and improving the reliability of our API surface. If your application expects or relies on installation tokens being exactly 40 characters long, it may not handle this new token format correctly. You can now validate your apps and workflows using a temporary request header that lets you enable the token format on demand. For more information about the temporary header, see [the GitHub blog](https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header).
+         *
          *     Optionally, you can use the `repositories` or `repository_ids` body parameters to specify individual repositories that the installation access token can access. If you don't use `repositories` or `repository_ids` to grant access to specific repositories, the installation access token will have access to all repositories that the installation was granted access to. The installation access token cannot be granted access to repositories that the installation was not granted access to. Up to 500 repositories can be listed in this manner.
          *
          *     Optionally, use the `permissions` body parameter to specify the permissions that the installation access token should have. If `permissions` is not specified, the installation access token will have all of the permissions that were granted to the app. The installation access token cannot be granted permissions that the app was not granted.
@@ -589,8 +592,11 @@ export type paths = {
             cookie?: never;
         };
         /**
-         * Get an assignment
-         * @description Gets a GitHub Classroom assignment. Assignment will only be returned if the current user is an administrator of the GitHub Classroom for the assignment.
+         * Closed - Get an assignment
+         * @deprecated
+         * @description > [!WARNING]
+         *     > **Closed notice:** This operation is no longer available as of August 28, 2026.
+         *     > For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
          */
         get: operations["classroom/get-an-assignment"];
         put?: never;
@@ -609,8 +615,11 @@ export type paths = {
             cookie?: never;
         };
         /**
-         * List accepted assignments for an assignment
-         * @description Lists any assignment repositories that have been created by students accepting a GitHub Classroom assignment. Accepted assignments will only be returned if the current user is an administrator of the GitHub Classroom for the assignment.
+         * Closed - List accepted assignments for an assignment
+         * @deprecated
+         * @description > [!WARNING]
+         *     > **Closed notice:** This operation is no longer available as of August 28, 2026.
+         *     > For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
          */
         get: operations["classroom/list-accepted-assignments-for-an-assignment"];
         put?: never;
@@ -629,8 +638,11 @@ export type paths = {
             cookie?: never;
         };
         /**
-         * Get assignment grades
-         * @description Gets grades for a GitHub Classroom assignment. Grades will only be returned if the current user is an administrator of the GitHub Classroom for the assignment.
+         * Closed - Get assignment grades
+         * @deprecated
+         * @description > [!WARNING]
+         *     > **Closed notice:** This operation is no longer available as of August 28, 2026.
+         *     > For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
          */
         get: operations["classroom/get-assignment-grades"];
         put?: never;
@@ -649,8 +661,11 @@ export type paths = {
             cookie?: never;
         };
         /**
-         * List classrooms
-         * @description Lists GitHub Classroom classrooms for the current user. Classrooms will only be returned if the current user is an administrator of one or more GitHub Classrooms.
+         * Closed - List classrooms
+         * @deprecated
+         * @description > [!WARNING]
+         *     > **Closed notice:** This operation is no longer available as of August 28, 2026.
+         *     > For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
          */
         get: operations["classroom/list-classrooms"];
         put?: never;
@@ -669,8 +684,11 @@ export type paths = {
             cookie?: never;
         };
         /**
-         * Get a classroom
-         * @description Gets a GitHub Classroom classroom for the current user. Classroom will only be returned if the current user is an administrator of the GitHub Classroom.
+         * Closed - Get a classroom
+         * @deprecated
+         * @description > [!WARNING]
+         *     > **Closed notice:** This operation is no longer available as of August 28, 2026.
+         *     > For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
          */
         get: operations["classroom/get-a-classroom"];
         put?: never;
@@ -689,8 +707,11 @@ export type paths = {
             cookie?: never;
         };
         /**
-         * List assignments for a classroom
-         * @description Lists GitHub Classroom assignments for a classroom. Assignments will only be returned if the current user is an administrator of the GitHub Classroom.
+         * Closed - List assignments for a classroom
+         * @deprecated
+         * @description > [!WARNING]
+         *     > **Closed notice:** This operation is no longer available as of August 28, 2026.
+         *     > For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
          */
         get: operations["classroom/list-assignments-for-a-classroom"];
         put?: never;
@@ -1133,6 +1154,32 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/enterprises/{enterprise}/copilot/metrics/reports/repos-1-day": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Copilot enterprise repository report for a specific day
+         * @description Use this endpoint to retrieve download links for the Copilot enterprise repository report for a specific day. The report provides per-repository pull request metrics for Copilot across the enterprise, with one entry per repository.
+         *
+         *     The report contains repository-level pull request activity for the specified day, including the Copilot Coding Agent (CCA) and Copilot Code Review (CCR) breakdowns. Only repositories that had activity on the specified day are included. Reports are generated daily and made available for download through signed URLs with a limited expiration time.
+         *
+         *     The response includes download links to the report files, along with the specific date of the report. The report covers a complete day for which data has been processed.
+         *
+         *     Enterprise owners, billing managers, and authorized users with fine-grained "View Enterprise Copilot Metrics" permission can retrieve Copilot metrics reports for the enterprise. OAuth app tokens and personal access tokens (classic) need either the `manage_billing:copilot` or `read:enterprise` scopes to use this endpoint.
+         */
+        get: operations["copilot/copilot-enterprise-repos-one-day-report"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day": {
         parameters: {
             query?: never;
@@ -1365,236 +1412,6 @@ export type paths = {
         options?: never;
         head?: never;
         patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List enterprise teams
-         * @description List all teams in the enterprise for the authenticated user
-         */
-        get: operations["enterprise-teams/list"];
-        put?: never;
-        /**
-         * Create an enterprise team
-         * @description To create an enterprise team, the authenticated user must be an owner of the enterprise.
-         */
-        post: operations["enterprise-teams/create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams/{enterprise-team}/memberships": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List members in an enterprise team
-         * @description Lists all team members in an enterprise team.
-         */
-        get: operations["enterprise-team-memberships/list"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get enterprise team membership
-         * @description Returns whether the user is a member of the enterprise team.
-         */
-        get: operations["enterprise-team-memberships/get"];
-        /**
-         * Add team member
-         * @description Add a team member to an enterprise team.
-         */
-        put: operations["enterprise-team-memberships/add"];
-        post?: never;
-        /**
-         * Remove team membership
-         * @description Remove membership of a specific user from a particular team in an enterprise.
-         */
-        delete: operations["enterprise-team-memberships/remove"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/add": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Bulk add team members
-         * @description Add multiple team members to an enterprise team.
-         */
-        post: operations["enterprise-team-memberships/bulk-add"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Bulk remove team members
-         * @description Remove multiple team members from an enterprise team.
-         */
-        post: operations["enterprise-team-memberships/bulk-remove"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams/{enterprise-team}/organizations": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get organization assignments
-         * @description Get all organizations assigned to an enterprise team
-         */
-        get: operations["enterprise-team-organizations/get-assignments"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get organization assignment
-         * @description Check if an enterprise team is assigned to an organization
-         */
-        get: operations["enterprise-team-organizations/get-assignment"];
-        /**
-         * Add an organization assignment
-         * @description Assign an enterprise team to an organization.
-         */
-        put: operations["enterprise-team-organizations/add"];
-        post?: never;
-        /**
-         * Delete an organization assignment
-         * @description Unassign an enterprise team from an organization.
-         */
-        delete: operations["enterprise-team-organizations/delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams/{enterprise-team}/organizations/add": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Add organization assignments
-         * @description Assign an enterprise team to multiple organizations.
-         */
-        post: operations["enterprise-team-organizations/bulk-add"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams/{enterprise-team}/organizations/remove": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Remove organization assignments
-         * @description Unassign an enterprise team from multiple organizations.
-         */
-        post: operations["enterprise-team-organizations/bulk-remove"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/enterprises/{enterprise}/teams/{team_slug}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get an enterprise team
-         * @description Gets a team using the team's slug. To create the slug, GitHub replaces special characters in the name string, changes all words to lowercase, and replaces spaces with a `-` separator and adds the "ent:" prefix. For example, "My TEam Näme" would become `ent:my-team-name`.
-         */
-        get: operations["enterprise-teams/get"];
-        put?: never;
-        post?: never;
-        /**
-         * Delete an enterprise team
-         * @description To delete an enterprise team, the authenticated user must be an enterprise owner.
-         *
-         *     If you are an enterprise owner, deleting an enterprise team will delete all of its IdP mappings as well.
-         */
-        delete: operations["enterprise-teams/delete"];
-        options?: never;
-        head?: never;
-        /**
-         * Update an enterprise team
-         * @description To edit a team, the authenticated user must be an enterprise owner.
-         */
-        patch: operations["enterprise-teams/update"];
         trace?: never;
     };
     "/events": {
@@ -2244,7 +2061,7 @@ export type paths = {
          * Get GitHub meta information
          * @description Returns meta information about GitHub, including a list of GitHub's IP addresses. For more information, see "[About GitHub's IP addresses](https://docs.github.com/articles/about-github-s-ip-addresses/)."
          *
-         *     The API's response also includes a list of GitHub's domain names.
+         *     The API's response also includes a list of GitHub's domain names, and the public keys used by GitHub to sign commits made through the web UI.
          *
          *     The values shown in the documentation's response are example values. You must always query the API directly to get the latest values.
          *
@@ -2470,6 +2287,28 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/organizations/{org}/settings/billing/ai_credit/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get billing AI credit usage report for an organization
+         * @description Gets a report of AI credit usage for an organization. To use this endpoint, you must be an administrator of an organization within an enterprise or an organization account.
+         *
+         *     **Note:** Only data from the past 24 months is accessible via this endpoint.
+         */
+        get: operations["billing/get-github-billing-ai-credit-usage-report-org"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/organizations/{org}/settings/billing/budgets": {
         parameters: {
             query?: never;
@@ -2479,15 +2318,17 @@ export type paths = {
         };
         /**
          * Get all budgets for an organization
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Gets all budgets for an organization. The authenticated user must be an organization admin or billing manager.
-         *     Each page returns up to 10 budgets.
+         * @description Gets all budgets for an organization. The authenticated user must be an organization admin or billing manager.
+         *     Each page returns up to 100 budgets.
          */
         get: operations["billing/get-all-budgets-org"];
         put?: never;
-        post?: never;
+        /**
+         * Create a budget for an organization
+         * @description Creates a new budget for an organization. The authenticated user must be an
+         *     organization admin or billing manager.
+         */
+        post: operations["billing/create-organization-budget"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2503,30 +2344,21 @@ export type paths = {
         };
         /**
          * Get a budget by ID for an organization
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Gets a budget by ID. The authenticated user must be an organization admin or billing manager.
+         * @description Gets a budget by ID. The authenticated user must be an organization admin or billing manager.
          */
         get: operations["billing/get-budget-org"];
         put?: never;
         post?: never;
         /**
          * Delete a budget for an organization
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Deletes a budget by ID for an organization. The authenticated user must be an organization admin or billing manager.
+         * @description Deletes a budget by ID for an organization. The authenticated user must be an organization admin or billing manager.
          */
         delete: operations["billing/delete-budget-org"];
         options?: never;
         head?: never;
         /**
          * Update a budget for an organization
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Updates an existing budget for an organization. The authenticated user must be an organization admin or billing manager.
+         * @description Updates an existing budget for an organization. The authenticated user must be an organization admin or billing manager.
          */
         patch: operations["billing/update-budget-org"];
         trace?: never;
@@ -3371,6 +3203,60 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/orgs/{org}/actions/policies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List organization Actions policies
+         * @description List all Actions policies for an organization.
+         */
+        get: operations["actions/get-org-actions-policies"];
+        put?: never;
+        /**
+         * Create an organization Actions policy
+         * @description Create an Actions policy for an organization.
+         *     Omitting `workflow_path` targets all workflows without storing an explicit condition.
+         */
+        post: operations["actions/create-org-actions-policy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/actions/policies/{policy_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get an organization Actions policy
+         * @description Get a specific Actions policy for an organization.
+         */
+        get: operations["actions/get-org-actions-policy"];
+        /**
+         * Update an organization Actions policy
+         * @description Update an Actions policy for an organization.
+         *     Omitting `workflow_path` preserves the policy's existing workflow targeting.
+         */
+        put: operations["actions/update-org-actions-policy"];
+        post?: never;
+        /**
+         * Delete an organization Actions policy
+         * @description Delete an Actions policy for an organization.
+         */
+        delete: operations["actions/delete-org-actions-policy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/orgs/{org}/actions/runner-groups": {
         parameters: {
             query?: never;
@@ -3696,6 +3582,31 @@ export type paths = {
          *     OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoint. If the repository is private, the `repo` scope is also required.
          */
         delete: operations["actions/remove-custom-label-from-self-hosted-runner-for-org"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/actions/runners/deprecations/{version}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get runner version end-of-life schedule for an organization
+         * @description Gets the end-of-life schedule for a specific runner version in an organization. Returns the runner version
+         *     and the dates when registration and runtime support will end.
+         *
+         *     Authenticated users must have admin access to the organization to use this endpoint.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoint.
+         */
+        get: operations["actions/get-runner-version-deprecation-for-org"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -4447,9 +4358,9 @@ export type paths = {
         };
         /**
          * List artifact storage records
-         * @description List a collection of artifact storage records with a given subject digest that are associated with repositories owned by an organization.
+         * @description List artifact storage records with a given subject digest for repositories owned by an organization.
          *
-         *     The collection of storage records returned by this endpoint is filtered according to the authenticated user's permissions; if the authenticated user cannot read a repository, the attestations associated with that repository will not be included in the response. In addition, when using a fine-grained access token the `content:read` permission is required.
+         *     Results are filtered by the authenticated user's permissions; records for repositories the user cannot read are omitted. Fine-grained access tokens require the `artifact-metadata:read` permission.
          */
         get: operations["orgs/list-artifact-storage-records"];
         put?: never;
@@ -4513,6 +4424,49 @@ export type paths = {
          *     only have one name and version.
          */
         post: operations["orgs/set-cluster-deployment-records"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}/jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a cluster deployment records job
+         * @description Create a background job to set deployment records for a given cluster.
+         *     Performs validation and permission checks synchronously, returning rejected
+         *     deployments immediately, then enqueues a background job for the actual
+         *     deployment updates. Use the companion GET endpoint to poll for job status.
+         */
+        post: operations["orgs/create-cluster-deployment-records-job"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}/jobs/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get cluster deployment records job status
+         * @description Get the status and results of a previously created cluster deployment records job.
+         */
+        get: operations["orgs/get-cluster-deployment-records-job"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -4793,6 +4747,46 @@ export type paths = {
         patch: operations["campaigns/update-campaign"];
         trace?: never;
     };
+    "/orgs/{org}/code-scanning/ai-scan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get the AI Scan setting for an organization
+         * @description > [!NOTE]
+         *     > This endpoint is in public preview and is subject to change.
+         *
+         *     Gets the AI Scan setting stored on an organization.
+         *
+         *     The response reports the value stored on the organization. Organization respects enterprise policy.
+         *
+         *     The authenticated user must be an owner or security manager for the organization to use this endpoint.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `admin:org`, `repo`, or `write:org` scope to use this endpoint. Organization owners can use `admin:org` or `repo`; security managers need `write:org`.
+         */
+        get: operations["code-scanning/get-ai-scan-enablement-for-org"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update the AI Scan setting for an organization
+         * @description > [!NOTE]
+         *     > This endpoint is in public preview and is subject to change.
+         *
+         *     Updates the AI Scan setting stored on an organization.
+         *
+         *     The organization respects the enterprise policy, so enabling is rejected when the enterprise disallows AI Scan.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `admin:org`, `repo`, or `write:org` scope to use this endpoint. Organization owners can use `admin:org` or `repo`; security managers need `write:org`.
+         */
+        patch: operations["code-scanning/update-ai-scan-enablement-for-org"];
+        trace?: never;
+    };
     "/orgs/{org}/code-scanning/alerts": {
         parameters: {
             query?: never;
@@ -4908,7 +4902,11 @@ export type paths = {
          *
          *     The authenticated user must be an administrator or security manager for the organization to use this endpoint.
          *
-         *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *     Directly applying an enterprise-enforced configuration also requires permission to manage the enterprise's code security settings. Without it, the request returns `403` and no repositories change.
+         *
+         *     When applying a different configuration, repositories with active enterprise-enforced attachments are skipped unless the authenticated user can manage the enterprise's code security settings; the remaining repositories are updated. The request still returns `202` if every repository is skipped.
+         *
+         *     OAuth app tokens and classic PATs require the `write:org` scope. Directly applying an enterprise-enforced configuration also requires `admin:enterprise` and is not supported by fine-grained PATs or GitHub App access tokens.
          */
         post: operations["code-security/attach-configuration"];
         delete?: never;
@@ -4931,9 +4929,11 @@ export type paths = {
          *
          *     This configuration will be applied to the matching repository type (all, none, public, private and internal) by default when they are created.
          *
-         *     The authenticated user must be an administrator or security manager for the organization to use this endpoint.
+         *     The authenticated user must be an administrator or security manager for the organization to use this endpoint. Setting an enterprise-enforced configuration as the default also requires permission to manage the enterprise's code security settings.
          *
-         *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *     A default set with this endpoint is an organization default, even if the configuration is owned or enforced by the enterprise. An enterprise-enforced configuration set as an enterprise-level default for the same repository visibility takes precedence.
+         *
+         *     OAuth app tokens and classic PATs require the `write:org` scope; setting an enterprise-enforced configuration as the default also requires `admin:enterprise`. Fine-grained PATs and GitHub App access tokens cannot perform that action.
          */
         put: operations["code-security/set-configuration-as-default"];
         post?: never;
@@ -5008,7 +5008,9 @@ export type paths = {
          *
          *     The authenticated user must be an administrator or security manager for the organization to use this endpoint.
          *
-         *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *     Repositories with active enterprise-enforced attachments are skipped unless the authenticated user can manage the enterprise's code security settings; the rest are detached. Inactive enterprise-enforced attachments, such as failed attachments, are detached. The request still returns `204` if every repository is skipped.
+         *
+         *     OAuth app tokens and classic PATs require the `write:org` scope. Managing enterprise-enforced configurations also requires `admin:enterprise` and is not supported by fine-grained PATs or GitHub App access tokens.
          */
         delete: operations["code-security/detach-configuration"];
         options?: never;
@@ -5792,38 +5794,6 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
-    "/orgs/{org}/copilot/metrics": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Copilot metrics for an organization
-         * @description Use this endpoint to see a breakdown of aggregated metrics for various GitHub Copilot features. See the response schema tab for detailed metrics definitions.
-         *
-         *     > [!NOTE]
-         *     > This endpoint will only return results for a given day if the organization contained **five or more members with active Copilot licenses** on that day, as evaluated at the end of that day.
-         *
-         *     The response contains metrics for up to 100 days prior. Metrics are processed once per day for the previous day,
-         *     and the response will only include data up until yesterday. In order for an end user to be counted towards these metrics,
-         *     they must have telemetry enabled in their IDE.
-         *
-         *     To access this endpoint, the Copilot Metrics API access policy must be enabled for the organization.
-         *     Only organization owners and owners and billing managers of the parent enterprise can view Copilot metrics.
-         *
-         *     OAuth app tokens and personal access tokens (classic) need either the `manage_billing:copilot`, `read:org`, or `read:enterprise` scopes to use this endpoint.
-         */
-        get: operations["copilot/copilot-metrics-for-organization"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/orgs/{org}/copilot/metrics/reports/organization-1-day": {
         parameters: {
             query?: never;
@@ -5872,6 +5842,34 @@ export type paths = {
          *     For more information about organization metrics attribution, see [How are metrics attributed across organizations](https://docs.github.com/copilot/concepts/copilot-metrics#how-are-metrics-attributed-across-organizations).
          */
         get: operations["copilot/copilot-organization-usage-metrics"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/copilot/metrics/reports/repos-1-day": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Copilot organization repository report for a specific day
+         * @description Use this endpoint to retrieve download links for the Copilot organization repository report for a specific day. The report provides per-repository pull request metrics for Copilot across the organization, with one entry per repository.
+         *
+         *     The report contains repository-level pull request activity for the specified day, including the Copilot Coding Agent (CCA) and Copilot Code Review (CCR) breakdowns. Only repositories that had activity on the specified day are included. Reports are generated daily and made available for download through signed URLs with a limited expiration time.
+         *
+         *     The response includes download links to the report files, along with the specific date of the report. The report covers a complete day for which data has been processed.
+         *
+         *     Organization owners and authorized users with fine-grained "View Organization Copilot Metrics" permission can retrieve Copilot metrics reports for the organization. OAuth app tokens and personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         *
+         *     For more information about organization metrics attribution, see [How are metrics attributed across organizations](https://docs.github.com/copilot/concepts/copilot-metrics#how-are-metrics-attributed-across-organizations).
+         */
+        get: operations["copilot/copilot-organization-repos-one-day-report"];
         put?: never;
         post?: never;
         delete?: never;
@@ -6016,6 +6014,8 @@ export type paths = {
          *     >    This operation supports both server-to-server and user-to-server access.
          *     Unauthorized users will not see the existence of this endpoint.
          *
+         *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         *
          *     **Example request body:**
          *     ```json
          *     {
@@ -6044,6 +6044,8 @@ export type paths = {
          *     Unauthorized users will not see the existence of this endpoint.
          *
          *     This operation supports both server-to-server and user-to-server access.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `write:org` scope to use this endpoint.
          */
         put: operations["dependabot/set-repository-access-default-level"];
         post?: never;
@@ -6487,6 +6489,8 @@ export type paths = {
         /**
          * Get route stats by actor
          * @description Get API request count statistics for an actor broken down by route within a specified time frame.
+         *
+         *     Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or periods of unusually high volume, it may take longer to show up.
          */
         get: operations["api-insights/get-route-stats-by-actor"];
         put?: never;
@@ -6507,6 +6511,8 @@ export type paths = {
         /**
          * Get subject stats
          * @description Get API request statistics for all subjects within an organization within a specified time frame. Subjects can be users or GitHub Apps.
+         *
+         *     Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or periods of unusually high volume, it may take longer to show up.
          */
         get: operations["api-insights/get-subject-stats"];
         put?: never;
@@ -6527,6 +6533,8 @@ export type paths = {
         /**
          * Get summary stats
          * @description Get overall statistics of API requests made within an organization by all users and apps within a specified time frame.
+         *
+         *     Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or periods of unusually high volume, it may take longer to show up.
          */
         get: operations["api-insights/get-summary-stats"];
         put?: never;
@@ -6547,6 +6555,8 @@ export type paths = {
         /**
          * Get summary stats by actor
          * @description Get overall statistics of API requests within the organization made by a specific actor. Actors can be GitHub App installations, OAuth apps or other tokens on behalf of a user.
+         *
+         *     Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or periods of unusually high volume, it may take longer to show up.
          */
         get: operations["api-insights/get-summary-stats-by-actor"];
         put?: never;
@@ -6567,6 +6577,8 @@ export type paths = {
         /**
          * Get summary stats by user
          * @description Get overall statistics of API requests within the organization for a user.
+         *
+         *     Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or periods of unusually high volume, it may take longer to show up.
          */
         get: operations["api-insights/get-summary-stats-by-user"];
         put?: never;
@@ -6587,6 +6599,8 @@ export type paths = {
         /**
          * Get time stats
          * @description Get the number of API requests and rate-limited requests made within an organization over a specified time period.
+         *
+         *     Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or periods of unusually high volume, it may take longer to show up.
          */
         get: operations["api-insights/get-time-stats"];
         put?: never;
@@ -6607,6 +6621,8 @@ export type paths = {
         /**
          * Get time stats by actor
          * @description Get the number of API requests and rate-limited requests made within an organization by a specific actor within a specified time period.
+         *
+         *     Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or periods of unusually high volume, it may take longer to show up.
          */
         get: operations["api-insights/get-time-stats-by-actor"];
         put?: never;
@@ -6627,6 +6643,8 @@ export type paths = {
         /**
          * Get time stats by user
          * @description Get the number of API requests and rate-limited requests made within an organization by a specific user over a specified time period.
+         *
+         *     Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or periods of unusually high volume, it may take longer to show up.
          */
         get: operations["api-insights/get-time-stats-by-user"];
         put?: never;
@@ -6647,6 +6665,8 @@ export type paths = {
         /**
          * Get user stats
          * @description Get API usage statistics within an organization for a user broken down by the type of access.
+         *
+         *     Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or periods of unusually high volume, it may take longer to show up.
          */
         get: operations["api-insights/get-user-stats"];
         put?: never;
@@ -6730,6 +6750,38 @@ export type paths = {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/interaction-limits/pulls/creation-cap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get pull request creation cap for an org
+         * @description Gets the pull request creation cap configuration for an organization.
+         *     The cap limits the total number of open pull requests a user can have across all public
+         *     repositories in the organization at one time.
+         *
+         *     Only users with admin access to the organization can view the cap configuration.
+         */
+        get: operations["interactions/get-pull-request-creation-cap-for-org"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update pull request creation cap for an org
+         * @description Updates the pull request creation cap for an organization. The cap limits the total number
+         *     of open pull requests a user can have across all public repositories in the organization
+         *     at one time.
+         *
+         *     Only users with admin access to the organization can configure the cap.
+         */
+        patch: operations["interactions/update-pull-request-creation-cap-for-org"];
         trace?: never;
     };
     "/orgs/{org}/invitations": {
@@ -8450,6 +8502,62 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/orgs/{org}/secret-scanning/custom-patterns": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List organization custom patterns
+         * @description Lists secret scanning custom patterns for an organization.
+         *
+         *     Personal access tokens (classic) need the `read:org` scope to use this endpoint.
+         */
+        get: operations["secret-scanning/list-org-custom-patterns"];
+        put?: never;
+        /**
+         * Bulk create organization custom patterns
+         * @description Bulk creates secret scanning custom patterns for an organization.
+         *
+         *     Personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         */
+        post: operations["secret-scanning/bulk-create-org-custom-patterns"];
+        /**
+         * Bulk delete organization custom patterns
+         * @description Bulk deletes secret scanning custom patterns for an organization.
+         *
+         *     Personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         */
+        delete: operations["secret-scanning/bulk-delete-org-custom-patterns"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/secret-scanning/custom-patterns/{pattern_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update an organization custom pattern
+         * @description Updates a secret scanning custom pattern for an organization.
+         *
+         *     Personal access tokens (classic) need the `write:org` scope to use this endpoint.
+         */
+        patch: operations["secret-scanning/update-org-custom-pattern"];
+        trace?: never;
+    };
     "/orgs/{org}/secret-scanning/pattern-configurations": {
         parameters: {
             query?: never;
@@ -8720,38 +8828,6 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
-    "/orgs/{org}/team/{team_slug}/copilot/metrics": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Copilot metrics for a team
-         * @description Use this endpoint to see a breakdown of aggregated metrics for various GitHub Copilot features. See the response schema tab for detailed metrics definitions.
-         *
-         *     > [!NOTE]
-         *     > This endpoint will only return results for a given day if the team had **five or more members with active Copilot licenses** on that day, as evaluated at the end of that day.
-         *
-         *     The response contains metrics for up to 100 days prior. Metrics are processed once per day for the previous day,
-         *     and the response will only include data up until yesterday. In order for an end user to be counted towards these metrics,
-         *     they must have telemetry enabled in their IDE.
-         *
-         *     To access this endpoint, the Copilot Metrics API access policy must be enabled for the organization containing the team within GitHub settings.
-         *     Only organization owners for the organization that contains this team and owners and billing managers of the parent enterprise can view Copilot metrics for a team.
-         *
-         *     OAuth app tokens and personal access tokens (classic) need either the `manage_billing:copilot`, `read:org`, or `read:enterprise` scopes to use this endpoint.
-         */
-        get: operations["copilot/copilot-metrics-for-team"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/orgs/{org}/teams": {
         parameters: {
             query?: never;
@@ -8851,7 +8927,12 @@ export type paths = {
          * List team members
          * @description Team members will include the members of child teams.
          *
+         *     Each member includes their `role` on the team (`member` or `maintainer`) and an `inherited` flag indicating whether the membership is inherited from a child team (`true`) or is a direct membership (`false`). These fields let you read a member's role and direct/inherited status without additional requests.
+         *
          *     To list members in a team, the team must be visible to the authenticated user.
+         *
+         *     > [!NOTE]
+         *     > You can also specify a team by `org_id` and `team_id` using the route `GET /organizations/{org_id}/team/{team_id}/members`.
          */
         get: operations["teams/list-members-in-org"];
         put?: never;
@@ -8930,6 +9011,8 @@ export type paths = {
         /**
          * List team repositories
          * @description Lists a team's repositories visible to the authenticated user.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `read:org` or `repo` scope to use this endpoint.
          *
          *     > [!NOTE]
          *     > You can also specify a team by `org_id` and `team_id` using the route `GET /organizations/{org_id}/team/{team_id}/repos`.
@@ -9031,7 +9114,6 @@ export type paths = {
          *     * The `integration_manifest` object provides your rate limit status for the `POST /app-manifests/{code}/conversions` operation. For more information, see "[Creating a GitHub App from a manifest](https://docs.github.com/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app-from-a-manifest#3-you-exchange-the-temporary-code-to-retrieve-the-app-configuration)."
          *     * The `dependency_snapshots` object provides your rate limit status for submitting snapshots to the dependency graph. For more information, see "[Dependency graph](https://docs.github.com/rest/dependency-graph)."
          *     * The `dependency_sbom` object provides your rate limit status for requesting SBOMs from the dependency graph. For more information, see "[Dependency graph](https://docs.github.com/rest/dependency-graph)."
-         *     * The `code_scanning_upload` object provides your rate limit status for uploading SARIF results to code scanning. For more information, see "[Uploading a SARIF file to GitHub](https://docs.github.com/code-security/code-scanning/integrating-with-code-scanning/uploading-a-sarif-file-to-github)."
          *     * The `actions_runner_registration` object provides your rate limit status for registering self-hosted runners in GitHub Actions. For more information, see "[Self-hosted runners](https://docs.github.com/rest/actions/self-hosted-runners)."
          *     * The `source_import` object is no longer in use for any API endpoints, and it will be removed in the next API version. For more information about API versions, see "[API Versions](https://docs.github.com/rest/about-the-rest-api/api-versions)."
          *
@@ -9702,6 +9784,60 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/repos/{owner}/{repo}/actions/policies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List repository Actions policies
+         * @description List all Actions policies for a repository.
+         */
+        get: operations["actions/get-repo-actions-policies"];
+        put?: never;
+        /**
+         * Create a repository Actions policy
+         * @description Create an Actions policy for a repository.
+         *     Omitting `workflow_path` targets all workflows without storing an explicit condition.
+         */
+        post: operations["actions/create-repo-actions-policy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/actions/policies/{policy_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a repository Actions policy
+         * @description Get a specific Actions policy for a repository.
+         */
+        get: operations["actions/get-repo-actions-policy"];
+        /**
+         * Update a repository Actions policy
+         * @description Update an Actions policy for a repository.
+         *     Omitting `workflow_path` preserves the policy's existing workflow targeting.
+         */
+        put: operations["actions/update-repo-actions-policy"];
+        post?: never;
+        /**
+         * Delete a repository Actions policy
+         * @description Delete an Actions policy for a repository.
+         */
+        delete: operations["actions/delete-repo-actions-policy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/actions/runners": {
         parameters: {
             query?: never;
@@ -9831,6 +9967,31 @@ export type paths = {
          *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
          */
         delete: operations["actions/remove-custom-label-from-self-hosted-runner-for-repo"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/actions/runners/deprecations/{version}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get runner version end-of-life schedule for a repository
+         * @description Gets the end-of-life schedule for a specific runner version in a repository. Returns the runner version
+         *     and the dates when registration and runtime support will end.
+         *
+         *     Authenticated users must have admin access to the repository to use this endpoint.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
+         */
+        get: operations["actions/get-runner-version-deprecation-for-repo"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -11800,6 +11961,112 @@ export type paths = {
         patch: operations["checks/set-suites-preferences"];
         trace?: never;
     };
+    "/repos/{owner}/{repo}/code-quality/findings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List code quality findings for a repository
+         * @description Lists code quality findings for a repository.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
+         */
+        get: operations["code-quality/list-findings-for-repo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/code-quality/findings/{finding_number}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a code quality finding
+         * @description Gets a single code quality finding.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
+         */
+        get: operations["code-quality/get-finding"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/code-quality/setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a code quality setup configuration
+         * @description Gets a code quality setup configuration.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
+         */
+        get: operations["code-quality/get-setup"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update a code quality setup configuration
+         * @description Updates a code quality setup configuration.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
+         */
+        patch: operations["code-quality/update-setup"];
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/code-scanning/ai-scan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get AI Scan enablement for a repository
+         * @description > [!NOTE]
+         *     > This endpoint is in public preview and is subject to change.
+         *
+         *     Gets whether AI Scan is enabled for a repository.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `security_events` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
+         */
+        get: operations["code-scanning/get-ai-scan-enablement"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update AI Scan enablement for a repository
+         * @description > [!NOTE]
+         *     > This endpoint is in public preview and is subject to change.
+         *
+         *     Updates whether AI Scan is enabled for a repository.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
+         */
+        patch: operations["code-scanning/update-ai-scan-enablement"];
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/code-scanning/alerts": {
         parameters: {
             query?: never;
@@ -11870,7 +12137,7 @@ export type paths = {
         put?: never;
         /**
          * Create an autofix for a code scanning alert
-         * @description Creates an autofix for a code scanning alert.
+         * @description Creates an autofix for a code scanning alert from the repository's default branch.
          *
          *     If a new autofix is to be created as a result of this request or is currently being generated, then this endpoint will return a 202 Accepted response.
          *
@@ -12884,6 +13151,8 @@ export type paths = {
          * Create a commit comment
          * @description Create a comment for a commit using its `:commit_sha`.
          *
+         *     Access to commit comments can be controlled by organization owners. For more information, see "[Managing commit comments for your organization](https://docs.github.com/organizations/managing-organization-settings/managing-commit-comments-for-your-organization)".
+         *
          *     This endpoint triggers [notifications](https://docs.github.com/github/managing-subscriptions-and-notifications-on-github/about-notifications). Creating content too quickly using this endpoint may result in secondary rate limiting. For more information, see "[Rate limits for the API](https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits)" and "[Best practices for using the REST API](https://docs.github.com/rest/guides/best-practices-for-using-the-rest-api)."
          *
          *     This endpoint supports the following custom media types. For more information, see "[Media types](https://docs.github.com/rest/using-the-rest-api/getting-started-with-the-rest-api#media-types)."
@@ -13454,7 +13723,11 @@ export type paths = {
         };
         /**
          * Export a software bill of materials (SBOM) for a repository.
-         * @description Exports the software bill of materials (SBOM) for a repository in SPDX JSON format.
+         * @deprecated
+         * @description > [!WARNING]
+         *     > **Closing down notice:** This operation is closing down and will not be accessible after November 13, 2026. Please migrate to the asynchronous flow. Use "[Request generation of a software bill of materials (SBOM) for a repository](https://docs.github.com/rest/dependency-graph/sboms#request-generation-of-a-software-bill-of-materials-sbom-for-a-repository)" to trigger the report, then "[Fetch a software bill of materials (SBOM) for a repository](https://docs.github.com/rest/dependency-graph/sboms#fetch-a-software-bill-of-materials-sbom-for-a-repository)" to retrieve it. For more information, see the [changelog](https://github.blog/changelog/2026-05-12-synchronous-sbom-api-deprecated/).
+         *
+         *     Exports the software bill of materials (SBOM) for a repository in SPDX JSON format.
          */
         get: operations["dependency-graph/export-sbom"];
         put?: never;
@@ -14528,6 +14801,26 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/repos/{owner}/{repo}/hash-algorithm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get the hash algorithm for a repository
+         * @description Returns the hash algorithm used to store repository objects.
+         */
+        get: operations["repos/get-hash-algorithm"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/hooks": {
         parameters: {
             query?: never;
@@ -14984,6 +15277,78 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/repos/{owner}/{repo}/interaction-limits/pulls/bypass-list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get pull request creation cap bypass list for a repository
+         * @description Lists the users that are on the pull request creation cap bypass list for a
+         *     repository. Users on this list can create pull requests regardless of any
+         *     configured pull request creation cap.
+         *
+         *     Only users with maintainer permissions can view the bypass list.
+         */
+        get: operations["interactions/get-pull-request-bypass-list-for-repo"];
+        /**
+         * Add users to the pull request creation cap bypass list for a repository
+         * @description Adds users to the pull request creation cap bypass list for a repository.
+         *     Users on this list can create pull requests regardless of any configured
+         *     pull request creation cap.
+         *
+         *     Only users with maintainer permissions can modify the bypass list.
+         *     You can add a maximum of 100 users per request.
+         *     The bypass list can only hold a maximum of 100 users.
+         */
+        put: operations["interactions/set-pull-request-bypass-list-for-repo"];
+        post?: never;
+        /**
+         * Remove users from the pull request creation cap bypass list for a repository
+         * @description Removes users from the pull request creation cap bypass list for a repository.
+         *     Removed users will be subject to any configured pull request creation cap.
+         *
+         *     Only users with maintainer permissions can modify the bypass list.
+         *     You can remove a maximum of 100 users per request.
+         */
+        delete: operations["interactions/remove-pull-request-bypass-list-for-repo"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/interaction-limits/pulls/creation-cap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get pull request creation cap for a repository
+         * @description Gets the pull request creation cap configuration for a repository.
+         *     The cap limits the number of open pull requests a user can have at one time.
+         *
+         *     Only users with admin access to the repository can view the cap configuration.
+         */
+        get: operations["interactions/get-pull-request-creation-cap-for-repo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update pull request creation cap for a repository
+         * @description Updates the pull request creation cap for a repository. The cap limits the number
+         *     of open pull requests a user can have at one time.
+         *
+         *     Only users with admin access to the repository can configure the cap.
+         */
+        patch: operations["interactions/update-pull-request-creation-cap-for-repo"];
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/invitations": {
         parameters: {
             query?: never;
@@ -15020,6 +15385,28 @@ export type paths = {
         head?: never;
         /** Update a repository invitation */
         patch: operations["repos/update-invitation"];
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/issue-types": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List issue types for a repository
+         * @description Lists issue types available for a repository (inherited from its organization owner, with any per-repository overrides applied).
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
+         *     Fine-grained access tokens require the "Metadata" repository permission (read).
+         */
+        get: operations["repos/list-issue-types"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/repos/{owner}/{repo}/issues": {
@@ -15556,6 +15943,79 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/repos/{owner}/{repo}/issues/{issue_number}/relates_to": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List issues related to an issue
+         * @description You can use the REST API to list the issues that are related to an issue.
+         *
+         *     This endpoint supports the following custom media types. For more information, see [Media types](https://docs.github.com/rest/using-the-rest-api/getting-started-with-the-rest-api#media-types).
+         *
+         *     - **`application/vnd.github.raw+json`**: Returns the raw Markdown body. Response will include `body`. This is the default if you do not pass any specific media type.
+         *     - **`application/vnd.github.text+json`**: Returns a text only representation of the Markdown body. Response will include `body_text`.
+         *     - **`application/vnd.github.html+json`**: Returns HTML rendered from the body's Markdown. Response will include `body_html`.
+         *     - **`application/vnd.github.full+json`**: Returns raw, text, and HTML representations. Response will include `body`, `body_text`, and `body_html`.
+         */
+        get: operations["issues/list-relates-to"];
+        put?: never;
+        /**
+         * Add a related issue
+         * @description You can use the REST API to mark an issue as related to another issue.
+         *
+         *     Creating content too quickly using this endpoint may result in secondary rate limiting.
+         *     For more information, see [Rate limits for the API](https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits)
+         *     and [Best practices for using the REST API](https://docs.github.com/rest/guides/best-practices-for-using-the-rest-api).
+         *
+         *     This endpoint supports the following custom media types. For more information, see [Media types](https://docs.github.com/rest/using-the-rest-api/getting-started-with-the-rest-api#media-types).
+         *
+         *     - **`application/vnd.github.raw+json`**: Returns the raw Markdown body. Response will include `body`. This is the default if you do not pass any specific media type.
+         *     - **`application/vnd.github.text+json`**: Returns a text only representation of the Markdown body. Response will include `body_text`.
+         *     - **`application/vnd.github.html+json`**: Returns HTML rendered from the body's Markdown. Response will include `body_html`.
+         *     - **`application/vnd.github.full+json`**: Returns raw, text, and HTML representations. Response will include `body`, `body_text`, and `body_html`.
+         */
+        post: operations["issues/add-relates-to"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/issues/{issue_number}/relates_to/{issue_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove a related issue
+         * @description You can use the REST API to remove a 'relates to' relationship between two issues.
+         *
+         *     Removing content too quickly using this endpoint may result in secondary rate limiting.
+         *     For more information, see [Rate limits for the API](https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits)
+         *     and [Best practices for using the REST API](https://docs.github.com/rest/guides/best-practices-for-using-the-rest-api).
+         *
+         *     This endpoint supports the following custom media types. For more information, see [Media types](https://docs.github.com/rest/using-the-rest-api/getting-started-with-the-rest-api#media-types).
+         *
+         *     - **`application/vnd.github.raw+json`**: Returns the raw Markdown body. Response will include `body`. This is the default if you do not pass any specific media type.
+         *     - **`application/vnd.github.text+json`**: Returns a text only representation of the Markdown body. Response will include `body_text`.
+         *     - **`application/vnd.github.html+json`**: Returns HTML rendered from the body's Markdown. Response will include `body_html`.
+         *     - **`application/vnd.github.full+json`**: Returns raw, text, and HTML representations. Response will include `body`, `body_text`, and `body_html`.
+         */
+        delete: operations["issues/remove-relates-to"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/issues/{issue_number}/sub_issue": {
         parameters: {
             query?: never;
@@ -15644,6 +16104,76 @@ export type paths = {
          * @description You can use the REST API to reprioritize a sub-issue to a different position in the parent list.
          */
         patch: operations["issues/reprioritize-sub-issue"];
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/issues/{issue_number}/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List issue suggestions
+         * @description Lists the suggestions on an issue. A suggestion is an agent-proposed change to an issue's type, labels, fields, assignees, or closed state that a maintainer can approve or dismiss.
+         *
+         *     By default only pending suggestions are returned. Use `state=all` to return suggestions in every state, or `state=<state>` to filter to a single state. Use `action=<action>` to return only suggestions for a specific change.
+         *
+         *     This endpoint is only available while the issue suggestions feature is enabled for the repository, and only supports issues, not pull requests.
+         *
+         *     Requires triage access to the repository.
+         */
+        get: operations["issues/list-suggestions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/issues/{issue_number}/suggestions/{suggestion_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Approve an issue suggestion
+         * @description Approves a pending suggestion on an issue. Applies the proposed change (creating the corresponding timeline event), transitions the suggestion to `approved`, and dismisses any competing pending suggestions for the same change.
+         *
+         *     Requires triage access to the repository. Approving a suggestion also requires permission to perform the change it applies (for example, setting the issue type, adding a label or assignee, or closing the issue); this only affects fine-grained access tokens and GitHub Apps whose permissions are narrower than the triage role. This endpoint only supports issues, not pull requests.
+         */
+        post: operations["issues/approve-suggestion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/issues/{issue_number}/suggestions/{suggestion_id}/dismiss": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Dismiss an issue suggestion
+         * @description Dismisses a pending suggestion on an issue. Transitions the suggestion to `dismissed` without applying any change or creating a timeline event.
+         *
+         *     Requires triage access to the repository. This endpoint only supports issues, not pull requests.
+         */
+        post: operations["issues/dismiss-suggestion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/repos/{owner}/{repo}/issues/{issue_number}/timeline": {
@@ -16664,10 +17194,74 @@ export type paths = {
         get: operations["pulls/check-if-merged"];
         /**
          * Merge a pull request
-         * @description Merges a pull request into the base branch.
-         *     This endpoint triggers [notifications](https://docs.github.com/github/managing-subscriptions-and-notifications-on-github/about-notifications). Creating content too quickly using this endpoint may result in secondary rate limiting. For more information, see "[Rate limits for the API](https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits)" and "[Best practices for using the REST API](https://docs.github.com/rest/guides/best-practices-for-using-the-rest-api)."
+         * @description > [!NOTE]
+         *     > We recommend using the [asynchronous merge API](https://docs.github.com/rest/pulls/pulls#merge-a-pull-request-asynchronously) instead. This endpoint does not support stacked pull requests or merging with a merge queue.
+         *
+         *     Merges a pull request into the base branch.
+         *
+         *     This endpoint triggers [notifications](https://docs.github.com/github/managing-subscriptions-and-notifications-on-github/about-notifications).
+         *     Creating content too quickly using this endpoint may result in secondary rate limiting.
+         *     For more information, see "[Rate limits for the API](https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits)" and "[Best practices for using the REST API](https://docs.github.com/rest/guides/best-practices-for-using-the-rest-api)."
          */
         put: operations["pulls/merge"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/pulls/{pull_number}/merge-async": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Merge a pull request asynchronously
+         * @description Merges a pull request into the base branch in the background or adds it to a merge queue. Background processing allows certain types of errors to be retried and reduces the risk of timeouts for complex merges.
+         *
+         *     This is the required API for merging stacked pull requests. For a stacked pull request, the operation includes all open downstack pull requests.
+         *
+         *     A new asynchronous merge request returns a `202` response with a UUID that can be used to [fetch the result of the merge](https://docs.github.com/rest/pulls/pulls#get-the-result-of-an-asynchronous-merge). If another asynchronous merge request is already pending for this pull request, a `409` response returns that request's UUID and merge options instead.
+         *
+         *     If the pull request is already merged or already in a merge queue, a `200` response is returned immediately. A `merged` result includes the merge commit OID. An `enqueued` result means the pull request was added to the merge queue, not that it has merged.
+         *
+         *     If the pull request cannot be merged (e.g. because it is closed, or still a draft) this result will be returned immediately with a `400` response status. Branch protection rules and repository rules are not run at this stage, only basic pull request state checks are performed.
+         */
+        put: operations["pulls/merge-async"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/pulls/{pull_number}/merge-async/{uuid}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get the result of an asynchronous merge
+         * @description Fetches the current result of an asynchronous merge request, identified by the UUID that was returned when the merge was requested.
+         *
+         *     While the request's status is `pending`, the response includes the UUID, merge method, merge action, and expected head SHA of the request. Once the asynchronous request completes, its status is one of:
+         *
+         *     - `merged`: The pull request was merged into the base branch. The response includes the merge commit OID.
+         *     - `enqueued`: The pull request was added to a merge queue.
+         *     - `failed`: The request failed. The response includes a message describing the failure.
+         *
+         *     An `enqueued` result is final for the merge queue requests and does not mean the pull request has merged. This result does not change when the merge queue later merges the pull request. To get the eventual merge status, [check if a pull request has been merged](https://docs.github.com/rest/pulls/pulls#check-if-a-pull-request-has-been-merged).
+         *
+         *     The result of an asynchronous merge request is retained for 24 hours after its most recent update. After this window the request expires and this endpoint returns a `404` response for its UUID.
+         */
+        get: operations["pulls/get-merge-async-result"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
@@ -17091,6 +17685,11 @@ export type paths = {
          * Create a release
          * @description Users with push access to the repository can create a release.
          *
+         *     > [!NOTE]
+         *     > If the commit identified by `target_commitish` (or, when `target_commitish` is omitted, the latest commit on the default branch) adds or modifies any file under `.github/workflows/` relative to the repository's default branch, the authenticating token must be authorized to modify workflows. Otherwise, this endpoint returns `404 Not Found`; some authentication paths surface `403 Resource not accessible by integration` instead.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `workflow` scope when the resolved target commit modifies workflow files. Fine-grained access tokens and GitHub App installation tokens also need the "Workflows" repository permission (write). The `GITHUB_TOKEN` available to GitHub Actions cannot be authorized for this; for more information, see "[Automatic token authentication](https://docs.github.com/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token)".
+         *
          *     This endpoint triggers [notifications](https://docs.github.com/github/managing-subscriptions-and-notifications-on-github/about-notifications). Creating content too quickly using this endpoint may result in secondary rate limiting. For more information, see "[Rate limits for the API](https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits)" and "[Best practices for using the REST API](https://docs.github.com/rest/guides/best-practices-for-using-the-rest-api)."
          */
         post: operations["repos/create-release"];
@@ -17127,6 +17726,11 @@ export type paths = {
         /**
          * Update a release
          * @description Users with push access to the repository can edit a release.
+         *
+         *     > [!NOTE]
+         *     > If the resolved target commit (the new value of `target_commitish` if you are changing it, otherwise the existing target) adds or modifies any file under `.github/workflows/` relative to the repository's default branch, the authenticating token must be authorized to modify workflows. Otherwise, this endpoint returns `404 Not Found`; some authentication paths surface `403 Resource not accessible by integration` instead.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `workflow` scope when the resolved target commit modifies workflow files. Fine-grained access tokens and GitHub App installation tokens also need the "Workflows" repository permission (write). The `GITHUB_TOKEN` available to GitHub Actions cannot be authorized for this; for more information, see "[Automatic token authentication](https://docs.github.com/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token)".
          */
         patch: operations["repos/update-release"];
         trace?: never;
@@ -17552,6 +18156,70 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/repos/{owner}/{repo}/secret-scanning/custom-patterns": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List repository custom patterns
+         * @description Lists secret scanning custom patterns for a repository.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. If this endpoint is only used with public repositories, the token can use the `public_repo` scope instead.
+         *
+         *     Fine-grained access tokens require the `administration:write` repository permission.
+         */
+        get: operations["secret-scanning/list-repo-custom-patterns"];
+        put?: never;
+        /**
+         * Bulk create repository custom patterns
+         * @description Bulk creates secret scanning custom patterns for a repository.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. If this endpoint is only used with public repositories, the token can use the `public_repo` scope instead.
+         *
+         *     Fine-grained access tokens require the `administration:write` repository permission.
+         */
+        post: operations["secret-scanning/bulk-create-repo-custom-patterns"];
+        /**
+         * Bulk delete repository custom patterns
+         * @description Bulk deletes secret scanning custom patterns for a repository.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. If this endpoint is only used with public repositories, the token can use the `public_repo` scope instead.
+         *
+         *     Fine-grained access tokens require the `administration:write` repository permission.
+         */
+        delete: operations["secret-scanning/bulk-delete-repo-custom-patterns"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/secret-scanning/custom-patterns/{pattern_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update a repository custom pattern
+         * @description Updates a secret scanning custom pattern for a repository.
+         *
+         *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. If this endpoint is only used with public repositories, the token can use the `public_repo` scope instead.
+         *
+         *     Fine-grained access tokens require the `administration:write` repository permission.
+         */
+        patch: operations["secret-scanning/update-repo-custom-pattern"];
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/secret-scanning/push-protection-bypasses": {
         parameters: {
             query?: never;
@@ -17739,6 +18407,98 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/repos/{owner}/{repo}/stacks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List pull request stacks
+         * @description Lists pull request stacks in a repository.
+         */
+        get: operations["pull-request-stacks/list"];
+        put?: never;
+        /**
+         * Create a pull request stack
+         * @description Creates a stack from an ordered list of pull request numbers. Provide the pull
+         *     request numbers from the bottom of the stack to the top. Each pull request's
+         *     base ref must match the previous pull request's head ref.
+         */
+        post: operations["pull-request-stacks/create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/stacks/{stack_number}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a pull request stack
+         * @description Gets a pull request stack by providing its stack number.
+         */
+        get: operations["pull-request-stacks/get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/stacks/{stack_number}/add": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add pull requests to a pull request stack
+         * @description Appends an ordered list of pull request numbers onto the top of an existing
+         *     stack. Provide only the pull requests you want to add, from the current top of
+         *     the stack upward. The first new pull request's base ref must match the current
+         *     top pull request's head ref.
+         */
+        post: operations["pull-request-stacks/add"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/stacks/{stack_number}/unstack": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Remove pull requests from a pull request stack
+         * @description Removes the unmerged pull requests from a stack. Pull requests that cannot be
+         *     unstacked (for example, those that are queued for merge) are left in place. When pull requests remain in the stack, the updated
+         *     stack is returned with a `200`. When no pull requests remain, the stack is
+         *     dissolved and a `204` is returned.
+         */
+        post: operations["pull-request-stacks/unstack"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/stargazers": {
         parameters: {
             query?: never;
@@ -17755,6 +18515,46 @@ export type paths = {
          *     - **`application/vnd.github.star+json`**: Includes a timestamp of when the star was created.
          */
         get: operations["activity/list-stargazers-for-repo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/stargazers/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get stargazer count
+         * @description Gets the current number of users who have starred the repository. Users who previously starred the repository but later removed their star are not included.
+         */
+        get: operations["activity/get-stargazer-count-for-repo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/stargazers/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get repository star history
+         * @description Returns repository stars grouped by calendar weeks, most recent first. Pages move backward toward the repository's creation week, and weeks within a page are ordered newest to oldest, so concatenating pages produces one continuous series. Weeks without stars contain zero counts. Week and day boundaries are not guaranteed to align with UTC. The `days` array contains the number of stars created on each day of the week, starting on Sunday.
+         */
+        get: operations["activity/get-stargazer-history-for-repo"];
         put?: never;
         post?: never;
         delete?: never;
@@ -18267,9 +19067,6 @@ export type paths = {
          *     *   You must always include at least one search term when searching source code. For example, searching for [`language:go`](https://github.com/search?utf8=%E2%9C%93&q=language%3Ago&type=Code) is not valid, while [`amazing
          *     language:go`](https://github.com/search?utf8=%E2%9C%93&q=amazing+language%3Ago&type=Code) is.
          *
-         *     > [!NOTE]
-         *     > `repository.description`, `repository.owner.type`, and `repository.owner.node_id` are closing down on this endpoint and will return `null` in a future API version. Use the [Get a repository](https://docs.github.com/rest/repos/repos#get-a-repository) endpoint (`GET /repos/{owner}/{repo}`) to retrieve full repository metadata.
-         *
          *     This endpoint requires you to authenticate and limits you to 10 requests per minute.
          */
         get: operations["search/code"];
@@ -18535,6 +19332,8 @@ export type paths = {
          *     > **Endpoint closing down notice:** This endpoint route is closing down and will be removed from the Teams API. We recommend migrating your existing code to use the new [`List team members`](https://docs.github.com/rest/teams/members#list-team-members) endpoint.
          *
          *     Team members will include the members of child teams.
+         *
+         *     Each member includes their `role` on the team (`member` or `maintainer`) and an `inherited` flag indicating whether the membership is inherited from a child team (`true`) or is a direct membership (`false`).
          */
         get: operations["teams/list-members-legacy"];
         put?: never;
@@ -18759,7 +19558,9 @@ export type paths = {
         };
         /**
          * Get the authenticated user
-         * @description OAuth app tokens and personal access tokens (classic) need the `user` scope in order for the response to include private profile information.
+         * @description OAuth app tokens and personal access tokens (classic) need the `read:user` scope, or the broader `user` scope, for this endpoint to return the private user response. The private user response includes additional fields such as `private_gists`, `total_private_repos`, `owned_private_repos`, `disk_usage`, `collaborators`, and `two_factor_authentication`. Tokens without these scopes receive the public user response.
+         *
+         *     The private and public user response types are unrelated to the [private profile](https://docs.github.com/account-and-profile/concepts/personal-profile#private-profiles) setting. A token without scopes still authenticates as the token's owner, so values subject to private profile visibility, such as `followers` and `following`, may differ from an unauthenticated response.
          */
         get: operations["users/get-authenticated"];
         put?: never;
@@ -20338,6 +21139,10 @@ export type paths = {
          * Get a user
          * @description Provides publicly available information about someone with a GitHub account.
          *
+         *     If the specified user has a [private profile](https://docs.github.com/account-and-profile/concepts/personal-profile#private-profiles), the `followers` and `following` values are `0` unless the request is authenticated as that user. A request authenticated as the specified user returns the actual values even if the token has no OAuth scopes.
+         *
+         *     The `events_url` value is a URI template. Replace `{/privacy}` with `/public` to retrieve only public events. Omit it to retrieve public events and, when authenticated as the user, private events. For more information, see "[List events for the authenticated user](https://docs.github.com/rest/activity/events#list-events-for-the-authenticated-user)."
+         *
          *     If you are requesting information about an [Enterprise Managed User](https://docs.github.com/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises/about-enterprise-managed-users), or a GitHub App bot that is installed in an organization that uses Enterprise Managed Users, your requests must be authenticated as a user or GitHub App that has access to the organization to view that account's information. If you are not authorized, the request will return a `404 Not Found` status.
          *
          *     The `email` key in the following response is the publicly visible email address from your GitHub [profile page](https://github.com/settings/profile). When setting up your profile, you can select a primary email address to be public which provides an email entry for this endpoint. If you do not set a public email address for `email`, then it will have a value of `null`. You only see publicly visible email addresses when authenticated with GitHub. For more information, see [Authentication](https://docs.github.com/rest/guides/getting-started-with-the-rest-api#authentication).
@@ -20767,6 +21572,8 @@ export type paths = {
         /**
          * List followers of a user
          * @description Lists the people following the specified user.
+         *
+         *     If the specified user has a [private profile](https://docs.github.com/account-and-profile/concepts/personal-profile#private-profiles), this endpoint returns an empty list unless the request is authenticated as that user. A request authenticated as the specified user returns the list even if the token has no OAuth scopes.
          */
         get: operations["users/list-followers-for-user"];
         put?: never;
@@ -20787,6 +21594,8 @@ export type paths = {
         /**
          * List the people a user follows
          * @description Lists the people who the specified user follows.
+         *
+         *     If the specified user has a [private profile](https://docs.github.com/account-and-profile/concepts/personal-profile#private-profiles), this endpoint returns an empty list unless the request is authenticated as that user. A request authenticated as the specified user returns the list even if the token has no OAuth scopes.
          */
         get: operations["users/list-following-for-user"];
         put?: never;
@@ -21323,6 +22132,28 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/users/{username}/settings/billing/ai_credit/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get billing AI credit usage report for a user
+         * @description Gets a report of AI credit usage for a user.
+         *
+         *     **Note:** Only data from the past 24 months is accessible via this endpoint.
+         */
+        get: operations["billing/get-github-billing-ai-credit-usage-report-user"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/{username}/settings/billing/premium_request/usage": {
         parameters: {
             query?: never;
@@ -21442,6 +22273,8 @@ export type paths = {
         /**
          * List repositories starred by a user
          * @description Lists repositories a user has starred.
+         *
+         *     If the specified user has a [private profile](https://docs.github.com/account-and-profile/concepts/personal-profile#private-profiles), this endpoint returns an empty list unless the request is authenticated as that user. A request authenticated as the specified user returns starred repositories visible to the token even if the token has no OAuth scopes.
          *
          *     This endpoint supports the following custom media types. For more information, see "[Media types](https://docs.github.com/rest/using-the-rest-api/getting-started-with-the-rest-api#media-types)."
          *
@@ -21913,6 +22746,94 @@ export type components = {
             sha_pinning_required?: components["schemas"]["sha-pinning-required"];
         };
         /**
+         * Actions Policy
+         * @description An Actions policy defines rules for workflow execution protection.
+         */
+        "actions-policy": {
+            _links?: {
+                html?: {
+                    /** @description The html URL of the policy */
+                    href?: string;
+                };
+                self?: {
+                    /** @description The URL of the policy */
+                    href?: string;
+                };
+            };
+            /**
+             * @description When workflow path targeting is available, detailed responses represent an omitted stored
+             *     workflow condition as `workflow_path` with `include` set to `["~ALL"]` and `exclude` set to `[]`.
+             *     When workflow path targeting is unavailable, an omitted stored condition remains omitted.
+             */
+            conditions?: (components["schemas"]["actions-policy-repo-conditions"] | components["schemas"]["actions-policy-org-conditions"] | components["schemas"]["actions-policy-enterprise-conditions"]) | null;
+            /** Format: date-time */
+            created_at?: string;
+            enforcement: components["schemas"]["repository-rule-enforcement"];
+            /** @description The ID of the policy */
+            id: number;
+            /** @description The name of the policy */
+            name: string;
+            node_id?: string;
+            /** @description An array of rules within the policy */
+            rules?: components["schemas"]["actions-rule"][];
+            /** @description The name of the source */
+            source: string;
+            /**
+             * @description The type of the source of the policy
+             * @enum {string}
+             */
+            source_type: "Repository" | "Organization" | "Enterprise";
+            /**
+             * @description The target of the policy
+             * @enum {string}
+             */
+            target: "actions";
+            /** Format: date-time */
+            updated_at?: string;
+        };
+        /**
+         * Enterprise Actions policy conditions
+         * @description Conditions for an enterprise Actions policy. The conditions object supports one organization
+         *     target (`organization_name`, `organization_id`, or `organization_property`) combined with one
+         *     repository target (`repository_name` or `repository_property`), and may also contain `workflow_path`.
+         */
+        "actions-policy-enterprise-conditions": (components["schemas"]["enterprise-ruleset-conditions-organization-name-target"] & components["schemas"]["repository-ruleset-conditions-repository-name-target"] & components["schemas"]["actions-policy-workflow-path-condition"]) | (components["schemas"]["enterprise-ruleset-conditions-organization-name-target"] & components["schemas"]["repository-ruleset-conditions-repository-property-target"] & components["schemas"]["actions-policy-workflow-path-condition"]) | (components["schemas"]["enterprise-ruleset-conditions-organization-id-target"] & components["schemas"]["repository-ruleset-conditions-repository-name-target"] & components["schemas"]["actions-policy-workflow-path-condition"]) | (components["schemas"]["enterprise-ruleset-conditions-organization-id-target"] & components["schemas"]["repository-ruleset-conditions-repository-property-target"] & components["schemas"]["actions-policy-workflow-path-condition"]) | (components["schemas"]["enterprise-ruleset-conditions-organization-property-target"] & components["schemas"]["repository-ruleset-conditions-repository-name-target"] & components["schemas"]["actions-policy-workflow-path-condition"]) | (components["schemas"]["enterprise-ruleset-conditions-organization-property-target"] & components["schemas"]["repository-ruleset-conditions-repository-property-target"] & components["schemas"]["actions-policy-workflow-path-condition"]);
+        /**
+         * Organization Actions policy conditions
+         * @description Conditions for an organization Actions policy. The conditions object should contain one of
+         *     `repository_name`, `repository_id`, or `repository_property`, and may also contain `workflow_path`.
+         */
+        "actions-policy-org-conditions": (components["schemas"]["repository-ruleset-conditions-repository-name-target"] & components["schemas"]["actions-policy-workflow-path-condition"]) | (components["schemas"]["repository-ruleset-conditions-repository-id-target"] & components["schemas"]["actions-policy-workflow-path-condition"]) | (components["schemas"]["repository-ruleset-conditions-repository-property-target"] & components["schemas"]["actions-policy-workflow-path-condition"]);
+        /**
+         * Repository Actions policy conditions
+         * @description Conditions for a repository Actions policy. The object may be empty to preserve or use the
+         *     default workflow targeting, or contain only `workflow_path`.
+         */
+        "actions-policy-repo-conditions": Record<string, never> | WithRequired<components["schemas"]["actions-policy-workflow-path-condition"], "workflow_path">;
+        /**
+         * Actions policy workflow path condition
+         * @description Parameters for an Actions policy workflow path condition. Omitting `workflow_path` when creating
+         *     a policy targets all workflows without storing an explicit condition. Omitting it when updating a
+         *     policy preserves the existing workflow targeting. For new or changed workflow conditions, the API
+         *     requires at least one included or excluded pattern. This is validated server-side rather than by
+         *     this schema, which can also describe existing stored conditions.
+         */
+        "actions-policy-workflow-path-condition": {
+            workflow_path?: {
+                /**
+                 * @description Array of workflow file paths or glob patterns to exclude. The condition will not pass
+                 *     if any of these patterns match. `~ALL` is not allowed in this array.
+                 */
+                exclude: string[];
+                /**
+                 * @description Array of workflow file paths or glob patterns to include. An empty array includes all
+                 *     workflows not matched by an excluded pattern. Use `~ALL` by itself to include all workflows.
+                 *     `~ALL` cannot be combined with other included patterns.
+                 */
+                include: string[];
+            };
+        };
+        /**
          * ActionsPublicKey
          * @description The public key used for setting Actions Secrets.
          */
@@ -21941,6 +22862,48 @@ export type components = {
             enabled: components["schemas"]["actions-enabled"];
             selected_actions_url?: components["schemas"]["selected-actions-url"];
             sha_pinning_required?: components["schemas"]["sha-pinning-required"];
+        };
+        /**
+         * Actions Rule
+         * @description An actions rule.
+         */
+        "actions-rule": components["schemas"]["actions-rule-restrict-actions-actors"] | components["schemas"]["actions-rule-restrict-action-events"];
+        /**
+         * Actor
+         * @description An actor authorized to trigger Actions workflows
+         */
+        "actions-rule-params-actor": {
+            /** @description ID of the actor authorized to trigger Actions workflows. */
+            id: number;
+            /**
+             * @description The type of the actor
+             * @enum {string}
+             */
+            type: "User" | "Bot" | "Team" | "BusinessTeam" | "EnterpriseTeam" | "IntegrationInstallation" | "App" | "RepositoryRole";
+        };
+        /**
+         * restrict_action_events
+         * @description Choose specific GitHub events that will trigger Actions workflows.
+         */
+        "actions-rule-restrict-action-events": {
+            parameters?: {
+                /** @description Select the events that can trigger Actions workflows. */
+                allowed_events: ("branch_protection_rule" | "check_run" | "check_suite" | "create" | "delete" | "deployment" | "deployment_status" | "discussion" | "discussion_comment" | "fork" | "gollum" | "image_version" | "issue_comment" | "issues" | "label" | "merge_group" | "milestone" | "page_build" | "project" | "project_card" | "project_column" | "public" | "pull_request" | "pull_request_review" | "pull_request_review_comment" | "pull_request_target" | "push" | "registry_package" | "release" | "repository_dispatch" | "schedule" | "status" | "watch" | "workflow_call" | "workflow_dispatch" | "workflow_run")[];
+            };
+            /** @enum {string} */
+            type: "restrict_action_events";
+        };
+        /**
+         * restrict_actions_actors
+         * @description Choose specific actors that are authorized to trigger Actions workflows.
+         */
+        "actions-rule-restrict-actions-actors": {
+            parameters?: {
+                /** @description Select the actors who can run Actions workflows. */
+                allowed_actors: components["schemas"]["actions-rule-params-actor"][];
+            };
+            /** @enum {string} */
+            type: "restrict_actions_actors";
         };
         /**
          * Actions Secret
@@ -22232,6 +23195,12 @@ export type components = {
             codespaces?: string[];
             /**
              * @example [
+             *       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+             *     ]
+             */
+            commit_signing_keys?: string[];
+            /**
+             * @example [
              *       "192.0.2.1"
              *     ]
              */
@@ -22260,6 +23229,7 @@ export type components = {
                 codespaces?: string[];
                 copilot?: string[];
                 packages?: string[];
+                storage?: string[];
                 website?: string[];
             };
             /**
@@ -22321,7 +23291,7 @@ export type components = {
         };
         /**
          * App Permissions
-         * @description The permissions granted to the user access token.
+         * @description The permissions granted to the fine-grained access token.
          * @example {
          *       "contents": "read",
          *       "issues": "read",
@@ -22464,7 +23434,7 @@ export type components = {
              * @description The level of permission to grant the access token for managing access to GitHub Copilot for members of an organization with a Copilot Business subscription. This property is in public preview and is subject to change.
              * @enum {string}
              */
-            organization_copilot_seat_management?: "write";
+            organization_copilot_seat_management?: "read" | "write";
             /**
              * @description The level of permission to grant the access token for custom organization roles management.
              * @enum {string}
@@ -22689,6 +23659,7 @@ export type components = {
             created_at: string;
             event: string;
             id: number;
+            intent?: components["schemas"]["nullable-issue-event-intent"];
             node_id: string;
             performed_via_github_app: components["schemas"]["integration"];
             url: string;
@@ -22865,6 +23836,88 @@ export type components = {
             message?: string;
             status?: string;
             url?: string;
+        };
+        "billing-ai-credit-usage-report-org": {
+            /** @description The model for the usage report. */
+            model?: string;
+            /** @description The unique identifier of the organization. */
+            organization: string;
+            /** @description The product for the usage report. */
+            product?: string;
+            timePeriod: {
+                /** @description The day for the usage report. */
+                day?: number;
+                /** @description The month for the usage report. */
+                month?: number;
+                /** @description The year for the usage report. */
+                year: number;
+            };
+            usageItems: {
+                /** @description Discount amount of the usage line item. */
+                discountAmount: number;
+                /** @description Discount quantity of the usage line item. */
+                discountQuantity: number;
+                /** @description Gross amount of the usage line item. */
+                grossAmount: number;
+                /** @description Gross quantity of the usage line item. */
+                grossQuantity: number;
+                /** @description Model name. */
+                model: string;
+                /** @description Net amount of the usage line item. */
+                netAmount: number;
+                /** @description Net quantity of the usage line item. */
+                netQuantity: number;
+                /** @description Price per unit of the usage line item. */
+                pricePerUnit: number;
+                /** @description Product name. */
+                product: string;
+                /** @description SKU name. */
+                sku: string;
+                /** @description Unit type of the usage line item. */
+                unitType: string;
+            }[];
+            /** @description The name of the user for the usage report. */
+            user?: string;
+        };
+        "billing-ai-credit-usage-report-user": {
+            /** @description The model for the usage report. */
+            model?: string;
+            /** @description The product for the usage report. */
+            product?: string;
+            timePeriod: {
+                /** @description The day for the usage report. */
+                day?: number;
+                /** @description The month for the usage report. */
+                month?: number;
+                /** @description The year for the usage report. */
+                year: number;
+            };
+            usageItems: {
+                /** @description Discount amount of the usage line item. */
+                discountAmount: number;
+                /** @description Discount quantity of the usage line item. */
+                discountQuantity: number;
+                /** @description Gross amount of the usage line item. */
+                grossAmount: number;
+                /** @description Gross quantity of the usage line item. */
+                grossQuantity: number;
+                /** @description Model name. */
+                model: string;
+                /** @description Net amount of the usage line item. */
+                netAmount: number;
+                /** @description Net quantity of the usage line item. */
+                netQuantity: number;
+                /** @description Price per unit of the usage line item. */
+                pricePerUnit: number;
+                /** @description Product name. */
+                product: string;
+                /** @description SKU name. */
+                sku: string;
+                /** @description Unit type of the usage line item. */
+                unitType: string;
+            }[];
+            /** @description The unique identifier of the user. */
+            user: string;
         };
         "billing-premium-request-usage-report-org": {
             /** @description The model for the usage report. */
@@ -23093,6 +24146,70 @@ export type components = {
             url: string;
         };
         /**
+         * Blocked-by Added Issue Event
+         * @description Blocked-by Added Issue Event
+         */
+        "blocked-by-added-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            blocked_by: components["schemas"]["nullable-issue-reference"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            url: string;
+        };
+        /**
+         * Blocked-by Removed Issue Event
+         * @description Blocked-by Removed Issue Event
+         */
+        "blocked-by-removed-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            blocked_by: components["schemas"]["nullable-issue-reference"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            url: string;
+        };
+        /**
+         * Blocking Added Issue Event
+         * @description Blocking Added Issue Event
+         */
+        "blocking-added-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            blocking: components["schemas"]["nullable-issue-reference"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            url: string;
+        };
+        /**
+         * Blocking Removed Issue Event
+         * @description Blocking Removed Issue Event
+         */
+        "blocking-removed-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            blocking: components["schemas"]["nullable-issue-reference"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            url: string;
+        };
+        /**
          * Branch Protection
          * @description Branch Protection
          */
@@ -23272,7 +24389,7 @@ export type components = {
         budget: {
             budget_alerting: {
                 /**
-                 * @description Array of user login names who will receive alerts
+                 * @description Array of user login names who will receive alerts. Ignored for user-scope as alerting is disabled for them.
                  * @example [
                  *       "mona",
                  *       "lisa"
@@ -23280,7 +24397,7 @@ export type components = {
                  */
                 alert_recipients: string[];
                 /**
-                 * @description Whether alerts are enabled for this budget
+                 * @description Whether alerts are enabled for this budget. Ignored for user-scope as alerting is disabled for them.
                  * @example true
                  */
                 will_alert: boolean;
@@ -23295,15 +24412,27 @@ export type components = {
             /** @description A single product or sku to apply the budget to. */
             budget_product_sku: string;
             /**
-             * @description The scope of the budget (enterprise, organization, repository, cost center)
+             * @description The scope of the budget
              * @example enterprise
+             * @enum {string}
              */
-            budget_scope: string;
+            budget_scope: "enterprise" | "organization" | "repository" | "cost_center" | "multi_user_customer" | "multi_user_cost_center" | "user";
             /**
              * @description The type of pricing for the budget
              * @example SkuPricing
              */
             budget_type: "SkuPricing" | "ProductPricing";
+            /** @description The amount consumed for a user-scoped budget, or for a multi-user budget when filtering by user. */
+            consumed_amount?: number;
+            /**
+             * Format: date
+             * @description The date the budget will expire in `YYYY-MM-DD` format. Only dates in the future are accepted.
+             *     If not provided, the budget will not expire.
+             *
+             *     Only supported for budgets with `budget_scope` of `user`
+             * @example 2026-12-31
+             */
+            expires_at?: string;
             /**
              * @description The unique identifier for the budget
              * @example 2066deda-923f-43f9-88d2-62395a28c0cdd
@@ -23314,6 +24443,11 @@ export type components = {
              * @example true
              */
             prevent_further_usage: boolean;
+            /**
+             * @description The user login when the budget is scoped to a single user (`user` scope).
+             * @example octocat
+             */
+            user?: string;
         };
         /**
          * Campaign alert type
@@ -23634,190 +24768,6 @@ export type components = {
             repository: components["schemas"]["minimal-repository"];
         };
         /**
-         * Classroom
-         * @description A GitHub Classroom classroom
-         */
-        classroom: {
-            /**
-             * @description Whether classroom is archived.
-             * @example false
-             */
-            archived: boolean;
-            /**
-             * @description Unique identifier of the classroom.
-             * @example 42
-             */
-            id: number;
-            /**
-             * @description The name of the classroom.
-             * @example Programming Elixir
-             */
-            name: string;
-            organization: components["schemas"]["simple-classroom-organization"];
-            /**
-             * @description The URL of the classroom on GitHub Classroom.
-             * @example https://classroom.github.com/classrooms/1-programming-elixir
-             */
-            url: string;
-        };
-        /**
-         * Classroom Accepted Assignment
-         * @description A GitHub Classroom accepted assignment
-         */
-        "classroom-accepted-assignment": {
-            assignment: components["schemas"]["simple-classroom-assignment"];
-            /**
-             * @description Count of student commits.
-             * @example 5
-             */
-            commit_count: number;
-            /**
-             * @description Most recent grade.
-             * @example 10/10
-             */
-            grade: string;
-            /**
-             * @description Unique identifier of the repository.
-             * @example 42
-             */
-            id: number;
-            /**
-             * @description Whether a submission passed.
-             * @example true
-             */
-            passing: boolean;
-            repository: components["schemas"]["simple-classroom-repository"];
-            students: components["schemas"]["simple-classroom-user"][];
-            /**
-             * @description Whether an accepted assignment has been submitted.
-             * @example true
-             */
-            submitted: boolean;
-        };
-        /**
-         * Classroom Assignment
-         * @description A GitHub Classroom assignment
-         */
-        "classroom-assignment": {
-            /**
-             * @description The number of students that have accepted the assignment.
-             * @example 25
-             */
-            accepted: number;
-            classroom: components["schemas"]["classroom"];
-            /**
-             * Format: date-time
-             * @description The time at which the assignment is due.
-             * @example 2011-01-26T19:06:43Z
-             */
-            deadline: string | null;
-            /**
-             * @description The selected editor for the assignment.
-             * @example codespaces
-             */
-            editor: string;
-            /**
-             * @description Whether feedback pull request will be created when a student accepts the assignment.
-             * @example true
-             */
-            feedback_pull_requests_enabled: boolean;
-            /**
-             * @description Unique identifier of the repository.
-             * @example 42
-             */
-            id: number;
-            /**
-             * @description Whether the invitation link is enabled. Visiting an enabled invitation link will accept the assignment.
-             * @example true
-             */
-            invitations_enabled: boolean;
-            /**
-             * @description The link that a student can use to accept the assignment.
-             * @example https://classroom.github.com/a/Lx7jiUgx
-             */
-            invite_link: string;
-            /**
-             * @description The programming language used in the assignment.
-             * @example elixir
-             */
-            language: string;
-            /**
-             * @description The maximum allowable members per team.
-             * @example 0
-             */
-            max_members: number | null;
-            /**
-             * @description The maximum allowable teams for the assignment.
-             * @example 0
-             */
-            max_teams: number | null;
-            /**
-             * @description The number of students that have passed the assignment.
-             * @example 10
-             */
-            passing: number;
-            /**
-             * @description Whether an accepted assignment creates a public repository.
-             * @example true
-             */
-            public_repo: boolean;
-            /**
-             * @description Sluggified name of the assignment.
-             * @example intro-to-binaries
-             */
-            slug: string;
-            starter_code_repository: components["schemas"]["simple-classroom-repository"];
-            /**
-             * @description Whether students are admins on created repository when a student accepts the assignment.
-             * @example true
-             */
-            students_are_repo_admins: boolean;
-            /**
-             * @description The number of students that have submitted the assignment.
-             * @example 10
-             */
-            submitted: number;
-            /**
-             * @description Assignment title.
-             * @example Intro to Binaries
-             */
-            title: string;
-            /**
-             * @description Whether it's a group assignment or individual assignment.
-             * @example individual
-             * @enum {string}
-             */
-            type: "individual" | "group";
-        };
-        /**
-         * Classroom Assignment Grade
-         * @description Grade for a student or groups GitHub Classroom assignment
-         */
-        "classroom-assignment-grade": {
-            /** @description Name of the assignment */
-            assignment_name: string;
-            /** @description URL of the assignment */
-            assignment_url: string;
-            /** @description GitHub username of the student */
-            github_username: string;
-            /** @description If a group assignment, name of the group the student is in */
-            group_name?: string;
-            /** @description Number of points available for the assignment */
-            points_available: number;
-            /** @description Number of points awarded to the student */
-            points_awarded: number;
-            /** @description Roster identifier of the student */
-            roster_identifier: string;
-            /** @description URL of the starter code for the assignment */
-            starter_code_url: string;
-            /** @description Name of the student's assignment repository */
-            student_repository_name: string;
-            /** @description URL of the student's assignment repository */
-            student_repository_url: string;
-            /** @description Timestamp of the student's assignment submission */
-            submission_timestamp: string;
-        };
-        /**
          * Clone Traffic
          * @description Clone Traffic
          */
@@ -23918,6 +24868,181 @@ export type components = {
              */
             url: string;
         };
+        /** @description Code quality finding */
+        "code-quality-finding": {
+            /**
+             * Format: date-time
+             * @description The time the code quality finding was created.
+             */
+            created_at?: string;
+            location: components["schemas"]["code-quality-finding-location"];
+            message: components["schemas"]["code-quality-finding-message"];
+            /** @description The finding number. */
+            number: number;
+            rule: components["schemas"]["code-quality-finding-rule"];
+            /**
+             * @description State of the code quality finding.
+             * @enum {string}
+             */
+            state: "open" | "dismissed";
+            /**
+             * Format: uri
+             * @description The REST API URL of the code quality finding resource.
+             */
+            url: string;
+        };
+        /** @description Code quality file location */
+        "code-quality-finding-location": {
+            /** @description The column number where the finding ends. */
+            end_column?: number;
+            /** @description The line number where the finding ends. */
+            end_line?: number;
+            /** @description The file path where the finding was detected. */
+            path: string;
+            /** @description The column number where the finding starts. */
+            start_column?: number;
+            /** @description The line number where the finding starts. */
+            start_line?: number;
+        };
+        /** @description Code quality finding message */
+        "code-quality-finding-message": {
+            /** @description The message text of the code quality finding in markdown format. */
+            markdown: string;
+            /** @description The message text of the code quality finding. */
+            text: string;
+        };
+        /** @description Code quality rule */
+        "code-quality-finding-rule": {
+            /**
+             * @description The category of the rule used to detect the finding.
+             * @enum {string}
+             */
+            category: "none" | "maintainability" | "reliability";
+            /** @description A short description of the rule used to detect the finding. */
+            description: string;
+            /** @description A detailed description of the rule used to detect the finding. */
+            help?: string;
+            /** @description A unique identifier for the rule used to detect the finding. */
+            id: string;
+            /**
+             * @description The severity of the rule used to detect the finding.
+             * @enum {string}
+             */
+            severity: "error" | "warning" | "note" | "none";
+            /** @description The name of the rule used to detect the finding. */
+            title: string;
+        };
+        /** @description Configuration for code quality setup. */
+        "code-quality-setup": {
+            /**
+             * @description The AI findings configuration for the repository.
+             * @enum {string|null}
+             */
+            ai_findings_option?: "disabled" | "on_push" | null;
+            /** @description Languages to be analyzed. */
+            languages?: ("csharp" | "go" | "java-kotlin" | "javascript-typescript" | "python" | "ruby" | "rust")[];
+            /**
+             * @description Runner label to be used if the runner type is labeled.
+             * @example code-scanning
+             */
+            runner_label?: string | null;
+            /**
+             * @description Runner type to be used.
+             * @enum {string|null}
+             */
+            runner_type?: "standard" | "labeled" | null;
+            /**
+             * @description The frequency of the periodic analysis.
+             * @enum {string|null}
+             */
+            schedule?: "weekly" | null;
+            /**
+             * @description Code quality setup has been configured or not.
+             * @enum {string}
+             */
+            state?: "configured" | "not-configured";
+            /**
+             * Format: date-time
+             * @description Timestamp of latest configuration update.
+             * @example 2023-12-06T14:20:20.000Z
+             */
+            updated_at?: string | null;
+        };
+        /** @description Configuration for code quality setup. */
+        "code-quality-setup-update": {
+            /**
+             * @description Whether AI findings run for Code Quality on this repository.
+             * @enum {string}
+             */
+            ai_findings_option?: "disabled" | "on_push";
+            /** @description Languages to be analyzed. */
+            languages?: ("csharp" | "go" | "java-kotlin" | "javascript-typescript" | "python" | "ruby")[];
+            /**
+             * @description Runner label to be used if the runner type is labeled.
+             * @example code-scanning
+             */
+            runner_label?: string | null;
+            /**
+             * @description Runner type to be used.
+             * @enum {string}
+             */
+            runner_type?: "standard" | "labeled";
+            /**
+             * @description The desired state of code quality setup.
+             * @enum {string}
+             */
+            state?: "configured" | "not-configured";
+        } | unknown | unknown | unknown | unknown | unknown;
+        /**
+         * @description You can use `run_url` to track the status of the run. This includes a property status and conclusion.
+         *     You should not rely on this always being an actions workflow run object.
+         */
+        "code-quality-setup-update-response": {
+            /** @description ID of the corresponding run. */
+            run_id?: number;
+            /** @description URL of the corresponding run. */
+            run_url?: string;
+        };
+        /** @description AI Scan enablement for a repository. */
+        "code-scanning-ai-scan-enablement": {
+            /**
+             * @description Whether AI Scan is enabled for the repository.
+             * @enum {string}
+             */
+            pr_scan: "enabled" | "disabled";
+        };
+        /** @description AI Scan enablement update for a repository. */
+        "code-scanning-ai-scan-enablement-update": {
+            /**
+             * @description Whether to enable or disable AI Scan for the repository.
+             * @enum {string}
+             */
+            pr_scan?: "enabled" | "disabled";
+        };
+        /**
+         * Code scanning AI Scan organization settings update
+         * @description The AI Scan organization setting to apply
+         */
+        "code-scanning-ai-scan-org-enablement-update": {
+            /**
+             * @description Whether AI Scan is enabled for the organization. Organization respects enterprise policy. Disabled organizations prevent repositories from enabling AI Scan. Enabled organizations enable AI Scan for their repositories, but individual repositories can opt out.
+             * @example enabled
+             * @enum {string}
+             */
+            pr_scan?: "enabled" | "disabled";
+        };
+        /**
+         * Code scanning AI Scan organization settings
+         * @description The AI Scan organization setting
+         */
+        "code-scanning-ai-scan-org-settings": {
+            /**
+             * @description Whether AI Scan on pull requests is enabled for the organization. The organization setting respects enterprise policy, and repositories inherit it: when disabled, repositories cannot enable AI Scan; when enabled, repositories can still opt out.
+             * @example enabled
+             * @enum {string}
+             */
+            pr_scan: "enabled" | "disabled";
+        };
         "code-scanning-alert": {
             assignees?: components["schemas"]["simple-user"][];
             created_at: components["schemas"]["alert-created-at"];
@@ -23929,6 +25054,8 @@ export type components = {
             fixed_at?: components["schemas"]["alert-fixed-at"];
             html_url: components["schemas"]["alert-html-url"];
             instances_url: components["schemas"]["alert-instances-url"];
+            /** @description Pull requests linked to this alert. */
+            linked_pull_requests?: components["schemas"]["pull-request-simple"][];
             most_recent_instance: components["schemas"]["code-scanning-alert-instance"];
             number: components["schemas"]["alert-number"];
             rule: components["schemas"]["code-scanning-alert-rule"];
@@ -23952,7 +25079,7 @@ export type components = {
          * @description **Required when the state is dismissed.** The reason for dismissing or closing the alert.
          * @enum {string|null}
          */
-        "code-scanning-alert-dismissed-reason": "false positive" | "won't fix" | "used in tests" | null;
+        "code-scanning-alert-dismissed-reason": "false positive" | "won't fix" | "used in tests" | "mitigated" | null;
         /** @description Identifies the variable values associated with the environment in which the analysis that generated this alert instance was performed, such as the language that was analyzed. */
         "code-scanning-alert-environment": string;
         "code-scanning-alert-instance": {
@@ -24608,12 +25735,12 @@ export type components = {
                 labeled_runners?: boolean;
             };
             /** @description A description of the code security configuration */
-            description?: string;
+            description?: string | null;
             /**
              * @description The enforcement status for a security configuration
              * @enum {string}
              */
-            enforcement?: "enforced" | "unenforced";
+            enforcement?: "enforced" | "unenforced" | "enterprise_enforced";
             /**
              * Format: uri
              * @description The URL of the configuration
@@ -24709,7 +25836,7 @@ export type components = {
              * @description The attachment status of the code security configuration on the repository.
              * @enum {string}
              */
-            status?: "attached" | "attaching" | "detached" | "removed" | "enforced" | "failed" | "updating" | "removed_by_enterprise";
+            status?: "attached" | "attaching" | "detached" | "removed" | "enforced" | "failed" | "updating" | "removed_by_enterprise" | "enterprise_enforced";
         };
         /** @description Repositories associated with a code security configuration and attachment status */
         "code-security-configuration-repositories": {
@@ -24718,7 +25845,7 @@ export type components = {
              * @description The attachment status of the code security configuration on the repository.
              * @enum {string}
              */
-            status?: "attached" | "attaching" | "detached" | "removed" | "enforced" | "failed" | "updating" | "removed_by_enterprise";
+            status?: "attached" | "attaching" | "detached" | "removed" | "enforced" | "failed" | "updating" | "removed_by_enterprise" | "enterprise_enforced";
         };
         /** @description A list of default code security configurations */
         "code-security-default-configurations": {
@@ -26054,131 +27181,6 @@ export type components = {
             };
             url: string;
         };
-        /** @description Usage metrics for Copilot Chat in GitHub.com */
-        "copilot-dotcom-chat": ({
-            /** @description List of model metrics for a custom models and the default model. */
-            models?: {
-                /** @description The training date for the custom model (if applicable). */
-                custom_model_training_date?: string | null;
-                /** @description Indicates whether a model is custom or default. */
-                is_custom_model?: boolean;
-                /** @description Name of the model used for Copilot Chat. If the default model is used will appear as 'default'. */
-                name?: string;
-                /** @description Total number of chats initiated by users on github.com. */
-                total_chats?: number;
-                /** @description Total number of users who prompted Copilot Chat on github.com at least once for each model. */
-                total_engaged_users?: number;
-            }[];
-            /** @description Total number of users who prompted Copilot Chat on github.com at least once. */
-            total_engaged_users?: number;
-        } & {
-            [key: string]: unknown;
-        }) | null;
-        /** @description Usage metrics for Copilot for pull requests. */
-        "copilot-dotcom-pull-requests": ({
-            /** @description Repositories in which users used Copilot for Pull Requests to generate pull request summaries */
-            repositories?: {
-                /** @description List of model metrics for custom models and the default model. */
-                models?: {
-                    /** @description The training date for the custom model. */
-                    custom_model_training_date?: string | null;
-                    /** @description Indicates whether a model is custom or default. */
-                    is_custom_model?: boolean;
-                    /** @description Name of the model used for Copilot pull request summaries. If the default model is used will appear as 'default'. */
-                    name?: string;
-                    /** @description The number of users who generated pull request summaries using Copilot for Pull Requests in the given repository and model. */
-                    total_engaged_users?: number;
-                    /** @description The number of pull request summaries generated using Copilot for Pull Requests in the given repository. */
-                    total_pr_summaries_created?: number;
-                }[];
-                /** @description Repository name */
-                name?: string;
-                /** @description The number of users who generated pull request summaries using Copilot for Pull Requests in the given repository. */
-                total_engaged_users?: number;
-            }[];
-            /** @description The number of users who used Copilot for Pull Requests on github.com to generate a pull request summary at least once. */
-            total_engaged_users?: number;
-        } & {
-            [key: string]: unknown;
-        }) | null;
-        /** @description Usage metrics for Copilot Chat in the IDE. */
-        "copilot-ide-chat": ({
-            editors?: {
-                /** @description List of model metrics for custom models and the default model. */
-                models?: {
-                    /** @description The training date for the custom model. */
-                    custom_model_training_date?: string | null;
-                    /** @description Indicates whether a model is custom or default. */
-                    is_custom_model?: boolean;
-                    /** @description Name of the model used for Copilot Chat. If the default model is used will appear as 'default'. */
-                    name?: string;
-                    /** @description The number of times users copied a code suggestion from Copilot Chat using the keyboard, or the 'Copy' UI element, for the given editor. */
-                    total_chat_copy_events?: number;
-                    /** @description The number of times users accepted a code suggestion from Copilot Chat using the 'Insert Code' UI element, for the given editor. */
-                    total_chat_insertion_events?: number;
-                    /** @description The total number of chats initiated by users in the given editor and model. */
-                    total_chats?: number;
-                    /** @description The number of users who prompted Copilot Chat in the given editor and model. */
-                    total_engaged_users?: number;
-                }[];
-                /** @description Name of the given editor. */
-                name?: string;
-                /** @description The number of users who prompted Copilot Chat in the specified editor. */
-                total_engaged_users?: number;
-            }[];
-            /** @description Total number of users who prompted Copilot Chat in the IDE. */
-            total_engaged_users?: number;
-        } & {
-            [key: string]: unknown;
-        }) | null;
-        /** @description Usage metrics for Copilot editor code completions in the IDE. */
-        "copilot-ide-code-completions": ({
-            editors?: ({
-                /** @description List of model metrics for custom models and the default model. */
-                models?: {
-                    /** @description The training date for the custom model. */
-                    custom_model_training_date?: string | null;
-                    /** @description Indicates whether a model is custom or default. */
-                    is_custom_model?: boolean;
-                    /** @description Code completion metrics for active languages, for the given editor. */
-                    languages?: {
-                        /** @description Name of the language used for Copilot code completion suggestions, for the given editor. */
-                        name?: string;
-                        /** @description The number of Copilot code suggestions accepted for the given editor, for the given language. Includes both full and partial acceptances. */
-                        total_code_acceptances?: number;
-                        /** @description The number of lines of code accepted from Copilot code suggestions for the given editor, for the given language. */
-                        total_code_lines_accepted?: number;
-                        /** @description The number of lines of code suggested by Copilot code completions for the given editor, for the given language. */
-                        total_code_lines_suggested?: number;
-                        /** @description The number of Copilot code suggestions generated for the given editor, for the given language. */
-                        total_code_suggestions?: number;
-                        /** @description Number of users who accepted at least one Copilot code completion suggestion for the given editor, for the given language. Includes both full and partial acceptances. */
-                        total_engaged_users?: number;
-                    }[];
-                    /** @description Name of the model used for Copilot code completion suggestions. If the default model is used will appear as 'default'. */
-                    name?: string;
-                    /** @description Number of users who accepted at least one Copilot code completion suggestion for the given editor, for the given language and model. Includes both full and partial acceptances. */
-                    total_engaged_users?: number;
-                }[];
-                /** @description Name of the given editor. */
-                name?: string;
-                /** @description Number of users who accepted at least one Copilot code completion suggestion for the given editor. Includes both full and partial acceptances. */
-                total_engaged_users?: number;
-            } & {
-                [key: string]: unknown;
-            })[];
-            /** @description Code completion metrics for active languages. */
-            languages?: {
-                /** @description Name of the language used for Copilot code completion suggestions. */
-                name?: string;
-                /** @description Number of users who accepted at least one Copilot code completion suggestion for the given language. Includes both full and partial acceptances. */
-                total_engaged_users?: number;
-            }[];
-            /** @description Number of users who accepted at least one Copilot code suggestion, across all active editors. Includes both full and partial acceptances. */
-            total_engaged_users?: number;
-        } & {
-            [key: string]: unknown;
-        }) | null;
         /**
          * Copilot Organization Content Exclusion Details
          * @description List all Copilot Content Exclusion rules for an organization.
@@ -26511,26 +27513,68 @@ export type components = {
              */
             report_start_day: string;
         };
-        /**
-         * Copilot Usage Metrics
-         * @description Copilot usage metrics for a given day.
-         */
-        "copilot-usage-metrics-day": {
-            copilot_dotcom_chat?: components["schemas"]["copilot-dotcom-chat"];
-            copilot_dotcom_pull_requests?: components["schemas"]["copilot-dotcom-pull-requests"];
-            copilot_ide_chat?: components["schemas"]["copilot-ide-chat"];
-            copilot_ide_code_completions?: components["schemas"]["copilot-ide-code-completions"];
-            /**
-             * Format: date
-             * @description The date for which the usage metrics are aggregated, in `YYYY-MM-DD` format.
-             */
-            date: string;
-            /** @description The total number of Copilot users with activity belonging to any Copilot feature, globally, for the given day. Includes passive activity such as receiving a code suggestion, as well as engagement activity such as accepting a code suggestion or prompting chat. Does not include authentication events. Is not limited to the individual features detailed on the endpoint. */
-            total_active_users?: number;
-            /** @description The total number of Copilot users who engaged with any Copilot feature, for the given day. Examples include but are not limited to accepting a code suggestion, prompting Copilot chat, or triggering a PR Summary. Does not include authentication events. Is not limited to the individual features detailed on the endpoint. */
-            total_engaged_users?: number;
-        } & {
-            [key: string]: unknown;
+        "create-budget": {
+            budget: {
+                budget_alerting?: {
+                    /**
+                     * @description Array of user login names who will receive alerts. Rejected for user-scope as alerting is always disabled for them.
+                     * @example [
+                     *       "mona",
+                     *       "lisa"
+                     *     ]
+                     */
+                    alert_recipients?: string[];
+                    /**
+                     * @description Whether alerts are enabled for this budget. Rejected for user-scope as alerting is always disabled for them.
+                     * @example true
+                     */
+                    will_alert?: boolean;
+                };
+                /**
+                 * @description The budget amount in whole dollars. For license-based products, this represents the number of licenses.
+                 * @example 100
+                 */
+                budget_amount?: number;
+                /**
+                 * @description The name of the entity to apply the budget to
+                 * @example example-repository-name
+                 */
+                budget_entity_name?: string;
+                /**
+                 * @description A single product or sku to apply the budget to.
+                 * @example actions_linux
+                 */
+                budget_product_sku?: string;
+                /**
+                 * @description The type of scope for the budget
+                 * @example enterprise
+                 * @enum {string}
+                 */
+                budget_scope?: "enterprise" | "organization" | "repository" | "cost_center" | "multi_user_customer" | "multi_user_cost_center" | "user";
+                /**
+                 * @description The type of pricing for the budget
+                 * @example ProductPricing
+                 */
+                budget_type?: "ProductPricing" | "SkuPricing";
+                /**
+                 * Format: date
+                 * @description The date the budget will expire in `YYYY-MM-DD` format. Only dates in the future are accepted.
+                 *     If not provided, the budget will not expire.
+                 *
+                 *     Only supported for budgets with `budget_scope` of `user`
+                 * @example 2026-12-31
+                 */
+                expires_at?: string;
+                /** @description ID of the budget. */
+                id?: string;
+                /**
+                 * @description Whether to prevent additional spending once the budget is exceeded
+                 * @example true
+                 */
+                prevent_further_usage?: boolean;
+            };
+            /** @description A message indicating the result of the create operation */
+            message: string;
         };
         /** CreateEvent */
         "create-event": {
@@ -26622,7 +27666,7 @@ export type components = {
              */
             allowed_values?: string[] | null;
             /** @description Default value of the property */
-            default_value?: (string | string[]) | null;
+            default_value?: ((string | null) | string[]) | null;
             /** @description Short description of the property */
             description?: string | null;
             /** @description Whether setting properties values is mandatory */
@@ -26650,7 +27694,7 @@ export type components = {
             /** @description The name of the property */
             property_name: string;
             /** @description The value assigned to the property */
-            value: (string | string[]) | null;
+            value: ((string | null) | string[]) | null;
         };
         "cvss-severities": {
             cvss_v3?: {
@@ -27739,6 +28783,50 @@ export type components = {
             website_url?: string | null;
         };
         /**
+         * Repository ruleset conditions for organization IDs
+         * @description Parameters for an organization ID condition
+         */
+        "enterprise-ruleset-conditions-organization-id-target": {
+            organization_id: {
+                /** @description The organization IDs that the ruleset applies to. One of these IDs must match for the condition to pass. */
+                organization_ids?: number[];
+            };
+        };
+        /**
+         * Repository ruleset conditions for organization names
+         * @description Parameters for an organization name condition
+         */
+        "enterprise-ruleset-conditions-organization-name-target": {
+            organization_name: {
+                /** @description Array of organization names or patterns to exclude. The condition will not pass if any of these patterns match. */
+                exclude?: string[];
+                /** @description Array of organization names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~ALL` to include all organizations and ~EMUS to target all enterprise managed user accounts. */
+                include?: string[];
+            };
+        };
+        /**
+         * Repository ruleset property targeting definition
+         * @description Parameters for a targeting a organization property
+         */
+        "enterprise-ruleset-conditions-organization-property-spec": {
+            /** @description The name of the organization property to target */
+            name: string;
+            /** @description The values to match for the organization property */
+            property_values: string[];
+        };
+        /**
+         * Repository ruleset conditions for organization properties
+         * @description Parameters for a organization property condition
+         */
+        "enterprise-ruleset-conditions-organization-property-target": {
+            organization_property: {
+                /** @description The organization properties and values to exclude. The condition will not pass if any of these properties match. */
+                exclude?: components["schemas"]["enterprise-ruleset-conditions-organization-property-spec"][];
+                /** @description The organization properties and values to include. All of these properties must match for the condition to pass. */
+                include?: components["schemas"]["enterprise-ruleset-conditions-organization-property-spec"][];
+            };
+        };
+        /**
          * Enterprise Team
          * @description Group of enterprise owners and/or members
          */
@@ -28491,15 +29579,26 @@ export type components = {
         get_all_budgets: {
             /** @description Array of budget objects for the enterprise */
             budgets: components["schemas"]["budget"][];
-            /** @description Indicates if there are more pages of results available (maps to hasNextPage from billing platform) */
+            /** @description Effective user-level budget details returned when the response is scoped with the `user` query parameter. */
+            effective_budget?: {
+                /** @description The budget amount for the effective budget. */
+                budget_amount: number;
+                /** @description The consumed amount for the specified user within the effective budget. */
+                consumed_amount: number;
+                /** @description The unique identifier of the effective budget. */
+                id: string;
+            };
+            /** @description Indicates if there are more pages of results available */
             has_next_page?: boolean;
             /** @description Total number of budgets matching the query */
             total_count?: number;
+            /** @description User login included when the response is scoped with the `user` query parameter. */
+            user?: string;
         };
         "get-budget": {
             budget_alerting: {
                 /**
-                 * @description Array of user login names who will receive alerts
+                 * @description Array of user login names who will receive alerts. Present but not applicable for user-scope as alerting is always disabled for them.
                  * @example [
                  *       "mona",
                  *       "lisa"
@@ -28507,7 +29606,7 @@ export type components = {
                  */
                 alert_recipients?: string[];
                 /**
-                 * @description Whether alerts are enabled for this budget
+                 * @description Whether alerts are enabled for this budget. Present but not applicable for user-scope as alerting is always disabled for them.
                  * @example true
                  */
                 will_alert?: boolean;
@@ -28529,12 +29628,17 @@ export type components = {
              * @example enterprise
              * @enum {string}
              */
-            budget_scope: "enterprise" | "organization" | "repository" | "cost_center";
+            budget_scope: "enterprise" | "organization" | "repository" | "cost_center" | "multi_user_customer" | "multi_user_cost_center" | "user";
             /**
              * @description The type of pricing for the budget
              * @example ProductPricing
              */
             budget_type: "ProductPricing" | "SkuPricing";
+            /**
+             * @description The current usage amount counted toward the budget. How usage is calculated may vary by budget type.
+             * @example 12.5
+             */
+            consumed_amount?: number;
             /** @description ID of the budget. */
             id: string;
             /**
@@ -28542,6 +29646,11 @@ export type components = {
              * @example true
              */
             prevent_further_usage: boolean;
+            /**
+             * @description The user login when the budget is scoped to a single user (`user` scope).
+             * @example octocat
+             */
+            user?: string;
         };
         /**
          * Gist Comment
@@ -28893,6 +30002,21 @@ export type components = {
             truncated: boolean;
             /** Format: uri */
             url?: string;
+        };
+        /**
+         * Git User
+         * @description Metaproperties for Git author/committer information.
+         */
+        "git-user": {
+            /**
+             * Format: date-time
+             * @example "2007-10-29T02:42:39.000-07:00"
+             */
+            date?: string;
+            /** @example "chris@ozmm.org" */
+            email?: string;
+            /** @example "Chris Wanstrath" */
+            name?: string;
         };
         /**
          * Gitignore Template
@@ -29610,6 +30734,20 @@ export type components = {
             limit: components["schemas"]["interaction-group"];
         };
         /**
+         * Interaction Limits Pull Request Bypass List
+         * @description A list of user logins to add or remove from the pull request creation cap bypass list.
+         */
+        "interaction-limit-pull-request-bypass-list": {
+            /**
+             * @description A list of user logins to add or remove from the bypass list.
+             * @example [
+             *       "octocat",
+             *       "monalisa"
+             *     ]
+             */
+            users: string[];
+        };
+        /**
          * Interaction Limits
          * @description Interaction limit settings.
          */
@@ -29664,6 +30802,8 @@ export type components = {
              *     ]
              */
             labels: (string | {
+                /** @description The user who archived the label, or `null` if it has not been archived. */
+                archived_by?: components["schemas"]["simple-user"] | null;
                 color?: string | null;
                 default?: boolean;
                 description?: string | null;
@@ -29764,6 +30904,7 @@ export type components = {
             id: number;
             /** Format: uri */
             issue_url: string;
+            minimized?: components["schemas"]["nullable-issue-comment-minimized"];
             node_id: string;
             performed_via_github_app?: components["schemas"]["nullable-integration"];
             pin?: components["schemas"]["nullable-pinned-issue-comment"];
@@ -29803,6 +30944,8 @@ export type components = {
             assignee?: components["schemas"]["nullable-simple-user"];
             assigner?: components["schemas"]["nullable-simple-user"];
             author_association?: components["schemas"]["author-association"];
+            blocked_by?: components["schemas"]["nullable-issue-reference"];
+            blocking?: components["schemas"]["nullable-issue-reference"];
             /** @example 6dcb09b5b57875f334f61aebed695e2e4193db5e */
             commit_id: string | null;
             /** @example https://api.github.com/repos/octocat/Hello-World/commits/6dcb09b5b57875f334f61aebed695e2e4193db5e */
@@ -29820,18 +30963,23 @@ export type components = {
              * @example 1
              */
             id: number;
+            intent?: components["schemas"]["nullable-issue-event-intent"];
             issue?: components["schemas"]["nullable-issue"];
+            issue_type?: components["schemas"]["issue-type-webhook"];
             label?: components["schemas"]["issue-event-label"];
             lock_reason?: string | null;
             milestone?: components["schemas"]["issue-event-milestone"];
             /** @example MDEwOklzc3VlRXZlbnQx */
             node_id: string;
+            parent_issue?: components["schemas"]["nullable-issue-reference"];
             performed_via_github_app?: components["schemas"]["nullable-integration"];
+            prev_issue_type?: components["schemas"]["issue-type-webhook"];
             project_card?: components["schemas"]["issue-event-project-card"];
             rename?: components["schemas"]["issue-event-rename"];
             requested_reviewer?: components["schemas"]["nullable-simple-user"];
             requested_team?: components["schemas"]["team"];
             review_requester?: components["schemas"]["nullable-simple-user"];
+            sub_issue?: components["schemas"]["nullable-issue-reference"];
             /**
              * Format: uri
              * @example https://api.github.com/repos/octocat/Hello-World/issues/events/1
@@ -29849,7 +30997,7 @@ export type components = {
          * Issue Event for Issue
          * @description Issue Event for Issue
          */
-        "issue-event-for-issue": components["schemas"]["labeled-issue-event"] | components["schemas"]["unlabeled-issue-event"] | components["schemas"]["assigned-issue-event"] | components["schemas"]["unassigned-issue-event"] | components["schemas"]["milestoned-issue-event"] | components["schemas"]["demilestoned-issue-event"] | components["schemas"]["renamed-issue-event"] | components["schemas"]["review-requested-issue-event"] | components["schemas"]["review-request-removed-issue-event"] | components["schemas"]["review-dismissed-issue-event"] | components["schemas"]["locked-issue-event"] | components["schemas"]["added-to-project-issue-event"] | components["schemas"]["moved-column-in-project-issue-event"] | components["schemas"]["removed-from-project-issue-event"] | components["schemas"]["converted-note-to-issue-issue-event"];
+        "issue-event-for-issue": components["schemas"]["labeled-issue-event"] | components["schemas"]["unlabeled-issue-event"] | components["schemas"]["assigned-issue-event"] | components["schemas"]["unassigned-issue-event"] | components["schemas"]["milestoned-issue-event"] | components["schemas"]["demilestoned-issue-event"] | components["schemas"]["renamed-issue-event"] | components["schemas"]["review-requested-issue-event"] | components["schemas"]["review-request-removed-issue-event"] | components["schemas"]["review-dismissed-issue-event"] | components["schemas"]["locked-issue-event"] | components["schemas"]["added-to-project-issue-event"] | components["schemas"]["moved-column-in-project-issue-event"] | components["schemas"]["removed-from-project-issue-event"] | components["schemas"]["converted-note-to-issue-issue-event"] | components["schemas"]["issue-type-added-issue-event"] | components["schemas"]["issue-type-removed-issue-event"] | components["schemas"]["issue-type-changed-issue-event"] | components["schemas"]["sub-issue-added-issue-event"] | components["schemas"]["sub-issue-removed-issue-event"] | components["schemas"]["parent-issue-added-issue-event"] | components["schemas"]["parent-issue-removed-issue-event"] | components["schemas"]["blocked-by-added-issue-event"] | components["schemas"]["blocked-by-removed-issue-event"] | components["schemas"]["blocking-added-issue-event"] | components["schemas"]["blocking-removed-issue-event"];
         /**
          * Issue Event Label
          * @description Issue Event Label
@@ -29901,7 +31049,7 @@ export type components = {
              * @description The data type of the issue field.
              * @enum {string}
              */
-            data_type: "text" | "date" | "single_select" | "number";
+            data_type: "text" | "date" | "single_select" | "multi_select" | "number";
             /** @description The description of the issue field. */
             description?: string | null;
             /** @description The unique identifier of the issue field. */
@@ -29910,7 +31058,7 @@ export type components = {
             name: string;
             /** @description The node identifier of the issue field. */
             node_id: string;
-            /** @description Available options for single select fields. */
+            /** @description Available options for single select and multi select fields. */
             options?: {
                 /**
                  * @description The color of the option.
@@ -29957,13 +31105,37 @@ export type components = {
              * @example text
              * @enum {string}
              */
-            data_type: "text" | "single_select" | "number" | "date";
+            data_type: "text" | "single_select" | "multi_select" | "number" | "date";
             /**
              * Format: int64
              * @description Unique identifier for the issue field.
              * @example 1
              */
             issue_field_id: number;
+            /**
+             * @description The human-readable name of the issue field.
+             * @example Priority
+             */
+            issue_field_name?: string;
+            /** @description Details about the selected options */
+            multi_select_options?: {
+                /**
+                 * @description The color of the option
+                 * @example red
+                 */
+                color: string;
+                /**
+                 * Format: int64
+                 * @description Unique identifier for the option.
+                 * @example 1
+                 */
+                id: number;
+                /**
+                 * @description The name of the option
+                 * @example High
+                 */
+                name: string;
+            }[] | null;
             /** @example IFT_GDKND */
             node_id: string;
             /** @description Details about the selected option (only present for single_select fields) */
@@ -29988,6 +31160,35 @@ export type components = {
             /** @description The value of the issue field */
             value: (string | number) | null;
         };
+        /**
+         * Issue Reference
+         * @description A minimal reference to an issue linked from a timeline event (e.g. sub-issue, parent-issue, or dependency events).
+         */
+        "issue-reference": {
+            /**
+             * Issue Type
+             * @description The type of the referenced issue.
+             */
+            issue_type: {
+                /** @description The color of the issue type. */
+                color?: string | null;
+                /** @description The unique identifier of the issue type. */
+                id: number;
+                /** @description The name of the issue type. */
+                name: string;
+                /** @description The node identifier of the issue type. */
+                node_id: string;
+            } | null;
+            /** @description The number of the referenced issue. */
+            number: number;
+            repository: components["schemas"]["simple-repository"];
+            /** @description The state of the referenced issue. */
+            state: string;
+            /** @description The reason for the referenced issue's state. */
+            state_reason?: string | null;
+            /** @description The title of the referenced issue. */
+            title: string;
+        } | null;
         /**
          * Issue Search Result Item
          * @description Issue Search Result Item
@@ -30017,6 +31218,13 @@ export type components = {
             issue_dependencies_summary?: components["schemas"]["issue-dependencies-summary"];
             issue_field_values?: components["schemas"]["issue-field-value"][];
             labels: {
+                /**
+                 * Format: date-time
+                 * @description Timestamp indicating when the label was archived, or `null` if it has not been archived.
+                 */
+                archived_at?: string | null;
+                /** @description The user who archived the label, or `null` if it has not been archived. */
+                archived_by?: components["schemas"]["simple-user"] | null;
                 color?: string;
                 default?: boolean;
                 description?: string | null;
@@ -30065,6 +31273,53 @@ export type components = {
             user: components["schemas"]["nullable-simple-user"];
         };
         /**
+         * Issue Suggestion
+         * @description An agent-proposed change to an issue that a maintainer can approve or dismiss.
+         */
+        "issue-suggestion": {
+            /**
+             * @description The kind of change proposed.
+             * @enum {string}
+             */
+            action: "set_type" | "add_label" | "add_field" | "add_assignee" | "close_issue";
+            /** @description The unique identifier of the actor that proposed the suggestion. */
+            actor_id: number | null;
+            /**
+             * @description The actor's confidence level in the suggestion.
+             * @enum {string|null}
+             */
+            confidence: "LOW" | "MEDIUM" | "HIGH" | null;
+            /**
+             * Format: date-time
+             * @description The time the suggestion was created.
+             */
+            created_at: string;
+            /** @description The unique identifier of the suggestion. */
+            id: number;
+            /** @description The identifier of the timeline event created when the suggestion was approved, when applicable. */
+            issue_event_id: number | null;
+            /** @description The unique identifier of the issue the suggestion applies to. */
+            issue_id: number;
+            /** @description The rationale the actor provided for the suggestion. */
+            rationale: string | null;
+            /** @description The unique identifier of the user who approved or dismissed the suggestion. */
+            resolved_by: number | null;
+            /**
+             * @description The suggestion's lifecycle state.
+             * @enum {string}
+             */
+            state: "pending" | "applied" | "approved" | "dismissed" | "replaced" | "invalidated";
+            /** @description The identifier of the target the change applies to (issue type, label, field, assignee, or duplicate issue), when applicable. */
+            target_id: number | null;
+            /** @description The proposed value, when applicable. An array for multi-select field suggestions. */
+            target_value: (string | number | boolean | string[]) | null;
+            /**
+             * Format: date-time
+             * @description The time the suggestion was last updated.
+             */
+            updated_at: string;
+        };
+        /**
          * Issue Type
          * @description The type assigned to the issue. This is only present for issues in repositories where issue types are supported.
          */
@@ -30094,6 +31349,73 @@ export type components = {
              * @description The time the issue type last updated.
              */
             updated_at?: string;
+        } | null;
+        /**
+         * Issue Type Added Issue Event
+         * @description Issue Type Added Issue Event
+         */
+        "issue-type-added-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            intent?: components["schemas"]["nullable-issue-event-intent"];
+            issue_type: components["schemas"]["issue-type-webhook"];
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            url: string;
+        };
+        /**
+         * Issue Type Changed Issue Event
+         * @description Issue Type Changed Issue Event
+         */
+        "issue-type-changed-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            intent?: components["schemas"]["nullable-issue-event-intent"];
+            issue_type: components["schemas"]["issue-type-webhook"];
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            prev_issue_type: components["schemas"]["issue-type-webhook"];
+            url: string;
+        };
+        /**
+         * Issue Type Removed Issue Event
+         * @description Issue Type Removed Issue Event
+         */
+        "issue-type-removed-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            intent?: components["schemas"]["nullable-issue-event-intent"];
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            prev_issue_type: components["schemas"]["issue-type-webhook"];
+            url: string;
+        };
+        /**
+         * Issue Type
+         * @description The type of issue.
+         */
+        "issue-type-webhook": {
+            /**
+             * @description The color of the issue type.
+             * @enum {string|null}
+             */
+            color?: "gray" | "blue" | "green" | "yellow" | "orange" | "red" | "pink" | "purple" | null;
+            /** @description The unique identifier of the issue type. */
+            id: number;
+            /** @description The name of the issue type. */
+            name: string;
         } | null;
         /** IssuesEvent */
         "issues-event": {
@@ -30142,6 +31464,7 @@ export type components = {
             /** @example https://github.com/github/hello-world/runs/4 */
             html_url: string | null;
             /**
+             * Format: int64
              * @description The id of the job.
              * @example 21
              */
@@ -30168,6 +31491,7 @@ export type components = {
              */
             run_attempt?: number;
             /**
+             * Format: int64
              * @description The id of the associated workflow run.
              * @example 5
              */
@@ -30282,6 +31606,14 @@ export type components = {
          */
         label: {
             /**
+             * Format: date-time
+             * @description Timestamp indicating when the label was archived, or `null` if it has not been archived.
+             * @example 2023-01-01T12:00:00Z
+             */
+            archived_at: string | null;
+            /** @description The user who archived the label, or `null` if it has not been archived. */
+            archived_by: components["schemas"]["simple-user"] | null;
+            /**
              * @description 6-character hex code, without the leading #, identifying the color
              * @example FFFFFF
              */
@@ -30321,6 +31653,13 @@ export type components = {
          * @description Label Search Result Item
          */
         "label-search-result-item": {
+            /**
+             * Format: date-time
+             * @description Timestamp indicating when the label was archived, or `null` if it has not been archived.
+             */
+            archived_at: string | null;
+            /** @description The user who archived the label, or `null` if it has not been archived. */
+            archived_by: components["schemas"]["simple-user"] | null;
             color: string;
             default: boolean;
             description: string | null;
@@ -30343,6 +31682,7 @@ export type components = {
             created_at: string;
             event: string;
             id: number;
+            intent?: components["schemas"]["nullable-issue-event-intent"];
             label: {
                 color: string;
                 name: string;
@@ -31514,6 +32854,8 @@ export type components = {
              *     ]
              */
             labels: (string | {
+                /** @description The user who archived the label, or `null` if it has not been archived. */
+                archived_by?: components["schemas"]["simple-user"] | null;
                 color?: string | null;
                 default?: boolean;
                 description?: string | null;
@@ -31614,6 +32956,7 @@ export type components = {
             id: number;
             /** Format: uri */
             issue_url: string;
+            minimized?: components["schemas"]["nullable-issue-comment-minimized"];
             node_id: string;
             performed_via_github_app?: components["schemas"]["nullable-integration"];
             pin?: components["schemas"]["nullable-pinned-issue-comment"];
@@ -31630,6 +32973,59 @@ export type components = {
              */
             url: string;
             user: components["schemas"]["nullable-simple-user"];
+        } | null;
+        /**
+         * Minimized Issue Comment
+         * @description Details about why an issue comment was minimized.
+         */
+        "nullable-issue-comment-minimized": {
+            /**
+             * @description The reason the comment was minimized.
+             * @example low-quality
+             */
+            reason: string | null;
+        } | null;
+        /**
+         * Issue Event Intent
+         * @description The intent behind an agent's action on an issue, including the rationale and confidence. Present (and `null` when the event carried no agent intent) on supported event types while the issue suggestions feature is enabled for the repository; the property is omitted entirely when the feature is disabled or the event type does not support intent.
+         */
+        "nullable-issue-event-intent": {
+            /**
+             * @description The confidence level the agent had when performing this action.
+             * @enum {string|null}
+             */
+            confidence?: "LOW" | "MEDIUM" | "HIGH" | null;
+            /** @description The reasoning the agent provided for the change. */
+            rationale?: string | null;
+        } | null;
+        /**
+         * Issue Reference
+         * @description A minimal reference to an issue linked from a timeline event (e.g. sub-issue, parent-issue, or dependency events).
+         */
+        "nullable-issue-reference": {
+            /**
+             * Issue Type
+             * @description The type of the referenced issue.
+             */
+            issue_type: {
+                /** @description The color of the issue type. */
+                color?: string | null;
+                /** @description The unique identifier of the issue type. */
+                id: number;
+                /** @description The name of the issue type. */
+                name: string;
+                /** @description The node identifier of the issue type. */
+                node_id: string;
+            } | null;
+            /** @description The number of the referenced issue. */
+            number: number;
+            repository: components["schemas"]["simple-repository"];
+            /** @description The state of the referenced issue. */
+            state: string;
+            /** @description The reason for the referenced issue's state. */
+            state_reason?: string | null;
+            /** @description The title of the referenced issue. */
+            title: string;
         } | null;
         /**
          * License Simple
@@ -33805,12 +35201,12 @@ export type components = {
              * @description The data type of the issue field.
              * @enum {string}
              */
-            data_type: "text" | "date" | "single_select" | "number";
+            data_type: "text" | "date" | "single_select" | "multi_select" | "number";
             /** @description Description of the issue field. */
             description?: string | null;
             /** @description Name of the issue field. */
             name: string;
-            /** @description Options for single select fields. Required when data_type is 'single_select'. */
+            /** @description Options for select fields. Required when data_type is 'single_select' or 'multi_select'. */
             options?: {
                 /**
                  * @description Color for the option.
@@ -33896,7 +35292,7 @@ export type components = {
              * Format: uri
              * @example https://github.com/blog
              */
-            blog?: string;
+            blog?: string | null;
             /**
              * @description The number of collaborators on private repositories.
              *
@@ -33905,7 +35301,7 @@ export type components = {
              */
             collaborators?: number | null;
             /** @example GitHub */
-            company?: string;
+            company?: string | null;
             /**
              * Format: date-time
              * @example 2008-01-14T04:33:35Z
@@ -33962,7 +35358,7 @@ export type components = {
              * Format: email
              * @example octocat@github.com
              */
-            email?: string;
+            email?: string | null;
             /**
              * Format: uri
              * @example https://api.github.com/orgs/github/events
@@ -33990,7 +35386,7 @@ export type components = {
             /** @example https://api.github.com/orgs/github/issues */
             issues_url: string;
             /** @example San Francisco */
-            location?: string;
+            location?: string | null;
             /** @example github */
             login: string;
             /** @example all */
@@ -34401,7 +35797,7 @@ export type components = {
             description?: string | null;
             /** @description Name of the issue field. */
             name?: string;
-            /** @description Options for single select fields. Only applicable when updating single_select fields. When provided, this array **replaces** the entire existing set of options rather than adding to or updating individual options. To retain or update an existing option, include it in the array with its `id`. Options sent without an `id` are treated as new options and may cause existing options to be deleted and recreated. */
+            /** @description Options for select fields. Only applicable when updating single_select or multi_select fields. When provided, this array **replaces** the entire existing set of options rather than adding to or updating individual options. To retain or update an existing option, include it in the array with its `id`. Options sent without an `id` are treated as new options and may cause existing options to be deleted and recreated. */
             options?: {
                 /**
                  * @description Color for the option.
@@ -34753,6 +36149,38 @@ export type components = {
         "pages-source-hash": {
             branch: string;
             path: string;
+        };
+        /**
+         * Parent-issue Added Issue Event
+         * @description Parent-issue Added Issue Event
+         */
+        "parent-issue-added-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            parent_issue: components["schemas"]["nullable-issue-reference"];
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            url: string;
+        };
+        /**
+         * Parent-issue Removed Issue Event
+         * @description Parent-issue Removed Issue Event
+         */
+        "parent-issue-removed-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            parent_issue: components["schemas"]["nullable-issue-reference"];
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            url: string;
         };
         /** Participation Stats */
         "participation-stats": {
@@ -35208,24 +36636,24 @@ export type components = {
         /** @description The configuration for iteration fields. */
         "projects-v2-field-iteration-configuration": {
             /** @description The default duration for iterations in days. Individual iterations can override this value. */
-            duration?: number;
+            duration: number;
             /** @description Zero or more iterations for the field. */
             iterations?: {
                 /** @description The duration of the iteration in days. */
-                duration?: number;
+                duration: number;
                 /**
                  * Format: date
                  * @description The start date of the iteration.
                  */
-                start_date?: string;
+                start_date: string;
                 /** @description The title of the iteration. */
-                title?: string;
+                title: string;
             }[];
             /**
              * Format: date
              * @description The start date of the first iteration.
              */
-            start_date?: string;
+            start_date: string;
         };
         "projects-v2-field-single-select-option": {
             /**
@@ -35887,6 +37315,8 @@ export type components = {
              */
             issue_url: string;
             labels: {
+                /** @description The user who archived the label, or `null` if it has not been archived. */
+                archived_by: components["schemas"]["simple-user"] | null;
                 color: string;
                 default: boolean;
                 description: string | null;
@@ -35942,6 +37372,7 @@ export type components = {
              * @example https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments
              */
             review_comments_url: string;
+            stack?: components["schemas"]["pull-request-stack"];
             /**
              * @description State of this Pull Request. Either `open` or `closed`.
              * @example open
@@ -35979,6 +37410,31 @@ export type components = {
             labels?: components["schemas"]["label"][];
             number: number;
             pull_request: components["schemas"]["pull-request-minimal"];
+        };
+        /**
+         * Pull Request Merge Async Result
+         * @description Pull Request Merge Async Result
+         */
+        "pull-request-merge-async-result": {
+            details: {
+                /** @description SHA that the pull request head must match for the enqueued merge to proceed. */
+                expected_head_sha: string;
+                /** @enum {string} */
+                merge_action: "default" | "merge_queue" | "direct_merge";
+                /** @enum {string} */
+                merge_method: "default" | "merge" | "squash" | "rebase";
+                message: string;
+                uuid: string;
+            } | {
+                message: string;
+            } | {
+                message: string;
+            } | {
+                message: string;
+                sha: string;
+            };
+            /** @enum {string} */
+            status: "pending" | "merged" | "enqueued" | "failed";
         };
         /**
          * Pull Request Merge Result
@@ -36440,6 +37896,8 @@ export type components = {
              */
             issue_url: string;
             labels: {
+                /** @description The user who archived the label, or `null` if it has not been archived. */
+                archived_by: components["schemas"]["simple-user"] | null;
                 color: string;
                 default: boolean;
                 description: string;
@@ -36477,6 +37935,7 @@ export type components = {
              * @example https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments
              */
             review_comments_url: string;
+            stack?: components["schemas"]["pull-request-stack"];
             /** @example open */
             state: string;
             /**
@@ -36496,6 +37955,66 @@ export type components = {
              * @example https://api.github.com/repos/octocat/Hello-World/pulls/1347
              */
             url: string;
+            user: components["schemas"]["nullable-simple-user"];
+        };
+        /**
+         * Pull Request Stack
+         * @description The stack information associated with a pull request.
+         */
+        "pull-request-stack": {
+            base: {
+                /** @description The base ref of the stack this pull request belongs to. */
+                ref: string;
+                /** @description The base SHA of the stack this pull request belongs to. */
+                sha: string;
+            };
+            /** @description The ID of the stack that this pull request belongs to. */
+            id?: number;
+            /** @description The number of the stack that this pull request belongs to. */
+            number?: number;
+            /** @description The one-based position of this pull request within the stack, where 1 is the bottom of the stack. */
+            position?: number;
+            /** @description The total number of pull requests in the stack. */
+            size?: number;
+        } | null;
+        /** Pull Request Stack Minimal */
+        "pull-request-stack-minimal": {
+            base: {
+                ref: string;
+            };
+            /** Format: date-time */
+            created_at: string;
+            id: number;
+            node_id: string;
+            number: number;
+            /** @description Whether the stack has any open pull request. False when all pull requests are merged or closed. */
+            open: boolean;
+            pull_requests: {
+                draft: boolean;
+                head: {
+                    ref: string;
+                    sha: string;
+                };
+                /** Format: date-time */
+                merged_at: string | null;
+                number: number;
+                /** @enum {string} */
+                state: "open" | "closed";
+            }[];
+            /** Format: uri */
+            url: string;
+        };
+        /** Pull Request Stack Pull Request */
+        "pull-request-stack-pull-request": components["schemas"]["pull-request-minimal"] & {
+            draft: boolean;
+            /** Format: uri */
+            html_url: string;
+            /** Format: date-time */
+            merged_at: string | null;
+            node_id: string;
+            /** @enum {string} */
+            state: "open" | "closed";
+            title: string;
             user: components["schemas"]["nullable-simple-user"];
         };
         "pull-request-webhook": components["schemas"]["pull-request"] & {
@@ -36571,8 +38090,8 @@ export type components = {
             resources: {
                 actions_runner_registration?: components["schemas"]["rate-limit"];
                 code_scanning_autofix?: components["schemas"]["rate-limit"];
-                code_scanning_upload?: components["schemas"]["rate-limit"];
                 code_search?: components["schemas"]["rate-limit"];
+                copilot_usage_records?: components["schemas"]["rate-limit"];
                 core: components["schemas"]["rate-limit"];
                 dependency_sbom?: components["schemas"]["rate-limit"];
                 dependency_snapshots?: components["schemas"]["rate-limit"];
@@ -37474,6 +38993,27 @@ export type components = {
             type: components["schemas"]["security-advisory-credit-types"];
             user: components["schemas"]["simple-user"];
         };
+        /**
+         * Repository Advisory Description Validation Error
+         * @description The description does not answer the repository's report template.
+         */
+        "repository-advisory-description-validation-error": {
+            documentation_url: string;
+            errors?: {
+                /** @description A machine-readable identifier for the problem. `missing_section`, `empty_section`, `unchecked_required_option`, and `sections_out_of_order` come from validating the description against the repository's report template; other codes are shared with other validation failures on this endpoint. */
+                code: string;
+                field?: string;
+                index?: number;
+                message?: string;
+                /** @description The checkbox option left unticked. Only present when `code` is `unchecked_required_option`. */
+                option?: string;
+                resource?: string;
+                /** @description The report template section the violation concerns. */
+                section?: string;
+                value?: (string | null) | (number | null) | (string[] | null);
+            }[];
+            message: string;
+        };
         "repository-advisory-update": {
             /** @description A list of team slugs which have been granted write access to the advisory. */
             collaborating_teams?: string[] | null;
@@ -37547,6 +39087,18 @@ export type components = {
             user: components["schemas"]["nullable-collaborator"];
         };
         /**
+         * Repository hash algorithm
+         * @description Repository hash algorithm
+         */
+        "repository-hash-algorithm": {
+            /**
+             * @description The Git hash algorithm used by this repository.
+             * @example sha1
+             * @enum {string}
+             */
+            hash_algorithm: "sha1" | "sha256";
+        };
+        /**
          * Repository Invitation
          * @description Repository invitations let you manage who you collaborate with.
          */
@@ -37574,7 +39126,7 @@ export type components = {
              * @example read
              * @enum {string}
              */
-            permissions: "read" | "write" | "admin" | "triage" | "maintain";
+            permissions: "read" | "write" | "admin" | "triage" | "triage_plus" | "maintain";
             repository: components["schemas"]["minimal-repository"];
             /**
              * @description URL for the repository invitation
@@ -37586,7 +39138,7 @@ export type components = {
          * Repository Rule
          * @description A repository rule.
          */
-        "repository-rule": components["schemas"]["repository-rule-creation"] | components["schemas"]["repository-rule-update"] | components["schemas"]["repository-rule-deletion"] | components["schemas"]["repository-rule-required-linear-history"] | components["schemas"]["repository-rule-merge-queue"] | components["schemas"]["repository-rule-required-deployments"] | components["schemas"]["repository-rule-required-signatures"] | components["schemas"]["repository-rule-pull-request"] | components["schemas"]["repository-rule-required-status-checks"] | components["schemas"]["repository-rule-non-fast-forward"] | components["schemas"]["repository-rule-commit-message-pattern"] | components["schemas"]["repository-rule-commit-author-email-pattern"] | components["schemas"]["repository-rule-committer-email-pattern"] | components["schemas"]["repository-rule-branch-name-pattern"] | components["schemas"]["repository-rule-tag-name-pattern"] | components["schemas"]["repository-rule-workflows"] | components["schemas"]["repository-rule-code-scanning"] | components["schemas"]["repository-rule-copilot-code-review"] | components["schemas"]["repository-rule-file-path-restriction"] | components["schemas"]["repository-rule-max-file-path-length"] | components["schemas"]["repository-rule-file-extension-restriction"] | components["schemas"]["repository-rule-max-file-size"];
+        "repository-rule": components["schemas"]["repository-rule-creation"] | components["schemas"]["repository-rule-update"] | components["schemas"]["repository-rule-deletion"] | components["schemas"]["repository-rule-required-linear-history"] | components["schemas"]["repository-rule-merge-queue"] | components["schemas"]["repository-rule-required-deployments"] | components["schemas"]["repository-rule-required-signatures"] | components["schemas"]["repository-rule-pull-request"] | components["schemas"]["repository-rule-required-status-checks"] | components["schemas"]["repository-rule-non-fast-forward"] | components["schemas"]["repository-rule-commit-message-pattern"] | components["schemas"]["repository-rule-commit-author-email-pattern"] | components["schemas"]["repository-rule-committer-email-pattern"] | components["schemas"]["repository-rule-branch-name-pattern"] | components["schemas"]["repository-rule-tag-name-pattern"] | components["schemas"]["repository-rule-workflows"] | components["schemas"]["repository-rule-code-scanning"] | components["schemas"]["repository-rule-code-quality"] | components["schemas"]["repository-rule-code-coverage"] | components["schemas"]["repository-rule-copilot-code-review"] | components["schemas"]["repository-rule-license-compliance-scanning"] | components["schemas"]["repository-rule-file-path-restriction"] | components["schemas"]["repository-rule-max-file-path-length"] | components["schemas"]["repository-rule-file-extension-restriction"] | components["schemas"]["repository-rule-max-file-size"];
         /**
          * branch_name_pattern
          * @description Parameters to be used for the branch_name_pattern rule
@@ -37607,6 +39159,41 @@ export type components = {
             };
             /** @enum {string} */
             type: "branch_name_pattern";
+        };
+        /**
+         * code_coverage
+         * @description Enforce minimum line coverage thresholds on pull requests. When configured, uploaded coverage data must meet the specified criteria before changes can be merged.
+         */
+        "repository-rule-code-coverage": {
+            parameters?: {
+                /**
+                 * Format: float
+                 * @description The maximum percentage points that line coverage may drop relative to the default branch. Pull requests that reduce line coverage by more than this amount will be blocked.
+                 */
+                max_coverage_drop?: number;
+                /**
+                 * Format: float
+                 * @description The absolute minimum line coverage percentage required. Pull requests with line coverage below this threshold will be blocked.
+                 */
+                minimum_coverage?: number;
+            };
+            /** @enum {string} */
+            type: "code_coverage";
+        };
+        /**
+         * code_quality
+         * @description Choose which severity levels of code quality results should block pull request merges. When configured, a code quality analysis must be done on the pull request before the changes can be merged.
+         */
+        "repository-rule-code-quality": {
+            parameters?: {
+                /**
+                 * @description The lowest severity level at which code quality reviews need to be resolved before commits can be merged.
+                 * @enum {string}
+                 */
+                severity: "errors" | "warnings" | "notes" | "all";
+            };
+            /** @enum {string} */
+            type: "code_quality";
         };
         /**
          * code_scanning
@@ -37717,7 +39304,7 @@ export type components = {
          * Repository Rule
          * @description A repository rule with ruleset details.
          */
-        "repository-rule-detailed": (components["schemas"]["repository-rule-creation"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-update"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-deletion"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-linear-history"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-merge-queue"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-deployments"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-signatures"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-pull-request"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-status-checks"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-non-fast-forward"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-message-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-author-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-committer-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-branch-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-tag-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-workflows"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-code-scanning"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-copilot-code-review"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-path-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-path-length"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-extension-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-size"] & components["schemas"]["repository-rule-ruleset-info"]);
+        "repository-rule-detailed": (components["schemas"]["repository-rule-creation"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-update"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-deletion"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-linear-history"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-merge-queue"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-deployments"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-signatures"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-pull-request"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-status-checks"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-non-fast-forward"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-message-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-author-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-committer-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-branch-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-tag-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-workflows"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-code-scanning"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-copilot-code-review"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-license-compliance-scanning"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-path-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-path-length"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-extension-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-size"] & components["schemas"]["repository-rule-ruleset-info"]);
         /**
          * @description The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them. Admins can view insights on the Rule Insights page (`evaluate` is only available with GitHub Enterprise).
          * @enum {string}
@@ -37746,6 +39333,14 @@ export type components = {
             };
             /** @enum {string} */
             type: "file_path_restriction";
+        };
+        /**
+         * license_compliance_scanning
+         * @description Enforce any added or changed dependencies to comply with the organization's license policy.
+         */
+        "repository-rule-license-compliance-scanning": {
+            /** @enum {string} */
+            type: "license_compliance_scanning";
         };
         /**
          * max_file_path_length
@@ -37810,6 +39405,19 @@ export type components = {
             type: "non_fast_forward";
         };
         /**
+         * Actor
+         * @description An actor allowed to dismiss pull request reviews
+         */
+        "repository-rule-params-actor": {
+            /** @description ID of the actor that can dismiss reviews. */
+            id: number;
+            /**
+             * @description The type of the actor
+             * @enum {string}
+             */
+            type: "User" | "Team" | "IntegrationInstallation" | "RepositoryRole";
+        };
+        /**
          * CodeScanningTool
          * @description A tool that must provide code scanning results for this rule to pass.
          */
@@ -37826,6 +39434,27 @@ export type components = {
             security_alerts_threshold: "none" | "critical" | "high_or_higher" | "medium_or_higher" | "all";
             /** @description The name of a code scanning tool */
             tool: string;
+        };
+        /**
+         * DismissalRestriction
+         * @description Specify people, teams, or apps allowed to dismiss pull request reviews.
+         */
+        "repository-rule-params-dismissal-restriction": {
+            /** @description Specify people, teams, or apps allowed to dismiss pull request reviews. */
+            allowed_actors?: components["schemas"]["repository-rule-params-actor"][];
+            /** @description Whether to restrict review dismissal to specific actors. */
+            enabled: boolean;
+        };
+        /**
+         * ProofOfPresence
+         * @description Require a fresh authentication before a pull request can be merged.
+         */
+        "repository-rule-params-proof-of-presence": {
+            /**
+             * @description The level of authentication required before a pull request can be merged.
+             * @enum {string}
+             */
+            required_authentication_level: "reauth" | "mfa";
         };
         /**
          * RequiredReviewerConfiguration
@@ -37895,6 +39524,7 @@ export type components = {
                 allowed_merge_methods?: ("merge" | "squash" | "rebase")[];
                 /** @description New, reviewable commits pushed will dismiss previous pull request review approvals. */
                 dismiss_stale_reviews_on_push: boolean;
+                dismissal_restriction?: components["schemas"]["repository-rule-params-dismissal-restriction"];
                 /** @description Require an approving review in pull requests that modify files that have a designated code owner. */
                 require_code_owner_review: boolean;
                 /** @description Whether the most recent reviewable push must be approved by someone other than the person who pushed it. */
@@ -39178,6 +40808,11 @@ export type components = {
              * @example online
              */
             status: string;
+            /**
+             * @description The version of the GitHub Actions Runner software. This is only set if the runner has connected to the service at least once.
+             * @example 2.323.0
+             */
+            version?: string | null;
         };
         /**
          * Runner Application
@@ -39332,6 +40967,13 @@ export type components = {
         };
         /** @description The username of the user to assign to the alert. Set to `null` to unassign the alert. */
         "secret-scanning-alert-assignee": string | null;
+        /** @description A list of metadata key/value pairs associated with the secret scanning alert. */
+        "secret-scanning-alert-metadata": {
+            /** @description The metadata key. */
+            key: string;
+            /** @description The metadata value. */
+            value: string;
+        }[];
         /**
          * @description **Required when the `state` is `resolved`.** The reason for resolving the alert.
          * @enum {string|null}
@@ -39363,6 +41005,7 @@ export type components = {
              * @description The REST API URL of the code locations for this alert.
              */
             locations_url?: string;
+            metadata?: components["schemas"]["secret-scanning-alert-metadata"];
             /** @description Whether the detected secret was found in multiple repositories in the same organization or business. */
             multi_repo?: boolean | null;
             number?: components["schemas"]["alert-number"];
@@ -39399,6 +41042,11 @@ export type components = {
              */
             resolved_at?: string | null;
             resolved_by?: components["schemas"]["nullable-simple-user"];
+            /**
+             * @description The category of the detected secret. `default` covers specific provider patterns and custom patterns; `generic` covers non-specific patterns and AI-detected secrets.
+             * @enum {string}
+             */
+            secret_category?: "default" | "generic";
             /** @description The type of secret that secret scanning detected. */
             secret_type?: string;
             /**
@@ -39413,6 +41061,185 @@ export type components = {
              * @enum {string}
              */
             validity?: "active" | "inactive" | "unknown";
+        };
+        "secret-scanning-alert-with-metadata": {
+            assigned_to?: components["schemas"]["nullable-simple-user"];
+            /** @description An optional comment from the closure request author. */
+            closure_request_comment?: string | null;
+            closure_request_reviewer?: components["schemas"]["nullable-simple-user"];
+            /** @description An optional comment from the closure request reviewer. */
+            closure_request_reviewer_comment?: string | null;
+            created_at?: components["schemas"]["alert-created-at"];
+            first_location_detected?: components["schemas"]["nullable-secret-scanning-first-detected-location"];
+            /** @description A boolean value representing whether or not the token in the alert was detected in more than one location. */
+            has_more_locations?: boolean;
+            html_url?: components["schemas"]["alert-html-url"];
+            /** @description A boolean value representing whether or not alert is base64 encoded */
+            is_base64_encoded?: boolean | null;
+            /**
+             * Format: uri
+             * @description The REST API URL of the code locations for this alert.
+             */
+            locations_url?: string;
+            metadata?: components["schemas"]["secret-scanning-alert-metadata"];
+            /** @description Whether the detected secret was found in multiple repositories under the same organization or enterprise. */
+            multi_repo?: boolean | null;
+            number?: components["schemas"]["alert-number"];
+            /** @description The provider of the secret that was detected. */
+            provider?: string | null;
+            /** @description The slug identifier for the provider of the secret that was detected. Use this value for filtering by provider with the `providers` or `exclude_providers` parameters. */
+            provider_slug?: string | null;
+            /** @description Whether the detected secret was publicly leaked. */
+            publicly_leaked?: boolean | null;
+            /** @description An optional comment when requesting a push protection bypass. */
+            push_protection_bypass_request_comment?: string | null;
+            /**
+             * Format: uri
+             * @description The URL to a push protection bypass request.
+             */
+            push_protection_bypass_request_html_url?: string | null;
+            push_protection_bypass_request_reviewer?: components["schemas"]["nullable-simple-user"];
+            /** @description An optional comment when reviewing a push protection bypass. */
+            push_protection_bypass_request_reviewer_comment?: string | null;
+            /** @description Whether push protection was bypassed for the detected secret. */
+            push_protection_bypassed?: boolean | null;
+            /**
+             * Format: date-time
+             * @description The time that push protection was bypassed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
+             */
+            push_protection_bypassed_at?: string | null;
+            push_protection_bypassed_by?: components["schemas"]["nullable-simple-user"];
+            resolution?: components["schemas"]["secret-scanning-alert-resolution"];
+            /** @description An optional comment to resolve an alert. */
+            resolution_comment?: string | null;
+            /**
+             * Format: date-time
+             * @description The time that the alert was resolved in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`.
+             */
+            resolved_at?: string | null;
+            resolved_by?: components["schemas"]["nullable-simple-user"];
+            /** @description The secret that was detected. */
+            secret?: string;
+            /** @description The type of secret that secret scanning detected. */
+            secret_type?: string;
+            /**
+             * @description User-friendly name for the detected secret, matching the `secret_type`.
+             *     For a list of built-in patterns, see "[Supported secret scanning patterns](https://docs.github.com/code-security/secret-scanning/introduction/supported-secret-scanning-patterns#supported-secrets)."
+             */
+            secret_type_display_name?: string;
+            state?: components["schemas"]["secret-scanning-alert-state"];
+            updated_at?: components["schemas"]["nullable-alert-updated-at"];
+            url?: components["schemas"]["alert-url"];
+            /**
+             * @description The token status as of the latest validity check.
+             * @enum {string}
+             */
+            validity?: "active" | "inactive" | "unknown";
+        };
+        /**
+         * Secret Scanning Custom Pattern
+         * @description A custom pattern for secret scanning.
+         */
+        "secret-scanning-custom-pattern": {
+            /**
+             * Format: date-time
+             * @description The date and time the custom pattern was created in ISO 8601 format.
+             */
+            created_at?: string;
+            custom_pattern_version?: components["schemas"]["secret-scanning-row-version"];
+            /** @description The end delimiter regex for the custom pattern. */
+            end_delimiter?: string | null;
+            /** @description The ID of the custom pattern. */
+            id: number;
+            /** @description List of regexes that the secret must match. */
+            must_match?: string[] | null;
+            /** @description List of regexes that the secret must not match. */
+            must_not_match?: string[] | null;
+            /** @description The name of the custom pattern. */
+            name: string;
+            /** @description The regular expression of the custom pattern. */
+            pattern: string;
+            /** @description Whether push protection is enabled for this custom pattern. */
+            push_protection_enabled: boolean;
+            /** @description A URL-friendly identifier for the custom pattern, derived from its name. */
+            slug: string;
+            /** @description The start delimiter regex for the custom pattern. */
+            start_delimiter?: string | null;
+            /**
+             * @description The state of the custom pattern.
+             * @enum {string}
+             */
+            state: "published" | "unpublished";
+            /**
+             * Format: date-time
+             * @description The date and time the custom pattern was last updated in ISO 8601 format.
+             */
+            updated_at?: string;
+        };
+        /**
+         * Secret Scanning Custom Pattern To Create
+         * @description A custom pattern to create in a bulk operation.
+         */
+        "secret-scanning-custom-pattern-to-create": {
+            /**
+             * @description The end delimiter regex for the custom pattern.
+             *     Defaults to `\z|[^0-9A-Za-z]` when not specified.
+             * @default \z|[^0-9A-Za-z]
+             */
+            end_delimiter: string;
+            /** @description List of regexes that the secret must match. */
+            must_match?: string[];
+            /** @description List of regexes that the secret must not match. */
+            must_not_match?: string[];
+            /** @description The name of the custom pattern. */
+            name: string;
+            /** @description The regular expression of the custom pattern. */
+            pattern: string;
+            /**
+             * @description The start delimiter regex for the custom pattern.
+             *     Defaults to `\A|[^0-9A-Za-z]` when not specified.
+             * @default \A|[^0-9A-Za-z]
+             */
+            start_delimiter: string;
+        };
+        /**
+         * Secret Scanning Custom Pattern To Delete
+         * @description A custom pattern to delete in a bulk operation.
+         */
+        "secret-scanning-custom-pattern-to-delete": {
+            custom_pattern_version?: components["schemas"]["secret-scanning-row-version"];
+            /** @description The ID of the custom pattern to delete. */
+            pattern_id: number;
+        };
+        /**
+         * Secret Scanning Custom Pattern To Update
+         * @description Fields to update on a custom pattern. At least one updatable field (`pattern`, `start_delimiter`, `end_delimiter`, `must_match`, or `must_not_match`) must also be provided. Only provided fields will be updated.
+         */
+        "secret-scanning-custom-pattern-to-update": {
+            custom_pattern_version: components["schemas"]["secret-scanning-row-version"];
+            /** @description The updated end delimiter regex for the custom pattern. */
+            end_delimiter?: string;
+            /** @description Updated list of regexes that the secret must match. */
+            must_match?: string[];
+            /** @description Updated list of regexes that the secret must not match. */
+            must_not_match?: string[];
+            /** @description The updated regular expression of the custom pattern. */
+            pattern?: string;
+            /** @description The updated start delimiter regex for the custom pattern. */
+            start_delimiter?: string;
+        } | unknown | unknown | unknown | unknown | unknown;
+        /**
+         * Secret Scanning Custom Pattern Validation Error
+         * @description A validation error for a custom pattern in a batch operation.
+         */
+        "secret-scanning-custom-pattern-validation-error": {
+            /**
+             * @description A machine-readable code describing the error.
+             * @enum {string}
+             */
+            code?: "invalid" | "unprocessable" | "start_delimiter" | "end_delimiter" | "name" | "must_match" | "must_not_match" | "custom_pattern_version_mismatch";
+            /** @description A human-readable description of the error. */
+            message?: string;
         };
         "secret-scanning-location": {
             details?: components["schemas"]["secret-scanning-location-commit"] | components["schemas"]["secret-scanning-location-wiki-commit"] | components["schemas"]["secret-scanning-location-issue-title"] | components["schemas"]["secret-scanning-location-issue-body"] | components["schemas"]["secret-scanning-location-issue-comment"] | components["schemas"]["secret-scanning-location-discussion-title"] | components["schemas"]["secret-scanning-location-discussion-body"] | components["schemas"]["secret-scanning-location-discussion-comment"] | components["schemas"]["secret-scanning-location-pull-request-title"] | components["schemas"]["secret-scanning-location-pull-request-body"] | components["schemas"]["secret-scanning-location-pull-request-comment"] | components["schemas"]["secret-scanning-location-pull-request-review"] | components["schemas"]["secret-scanning-location-pull-request-review-comment"];
@@ -39911,201 +41738,6 @@ export type components = {
             url?: string;
         };
         /**
-         * Simple Classroom
-         * @description A GitHub Classroom classroom
-         */
-        "simple-classroom": {
-            /**
-             * @description Returns whether classroom is archived or not.
-             * @example false
-             */
-            archived: boolean;
-            /**
-             * @description Unique identifier of the classroom.
-             * @example 42
-             */
-            id: number;
-            /**
-             * @description The name of the classroom.
-             * @example Programming Elixir
-             */
-            name: string;
-            /**
-             * @description The url of the classroom on GitHub Classroom.
-             * @example https://classroom.github.com/classrooms/1-programming-elixir
-             */
-            url: string;
-        };
-        /**
-         * Simple Classroom Assignment
-         * @description A GitHub Classroom assignment
-         */
-        "simple-classroom-assignment": {
-            /**
-             * @description The number of students that have accepted the assignment.
-             * @example 25
-             */
-            accepted: number;
-            classroom: components["schemas"]["simple-classroom"];
-            /**
-             * Format: date-time
-             * @description The time at which the assignment is due.
-             * @example 2011-01-26T19:06:43Z
-             */
-            deadline: string | null;
-            /**
-             * @description The selected editor for the assignment.
-             * @example codespaces
-             */
-            editor: string;
-            /**
-             * @description Whether feedback pull request will be created on assignment acceptance.
-             * @example true
-             */
-            feedback_pull_requests_enabled: boolean;
-            /**
-             * @description Unique identifier of the repository.
-             * @example 42
-             */
-            id: number;
-            /**
-             * @description Whether the invitation link is enabled. Visiting an enabled invitation link will accept the assignment.
-             * @example true
-             */
-            invitations_enabled: boolean;
-            /**
-             * @description The link that a student can use to accept the assignment.
-             * @example https://classroom.github.com/a/Lx7jiUgx
-             */
-            invite_link: string;
-            /**
-             * @description The programming language used in the assignment.
-             * @example elixir
-             */
-            language: string;
-            /**
-             * @description The maximum allowable members per team.
-             * @example 0
-             */
-            max_members?: number | null;
-            /**
-             * @description The maximum allowable teams for the assignment.
-             * @example 0
-             */
-            max_teams?: number | null;
-            /**
-             * @description The number of students that have passed the assignment.
-             * @example 10
-             */
-            passing: number;
-            /**
-             * @description Whether an accepted assignment creates a public repository.
-             * @example true
-             */
-            public_repo: boolean;
-            /**
-             * @description Sluggified name of the assignment.
-             * @example intro-to-binaries
-             */
-            slug: string;
-            /**
-             * @description Whether students are admins on created repository on accepted assignment.
-             * @example true
-             */
-            students_are_repo_admins: boolean;
-            /**
-             * @description The number of students that have submitted the assignment.
-             * @example 10
-             */
-            submitted: number;
-            /**
-             * @description Assignment title.
-             * @example Intro to Binaries
-             */
-            title: string;
-            /**
-             * @description Whether it's a Group Assignment or Individual Assignment.
-             * @example individual
-             * @enum {string}
-             */
-            type: "individual" | "group";
-        };
-        /**
-         * Organization Simple for Classroom
-         * @description A GitHub organization.
-         */
-        "simple-classroom-organization": {
-            /** @example https://github.com/images/error/octocat_happy.gif */
-            avatar_url: string;
-            /**
-             * Format: uri
-             * @example https://github.com/github
-             */
-            html_url: string;
-            /** @example 1 */
-            id: number;
-            /** @example github */
-            login: string;
-            /** @example Github - Code thigns happen here */
-            name: string | null;
-            /** @example MDEyOk9yZ2FuaXphdGlvbjE= */
-            node_id: string;
-        };
-        /**
-         * Simple Classroom Repository
-         * @description A GitHub repository view for Classroom
-         */
-        "simple-classroom-repository": {
-            /**
-             * @description The default branch for the repository.
-             * @example main
-             */
-            default_branch: string;
-            /**
-             * @description The full, globally unique name of the repository.
-             * @example octocat/Hello-World
-             */
-            full_name: string;
-            /**
-             * Format: uri
-             * @description The URL to view the repository on GitHub.com.
-             * @example https://github.com/octocat/Hello-World
-             */
-            html_url: string;
-            /**
-             * @description A unique identifier of the repository.
-             * @example 1296269
-             */
-            id: number;
-            /**
-             * @description The GraphQL identifier of the repository.
-             * @example MDEwOlJlcG9zaXRvcnkxMjk2MjY5
-             */
-            node_id: string;
-            /** @description Whether the repository is private. */
-            private: boolean;
-        };
-        /**
-         * Simple Classroom User
-         * @description A GitHub user simplified for Classroom.
-         */
-        "simple-classroom-user": {
-            /**
-             * Format: uri
-             * @example https://github.com/images/error/octocat_happy.gif
-             */
-            avatar_url: string;
-            /**
-             * Format: uri
-             * @example https://github.com/octocat
-             */
-            html_url: string;
-            /** @example 1 */
-            id: number;
-            /** @example octocat */
-            login: string;
-        };
-        /**
          * Simple Commit
          * @description A commit.
          */
@@ -40567,7 +42199,7 @@ export type components = {
              */
             scanned: string;
             /**
-             * @description The commit SHA associated with this dependency snapshot. Maximum length: 40 characters.
+             * @description The commit SHA associated with this dependency snapshot. Maximum length: 64 characters.
              * @example ddc951f4b1293222421f2c8df679786153acf689
              */
             sha: string;
@@ -40605,6 +42237,35 @@ export type components = {
             user: components["schemas"]["nullable-simple-user"];
         };
         /**
+         * Stargazer History
+         * @description Stargazer History
+         */
+        "stargazer-history": {
+            /**
+             * @description The number of stars created on each day of the week, starting on Sunday.
+             * @example [
+             *       0,
+             *       12,
+             *       7,
+             *       0,
+             *       0,
+             *       0,
+             *       0
+             *     ]
+             */
+            days: number[];
+            /**
+             * @description The number of stars created during the week.
+             * @example 19
+             */
+            total: number;
+            /**
+             * @description The start of the week, given as a Unix timestamp.
+             * @example 1754784000
+             */
+            week: number;
+        };
+        /**
          * Starred Repository
          * @description Starred Repository
          */
@@ -40624,6 +42285,7 @@ export type components = {
             created_at: string;
             event: string;
             id: number;
+            intent?: components["schemas"]["nullable-issue-event-intent"];
             node_id: string;
             performed_via_github_app: components["schemas"]["nullable-integration"];
             state_reason?: string | null;
@@ -40675,6 +42337,38 @@ export type components = {
              */
             url: string;
         };
+        /**
+         * Sub-issue Added Issue Event
+         * @description Sub-issue Added Issue Event
+         */
+        "sub-issue-added-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            sub_issue: components["schemas"]["nullable-issue-reference"];
+            url: string;
+        };
+        /**
+         * Sub-issue Removed Issue Event
+         * @description Sub-issue Removed Issue Event
+         */
+        "sub-issue-removed-issue-event": {
+            actor: components["schemas"]["simple-user"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            sub_issue: components["schemas"]["nullable-issue-reference"];
+            url: string;
+        };
         /** Sub-issues Summary */
         "sub-issues-summary": {
             completed: number;
@@ -40710,6 +42404,14 @@ export type components = {
          * @description Groups of organization members that gives permissions on specified repositories.
          */
         team: {
+            /**
+             * @description How the team's access to the repository was granted. This property is only
+             *     present when the team is returned in a repository context, such as
+             *     `GET /repos/{owner}/{repo}/teams`.
+             * @example direct
+             * @enum {string}
+             */
+            access_source?: "direct" | "organization" | "enterprise";
             description: string | null;
             /**
              * @description Unique identifier of the enterprise to which this team belongs
@@ -40842,6 +42544,91 @@ export type components = {
             url: string;
         };
         /**
+         * Team Member
+         * @description A user that is a member of a team, including their role on the team and whether the membership is inherited from a child team.
+         */
+        "team-member": {
+            /**
+             * Format: uri
+             * @example https://github.com/images/error/octocat_happy.gif
+             */
+            avatar_url: string;
+            email?: string | null;
+            /** @example https://api.github.com/users/octocat/events{/privacy} */
+            events_url: string;
+            /**
+             * Format: uri
+             * @example https://api.github.com/users/octocat/followers
+             */
+            followers_url: string;
+            /** @example https://api.github.com/users/octocat/following{/other_user} */
+            following_url: string;
+            /** @example https://api.github.com/users/octocat/gists{/gist_id} */
+            gists_url: string;
+            /** @example 41d064eb2195891e12d0413f63227ea7 */
+            gravatar_id: string | null;
+            /**
+             * Format: uri
+             * @example https://github.com/octocat
+             */
+            html_url: string;
+            /**
+             * Format: int64
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description Whether the user is a member of the team only through a child team. `true` means the membership is inherited from a child team; `false` means the user is a direct (immediate) member of the team. Only present on the `List team members` endpoint, and only when the feature is enabled for the organization.
+             * @example false
+             */
+            inherited?: boolean;
+            /** @example octocat */
+            login: string;
+            name?: string | null;
+            /** @example MDQ6VXNlcjE= */
+            node_id: string;
+            /**
+             * Format: uri
+             * @example https://api.github.com/users/octocat/orgs
+             */
+            organizations_url: string;
+            /**
+             * Format: uri
+             * @example https://api.github.com/users/octocat/received_events
+             */
+            received_events_url: string;
+            /**
+             * Format: uri
+             * @example https://api.github.com/users/octocat/repos
+             */
+            repos_url: string;
+            /**
+             * @description The member's role on the team. Only present on the `List team members` endpoint, and only when the feature is enabled for the organization.
+             * @example member
+             * @enum {string}
+             */
+            role?: "member" | "maintainer";
+            site_admin: boolean;
+            /** @example "2020-07-09T00:17:55Z" */
+            starred_at?: string;
+            /** @example https://api.github.com/users/octocat/starred{/owner}{/repo} */
+            starred_url: string;
+            /**
+             * Format: uri
+             * @example https://api.github.com/users/octocat/subscriptions
+             */
+            subscriptions_url: string;
+            /** @example User */
+            type: string;
+            /**
+             * Format: uri
+             * @example https://api.github.com/users/octocat
+             */
+            url: string;
+            /** @example public */
+            user_view_type?: string;
+        };
+        /**
          * Team Membership
          * @description Team Membership
          */
@@ -40879,11 +42666,11 @@ export type components = {
              * Format: uri
              * @example https://github.com/blog
              */
-            blog?: string;
+            blog?: string | null;
             /** @example 8 */
             collaborators?: number | null;
             /** @example GitHub */
-            company?: string;
+            company?: string | null;
             /**
              * Format: date-time
              * @example 2008-01-14T04:33:35Z
@@ -40898,7 +42685,7 @@ export type components = {
              * Format: email
              * @example octocat@github.com
              */
-            email?: string;
+            email?: string | null;
             /**
              * Format: uri
              * @example https://api.github.com/orgs/github/events
@@ -40926,7 +42713,7 @@ export type components = {
             /** @example https://api.github.com/orgs/github/issues */
             issues_url: string;
             /** @example San Francisco */
-            location?: string;
+            location?: string | null;
             /** @example github */
             login: string;
             /** @example all */
@@ -41492,6 +43279,7 @@ export type components = {
             created_at: string;
             event: string;
             id: number;
+            intent?: components["schemas"]["nullable-issue-event-intent"];
             node_id: string;
             performed_via_github_app: components["schemas"]["nullable-integration"];
             url: string;
@@ -41525,6 +43313,7 @@ export type components = {
             id: number;
             /** Format: uri */
             issue_url: string;
+            minimized?: components["schemas"]["nullable-issue-comment-minimized"];
             node_id: string;
             performed_via_github_app?: components["schemas"]["nullable-integration"];
             pin?: components["schemas"]["nullable-pinned-issue-comment"];
@@ -41640,6 +43429,21 @@ export type components = {
             };
         };
         /**
+         * Timeline Connected Event
+         * @description Timeline Connected Event
+         */
+        "timeline-connected-event": {
+            actor: components["schemas"]["simple-user"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            url: string;
+        };
+        /**
          * Timeline Cross Referenced Event
          * @description Timeline Cross Referenced Event
          */
@@ -41656,10 +43460,25 @@ export type components = {
             updated_at: string;
         };
         /**
+         * Timeline Disconnected Event
+         * @description Timeline Disconnected Event
+         */
+        "timeline-disconnected-event": {
+            actor: components["schemas"]["simple-user"];
+            commit_id: string | null;
+            commit_url: string | null;
+            created_at: string;
+            event: string;
+            id: number;
+            node_id: string;
+            performed_via_github_app: components["schemas"]["nullable-integration"];
+            url: string;
+        };
+        /**
          * Timeline Event
          * @description Timeline Event
          */
-        "timeline-issue-events": components["schemas"]["labeled-issue-event"] | components["schemas"]["unlabeled-issue-event"] | components["schemas"]["milestoned-issue-event"] | components["schemas"]["demilestoned-issue-event"] | components["schemas"]["renamed-issue-event"] | components["schemas"]["review-requested-issue-event"] | components["schemas"]["review-request-removed-issue-event"] | components["schemas"]["review-dismissed-issue-event"] | components["schemas"]["locked-issue-event"] | components["schemas"]["added-to-project-issue-event"] | components["schemas"]["moved-column-in-project-issue-event"] | components["schemas"]["removed-from-project-issue-event"] | components["schemas"]["converted-note-to-issue-issue-event"] | components["schemas"]["timeline-comment-event"] | components["schemas"]["timeline-cross-referenced-event"] | components["schemas"]["timeline-committed-event"] | components["schemas"]["timeline-reviewed-event"] | components["schemas"]["timeline-line-commented-event"] | components["schemas"]["timeline-commit-commented-event"] | components["schemas"]["timeline-assigned-issue-event"] | components["schemas"]["timeline-unassigned-issue-event"] | components["schemas"]["state-change-issue-event"];
+        "timeline-issue-events": components["schemas"]["labeled-issue-event"] | components["schemas"]["unlabeled-issue-event"] | components["schemas"]["milestoned-issue-event"] | components["schemas"]["demilestoned-issue-event"] | components["schemas"]["renamed-issue-event"] | components["schemas"]["review-requested-issue-event"] | components["schemas"]["review-request-removed-issue-event"] | components["schemas"]["review-dismissed-issue-event"] | components["schemas"]["locked-issue-event"] | components["schemas"]["added-to-project-issue-event"] | components["schemas"]["moved-column-in-project-issue-event"] | components["schemas"]["removed-from-project-issue-event"] | components["schemas"]["converted-note-to-issue-issue-event"] | components["schemas"]["timeline-comment-event"] | components["schemas"]["timeline-cross-referenced-event"] | components["schemas"]["timeline-committed-event"] | components["schemas"]["timeline-reviewed-event"] | components["schemas"]["timeline-line-commented-event"] | components["schemas"]["timeline-commit-commented-event"] | components["schemas"]["timeline-assigned-issue-event"] | components["schemas"]["timeline-unassigned-issue-event"] | components["schemas"]["state-change-issue-event"] | components["schemas"]["issue-type-added-issue-event"] | components["schemas"]["issue-type-removed-issue-event"] | components["schemas"]["issue-type-changed-issue-event"] | components["schemas"]["sub-issue-added-issue-event"] | components["schemas"]["sub-issue-removed-issue-event"] | components["schemas"]["parent-issue-added-issue-event"] | components["schemas"]["parent-issue-removed-issue-event"] | components["schemas"]["blocked-by-added-issue-event"] | components["schemas"]["blocked-by-removed-issue-event"] | components["schemas"]["blocking-added-issue-event"] | components["schemas"]["blocking-removed-issue-event"] | components["schemas"]["timeline-connected-event"] | components["schemas"]["timeline-disconnected-event"];
         /**
          * Timeline Line Commented Event
          * @description Timeline Line Commented Event
@@ -41818,6 +43637,7 @@ export type components = {
             created_at: string;
             event: string;
             id: number;
+            intent?: components["schemas"]["nullable-issue-event-intent"];
             label: {
                 color: string;
                 name: string;
@@ -41825,6 +43645,79 @@ export type components = {
             node_id: string;
             performed_via_github_app: components["schemas"]["nullable-integration"];
             url: string;
+        };
+        "update-budget": {
+            budget: {
+                budget_alerting?: {
+                    /**
+                     * @description Array of user login names who will receive alerts. Ignored for user-scope as alerting is always disabled for them.
+                     * @example [
+                     *       "mona",
+                     *       "lisa"
+                     *     ]
+                     */
+                    alert_recipients?: string[];
+                    /**
+                     * @description Whether alerts are enabled for this budget. Ignored for user-scope as alerting is always disabled for them.
+                     * @example true
+                     */
+                    will_alert?: boolean;
+                };
+                /**
+                 * @description The budget amount in whole dollars. For license-based products, this represents the number of licenses.
+                 * @example 100
+                 */
+                budget_amount?: number;
+                /**
+                 * @description The name of the entity to apply the budget to
+                 * @example example-repository-name
+                 */
+                budget_entity_name?: string;
+                /**
+                 * @description A single product or sku to apply the budget to.
+                 * @example actions_linux
+                 */
+                budget_product_sku?: string;
+                /**
+                 * @description The type of scope for the budget
+                 * @example enterprise
+                 * @enum {string}
+                 */
+                budget_scope?: "enterprise" | "organization" | "repository" | "cost_center" | "multi_user_customer" | "multi_user_cost_center" | "user";
+                /**
+                 * @description The type of pricing for the budget
+                 * @example ProductPricing
+                 */
+                budget_type?: "ProductPricing" | "SkuPricing";
+                /**
+                 * @description The consumed amount for the specified user within the budget. Only included for `user`-scoped budgets.
+                 * @example 42.5
+                 */
+                consumed_amount?: number;
+                /**
+                 * Format: date
+                 * @description The date the budget will expire in `YYYY-MM-DD` format. Only dates in the future are accepted.
+                 *     If not provided, the budget will not expire.
+                 *
+                 *     Only supported for budgets with `budget_scope` of `user`
+                 * @example 2026-12-31
+                 */
+                expires_at?: string;
+                /** @description ID of the budget. */
+                id?: string;
+                /**
+                 * @description Whether to prevent additional spending once the budget is exceeded
+                 * @example true
+                 */
+                prevent_further_usage?: boolean;
+                /**
+                 * @description The user login when the budget is scoped to a single user (`user` scope).
+                 * @example octocat
+                 */
+                user?: string;
+            };
+            /** @description A message indicating the result of the update operation */
+            message: string;
         };
         /**
          * User Marketplace Purchase
@@ -42562,6 +44455,8 @@ export type components = {
                         /** @enum {string} */
                         discussions?: "read" | "write";
                         /** @enum {string} */
+                        drives?: "read" | "write";
+                        /** @enum {string} */
                         emails?: "read" | "write";
                         /** @enum {string} */
                         environments?: "read" | "write";
@@ -42816,6 +44711,8 @@ export type components = {
                         /** @enum {string} */
                         discussions?: "read" | "write";
                         /** @enum {string} */
+                        drives?: "read" | "write";
+                        /** @enum {string} */
                         emails?: "read" | "write";
                         /** @enum {string} */
                         environments?: "read" | "write";
@@ -43039,7 +44936,7 @@ export type components = {
                  * @description The reason for dismissing or closing the alert.
                  * @enum {string|null}
                  */
-                dismissed_reason: "false positive" | "won't fix" | "used in tests" | null;
+                dismissed_reason: "false positive" | "won't fix" | "used in tests" | "mitigated" | null;
                 /** @description The time that the alert was fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. */
                 fixed_at?: unknown;
                 /**
@@ -43208,7 +45105,7 @@ export type components = {
                  * @description The reason for dismissing or closing the alert.
                  * @enum {string|null}
                  */
-                dismissed_reason: "false positive" | "won't fix" | "used in tests" | null;
+                dismissed_reason: "false positive" | "won't fix" | "used in tests" | "mitigated" | null;
                 /** @description The time that the alert was fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. */
                 fixed_at?: unknown;
                 /**
@@ -43303,7 +45200,7 @@ export type components = {
                 dismissed_at: unknown;
                 dismissed_by: unknown;
                 dismissed_comment?: components["schemas"]["code-scanning-alert-dismissed-comment"];
-                /** @description The reason for dismissing or closing the alert. Can be one of: `false positive`, `won't fix`, and `used in tests`. */
+                /** @description The reason for dismissing or closing the alert. Can be one of: `false positive`, `won't fix`, `used in tests`, and `mitigated`. */
                 dismissed_reason: unknown;
                 /** @description The time that the alert was fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. */
                 fixed_at?: unknown;
@@ -43444,7 +45341,7 @@ export type components = {
                  * @description The reason for dismissing or closing the alert.
                  * @enum {string|null}
                  */
-                dismissed_reason: "false positive" | "won't fix" | "used in tests" | null;
+                dismissed_reason: "false positive" | "won't fix" | "used in tests" | "mitigated" | null;
                 /** @description The time that the alert was fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. */
                 fixed_at?: unknown;
                 /**
@@ -43541,7 +45438,7 @@ export type components = {
                 dismissed_at: string | null;
                 dismissed_by: Record<string, never> | null;
                 dismissed_comment?: components["schemas"]["code-scanning-alert-dismissed-comment"];
-                /** @description The reason for dismissing or closing the alert. Can be one of: `false positive`, `won't fix`, and `used in tests`. */
+                /** @description The reason for dismissing or closing the alert. Can be one of: `false positive`, `won't fix`, `used in tests`, and `mitigated`. */
                 dismissed_reason: string | null;
                 /** @description The time that the alert was fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. */
                 fixed_at?: unknown;
@@ -43640,7 +45537,7 @@ export type components = {
                 dismissed_at: unknown;
                 dismissed_by: unknown;
                 dismissed_comment?: components["schemas"]["code-scanning-alert-dismissed-comment"];
-                /** @description The reason for dismissing or closing the alert. Can be one of: `false positive`, `won't fix`, and `used in tests`. */
+                /** @description The reason for dismissing or closing the alert. Can be one of: `false positive`, `won't fix`, `used in tests`, and `mitigated`. */
                 dismissed_reason: unknown;
                 /** @description The time that the alert was fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. */
                 fixed_at?: unknown;
@@ -43772,7 +45669,7 @@ export type components = {
                  * @description The reason for dismissing or closing the alert.
                  * @enum {string|null}
                  */
-                dismissed_reason: "false positive" | "won't fix" | "used in tests" | null;
+                dismissed_reason: "false positive" | "won't fix" | "used in tests" | "mitigated" | null;
                 /** @description The time that the alert was fixed in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. */
                 fixed_at?: unknown;
                 /**
@@ -47018,7 +48915,7 @@ export type components = {
             installation: components["schemas"]["installation"];
             organization?: components["schemas"]["organization-simple-webhooks"];
             repositories_added: components["schemas"]["webhooks_repositories_added"];
-            /** @description An array of repository objects, which were removed from the installation. */
+            /** @description An array of repository objects, which were removed from the installation. When `repository_selection` changes from `all` to `selected`, this array is empty. */
             repositories_removed: {
                 full_name?: string;
                 /** @description Unique identifier of the repository */
@@ -47042,7 +48939,7 @@ export type components = {
             installation: components["schemas"]["installation"];
             organization?: components["schemas"]["organization-simple-webhooks"];
             repositories_added: components["schemas"]["webhooks_repositories_added"];
-            /** @description An array of repository objects, which were removed from the installation. */
+            /** @description An array of repository objects, which were removed from the installation. When `repository_selection` changes from `all` to `selected`, this array is empty. */
             repositories_removed: {
                 full_name: string;
                 /** @description Unique identifier of the repository */
@@ -47167,6 +49064,7 @@ export type components = {
                 id: number;
                 /** Format: uri */
                 issue_url: string;
+                minimized?: components["schemas"]["nullable-issue-comment-minimized"];
                 node_id: string;
                 performed_via_github_app: components["schemas"]["nullable-integration"];
                 pin?: components["schemas"]["nullable-pinned-issue-comment"];
@@ -49993,6 +51891,36 @@ export type components = {
             repository: components["schemas"]["repository-webhooks"];
             sender: components["schemas"]["simple-user"];
         };
+        /** relates to issue added event */
+        "webhook-issue-relates-to-added": {
+            /** @enum {string} */
+            action: "relates_to_added";
+            installation?: components["schemas"]["simple-installation"];
+            issue?: components["schemas"]["issue"];
+            /** @description The ID of the issue the relationship was added to. */
+            issue_id?: number;
+            organization: components["schemas"]["organization-simple-webhooks"];
+            related_issue?: components["schemas"]["issue"];
+            /** @description The ID of the related issue. Only present when both issues belong to the same repository. */
+            related_issue_id?: number;
+            repository: components["schemas"]["repository-webhooks"];
+            sender: components["schemas"]["simple-user"];
+        };
+        /** relates to issue removed event */
+        "webhook-issue-relates-to-removed": {
+            /** @enum {string} */
+            action: "relates_to_removed";
+            installation?: components["schemas"]["simple-installation"];
+            issue?: components["schemas"]["issue"];
+            /** @description The ID of the issue the relationship was removed from. */
+            issue_id?: number;
+            organization: components["schemas"]["organization-simple-webhooks"];
+            related_issue?: components["schemas"]["issue"];
+            /** @description The ID of the related issue. Only present when both issues belong to the same repository. */
+            related_issue_id?: number;
+            repository: components["schemas"]["repository-webhooks"];
+            sender: components["schemas"]["simple-user"];
+        };
         /** issues assigned event */
         "webhook-issues-assigned": {
             /**
@@ -51814,10 +53742,19 @@ export type components = {
                             id?: number;
                             name?: string;
                         };
+                        /** @description The previously selected option details. Present for multi_select field types. */
+                        options?: {
+                            color?: string;
+                            description?: string | null;
+                            id?: number;
+                            name?: string;
+                        }[];
                         /** @description The previous value. Present for text, date, and number field types. */
                         value?: (string | number) | null;
                         /** @description The identifier of the previously selected option. Present for single_select field types. */
                         value_id?: number;
+                        /** @description The identifiers of the previously selected options. Present for multi_select field types. */
+                        value_ids?: number[];
                     };
                 };
             };
@@ -51830,7 +53767,7 @@ export type components = {
                  * @description The data type of the issue field.
                  * @enum {string}
                  */
-                field_type: "text" | "date" | "single_select" | "number";
+                field_type: "text" | "date" | "single_select" | "multi_select" | "number";
                 /** @description The unique identifier of the issue field. */
                 id: number;
                 /** @description The name of the issue field. */
@@ -51847,10 +53784,19 @@ export type components = {
                     id?: number;
                     name?: string;
                 };
+                /** @description The selected option details. Present for multi_select field types. */
+                options?: {
+                    color?: string;
+                    description?: string | null;
+                    id?: number;
+                    name?: string;
+                }[];
                 /** @description The value of the field. Present for text, date, and number field types. */
                 value?: (string | number) | null;
                 /** @description The identifier of the selected option. Present for single_select field types. */
                 value_id?: number;
+                /** @description The identifiers of the selected options. Present for multi_select field types. */
+                value_ids?: number[];
             };
             organization?: components["schemas"]["organization-simple-webhooks"];
             repository: components["schemas"]["repository-webhooks"];
@@ -51869,7 +53815,7 @@ export type components = {
                  * @description The data type of the issue field.
                  * @enum {string}
                  */
-                field_type: "text" | "date" | "single_select" | "number";
+                field_type: "text" | "date" | "single_select" | "multi_select" | "number";
                 /** @description The unique identifier of the issue field. */
                 id: number;
                 /** @description The name of the issue field. */
@@ -51886,10 +53832,19 @@ export type components = {
                     id?: number;
                     name?: string;
                 };
+                /** @description The selected option details. Present for multi_select field types. */
+                options?: {
+                    color?: string;
+                    description?: string | null;
+                    id?: number;
+                    name?: string;
+                }[];
                 /** @description The value of the field. Present for text, date, and number field types. */
                 value?: (string | number) | null;
                 /** @description The identifier of the selected option. Present for single_select field types. */
                 value_id?: number;
+                /** @description The identifiers of the selected options. Present for multi_select field types. */
+                value_ids?: number[];
             };
             organization?: components["schemas"]["organization-simple-webhooks"];
             repository: components["schemas"]["repository-webhooks"];
@@ -52007,6 +53962,13 @@ export type components = {
                 issue_dependencies_summary?: components["schemas"]["issue-dependencies-summary"];
                 issue_field_values?: components["schemas"]["issue-field-value"][];
                 labels?: {
+                    /**
+                     * Format: date-time
+                     * @description Timestamp indicating when the label was archived, or `null` if it has not been archived.
+                     */
+                    archived_at: string | null;
+                    /** @description The user who archived the label, or `null` if it has not been archived. */
+                    archived_by: components["schemas"]["simple-user"] | null;
                     /** @description 6-character hex code, without the leading #, identifying the color */
                     color: string;
                     default: boolean;
@@ -55911,6 +57873,17 @@ export type components = {
             sender: components["schemas"]["simple-user"];
             type: components["schemas"]["issue-type"];
         };
+        /** label archived event */
+        "webhook-label-archived": {
+            /** @enum {string} */
+            action: "archived";
+            enterprise?: components["schemas"]["enterprise-webhooks"];
+            installation?: components["schemas"]["simple-installation"];
+            label: components["schemas"]["webhooks_label_archived"];
+            organization?: components["schemas"]["organization-simple-webhooks"];
+            repository: components["schemas"]["repository-webhooks"];
+            sender: components["schemas"]["simple-user"];
+        };
         /** label created event */
         "webhook-label-created": {
             /** @enum {string} */
@@ -55955,6 +57928,17 @@ export type components = {
             enterprise?: components["schemas"]["enterprise-webhooks"];
             installation?: components["schemas"]["simple-installation"];
             label: components["schemas"]["webhooks_label"];
+            organization?: components["schemas"]["organization-simple-webhooks"];
+            repository: components["schemas"]["repository-webhooks"];
+            sender: components["schemas"]["simple-user"];
+        };
+        /** label unarchived event */
+        "webhook-label-unarchived": {
+            /** @enum {string} */
+            action: "unarchived";
+            enterprise?: components["schemas"]["enterprise-webhooks"];
+            installation?: components["schemas"]["simple-installation"];
+            label: components["schemas"]["webhooks_label_unarchived"];
             organization?: components["schemas"]["organization-simple-webhooks"];
             repository: components["schemas"]["repository-webhooks"];
             sender: components["schemas"]["simple-user"];
@@ -58874,6 +60858,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -58936,7 +60921,7 @@ export type components = {
             action: "auto_merge_disabled";
             enterprise?: components["schemas"]["enterprise-webhooks"];
             installation?: components["schemas"]["simple-installation"];
-            number: number;
+            number: components["schemas"]["webhooks_number"];
             organization?: components["schemas"]["organization-simple-webhooks"];
             /** Pull Request */
             pull_request: {
@@ -60101,6 +62086,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -60164,7 +62150,7 @@ export type components = {
             action: "auto_merge_enabled";
             enterprise?: components["schemas"]["enterprise-webhooks"];
             installation?: components["schemas"]["simple-installation"];
-            number: number;
+            number: components["schemas"]["webhooks_number"];
             organization?: components["schemas"]["organization-simple-webhooks"];
             /** Pull Request */
             pull_request: {
@@ -61326,6 +63312,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -61412,12 +63399,13 @@ export type components = {
             /** @enum {string} */
             action: "demilestoned";
             enterprise?: components["schemas"]["enterprise-webhooks"];
+            installation?: components["schemas"]["simple-installation"];
             milestone?: components["schemas"]["milestone"];
             number: components["schemas"]["webhooks_number"];
             organization?: components["schemas"]["organization-simple-webhooks"];
             pull_request: components["schemas"]["webhooks_pull_request_5"];
             repository: components["schemas"]["repository-webhooks"];
-            sender?: components["schemas"]["simple-user"];
+            sender: components["schemas"]["simple-user"];
         };
         /** pull_request dequeued event */
         "webhook-pull-request-dequeued": {
@@ -61425,7 +63413,7 @@ export type components = {
             action: "dequeued";
             enterprise?: components["schemas"]["enterprise-webhooks"];
             installation?: components["schemas"]["simple-installation"];
-            number: number;
+            number: components["schemas"]["webhooks_number"];
             organization?: components["schemas"]["organization-simple-webhooks"];
             /** Pull Request */
             pull_request: {
@@ -62590,6 +64578,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -62677,7 +64666,7 @@ export type components = {
             organization?: components["schemas"]["organization-simple-webhooks"];
             pull_request: components["schemas"]["pull-request-webhook"];
             repository: components["schemas"]["repository-webhooks"];
-            sender?: components["schemas"]["simple-user"];
+            sender: components["schemas"]["simple-user"];
         };
         /** pull_request enqueued event */
         "webhook-pull-request-enqueued": {
@@ -62685,7 +64674,7 @@ export type components = {
             action: "enqueued";
             enterprise?: components["schemas"]["enterprise-webhooks"];
             installation?: components["schemas"]["simple-installation"];
-            number: number;
+            number: components["schemas"]["webhooks_number"];
             organization?: components["schemas"]["organization-simple-webhooks"];
             /** Pull Request */
             pull_request: {
@@ -63850,6 +65839,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -64796,6 +66786,13 @@ export type components = {
                 /** Format: uri */
                 issue_url: string;
                 labels: {
+                    /**
+                     * Format: date-time
+                     * @description Timestamp indicating when the label was archived, or `null` if it has not been archived.
+                     */
+                    archived_at: string | null;
+                    /** @description The user who archived the label, or `null` if it has not been archived. */
+                    archived_by: components["schemas"]["simple-user"] | null;
                     /** @description 6-character hex code, without the leading #, identifying the color */
                     color: string;
                     default: boolean;
@@ -65078,6 +67075,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -66305,6 +68303,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -66366,12 +68365,13 @@ export type components = {
             /** @enum {string} */
             action: "milestoned";
             enterprise?: components["schemas"]["enterprise-webhooks"];
+            installation?: components["schemas"]["simple-installation"];
             milestone?: components["schemas"]["milestone"];
             number: components["schemas"]["webhooks_number"];
             organization?: components["schemas"]["organization-simple-webhooks"];
             pull_request: components["schemas"]["webhooks_pull_request_5"];
             repository: components["schemas"]["repository-webhooks"];
-            sender?: components["schemas"]["simple-user"];
+            sender: components["schemas"]["simple-user"];
         };
         /** pull_request opened event */
         "webhook-pull-request-opened": {
@@ -67670,6 +69670,7 @@ export type components = {
                 review_comment_url: string;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /** @enum {string} */
                 state: "open" | "closed";
                 /** Format: uri */
@@ -68836,6 +70837,7 @@ export type components = {
                 review_comment_url: string;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /** @enum {string} */
                 state: "open" | "closed";
                 /** Format: uri */
@@ -70004,6 +72006,7 @@ export type components = {
                 review_comment_url: string;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /** @enum {string} */
                 state: "open" | "closed";
                 /** Format: uri */
@@ -71170,6 +73173,7 @@ export type components = {
                 review_comment_url: string;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /** @enum {string} */
                 state: "open" | "closed";
                 /** Format: uri */
@@ -73525,6 +75529,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -74790,6 +76795,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -76074,6 +78080,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -77339,6 +79346,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -78565,6 +80573,7 @@ export type components = {
                 review_comment_url: string;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /** @enum {string} */
                 state: "open" | "closed";
                 /** Format: uri */
@@ -79654,6 +81663,7 @@ export type components = {
                 review_comment_url: string;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /** @enum {string} */
                 state: "open" | "closed";
                 /** Format: uri */
@@ -80890,6 +82900,7 @@ export type components = {
                 review_comment_url: string;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /** @enum {string} */
                 state: "open" | "closed";
                 /** Format: uri */
@@ -81088,6 +83099,1235 @@ export type components = {
             };
             /** Format: date-time */
             updated_at?: string | null;
+        };
+        /** pull_request stacked event */
+        "webhook-pull-request-stacked": {
+            /** @enum {string} */
+            action: "stacked";
+            enterprise?: components["schemas"]["enterprise-webhooks"];
+            installation?: components["schemas"]["simple-installation"];
+            number: components["schemas"]["webhooks_number"];
+            organization?: components["schemas"]["organization-simple-webhooks"];
+            /** Pull Request */
+            pull_request: {
+                _links: {
+                    /** Link */
+                    comments: {
+                        /** Format: uri-template */
+                        href: string;
+                    };
+                    /** Link */
+                    commits: {
+                        /** Format: uri-template */
+                        href: string;
+                    };
+                    /** Link */
+                    html: {
+                        /** Format: uri-template */
+                        href: string;
+                    };
+                    /** Link */
+                    issue: {
+                        /** Format: uri-template */
+                        href: string;
+                    };
+                    /** Link */
+                    review_comment: {
+                        /** Format: uri-template */
+                        href: string;
+                    };
+                    /** Link */
+                    review_comments: {
+                        /** Format: uri-template */
+                        href: string;
+                    };
+                    /** Link */
+                    self: {
+                        /** Format: uri-template */
+                        href: string;
+                    };
+                    /** Link */
+                    statuses: {
+                        /** Format: uri-template */
+                        href: string;
+                    };
+                };
+                /** @enum {string|null} */
+                active_lock_reason: "resolved" | "off-topic" | "too heated" | "spam" | null;
+                additions?: number;
+                /** User */
+                assignee: {
+                    /** Format: uri */
+                    avatar_url?: string;
+                    deleted?: boolean;
+                    email?: string | null;
+                    /** Format: uri-template */
+                    events_url?: string;
+                    /** Format: uri */
+                    followers_url?: string;
+                    /** Format: uri-template */
+                    following_url?: string;
+                    /** Format: uri-template */
+                    gists_url?: string;
+                    gravatar_id?: string;
+                    /** Format: uri */
+                    html_url?: string;
+                    id: number;
+                    login: string;
+                    name?: string;
+                    node_id?: string;
+                    /** Format: uri */
+                    organizations_url?: string;
+                    /** Format: uri */
+                    received_events_url?: string;
+                    /** Format: uri */
+                    repos_url?: string;
+                    site_admin?: boolean;
+                    /** Format: uri-template */
+                    starred_url?: string;
+                    /** Format: uri */
+                    subscriptions_url?: string;
+                    /** @enum {string} */
+                    type?: "Bot" | "User" | "Organization" | "Mannequin";
+                    /** Format: uri */
+                    url?: string;
+                    user_view_type?: string;
+                } | null;
+                assignees: ({
+                    /** Format: uri */
+                    avatar_url?: string;
+                    deleted?: boolean;
+                    email?: string | null;
+                    /** Format: uri-template */
+                    events_url?: string;
+                    /** Format: uri */
+                    followers_url?: string;
+                    /** Format: uri-template */
+                    following_url?: string;
+                    /** Format: uri-template */
+                    gists_url?: string;
+                    gravatar_id?: string;
+                    /** Format: uri */
+                    html_url?: string;
+                    id: number;
+                    login: string;
+                    name?: string;
+                    node_id?: string;
+                    /** Format: uri */
+                    organizations_url?: string;
+                    /** Format: uri */
+                    received_events_url?: string;
+                    /** Format: uri */
+                    repos_url?: string;
+                    site_admin?: boolean;
+                    /** Format: uri-template */
+                    starred_url?: string;
+                    /** Format: uri */
+                    subscriptions_url?: string;
+                    /** @enum {string} */
+                    type?: "Bot" | "User" | "Organization" | "Mannequin";
+                    /** Format: uri */
+                    url?: string;
+                } | null)[];
+                /**
+                 * AuthorAssociation
+                 * @description How the author is associated with the repository.
+                 * @enum {string}
+                 */
+                author_association: "COLLABORATOR" | "CONTRIBUTOR" | "FIRST_TIMER" | "FIRST_TIME_CONTRIBUTOR" | "MANNEQUIN" | "MEMBER" | "NONE" | "OWNER";
+                /**
+                 * PullRequestAutoMerge
+                 * @description The status of auto merging a pull request.
+                 */
+                auto_merge: {
+                    /** @description Commit message for the merge commit. */
+                    commit_message: string | null;
+                    /** @description Title for the merge commit message. */
+                    commit_title: string | null;
+                    /** User */
+                    enabled_by: {
+                        /** Format: uri */
+                        avatar_url?: string;
+                        deleted?: boolean;
+                        email?: string | null;
+                        /** Format: uri-template */
+                        events_url?: string;
+                        /** Format: uri */
+                        followers_url?: string;
+                        /** Format: uri-template */
+                        following_url?: string;
+                        /** Format: uri-template */
+                        gists_url?: string;
+                        gravatar_id?: string;
+                        /** Format: uri */
+                        html_url?: string;
+                        id: number;
+                        login: string;
+                        name?: string;
+                        node_id?: string;
+                        /** Format: uri */
+                        organizations_url?: string;
+                        /** Format: uri */
+                        received_events_url?: string;
+                        /** Format: uri */
+                        repos_url?: string;
+                        site_admin?: boolean;
+                        /** Format: uri-template */
+                        starred_url?: string;
+                        /** Format: uri */
+                        subscriptions_url?: string;
+                        /** @enum {string} */
+                        type?: "Bot" | "User" | "Organization";
+                        /** Format: uri */
+                        url?: string;
+                        user_view_type?: string;
+                    } | null;
+                    /**
+                     * @description The merge method to use.
+                     * @enum {string}
+                     */
+                    merge_method: "merge" | "squash" | "rebase";
+                } | null;
+                base: {
+                    label: string;
+                    ref: string;
+                    /**
+                     * Repository
+                     * @description A git repository
+                     */
+                    repo: {
+                        /**
+                         * @description Whether to allow auto-merge for pull requests.
+                         * @default false
+                         */
+                        allow_auto_merge: boolean;
+                        /** @description Whether to allow private forks */
+                        allow_forking?: boolean;
+                        /**
+                         * @description Whether to allow merge commits for pull requests.
+                         * @default true
+                         */
+                        allow_merge_commit: boolean;
+                        /**
+                         * @description Whether to allow rebase merges for pull requests.
+                         * @default true
+                         */
+                        allow_rebase_merge: boolean;
+                        /**
+                         * @description Whether to allow squash merges for pull requests.
+                         * @default true
+                         */
+                        allow_squash_merge: boolean;
+                        allow_update_branch?: boolean;
+                        /** Format: uri-template */
+                        archive_url: string;
+                        /**
+                         * @description Whether the repository is archived.
+                         * @default false
+                         */
+                        archived: boolean;
+                        /** Format: uri-template */
+                        assignees_url: string;
+                        /** Format: uri-template */
+                        blobs_url: string;
+                        /** Format: uri-template */
+                        branches_url: string;
+                        /** Format: uri */
+                        clone_url: string;
+                        /** Format: uri-template */
+                        collaborators_url: string;
+                        /** Format: uri-template */
+                        comments_url: string;
+                        /** Format: uri-template */
+                        commits_url: string;
+                        /** Format: uri-template */
+                        compare_url: string;
+                        /** Format: uri-template */
+                        contents_url: string;
+                        /** Format: uri */
+                        contributors_url: string;
+                        created_at: number | string;
+                        /** @description The default branch of the repository. */
+                        default_branch: string;
+                        /**
+                         * @description Whether to delete head branches when pull requests are merged
+                         * @default false
+                         */
+                        delete_branch_on_merge: boolean;
+                        /** Format: uri */
+                        deployments_url: string;
+                        description: string | null;
+                        /** @description Returns whether or not this repository is disabled. */
+                        disabled?: boolean;
+                        /** Format: uri */
+                        downloads_url: string;
+                        /** Format: uri */
+                        events_url: string;
+                        fork: boolean;
+                        forks: number;
+                        forks_count: number;
+                        /** Format: uri */
+                        forks_url: string;
+                        full_name: string;
+                        /** Format: uri-template */
+                        git_commits_url: string;
+                        /** Format: uri-template */
+                        git_refs_url: string;
+                        /** Format: uri-template */
+                        git_tags_url: string;
+                        /** Format: uri */
+                        git_url: string;
+                        /**
+                         * @description Whether discussions are enabled.
+                         * @default false
+                         */
+                        has_discussions: boolean;
+                        /**
+                         * @description Whether downloads are enabled.
+                         * @default true
+                         */
+                        has_downloads: boolean;
+                        /**
+                         * @description Whether issues are enabled.
+                         * @default true
+                         */
+                        has_issues: boolean;
+                        has_pages: boolean;
+                        /**
+                         * @description Whether projects are enabled.
+                         * @default true
+                         */
+                        has_projects: boolean;
+                        /**
+                         * @description Whether pull requests are enabled.
+                         * @default true
+                         */
+                        has_pull_requests: boolean;
+                        /**
+                         * @description Whether the wiki is enabled.
+                         * @default true
+                         */
+                        has_wiki: boolean;
+                        homepage: string | null;
+                        /** Format: uri */
+                        hooks_url: string;
+                        /** Format: uri */
+                        html_url: string;
+                        /**
+                         * Format: int64
+                         * @description Unique identifier of the repository
+                         */
+                        id: number;
+                        is_template?: boolean;
+                        /** Format: uri-template */
+                        issue_comment_url: string;
+                        /** Format: uri-template */
+                        issue_events_url: string;
+                        /** Format: uri-template */
+                        issues_url: string;
+                        /** Format: uri-template */
+                        keys_url: string;
+                        /** Format: uri-template */
+                        labels_url: string;
+                        language: string | null;
+                        /** Format: uri */
+                        languages_url: string;
+                        /** License */
+                        license: {
+                            key: string;
+                            name: string;
+                            node_id: string;
+                            spdx_id: string;
+                            /** Format: uri */
+                            url: string | null;
+                        } | null;
+                        master_branch?: string;
+                        /**
+                         * @description The default value for a merge commit message.
+                         *
+                         *     - `PR_TITLE` - default to the pull request's title.
+                         *     - `PR_BODY` - default to the pull request's body.
+                         *     - `BLANK` - default to a blank commit message.
+                         * @enum {string}
+                         */
+                        merge_commit_message?: "PR_BODY" | "PR_TITLE" | "BLANK";
+                        /**
+                         * @description The default value for a merge commit title.
+                         *
+                         *     - `PR_TITLE` - default to the pull request's title.
+                         *     - `MERGE_MESSAGE` - default to the classic title for a merge message (e.g., Merge pull request #123 from branch-name).
+                         * @enum {string}
+                         */
+                        merge_commit_title?: "PR_TITLE" | "MERGE_MESSAGE";
+                        /** Format: uri */
+                        merges_url: string;
+                        /** Format: uri-template */
+                        milestones_url: string;
+                        /** Format: uri */
+                        mirror_url: string | null;
+                        /** @description The name of the repository. */
+                        name: string;
+                        node_id: string;
+                        /** Format: uri-template */
+                        notifications_url: string;
+                        open_issues: number;
+                        open_issues_count: number;
+                        organization?: string;
+                        /** User */
+                        owner: {
+                            /** Format: uri */
+                            avatar_url?: string;
+                            deleted?: boolean;
+                            email?: string | null;
+                            /** Format: uri-template */
+                            events_url?: string;
+                            /** Format: uri */
+                            followers_url?: string;
+                            /** Format: uri-template */
+                            following_url?: string;
+                            /** Format: uri-template */
+                            gists_url?: string;
+                            gravatar_id?: string;
+                            /** Format: uri */
+                            html_url?: string;
+                            id: number;
+                            login: string;
+                            name?: string;
+                            node_id?: string;
+                            /** Format: uri */
+                            organizations_url?: string;
+                            /** Format: uri */
+                            received_events_url?: string;
+                            /** Format: uri */
+                            repos_url?: string;
+                            site_admin?: boolean;
+                            /** Format: uri-template */
+                            starred_url?: string;
+                            /** Format: uri */
+                            subscriptions_url?: string;
+                            /** @enum {string} */
+                            type?: "Bot" | "User" | "Organization";
+                            /** Format: uri */
+                            url?: string;
+                            user_view_type?: string;
+                        } | null;
+                        permissions?: {
+                            admin: boolean;
+                            maintain?: boolean;
+                            pull: boolean;
+                            push: boolean;
+                            triage?: boolean;
+                        };
+                        /** @description Whether the repository is private or public. */
+                        private: boolean;
+                        public?: boolean;
+                        /**
+                         * @description The policy controlling who can create pull requests: all or collaborators_only.
+                         * @enum {string}
+                         */
+                        pull_request_creation_policy?: "all" | "collaborators_only";
+                        /** Format: uri-template */
+                        pulls_url: string;
+                        pushed_at: (number | string) | null;
+                        /** Format: uri-template */
+                        releases_url: string;
+                        role_name?: string | null;
+                        size: number;
+                        /**
+                         * @description The default value for a squash merge commit message:
+                         *
+                         *     - `PR_BODY` - default to the pull request's body.
+                         *     - `COMMIT_MESSAGES` - default to the branch's commit messages.
+                         *     - `BLANK` - default to a blank commit message.
+                         * @enum {string}
+                         */
+                        squash_merge_commit_message?: "PR_BODY" | "COMMIT_MESSAGES" | "BLANK";
+                        /**
+                         * @description The default value for a squash merge commit title:
+                         *
+                         *     - `PR_TITLE` - default to the pull request's title.
+                         *     - `COMMIT_OR_PR_TITLE` - default to the commit's title (if only one commit) or the pull request's title (when more than one commit).
+                         * @enum {string}
+                         */
+                        squash_merge_commit_title?: "PR_TITLE" | "COMMIT_OR_PR_TITLE";
+                        ssh_url: string;
+                        stargazers?: number;
+                        stargazers_count: number;
+                        /** Format: uri */
+                        stargazers_url: string;
+                        /** Format: uri-template */
+                        statuses_url: string;
+                        /** Format: uri */
+                        subscribers_url: string;
+                        /** Format: uri */
+                        subscription_url: string;
+                        /** Format: uri */
+                        svn_url: string;
+                        /** Format: uri */
+                        tags_url: string;
+                        /** Format: uri */
+                        teams_url: string;
+                        topics: string[];
+                        /** Format: uri-template */
+                        trees_url: string;
+                        /** Format: date-time */
+                        updated_at: string;
+                        /** Format: uri */
+                        url: string;
+                        /**
+                         * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
+                         * @default false
+                         */
+                        use_squash_pr_title_as_default: boolean;
+                        /** @enum {string} */
+                        visibility: "public" | "private" | "internal";
+                        watchers: number;
+                        watchers_count: number;
+                        /** @description Whether to require contributors to sign off on web-based commits */
+                        web_commit_signoff_required?: boolean;
+                    };
+                    sha: string;
+                    /** User */
+                    user: {
+                        /** Format: uri */
+                        avatar_url?: string;
+                        deleted?: boolean;
+                        email?: string | null;
+                        /** Format: uri-template */
+                        events_url?: string;
+                        /** Format: uri */
+                        followers_url?: string;
+                        /** Format: uri-template */
+                        following_url?: string;
+                        /** Format: uri-template */
+                        gists_url?: string;
+                        gravatar_id?: string;
+                        /** Format: uri */
+                        html_url?: string;
+                        /** Format: int64 */
+                        id: number;
+                        login: string;
+                        name?: string;
+                        node_id?: string;
+                        /** Format: uri */
+                        organizations_url?: string;
+                        /** Format: uri */
+                        received_events_url?: string;
+                        /** Format: uri */
+                        repos_url?: string;
+                        site_admin?: boolean;
+                        /** Format: uri-template */
+                        starred_url?: string;
+                        /** Format: uri */
+                        subscriptions_url?: string;
+                        /** @enum {string} */
+                        type?: "Bot" | "User" | "Organization";
+                        /** Format: uri */
+                        url?: string;
+                        user_view_type?: string;
+                    } | null;
+                };
+                body: string | null;
+                changed_files?: number;
+                /** Format: date-time */
+                closed_at: string | null;
+                comments?: number;
+                /** Format: uri */
+                comments_url: string;
+                commits?: number;
+                /** Format: uri */
+                commits_url: string;
+                /** Format: date-time */
+                created_at: string;
+                deletions?: number;
+                /** Format: uri */
+                diff_url: string;
+                /** @description Indicates whether or not the pull request is a draft. */
+                draft: boolean;
+                head: {
+                    label: string | null;
+                    ref: string;
+                    /**
+                     * Repository
+                     * @description A git repository
+                     */
+                    repo: {
+                        /**
+                         * @description Whether to allow auto-merge for pull requests.
+                         * @default false
+                         */
+                        allow_auto_merge: boolean;
+                        /** @description Whether to allow private forks */
+                        allow_forking?: boolean;
+                        /**
+                         * @description Whether to allow merge commits for pull requests.
+                         * @default true
+                         */
+                        allow_merge_commit: boolean;
+                        /**
+                         * @description Whether to allow rebase merges for pull requests.
+                         * @default true
+                         */
+                        allow_rebase_merge: boolean;
+                        /**
+                         * @description Whether to allow squash merges for pull requests.
+                         * @default true
+                         */
+                        allow_squash_merge: boolean;
+                        allow_update_branch?: boolean;
+                        /** Format: uri-template */
+                        archive_url: string;
+                        /**
+                         * @description Whether the repository is archived.
+                         * @default false
+                         */
+                        archived: boolean;
+                        /** Format: uri-template */
+                        assignees_url: string;
+                        /** Format: uri-template */
+                        blobs_url: string;
+                        /** Format: uri-template */
+                        branches_url: string;
+                        /** Format: uri */
+                        clone_url: string;
+                        /** Format: uri-template */
+                        collaborators_url: string;
+                        /** Format: uri-template */
+                        comments_url: string;
+                        /** Format: uri-template */
+                        commits_url: string;
+                        /** Format: uri-template */
+                        compare_url: string;
+                        /** Format: uri-template */
+                        contents_url: string;
+                        /** Format: uri */
+                        contributors_url: string;
+                        created_at: number | string;
+                        /** @description The default branch of the repository. */
+                        default_branch: string;
+                        /**
+                         * @description Whether to delete head branches when pull requests are merged
+                         * @default false
+                         */
+                        delete_branch_on_merge: boolean;
+                        /** Format: uri */
+                        deployments_url: string;
+                        description: string | null;
+                        /** @description Returns whether or not this repository is disabled. */
+                        disabled?: boolean;
+                        /** Format: uri */
+                        downloads_url: string;
+                        /** Format: uri */
+                        events_url: string;
+                        fork: boolean;
+                        forks: number;
+                        forks_count: number;
+                        /** Format: uri */
+                        forks_url: string;
+                        full_name: string;
+                        /** Format: uri-template */
+                        git_commits_url: string;
+                        /** Format: uri-template */
+                        git_refs_url: string;
+                        /** Format: uri-template */
+                        git_tags_url: string;
+                        /** Format: uri */
+                        git_url: string;
+                        /**
+                         * @description Whether discussions are enabled.
+                         * @default false
+                         */
+                        has_discussions: boolean;
+                        /**
+                         * @description Whether downloads are enabled.
+                         * @default true
+                         */
+                        has_downloads: boolean;
+                        /**
+                         * @description Whether issues are enabled.
+                         * @default true
+                         */
+                        has_issues: boolean;
+                        has_pages: boolean;
+                        /**
+                         * @description Whether projects are enabled.
+                         * @default true
+                         */
+                        has_projects: boolean;
+                        /**
+                         * @description Whether pull requests are enabled.
+                         * @default true
+                         */
+                        has_pull_requests: boolean;
+                        /**
+                         * @description Whether the wiki is enabled.
+                         * @default true
+                         */
+                        has_wiki: boolean;
+                        homepage: string | null;
+                        /** Format: uri */
+                        hooks_url: string;
+                        /** Format: uri */
+                        html_url: string;
+                        /**
+                         * Format: int64
+                         * @description Unique identifier of the repository
+                         */
+                        id: number;
+                        is_template?: boolean;
+                        /** Format: uri-template */
+                        issue_comment_url: string;
+                        /** Format: uri-template */
+                        issue_events_url: string;
+                        /** Format: uri-template */
+                        issues_url: string;
+                        /** Format: uri-template */
+                        keys_url: string;
+                        /** Format: uri-template */
+                        labels_url: string;
+                        language: string | null;
+                        /** Format: uri */
+                        languages_url: string;
+                        /** License */
+                        license: {
+                            key: string;
+                            name: string;
+                            node_id: string;
+                            spdx_id: string;
+                            /** Format: uri */
+                            url: string | null;
+                        } | null;
+                        master_branch?: string;
+                        /**
+                         * @description The default value for a merge commit message.
+                         *
+                         *     - `PR_TITLE` - default to the pull request's title.
+                         *     - `PR_BODY` - default to the pull request's body.
+                         *     - `BLANK` - default to a blank commit message.
+                         * @enum {string}
+                         */
+                        merge_commit_message?: "PR_BODY" | "PR_TITLE" | "BLANK";
+                        /**
+                         * @description The default value for a merge commit title.
+                         *
+                         *     - `PR_TITLE` - default to the pull request's title.
+                         *     - `MERGE_MESSAGE` - default to the classic title for a merge message (e.g., Merge pull request #123 from branch-name).
+                         * @enum {string}
+                         */
+                        merge_commit_title?: "PR_TITLE" | "MERGE_MESSAGE";
+                        /** Format: uri */
+                        merges_url: string;
+                        /** Format: uri-template */
+                        milestones_url: string;
+                        /** Format: uri */
+                        mirror_url: string | null;
+                        /** @description The name of the repository. */
+                        name: string;
+                        node_id: string;
+                        /** Format: uri-template */
+                        notifications_url: string;
+                        open_issues: number;
+                        open_issues_count: number;
+                        organization?: string;
+                        /** User */
+                        owner: {
+                            /** Format: uri */
+                            avatar_url?: string;
+                            deleted?: boolean;
+                            email?: string | null;
+                            /** Format: uri-template */
+                            events_url?: string;
+                            /** Format: uri */
+                            followers_url?: string;
+                            /** Format: uri-template */
+                            following_url?: string;
+                            /** Format: uri-template */
+                            gists_url?: string;
+                            gravatar_id?: string;
+                            /** Format: uri */
+                            html_url?: string;
+                            id: number;
+                            login: string;
+                            name?: string;
+                            node_id?: string;
+                            /** Format: uri */
+                            organizations_url?: string;
+                            /** Format: uri */
+                            received_events_url?: string;
+                            /** Format: uri */
+                            repos_url?: string;
+                            site_admin?: boolean;
+                            /** Format: uri-template */
+                            starred_url?: string;
+                            /** Format: uri */
+                            subscriptions_url?: string;
+                            /** @enum {string} */
+                            type?: "Bot" | "User" | "Organization";
+                            /** Format: uri */
+                            url?: string;
+                            user_view_type?: string;
+                        } | null;
+                        permissions?: {
+                            admin: boolean;
+                            maintain?: boolean;
+                            pull: boolean;
+                            push: boolean;
+                            triage?: boolean;
+                        };
+                        /** @description Whether the repository is private or public. */
+                        private: boolean;
+                        public?: boolean;
+                        /**
+                         * @description The policy controlling who can create pull requests: all or collaborators_only.
+                         * @enum {string}
+                         */
+                        pull_request_creation_policy?: "all" | "collaborators_only";
+                        /** Format: uri-template */
+                        pulls_url: string;
+                        pushed_at: (number | string) | null;
+                        /** Format: uri-template */
+                        releases_url: string;
+                        role_name?: string | null;
+                        size: number;
+                        /**
+                         * @description The default value for a squash merge commit message:
+                         *
+                         *     - `PR_BODY` - default to the pull request's body.
+                         *     - `COMMIT_MESSAGES` - default to the branch's commit messages.
+                         *     - `BLANK` - default to a blank commit message.
+                         * @enum {string}
+                         */
+                        squash_merge_commit_message?: "PR_BODY" | "COMMIT_MESSAGES" | "BLANK";
+                        /**
+                         * @description The default value for a squash merge commit title:
+                         *
+                         *     - `PR_TITLE` - default to the pull request's title.
+                         *     - `COMMIT_OR_PR_TITLE` - default to the commit's title (if only one commit) or the pull request's title (when more than one commit).
+                         * @enum {string}
+                         */
+                        squash_merge_commit_title?: "PR_TITLE" | "COMMIT_OR_PR_TITLE";
+                        ssh_url: string;
+                        stargazers?: number;
+                        stargazers_count: number;
+                        /** Format: uri */
+                        stargazers_url: string;
+                        /** Format: uri-template */
+                        statuses_url: string;
+                        /** Format: uri */
+                        subscribers_url: string;
+                        /** Format: uri */
+                        subscription_url: string;
+                        /** Format: uri */
+                        svn_url: string;
+                        /** Format: uri */
+                        tags_url: string;
+                        /** Format: uri */
+                        teams_url: string;
+                        topics: string[];
+                        /** Format: uri-template */
+                        trees_url: string;
+                        /** Format: date-time */
+                        updated_at: string;
+                        /** Format: uri */
+                        url: string;
+                        /**
+                         * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
+                         * @default false
+                         */
+                        use_squash_pr_title_as_default: boolean;
+                        /** @enum {string} */
+                        visibility: "public" | "private" | "internal";
+                        watchers: number;
+                        watchers_count: number;
+                        /** @description Whether to require contributors to sign off on web-based commits */
+                        web_commit_signoff_required?: boolean;
+                    } | null;
+                    sha: string;
+                    /** User */
+                    user: {
+                        /** Format: uri */
+                        avatar_url?: string;
+                        deleted?: boolean;
+                        email?: string | null;
+                        /** Format: uri-template */
+                        events_url?: string;
+                        /** Format: uri */
+                        followers_url?: string;
+                        /** Format: uri-template */
+                        following_url?: string;
+                        /** Format: uri-template */
+                        gists_url?: string;
+                        gravatar_id?: string;
+                        /** Format: uri */
+                        html_url?: string;
+                        /** Format: int64 */
+                        id: number;
+                        login: string;
+                        name?: string;
+                        node_id?: string;
+                        /** Format: uri */
+                        organizations_url?: string;
+                        /** Format: uri */
+                        received_events_url?: string;
+                        /** Format: uri */
+                        repos_url?: string;
+                        site_admin?: boolean;
+                        /** Format: uri-template */
+                        starred_url?: string;
+                        /** Format: uri */
+                        subscriptions_url?: string;
+                        /** @enum {string} */
+                        type?: "Bot" | "User" | "Organization";
+                        /** Format: uri */
+                        url?: string;
+                        user_view_type?: string;
+                    } | null;
+                };
+                /** Format: uri */
+                html_url: string;
+                id: number;
+                /** Format: uri */
+                issue_url: string;
+                labels: {
+                    /** @description 6-character hex code, without the leading #, identifying the color */
+                    color: string;
+                    default: boolean;
+                    description: string | null;
+                    id: number;
+                    /** @description The name of the label. */
+                    name: string;
+                    node_id: string;
+                    /**
+                     * Format: uri
+                     * @description URL for the label
+                     */
+                    url: string;
+                }[];
+                locked: boolean;
+                /** @description Indicates whether maintainers can modify the pull request. */
+                maintainer_can_modify?: boolean;
+                merge_commit_sha: string | null;
+                mergeable?: boolean | null;
+                mergeable_state?: string;
+                merged?: boolean | null;
+                /** Format: date-time */
+                merged_at: string | null;
+                /** User */
+                merged_by?: {
+                    /** Format: uri */
+                    avatar_url?: string;
+                    deleted?: boolean;
+                    email?: string | null;
+                    /** Format: uri-template */
+                    events_url?: string;
+                    /** Format: uri */
+                    followers_url?: string;
+                    /** Format: uri-template */
+                    following_url?: string;
+                    /** Format: uri-template */
+                    gists_url?: string;
+                    gravatar_id?: string;
+                    /** Format: uri */
+                    html_url?: string;
+                    id: number;
+                    login: string;
+                    name?: string;
+                    node_id?: string;
+                    /** Format: uri */
+                    organizations_url?: string;
+                    /** Format: uri */
+                    received_events_url?: string;
+                    /** Format: uri */
+                    repos_url?: string;
+                    site_admin?: boolean;
+                    /** Format: uri-template */
+                    starred_url?: string;
+                    /** Format: uri */
+                    subscriptions_url?: string;
+                    /** @enum {string} */
+                    type?: "Bot" | "User" | "Organization" | "Mannequin";
+                    /** Format: uri */
+                    url?: string;
+                    user_view_type?: string;
+                } | null;
+                /**
+                 * Milestone
+                 * @description A collection of related issues and pull requests.
+                 */
+                milestone: {
+                    /** Format: date-time */
+                    closed_at: string | null;
+                    closed_issues: number;
+                    /** Format: date-time */
+                    created_at: string;
+                    /** User */
+                    creator: {
+                        /** Format: uri */
+                        avatar_url?: string;
+                        deleted?: boolean;
+                        email?: string | null;
+                        /** Format: uri-template */
+                        events_url?: string;
+                        /** Format: uri */
+                        followers_url?: string;
+                        /** Format: uri-template */
+                        following_url?: string;
+                        /** Format: uri-template */
+                        gists_url?: string;
+                        gravatar_id?: string;
+                        /** Format: uri */
+                        html_url?: string;
+                        id: number;
+                        login: string;
+                        name?: string;
+                        node_id?: string;
+                        /** Format: uri */
+                        organizations_url?: string;
+                        /** Format: uri */
+                        received_events_url?: string;
+                        /** Format: uri */
+                        repos_url?: string;
+                        site_admin?: boolean;
+                        /** Format: uri-template */
+                        starred_url?: string;
+                        /** Format: uri */
+                        subscriptions_url?: string;
+                        /** @enum {string} */
+                        type?: "Bot" | "User" | "Organization" | "Mannequin";
+                        /** Format: uri */
+                        url?: string;
+                        user_view_type?: string;
+                    } | null;
+                    description: string | null;
+                    /** Format: date-time */
+                    due_on: string | null;
+                    /** Format: uri */
+                    html_url: string;
+                    id: number;
+                    /** Format: uri */
+                    labels_url: string;
+                    node_id: string;
+                    /** @description The number of the milestone. */
+                    number: number;
+                    open_issues: number;
+                    /**
+                     * @description The state of the milestone.
+                     * @enum {string}
+                     */
+                    state: "open" | "closed";
+                    /** @description The title of the milestone. */
+                    title: string;
+                    /** Format: date-time */
+                    updated_at: string;
+                    /** Format: uri */
+                    url: string;
+                } | null;
+                node_id: string;
+                /** @description Number uniquely identifying the pull request within its repository. */
+                number: number;
+                /** Format: uri */
+                patch_url: string;
+                rebaseable?: boolean | null;
+                requested_reviewers: (({
+                    /** Format: uri */
+                    avatar_url?: string;
+                    deleted?: boolean;
+                    email?: string | null;
+                    /** Format: uri-template */
+                    events_url?: string;
+                    /** Format: uri */
+                    followers_url?: string;
+                    /** Format: uri-template */
+                    following_url?: string;
+                    /** Format: uri-template */
+                    gists_url?: string;
+                    gravatar_id?: string;
+                    /** Format: uri */
+                    html_url?: string;
+                    id: number;
+                    login: string;
+                    name?: string;
+                    node_id?: string;
+                    /** Format: uri */
+                    organizations_url?: string;
+                    /** Format: uri */
+                    received_events_url?: string;
+                    /** Format: uri */
+                    repos_url?: string;
+                    site_admin?: boolean;
+                    /** Format: uri-template */
+                    starred_url?: string;
+                    /** Format: uri */
+                    subscriptions_url?: string;
+                    /** @enum {string} */
+                    type?: "Bot" | "User" | "Organization" | "Mannequin";
+                    /** Format: uri */
+                    url?: string;
+                    user_view_type?: string;
+                } | null) | {
+                    deleted?: boolean;
+                    /** @description Description of the team */
+                    description: string | null;
+                    /** Format: uri */
+                    html_url: string;
+                    /** @description Unique identifier of the team */
+                    id: number;
+                    /** Format: uri-template */
+                    members_url: string;
+                    /** @description Name of the team */
+                    name: string;
+                    node_id: string;
+                    parent?: {
+                        /** @description Description of the team */
+                        description: string | null;
+                        /** Format: uri */
+                        html_url: string;
+                        /** @description Unique identifier of the team */
+                        id: number;
+                        /** Format: uri-template */
+                        members_url: string;
+                        /** @description Name of the team */
+                        name: string;
+                        node_id: string;
+                        /** @description Permission that the team will have for its repositories */
+                        permission: string;
+                        /** @enum {string} */
+                        privacy: "open" | "closed" | "secret";
+                        /** Format: uri */
+                        repositories_url: string;
+                        slug: string;
+                        /**
+                         * Format: uri
+                         * @description URL for the team
+                         */
+                        url: string;
+                    } | null;
+                    /** @description Permission that the team will have for its repositories */
+                    permission: string;
+                    /** @enum {string} */
+                    privacy: "open" | "closed" | "secret";
+                    /** Format: uri */
+                    repositories_url: string;
+                    slug: string;
+                    /**
+                     * Format: uri
+                     * @description URL for the team
+                     */
+                    url: string;
+                })[];
+                requested_teams: {
+                    deleted?: boolean;
+                    /** @description Description of the team */
+                    description?: string | null;
+                    /** Format: uri */
+                    html_url?: string;
+                    /** @description Unique identifier of the team */
+                    id: number;
+                    /** Format: uri-template */
+                    members_url?: string;
+                    /** @description Name of the team */
+                    name: string;
+                    node_id?: string;
+                    parent?: {
+                        /** @description Description of the team */
+                        description: string | null;
+                        /** Format: uri */
+                        html_url: string;
+                        /** @description Unique identifier of the team */
+                        id: number;
+                        /** Format: uri-template */
+                        members_url: string;
+                        /** @description Name of the team */
+                        name: string;
+                        node_id: string;
+                        /** @description Permission that the team will have for its repositories */
+                        permission: string;
+                        /** @enum {string} */
+                        privacy: "open" | "closed" | "secret";
+                        /** Format: uri */
+                        repositories_url: string;
+                        slug: string;
+                        /**
+                         * Format: uri
+                         * @description URL for the team
+                         */
+                        url: string;
+                    } | null;
+                    /** @description Permission that the team will have for its repositories */
+                    permission?: string;
+                    /** @enum {string} */
+                    privacy?: "open" | "closed" | "secret";
+                    /** Format: uri */
+                    repositories_url?: string;
+                    slug?: string;
+                    /**
+                     * Format: uri
+                     * @description URL for the team
+                     */
+                    url?: string;
+                }[];
+                /** Format: uri-template */
+                review_comment_url: string;
+                review_comments?: number;
+                /** Format: uri */
+                review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
+                /**
+                 * @description State of this Pull Request. Either `open` or `closed`.
+                 * @enum {string}
+                 */
+                state: "open" | "closed";
+                /** Format: uri */
+                statuses_url: string;
+                /** @description The title of the pull request. */
+                title: string;
+                /** Format: date-time */
+                updated_at: string;
+                /** Format: uri */
+                url: string;
+                /** User */
+                user: {
+                    /** Format: uri */
+                    avatar_url?: string;
+                    deleted?: boolean;
+                    email?: string | null;
+                    /** Format: uri-template */
+                    events_url?: string;
+                    /** Format: uri */
+                    followers_url?: string;
+                    /** Format: uri-template */
+                    following_url?: string;
+                    /** Format: uri-template */
+                    gists_url?: string;
+                    gravatar_id?: string;
+                    /** Format: uri */
+                    html_url?: string;
+                    /** Format: int64 */
+                    id: number;
+                    login: string;
+                    name?: string;
+                    node_id?: string;
+                    /** Format: uri */
+                    organizations_url?: string;
+                    /** Format: uri */
+                    received_events_url?: string;
+                    /** Format: uri */
+                    repos_url?: string;
+                    site_admin?: boolean;
+                    /** Format: uri-template */
+                    starred_url?: string;
+                    /** Format: uri */
+                    subscriptions_url?: string;
+                    /** @enum {string} */
+                    type?: "Bot" | "User" | "Organization" | "Mannequin";
+                    /** Format: uri */
+                    url?: string;
+                    user_view_type?: string;
+                } | null;
+            };
+            repository: components["schemas"]["repository-webhooks"];
+            sender: components["schemas"]["simple-user"];
+            stack?: components["schemas"]["pull-request-stack"];
         };
         /** pull_request synchronize event */
         "webhook-pull-request-synchronize": {
@@ -82255,6 +85495,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -83483,6 +86724,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -83537,7 +86779,7 @@ export type components = {
                 } | null;
             };
             repository: components["schemas"]["repository-webhooks"];
-            sender?: components["schemas"]["simple-user"];
+            sender: components["schemas"]["simple-user"];
         };
         /** pull_request unlabeled event */
         "webhook-pull-request-unlabeled": {
@@ -84704,6 +87946,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -85931,6 +89174,7 @@ export type components = {
                 review_comments?: number;
                 /** Format: uri */
                 review_comments_url: string;
+                stack?: components["schemas"]["pull-request-stack"];
                 /**
                  * @description State of this Pull Request. Either `open` or `closed`.
                  * @enum {string}
@@ -87502,6 +90746,28 @@ export type components = {
         "webhook-secret-scanning-alert-location-created-form-encoded": {
             /** @description A URL-encoded string of the secret_scanning_alert_location.created JSON payload. The decoded payload is a JSON object. */
             payload: string;
+        };
+        /** secret_scanning_alert metadata created event */
+        "webhook-secret-scanning-alert-metadata-created": {
+            /** @enum {string} */
+            action: "metadata_created";
+            alert: components["schemas"]["secret-scanning-alert-webhook"];
+            enterprise?: components["schemas"]["enterprise-webhooks"];
+            installation?: components["schemas"]["simple-installation"];
+            organization?: components["schemas"]["organization-simple-webhooks"];
+            repository: components["schemas"]["repository-webhooks"];
+            sender?: components["schemas"]["simple-user"];
+        };
+        /** secret_scanning_alert metadata removed event */
+        "webhook-secret-scanning-alert-metadata-removed": {
+            /** @enum {string} */
+            action: "metadata_removed";
+            alert: components["schemas"]["secret-scanning-alert-webhook"];
+            enterprise?: components["schemas"]["enterprise-webhooks"];
+            installation?: components["schemas"]["simple-installation"];
+            organization?: components["schemas"]["organization-simple-webhooks"];
+            repository: components["schemas"]["repository-webhooks"];
+            sender?: components["schemas"]["simple-user"];
         };
         /** secret_scanning_alert publicly leaked event */
         "webhook-secret-scanning-alert-publicly-leaked": {
@@ -92137,6 +95403,7 @@ export type components = {
             id: number;
             /** Format: uri */
             issue_url: string;
+            minimized?: components["schemas"]["nullable-issue-comment-minimized"];
             node_id: string;
             performed_via_github_app: components["schemas"]["integration"];
             pin?: components["schemas"]["nullable-pinned-issue-comment"];
@@ -92203,6 +95470,13 @@ export type components = {
         };
         /** Label */
         webhooks_label: {
+            /**
+             * Format: date-time
+             * @description Timestamp indicating when the label was archived, or `null` if it has not been archived.
+             */
+            archived_at: string | null;
+            /** @description The user who archived the label, or `null` if it has not been archived. */
+            archived_by: components["schemas"]["simple-user"] | null;
             /** @description 6-character hex code, without the leading #, identifying the color */
             color: string;
             default: boolean;
@@ -92216,6 +95490,26 @@ export type components = {
              * @description URL for the label
              */
             url: string;
+        };
+        /** Archived label */
+        webhooks_label_archived: components["schemas"]["webhooks_label"] & {
+            /**
+             * Format: date-time
+             * @description Timestamp indicating when the label was archived.
+             */
+            archived_at: string;
+            /** @description The user who archived the label. */
+            archived_by: components["schemas"]["simple-user"];
+        };
+        /** Unarchived label */
+        webhooks_label_unarchived: components["schemas"]["webhooks_label"] & {
+            /**
+             * Format: date-time
+             * @description Timestamp indicating when the label was archived. This is `null` after the label is unarchived.
+             */
+            archived_at: string | null;
+            /** @description The user who archived the label. This is `null` after the label is unarchived. */
+            archived_by: components["schemas"]["simple-user"] | null;
         };
         /** Marketplace Purchase */
         webhooks_marketplace_purchase: {
@@ -93798,6 +97092,7 @@ export type components = {
             review_comments?: number;
             /** Format: uri */
             review_comments_url: string;
+            stack?: components["schemas"]["pull-request-stack"];
             /**
              * @description State of this Pull Request. Either `open` or `closed`.
              * @enum {string}
@@ -95019,6 +98314,7 @@ export type components = {
              */
             cancel_url: string;
             /**
+             * Format: int64
              * @description The ID of the associated check suite.
              * @example 42
              */
@@ -95058,6 +98354,7 @@ export type components = {
             /** @example https://github.com/github/hello-world/suites/4 */
             html_url: string;
             /**
+             * Format: int64
              * @description The ID of the workflow run.
              * @example 5
              */
@@ -95248,6 +98545,24 @@ export type components = {
                 "application/scim+json": components["schemas"]["scim-error"];
             };
         };
+        /** @description Response when getting a billing AI credit usage report */
+        billing_ai_credit_usage_report_org: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["billing-ai-credit-usage-report-org"];
+            };
+        };
+        /** @description Response when getting a billing AI credit usage report */
+        billing_ai_credit_usage_report_user: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["billing-ai-credit-usage-report-user"];
+            };
+        };
         /** @description Response when getting a billing premium request usage report */
         billing_premium_request_usage_report_org: {
             headers: {
@@ -95309,6 +98624,42 @@ export type components = {
             };
             content: {
                 "application/json": components["schemas"]["get-budget"];
+            };
+        };
+        /** @description Response if there is already a code quality setup configuration update in progress */
+        code_quality_conflict: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
+            };
+        };
+        /** @description Response if the user is not authorized to access Code quality for this repository. */
+        code_quality_forbidden_read: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
+            };
+        };
+        /** @description Response if the repository is archived or if Code quality is not enabled for this repository */
+        code_quality_forbidden_write: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
+            };
+        };
+        /** @description Response if the configuration change cannot be made */
+        code_quality_invalid_state: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
             };
         };
         /** @description Response if the repository is archived, if GitHub Advanced Security is not enabled for this repository or if rate limit is exceeded */
@@ -95507,8 +98858,26 @@ export type components = {
                 "application/json": components["schemas"]["basic-error"];
             };
         };
+        /** @description Precondition Failed */
+        precondition_failed: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
+            };
+        };
         /** @description Requires authentication */
         requires_authentication: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["basic-error"];
+            };
+        };
+        /** @description The request could not be processed due to heavy server load. Please try again. */
+        server_load_try_again: {
             headers: {
                 [name: string]: unknown;
             };
@@ -95558,15 +98927,6 @@ export type components = {
         };
         /** @description Response if analysis could not be processed */
         unprocessable_analysis: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": components["schemas"]["basic-error"];
-            };
-        };
-        /** @description Copilot Usage Metrics API setting is disabled at the organization or enterprise level. */
-        usage_metrics_api_disabled: {
             headers: {
                 [name: string]: unknown;
             };
@@ -95691,6 +99051,8 @@ export type components = {
         "classroom-id": number;
         /** @description The client ID of the GitHub app. */
         "client-id": string;
+        /** @description The number that identifies a finding. */
+        "code-quality-finding-number": number;
         /** @description The name of the codespace. */
         "codespace-name": string;
         /** @description The unique identifier of the comment. */
@@ -95786,6 +99148,13 @@ export type components = {
          *     Multiple `has` filters can be passed to filter for alerts that have all of the values.
          */
         "dependabot-alert-org-scope-comma-separated-has": string | ("patch" | "deployment")[];
+        /**
+         * @description A comma-separated list of relationships of the vulnerable dependency to your project. If specified, only alerts with these relationships will be returned.
+         *
+         *     > [!NOTE]
+         *     > We are rolling out support for dependency relationship across ecosystems. This value will be "unknown" for all dependencies in unsupported ecosystems.
+         */
+        "dependabot-alert-relationship": string;
         /** @description The scope of the vulnerable dependency. If specified, only alerts with this scope will be returned. */
         "dependabot-alert-scope": "development" | "runtime";
         /**
@@ -95801,10 +99170,15 @@ export type components = {
         direction: "asc" | "desc";
         /** @description The slug version of the enterprise name. */
         enterprise: string;
-        /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-        "enterprise-team": string;
         /** @description The name of the environment. The name must be URL encoded. For example, any slashes in the name must be replaced with `%2F`. */
         "environment-name": string;
+        /**
+         * @description The evaluate status to filter on. When specified, only rule suites resulting from rulesets with the specified evaluate status will be returned.
+         *       - `all` - all rule suites will be returned.
+         *       - `active` - only rule suites resulting from rulesets in active (non-evaluate) mode will be returned.
+         *       - `evaluate` - only rule suites resulting from rulesets in evaluate mode will be returned.
+         */
+        "evaluate-status": "all" | "active" | "evaluate";
         /** @description Returns workflow run triggered by the event you specify. For example, `push`, `pull_request` or `issue`. For more information, see "[Events that trigger workflows](https://docs.github.com/actions/automating-your-workflow-with-github-actions/events-that-trigger-workflows)." */
         event: string;
         /** @description If `true` pull requests are omitted from the response (empty array). */
@@ -95840,6 +99214,8 @@ export type components = {
         "issue-field-id": number;
         /** @description The number that identifies the issue. */
         "issue-number": number;
+        /** @description A comma-separated list of timeline event names to exclude from the response. */
+        "issue-timeline-exclude": string;
         /** @description The unique identifier of the issue type. */
         "issue-type-id": number;
         /**
@@ -96001,8 +99377,23 @@ export type components = {
         "secret-scanning-alert-exclude-secret-types": string;
         /** @description A boolean value representing whether or not to hide literal secrets in the results. */
         "secret-scanning-alert-hide-secret": boolean;
+        /**
+         * @description A comma-separated list of metadata fields to filter alerts by. Only alerts that have all of the
+         *     specified metadata fields attached will be returned. Possible values are: `owner-email`, `owner-id`,
+         *     `owner-name`, `secret-id`, `secret-name`, `secret-issued-date`, `secret-expiration-date`, `organization-name`,
+         *     `organization-id`, `last-used-date`, and `has-organization-access`.
+         */
+        "secret-scanning-alert-included-metadata": string;
         /** @description A boolean value representing whether or not to filter alerts by the multi-repo tag being present. */
         "secret-scanning-alert-multi-repo": boolean;
+        /**
+         * @description Filters alerts to only those whose attached `owner_email` metadata field matches the
+         *     provided value. The value must be the lowercase hex-encoded SHA-256 hash of the email
+         *     address to match (for example, the SHA-256 of `user@example.com`). Only alerts that
+         *     have an `owner_email` metadata value whose SHA-256 hash equals this parameter are
+         *     returned.
+         */
+        "secret-scanning-alert-owner-email-hash": string;
         /**
          * @description A comma-separated list of provider slugs to filter by.
          *     Provider slugs use lowercase with underscores (e.g., `github_secret_scanning`, `clojars`).
@@ -96022,6 +99413,12 @@ export type components = {
         "secret-scanning-alert-state": "open" | "resolved";
         /** @description A comma-separated list of validities that, when present, will return alerts that match the validities in this list. Valid options are `active`, `inactive`, and `unknown`. */
         "secret-scanning-alert-validity": string;
+        /** @description Filter custom patterns by whether push protection is enabled. When absent, returns patterns regardless of push protection status. */
+        "secret-scanning-custom-pattern-push-protection": "enabled" | "disabled";
+        /** @description The property to sort the results by. */
+        "secret-scanning-custom-pattern-sort": "created" | "updated" | "name";
+        /** @description Filter custom patterns by state. When absent, returns patterns in all states. */
+        "secret-scanning-custom-pattern-state": "published" | "unpublished";
         /** @description A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for events after this cursor.  To receive an initial cursor on your first request, include an empty "after" query string. */
         "secret-scanning-pagination-after-org-repo": string;
         /** @description A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for events before this cursor. To receive an initial cursor on your first request, include an empty "before" query string. */
@@ -96253,8 +99650,8 @@ export interface operations {
     "agent-tasks/list-tasks-for-repo": {
         parameters: {
             query?: {
-                /** @description Filter tasks by creator user ID */
-                creator_id?: number;
+                /** @description Filter tasks by creator user ID. Accepts one or more user IDs. */
+                creator_id?: number[];
                 /** @description The direction to sort results. Can be `asc` or `desc`. */
                 direction?: "asc" | "desc";
                 /** @description Filter by archived status. When `true`, returns only archived tasks. When `false` or omitted, returns only non-archived tasks. Defaults to `false`. */
@@ -96348,6 +99745,11 @@ export interface operations {
                              * @enum {string}
                              */
                             creator_type?: "user" | "organization";
+                            /** @description Custom agent metadata associated with this task */
+                            custom_agent?: {
+                                /** @description The custom agent's filename without the extension - for example, `performance-optimizer` for a `.github/agents/performance-optimizer.agent.md` custom agent. */
+                                id?: string;
+                            };
                             /** @description Web URL for this task */
                             html_url?: string;
                             /** @description Unique task identifier */
@@ -96557,6 +99959,10 @@ export interface operations {
                      * @default false
                      */
                     create_pull_request?: boolean;
+                    /** @description Optional identifier for a custom agent to use for this task. Use the custom agent's filename without the extension - for example, for a `.github/agents/performance-optimizer.agent.md` custom agent, use `performance-optimizer`. */
+                    custom_agent?: string;
+                    /** @description Head ref for existing branch/PR. If provided with `base_ref`, the agent looks up open PR context for `head_ref` targeting `base_ref` and commits to `head_ref` instead of creating a new branch. */
+                    head_ref?: string;
                     /** @description The model to use for this task. The allowed models may change over time and depend on the user's GitHub Copilot plan and organization policies. Currently supported values: `claude-sonnet-4.6`, `claude-opus-4.6`, `gpt-5.2-codex`, `gpt-5.3-codex`, `gpt-5.4`, `claude-sonnet-4.5`, `claude-opus-4.5` */
                     model?: string;
                     /** @description The user's prompt for the agent */
@@ -96623,6 +100029,11 @@ export interface operations {
                          * @enum {string}
                          */
                         creator_type?: "user" | "organization";
+                        /** @description Custom agent metadata associated with this task */
+                        custom_agent?: {
+                            /** @description The custom agent's filename without the extension - for example, `performance-optimizer` for a `.github/agents/performance-optimizer.agent.md` custom agent. */
+                            id?: string;
+                        };
                         /** @description Web URL for this task */
                         html_url?: string;
                         /** @description Unique task identifier */
@@ -96848,6 +100259,11 @@ export interface operations {
                          * @enum {string}
                          */
                         creator_type?: "user" | "organization";
+                        /** @description Custom agent metadata associated with this task */
+                        custom_agent?: {
+                            /** @description The custom agent's filename without the extension - for example, `performance-optimizer` for a `.github/agents/performance-optimizer.agent.md` custom agent. */
+                            id?: string;
+                        };
                         /** @description Web URL for this task */
                         html_url?: string;
                         /** @description Unique task identifier */
@@ -96956,6 +100372,19 @@ export interface operations {
                              * @description Last update timestamp
                              */
                             updated_at?: string;
+                            /** @description Structured information about billing units consumed by the session. */
+                            usage?: {
+                                /**
+                                 * Format: double
+                                 * @description Number of billing units used by this session. When the `type` is `ai_credits`, the value is a whole number, expressed in nano units. When presenting this to a human, divide by 1,000,000,000 and round to one decimal place. When aggregating (for example, summing usage across sessions), sum the nano values first, and divide once at the end before presenting to a human to avoid losing precision. When the `type` is `premium_requests`, the value may be fractional (for example `1.5`).
+                                 */
+                                amount: number;
+                                /**
+                                 * @description Billing unit used for this session. New sessions since June 1, 2026 use `ai_credits`, but older sessions use `premium_requests`.
+                                 * @enum {string}
+                                 */
+                                type: "ai_credits" | "premium_requests";
+                            };
                             /** @description The user who created this session */
                             user?: {
                                 /**
@@ -97180,6 +100609,11 @@ export interface operations {
                              * @enum {string}
                              */
                             creator_type?: "user" | "organization";
+                            /** @description Custom agent metadata associated with this task */
+                            custom_agent?: {
+                                /** @description The custom agent's filename without the extension - for example, `performance-optimizer` for a `.github/agents/performance-optimizer.agent.md` custom agent. */
+                                id?: string;
+                            };
                             /** @description Web URL for this task */
                             html_url?: string;
                             /** @description Unique task identifier */
@@ -97412,6 +100846,11 @@ export interface operations {
                          * @enum {string}
                          */
                         creator_type?: "user" | "organization";
+                        /** @description Custom agent metadata associated with this task */
+                        custom_agent?: {
+                            /** @description The custom agent's filename without the extension - for example, `performance-optimizer` for a `.github/agents/performance-optimizer.agent.md` custom agent. */
+                            id?: string;
+                        };
                         /** @description Web URL for this task */
                         html_url?: string;
                         /** @description Unique task identifier */
@@ -97520,6 +100959,19 @@ export interface operations {
                              * @description Last update timestamp
                              */
                             updated_at?: string;
+                            /** @description Structured information about billing units consumed by the session. */
+                            usage?: {
+                                /**
+                                 * Format: double
+                                 * @description Number of billing units used by this session. When the `type` is `ai_credits`, the value is a whole number, expressed in nano units. When presenting this to a human, divide by 1,000,000,000 and round to one decimal place. When aggregating (for example, summing usage across sessions), sum the nano values first, and divide once at the end before presenting to a human to avoid losing precision. When the `type` is `premium_requests`, the value may be fractional (for example `1.5`).
+                                 */
+                                amount: number;
+                                /**
+                                 * @description Billing unit used for this session. New sessions since June 1, 2026 use `ai_credits`, but older sessions use `premium_requests`.
+                                 * @enum {string}
+                                 */
+                                type: "ai_credits" | "premium_requests";
+                            };
                             /** @description The user who created this session */
                             user?: {
                                 /**
@@ -98225,26 +101677,12 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["classroom-assignment"];
-                };
-            };
-            404: components["responses"]["not_found"];
+            410: components["responses"]["gone"];
         };
     };
     "classroom/list-accepted-assignments-for-an-assignment": {
         parameters: {
-            query?: {
-                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                page?: components["parameters"]["page"];
-                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                per_page?: components["parameters"]["per-page"];
-            };
+            query?: never;
             header?: never;
             path: {
                 /** @description The unique identifier of the classroom assignment. */
@@ -98254,15 +101692,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["classroom-accepted-assignment"][];
-                };
-            };
+            410: components["responses"]["gone"];
         };
     };
     "classroom/get-assignment-grades": {
@@ -98277,41 +101707,19 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["classroom-assignment-grade"][];
-                };
-            };
-            404: components["responses"]["not_found"];
+            410: components["responses"]["gone"];
         };
     };
     "classroom/list-classrooms": {
         parameters: {
-            query?: {
-                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                page?: components["parameters"]["page"];
-                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                per_page?: components["parameters"]["per-page"];
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["simple-classroom"][];
-                };
-            };
+            410: components["responses"]["gone"];
         };
     };
     "classroom/get-a-classroom": {
@@ -98326,26 +101734,12 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["classroom"];
-                };
-            };
-            404: components["responses"]["not_found"];
+            410: components["responses"]["gone"];
         };
     };
     "classroom/list-assignments-for-a-classroom": {
         parameters: {
-            query?: {
-                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                page?: components["parameters"]["page"];
-                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                per_page?: components["parameters"]["per-page"];
-            };
+            query?: never;
             header?: never;
             path: {
                 /** @description The unique identifier of the classroom. */
@@ -98355,15 +101749,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["simple-classroom-assignment"][];
-                };
-            };
+            410: components["responses"]["gone"];
         };
     };
     "codes-of-conduct/get-all-codes-of-conduct": {
@@ -98772,13 +102158,13 @@ export interface operations {
                         labeled_runners?: boolean;
                     };
                     /** @description A description of the code security configuration */
-                    description: string;
+                    description?: string;
                     /**
                      * @description The enforcement status for a security configuration
                      * @default enforced
                      * @enum {string}
                      */
-                    enforcement?: "enforced" | "unenforced";
+                    enforcement?: "enforced" | "unenforced" | "enterprise_enforced";
                     /** @description The name of the code security configuration. Must be unique within the enterprise. */
                     name: string;
                     /**
@@ -98973,7 +102359,7 @@ export interface operations {
                      * @description The enforcement status for a security configuration
                      * @enum {string}
                      */
-                    enforcement?: "enforced" | "unenforced";
+                    enforcement?: "enforced" | "unenforced" | "enterprise_enforced";
                     /** @description The name of the code security configuration. Must be unique across the enterprise. */
                     name?: string;
                     /**
@@ -99129,7 +102515,7 @@ export interface operations {
                 /**
                  * @description A comma-separated list of statuses. If specified, only repositories with these attachment statuses will be returned.
                  *
-                 *     Can be: `all`, `attached`, `attaching`, `removed`, `enforced`, `failed`, `updating`, `removed_by_enterprise`
+                 *     Can be: `all`, `attached`, `attaching`, `removed`, `enforced`, `failed`, `updating`, `removed_by_enterprise`, `enterprise_enforced`
                  */
                 status?: string;
             };
@@ -99230,6 +102616,36 @@ export interface operations {
                     "application/json": components["schemas"]["copilot-usage-metrics-28-day-report"];
                 };
             };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "copilot/copilot-enterprise-repos-one-day-report": {
+        parameters: {
+            query: {
+                /** @description The day to request data for, in `YYYY-MM-DD` format. */
+                day: components["parameters"]["day"];
+            };
+            header?: never;
+            path: {
+                /** @description The slug version of the enterprise name. */
+                enterprise: components["parameters"]["enterprise"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["copilot-usage-metrics-1-day-report"];
+                };
+            };
+            204: components["responses"]["no_content"];
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
             500: components["responses"]["internal_error"];
@@ -99453,6 +102869,13 @@ export interface operations {
                 package?: components["parameters"]["dependabot-alert-comma-separated-packages"];
                 /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
                 per_page?: components["parameters"]["per-page"];
+                /**
+                 * @description A comma-separated list of relationships of the vulnerable dependency to your project. If specified, only alerts with these relationships will be returned.
+                 *
+                 *     > [!NOTE]
+                 *     > We are rolling out support for dependency relationship across ecosystems. This value will be "unknown" for all dependencies in unsupported ecosystems.
+                 */
+                relationship?: components["parameters"]["dependabot-alert-relationship"];
                 /** @description The scope of the vulnerable dependency. If specified, only alerts with this scope will be returned. */
                 scope?: components["parameters"]["dependabot-alert-scope"];
                 /**
@@ -99593,564 +103016,6 @@ export interface operations {
             };
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
-        };
-    };
-    "enterprise-teams/list": {
-        parameters: {
-            query?: {
-                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                page?: components["parameters"]["page"];
-                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                per_page?: components["parameters"]["per-page"];
-            };
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    Link: components["headers"]["link"];
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["enterprise-team"][];
-                };
-            };
-            403: components["responses"]["forbidden"];
-        };
-    };
-    "enterprise-teams/create": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /** @description A description of the team. */
-                    description?: string | null;
-                    /** @description The ID of the IdP group to assign team membership with. You can get this value from the [REST API endpoints for SCIM](https://docs.github.com/rest/scim#list-provisioned-scim-groups-for-an-enterprise). */
-                    group_id?: string | null;
-                    /** @description The name of the team. */
-                    name: string;
-                    /**
-                     * @description The notification setting the team is set to. The options are:
-                     *
-                     *     * `notifications_enabled` - team members receive notifications when the team is @mentioned.
-                     *     * `notifications_disabled` - no one receives notifications.
-                     *
-                     *     Default: `notifications_enabled`
-                     * @enum {string}
-                     */
-                    notification_setting?: "notifications_enabled" | "notifications_disabled";
-                    /**
-                     * @description Specifies which organizations in the enterprise should have access to this team. Can be one of `disabled`, `selected`, or `all`.
-                     *     `disabled`: The team is not assigned to any organizations. This is the default when you create a new team.
-                     *     `selected`: The team is assigned to specific organizations. You can then use the [add organization assignments API](https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#add-organization-assignments) endpoint.
-                     *     `all`: The team is assigned to all current and future organizations in the enterprise.
-                     * @default disabled
-                     * @enum {string}
-                     */
-                    organization_selection_type?: "disabled" | "selected" | "all";
-                    /**
-                     * @description Retired: this field is no longer supported.
-                     *     Whether the enterprise team should be reflected in each organization.
-                     *     This value cannot be set.
-                     * @default disabled
-                     * @enum {string}
-                     */
-                    sync_to_organizations?: "all" | "disabled";
-                };
-            };
-        };
-        responses: {
-            /** @description Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["enterprise-team"];
-                };
-            };
-        };
-    };
-    "enterprise-team-memberships/list": {
-        parameters: {
-            query?: {
-                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                page?: components["parameters"]["page"];
-                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                per_page?: components["parameters"]["per-page"];
-            };
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    Link: components["headers"]["link"];
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["simple-user"][];
-                };
-            };
-        };
-    };
-    "enterprise-team-memberships/get": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-                /** @description The handle for the GitHub user account. */
-                username: components["parameters"]["username"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description User is a member of the enterprise team. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["simple-user"];
-                };
-            };
-        };
-    };
-    "enterprise-team-memberships/add": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-                /** @description The handle for the GitHub user account. */
-                username: components["parameters"]["username"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successfully added team member */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["simple-user"];
-                };
-            };
-        };
-    };
-    "enterprise-team-memberships/remove": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-                /** @description The handle for the GitHub user account. */
-                username: components["parameters"]["username"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            403: components["responses"]["forbidden"];
-        };
-    };
-    "enterprise-team-memberships/bulk-add": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /** @description The GitHub user handles to add to the team. */
-                    usernames: string[];
-                };
-            };
-        };
-        responses: {
-            /** @description Successfully added team members. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["simple-user"][];
-                };
-            };
-        };
-    };
-    "enterprise-team-memberships/bulk-remove": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /** @description The GitHub user handles to be removed from the team. */
-                    usernames: string[];
-                };
-            };
-        };
-        responses: {
-            /** @description Successfully removed team members. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["simple-user"][];
-                };
-            };
-        };
-    };
-    "enterprise-team-organizations/get-assignments": {
-        parameters: {
-            query?: {
-                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                page?: components["parameters"]["page"];
-                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                per_page?: components["parameters"]["per-page"];
-            };
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description An array of organizations the team is assigned to */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["organization-simple"][];
-                };
-            };
-        };
-    };
-    "enterprise-team-organizations/get-assignment": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-                /** @description The organization name. The name is not case sensitive. */
-                org: components["parameters"]["org"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The team is assigned to the organization */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["organization-simple"];
-                };
-            };
-            /** @description The team is not assigned to the organization */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "enterprise-team-organizations/add": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-                /** @description The organization name. The name is not case sensitive. */
-                org: components["parameters"]["org"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successfully assigned the enterprise team to the organization. */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["organization-simple"];
-                };
-            };
-        };
-    };
-    "enterprise-team-organizations/delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-                /** @description The organization name. The name is not case sensitive. */
-                org: components["parameters"]["org"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successfully unassigned the enterprise team from the organization. */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "enterprise-team-organizations/bulk-add": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /** @description Organization slug to assign the team to. */
-                    organization_slugs: string[];
-                };
-            };
-        };
-        responses: {
-            /** @description Successfully assigned the enterprise team to organizations. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["organization-simple"][];
-                };
-            };
-        };
-    };
-    "enterprise-team-organizations/bulk-remove": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug version of the enterprise team name. You can also substitute this value with the enterprise team id. */
-                "enterprise-team": components["parameters"]["enterprise-team"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /** @description Organization slug to unassign the team from. */
-                    organization_slugs: string[];
-                };
-            };
-        };
-        responses: {
-            /** @description Successfully unassigned the enterprise team from organizations. */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "enterprise-teams/get": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug of the team name. */
-                team_slug: components["parameters"]["team-slug"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    Link: components["headers"]["link"];
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["enterprise-team"];
-                };
-            };
-            403: components["responses"]["forbidden"];
-        };
-    };
-    "enterprise-teams/delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug of the team name. */
-                team_slug: components["parameters"]["team-slug"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            403: components["responses"]["forbidden"];
-        };
-    };
-    "enterprise-teams/update": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The slug version of the enterprise name. */
-                enterprise: components["parameters"]["enterprise"];
-                /** @description The slug of the team name. */
-                team_slug: components["parameters"]["team-slug"];
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /** @description A new description for the team. */
-                    description?: string | null;
-                    /** @description The ID of the IdP group to assign team membership with. The new IdP group will replace the existing one, or replace existing direct members if the team isn't currently linked to an IdP group. */
-                    group_id?: string | null;
-                    /** @description A new name for the team. */
-                    name?: string | null;
-                    /**
-                     * @description The notification setting the team is set to. The options are:
-                     *
-                     *     * `notifications_enabled` - team members receive notifications when the team is @mentioned.
-                     *     * `notifications_disabled` - no one receives notifications.
-                     * @enum {string}
-                     */
-                    notification_setting?: "notifications_enabled" | "notifications_disabled";
-                    /**
-                     * @description Specifies which organizations in the enterprise should have access to this team. Can be one of `disabled`, `selected`, or `all`.
-                     *     `disabled`: The team is not assigned to any organizations. This is the default when you create a new team.
-                     *     `selected`: The team is assigned to specific organizations. You can then use the [add organization assignments API](https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#add-organization-assignments).
-                     *     `all`: The team is assigned to all current and future organizations in the enterprise.
-                     * @default disabled
-                     * @enum {string}
-                     */
-                    organization_selection_type?: "disabled" | "selected" | "all";
-                    /**
-                     * @description Retired: this field is no longer supported.
-                     *     Whether the enterprise team should be reflected in each organization.
-                     *     This value cannot be changed.
-                     * @default disabled
-                     * @enum {string}
-                     */
-                    sync_to_organizations?: "all" | "disabled";
-                };
-            };
-        };
-        responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    Link: components["headers"]["link"];
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["enterprise-team"];
-                };
-            };
-            403: components["responses"]["forbidden"];
         };
     };
     "activity/list-public-events": {
@@ -100877,7 +103742,12 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        repositories: components["schemas"]["repository"][];
+                        repositories: (components["schemas"]["repository"] & {
+                            /** @description The custom properties that were defined for the repository. The keys are the custom property names, and the values are the corresponding custom property values. Present for org repos only. */
+                            custom_properties?: {
+                                [key: string]: unknown;
+                            };
+                        })[];
                         /** @example selected */
                         repository_selection?: string;
                         total_count: number;
@@ -101711,15 +104581,57 @@ export interface operations {
             404: components["responses"]["not_found"];
         };
     };
+    "billing/get-github-billing-ai-credit-usage-report-org": {
+        parameters: {
+            query?: {
+                /** @description If specified, only return results for a single day. The value of `day` is an integer between `1` and `31`. If no `year` or `month` is specified, the default `year` and `month` are used. */
+                day?: components["parameters"]["billing-usage-report-day"];
+                /** @description The model name to query usage for. The name is not case sensitive. */
+                model?: components["parameters"]["billing-usage-report-model"];
+                /** @description If specified, only return results for a single month. The value of `month` is an integer between `1` and `12`. Default value is the current month. If no year is specified the default `year` is used. */
+                month?: components["parameters"]["billing-usage-report-month-default"];
+                /** @description The product name to query usage for. The name is not case sensitive. */
+                product?: components["parameters"]["billing-usage-report-product"];
+                /** @description The user name to query usage for. The name is not case sensitive. */
+                user?: components["parameters"]["billing-usage-report-user"];
+                /** @description If specified, only return results for a single year. The value of `year` is an integer with four digits representing a year. For example, `2025`. Default value is the current year. */
+                year?: components["parameters"]["billing-usage-report-year"];
+            };
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: components["responses"]["billing_ai_credit_usage_report_org"];
+            400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+            503: components["responses"]["service_unavailable"];
+        };
+    };
     "billing/get-all-budgets-org": {
         parameters: {
             query?: {
                 /** @description The page number of the results to fetch. */
                 page?: number;
-                /** @description The number of results per page (max 10). */
+                /** @description The number of results per page (max 100). */
                 per_page?: number;
-                /** @description Filter budgets by scope type. */
-                scope?: "enterprise" | "organization" | "repository" | "cost_center";
+                /**
+                 * @description Filter budgets by scope type.
+                 *
+                 *     - `organization`: Budgets scoped to the organization.
+                 *     - `repository`: Budgets scoped to a repository.
+                 *     - `multi_user_customer`: Universal budgets that apply to all users in the organization.
+                 *     - `user`: Budgets scoped to an individual user.
+                 */
+                scope?: "enterprise" | "organization" | "repository" | "cost_center" | "multi_user_customer" | "user";
+                /** @description Filter consumed amount details for budgets by the specified user login. */
+                user?: string;
             };
             header?: never;
             path: {
@@ -101734,6 +104646,112 @@ export interface operations {
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
             500: components["responses"]["internal_error"];
+        };
+    };
+    "billing/create-organization-budget": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    budget_alerting?: {
+                        /** @description Array of user login names who will receive alerts. Rejected for user-scope as alerting is always disabled for them. */
+                        alert_recipients?: string[];
+                        /** @description Whether alerts are enabled for this budget. Rejected for user-scope as alerting is always disabled for them. */
+                        will_alert?: boolean;
+                    };
+                    /** @description The budget amount in whole dollars. For license-based products, this represents the number of licenses. */
+                    budget_amount?: number;
+                    /**
+                     * @description The name of the entity to apply the budget to
+                     * @default
+                     */
+                    budget_entity_name?: string;
+                    /** @description A single product or SKU that will be covered in the budget */
+                    budget_product_sku?: string;
+                    /**
+                     * @description The scope of the budget for this organization.
+                     *
+                     *     - `organization`: Apply the budget to the organization.
+                     *     - `repository`: Apply the budget to a specific repository in the organization.
+                     *     - `multi_user_customer`: Apply a universal budget to all users in the organization.
+                     *     - `user`: Apply the budget to a single user in the organization.
+                     *
+                     *     `user` and `multi_user_customer` scopes are only supported when
+                     *     `budget_product_sku` is `ai_credits` or `premium_requests`.
+                     * @enum {string}
+                     */
+                    budget_scope?: "organization" | "repository" | "multi_user_customer" | "user";
+                    /**
+                     * @description The type of pricing model used by the budget. Determines how `budget_product_sku` is interpreted.
+                     *
+                     *     - `BundlePricing`: Covers all AI credit SKUs. Set `budget_product_sku` to `ai_credits`.
+                     *     - `ProductPricing`: Covers all SKUs that belong to a product. Set `budget_product_sku` to a product such as `actions` or `packages`.
+                     *     - `SkuPricing`: Covers a single, specific SKU. Set `budget_product_sku` to a SKU such as `actions_linux`.
+                     */
+                    budget_type?: "BundlePricing" | "ProductPricing" | "SkuPricing";
+                    /**
+                     * Format: date
+                     * @description The date the budget will expire in `YYYY-MM-DD` format. Only dates in the future are accepted.
+                     *     If not provided, the budget will not expire.
+                     *
+                     *     Only supported for budgets with `budget_scope` of `user`
+                     */
+                    expires_at?: string;
+                    /** @description Whether to prevent additional spending once the budget is exceeded. For `user` and `multi_user_customer` scopes, this must be `true`. */
+                    prevent_further_usage?: boolean;
+                    /** @description The username of the user for `user` scope budgets. This field is required when `budget_scope` is `user`. */
+                    user?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Budget created successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["create-budget"];
+                };
+            };
+            400: components["responses"]["bad_request"];
+            401: components["responses"]["requires_authentication"];
+            /** @description Insufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /** @description Feature not enabled or organization not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            422: components["responses"]["validation_failed"];
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
         };
     };
     "billing/get-budget-org": {
@@ -101796,25 +104814,21 @@ export interface operations {
             content: {
                 "application/json": {
                     budget_alerting?: {
-                        /** @description Array of user login names who will receive alerts */
+                        /** @description Array of user login names who will receive alerts. Ignored for user-scopes as alerting is always disabled for them. */
                         alert_recipients?: string[];
-                        /** @description Whether alerts are enabled for this budget */
+                        /** @description Whether alerts are enabled for this budget. Ignored for user-scopes as alerting is always disabled for them. */
                         will_alert?: boolean;
                     };
                     /** @description The budget amount in whole dollars. For license-based products, this represents the number of licenses. */
                     budget_amount?: number;
-                    /** @description The name of the entity to apply the budget to */
-                    budget_entity_name?: string;
-                    /** @description A single product or SKU that will be covered in the budget */
-                    budget_product_sku?: string;
                     /**
-                     * @description The scope of the budget
-                     * @enum {string}
+                     * @description The date the budget will expire in `YYYY-MM-DD` format. Only dates in the future are accepted.
+                     *     If not set, the budget will not expire. Setting to `null` or `0` will remove the expiration date from a budget if set.
+                     *
+                     *     Only supported for existing user-scoped budgets.
                      */
-                    budget_scope?: "enterprise" | "organization" | "repository" | "cost_center";
-                    /** @description The type of pricing for the budget */
-                    budget_type?: "ProductPricing" | "SkuPricing";
-                    /** @description Whether to prevent additional spending once the budget is exceeded */
+                    expires_at?: (string | null) | 0;
+                    /** @description Whether to prevent additional spending once the budget is exceeded. For budgets with `user` or `multi_user_customer` scope, this must remain `true`. */
                     prevent_further_usage?: boolean;
                 };
             };
@@ -101826,41 +104840,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        budget?: {
-                            budget_alerting?: {
-                                /** @description Array of user login names who will receive alerts */
-                                alert_recipients: string[];
-                                /** @description Whether alerts are enabled for this budget */
-                                will_alert: boolean;
-                            };
-                            /**
-                             * Format: float
-                             * @description The budget amount in whole dollars. For license-based products, this represents the number of licenses.
-                             */
-                            budget_amount?: number;
-                            /**
-                             * @description The name of the entity to apply the budget to
-                             * @default
-                             */
-                            budget_entity_name: string;
-                            /** @description A single product or SKU that will be covered in the budget */
-                            budget_product_sku?: string;
-                            /**
-                             * @description The scope of the budget
-                             * @enum {string}
-                             */
-                            budget_scope?: "enterprise" | "organization" | "repository" | "cost_center";
-                            /** @description The type of pricing for the budget */
-                            budget_type?: "ProductPricing" | "SkuPricing";
-                            /** @description ID of the budget. */
-                            id?: string;
-                            /** @description Whether to prevent additional spending once the budget is exceeded */
-                            prevent_further_usage?: boolean;
-                        };
-                        /** @example Budget successfully updated. */
-                        message?: string;
-                    };
+                    "application/json": components["schemas"]["update-budget"];
                 };
             };
             400: components["responses"]["bad_request"];
@@ -103530,6 +106510,173 @@ export interface operations {
             };
         };
     };
+    "actions/get-org-actions-policies": {
+        parameters: {
+            query?: {
+                /** @description Include policies configured at higher levels that apply to this organization */
+                has_parents?: boolean;
+                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                page?: components["parameters"]["page"];
+                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                per_page?: components["parameters"]["per-page"];
+            };
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description An array of Actions policies. */
+                        policies: components["schemas"]["actions-policy"][];
+                        /** @description The total number of Actions policies. */
+                        total_count: number;
+                    };
+                };
+            };
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "actions/create-org-actions-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        /** @description Request body */
+        requestBody: {
+            content: {
+                "application/json": {
+                    conditions?: components["schemas"]["actions-policy-org-conditions"];
+                    enforcement: components["schemas"]["repository-rule-enforcement"];
+                    /** @description The name of the policy. */
+                    name: string;
+                    /** @description An array of rules within the policy. */
+                    rules?: components["schemas"]["actions-rule"][];
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["actions-policy"];
+                };
+            };
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "actions/get-org-actions-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+                /** @description The ID of the policy. */
+                policy_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["actions-policy"];
+                };
+            };
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "actions/update-org-actions-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+                /** @description The ID of the policy. */
+                policy_id: number;
+            };
+            cookie?: never;
+        };
+        /** @description Request body */
+        requestBody: {
+            content: {
+                "application/json": {
+                    conditions?: components["schemas"]["actions-policy-org-conditions"];
+                    enforcement?: components["schemas"]["repository-rule-enforcement"];
+                    /** @description The name of the policy. */
+                    name?: string;
+                    /** @description An array of rules within the policy. */
+                    rules?: components["schemas"]["actions-rule"][];
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["actions-policy"];
+                };
+            };
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "actions/delete-org-actions-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+                /** @description The ID of the policy. */
+                policy_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
     "actions/list-self-hosted-runner-groups-for-org": {
         parameters: {
             query?: {
@@ -104167,6 +107314,52 @@ export interface operations {
             200: components["responses"]["actions_runner_labels"];
             404: components["responses"]["not_found"];
             422: components["responses"]["validation_failed_simple"];
+        };
+    };
+    "actions/get-runner-version-deprecation-for-org": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+                /**
+                 * @description The runner version to look up.
+                 * @example 2.300.0
+                 */
+                version: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * Format: date-time
+                         * @description The date after which this runner version can no longer register. Null if no schedule is set.
+                         * @example 2026-08-01T00:00:00Z
+                         */
+                        registration_deprecates_at?: string | null;
+                        /**
+                         * @description The runner version string.
+                         * @example 2.300.0
+                         */
+                        runner_version: string;
+                        /**
+                         * Format: date-time
+                         * @description The date after which jobs will no longer be dispatched to runners on this version.
+                         * @example 2026-09-01T00:00:00Z
+                         */
+                        runtime_deprecates_at?: string | null;
+                    };
+                };
+            };
         };
     };
     "actions/list-runner-applications-for-org": {
@@ -105637,6 +108830,14 @@ export interface operations {
                     }[];
                     /** @description The stage of the deployment. */
                     logical_environment: string;
+                    /**
+                     * @description When enabled, deployments associated with repositories the actor can write to are processed
+                     *     while deployments associated with repositories that cannot be resolved or written to by the actor
+                     *     are skipped and reported in the `errors` array. When false (the default), the endpoint returns
+                     *     an error if any targeted repository cannot be resolved, the actor lacks write access, or no matching attestation can be found.
+                     * @default false
+                     */
+                    partial_success?: boolean;
                     /** @description The physical region of the deployment. */
                     physical_environment?: string;
                     /**
@@ -105661,6 +108862,53 @@ export interface operations {
                     };
                 };
             };
+            /**
+             * @description This response format is only returned when `partial_success` is set to true in the request body.
+             *     Successfully processed deployments are included in the `deployment_records` field. Records that could
+             *     not be processed and were skipped because of unresolvable repositories, missing actor permissions, or lack of a matching attestation are
+             *     included in the `errors` field.
+             */
+            207: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        deployment_records?: components["schemas"]["artifact-deployment-record"][];
+                        /** @description A list of errors for deployments that could not be processed. */
+                        errors?: {
+                            /**
+                             * @description The reason the deployment failed processing.
+                             * @enum {string}
+                             */
+                            cause?: "unauthorized" | "not_found";
+                            /** @description The deployment payload that could not be processed. */
+                            deployment?: {
+                                /** @description The name of the deployment that failed processing. */
+                                deployment_name?: string;
+                                /** @description The digest of the artifact. */
+                                digest?: string;
+                                /** @description The repository associated with the deployment. */
+                                github_repository?: string | null;
+                                /** @description The name of the artifact. */
+                                name?: string;
+                                /** @description Runtime risk classifications for the deployment. */
+                                runtime_risks?: string[];
+                                /** @description The deployment status. */
+                                status?: string;
+                                /** @description Custom metadata tags for the deployment. */
+                                tags?: {
+                                    [key: string]: string;
+                                };
+                                /** @description The version of the deployment. */
+                                version?: string | null;
+                            };
+                        }[];
+                        /** @description The number of deployment records created or updated. */
+                        total_count: number;
+                    };
+                };
+            };
             /** @description Forbidden */
             403: {
                 headers: {
@@ -105668,6 +108916,165 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+        };
+    };
+    "orgs/create-cluster-deployment-records-job": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The cluster name. */
+                cluster: string;
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The list of deployments to record. */
+                    deployments: {
+                        /** @description The unique identifier for the deployment represented by the new record. */
+                        deployment_name: string;
+                        /** @description The hex encoded digest of the artifact. */
+                        digest: string;
+                        /**
+                         * @description The name of the GitHub repository associated with the artifact.
+                         * @example my-github-repo
+                         */
+                        github_repository?: string;
+                        /** @description The name of the artifact. */
+                        name: string;
+                        /** @description A list of runtime risks associated with the deployment. */
+                        runtime_risks?: ("critical-resource" | "internet-exposed" | "lateral-movement" | "sensitive-data")[];
+                        /**
+                         * @description The deployment status of the artifact.
+                         * @default deployed
+                         * @enum {string}
+                         */
+                        status?: "deployed" | "decommissioned";
+                        /** @description Key-value pairs to tag the deployment record. */
+                        tags?: {
+                            [key: string]: string;
+                        };
+                        /**
+                         * @description The artifact version.
+                         * @example 1.2.3
+                         */
+                        version?: string;
+                    }[];
+                    /** @description The stage of the deployment. */
+                    logical_environment: string;
+                    /** @description The physical region of the deployment. */
+                    physical_environment?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Job created successfully. Authorized deployments will be processed in the background. */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Deployments that were rejected during authorization. */
+                        errors?: Record<string, never>[];
+                        /** @description The ID of the created job. */
+                        job_id: number;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /** @description A job is already in progress for this cluster. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+        };
+    };
+    "orgs/get-cluster-deployment-records-job": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The cluster name. */
+                cluster: string;
+                /** @description The ID of the job. */
+                job_id: number;
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Job status retrieved successfully. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Processing errors (only present when completed or failed). */
+                        errors?: Record<string, never>[];
+                        /** @description The ID of the job. */
+                        job_id: number;
+                        /**
+                         * Format: date-time
+                         * @description When the job started processing (only present when processing, completed, or failed).
+                         */
+                        started_at?: string;
+                        /**
+                         * @description The current status of the job.
+                         * @enum {string}
+                         */
+                        status: "pending" | "processing" | "completed" | "failed";
+                        /** @description The number of records successfully mutated (only present when completed). */
+                        total_count?: number;
+                    };
                 };
             };
             /** @description Resource not found */
@@ -106407,6 +109814,61 @@ export interface operations {
             503: components["responses"]["service_unavailable"];
         };
     };
+    "code-scanning/get-ai-scan-enablement-for-org": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-scanning-ai-scan-org-settings"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+        };
+    };
+    "code-scanning/update-ai-scan-enablement-for-org": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["code-scanning-ai-scan-org-enablement-update"];
+            };
+        };
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-scanning-ai-scan-org-settings"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
     "code-scanning/list-alerts-for-org": {
         parameters: {
             query?: {
@@ -106573,7 +110035,7 @@ export interface operations {
                         labeled_runners?: boolean;
                     };
                     /** @description A description of the code security configuration */
-                    description: string;
+                    description?: string;
                     /**
                      * @description The enforcement status for a security configuration
                      * @default enforced
@@ -106920,6 +110382,7 @@ export interface operations {
         };
         responses: {
             202: components["responses"]["accepted"];
+            403: components["responses"]["forbidden"];
         };
     };
     "code-security/set-configuration-as-default": {
@@ -106978,7 +110441,7 @@ export interface operations {
                 /**
                  * @description A comma-separated list of statuses. If specified, only repositories with these attachment statuses will be returned.
                  *
-                 *     Can be: `all`, `attached`, `attaching`, `detached`, `removed`, `enforced`, `failed`, `updating`, `removed_by_enterprise`
+                 *     Can be: `all`, `attached`, `attaching`, `detached`, `removed`, `enforced`, `failed`, `updating`, `removed_by_enterprise`, `enterprise_enforced`
                  */
                 status?: string;
             };
@@ -108591,42 +112054,6 @@ export interface operations {
             500: components["responses"]["internal_error"];
         };
     };
-    "copilot/copilot-metrics-for-organization": {
-        parameters: {
-            query?: {
-                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                page?: components["parameters"]["page"];
-                /** @description The number of days of metrics to display per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                per_page?: number;
-                /** @description Show usage metrics since this date. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format (`YYYY-MM-DDTHH:MM:SSZ`). Maximum value is 100 days ago. */
-                since?: string;
-                /** @description Show usage metrics until this date. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format (`YYYY-MM-DDTHH:MM:SSZ`) and should not preceed the `since` date if it is passed. */
-                until?: string;
-            };
-            header?: never;
-            path: {
-                /** @description The organization name. The name is not case sensitive. */
-                org: components["parameters"]["org"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["copilot-usage-metrics-day"][];
-                };
-            };
-            403: components["responses"]["forbidden"];
-            404: components["responses"]["not_found"];
-            422: components["responses"]["usage_metrics_api_disabled"];
-            500: components["responses"]["internal_error"];
-        };
-    };
     "copilot/copilot-organization-one-day-usage-metrics": {
         parameters: {
             query: {
@@ -108678,6 +112105,36 @@ export interface operations {
                     "application/json": components["schemas"]["copilot-usage-metrics-28-day-report"];
                 };
             };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "copilot/copilot-organization-repos-one-day-report": {
+        parameters: {
+            query: {
+                /** @description The day to request data for, in `YYYY-MM-DD` format. */
+                day: components["parameters"]["day"];
+            };
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["copilot-usage-metrics-1-day-report"];
+                };
+            };
+            204: components["responses"]["no_content"];
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
             500: components["responses"]["internal_error"];
@@ -108822,6 +112279,13 @@ export interface operations {
                 package?: components["parameters"]["dependabot-alert-comma-separated-packages"];
                 /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
                 per_page?: components["parameters"]["per-page"];
+                /**
+                 * @description A comma-separated list of relationships of the vulnerable dependency to your project. If specified, only alerts with these relationships will be returned.
+                 *
+                 *     > [!NOTE]
+                 *     > We are rolling out support for dependency relationship across ecosystems. This value will be "unknown" for all dependencies in unsupported ecosystems.
+                 */
+                relationship?: components["parameters"]["dependabot-alert-relationship"];
                 /**
                  * @description A comma-separated list of runtime risk strings. If specified, only alerts for repositories with deployment records matching these risks will be returned.
                  *
@@ -110116,6 +113580,100 @@ export interface operations {
                 };
                 content?: never;
             };
+        };
+    };
+    "interactions/get-pull-request-creation-cap-for-org": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Whether the pull request creation cap is enabled */
+                        enabled: boolean;
+                        /** @description Whether draft pull requests count toward the pull request creation cap */
+                        include_drafts?: boolean;
+                        /** @description The maximum number of open pull requests a user can have at one time */
+                        max_open_pull_requests: number;
+                    };
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /** @description Method Not Allowed */
+            405: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+        };
+    };
+    "interactions/update-pull-request-creation-cap-for-org": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Whether the pull request creation cap is enabled */
+                    enabled: boolean;
+                    /** @description Whether draft pull requests count toward the pull request creation cap */
+                    include_drafts?: boolean;
+                    /** @description The maximum number of open pull requests a user can have at one time */
+                    max_open_pull_requests?: number;
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Whether the pull request creation cap is enabled */
+                        enabled: boolean;
+                        /** @description Whether draft pull requests count toward the pull request creation cap */
+                        include_drafts?: boolean;
+                        /** @description The maximum number of open pull requests a user can have at one time */
+                        max_open_pull_requests: number;
+                    };
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /** @description Method Not Allowed */
+            405: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            422: components["responses"]["validation_failed"];
         };
     };
     "orgs/list-pending-invitations": {
@@ -112824,6 +116382,13 @@ export interface operations {
                      */
                     filter?: string;
                     /**
+                     * @description The field IDs to group items by (horizontal grouping). Supports a single field. The field must support grouping; fields such as `Title`, `Reviewers`, `Linked pull requests`, `Sub-issues progress`, `Tracked by`, and `Tracks` cannot be grouped on.
+                     * @example [
+                     *       123
+                     *     ]
+                     */
+                    group_by?: number[];
+                    /**
                      * @description The layout of the view.
                      * @example board
                      * @enum {string}
@@ -112834,6 +116399,27 @@ export interface operations {
                      * @example Sprint Board
                      */
                     name: string;
+                    /**
+                     * @description Sorting configuration for the view. Each element is a two-element array of `[field_id, direction]` where `direction` is `"asc"` or `"desc"`. Supports multiple sort criteria applied in order.
+                     * @example [
+                     *       [
+                     *         123,
+                     *         "asc"
+                     *       ],
+                     *       [
+                     *         456,
+                     *         "desc"
+                     *       ]
+                     *     ]
+                     */
+                    sort_by?: (number | string)[][];
+                    /**
+                     * @description The field IDs to use as columns in `board` layout (vertical grouping). Supports a single field. The field must support grouping; fields such as `Title`, `Reviewers`, `Linked pull requests`, `Sub-issues progress`, `Tracked by`, and `Tracks` cannot be grouped on.
+                     * @example [
+                     *       456
+                     *     ]
+                     */
+                    vertical_group_by?: number[];
                     /**
                      * @description `visible_fields` is not applicable to `roadmap` layout views.
                      *     For `table` and `board` layouts, this represents the field IDs that should be visible in the view. If not provided, the default visible fields will be used.
@@ -113665,6 +117251,13 @@ export interface operations {
             query?: {
                 /** @description The handle for the GitHub user account to filter on. When specified, only rule evaluations triggered by this actor will be returned. */
                 actor_name?: components["parameters"]["actor-name-in-query"];
+                /**
+                 * @description The evaluate status to filter on. When specified, only rule suites resulting from rulesets with the specified evaluate status will be returned.
+                 *       - `all` - all rule suites will be returned.
+                 *       - `active` - only rule suites resulting from rulesets in active (non-evaluate) mode will be returned.
+                 *       - `evaluate` - only rule suites resulting from rulesets in evaluate mode will be returned.
+                 */
+                evaluate_status?: components["parameters"]["evaluate-status"];
                 /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
                 page?: components["parameters"]["page"];
                 /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
@@ -113758,12 +117351,27 @@ export interface operations {
                 exclude_secret_types?: components["parameters"]["secret-scanning-alert-exclude-secret-types"];
                 /** @description A boolean value representing whether or not to hide literal secrets in the results. */
                 hide_secret?: components["parameters"]["secret-scanning-alert-hide-secret"];
+                /**
+                 * @description A comma-separated list of metadata fields to filter alerts by. Only alerts that have all of the
+                 *     specified metadata fields attached will be returned. Possible values are: `owner-email`, `owner-id`,
+                 *     `owner-name`, `secret-id`, `secret-name`, `secret-issued-date`, `secret-expiration-date`, `organization-name`,
+                 *     `organization-id`, `last-used-date`, and `has-organization-access`.
+                 */
+                included_metadata?: components["parameters"]["secret-scanning-alert-included-metadata"];
                 /** @description A boolean value (`true` or `false`) indicating whether to filter alerts by their push protection bypass status. When set to `true`, only alerts that were created because a push protection rule was bypassed will be returned. When set to `false`, only alerts that were not caused by a push protection bypass will be returned. */
                 is_bypassed?: components["parameters"]["secret-scanning-alert-bypassed"];
                 /** @description A boolean value representing whether or not to filter alerts by the multi-repo tag being present. */
                 is_multi_repo?: components["parameters"]["secret-scanning-alert-multi-repo"];
                 /** @description A boolean value representing whether or not to filter alerts by the publicly-leaked tag being present. */
                 is_publicly_leaked?: components["parameters"]["secret-scanning-alert-publicly-leaked"];
+                /**
+                 * @description Filters alerts to only those whose attached `owner_email` metadata field matches the
+                 *     provided value. The value must be the lowercase hex-encoded SHA-256 hash of the email
+                 *     address to match (for example, the SHA-256 of `user@example.com`). Only alerts that
+                 *     have an `owner_email` metadata value whose SHA-256 hash equals this parameter are
+                 *     returned.
+                 */
+                owner_email_hash?: components["parameters"]["secret-scanning-alert-owner-email-hash"];
                 /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
                 page?: components["parameters"]["page"];
                 /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
@@ -113807,6 +117415,175 @@ export interface operations {
             };
             404: components["responses"]["not_found"];
             503: components["responses"]["service_unavailable"];
+        };
+    };
+    "secret-scanning/list-org-custom-patterns": {
+        parameters: {
+            query?: {
+                /** @description A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for results after this cursor. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                after?: components["parameters"]["pagination-after"];
+                /** @description A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for results before this cursor. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                before?: components["parameters"]["pagination-before"];
+                /** @description The direction to sort the results by. */
+                direction?: components["parameters"]["direction"];
+                /** @description Filter custom patterns by whether push protection is enabled. When absent, returns patterns regardless of push protection status. */
+                push_protection?: components["parameters"]["secret-scanning-custom-pattern-push-protection"];
+                /** @description The property to sort the results by. */
+                sort?: components["parameters"]["secret-scanning-custom-pattern-sort"];
+                /** @description Filter custom patterns by state. When absent, returns patterns in all states. */
+                state?: components["parameters"]["secret-scanning-custom-pattern-state"];
+            };
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    Link: components["headers"]["link"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["secret-scanning-custom-pattern"][];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+        };
+    };
+    "secret-scanning/bulk-create-org-custom-patterns": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The list of custom patterns to create (maximum 100). */
+                    patterns: components["schemas"]["secret-scanning-custom-pattern-to-create"][];
+                };
+            };
+        };
+        responses: {
+            /** @description All patterns created successfully. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description The list of successfully created custom patterns. */
+                        created_patterns?: components["schemas"]["secret-scanning-custom-pattern"][];
+                    };
+                };
+            };
+            400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /** @description Validation failed for one or more patterns. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description A summary message describing the error. */
+                        message?: string;
+                        /** @description A map of validation errors keyed by the zero-based index of the pattern that failed. */
+                        validation_errors?: {
+                            [key: string]: {
+                                /** @description List of validation errors for this pattern. */
+                                errors?: components["schemas"]["secret-scanning-custom-pattern-validation-error"][];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+    "secret-scanning/bulk-delete-org-custom-patterns": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The list of custom patterns to delete. */
+                    patterns: components["schemas"]["secret-scanning-custom-pattern-to-delete"][];
+                    /**
+                     * @description What to do with alerts associated with the deleted patterns.
+                     *     `delete_alerts` permanently removes the alerts.
+                     *     `resolve_alerts` resolves the alerts as "pattern deleted".
+                     *     Defaults to `delete_alerts` when not specified.
+                     * @default delete_alerts
+                     * @enum {string}
+                     */
+                    post_delete_action?: "delete_alerts" | "resolve_alerts";
+                };
+            };
+        };
+        responses: {
+            /** @description All patterns deleted successfully. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            412: components["responses"]["precondition_failed"];
+        };
+    };
+    "secret-scanning/update-org-custom-pattern": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+                /** @description The ID of the custom pattern. */
+                pattern_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["secret-scanning-custom-pattern-to-update"];
+            };
+        };
+        responses: {
+            /** @description Pattern updated successfully. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["secret-scanning-custom-pattern"];
+                };
+            };
+            400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            412: components["responses"]["precondition_failed"];
+            422: components["responses"]["validation_failed"];
         };
     };
     "secret-scanning/list-org-pattern-configs": {
@@ -114352,44 +118129,6 @@ export interface operations {
             };
         };
     };
-    "copilot/copilot-metrics-for-team": {
-        parameters: {
-            query?: {
-                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                page?: components["parameters"]["page"];
-                /** @description The number of days of metrics to display per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
-                per_page?: number;
-                /** @description Show usage metrics since this date. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format (`YYYY-MM-DDTHH:MM:SSZ`). Maximum value is 100 days ago. */
-                since?: string;
-                /** @description Show usage metrics until this date. This is a timestamp in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format (`YYYY-MM-DDTHH:MM:SSZ`) and should not preceed the `since` date if it is passed. */
-                until?: string;
-            };
-            header?: never;
-            path: {
-                /** @description The organization name. The name is not case sensitive. */
-                org: components["parameters"]["org"];
-                /** @description The slug of the team name. */
-                team_slug: components["parameters"]["team-slug"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["copilot-usage-metrics-day"][];
-                };
-            };
-            403: components["responses"]["forbidden"];
-            404: components["responses"]["not_found"];
-            422: components["responses"]["usage_metrics_api_disabled"];
-            500: components["responses"]["internal_error"];
-        };
-    };
     "teams/list": {
         parameters: {
             query?: {
@@ -114451,6 +118190,8 @@ export interface operations {
                     notification_setting?: "notifications_enabled" | "notifications_disabled";
                     /** @description The ID of a team to set as the parent team. */
                     parent_team_id?: number;
+                    /** @description The slug of a team to set as the parent team. Ignored when `parent_team_id` is also provided. */
+                    parent_team_slug?: string;
                     /**
                      * @description **Closing down notice**. The permission that new repositories will be added to the team with when none is specified.
                      * @default pull
@@ -114566,6 +118307,8 @@ export interface operations {
                     notification_setting?: "notifications_enabled" | "notifications_disabled";
                     /** @description The ID of a team to set as the parent team. */
                     parent_team_id?: number | null;
+                    /** @description The slug of a team to set as the parent team. Ignored when `parent_team_id` is also provided. */
+                    parent_team_slug?: string | null;
                     /**
                      * @description **Closing down notice**. The permission that new repositories will be added to the team with when none is specified.
                      * @default pull
@@ -114669,7 +118412,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["simple-user"][];
+                    "application/json": components["schemas"]["team-member"][];
                 };
             };
         };
@@ -115119,6 +118862,11 @@ export interface operations {
                      */
                     has_projects?: boolean;
                     /**
+                     * @description Either `true` to allow pull requests for this repository or `false` to prevent pull requests.
+                     * @default true
+                     */
+                    has_pull_requests?: boolean;
+                    /**
                      * @description Either `true` to enable the wiki for this repository or `false` to disable it.
                      * @default true
                      */
@@ -115157,6 +118905,11 @@ export interface operations {
                      * @default false
                      */
                     private?: boolean;
+                    /**
+                     * @description The policy that controls who can create pull requests for this repository: `all` or `collaborators_only`.
+                     * @enum {string}
+                     */
+                    pull_request_creation_policy?: "all" | "collaborators_only";
                     /**
                      * @description Specify which security and analysis features to enable or disable for the repository.
                      *
@@ -116334,6 +120087,183 @@ export interface operations {
             };
         };
     };
+    "actions/get-repo-actions-policies": {
+        parameters: {
+            query?: {
+                /** @description Include policies configured at higher levels that apply to this repository */
+                has_parents?: boolean;
+                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                page?: components["parameters"]["page"];
+                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                per_page?: components["parameters"]["per-page"];
+            };
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description An array of Actions policies. */
+                        policies: components["schemas"]["actions-policy"][];
+                        /** @description The total number of Actions policies. */
+                        total_count: number;
+                    };
+                };
+            };
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "actions/create-repo-actions-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        /** @description Request body */
+        requestBody: {
+            content: {
+                "application/json": {
+                    conditions?: components["schemas"]["actions-policy-repo-conditions"];
+                    enforcement: components["schemas"]["repository-rule-enforcement"];
+                    /** @description The name of the policy. */
+                    name: string;
+                    /** @description An array of rules within the policy. */
+                    rules?: components["schemas"]["actions-rule"][];
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["actions-policy"];
+                };
+            };
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "actions/get-repo-actions-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The ID of the policy. */
+                policy_id: number;
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["actions-policy"];
+                };
+            };
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "actions/update-repo-actions-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The ID of the policy. */
+                policy_id: number;
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        /** @description Request body */
+        requestBody: {
+            content: {
+                "application/json": {
+                    conditions?: components["schemas"]["actions-policy-repo-conditions"];
+                    enforcement?: components["schemas"]["repository-rule-enforcement"];
+                    /** @description The name of the policy. */
+                    name?: string;
+                    /** @description An array of rules within the policy. */
+                    rules?: components["schemas"]["actions-rule"][];
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["actions-policy"];
+                };
+            };
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+            500: components["responses"]["internal_error"];
+        };
+    };
+    "actions/delete-repo-actions-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The ID of the policy. */
+                policy_id: number;
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+        };
+    };
     "actions/list-self-hosted-runners-for-repo": {
         parameters: {
             query?: {
@@ -116540,6 +120470,54 @@ export interface operations {
             200: components["responses"]["actions_runner_labels"];
             404: components["responses"]["not_found"];
             422: components["responses"]["validation_failed_simple"];
+        };
+    };
+    "actions/get-runner-version-deprecation-for-repo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+                /**
+                 * @description The runner version to look up.
+                 * @example 2.300.0
+                 */
+                version: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * Format: date-time
+                         * @description The date after which this runner version can no longer register. Null if no schedule is set.
+                         * @example 2026-08-01T00:00:00Z
+                         */
+                        registration_deprecates_at?: string | null;
+                        /**
+                         * @description The runner version string.
+                         * @example 2.300.0
+                         */
+                        runner_version: string;
+                        /**
+                         * Format: date-time
+                         * @description The date after which jobs will no longer be dispatched to runners on this version.
+                         * @example 2026-09-01T00:00:00Z
+                         */
+                        runtime_deprecates_at?: string | null;
+                    };
+                };
+            };
         };
     };
     "actions/list-runner-applications-for-repo": {
@@ -120455,6 +124433,205 @@ export interface operations {
             };
         };
     };
+    "code-quality/list-findings-for-repo": {
+        parameters: {
+            query?: {
+                /** @description A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for results after this cursor. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                after?: components["parameters"]["pagination-after"];
+                /** @description A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for results before this cursor. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                before?: components["parameters"]["pagination-before"];
+                /** @description The direction to sort the results by. */
+                direction?: components["parameters"]["direction"];
+                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                per_page?: components["parameters"]["per-page"];
+                /** @description If specified, only code quality findings with this state will be returned. */
+                state?: "open" | "dismissed";
+            };
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-quality-finding"][];
+                };
+            };
+            403: components["responses"]["code_quality_forbidden_read"];
+            404: components["responses"]["not_found"];
+            503: components["responses"]["service_unavailable"];
+        };
+    };
+    "code-quality/get-finding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The number that identifies a finding. */
+                finding_number: components["parameters"]["code-quality-finding-number"];
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-quality-finding"];
+                };
+            };
+            403: components["responses"]["code_quality_forbidden_read"];
+            404: components["responses"]["not_found"];
+            503: components["responses"]["service_unavailable"];
+        };
+    };
+    "code-quality/get-setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-quality-setup"];
+                };
+            };
+            403: components["responses"]["code_quality_forbidden_read"];
+            404: components["responses"]["not_found"];
+            503: components["responses"]["service_unavailable"];
+        };
+    };
+    "code-quality/update-setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["code-quality-setup-update"];
+            };
+        };
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["empty-object"];
+                };
+            };
+            /** @description Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-quality-setup-update-response"];
+                };
+            };
+            403: components["responses"]["code_quality_forbidden_write"];
+            404: components["responses"]["not_found"];
+            409: components["responses"]["code_quality_conflict"];
+            422: components["responses"]["code_quality_invalid_state"];
+            503: components["responses"]["service_unavailable"];
+        };
+    };
+    "code-scanning/get-ai-scan-enablement": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-scanning-ai-scan-enablement"];
+                };
+            };
+            403: components["responses"]["code_scanning_forbidden_read"];
+            404: components["responses"]["not_found"];
+        };
+    };
+    "code-scanning/update-ai-scan-enablement": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["code-scanning-ai-scan-enablement-update"];
+            };
+        };
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["code-scanning-ai-scan-enablement"];
+                };
+            };
+            403: components["responses"]["code_scanning_forbidden_write"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
     "code-scanning/list-alerts-for-repo": {
         parameters: {
             query?: {
@@ -120614,7 +124791,7 @@ export interface operations {
             400: components["responses"]["code_scanning_bad_request"];
             403: components["responses"]["code_scanning_forbidden_read"];
             404: components["responses"]["not_found"];
-            503: components["responses"]["service_unavailable"];
+            500: components["responses"]["internal_error"];
         };
     };
     "code-scanning/create-autofix": {
@@ -120661,7 +124838,7 @@ export interface operations {
                 };
                 content?: never;
             };
-            503: components["responses"]["service_unavailable"];
+            500: components["responses"]["internal_error"];
         };
     };
     "code-scanning/commit-autofix": {
@@ -121725,7 +125902,7 @@ export interface operations {
                 /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
                 per_page?: components["parameters"]["per-page"];
                 /** @description Filter collaborators by the permissions they have on the repository. If not specified, all collaborators will be returned. */
-                permission?: "pull" | "triage" | "push" | "maintain" | "admin";
+                permission?: "pull" | "triage" | "triage_plus" | "push" | "maintain" | "admin";
             };
             header?: never;
             path: {
@@ -121801,7 +125978,7 @@ export interface operations {
             content: {
                 "application/json": {
                     /**
-                     * @description The permission to grant the collaborator. **Only valid on organization-owned repositories.** We accept the following permissions to be set: `pull`, `triage`, `push`, `maintain`, `admin` and you can also specify a custom repository role name, if the owning organization has defined any.
+                     * @description The permission to grant the collaborator. **Only valid on organization-owned repositories.** We accept the following permissions to be set: `pull`, `triage`, `triage_plus`, `push`, `maintain`, `admin` and you can also specify a custom repository role name, if the owning organization has defined any.
                      * @default push
                      */
                     permission?: string;
@@ -122175,6 +126352,8 @@ export interface operations {
             400: components["responses"]["bad_request"];
             404: components["responses"]["not_found"];
             409: components["responses"]["conflict"];
+            422: components["responses"]["validation_failed"];
+            429: components["responses"]["server_load_try_again"];
             500: components["responses"]["internal_error"];
         };
     };
@@ -122354,6 +126533,7 @@ export interface operations {
             404: components["responses"]["not_found"];
             409: components["responses"]["conflict"];
             422: components["responses"]["validation_failed"];
+            429: components["responses"]["server_load_try_again"];
             500: components["responses"]["internal_error"];
             503: components["responses"]["service_unavailable"];
         };
@@ -122569,6 +126749,7 @@ export interface operations {
                 };
             };
             404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
             500: components["responses"]["internal_error"];
             503: components["responses"]["service_unavailable"];
         };
@@ -122822,6 +127003,8 @@ export interface operations {
                             /** @description Whether the secret scanning tool is enabled for the Copilot cloud agent. */
                             secret_scanning: boolean;
                         };
+                        /** @description Whether automations are enabled in this repository. When true, users can create automations that automatically run agents on a schedule or in response to events like new issues or updated pull requests. */
+                        is_automations_enabled: boolean;
                         /** @description Whether the firewall is enabled. */
                         is_firewall_enabled: boolean;
                         /** @description Whether the firewall recommended allowlist is enabled. */
@@ -122836,6 +127019,8 @@ export interface operations {
                         } | null;
                         /** @description Whether Actions workflow approval is required for Copilot cloud agent pull requests. */
                         require_actions_workflow_approval: boolean;
+                        /** @description Whether write access is required for automation triggers. When true, automations will only run if the user triggering the event has write access to the repository. When false, users can create automations that listen for events triggered by users without write access. */
+                        require_write_access_for_automation_triggers: boolean;
                     };
                 };
             };
@@ -122892,6 +127077,13 @@ export interface operations {
                 package?: components["parameters"]["dependabot-alert-comma-separated-packages"];
                 /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
                 per_page?: components["parameters"]["per-page"];
+                /**
+                 * @description A comma-separated list of relationships of the vulnerable dependency to your project. If specified, only alerts with these relationships will be returned.
+                 *
+                 *     > [!NOTE]
+                 *     > We are rolling out support for dependency relationship across ecosystems. This value will be "unknown" for all dependencies in unsupported ecosystems.
+                 */
+                relationship?: components["parameters"]["dependabot-alert-relationship"];
                 /** @description The scope of the vulnerable dependency. If specified, only alerts with this scope will be returned. */
                 scope?: components["parameters"]["dependabot-alert-scope"];
                 /**
@@ -122974,6 +127166,7 @@ export interface operations {
             304: components["responses"]["not_modified"];
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
+            410: components["responses"]["gone"];
         };
     };
     "dependabot/update-alert": {
@@ -122999,9 +127192,22 @@ export interface operations {
             content: {
                 "application/json": {
                     /**
+                     * @description Parameters for AI agent assignment. Only used when an agent bot login is
+                     *     included in `assignees`. Ignored when no agent is being assigned.
+                     */
+                    agent_assignment?: {
+                        /** @description A custom agent identifier. */
+                        custom_agent?: string;
+                        /** @description Custom instructions for the agent. */
+                        custom_instructions?: string;
+                        /** @description The model to use for the agent. */
+                        model?: string;
+                    };
+                    /**
                      * @description Usernames to assign to this Dependabot Alert.
                      *     Pass one or more user logins to _replace_ the set of assignees on this alert.
                      *     Send an empty array (`[]`) to clear all assignees from the alert.
+                     *     To assign an AI agent, include the bot login (for example, `copilot-swe-agent[bot]`).
                      */
                     assignees?: string[];
                     /** @description An optional comment associated with dismissing the alert. */
@@ -123034,6 +127240,7 @@ export interface operations {
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
             409: components["responses"]["conflict"];
+            410: components["responses"]["gone"];
             422: components["responses"]["validation_failed_simple"];
         };
     };
@@ -125156,6 +129363,33 @@ export interface operations {
             422: components["responses"]["validation_failed"];
         };
     };
+    "repos/get-hash-algorithm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["repository-hash-algorithm"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+        };
+    };
     "repos/list-webhooks": {
         parameters: {
             query?: {
@@ -126014,6 +130248,191 @@ export interface operations {
             };
         };
     };
+    "interactions/get-pull-request-bypass-list-for-repo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["simple-user"][];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+        };
+    };
+    "interactions/set-pull-request-bypass-list-for-repo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["interaction-limit-pull-request-bypass-list"];
+            };
+        };
+        responses: {
+            /** @description Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "interactions/remove-pull-request-bypass-list-for-repo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["interaction-limit-pull-request-bypass-list"];
+            };
+        };
+        responses: {
+            /** @description Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "interactions/get-pull-request-creation-cap-for-repo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Whether the pull request creation cap is enabled */
+                        enabled: boolean;
+                        /** @description Whether draft pull requests count toward the pull request creation cap */
+                        include_drafts?: boolean;
+                        /** @description The maximum number of open pull requests a user can have at one time */
+                        max_open_pull_requests: number;
+                    };
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /** @description Method Not Allowed */
+            405: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+        };
+    };
+    "interactions/update-pull-request-creation-cap-for-repo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Whether the pull request creation cap is enabled */
+                    enabled: boolean;
+                    /** @description Whether draft pull requests count toward the pull request creation cap */
+                    include_drafts?: boolean;
+                    /** @description The maximum number of open pull requests a user can have at one time */
+                    max_open_pull_requests?: number;
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Whether the pull request creation cap is enabled */
+                        enabled: boolean;
+                        /** @description Whether draft pull requests count toward the pull request creation cap */
+                        include_drafts?: boolean;
+                        /** @description The maximum number of open pull requests a user can have at one time */
+                        max_open_pull_requests: number;
+                    };
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /** @description Method Not Allowed */
+            405: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            422: components["responses"]["validation_failed"];
+        };
+    };
     "repos/list-invitations": {
         parameters: {
             query?: {
@@ -126107,6 +130526,32 @@ export interface operations {
             };
         };
     };
+    "repos/list-issue-types": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["issue-type"][];
+                };
+            };
+            404: components["responses"]["not_found"];
+        };
+    };
     "issues/list-for-repo": {
         parameters: {
             query?: {
@@ -126197,8 +130642,8 @@ export interface operations {
                     issue_field_values?: {
                         /** @description The ID of the issue field to set */
                         field_id: number;
-                        /** @description The value to set for the field */
-                        value: string | number;
+                        /** @description The value to set for the field. For multi-select fields, provide an array of option names. */
+                        value: string | number | string[];
                     }[];
                     /** @description Labels to associate with this issue. _NOTE: Only users with push access can set labels for new issues. Labels are silently dropped otherwise._ */
                     labels?: (string | {
@@ -126208,6 +130653,8 @@ export interface operations {
                         name?: string;
                     })[];
                     milestone?: (string | number) | null;
+                    /** @description The id of the parent issue to add this issue to as a sub-issue. _NOTE: Only users with triage access to both the parent issue's repository and this repository can set the parent issue._ */
+                    parent_issue_id?: number;
                     /** @description The title of the issue. */
                     title: string | number;
                     /**
@@ -126289,22 +130736,53 @@ export interface operations {
                     /** @description Username to assign to this issue. **This field is closing down.** */
                     assignee?: string | null;
                     /** @description Usernames to assign to this issue. Pass one or more user logins to _replace_ the set of assignees on this issue. Send an empty array (`[]`) to clear all assignees from the issue. Only users with push access can set assignees for new issues. Without push access to the repository, assignee changes are silently dropped. */
-                    assignees?: string[];
+                    assignees?: (string | {
+                        /**
+                         * @description The confidence level for this assignee choice.
+                         * @enum {string}
+                         */
+                        confidence?: "low" | "medium" | "high";
+                        login?: string;
+                        /** @description Optional reasoning for selecting this assignee. */
+                        rationale?: string;
+                        /** @description If `true`, the change is stored as a pending suggestion for human review rather than applied directly. */
+                        suggest?: boolean;
+                    })[];
                     /** @description The contents of the issue. */
                     body?: string | null;
+                    /** @description The ID of the issue to mark as the canonical duplicate when `state_reason` is `duplicate`. The issue must exist and be accessible to the authenticated user. Ignored when `state_reason` is not `duplicate`. */
+                    duplicate_issue_id?: number;
                     /** @description An array of issue field values to set on this issue. Each field value must include the field ID and the value to set. Only users with push access can set field values for issues */
                     issue_field_values?: {
+                        /**
+                         * @description The confidence level for this field value choice.
+                         * @enum {string}
+                         */
+                        confidence?: "low" | "medium" | "high";
                         /** @description The ID of the issue field to set */
                         field_id: number;
-                        /** @description The value to set for the field */
-                        value: string | number;
+                        /** @description Optional reasoning for setting this field value. */
+                        rationale?: string;
+                        /** @description If `true`, the change is stored as a pending suggestion for human review rather than applied directly. */
+                        suggest?: boolean;
+                        /** @description The value to set for the field. For multi-select fields, provide an array of option names. */
+                        value: string | number | string[];
                     }[];
                     /** @description Labels to associate with this issue. Pass one or more labels to _replace_ the set of labels on this issue. Send an empty array (`[]`) to clear all labels from the issue. Only users with push access can set labels for issues. Without push access to the repository, label changes are silently dropped. */
                     labels?: (string | {
                         color?: string | null;
+                        /**
+                         * @description The confidence level for this label choice.
+                         * @enum {string}
+                         */
+                        confidence?: "low" | "medium" | "high";
                         description?: string | null;
                         id?: number;
                         name?: string;
+                        /** @description Optional reasoning for selecting this label. */
+                        rationale?: string;
+                        /** @description If `true`, the change is stored as a pending suggestion for human review rather than applied directly. */
+                        suggest?: boolean;
                     })[];
                     milestone?: (string | number) | null;
                     /**
@@ -126320,11 +130798,23 @@ export interface operations {
                     state_reason?: "completed" | "not_planned" | "duplicate" | "reopened" | null;
                     /** @description The title of the issue. */
                     title?: (string | number) | null;
-                    /**
-                     * @description The name of the issue type to associate with this issue or use `null` to remove the current issue type. Only users with push access can set the type for issues. Without push access to the repository, type changes are silently dropped.
-                     * @example Epic
-                     */
-                    type?: string | null;
+                    /** @description The issue type to associate with this issue. Only users with push access can set the type for issues. Without push access to the repository, type changes are silently dropped. */
+                    type?: (string | {
+                        /**
+                         * @description The confidence level for this type choice.
+                         * @enum {string}
+                         */
+                        confidence?: "low" | "medium" | "high";
+                        /** @description Optional reasoning for selecting this type. */
+                        rationale?: string;
+                        /** @description If `true`, the change is stored as a pending suggestion for human review rather than applied directly. */
+                        suggest?: boolean;
+                        /**
+                         * @description The name of the issue type to associate with this issue, or `null` to remove the current issue type.
+                         * @example Epic
+                         */
+                        value?: string | null;
+                    }) | null;
                 };
             };
         };
@@ -126335,7 +130825,71 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["issue"];
+                    "application/json": components["schemas"]["issue"] & {
+                        /**
+                         * @description Pending suggestions for each suggestible field (`type`,
+                         *     `issue_field_values`, `labels`, `assignees`, `state`) the
+                         *     request touched. Omitted for fields not in the request or
+                         *     with no pending or ignored suggestions. Items tagged
+                         *     `ignored` are echoes of the current request's inputs that
+                         *     were not persisted as pending suggestions.
+                         */
+                        suggestions?: {
+                            assignees?: {
+                                /** @enum {string} */
+                                confidence?: "low" | "medium" | "high";
+                                ignored?: boolean;
+                                /** @enum {string} */
+                                ignored_reason?: "already_applied" | "issue_already_closed";
+                                login?: string;
+                                rationale?: string;
+                                suggest?: boolean;
+                            }[];
+                            issue_field_values?: {
+                                /** @enum {string} */
+                                confidence?: "low" | "medium" | "high";
+                                field_id?: number;
+                                ignored?: boolean;
+                                /** @enum {string} */
+                                ignored_reason?: "already_applied" | "issue_already_closed";
+                                rationale?: string;
+                                suggest?: boolean;
+                                value?: string | number | string[];
+                            }[];
+                            labels?: {
+                                /** @enum {string} */
+                                confidence?: "low" | "medium" | "high";
+                                ignored?: boolean;
+                                /** @enum {string} */
+                                ignored_reason?: "already_applied" | "issue_already_closed";
+                                name?: string;
+                                rationale?: string;
+                                suggest?: boolean;
+                            }[];
+                            state?: {
+                                /** @enum {string} */
+                                confidence?: "low" | "medium" | "high";
+                                duplicate_issue_id?: number;
+                                ignored?: boolean;
+                                /** @enum {string} */
+                                ignored_reason?: "already_applied" | "issue_already_closed";
+                                rationale?: string;
+                                state_reason?: string;
+                                suggest?: boolean;
+                                value?: string;
+                            }[];
+                            type?: {
+                                /** @enum {string} */
+                                confidence?: "low" | "medium" | "high";
+                                ignored?: boolean;
+                                /** @enum {string} */
+                                ignored_reason?: "already_applied" | "issue_already_closed";
+                                rationale?: string;
+                                suggest?: boolean;
+                                value?: string;
+                            }[];
+                        };
+                    };
                 };
             };
             301: components["responses"]["moved_permanently"];
@@ -126364,7 +130918,19 @@ export interface operations {
             content: {
                 "application/json": {
                     /** @description Usernames of people to assign this issue to. _NOTE: Only users with push access can add assignees to an issue. Assignees are silently ignored otherwise._ */
-                    assignees?: string[];
+                    assignees?: (string | {
+                        /**
+                         * @description The confidence level for this assignee choice.
+                         * @enum {string}
+                         */
+                        confidence?: "low" | "medium" | "high";
+                        /** @description The login of the user to assign. */
+                        login: string;
+                        /** @description Optional reasoning for adding this assignee. */
+                        rationale?: string;
+                        /** @description If `true`, the assignee is stored as a pending suggestion for human review rather than applied directly. */
+                        suggest?: boolean;
+                    })[];
                 };
             };
         };
@@ -126827,10 +131393,11 @@ export interface operations {
                          *     - For text fields: provide a string value
                          *     - For single_select fields: provide the option name as a string (must match an existing option)
                          *     - For number fields: provide a numeric value
+                         *     - For multi_select fields: provide an array of option names (must match existing options)
                          *     - For date fields: provide an ISO 8601 date string
                          * @example Critical
                          */
-                        value: string | number;
+                        value: string | number | string[];
                     }[];
                 };
             };
@@ -126980,10 +131547,31 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** @description The names of the labels to add to the issue's existing labels. You can also pass an `array` of labels directly, but GitHub recommends passing an object with the `labels` key. To replace all of the labels for an issue, use "[Set labels for an issue](https://docs.github.com/rest/issues/labels#set-labels-for-an-issue)." */
-                    labels?: string[];
+                    /** @description The labels to add to the issue's existing labels. You can also pass an `array` of labels directly, but GitHub recommends passing an object with the `labels` key. To replace all of the labels for an issue, use "[Set labels for an issue](https://docs.github.com/rest/issues/labels#set-labels-for-an-issue)." */
+                    labels?: (string | {
+                        /**
+                         * @description The confidence level for this label choice.
+                         * @enum {string}
+                         */
+                        confidence?: "low" | "medium" | "high";
+                        /** @description The name of the label to add. */
+                        name: string;
+                        /** @description Optional reasoning for adding this label. */
+                        rationale?: string;
+                        /** @description If `true`, the label is stored as a pending suggestion for human review rather than applied directly. */
+                        suggest?: boolean;
+                    })[];
                 } | string[] | {
+                    /**
+                     * @description The confidence level for this label choice.
+                     * @enum {string}
+                     */
+                    confidence?: "low" | "medium" | "high";
                     name: string;
+                    /** @description Optional reasoning for adding this label. */
+                    rationale?: string;
+                    /** @description If `true`, the label is stored as a pending suggestion for human review rather than applied directly. */
+                    suggest?: boolean;
                 }[];
             };
         };
@@ -127273,6 +131861,117 @@ export interface operations {
             };
         };
     };
+    "issues/list-relates-to": {
+        parameters: {
+            query?: {
+                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                page?: components["parameters"]["page"];
+                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                per_page?: components["parameters"]["per-page"];
+            };
+            header?: never;
+            path: {
+                /** @description The number that identifies the issue. */
+                issue_number: components["parameters"]["issue-number"];
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    Link: components["headers"]["link"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["issue"][];
+                };
+            };
+            301: components["responses"]["moved_permanently"];
+            404: components["responses"]["not_found"];
+            410: components["responses"]["gone"];
+        };
+    };
+    "issues/add-relates-to": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The number that identifies the issue. */
+                issue_number: components["parameters"]["issue-number"];
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The id of the issue to mark as related to the current issue */
+                    issue_id: number;
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            201: {
+                headers: {
+                    /** @example https://api.github.com/repos/octocat/Hello-World/issues/1/relates_to */
+                    Location?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["issue"];
+                };
+            };
+            301: components["responses"]["moved_permanently"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            410: components["responses"]["gone"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "issues/remove-relates-to": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The id of the related issue to remove */
+                issue_id: number;
+                /** @description The number that identifies the issue. */
+                issue_number: components["parameters"]["issue-number"];
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["issue"];
+                };
+            };
+            301: components["responses"]["moved_permanently"];
+            400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            410: components["responses"]["gone"];
+        };
+    };
     "issues/remove-sub-issue": {
         parameters: {
             query?: never;
@@ -127308,6 +132007,7 @@ export interface operations {
                 };
             };
             400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
         };
     };
@@ -127430,9 +132130,114 @@ export interface operations {
             503: components["responses"]["service_unavailable"];
         };
     };
+    "issues/list-suggestions": {
+        parameters: {
+            query?: {
+                /** @description Filter suggestions by the change they propose. */
+                action?: "set_type" | "add_label" | "add_field" | "add_assignee" | "close_issue";
+                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                page?: components["parameters"]["page"];
+                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                per_page?: components["parameters"]["per-page"];
+                /** @description Filter suggestions by their state. */
+                state?: "pending" | "applied" | "approved" | "dismissed" | "replaced" | "invalidated" | "all";
+            };
+            header?: never;
+            path: {
+                /** @description The number that identifies the issue. */
+                issue_number: components["parameters"]["issue-number"];
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    Link: components["headers"]["link"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["issue-suggestion"][];
+                };
+            };
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "issues/approve-suggestion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The number that identifies the issue. */
+                issue_number: components["parameters"]["issue-number"];
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+                /** @description The unique identifier of the suggestion. */
+                suggestion_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["issue-suggestion"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "issues/dismiss-suggestion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The number that identifies the issue. */
+                issue_number: components["parameters"]["issue-number"];
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+                /** @description The unique identifier of the suggestion. */
+                suggestion_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["issue-suggestion"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
     "issues/list-events-for-timeline": {
         parameters: {
             query?: {
+                /** @description A comma-separated list of timeline event names to exclude from the response. */
+                exclude?: components["parameters"]["issue-timeline-exclude"];
                 /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
                 page?: components["parameters"]["page"];
                 /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
@@ -127461,6 +132266,7 @@ export interface operations {
                     "application/json": components["schemas"]["timeline-issue-events"][];
                 };
             };
+            400: components["responses"]["bad_request"];
             404: components["responses"]["not_found"];
             410: components["responses"]["gone"];
         };
@@ -128091,6 +132897,8 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
+                    /** @description Whether to archive or unarchive the label. Archived labels cannot be added to issues or pull requests. For more information, see "[Archiving labels](https://docs.github.com/issues/organizing-your-work-with-labels/managing-labels)." */
+                    archived?: boolean;
                     /** @description The [hexadecimal color code](http://www.color-hex.com/) for the label, without the leading `#`. */
                     color?: string;
                     /** @description A short description of the label. Must be 100 characters or fewer. */
@@ -129232,6 +134040,7 @@ export interface operations {
             304: components["responses"]["not_modified"];
             404: components["responses"]["not_found"];
             406: components["responses"]["unacceptable"];
+            422: components["responses"]["validation_failed"];
             500: components["responses"]["internal_error"];
             503: components["responses"]["service_unavailable"];
         };
@@ -129671,6 +134480,115 @@ export interface operations {
             422: components["responses"]["validation_failed"];
         };
     };
+    "pulls/merge-async": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The number that identifies the pull request. */
+                pull_number: components["parameters"]["pull-number"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Extra detail to append to automatic commit message. Only supported for direct merges. */
+                    commit_message?: string;
+                    /** @description Title for the automatic commit message. Only supported for direct merges. */
+                    commit_title?: string;
+                    /**
+                     * @description The action that will be taken to merge the pull request. `direct_merge` merges the pull request directly without using a merge queue; `merge_queue` adds the pull request to a merge queue; `default` uses a merge queue if one is configured for the target branch, or merges directly otherwise. If omitted, defaults to `default`.
+                     * @enum {string}
+                     */
+                    merge_action?: "default" | "direct_merge" | "merge_queue";
+                    /**
+                     * @description The merge method to use for a direct merge. Only supported for direct merges.
+                     * @enum {string}
+                     */
+                    merge_method?: "merge" | "squash" | "rebase";
+                    /** @description SHA that pull request head must match to allow merge. If not provided, the current head of the PR at the time of the request will be used; if the PR is pushed in between the merge being requested and being executed, the merge will be cancelled. */
+                    sha?: string;
+                } | null;
+            };
+        };
+        responses: {
+            /** @description if the pull request was already merged, or is already in a merge queue */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["pull-request-merge-async-result"];
+                };
+            };
+            /** @description if the merge request was accepted and will run in the background */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["pull-request-merge-async-result"];
+                };
+            };
+            /** @description if the pull request is not ready to be merged, e.g. because it is closed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["pull-request-merge-async-result"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /** @description if there is an existing merge request already enqueued for this pull request */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["pull-request-merge-async-result"];
+                };
+            };
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "pulls/get-merge-async-result": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The number that identifies the pull request. */
+                pull_number: components["parameters"]["pull-number"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+                /** @description The UUID of the asynchronous merge request, as returned when the merge was requested. */
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description the current result of the asynchronous merge request */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["pull-request-merge-async-result"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+        };
+    };
     "pulls/list-requested-reviewers": {
         parameters: {
             query?: never;
@@ -129741,6 +134659,7 @@ export interface operations {
                 };
                 content?: never;
             };
+            503: components["responses"]["service_unavailable"];
         };
     };
     "pulls/remove-requested-reviewers": {
@@ -131324,6 +136243,13 @@ export interface operations {
             query?: {
                 /** @description The handle for the GitHub user account to filter on. When specified, only rule evaluations triggered by this actor will be returned. */
                 actor_name?: components["parameters"]["actor-name-in-query"];
+                /**
+                 * @description The evaluate status to filter on. When specified, only rule suites resulting from rulesets with the specified evaluate status will be returned.
+                 *       - `all` - all rule suites will be returned.
+                 *       - `active` - only rule suites resulting from rulesets in active (non-evaluate) mode will be returned.
+                 *       - `evaluate` - only rule suites resulting from rulesets in evaluate mode will be returned.
+                 */
+                evaluate_status?: components["parameters"]["evaluate-status"];
                 /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
                 page?: components["parameters"]["page"];
                 /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
@@ -131419,12 +136345,27 @@ export interface operations {
                 exclude_secret_types?: components["parameters"]["secret-scanning-alert-exclude-secret-types"];
                 /** @description A boolean value representing whether or not to hide literal secrets in the results. */
                 hide_secret?: components["parameters"]["secret-scanning-alert-hide-secret"];
+                /**
+                 * @description A comma-separated list of metadata fields to filter alerts by. Only alerts that have all of the
+                 *     specified metadata fields attached will be returned. Possible values are: `owner-email`, `owner-id`,
+                 *     `owner-name`, `secret-id`, `secret-name`, `secret-issued-date`, `secret-expiration-date`, `organization-name`,
+                 *     `organization-id`, `last-used-date`, and `has-organization-access`.
+                 */
+                included_metadata?: components["parameters"]["secret-scanning-alert-included-metadata"];
                 /** @description A boolean value (`true` or `false`) indicating whether to filter alerts by their push protection bypass status. When set to `true`, only alerts that were created because a push protection rule was bypassed will be returned. When set to `false`, only alerts that were not caused by a push protection bypass will be returned. */
                 is_bypassed?: components["parameters"]["secret-scanning-alert-bypassed"];
                 /** @description A boolean value representing whether or not to filter alerts by the multi-repo tag being present. */
                 is_multi_repo?: components["parameters"]["secret-scanning-alert-multi-repo"];
                 /** @description A boolean value representing whether or not to filter alerts by the publicly-leaked tag being present. */
                 is_publicly_leaked?: components["parameters"]["secret-scanning-alert-publicly-leaked"];
+                /**
+                 * @description Filters alerts to only those whose attached `owner_email` metadata field matches the
+                 *     provided value. The value must be the lowercase hex-encoded SHA-256 hash of the email
+                 *     address to match (for example, the SHA-256 of `user@example.com`). Only alerts that
+                 *     have an `owner_email` metadata value whose SHA-256 hash equals this parameter are
+                 *     returned.
+                 */
+                owner_email_hash?: components["parameters"]["secret-scanning-alert-owner-email-hash"];
                 /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
                 page?: components["parameters"]["page"];
                 /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
@@ -131502,7 +136443,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["secret-scanning-alert"];
+                    "application/json": components["schemas"]["secret-scanning-alert-with-metadata"];
                 };
             };
             304: components["responses"]["not_modified"];
@@ -131552,7 +136493,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["secret-scanning-alert"];
+                    "application/json": components["schemas"]["secret-scanning-alert-with-metadata"];
                 };
             };
             /** @description Bad request, resolution comment is invalid or the resolution was not changed. */
@@ -131625,6 +136566,183 @@ export interface operations {
                 content?: never;
             };
             503: components["responses"]["service_unavailable"];
+        };
+    };
+    "secret-scanning/list-repo-custom-patterns": {
+        parameters: {
+            query?: {
+                /** @description A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for results after this cursor. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                after?: components["parameters"]["pagination-after"];
+                /** @description A cursor, as given in the [Link header](https://docs.github.com/rest/guides/using-pagination-in-the-rest-api#using-link-headers). If specified, the query only searches for results before this cursor. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                before?: components["parameters"]["pagination-before"];
+                /** @description The direction to sort the results by. */
+                direction?: components["parameters"]["direction"];
+                /** @description Filter custom patterns by whether push protection is enabled. When absent, returns patterns regardless of push protection status. */
+                push_protection?: components["parameters"]["secret-scanning-custom-pattern-push-protection"];
+                /** @description The property to sort the results by. */
+                sort?: components["parameters"]["secret-scanning-custom-pattern-sort"];
+                /** @description Filter custom patterns by state. When absent, returns patterns in all states. */
+                state?: components["parameters"]["secret-scanning-custom-pattern-state"];
+            };
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    Link: components["headers"]["link"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["secret-scanning-custom-pattern"][];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+        };
+    };
+    "secret-scanning/bulk-create-repo-custom-patterns": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The list of custom patterns to create (maximum 100). */
+                    patterns: components["schemas"]["secret-scanning-custom-pattern-to-create"][];
+                };
+            };
+        };
+        responses: {
+            /** @description All patterns created successfully. */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description The list of successfully created custom patterns. */
+                        created_patterns?: components["schemas"]["secret-scanning-custom-pattern"][];
+                    };
+                };
+            };
+            400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /** @description Validation failed for one or more patterns. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description A summary message describing the error. */
+                        message?: string;
+                        /** @description A map of validation errors keyed by the zero-based index of the pattern that failed. */
+                        validation_errors?: {
+                            [key: string]: {
+                                /** @description List of validation errors for this pattern. */
+                                errors?: components["schemas"]["secret-scanning-custom-pattern-validation-error"][];
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+    "secret-scanning/bulk-delete-repo-custom-patterns": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The list of custom patterns to delete. */
+                    patterns: components["schemas"]["secret-scanning-custom-pattern-to-delete"][];
+                    /**
+                     * @description What to do with alerts associated with the deleted patterns.
+                     *     `delete_alerts` permanently removes the alerts.
+                     *     `resolve_alerts` resolves the alerts as "pattern deleted".
+                     *     Defaults to `delete_alerts` when not specified.
+                     * @default delete_alerts
+                     * @enum {string}
+                     */
+                    post_delete_action?: "delete_alerts" | "resolve_alerts";
+                };
+            };
+        };
+        responses: {
+            /** @description All patterns deleted successfully. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            412: components["responses"]["precondition_failed"];
+        };
+    };
+    "secret-scanning/update-repo-custom-pattern": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The ID of the custom pattern. */
+                pattern_id: number;
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["secret-scanning-custom-pattern-to-update"];
+            };
+        };
+        responses: {
+            /** @description Pattern updated successfully. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["secret-scanning-custom-pattern"];
+                };
+            };
+            400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            412: components["responses"]["precondition_failed"];
+            422: components["responses"]["validation_failed"];
         };
     };
     "secret-scanning/create-push-protection-bypass": {
@@ -131783,7 +136901,15 @@ export interface operations {
             };
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
-            422: components["responses"]["validation_failed"];
+            /** @description Validation failed. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["repository-advisory-description-validation-error"];
+                };
+            };
         };
     };
     "security-advisories/get-repository-advisory": {
@@ -131940,7 +137066,308 @@ export interface operations {
             };
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
+            /** @description Validation failed. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["repository-advisory-description-validation-error"];
+                };
+            };
+        };
+    };
+    "pull-request-stacks/list": {
+        parameters: {
+            query?: {
+                /** @description The page number of the results to fetch. For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                page?: components["parameters"]["page"];
+                /** @description The number of results per page (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                per_page?: components["parameters"]["per-page"];
+                /** @description Filter to the stack containing this repository pull request number. */
+                pull_request?: number;
+            };
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["pull-request-stack-minimal"][];
+                };
+            };
+            404: components["responses"]["not_found"];
             422: components["responses"]["validation_failed"];
+        };
+    };
+    "pull-request-stacks/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description An ordered list of pull request numbers forming the stack from bottom to top. */
+                    pull_requests: number[];
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        base: {
+                            ref: string;
+                        };
+                        /** Format: date-time */
+                        created_at: string;
+                        id: number;
+                        node_id: string;
+                        number: number;
+                        /** @description Whether the stack has any open pull request. False when all pull requests are merged or closed. */
+                        open: boolean;
+                        pull_requests: components["schemas"]["pull-request-stack-pull-request"][];
+                        /** Format: uri */
+                        url: string;
+                    };
+                };
+            };
+            404: components["responses"]["not_found"];
+            /**
+             * @description Validation failed. Returned when the request references pull requests that
+             *     don't exist in the repository, or when the pull requests can't form a
+             *     valid stack.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        documentation_url: string;
+                        errors?: {
+                            code: string;
+                            field?: string;
+                            index?: number;
+                            message?: string;
+                            resource?: string;
+                            value?: (string | null) | (number | null) | ((string | number)[] | null);
+                        }[];
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "pull-request-stacks/get": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+                /** @description The number that identifies the pull request stack. */
+                stack_number: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        base: {
+                            ref: string;
+                        };
+                        /** Format: date-time */
+                        created_at: string;
+                        id: number;
+                        node_id: string;
+                        number: number;
+                        /** @description Whether the stack has any open pull request. False when all pull requests are merged or closed. */
+                        open: boolean;
+                        pull_requests: components["schemas"]["pull-request-stack-pull-request"][];
+                        /** Format: uri */
+                        url: string;
+                    };
+                };
+            };
+            404: components["responses"]["not_found"];
+        };
+    };
+    "pull-request-stacks/add": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+                /** @description The number that identifies the pull request stack. */
+                stack_number: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description An ordered list of pull request numbers to append to the stack, from the current top upward. */
+                    pull_requests: number[];
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        base: {
+                            ref: string;
+                        };
+                        /** Format: date-time */
+                        created_at: string;
+                        id: number;
+                        node_id: string;
+                        number: number;
+                        /** @description Whether the stack has any open pull request. False when all pull requests are merged or closed. */
+                        open: boolean;
+                        pull_requests: components["schemas"]["pull-request-stack-pull-request"][];
+                        /** Format: uri */
+                        url: string;
+                    };
+                };
+            };
+            404: components["responses"]["not_found"];
+            /** @description Conflict. Returned when the stack is being modified by another request. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /**
+             * @description Validation failed. Returned when the request references pull requests that
+             *     don't exist in the repository, or when the pull requests can't be appended
+             *     to the stack.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        documentation_url: string;
+                        errors?: {
+                            code: string;
+                            field?: string;
+                            index?: number;
+                            message?: string;
+                            resource?: string;
+                            value?: (string | null) | (number | null) | ((string | number)[] | null);
+                        }[];
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "pull-request-stacks/unstack": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+                /** @description The number that identifies the pull request stack. */
+                stack_number: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        base: {
+                            ref: string;
+                        };
+                        /** Format: date-time */
+                        created_at: string;
+                        id: number;
+                        node_id: string;
+                        number: number;
+                        /** @description Whether the stack has any open pull request. False when all pull requests are merged or closed. */
+                        open: boolean;
+                        pull_requests: components["schemas"]["pull-request-stack-pull-request"][];
+                        /** Format: uri */
+                        url: string;
+                    };
+                };
+            };
+            204: components["responses"]["no_content"];
+            404: components["responses"]["not_found"];
+            /** @description Conflict. Returned when the stack is being modified by another request. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /**
+             * @description Validation failed. Returned when the stack can't be unstacked because every
+             *     pull request in it is locked and cannot be removed.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error"];
+                };
+            };
         };
     };
     "activity/list-stargazers-for-repo": {
@@ -131970,6 +137397,67 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["simple-user"][] | components["schemas"]["stargazer"][];
+                };
+            };
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "activity/get-stargazer-count-for-repo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example 42 */
+                        count: number;
+                    };
+                };
+            };
+            404: components["responses"]["not_found"];
+        };
+    };
+    "activity/get-stargazer-history-for-repo": {
+        parameters: {
+            query?: {
+                /** @description The page number of the results to fetch (max 100). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                page?: number;
+                /** @description The number of results per page (max 30). For more information, see "[Using pagination in the REST API](https://docs.github.com/rest/using-the-rest-api/using-pagination-in-the-rest-api)." */
+                per_page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Repository star history */
+            200: {
+                headers: {
+                    Link: components["headers"]["link"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["stargazer-history"][];
                 };
             };
             422: components["responses"]["validation_failed"];
@@ -133129,6 +138617,8 @@ export interface operations {
                     notification_setting?: "notifications_enabled" | "notifications_disabled";
                     /** @description The ID of a team to set as the parent team. */
                     parent_team_id?: number | null;
+                    /** @description The slug of a team to set as the parent team. Ignored when `parent_team_id` is also provided. */
+                    parent_team_slug?: string | null;
                     /**
                      * @description **Closing down notice**. The permission that new repositories will be added to the team with when none is specified.
                      * @default pull
@@ -133227,7 +138717,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["simple-user"][];
+                    "application/json": components["schemas"]["team-member"][];
                 };
             };
             404: components["responses"]["not_found"];
@@ -134979,7 +140469,12 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        repositories: components["schemas"]["repository"][];
+                        repositories: (components["schemas"]["repository"] & {
+                            /** @description The custom properties that were defined for the repository. The keys are the custom property names, and the values are the corresponding custom property values. Present for org repos only. */
+                            custom_properties?: {
+                                [key: string]: unknown;
+                            };
+                        })[];
                         repository_selection?: string;
                         total_count: number;
                     };
@@ -135414,8 +140909,17 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Response */
+            /** @description The user's organization invitation was accepted synchronously. */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["org-membership"];
+                };
+            };
+            /** @description The acceptance of the user's organization invitation is being processed asynchronously. */
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -136701,6 +142205,13 @@ export interface operations {
                      */
                     filter?: string;
                     /**
+                     * @description The field IDs to group items by (horizontal grouping). Supports a single field. The field must support grouping; fields such as `Title`, `Reviewers`, `Linked pull requests`, `Sub-issues progress`, `Tracked by`, and `Tracks` cannot be grouped on.
+                     * @example [
+                     *       123
+                     *     ]
+                     */
+                    group_by?: number[];
+                    /**
                      * @description The layout of the view.
                      * @example board
                      * @enum {string}
@@ -136711,6 +142222,27 @@ export interface operations {
                      * @example Sprint Board
                      */
                     name: string;
+                    /**
+                     * @description Sorting configuration for the view. Each element is a two-element array of `[field_id, direction]` where `direction` is `"asc"` or `"desc"`. Supports multiple sort criteria applied in order.
+                     * @example [
+                     *       [
+                     *         123,
+                     *         "asc"
+                     *       ],
+                     *       [
+                     *         456,
+                     *         "desc"
+                     *       ]
+                     *     ]
+                     */
+                    sort_by?: (number | string)[][];
+                    /**
+                     * @description The field IDs to use as columns in `board` layout (vertical grouping). Supports a single field. The field must support grouping; fields such as `Title`, `Reviewers`, `Linked pull requests`, `Sub-issues progress`, `Tracked by`, and `Tracks` cannot be grouped on.
+                     * @example [
+                     *       456
+                     *     ]
+                     */
+                    vertical_group_by?: number[];
                     /**
                      * @description `visible_fields` is not applicable to `roadmap` layout views.
                      *     For `table` and `board` layouts, this represents the field IDs that should be visible in the view. If not provided, the default visible fields will be used.
@@ -138734,6 +144266,37 @@ export interface operations {
             };
         };
     };
+    "billing/get-github-billing-ai-credit-usage-report-user": {
+        parameters: {
+            query?: {
+                /** @description If specified, only return results for a single day. The value of `day` is an integer between `1` and `31`. If no `year` or `month` is specified, the default `year` and `month` are used. */
+                day?: components["parameters"]["billing-usage-report-day"];
+                /** @description The model name to query usage for. The name is not case sensitive. */
+                model?: components["parameters"]["billing-usage-report-model"];
+                /** @description If specified, only return results for a single month. The value of `month` is an integer between `1` and `12`. Default value is the current month. If no year is specified the default `year` is used. */
+                month?: components["parameters"]["billing-usage-report-month-default"];
+                /** @description The product name to query usage for. The name is not case sensitive. */
+                product?: components["parameters"]["billing-usage-report-product"];
+                /** @description If specified, only return results for a single year. The value of `year` is an integer with four digits representing a year. For example, `2025`. Default value is the current year. */
+                year?: components["parameters"]["billing-usage-report-year"];
+            };
+            header?: never;
+            path: {
+                /** @description The handle for the GitHub user account. */
+                username: components["parameters"]["username"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: components["responses"]["billing_ai_credit_usage_report_user"];
+            400: components["responses"]["bad_request"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            500: components["responses"]["internal_error"];
+            503: components["responses"]["service_unavailable"];
+        };
+    };
     "billing/get-github-billing-premium-request-usage-report-user": {
         parameters: {
             query?: {
@@ -138986,3 +144549,6 @@ export interface operations {
         };
     };
 }
+type WithRequired<T, K extends keyof T> = T & {
+    [P in K]-?: T[P];
+};

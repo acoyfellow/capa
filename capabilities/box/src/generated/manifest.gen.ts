@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Box Platform API v2024.0
-// Operations:  294
+// Operations:  295
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -27,6 +27,7 @@ export const manifest = {
 	"put_files_upload_sessions_id": {"namespace":"files","method":"uploadSessions","http":"put","path":"/files/upload_sessions/{upload_session_id}","risk":"medium"},
 	"delete_files_upload_sessions_id": {"namespace":"files","method":"deleteUploadSession","http":"delete","path":"/files/upload_sessions/{upload_session_id}","risk":"medium"},
 	"get_files_upload_sessions_id_parts": {"namespace":"files","method":"parts","http":"get","path":"/files/upload_sessions/{upload_session_id}/parts","risk":"medium"},
+	"post_files_upload_sessions_id_plan": {"namespace":"files","method":"plan","http":"post","path":"/files/upload_sessions/{upload_session_id}/plan","risk":"medium"},
 	"post_files_upload_sessions_id_commit": {"namespace":"files","method":"commit","http":"post","path":"/files/upload_sessions/{upload_session_id}/commit","risk":"medium"},
 	"post_files_id_copy": {"namespace":"files","method":"createCopy","http":"post","path":"/files/{file_id}/copy","risk":"medium"},
 	"get_files_id_thumbnail_id": {"namespace":"files","method":"listThumbnailExtension","http":"get","path":"/files/{file_id}/thumbnail.{extension}","risk":"medium"},

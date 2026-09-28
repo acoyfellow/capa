@@ -15,22 +15,6 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
-    "/v1/a2p/BrandRegistrations/{BrandRegistrationSid}/2fa": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/v1/a2p/BrandRegistrations/{BrandRegistrationSid}/SmsOtp": {
         parameters: {
             query?: never;
@@ -1028,6 +1012,8 @@ export type components = {
         "messaging.v1.service.generic_sender": {
             /** @description The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the number or channel sender resource. */
             account_sid?: string | null;
+            /** @description The capabilities of the number or channel sender (e.g. SMS, MMS, Voice). Populated for phone-number senders; empty for channel senders which have a standardized capability. */
+            capabilities?: string[] | null;
             /** @description The 2-character [ISO Country Code](https://www.iso.org/iso-3166-country-codes.html) of the number or channel sender. */
             country_code?: string | null;
             /**
@@ -1433,16 +1419,6 @@ export type components = {
          * @enum {string|null}
          */
         tollfree_verification_enum_vetting_provider: "CAMPAIGN_VERIFY" | null;
-        /**
-         * @description The status of the sender. Configuring: We are in the process of registering the sender. If your sender stays in this state for a long period of time it is possible that there is an issue with parameters you provided; PendingVerification: We have successfully registered the sender with WhatsApp and you should receive a code from their services; Configured: The sender has been successfully verified with WhatsApp and is all set to start sending messages; ConfigurationError - If configuration fails due to below possibilities: parameters provided were incorrect, Twilio account suspended or deleted, whatsapp api failed, Twilio internal error. VerificationError - If verification api fails, please check error_message for more details
-         * @enum {string}
-         */
-        whatsapp_sender_enum_status: "Configuring" | "PendingVerification" | "Configured" | "ConfigurationError" | "VerificationError";
-        /**
-         * @description The Category of this WhatsApp Template. One of `ACCOUNT_UPDATE`, `ALERT_UPDATE`, `APPOINTMENT_UPDATE`, `AUTO_REPLY`, `ISSUE_RESOLUTION`, `PAYMENT_UPDATE`, `PERSONAL_FINANCE_UPDATE`, `RESERVATION_UPDATE`, `SHIPPING_UPDATE`, `TICKET_UPDATE`, `TRANSPORTATION_UPDATE`, `MARKETING`, `AUTHENTICATION`, `UTILITY`, `OTP` or `TRANSACTIONAL`.
-         * @enum {string}
-         */
-        whatsapp_template_enum_category: "ACCOUNT_UPDATE" | "ALERT_UPDATE" | "AUTO_REPLY" | "APPOINTMENT_UPDATE" | "ISSUE_RESOLUTION" | "PAYMENT_UPDATE" | "PERSONAL_FINANCE_UPDATE" | "RESERVATION_UPDATE" | "SHIPPING_UPDATE" | "TICKET_UPDATE" | "TRANSPORTATION_UPDATE" | "MARKETING" | "OTP" | "TRANSACTIONAL" | "AUTHENTICATION" | "UTILITY";
     };
     responses: never;
     parameters: {

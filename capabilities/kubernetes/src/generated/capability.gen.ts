@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Kubernetes vunversioned
-// Operations:  1111
+// Operations:  1190
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -11655,6 +11655,402 @@ export class ApisResource extends RpcTarget {
 	}
 
 	/**
+	 * list or watch objects of kind ClusterTrustBundle
+	 *
+	 * `GET /apis/certificates.k8s.io/v1/clustertrustbundles` — risk: medium
+	 */
+	async getV1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listCertificatesV1ClusterTrustBundle",
+			namespace: "apis",
+			method: "getV1Clustertrustbundles",
+			http: "get",
+			path: `/apis/certificates.k8s.io/v1/clustertrustbundles`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getV1Clustertrustbundles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * create a ClusterTrustBundle
+	 *
+	 * `POST /apis/certificates.k8s.io/v1/clustertrustbundles` — risk: medium
+	 */
+	async postV1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "createCertificatesV1ClusterTrustBundle",
+			namespace: "apis",
+			method: "postV1Clustertrustbundles",
+			http: "post",
+			path: `/apis/certificates.k8s.io/v1/clustertrustbundles`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["postV1Clustertrustbundles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete collection of ClusterTrustBundle
+	 *
+	 * `DELETE /apis/certificates.k8s.io/v1/clustertrustbundles` — risk: medium
+	 */
+	async deleteV1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteCertificatesV1CollectionClusterTrustBundle",
+			namespace: "apis",
+			method: "deleteV1Clustertrustbundles",
+			http: "delete",
+			path: `/apis/certificates.k8s.io/v1/clustertrustbundles`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteV1Clustertrustbundles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read the specified ClusterTrustBundle
+	 *
+	 * `GET /apis/certificates.k8s.io/v1/clustertrustbundles/{name}` — risk: medium
+	 */
+	async v1clustertrustbundlesRetrieveClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readCertificatesV1ClusterTrustBundle",
+			namespace: "apis",
+			method: "v1clustertrustbundlesRetrieveClustertrustbundle",
+			http: "get",
+			path: `/apis/certificates.k8s.io/v1/clustertrustbundles/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1clustertrustbundlesRetrieveClustertrustbundle"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace the specified ClusterTrustBundle
+	 *
+	 * `PUT /apis/certificates.k8s.io/v1/clustertrustbundles/{name}` — risk: medium
+	 */
+	async putV1Clustertrustbundles(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceCertificatesV1ClusterTrustBundle",
+			namespace: "apis",
+			method: "putV1Clustertrustbundles",
+			http: "put",
+			path: `/apis/certificates.k8s.io/v1/clustertrustbundles/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putV1Clustertrustbundles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update the specified ClusterTrustBundle
+	 *
+	 * `PATCH /apis/certificates.k8s.io/v1/clustertrustbundles/{name}` — risk: medium
+	 */
+	async patchV1Clustertrustbundles(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchCertificatesV1ClusterTrustBundle",
+			namespace: "apis",
+			method: "patchV1Clustertrustbundles",
+			http: "patch",
+			path: `/apis/certificates.k8s.io/v1/clustertrustbundles/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchV1Clustertrustbundles"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete a ClusterTrustBundle
+	 *
+	 * `DELETE /apis/certificates.k8s.io/v1/clustertrustbundles/{name}` — risk: medium
+	 */
+	async v1clustertrustbundlesDeleteClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteCertificatesV1ClusterTrustBundle",
+			namespace: "apis",
+			method: "v1clustertrustbundlesDeleteClustertrustbundle",
+			http: "delete",
+			path: `/apis/certificates.k8s.io/v1/clustertrustbundles/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1clustertrustbundlesDeleteClustertrustbundle"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind PodCertificateRequest
+	 *
+	 * `GET /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests` — risk: medium
+	 */
+	async getV1namespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listCertificatesV1NamespacedPodCertificateRequest",
+			namespace: "apis",
+			method: "getV1namespacesPodcertificaterequests",
+			http: "get",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getV1namespacesPodcertificaterequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * create a PodCertificateRequest
+	 *
+	 * `POST /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests` — risk: medium
+	 */
+	async postV1namespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "createCertificatesV1NamespacedPodCertificateRequest",
+			namespace: "apis",
+			method: "postV1namespacesPodcertificaterequests",
+			http: "post",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["postV1namespacesPodcertificaterequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete collection of PodCertificateRequest
+	 *
+	 * `DELETE /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests` — risk: medium
+	 */
+	async deleteV1namespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteCertificatesV1CollectionNamespacedPodCertificateRequest",
+			namespace: "apis",
+			method: "deleteV1namespacesPodcertificaterequests",
+			http: "delete",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteV1namespacesPodcertificaterequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read the specified PodCertificateRequest
+	 *
+	 * `GET /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
+	 */
+	async v1namespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readCertificatesV1NamespacedPodCertificateRequest",
+			namespace: "apis",
+			method: "v1namespacespodcertificaterequestsRetrievePodcertificaterequest",
+			http: "get",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1namespacespodcertificaterequestsRetrievePodcertificaterequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace the specified PodCertificateRequest
+	 *
+	 * `PUT /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
+	 */
+	async putV1namespacesPodcertificaterequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceCertificatesV1NamespacedPodCertificateRequest",
+			namespace: "apis",
+			method: "putV1namespacesPodcertificaterequests",
+			http: "put",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putV1namespacesPodcertificaterequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update the specified PodCertificateRequest
+	 *
+	 * `PATCH /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
+	 */
+	async patchV1namespacesPodcertificaterequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchCertificatesV1NamespacedPodCertificateRequest",
+			namespace: "apis",
+			method: "patchV1namespacesPodcertificaterequests",
+			http: "patch",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchV1namespacesPodcertificaterequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete a PodCertificateRequest
+	 *
+	 * `DELETE /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
+	 */
+	async v1namespacespodcertificaterequestsDeletePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteCertificatesV1NamespacedPodCertificateRequest",
+			namespace: "apis",
+			method: "v1namespacespodcertificaterequestsDeletePodcertificaterequest",
+			http: "delete",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1namespacespodcertificaterequestsDeletePodcertificaterequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read status of the specified PodCertificateRequest
+	 *
+	 * `GET /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests/{name}/status` — risk: medium
+	 */
+	async getCertificatesK8sIov1namespacespodcertificaterequestsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readCertificatesV1NamespacedPodCertificateRequestStatus",
+			namespace: "apis",
+			method: "getCertificatesK8sIov1namespacespodcertificaterequestsStatus",
+			http: "get",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getCertificatesK8sIov1namespacespodcertificaterequestsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace status of the specified PodCertificateRequest
+	 *
+	 * `PUT /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests/{name}/status` — risk: medium
+	 */
+	async putCertificatesK8sIov1namespacespodcertificaterequestsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceCertificatesV1NamespacedPodCertificateRequestStatus",
+			namespace: "apis",
+			method: "putCertificatesK8sIov1namespacespodcertificaterequestsStatus",
+			http: "put",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putCertificatesK8sIov1namespacespodcertificaterequestsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update status of the specified PodCertificateRequest
+	 *
+	 * `PATCH /apis/certificates.k8s.io/v1/namespaces/{namespace}/podcertificaterequests/{name}/status` — risk: medium
+	 */
+	async patchCertificatesK8sIov1namespacespodcertificaterequestsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchCertificatesV1NamespacedPodCertificateRequestStatus",
+			namespace: "apis",
+			method: "patchCertificatesK8sIov1namespacespodcertificaterequestsStatus",
+			http: "patch",
+			path: `/apis/certificates.k8s.io/v1/namespaces/${namespace}/podcertificaterequests/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchCertificatesK8sIov1namespacespodcertificaterequestsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind PodCertificateRequest
+	 *
+	 * `GET /apis/certificates.k8s.io/v1/podcertificaterequests` — risk: medium
+	 */
+	async v1Podcertificaterequests(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listCertificatesV1PodCertificateRequestForAllNamespaces",
+			namespace: "apis",
+			method: "v1Podcertificaterequests",
+			http: "get",
+			path: `/apis/certificates.k8s.io/v1/podcertificaterequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1Podcertificaterequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * watch individual changes to a list of CertificateSigningRequest. deprecated: use the 'watch' parameter with a list operation instead.
 	 *
 	 * `GET /apis/certificates.k8s.io/v1/watch/certificatesigningrequests` — risk: medium
@@ -11699,196 +12095,20 @@ export class ApisResource extends RpcTarget {
 	}
 
 	/**
-	 * get available resources
-	 *
-	 * `GET /apis/certificates.k8s.io/v1alpha1/` — risk: medium
-	 */
-	async certificatesK8sIoV1alpha1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "getCertificatesV1alpha1APIResources",
-			namespace: "apis",
-			method: "certificatesK8sIoV1alpha1",
-			http: "get",
-			path: `/apis/certificates.k8s.io/v1alpha1/`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["certificatesK8sIoV1alpha1"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * list or watch objects of kind ClusterTrustBundle
-	 *
-	 * `GET /apis/certificates.k8s.io/v1alpha1/clustertrustbundles` — risk: medium
-	 */
-	async getV1alpha1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "listCertificatesV1alpha1ClusterTrustBundle",
-			namespace: "apis",
-			method: "getV1alpha1Clustertrustbundles",
-			http: "get",
-			path: `/apis/certificates.k8s.io/v1alpha1/clustertrustbundles`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["getV1alpha1Clustertrustbundles"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * create a ClusterTrustBundle
-	 *
-	 * `POST /apis/certificates.k8s.io/v1alpha1/clustertrustbundles` — risk: medium
-	 */
-	async postV1alpha1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "createCertificatesV1alpha1ClusterTrustBundle",
-			namespace: "apis",
-			method: "postV1alpha1Clustertrustbundles",
-			http: "post",
-			path: `/apis/certificates.k8s.io/v1alpha1/clustertrustbundles`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["postV1alpha1Clustertrustbundles"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * delete collection of ClusterTrustBundle
-	 *
-	 * `DELETE /apis/certificates.k8s.io/v1alpha1/clustertrustbundles` — risk: medium
-	 */
-	async deleteV1alpha1Clustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "deleteCertificatesV1alpha1CollectionClusterTrustBundle",
-			namespace: "apis",
-			method: "deleteV1alpha1Clustertrustbundles",
-			http: "delete",
-			path: `/apis/certificates.k8s.io/v1alpha1/clustertrustbundles`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["deleteV1alpha1Clustertrustbundles"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * read the specified ClusterTrustBundle
-	 *
-	 * `GET /apis/certificates.k8s.io/v1alpha1/clustertrustbundles/{name}` — risk: medium
-	 */
-	async v1alpha1clustertrustbundlesRetrieveClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "readCertificatesV1alpha1ClusterTrustBundle",
-			namespace: "apis",
-			method: "v1alpha1clustertrustbundlesRetrieveClustertrustbundle",
-			http: "get",
-			path: `/apis/certificates.k8s.io/v1alpha1/clustertrustbundles/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1alpha1clustertrustbundlesRetrieveClustertrustbundle"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * replace the specified ClusterTrustBundle
-	 *
-	 * `PUT /apis/certificates.k8s.io/v1alpha1/clustertrustbundles/{name}` — risk: medium
-	 */
-	async putV1alpha1Clustertrustbundles(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "replaceCertificatesV1alpha1ClusterTrustBundle",
-			namespace: "apis",
-			method: "putV1alpha1Clustertrustbundles",
-			http: "put",
-			path: `/apis/certificates.k8s.io/v1alpha1/clustertrustbundles/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["putV1alpha1Clustertrustbundles"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * partially update the specified ClusterTrustBundle
-	 *
-	 * `PATCH /apis/certificates.k8s.io/v1alpha1/clustertrustbundles/{name}` — risk: medium
-	 */
-	async patchV1alpha1Clustertrustbundles(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "patchCertificatesV1alpha1ClusterTrustBundle",
-			namespace: "apis",
-			method: "patchV1alpha1Clustertrustbundles",
-			http: "patch",
-			path: `/apis/certificates.k8s.io/v1alpha1/clustertrustbundles/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["patchV1alpha1Clustertrustbundles"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * delete a ClusterTrustBundle
-	 *
-	 * `DELETE /apis/certificates.k8s.io/v1alpha1/clustertrustbundles/{name}` — risk: medium
-	 */
-	async v1alpha1clustertrustbundlesDeleteClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "deleteCertificatesV1alpha1ClusterTrustBundle",
-			namespace: "apis",
-			method: "v1alpha1clustertrustbundlesDeleteClustertrustbundle",
-			http: "delete",
-			path: `/apis/certificates.k8s.io/v1alpha1/clustertrustbundles/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1alpha1clustertrustbundlesDeleteClustertrustbundle"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
 	 * watch individual changes to a list of ClusterTrustBundle. deprecated: use the 'watch' parameter with a list operation instead.
 	 *
-	 * `GET /apis/certificates.k8s.io/v1alpha1/watch/clustertrustbundles` — risk: medium
+	 * `GET /apis/certificates.k8s.io/v1/watch/clustertrustbundles` — risk: medium
 	 */
-	async v1alpha1watchClustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1watchClustertrustbundles(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "watchCertificatesV1alpha1ClusterTrustBundleList",
+			operationId: "watchCertificatesV1ClusterTrustBundleList",
 			namespace: "apis",
-			method: "v1alpha1watchClustertrustbundles",
+			method: "v1watchClustertrustbundles",
 			http: "get",
-			path: `/apis/certificates.k8s.io/v1alpha1/watch/clustertrustbundles`,
+			path: `/apis/certificates.k8s.io/v1/watch/clustertrustbundles`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1alpha1watchClustertrustbundles"],
+			overrides: this.overrides["v1watchClustertrustbundles"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -11899,18 +12119,84 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * watch changes to an object of kind ClusterTrustBundle. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 	 *
-	 * `GET /apis/certificates.k8s.io/v1alpha1/watch/clustertrustbundles/{name}` — risk: medium
+	 * `GET /apis/certificates.k8s.io/v1/watch/clustertrustbundles/{name}` — risk: medium
 	 */
-	async v1alpha1watchclustertrustbundlesRetrieveClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1watchclustertrustbundlesRetrieveClustertrustbundle(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "watchCertificatesV1alpha1ClusterTrustBundle",
+			operationId: "watchCertificatesV1ClusterTrustBundle",
 			namespace: "apis",
-			method: "v1alpha1watchclustertrustbundlesRetrieveClustertrustbundle",
+			method: "v1watchclustertrustbundlesRetrieveClustertrustbundle",
 			http: "get",
-			path: `/apis/certificates.k8s.io/v1alpha1/watch/clustertrustbundles/${name}`,
+			path: `/apis/certificates.k8s.io/v1/watch/clustertrustbundles/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1alpha1watchclustertrustbundlesRetrieveClustertrustbundle"],
+			overrides: this.overrides["v1watchclustertrustbundlesRetrieveClustertrustbundle"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of PodCertificateRequest. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/certificates.k8s.io/v1/watch/namespaces/{namespace}/podcertificaterequests` — risk: medium
+	 */
+	async v1watchnamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchCertificatesV1NamespacedPodCertificateRequestList",
+			namespace: "apis",
+			method: "v1watchnamespacesPodcertificaterequests",
+			http: "get",
+			path: `/apis/certificates.k8s.io/v1/watch/namespaces/${namespace}/podcertificaterequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1watchnamespacesPodcertificaterequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch changes to an object of kind PodCertificateRequest. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
+	 *
+	 * `GET /apis/certificates.k8s.io/v1/watch/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
+	 */
+	async v1watchnamespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchCertificatesV1NamespacedPodCertificateRequest",
+			namespace: "apis",
+			method: "v1watchnamespacespodcertificaterequestsRetrievePodcertificaterequest",
+			http: "get",
+			path: `/apis/certificates.k8s.io/v1/watch/namespaces/${namespace}/podcertificaterequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1watchnamespacespodcertificaterequestsRetrievePodcertificaterequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of PodCertificateRequest. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/certificates.k8s.io/v1/watch/podcertificaterequests` — risk: medium
+	 */
+	async v1watchPodcertificaterequests(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchCertificatesV1PodCertificateRequestListForAllNamespaces",
+			namespace: "apis",
+			method: "v1watchPodcertificaterequests",
+			http: "get",
+			path: `/apis/certificates.k8s.io/v1/watch/podcertificaterequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1watchPodcertificaterequests"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12099,16 +12385,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests` — risk: medium
 	 */
-	async getNamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async getV1beta1namespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
-			method: "getNamespacesPodcertificaterequests",
+			method: "getV1beta1namespacesPodcertificaterequests",
 			http: "get",
 			path: `/apis/certificates.k8s.io/v1beta1/namespaces/${namespace}/podcertificaterequests`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["getNamespacesPodcertificaterequests"],
+			overrides: this.overrides["getV1beta1namespacesPodcertificaterequests"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12121,16 +12407,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests` — risk: medium
 	 */
-	async postNamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async postV1beta1namespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
-			method: "postNamespacesPodcertificaterequests",
+			method: "postV1beta1namespacesPodcertificaterequests",
 			http: "post",
 			path: `/apis/certificates.k8s.io/v1beta1/namespaces/${namespace}/podcertificaterequests`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["postNamespacesPodcertificaterequests"],
+			overrides: this.overrides["postV1beta1namespacesPodcertificaterequests"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12143,16 +12429,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests` — risk: medium
 	 */
-	async deleteNamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async deleteV1beta1namespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1beta1CollectionNamespacedPodCertificateRequest",
 			namespace: "apis",
-			method: "deleteNamespacesPodcertificaterequests",
+			method: "deleteV1beta1namespacesPodcertificaterequests",
 			http: "delete",
 			path: `/apis/certificates.k8s.io/v1beta1/namespaces/${namespace}/podcertificaterequests`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deleteNamespacesPodcertificaterequests"],
+			overrides: this.overrides["deleteV1beta1namespacesPodcertificaterequests"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12165,16 +12451,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async namespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1namespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
-			method: "namespacespodcertificaterequestsRetrievePodcertificaterequest",
+			method: "v1beta1namespacespodcertificaterequestsRetrievePodcertificaterequest",
 			http: "get",
 			path: `/apis/certificates.k8s.io/v1beta1/namespaces/${namespace}/podcertificaterequests/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["namespacespodcertificaterequestsRetrievePodcertificaterequest"],
+			overrides: this.overrides["v1beta1namespacespodcertificaterequestsRetrievePodcertificaterequest"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12187,16 +12473,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async putNamespacesPodcertificaterequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async putV1beta1namespacesPodcertificaterequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
-			method: "putNamespacesPodcertificaterequests",
+			method: "putV1beta1namespacesPodcertificaterequests",
 			http: "put",
 			path: `/apis/certificates.k8s.io/v1beta1/namespaces/${namespace}/podcertificaterequests/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["putNamespacesPodcertificaterequests"],
+			overrides: this.overrides["putV1beta1namespacesPodcertificaterequests"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12209,16 +12495,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async patchNamespacesPodcertificaterequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async patchV1beta1namespacesPodcertificaterequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
-			method: "patchNamespacesPodcertificaterequests",
+			method: "patchV1beta1namespacesPodcertificaterequests",
 			http: "patch",
 			path: `/apis/certificates.k8s.io/v1beta1/namespaces/${namespace}/podcertificaterequests/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["patchNamespacesPodcertificaterequests"],
+			overrides: this.overrides["patchV1beta1namespacesPodcertificaterequests"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12231,16 +12517,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/certificates.k8s.io/v1beta1/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async deletePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1namespacespodcertificaterequestsDeletePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
-			method: "deletePodcertificaterequest",
+			method: "v1beta1namespacespodcertificaterequestsDeletePodcertificaterequest",
 			http: "delete",
 			path: `/apis/certificates.k8s.io/v1beta1/namespaces/${namespace}/podcertificaterequests/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deletePodcertificaterequest"],
+			overrides: this.overrides["v1beta1namespacespodcertificaterequestsDeletePodcertificaterequest"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12319,16 +12605,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/podcertificaterequests` — risk: medium
 	 */
-	async podcertificaterequests_5(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1Podcertificaterequests(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listCertificatesV1beta1PodCertificateRequestForAllNamespaces",
 			namespace: "apis",
-			method: "podcertificaterequests_5",
+			method: "v1beta1Podcertificaterequests",
 			http: "get",
 			path: `/apis/certificates.k8s.io/v1beta1/podcertificaterequests`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["podcertificaterequests_5"],
+			overrides: this.overrides["v1beta1Podcertificaterequests"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12385,16 +12671,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/watch/namespaces/{namespace}/podcertificaterequests` — risk: medium
 	 */
-	async watchnamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1watchnamespacesPodcertificaterequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1beta1NamespacedPodCertificateRequestList",
 			namespace: "apis",
-			method: "watchnamespacesPodcertificaterequests",
+			method: "v1beta1watchnamespacesPodcertificaterequests",
 			http: "get",
 			path: `/apis/certificates.k8s.io/v1beta1/watch/namespaces/${namespace}/podcertificaterequests`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchnamespacesPodcertificaterequests"],
+			overrides: this.overrides["v1beta1watchnamespacesPodcertificaterequests"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12407,16 +12693,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/watch/namespaces/{namespace}/podcertificaterequests/{name}` — risk: medium
 	 */
-	async watchnamespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1watchnamespacespodcertificaterequestsRetrievePodcertificaterequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1beta1NamespacedPodCertificateRequest",
 			namespace: "apis",
-			method: "watchnamespacespodcertificaterequestsRetrievePodcertificaterequest",
+			method: "v1beta1watchnamespacespodcertificaterequestsRetrievePodcertificaterequest",
 			http: "get",
 			path: `/apis/certificates.k8s.io/v1beta1/watch/namespaces/${namespace}/podcertificaterequests/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchnamespacespodcertificaterequestsRetrievePodcertificaterequest"],
+			overrides: this.overrides["v1beta1watchnamespacespodcertificaterequestsRetrievePodcertificaterequest"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12429,16 +12715,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/certificates.k8s.io/v1beta1/watch/podcertificaterequests` — risk: medium
 	 */
-	async watchPodcertificaterequests(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1watchPodcertificaterequests(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchCertificatesV1beta1PodCertificateRequestListForAllNamespaces",
 			namespace: "apis",
-			method: "watchPodcertificaterequests",
+			method: "v1beta1watchPodcertificaterequests",
 			http: "get",
 			path: `/apis/certificates.k8s.io/v1beta1/watch/podcertificaterequests`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchPodcertificaterequests"],
+			overrides: this.overrides["v1beta1watchPodcertificaterequests"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -12737,16 +13023,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/coordination.k8s.io/v1alpha2/` — risk: medium
 	 */
-	async coordinationK8sIoV1alpha2(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getCoordinationV1alpha2APIResources",
 			namespace: "apis",
-			method: "coordinationK8sIoV1alpha2",
+			method: "v1alpha2",
 			http: "get",
 			path: `/apis/coordination.k8s.io/v1alpha2/`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["coordinationK8sIoV1alpha2"],
+			overrides: this.overrides["v1alpha2"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -14715,6 +15001,666 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * get information of a group
 	 *
+	 * `GET /apis/lifecycle.k8s.io/` — risk: medium
+	 */
+	async listLifecycleK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getLifecycleAPIGroup",
+			namespace: "apis",
+			method: "listLifecycleK8sIo",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listLifecycleK8sIo"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * get available resources
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/` — risk: medium
+	 */
+	async lifecycleK8sIoV1alpha1(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getLifecycleV1alpha1APIResources",
+			namespace: "apis",
+			method: "lifecycleK8sIoV1alpha1",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["lifecycleK8sIoV1alpha1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind EvictionRequest
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/evictionrequests` — risk: medium
+	 */
+	async evictionrequests_0(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listLifecycleV1alpha1EvictionRequestForAllNamespaces",
+			namespace: "apis",
+			method: "evictionrequests_0",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/evictionrequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["evictionrequests_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind Eviction
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/evictions` — risk: medium
+	 */
+	async evictions_0(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listLifecycleV1alpha1EvictionForAllNamespaces",
+			namespace: "apis",
+			method: "evictions_0",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/evictions`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["evictions_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind EvictionRequest
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests` — risk: medium
+	 */
+	async getNamespacesEvictionrequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listLifecycleV1alpha1NamespacedEvictionRequest",
+			namespace: "apis",
+			method: "getNamespacesEvictionrequests",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getNamespacesEvictionrequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * create an EvictionRequest
+	 *
+	 * `POST /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests` — risk: medium
+	 */
+	async postNamespacesEvictionrequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "createLifecycleV1alpha1NamespacedEvictionRequest",
+			namespace: "apis",
+			method: "postNamespacesEvictionrequests",
+			http: "post",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["postNamespacesEvictionrequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete collection of EvictionRequest
+	 *
+	 * `DELETE /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests` — risk: medium
+	 */
+	async deleteNamespacesEvictionrequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteLifecycleV1alpha1CollectionNamespacedEvictionRequest",
+			namespace: "apis",
+			method: "deleteNamespacesEvictionrequests",
+			http: "delete",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteNamespacesEvictionrequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read the specified EvictionRequest
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests/{name}` — risk: medium
+	 */
+	async namespacesevictionrequestsRetrieveEvictionrequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readLifecycleV1alpha1NamespacedEvictionRequest",
+			namespace: "apis",
+			method: "namespacesevictionrequestsRetrieveEvictionrequest",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["namespacesevictionrequestsRetrieveEvictionrequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace the specified EvictionRequest
+	 *
+	 * `PUT /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests/{name}` — risk: medium
+	 */
+	async putNamespacesEvictionrequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceLifecycleV1alpha1NamespacedEvictionRequest",
+			namespace: "apis",
+			method: "putNamespacesEvictionrequests",
+			http: "put",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putNamespacesEvictionrequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update the specified EvictionRequest
+	 *
+	 * `PATCH /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests/{name}` — risk: medium
+	 */
+	async patchNamespacesEvictionrequests(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchLifecycleV1alpha1NamespacedEvictionRequest",
+			namespace: "apis",
+			method: "patchNamespacesEvictionrequests",
+			http: "patch",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchNamespacesEvictionrequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete an EvictionRequest
+	 *
+	 * `DELETE /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests/{name}` — risk: medium
+	 */
+	async deleteEvictionrequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteLifecycleV1alpha1NamespacedEvictionRequest",
+			namespace: "apis",
+			method: "deleteEvictionrequest",
+			http: "delete",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteEvictionrequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read status of the specified EvictionRequest
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests/{name}/status` — risk: medium
+	 */
+	async getLifecycleK8sIov1alpha1namespacesevictionrequestsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readLifecycleV1alpha1NamespacedEvictionRequestStatus",
+			namespace: "apis",
+			method: "getLifecycleK8sIov1alpha1namespacesevictionrequestsStatus",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getLifecycleK8sIov1alpha1namespacesevictionrequestsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace status of the specified EvictionRequest
+	 *
+	 * `PUT /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests/{name}/status` — risk: medium
+	 */
+	async putLifecycleK8sIov1alpha1namespacesevictionrequestsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceLifecycleV1alpha1NamespacedEvictionRequestStatus",
+			namespace: "apis",
+			method: "putLifecycleK8sIov1alpha1namespacesevictionrequestsStatus",
+			http: "put",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putLifecycleK8sIov1alpha1namespacesevictionrequestsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update status of the specified EvictionRequest
+	 *
+	 * `PATCH /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictionrequests/{name}/status` — risk: medium
+	 */
+	async patchLifecycleK8sIov1alpha1namespacesevictionrequestsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchLifecycleV1alpha1NamespacedEvictionRequestStatus",
+			namespace: "apis",
+			method: "patchLifecycleK8sIov1alpha1namespacesevictionrequestsStatus",
+			http: "patch",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictionrequests/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchLifecycleK8sIov1alpha1namespacesevictionrequestsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind Eviction
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions` — risk: medium
+	 */
+	async getNamespacesEvictions(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listLifecycleV1alpha1NamespacedEviction",
+			namespace: "apis",
+			method: "getNamespacesEvictions",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getNamespacesEvictions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * create an Eviction
+	 *
+	 * `POST /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions` — risk: medium
+	 */
+	async postNamespacesEvictions(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "createLifecycleV1alpha1NamespacedEviction",
+			namespace: "apis",
+			method: "postNamespacesEvictions",
+			http: "post",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["postNamespacesEvictions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete collection of Eviction
+	 *
+	 * `DELETE /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions` — risk: medium
+	 */
+	async deleteNamespacesEvictions(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteLifecycleV1alpha1CollectionNamespacedEviction",
+			namespace: "apis",
+			method: "deleteNamespacesEvictions",
+			http: "delete",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteNamespacesEvictions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read the specified Eviction
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions/{name}` — risk: medium
+	 */
+	async namespacesevictionsRetrieveEviction(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readLifecycleV1alpha1NamespacedEviction",
+			namespace: "apis",
+			method: "namespacesevictionsRetrieveEviction",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["namespacesevictionsRetrieveEviction"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace the specified Eviction
+	 *
+	 * `PUT /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions/{name}` — risk: medium
+	 */
+	async putNamespacesEvictions(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceLifecycleV1alpha1NamespacedEviction",
+			namespace: "apis",
+			method: "putNamespacesEvictions",
+			http: "put",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putNamespacesEvictions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update the specified Eviction
+	 *
+	 * `PATCH /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions/{name}` — risk: medium
+	 */
+	async patchNamespacesEvictions(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchLifecycleV1alpha1NamespacedEviction",
+			namespace: "apis",
+			method: "patchNamespacesEvictions",
+			http: "patch",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchNamespacesEvictions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete an Eviction
+	 *
+	 * `DELETE /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions/{name}` — risk: medium
+	 */
+	async deleteEviction(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteLifecycleV1alpha1NamespacedEviction",
+			namespace: "apis",
+			method: "deleteEviction",
+			http: "delete",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteEviction"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read status of the specified Eviction
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions/{name}/status` — risk: medium
+	 */
+	async getLifecycleK8sIov1alpha1namespacesevictionsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readLifecycleV1alpha1NamespacedEvictionStatus",
+			namespace: "apis",
+			method: "getLifecycleK8sIov1alpha1namespacesevictionsStatus",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getLifecycleK8sIov1alpha1namespacesevictionsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace status of the specified Eviction
+	 *
+	 * `PUT /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions/{name}/status` — risk: medium
+	 */
+	async putLifecycleK8sIov1alpha1namespacesevictionsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceLifecycleV1alpha1NamespacedEvictionStatus",
+			namespace: "apis",
+			method: "putLifecycleK8sIov1alpha1namespacesevictionsStatus",
+			http: "put",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putLifecycleK8sIov1alpha1namespacesevictionsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update status of the specified Eviction
+	 *
+	 * `PATCH /apis/lifecycle.k8s.io/v1alpha1/namespaces/{namespace}/evictions/{name}/status` — risk: medium
+	 */
+	async patchLifecycleK8sIov1alpha1namespacesevictionsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchLifecycleV1alpha1NamespacedEvictionStatus",
+			namespace: "apis",
+			method: "patchLifecycleK8sIov1alpha1namespacesevictionsStatus",
+			http: "patch",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/namespaces/${namespace}/evictions/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchLifecycleK8sIov1alpha1namespacesevictionsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of EvictionRequest. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/watch/evictionrequests` — risk: medium
+	 */
+	async watchEvictionrequests(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchLifecycleV1alpha1EvictionRequestListForAllNamespaces",
+			namespace: "apis",
+			method: "watchEvictionrequests",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/watch/evictionrequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["watchEvictionrequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of Eviction. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/watch/evictions` — risk: medium
+	 */
+	async watchEvictions(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchLifecycleV1alpha1EvictionListForAllNamespaces",
+			namespace: "apis",
+			method: "watchEvictions",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/watch/evictions`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["watchEvictions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of EvictionRequest. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/watch/namespaces/{namespace}/evictionrequests` — risk: medium
+	 */
+	async watchnamespacesEvictionrequests(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchLifecycleV1alpha1NamespacedEvictionRequestList",
+			namespace: "apis",
+			method: "watchnamespacesEvictionrequests",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/watch/namespaces/${namespace}/evictionrequests`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["watchnamespacesEvictionrequests"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch changes to an object of kind EvictionRequest. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/watch/namespaces/{namespace}/evictionrequests/{name}` — risk: medium
+	 */
+	async watchnamespacesevictionrequestsRetrieveEvictionrequest(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchLifecycleV1alpha1NamespacedEvictionRequest",
+			namespace: "apis",
+			method: "watchnamespacesevictionrequestsRetrieveEvictionrequest",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/watch/namespaces/${namespace}/evictionrequests/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["watchnamespacesevictionrequestsRetrieveEvictionrequest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of Eviction. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/watch/namespaces/{namespace}/evictions` — risk: medium
+	 */
+	async watchnamespacesEvictions(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchLifecycleV1alpha1NamespacedEvictionList",
+			namespace: "apis",
+			method: "watchnamespacesEvictions",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/watch/namespaces/${namespace}/evictions`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["watchnamespacesEvictions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch changes to an object of kind Eviction. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
+	 *
+	 * `GET /apis/lifecycle.k8s.io/v1alpha1/watch/namespaces/{namespace}/evictions/{name}` — risk: medium
+	 */
+	async watchnamespacesevictionsRetrieveEviction(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchLifecycleV1alpha1NamespacedEviction",
+			namespace: "apis",
+			method: "watchnamespacesevictionsRetrieveEviction",
+			http: "get",
+			path: `/apis/lifecycle.k8s.io/v1alpha1/watch/namespaces/${namespace}/evictions/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["watchnamespacesevictionsRetrieveEviction"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * get information of a group
+	 *
 	 * `GET /apis/networking.k8s.io/` — risk: medium
 	 */
 	async listNetworkingK8sIo(options?: CallOptions): Promise<ProofResult<unknown>> {
@@ -14937,16 +15883,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/ipaddresses` — risk: medium
 	 */
-	async getV1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async ipaddresses_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1IPAddress",
 			namespace: "apis",
-			method: "getV1Ipaddresses",
+			method: "ipaddresses_0",
 			http: "get",
 			path: `/apis/networking.k8s.io/v1/ipaddresses`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["getV1Ipaddresses"],
+			overrides: this.overrides["ipaddresses_0"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -14959,16 +15905,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/networking.k8s.io/v1/ipaddresses` — risk: medium
 	 */
-	async postV1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async ipaddresses_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNetworkingV1IPAddress",
 			namespace: "apis",
-			method: "postV1Ipaddresses",
+			method: "ipaddresses_1",
 			http: "post",
 			path: `/apis/networking.k8s.io/v1/ipaddresses`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["postV1Ipaddresses"],
+			overrides: this.overrides["ipaddresses_1"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -14981,16 +15927,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/ipaddresses` — risk: medium
 	 */
-	async deleteV1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async ipaddresses_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1CollectionIPAddress",
 			namespace: "apis",
-			method: "deleteV1Ipaddresses",
+			method: "ipaddresses_2",
 			http: "delete",
 			path: `/apis/networking.k8s.io/v1/ipaddresses`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deleteV1Ipaddresses"],
+			overrides: this.overrides["ipaddresses_2"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15003,16 +15949,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/ipaddresses/{name}` — risk: medium
 	 */
-	async v1ipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async ipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1IPAddress",
 			namespace: "apis",
-			method: "v1ipaddressesRetrieveIpaddress",
+			method: "ipaddressesRetrieveIpaddress",
 			http: "get",
 			path: `/apis/networking.k8s.io/v1/ipaddresses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1ipaddressesRetrieveIpaddress"],
+			overrides: this.overrides["ipaddressesRetrieveIpaddress"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15025,16 +15971,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1/ipaddresses/{name}` — risk: medium
 	 */
-	async putV1Ipaddresses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async ipaddresses_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1IPAddress",
 			namespace: "apis",
-			method: "putV1Ipaddresses",
+			method: "ipaddresses_3",
 			http: "put",
 			path: `/apis/networking.k8s.io/v1/ipaddresses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["putV1Ipaddresses"],
+			overrides: this.overrides["ipaddresses_3"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15047,16 +15993,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1/ipaddresses/{name}` — risk: medium
 	 */
-	async patchV1Ipaddresses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async ipaddresses_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1IPAddress",
 			namespace: "apis",
-			method: "patchV1Ipaddresses",
+			method: "ipaddresses_4",
 			http: "patch",
 			path: `/apis/networking.k8s.io/v1/ipaddresses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["patchV1Ipaddresses"],
+			overrides: this.overrides["ipaddresses_4"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15069,16 +16015,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/ipaddresses/{name}` — risk: medium
 	 */
-	async v1ipaddressesDeleteIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async deleteIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1IPAddress",
 			namespace: "apis",
-			method: "v1ipaddressesDeleteIpaddress",
+			method: "deleteIpaddress",
 			http: "delete",
 			path: `/apis/networking.k8s.io/v1/ipaddresses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1ipaddressesDeleteIpaddress"],
+			overrides: this.overrides["deleteIpaddress"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15487,16 +16433,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/servicecidrs` — risk: medium
 	 */
-	async getV1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async servicecidrs_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listNetworkingV1ServiceCIDR",
 			namespace: "apis",
-			method: "getV1Servicecidrs",
+			method: "servicecidrs_0",
 			http: "get",
 			path: `/apis/networking.k8s.io/v1/servicecidrs`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["getV1Servicecidrs"],
+			overrides: this.overrides["servicecidrs_0"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15509,16 +16455,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/networking.k8s.io/v1/servicecidrs` — risk: medium
 	 */
-	async postV1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async servicecidrs_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createNetworkingV1ServiceCIDR",
 			namespace: "apis",
-			method: "postV1Servicecidrs",
+			method: "servicecidrs_1",
 			http: "post",
 			path: `/apis/networking.k8s.io/v1/servicecidrs`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["postV1Servicecidrs"],
+			overrides: this.overrides["servicecidrs_1"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15531,16 +16477,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/servicecidrs` — risk: medium
 	 */
-	async deleteV1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async servicecidrs_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1CollectionServiceCIDR",
 			namespace: "apis",
-			method: "deleteV1Servicecidrs",
+			method: "servicecidrs_2",
 			http: "delete",
 			path: `/apis/networking.k8s.io/v1/servicecidrs`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deleteV1Servicecidrs"],
+			overrides: this.overrides["servicecidrs_2"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15553,16 +16499,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/servicecidrs/{name}` — risk: medium
 	 */
-	async v1servicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async servicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readNetworkingV1ServiceCIDR",
 			namespace: "apis",
-			method: "v1servicecidrsRetrieveServicecidr",
+			method: "servicecidrsRetrieveServicecidr",
 			http: "get",
 			path: `/apis/networking.k8s.io/v1/servicecidrs/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1servicecidrsRetrieveServicecidr"],
+			overrides: this.overrides["servicecidrsRetrieveServicecidr"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15575,16 +16521,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/networking.k8s.io/v1/servicecidrs/{name}` — risk: medium
 	 */
-	async putV1Servicecidrs(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async servicecidrs_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceNetworkingV1ServiceCIDR",
 			namespace: "apis",
-			method: "putV1Servicecidrs",
+			method: "servicecidrs_3",
 			http: "put",
 			path: `/apis/networking.k8s.io/v1/servicecidrs/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["putV1Servicecidrs"],
+			overrides: this.overrides["servicecidrs_3"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15597,16 +16543,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/networking.k8s.io/v1/servicecidrs/{name}` — risk: medium
 	 */
-	async patchV1Servicecidrs(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async servicecidrs_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchNetworkingV1ServiceCIDR",
 			namespace: "apis",
-			method: "patchV1Servicecidrs",
+			method: "servicecidrs_4",
 			http: "patch",
 			path: `/apis/networking.k8s.io/v1/servicecidrs/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["patchV1Servicecidrs"],
+			overrides: this.overrides["servicecidrs_4"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15619,16 +16565,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/networking.k8s.io/v1/servicecidrs/{name}` — risk: medium
 	 */
-	async v1servicecidrsDeleteServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async deleteServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteNetworkingV1ServiceCIDR",
 			namespace: "apis",
-			method: "v1servicecidrsDeleteServicecidr",
+			method: "deleteServicecidr",
 			http: "delete",
 			path: `/apis/networking.k8s.io/v1/servicecidrs/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1servicecidrsDeleteServicecidr"],
+			overrides: this.overrides["deleteServicecidr"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15773,16 +16719,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/ipaddresses` — risk: medium
 	 */
-	async v1watchIpaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async watchIpaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1IPAddressList",
 			namespace: "apis",
-			method: "v1watchIpaddresses",
+			method: "watchIpaddresses",
 			http: "get",
 			path: `/apis/networking.k8s.io/v1/watch/ipaddresses`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1watchIpaddresses"],
+			overrides: this.overrides["watchIpaddresses"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15795,16 +16741,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/ipaddresses/{name}` — risk: medium
 	 */
-	async v1watchipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async watchipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1IPAddress",
 			namespace: "apis",
-			method: "v1watchipaddressesRetrieveIpaddress",
+			method: "watchipaddressesRetrieveIpaddress",
 			http: "get",
 			path: `/apis/networking.k8s.io/v1/watch/ipaddresses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1watchipaddressesRetrieveIpaddress"],
+			overrides: this.overrides["watchipaddressesRetrieveIpaddress"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15927,16 +16873,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/servicecidrs` — risk: medium
 	 */
-	async v1watchServicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async watchServicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1ServiceCIDRList",
 			namespace: "apis",
-			method: "v1watchServicecidrs",
+			method: "watchServicecidrs",
 			http: "get",
 			path: `/apis/networking.k8s.io/v1/watch/servicecidrs`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1watchServicecidrs"],
+			overrides: this.overrides["watchServicecidrs"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -15949,500 +16895,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/networking.k8s.io/v1/watch/servicecidrs/{name}` — risk: medium
 	 */
-	async v1watchservicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async watchservicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchNetworkingV1ServiceCIDR",
 			namespace: "apis",
-			method: "v1watchservicecidrsRetrieveServicecidr",
+			method: "watchservicecidrsRetrieveServicecidr",
 			http: "get",
 			path: `/apis/networking.k8s.io/v1/watch/servicecidrs/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1watchservicecidrsRetrieveServicecidr"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * get available resources
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/` — risk: medium
-	 */
-	async networkingK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "getNetworkingV1beta1APIResources",
-			namespace: "apis",
-			method: "networkingK8sIoV1beta1",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["networkingK8sIoV1beta1"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * list or watch objects of kind IPAddress
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/ipaddresses` — risk: medium
-	 */
-	async getV1beta1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "listNetworkingV1beta1IPAddress",
-			namespace: "apis",
-			method: "getV1beta1Ipaddresses",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/ipaddresses`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["getV1beta1Ipaddresses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * create an IPAddress
-	 *
-	 * `POST /apis/networking.k8s.io/v1beta1/ipaddresses` — risk: medium
-	 */
-	async postV1beta1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "createNetworkingV1beta1IPAddress",
-			namespace: "apis",
-			method: "postV1beta1Ipaddresses",
-			http: "post",
-			path: `/apis/networking.k8s.io/v1beta1/ipaddresses`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["postV1beta1Ipaddresses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * delete collection of IPAddress
-	 *
-	 * `DELETE /apis/networking.k8s.io/v1beta1/ipaddresses` — risk: medium
-	 */
-	async deleteV1beta1Ipaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "deleteNetworkingV1beta1CollectionIPAddress",
-			namespace: "apis",
-			method: "deleteV1beta1Ipaddresses",
-			http: "delete",
-			path: `/apis/networking.k8s.io/v1beta1/ipaddresses`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["deleteV1beta1Ipaddresses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * read the specified IPAddress
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/ipaddresses/{name}` — risk: medium
-	 */
-	async v1beta1ipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "readNetworkingV1beta1IPAddress",
-			namespace: "apis",
-			method: "v1beta1ipaddressesRetrieveIpaddress",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/ipaddresses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1ipaddressesRetrieveIpaddress"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * replace the specified IPAddress
-	 *
-	 * `PUT /apis/networking.k8s.io/v1beta1/ipaddresses/{name}` — risk: medium
-	 */
-	async putV1beta1Ipaddresses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "replaceNetworkingV1beta1IPAddress",
-			namespace: "apis",
-			method: "putV1beta1Ipaddresses",
-			http: "put",
-			path: `/apis/networking.k8s.io/v1beta1/ipaddresses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["putV1beta1Ipaddresses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * partially update the specified IPAddress
-	 *
-	 * `PATCH /apis/networking.k8s.io/v1beta1/ipaddresses/{name}` — risk: medium
-	 */
-	async patchV1beta1Ipaddresses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "patchNetworkingV1beta1IPAddress",
-			namespace: "apis",
-			method: "patchV1beta1Ipaddresses",
-			http: "patch",
-			path: `/apis/networking.k8s.io/v1beta1/ipaddresses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["patchV1beta1Ipaddresses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * delete an IPAddress
-	 *
-	 * `DELETE /apis/networking.k8s.io/v1beta1/ipaddresses/{name}` — risk: medium
-	 */
-	async v1beta1ipaddressesDeleteIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "deleteNetworkingV1beta1IPAddress",
-			namespace: "apis",
-			method: "v1beta1ipaddressesDeleteIpaddress",
-			http: "delete",
-			path: `/apis/networking.k8s.io/v1beta1/ipaddresses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1ipaddressesDeleteIpaddress"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * list or watch objects of kind ServiceCIDR
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/servicecidrs` — risk: medium
-	 */
-	async getV1beta1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "listNetworkingV1beta1ServiceCIDR",
-			namespace: "apis",
-			method: "getV1beta1Servicecidrs",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["getV1beta1Servicecidrs"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * create a ServiceCIDR
-	 *
-	 * `POST /apis/networking.k8s.io/v1beta1/servicecidrs` — risk: medium
-	 */
-	async postV1beta1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "createNetworkingV1beta1ServiceCIDR",
-			namespace: "apis",
-			method: "postV1beta1Servicecidrs",
-			http: "post",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["postV1beta1Servicecidrs"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * delete collection of ServiceCIDR
-	 *
-	 * `DELETE /apis/networking.k8s.io/v1beta1/servicecidrs` — risk: medium
-	 */
-	async deleteV1beta1Servicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "deleteNetworkingV1beta1CollectionServiceCIDR",
-			namespace: "apis",
-			method: "deleteV1beta1Servicecidrs",
-			http: "delete",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["deleteV1beta1Servicecidrs"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * read the specified ServiceCIDR
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/servicecidrs/{name}` — risk: medium
-	 */
-	async v1beta1servicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "readNetworkingV1beta1ServiceCIDR",
-			namespace: "apis",
-			method: "v1beta1servicecidrsRetrieveServicecidr",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1servicecidrsRetrieveServicecidr"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * replace the specified ServiceCIDR
-	 *
-	 * `PUT /apis/networking.k8s.io/v1beta1/servicecidrs/{name}` — risk: medium
-	 */
-	async putV1beta1Servicecidrs(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "replaceNetworkingV1beta1ServiceCIDR",
-			namespace: "apis",
-			method: "putV1beta1Servicecidrs",
-			http: "put",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["putV1beta1Servicecidrs"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * partially update the specified ServiceCIDR
-	 *
-	 * `PATCH /apis/networking.k8s.io/v1beta1/servicecidrs/{name}` — risk: medium
-	 */
-	async patchV1beta1Servicecidrs(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "patchNetworkingV1beta1ServiceCIDR",
-			namespace: "apis",
-			method: "patchV1beta1Servicecidrs",
-			http: "patch",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["patchV1beta1Servicecidrs"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * delete a ServiceCIDR
-	 *
-	 * `DELETE /apis/networking.k8s.io/v1beta1/servicecidrs/{name}` — risk: medium
-	 */
-	async v1beta1servicecidrsDeleteServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "deleteNetworkingV1beta1ServiceCIDR",
-			namespace: "apis",
-			method: "v1beta1servicecidrsDeleteServicecidr",
-			http: "delete",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1servicecidrsDeleteServicecidr"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * read status of the specified ServiceCIDR
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/servicecidrs/{name}/status` — risk: medium
-	 */
-	async getNetworkingK8sIov1beta1servicecidrsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "readNetworkingV1beta1ServiceCIDRStatus",
-			namespace: "apis",
-			method: "getNetworkingK8sIov1beta1servicecidrsStatus",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs/${name}/status`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["getNetworkingK8sIov1beta1servicecidrsStatus"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * replace status of the specified ServiceCIDR
-	 *
-	 * `PUT /apis/networking.k8s.io/v1beta1/servicecidrs/{name}/status` — risk: medium
-	 */
-	async putNetworkingK8sIov1beta1servicecidrsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "replaceNetworkingV1beta1ServiceCIDRStatus",
-			namespace: "apis",
-			method: "putNetworkingK8sIov1beta1servicecidrsStatus",
-			http: "put",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs/${name}/status`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["putNetworkingK8sIov1beta1servicecidrsStatus"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * partially update status of the specified ServiceCIDR
-	 *
-	 * `PATCH /apis/networking.k8s.io/v1beta1/servicecidrs/{name}/status` — risk: medium
-	 */
-	async patchNetworkingK8sIov1beta1servicecidrsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "patchNetworkingV1beta1ServiceCIDRStatus",
-			namespace: "apis",
-			method: "patchNetworkingK8sIov1beta1servicecidrsStatus",
-			http: "patch",
-			path: `/apis/networking.k8s.io/v1beta1/servicecidrs/${name}/status`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["patchNetworkingK8sIov1beta1servicecidrsStatus"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * watch individual changes to a list of IPAddress. deprecated: use the 'watch' parameter with a list operation instead.
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/watch/ipaddresses` — risk: medium
-	 */
-	async v1beta1watchIpaddresses(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "watchNetworkingV1beta1IPAddressList",
-			namespace: "apis",
-			method: "v1beta1watchIpaddresses",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/watch/ipaddresses`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1watchIpaddresses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * watch changes to an object of kind IPAddress. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/watch/ipaddresses/{name}` — risk: medium
-	 */
-	async v1beta1watchipaddressesRetrieveIpaddress(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "watchNetworkingV1beta1IPAddress",
-			namespace: "apis",
-			method: "v1beta1watchipaddressesRetrieveIpaddress",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/watch/ipaddresses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1watchipaddressesRetrieveIpaddress"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * watch individual changes to a list of ServiceCIDR. deprecated: use the 'watch' parameter with a list operation instead.
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/watch/servicecidrs` — risk: medium
-	 */
-	async v1beta1watchServicecidrs(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "watchNetworkingV1beta1ServiceCIDRList",
-			namespace: "apis",
-			method: "v1beta1watchServicecidrs",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/watch/servicecidrs`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1watchServicecidrs"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * watch changes to an object of kind ServiceCIDR. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
-	 *
-	 * `GET /apis/networking.k8s.io/v1beta1/watch/servicecidrs/{name}` — risk: medium
-	 */
-	async v1beta1watchservicecidrsRetrieveServicecidr(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "watchNetworkingV1beta1ServiceCIDR",
-			namespace: "apis",
-			method: "v1beta1watchservicecidrsRetrieveServicecidr",
-			http: "get",
-			path: `/apis/networking.k8s.io/v1beta1/watch/servicecidrs/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1watchservicecidrsRetrieveServicecidr"],
+			overrides: this.overrides["watchservicecidrsRetrieveServicecidr"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -18167,6 +18629,226 @@ export class ApisResource extends RpcTarget {
 	}
 
 	/**
+	 * list or watch objects of kind DeviceTaintRule
+	 *
+	 * `GET /apis/resource.k8s.io/v1/devicetaintrules` — risk: medium
+	 */
+	async getV1Devicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listResourceV1DeviceTaintRule",
+			namespace: "apis",
+			method: "getV1Devicetaintrules",
+			http: "get",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getV1Devicetaintrules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * create a DeviceTaintRule
+	 *
+	 * `POST /apis/resource.k8s.io/v1/devicetaintrules` — risk: medium
+	 */
+	async postV1Devicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "createResourceV1DeviceTaintRule",
+			namespace: "apis",
+			method: "postV1Devicetaintrules",
+			http: "post",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["postV1Devicetaintrules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete collection of DeviceTaintRule
+	 *
+	 * `DELETE /apis/resource.k8s.io/v1/devicetaintrules` — risk: medium
+	 */
+	async deleteV1Devicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteResourceV1CollectionDeviceTaintRule",
+			namespace: "apis",
+			method: "deleteV1Devicetaintrules",
+			http: "delete",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteV1Devicetaintrules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read the specified DeviceTaintRule
+	 *
+	 * `GET /apis/resource.k8s.io/v1/devicetaintrules/{name}` — risk: medium
+	 */
+	async v1devicetaintrulesRetrieveDevicetaintrule(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readResourceV1DeviceTaintRule",
+			namespace: "apis",
+			method: "v1devicetaintrulesRetrieveDevicetaintrule",
+			http: "get",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1devicetaintrulesRetrieveDevicetaintrule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace the specified DeviceTaintRule
+	 *
+	 * `PUT /apis/resource.k8s.io/v1/devicetaintrules/{name}` — risk: medium
+	 */
+	async putV1Devicetaintrules(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceResourceV1DeviceTaintRule",
+			namespace: "apis",
+			method: "putV1Devicetaintrules",
+			http: "put",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putV1Devicetaintrules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update the specified DeviceTaintRule
+	 *
+	 * `PATCH /apis/resource.k8s.io/v1/devicetaintrules/{name}` — risk: medium
+	 */
+	async patchV1Devicetaintrules(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchResourceV1DeviceTaintRule",
+			namespace: "apis",
+			method: "patchV1Devicetaintrules",
+			http: "patch",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchV1Devicetaintrules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete a DeviceTaintRule
+	 *
+	 * `DELETE /apis/resource.k8s.io/v1/devicetaintrules/{name}` — risk: medium
+	 */
+	async v1devicetaintrulesDeleteDevicetaintrule(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteResourceV1DeviceTaintRule",
+			namespace: "apis",
+			method: "v1devicetaintrulesDeleteDevicetaintrule",
+			http: "delete",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1devicetaintrulesDeleteDevicetaintrule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read status of the specified DeviceTaintRule
+	 *
+	 * `GET /apis/resource.k8s.io/v1/devicetaintrules/{name}/status` — risk: medium
+	 */
+	async getResourceK8sIov1devicetaintrulesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readResourceV1DeviceTaintRuleStatus",
+			namespace: "apis",
+			method: "getResourceK8sIov1devicetaintrulesStatus",
+			http: "get",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getResourceK8sIov1devicetaintrulesStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace status of the specified DeviceTaintRule
+	 *
+	 * `PUT /apis/resource.k8s.io/v1/devicetaintrules/{name}/status` — risk: medium
+	 */
+	async putResourceK8sIov1devicetaintrulesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceResourceV1DeviceTaintRuleStatus",
+			namespace: "apis",
+			method: "putResourceK8sIov1devicetaintrulesStatus",
+			http: "put",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putResourceK8sIov1devicetaintrulesStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update status of the specified DeviceTaintRule
+	 *
+	 * `PATCH /apis/resource.k8s.io/v1/devicetaintrules/{name}/status` — risk: medium
+	 */
+	async patchResourceK8sIov1devicetaintrulesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchResourceV1DeviceTaintRuleStatus",
+			namespace: "apis",
+			method: "patchResourceK8sIov1devicetaintrulesStatus",
+			http: "patch",
+			path: `/apis/resource.k8s.io/v1/devicetaintrules/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchResourceK8sIov1devicetaintrulesStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * list or watch objects of kind ResourceClaim
 	 *
 	 * `GET /apis/resource.k8s.io/v1/namespaces/{namespace}/resourceclaims` — risk: medium
@@ -18783,6 +19465,50 @@ export class ApisResource extends RpcTarget {
 	}
 
 	/**
+	 * watch individual changes to a list of DeviceTaintRule. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/resource.k8s.io/v1/watch/devicetaintrules` — risk: medium
+	 */
+	async v1watchDevicetaintrules(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchResourceV1DeviceTaintRuleList",
+			namespace: "apis",
+			method: "v1watchDevicetaintrules",
+			http: "get",
+			path: `/apis/resource.k8s.io/v1/watch/devicetaintrules`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1watchDevicetaintrules"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch changes to an object of kind DeviceTaintRule. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
+	 *
+	 * `GET /apis/resource.k8s.io/v1/watch/devicetaintrules/{name}` — risk: medium
+	 */
+	async v1watchdevicetaintrulesRetrieveDevicetaintrule(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchResourceV1DeviceTaintRule",
+			namespace: "apis",
+			method: "v1watchdevicetaintrulesRetrieveDevicetaintrule",
+			http: "get",
+			path: `/apis/resource.k8s.io/v1/watch/devicetaintrules/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1watchdevicetaintrulesRetrieveDevicetaintrule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * watch individual changes to a list of ResourceClaim. deprecated: use the 'watch' parameter with a list operation instead.
 	 *
 	 * `GET /apis/resource.k8s.io/v1/watch/namespaces/{namespace}/resourceclaims` — risk: medium
@@ -18963,16 +19689,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/resource.k8s.io/v1alpha3/` — risk: medium
 	 */
-	async v1alpha3(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async resourceK8sIoV1alpha3(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getResourceV1alpha3APIResources",
 			namespace: "apis",
-			method: "v1alpha3",
+			method: "resourceK8sIoV1alpha3",
 			http: "get",
 			path: `/apis/resource.k8s.io/v1alpha3/`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1alpha3"],
+			overrides: this.overrides["resourceK8sIoV1alpha3"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -21953,18 +22679,260 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * get available resources
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/` — risk: medium
 	 */
-	async schedulingK8sIoV1alpha2(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async schedulingK8sIoV1alpha3(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "getSchedulingV1alpha2APIResources",
+			operationId: "getSchedulingV1alpha3APIResources",
 			namespace: "apis",
-			method: "schedulingK8sIoV1alpha2",
+			method: "schedulingK8sIoV1alpha3",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["schedulingK8sIoV1alpha2"],
+			overrides: this.overrides["schedulingK8sIoV1alpha3"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind CompositePodGroup
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/compositepodgroups` — risk: medium
+	 */
+	async compositepodgroups_0(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listSchedulingV1alpha3CompositePodGroupForAllNamespaces",
+			namespace: "apis",
+			method: "compositepodgroups_0",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1alpha3/compositepodgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["compositepodgroups_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind CompositePodGroup
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups` — risk: medium
+	 */
+	async getNamespacesCompositepodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listSchedulingV1alpha3NamespacedCompositePodGroup",
+			namespace: "apis",
+			method: "getNamespacesCompositepodgroups",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getNamespacesCompositepodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * create a CompositePodGroup
+	 *
+	 * `POST /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups` — risk: medium
+	 */
+	async postNamespacesCompositepodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "createSchedulingV1alpha3NamespacedCompositePodGroup",
+			namespace: "apis",
+			method: "postNamespacesCompositepodgroups",
+			http: "post",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["postNamespacesCompositepodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete collection of CompositePodGroup
+	 *
+	 * `DELETE /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups` — risk: medium
+	 */
+	async deleteNamespacesCompositepodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteSchedulingV1alpha3CollectionNamespacedCompositePodGroup",
+			namespace: "apis",
+			method: "deleteNamespacesCompositepodgroups",
+			http: "delete",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteNamespacesCompositepodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read the specified CompositePodGroup
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups/{name}` — risk: medium
+	 */
+	async namespacescompositepodgroupsRetrieveCompositepodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readSchedulingV1alpha3NamespacedCompositePodGroup",
+			namespace: "apis",
+			method: "namespacescompositepodgroupsRetrieveCompositepodgroup",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["namespacescompositepodgroupsRetrieveCompositepodgroup"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace the specified CompositePodGroup
+	 *
+	 * `PUT /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups/{name}` — risk: medium
+	 */
+	async putNamespacesCompositepodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceSchedulingV1alpha3NamespacedCompositePodGroup",
+			namespace: "apis",
+			method: "putNamespacesCompositepodgroups",
+			http: "put",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putNamespacesCompositepodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update the specified CompositePodGroup
+	 *
+	 * `PATCH /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups/{name}` — risk: medium
+	 */
+	async patchNamespacesCompositepodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchSchedulingV1alpha3NamespacedCompositePodGroup",
+			namespace: "apis",
+			method: "patchNamespacesCompositepodgroups",
+			http: "patch",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchNamespacesCompositepodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete a CompositePodGroup
+	 *
+	 * `DELETE /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups/{name}` — risk: medium
+	 */
+	async deleteCompositepodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteSchedulingV1alpha3NamespacedCompositePodGroup",
+			namespace: "apis",
+			method: "deleteCompositepodgroup",
+			http: "delete",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteCompositepodgroup"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read status of the specified CompositePodGroup
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups/{name}/status` — risk: medium
+	 */
+	async getSchedulingK8sIov1alpha3namespacescompositepodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readSchedulingV1alpha3NamespacedCompositePodGroupStatus",
+			namespace: "apis",
+			method: "getSchedulingK8sIov1alpha3namespacescompositepodgroupsStatus",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getSchedulingK8sIov1alpha3namespacescompositepodgroupsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace status of the specified CompositePodGroup
+	 *
+	 * `PUT /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups/{name}/status` — risk: medium
+	 */
+	async putSchedulingK8sIov1alpha3namespacescompositepodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceSchedulingV1alpha3NamespacedCompositePodGroupStatus",
+			namespace: "apis",
+			method: "putSchedulingK8sIov1alpha3namespacescompositepodgroupsStatus",
+			http: "put",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putSchedulingK8sIov1alpha3namespacescompositepodgroupsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update status of the specified CompositePodGroup
+	 *
+	 * `PATCH /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/compositepodgroups/{name}/status` — risk: medium
+	 */
+	async patchSchedulingK8sIov1alpha3namespacescompositepodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchSchedulingV1alpha3NamespacedCompositePodGroupStatus",
+			namespace: "apis",
+			method: "patchSchedulingK8sIov1alpha3namespacescompositepodgroupsStatus",
+			http: "patch",
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/compositepodgroups/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchSchedulingK8sIov1alpha3namespacescompositepodgroupsStatus"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -21975,18 +22943,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * list or watch objects of kind PodGroup
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups` — risk: medium
 	 */
-	async getNamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async getV1alpha3namespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "listSchedulingV1alpha2NamespacedPodGroup",
+			operationId: "listSchedulingV1alpha3NamespacedPodGroup",
 			namespace: "apis",
-			method: "getNamespacesPodgroups",
+			method: "getV1alpha3namespacesPodgroups",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["getNamespacesPodgroups"],
+			overrides: this.overrides["getV1alpha3namespacesPodgroups"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -21997,18 +22965,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * create a PodGroup
 	 *
-	 * `POST /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups` — risk: medium
+	 * `POST /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups` — risk: medium
 	 */
-	async postNamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async postV1alpha3namespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "createSchedulingV1alpha2NamespacedPodGroup",
+			operationId: "createSchedulingV1alpha3NamespacedPodGroup",
 			namespace: "apis",
-			method: "postNamespacesPodgroups",
+			method: "postV1alpha3namespacesPodgroups",
 			http: "post",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["postNamespacesPodgroups"],
+			overrides: this.overrides["postV1alpha3namespacesPodgroups"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22019,18 +22987,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * delete collection of PodGroup
 	 *
-	 * `DELETE /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups` — risk: medium
+	 * `DELETE /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups` — risk: medium
 	 */
-	async deleteNamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async deleteV1alpha3namespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "deleteSchedulingV1alpha2CollectionNamespacedPodGroup",
+			operationId: "deleteSchedulingV1alpha3CollectionNamespacedPodGroup",
 			namespace: "apis",
-			method: "deleteNamespacesPodgroups",
+			method: "deleteV1alpha3namespacesPodgroups",
 			http: "delete",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deleteNamespacesPodgroups"],
+			overrides: this.overrides["deleteV1alpha3namespacesPodgroups"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22041,18 +23009,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * read the specified PodGroup
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async namespacespodgroupsRetrievePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3namespacespodgroupsRetrievePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "readSchedulingV1alpha2NamespacedPodGroup",
+			operationId: "readSchedulingV1alpha3NamespacedPodGroup",
 			namespace: "apis",
-			method: "namespacespodgroupsRetrievePodgroup",
+			method: "v1alpha3namespacespodgroupsRetrievePodgroup",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["namespacespodgroupsRetrievePodgroup"],
+			overrides: this.overrides["v1alpha3namespacespodgroupsRetrievePodgroup"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22063,18 +23031,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * replace the specified PodGroup
 	 *
-	 * `PUT /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 * `PUT /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async putNamespacesPodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async putV1alpha3namespacesPodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "replaceSchedulingV1alpha2NamespacedPodGroup",
+			operationId: "replaceSchedulingV1alpha3NamespacedPodGroup",
 			namespace: "apis",
-			method: "putNamespacesPodgroups",
+			method: "putV1alpha3namespacesPodgroups",
 			http: "put",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["putNamespacesPodgroups"],
+			overrides: this.overrides["putV1alpha3namespacesPodgroups"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22085,18 +23053,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * partially update the specified PodGroup
 	 *
-	 * `PATCH /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 * `PATCH /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async patchNamespacesPodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async patchV1alpha3namespacesPodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "patchSchedulingV1alpha2NamespacedPodGroup",
+			operationId: "patchSchedulingV1alpha3NamespacedPodGroup",
 			namespace: "apis",
-			method: "patchNamespacesPodgroups",
+			method: "patchV1alpha3namespacesPodgroups",
 			http: "patch",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["patchNamespacesPodgroups"],
+			overrides: this.overrides["patchV1alpha3namespacesPodgroups"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22107,18 +23075,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * delete a PodGroup
 	 *
-	 * `DELETE /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 * `DELETE /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async deletePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3namespacespodgroupsDeletePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "deleteSchedulingV1alpha2NamespacedPodGroup",
+			operationId: "deleteSchedulingV1alpha3NamespacedPodGroup",
 			namespace: "apis",
-			method: "deletePodgroup",
+			method: "v1alpha3namespacespodgroupsDeletePodgroup",
 			http: "delete",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deletePodgroup"],
+			overrides: this.overrides["v1alpha3namespacespodgroupsDeletePodgroup"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22129,18 +23097,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * read status of the specified PodGroup
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
 	 */
-	async getSchedulingK8sIov1alpha2namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async getSchedulingK8sIov1alpha3namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "readSchedulingV1alpha2NamespacedPodGroupStatus",
+			operationId: "readSchedulingV1alpha3NamespacedPodGroupStatus",
 			namespace: "apis",
-			method: "getSchedulingK8sIov1alpha2namespacespodgroupsStatus",
+			method: "getSchedulingK8sIov1alpha3namespacespodgroupsStatus",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups/${name}/status`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups/${name}/status`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["getSchedulingK8sIov1alpha2namespacespodgroupsStatus"],
+			overrides: this.overrides["getSchedulingK8sIov1alpha3namespacespodgroupsStatus"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22151,18 +23119,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * replace status of the specified PodGroup
 	 *
-	 * `PUT /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
+	 * `PUT /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
 	 */
-	async putSchedulingK8sIov1alpha2namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async putSchedulingK8sIov1alpha3namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "replaceSchedulingV1alpha2NamespacedPodGroupStatus",
+			operationId: "replaceSchedulingV1alpha3NamespacedPodGroupStatus",
 			namespace: "apis",
-			method: "putSchedulingK8sIov1alpha2namespacespodgroupsStatus",
+			method: "putSchedulingK8sIov1alpha3namespacespodgroupsStatus",
 			http: "put",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups/${name}/status`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups/${name}/status`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["putSchedulingK8sIov1alpha2namespacespodgroupsStatus"],
+			overrides: this.overrides["putSchedulingK8sIov1alpha3namespacespodgroupsStatus"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22173,18 +23141,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * partially update status of the specified PodGroup
 	 *
-	 * `PATCH /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
+	 * `PATCH /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
 	 */
-	async patchSchedulingK8sIov1alpha2namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async patchSchedulingK8sIov1alpha3namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "patchSchedulingV1alpha2NamespacedPodGroupStatus",
+			operationId: "patchSchedulingV1alpha3NamespacedPodGroupStatus",
 			namespace: "apis",
-			method: "patchSchedulingK8sIov1alpha2namespacespodgroupsStatus",
+			method: "patchSchedulingK8sIov1alpha3namespacespodgroupsStatus",
 			http: "patch",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/podgroups/${name}/status`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/podgroups/${name}/status`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["patchSchedulingK8sIov1alpha2namespacespodgroupsStatus"],
+			overrides: this.overrides["patchSchedulingK8sIov1alpha3namespacespodgroupsStatus"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22195,18 +23163,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * list or watch objects of kind Workload
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/workloads` — risk: medium
 	 */
-	async getNamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async getV1alpha3namespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "listSchedulingV1alpha2NamespacedWorkload",
+			operationId: "listSchedulingV1alpha3NamespacedWorkload",
 			namespace: "apis",
-			method: "getNamespacesWorkloads",
+			method: "getV1alpha3namespacesWorkloads",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/workloads`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/workloads`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["getNamespacesWorkloads"],
+			overrides: this.overrides["getV1alpha3namespacesWorkloads"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22217,18 +23185,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * create a Workload
 	 *
-	 * `POST /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads` — risk: medium
+	 * `POST /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/workloads` — risk: medium
 	 */
-	async postNamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async postV1alpha3namespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "createSchedulingV1alpha2NamespacedWorkload",
+			operationId: "createSchedulingV1alpha3NamespacedWorkload",
 			namespace: "apis",
-			method: "postNamespacesWorkloads",
+			method: "postV1alpha3namespacesWorkloads",
 			http: "post",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/workloads`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/workloads`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["postNamespacesWorkloads"],
+			overrides: this.overrides["postV1alpha3namespacesWorkloads"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22239,18 +23207,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * delete collection of Workload
 	 *
-	 * `DELETE /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads` — risk: medium
+	 * `DELETE /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/workloads` — risk: medium
 	 */
-	async deleteNamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async deleteV1alpha3namespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "deleteSchedulingV1alpha2CollectionNamespacedWorkload",
+			operationId: "deleteSchedulingV1alpha3CollectionNamespacedWorkload",
 			namespace: "apis",
-			method: "deleteNamespacesWorkloads",
+			method: "deleteV1alpha3namespacesWorkloads",
 			http: "delete",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/workloads`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/workloads`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deleteNamespacesWorkloads"],
+			overrides: this.overrides["deleteV1alpha3namespacesWorkloads"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22261,18 +23229,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * read the specified Workload
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async namespacesworkloadsRetrieveWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3namespacesworkloadsRetrieveWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "readSchedulingV1alpha2NamespacedWorkload",
+			operationId: "readSchedulingV1alpha3NamespacedWorkload",
 			namespace: "apis",
-			method: "namespacesworkloadsRetrieveWorkload",
+			method: "v1alpha3namespacesworkloadsRetrieveWorkload",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/workloads/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/workloads/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["namespacesworkloadsRetrieveWorkload"],
+			overrides: this.overrides["v1alpha3namespacesworkloadsRetrieveWorkload"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22283,18 +23251,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * replace the specified Workload
 	 *
-	 * `PUT /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 * `PUT /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async putNamespacesWorkloads(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async putV1alpha3namespacesWorkloads(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "replaceSchedulingV1alpha2NamespacedWorkload",
+			operationId: "replaceSchedulingV1alpha3NamespacedWorkload",
 			namespace: "apis",
-			method: "putNamespacesWorkloads",
+			method: "putV1alpha3namespacesWorkloads",
 			http: "put",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/workloads/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/workloads/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["putNamespacesWorkloads"],
+			overrides: this.overrides["putV1alpha3namespacesWorkloads"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22305,18 +23273,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * partially update the specified Workload
 	 *
-	 * `PATCH /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 * `PATCH /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async patchNamespacesWorkloads(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async patchV1alpha3namespacesWorkloads(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "patchSchedulingV1alpha2NamespacedWorkload",
+			operationId: "patchSchedulingV1alpha3NamespacedWorkload",
 			namespace: "apis",
-			method: "patchNamespacesWorkloads",
+			method: "patchV1alpha3namespacesWorkloads",
 			http: "patch",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/workloads/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/workloads/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["patchNamespacesWorkloads"],
+			overrides: this.overrides["patchV1alpha3namespacesWorkloads"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22327,18 +23295,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * delete a Workload
 	 *
-	 * `DELETE /apis/scheduling.k8s.io/v1alpha2/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 * `DELETE /apis/scheduling.k8s.io/v1alpha3/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async deleteWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3namespacesworkloadsDeleteWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "deleteSchedulingV1alpha2NamespacedWorkload",
+			operationId: "deleteSchedulingV1alpha3NamespacedWorkload",
 			namespace: "apis",
-			method: "deleteWorkload",
+			method: "v1alpha3namespacesworkloadsDeleteWorkload",
 			http: "delete",
-			path: `/apis/scheduling.k8s.io/v1alpha2/namespaces/${namespace}/workloads/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/namespaces/${namespace}/workloads/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deleteWorkload"],
+			overrides: this.overrides["v1alpha3namespacesworkloadsDeleteWorkload"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22349,18 +23317,84 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * list or watch objects of kind PodGroup
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/podgroups` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/podgroups` — risk: medium
 	 */
-	async podgroups_5(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3Podgroups(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "listSchedulingV1alpha2PodGroupForAllNamespaces",
+			operationId: "listSchedulingV1alpha3PodGroupForAllNamespaces",
 			namespace: "apis",
-			method: "podgroups_5",
+			method: "v1alpha3Podgroups",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/podgroups`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/podgroups`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["podgroups_5"],
+			overrides: this.overrides["v1alpha3Podgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of CompositePodGroup. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/watch/compositepodgroups` — risk: medium
+	 */
+	async watchCompositepodgroups(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchSchedulingV1alpha3CompositePodGroupListForAllNamespaces",
+			namespace: "apis",
+			method: "watchCompositepodgroups",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1alpha3/watch/compositepodgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["watchCompositepodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of CompositePodGroup. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/watch/namespaces/{namespace}/compositepodgroups` — risk: medium
+	 */
+	async watchnamespacesCompositepodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchSchedulingV1alpha3NamespacedCompositePodGroupList",
+			namespace: "apis",
+			method: "watchnamespacesCompositepodgroups",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1alpha3/watch/namespaces/${namespace}/compositepodgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["watchnamespacesCompositepodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch changes to an object of kind CompositePodGroup. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/watch/namespaces/{namespace}/compositepodgroups/{name}` — risk: medium
+	 */
+	async watchnamespacescompositepodgroupsRetrieveCompositepodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchSchedulingV1alpha3NamespacedCompositePodGroup",
+			namespace: "apis",
+			method: "watchnamespacescompositepodgroupsRetrieveCompositepodgroup",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1alpha3/watch/namespaces/${namespace}/compositepodgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["watchnamespacescompositepodgroupsRetrieveCompositepodgroup"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22371,18 +23405,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * watch individual changes to a list of PodGroup. deprecated: use the 'watch' parameter with a list operation instead.
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/namespaces/{namespace}/podgroups` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/watch/namespaces/{namespace}/podgroups` — risk: medium
 	 */
-	async watchnamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3watchnamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "watchSchedulingV1alpha2NamespacedPodGroupList",
+			operationId: "watchSchedulingV1alpha3NamespacedPodGroupList",
 			namespace: "apis",
-			method: "watchnamespacesPodgroups",
+			method: "v1alpha3watchnamespacesPodgroups",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/watch/namespaces/${namespace}/podgroups`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/watch/namespaces/${namespace}/podgroups`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchnamespacesPodgroups"],
+			overrides: this.overrides["v1alpha3watchnamespacesPodgroups"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22393,18 +23427,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * watch changes to an object of kind PodGroup. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/watch/namespaces/{namespace}/podgroups/{name}` — risk: medium
 	 */
-	async watchnamespacespodgroupsRetrievePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3watchnamespacespodgroupsRetrievePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "watchSchedulingV1alpha2NamespacedPodGroup",
+			operationId: "watchSchedulingV1alpha3NamespacedPodGroup",
 			namespace: "apis",
-			method: "watchnamespacespodgroupsRetrievePodgroup",
+			method: "v1alpha3watchnamespacespodgroupsRetrievePodgroup",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/watch/namespaces/${namespace}/podgroups/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/watch/namespaces/${namespace}/podgroups/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchnamespacespodgroupsRetrievePodgroup"],
+			overrides: this.overrides["v1alpha3watchnamespacespodgroupsRetrievePodgroup"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22415,18 +23449,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * watch individual changes to a list of Workload. deprecated: use the 'watch' parameter with a list operation instead.
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/namespaces/{namespace}/workloads` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/watch/namespaces/{namespace}/workloads` — risk: medium
 	 */
-	async watchnamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3watchnamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "watchSchedulingV1alpha2NamespacedWorkloadList",
+			operationId: "watchSchedulingV1alpha3NamespacedWorkloadList",
 			namespace: "apis",
-			method: "watchnamespacesWorkloads",
+			method: "v1alpha3watchnamespacesWorkloads",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/watch/namespaces/${namespace}/workloads`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/watch/namespaces/${namespace}/workloads`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchnamespacesWorkloads"],
+			overrides: this.overrides["v1alpha3watchnamespacesWorkloads"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22437,18 +23471,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * watch changes to an object of kind Workload. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/watch/namespaces/{namespace}/workloads/{name}` — risk: medium
 	 */
-	async watchnamespacesworkloadsRetrieveWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3watchnamespacesworkloadsRetrieveWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "watchSchedulingV1alpha2NamespacedWorkload",
+			operationId: "watchSchedulingV1alpha3NamespacedWorkload",
 			namespace: "apis",
-			method: "watchnamespacesworkloadsRetrieveWorkload",
+			method: "v1alpha3watchnamespacesworkloadsRetrieveWorkload",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/watch/namespaces/${namespace}/workloads/${name}`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/watch/namespaces/${namespace}/workloads/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchnamespacesworkloadsRetrieveWorkload"],
+			overrides: this.overrides["v1alpha3watchnamespacesworkloadsRetrieveWorkload"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22459,18 +23493,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * watch individual changes to a list of PodGroup. deprecated: use the 'watch' parameter with a list operation instead.
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/podgroups` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/watch/podgroups` — risk: medium
 	 */
-	async watchPodgroups(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3watchPodgroups(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "watchSchedulingV1alpha2PodGroupListForAllNamespaces",
+			operationId: "watchSchedulingV1alpha3PodGroupListForAllNamespaces",
 			namespace: "apis",
-			method: "watchPodgroups",
+			method: "v1alpha3watchPodgroups",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/watch/podgroups`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/watch/podgroups`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchPodgroups"],
+			overrides: this.overrides["v1alpha3watchPodgroups"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22481,18 +23515,18 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * watch individual changes to a list of Workload. deprecated: use the 'watch' parameter with a list operation instead.
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/watch/workloads` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/watch/workloads` — risk: medium
 	 */
-	async watchWorkloads(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3watchWorkloads(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "watchSchedulingV1alpha2WorkloadListForAllNamespaces",
+			operationId: "watchSchedulingV1alpha3WorkloadListForAllNamespaces",
 			namespace: "apis",
-			method: "watchWorkloads",
+			method: "v1alpha3watchWorkloads",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/watch/workloads`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/watch/workloads`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchWorkloads"],
+			overrides: this.overrides["v1alpha3watchWorkloads"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22503,18 +23537,590 @@ export class ApisResource extends RpcTarget {
 	/**
 	 * list or watch objects of kind Workload
 	 *
-	 * `GET /apis/scheduling.k8s.io/v1alpha2/workloads` — risk: medium
+	 * `GET /apis/scheduling.k8s.io/v1alpha3/workloads` — risk: medium
 	 */
-	async workloads_7(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1alpha3Workloads(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
-			operationId: "listSchedulingV1alpha2WorkloadForAllNamespaces",
+			operationId: "listSchedulingV1alpha3WorkloadForAllNamespaces",
 			namespace: "apis",
-			method: "workloads_7",
+			method: "v1alpha3Workloads",
 			http: "get",
-			path: `/apis/scheduling.k8s.io/v1alpha2/workloads`,
+			path: `/apis/scheduling.k8s.io/v1alpha3/workloads`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["workloads_7"],
+			overrides: this.overrides["v1alpha3Workloads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * get available resources
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/` — risk: medium
+	 */
+	async schedulingK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getSchedulingV1beta1APIResources",
+			namespace: "apis",
+			method: "schedulingK8sIoV1beta1",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["schedulingK8sIoV1beta1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind PodGroup
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups` — risk: medium
+	 */
+	async getV1beta1namespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listSchedulingV1beta1NamespacedPodGroup",
+			namespace: "apis",
+			method: "getV1beta1namespacesPodgroups",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getV1beta1namespacesPodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * create a PodGroup
+	 *
+	 * `POST /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups` — risk: medium
+	 */
+	async postV1beta1namespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "createSchedulingV1beta1NamespacedPodGroup",
+			namespace: "apis",
+			method: "postV1beta1namespacesPodgroups",
+			http: "post",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["postV1beta1namespacesPodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete collection of PodGroup
+	 *
+	 * `DELETE /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups` — risk: medium
+	 */
+	async deleteV1beta1namespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteSchedulingV1beta1CollectionNamespacedPodGroup",
+			namespace: "apis",
+			method: "deleteV1beta1namespacesPodgroups",
+			http: "delete",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteV1beta1namespacesPodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read the specified PodGroup
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 */
+	async v1beta1namespacespodgroupsRetrievePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readSchedulingV1beta1NamespacedPodGroup",
+			namespace: "apis",
+			method: "v1beta1namespacespodgroupsRetrievePodgroup",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1namespacespodgroupsRetrievePodgroup"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace the specified PodGroup
+	 *
+	 * `PUT /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 */
+	async putV1beta1namespacesPodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceSchedulingV1beta1NamespacedPodGroup",
+			namespace: "apis",
+			method: "putV1beta1namespacesPodgroups",
+			http: "put",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putV1beta1namespacesPodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update the specified PodGroup
+	 *
+	 * `PATCH /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 */
+	async patchV1beta1namespacesPodgroups(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchSchedulingV1beta1NamespacedPodGroup",
+			namespace: "apis",
+			method: "patchV1beta1namespacesPodgroups",
+			http: "patch",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchV1beta1namespacesPodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete a PodGroup
+	 *
+	 * `DELETE /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 */
+	async v1beta1namespacespodgroupsDeletePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteSchedulingV1beta1NamespacedPodGroup",
+			namespace: "apis",
+			method: "v1beta1namespacespodgroupsDeletePodgroup",
+			http: "delete",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1namespacespodgroupsDeletePodgroup"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read status of the specified PodGroup
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
+	 */
+	async getSchedulingK8sIov1beta1namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readSchedulingV1beta1NamespacedPodGroupStatus",
+			namespace: "apis",
+			method: "getSchedulingK8sIov1beta1namespacespodgroupsStatus",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getSchedulingK8sIov1beta1namespacespodgroupsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace status of the specified PodGroup
+	 *
+	 * `PUT /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
+	 */
+	async putSchedulingK8sIov1beta1namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceSchedulingV1beta1NamespacedPodGroupStatus",
+			namespace: "apis",
+			method: "putSchedulingK8sIov1beta1namespacespodgroupsStatus",
+			http: "put",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putSchedulingK8sIov1beta1namespacespodgroupsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update status of the specified PodGroup
+	 *
+	 * `PATCH /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups/{name}/status` — risk: medium
+	 */
+	async patchSchedulingK8sIov1beta1namespacespodgroupsStatus(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchSchedulingV1beta1NamespacedPodGroupStatus",
+			namespace: "apis",
+			method: "patchSchedulingK8sIov1beta1namespacespodgroupsStatus",
+			http: "patch",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/podgroups/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchSchedulingK8sIov1beta1namespacespodgroupsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind Workload
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads` — risk: medium
+	 */
+	async getV1beta1namespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listSchedulingV1beta1NamespacedWorkload",
+			namespace: "apis",
+			method: "getV1beta1namespacesWorkloads",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/workloads`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getV1beta1namespacesWorkloads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * create a Workload
+	 *
+	 * `POST /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads` — risk: medium
+	 */
+	async postV1beta1namespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "createSchedulingV1beta1NamespacedWorkload",
+			namespace: "apis",
+			method: "postV1beta1namespacesWorkloads",
+			http: "post",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/workloads`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["postV1beta1namespacesWorkloads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete collection of Workload
+	 *
+	 * `DELETE /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads` — risk: medium
+	 */
+	async deleteV1beta1namespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteSchedulingV1beta1CollectionNamespacedWorkload",
+			namespace: "apis",
+			method: "deleteV1beta1namespacesWorkloads",
+			http: "delete",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/workloads`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteV1beta1namespacesWorkloads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read the specified Workload
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 */
+	async v1beta1namespacesworkloadsRetrieveWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readSchedulingV1beta1NamespacedWorkload",
+			namespace: "apis",
+			method: "v1beta1namespacesworkloadsRetrieveWorkload",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/workloads/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1namespacesworkloadsRetrieveWorkload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace the specified Workload
+	 *
+	 * `PUT /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 */
+	async putV1beta1namespacesWorkloads(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceSchedulingV1beta1NamespacedWorkload",
+			namespace: "apis",
+			method: "putV1beta1namespacesWorkloads",
+			http: "put",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/workloads/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putV1beta1namespacesWorkloads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update the specified Workload
+	 *
+	 * `PATCH /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 */
+	async patchV1beta1namespacesWorkloads(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchSchedulingV1beta1NamespacedWorkload",
+			namespace: "apis",
+			method: "patchV1beta1namespacesWorkloads",
+			http: "patch",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/workloads/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchV1beta1namespacesWorkloads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete a Workload
+	 *
+	 * `DELETE /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 */
+	async v1beta1namespacesworkloadsDeleteWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteSchedulingV1beta1NamespacedWorkload",
+			namespace: "apis",
+			method: "v1beta1namespacesworkloadsDeleteWorkload",
+			http: "delete",
+			path: `/apis/scheduling.k8s.io/v1beta1/namespaces/${namespace}/workloads/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1namespacesworkloadsDeleteWorkload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind PodGroup
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/podgroups` — risk: medium
+	 */
+	async v1beta1Podgroups(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listSchedulingV1beta1PodGroupForAllNamespaces",
+			namespace: "apis",
+			method: "v1beta1Podgroups",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/podgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1Podgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of PodGroup. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/watch/namespaces/{namespace}/podgroups` — risk: medium
+	 */
+	async v1beta1watchnamespacesPodgroups(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchSchedulingV1beta1NamespacedPodGroupList",
+			namespace: "apis",
+			method: "v1beta1watchnamespacesPodgroups",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/watch/namespaces/${namespace}/podgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1watchnamespacesPodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch changes to an object of kind PodGroup. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/watch/namespaces/{namespace}/podgroups/{name}` — risk: medium
+	 */
+	async v1beta1watchnamespacespodgroupsRetrievePodgroup(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchSchedulingV1beta1NamespacedPodGroup",
+			namespace: "apis",
+			method: "v1beta1watchnamespacespodgroupsRetrievePodgroup",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/watch/namespaces/${namespace}/podgroups/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1watchnamespacespodgroupsRetrievePodgroup"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of Workload. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/watch/namespaces/{namespace}/workloads` — risk: medium
+	 */
+	async v1beta1watchnamespacesWorkloads(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchSchedulingV1beta1NamespacedWorkloadList",
+			namespace: "apis",
+			method: "v1beta1watchnamespacesWorkloads",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/watch/namespaces/${namespace}/workloads`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1watchnamespacesWorkloads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch changes to an object of kind Workload. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/watch/namespaces/{namespace}/workloads/{name}` — risk: medium
+	 */
+	async v1beta1watchnamespacesworkloadsRetrieveWorkload(namespace: string, name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchSchedulingV1beta1NamespacedWorkload",
+			namespace: "apis",
+			method: "v1beta1watchnamespacesworkloadsRetrieveWorkload",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/watch/namespaces/${namespace}/workloads/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1watchnamespacesworkloadsRetrieveWorkload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of PodGroup. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/watch/podgroups` — risk: medium
+	 */
+	async v1beta1watchPodgroups(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchSchedulingV1beta1PodGroupListForAllNamespaces",
+			namespace: "apis",
+			method: "v1beta1watchPodgroups",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/watch/podgroups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1watchPodgroups"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of Workload. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/watch/workloads` — risk: medium
+	 */
+	async v1beta1watchWorkloads(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchSchedulingV1beta1WorkloadListForAllNamespaces",
+			namespace: "apis",
+			method: "v1beta1watchWorkloads",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/watch/workloads`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1watchWorkloads"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind Workload
+	 *
+	 * `GET /apis/scheduling.k8s.io/v1beta1/workloads` — risk: medium
+	 */
+	async v1beta1Workloads(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listSchedulingV1beta1WorkloadForAllNamespaces",
+			namespace: "apis",
+			method: "v1beta1Workloads",
+			http: "get",
+			path: `/apis/scheduling.k8s.io/v1beta1/workloads`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1beta1Workloads"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22867,6 +24473,72 @@ export class ApisResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCsinode"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read status of the specified CSINode
+	 *
+	 * `GET /apis/storage.k8s.io/v1/csinodes/{name}/status` — risk: medium
+	 */
+	async getStorageK8sIov1csinodesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readStorageV1CSINodeStatus",
+			namespace: "apis",
+			method: "getStorageK8sIov1csinodesStatus",
+			http: "get",
+			path: `/apis/storage.k8s.io/v1/csinodes/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getStorageK8sIov1csinodesStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace status of the specified CSINode
+	 *
+	 * `PUT /apis/storage.k8s.io/v1/csinodes/{name}/status` — risk: medium
+	 */
+	async putStorageK8sIov1csinodesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceStorageV1CSINodeStatus",
+			namespace: "apis",
+			method: "putStorageK8sIov1csinodesStatus",
+			http: "put",
+			path: `/apis/storage.k8s.io/v1/csinodes/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putStorageK8sIov1csinodesStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update status of the specified CSINode
+	 *
+	 * `PATCH /apis/storage.k8s.io/v1/csinodes/{name}/status` — risk: medium
+	 */
+	async patchStorageK8sIov1csinodesStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchStorageV1CSINodeStatus",
+			namespace: "apis",
+			method: "patchStorageK8sIov1csinodesStatus",
+			http: "patch",
+			path: `/apis/storage.k8s.io/v1/csinodes/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchStorageK8sIov1csinodesStatus"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23429,16 +25101,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/volumeattributesclasses` — risk: medium
 	 */
-	async getV1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async volumeattributesclasses_0(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStorageV1VolumeAttributesClass",
 			namespace: "apis",
-			method: "getV1Volumeattributesclasses",
+			method: "volumeattributesclasses_0",
 			http: "get",
 			path: `/apis/storage.k8s.io/v1/volumeattributesclasses`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["getV1Volumeattributesclasses"],
+			overrides: this.overrides["volumeattributesclasses_0"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23451,16 +25123,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storage.k8s.io/v1/volumeattributesclasses` — risk: medium
 	 */
-	async postV1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async volumeattributesclasses_1(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStorageV1VolumeAttributesClass",
 			namespace: "apis",
-			method: "postV1Volumeattributesclasses",
+			method: "volumeattributesclasses_1",
 			http: "post",
 			path: `/apis/storage.k8s.io/v1/volumeattributesclasses`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["postV1Volumeattributesclasses"],
+			overrides: this.overrides["volumeattributesclasses_1"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23473,16 +25145,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/volumeattributesclasses` — risk: medium
 	 */
-	async deleteV1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async volumeattributesclasses_2(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1CollectionVolumeAttributesClass",
 			namespace: "apis",
-			method: "deleteV1Volumeattributesclasses",
+			method: "volumeattributesclasses_2",
 			http: "delete",
 			path: `/apis/storage.k8s.io/v1/volumeattributesclasses`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deleteV1Volumeattributesclasses"],
+			overrides: this.overrides["volumeattributesclasses_2"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23495,16 +25167,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async v1volumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async volumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStorageV1VolumeAttributesClass",
 			namespace: "apis",
-			method: "v1volumeattributesclassesRetrieveVolumeattributesclass",
+			method: "volumeattributesclassesRetrieveVolumeattributesclass",
 			http: "get",
 			path: `/apis/storage.k8s.io/v1/volumeattributesclasses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1volumeattributesclassesRetrieveVolumeattributesclass"],
+			overrides: this.overrides["volumeattributesclassesRetrieveVolumeattributesclass"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23517,16 +25189,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storage.k8s.io/v1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async putV1Volumeattributesclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async volumeattributesclasses_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStorageV1VolumeAttributesClass",
 			namespace: "apis",
-			method: "putV1Volumeattributesclasses",
+			method: "volumeattributesclasses_3",
 			http: "put",
 			path: `/apis/storage.k8s.io/v1/volumeattributesclasses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["putV1Volumeattributesclasses"],
+			overrides: this.overrides["volumeattributesclasses_3"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23539,16 +25211,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storage.k8s.io/v1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async patchV1Volumeattributesclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async volumeattributesclasses_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStorageV1VolumeAttributesClass",
 			namespace: "apis",
-			method: "patchV1Volumeattributesclasses",
+			method: "volumeattributesclasses_4",
 			http: "patch",
 			path: `/apis/storage.k8s.io/v1/volumeattributesclasses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["patchV1Volumeattributesclasses"],
+			overrides: this.overrides["volumeattributesclasses_4"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23561,16 +25233,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storage.k8s.io/v1/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async v1volumeattributesclassesDeleteVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async deleteVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStorageV1VolumeAttributesClass",
 			namespace: "apis",
-			method: "v1volumeattributesclassesDeleteVolumeattributesclass",
+			method: "deleteVolumeattributesclass",
 			http: "delete",
 			path: `/apis/storage.k8s.io/v1/volumeattributesclasses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1volumeattributesclassesDeleteVolumeattributesclass"],
+			overrides: this.overrides["deleteVolumeattributesclass"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23825,16 +25497,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/volumeattributesclasses` — risk: medium
 	 */
-	async v1watchVolumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async watchVolumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1VolumeAttributesClassList",
 			namespace: "apis",
-			method: "v1watchVolumeattributesclasses",
+			method: "watchVolumeattributesclasses",
 			http: "get",
 			path: `/apis/storage.k8s.io/v1/watch/volumeattributesclasses`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1watchVolumeattributesclasses"],
+			overrides: this.overrides["watchVolumeattributesclasses"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23847,236 +25519,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storage.k8s.io/v1/watch/volumeattributesclasses/{name}` — risk: medium
 	 */
-	async v1watchvolumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async watchvolumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStorageV1VolumeAttributesClass",
 			namespace: "apis",
-			method: "v1watchvolumeattributesclassesRetrieveVolumeattributesclass",
+			method: "watchvolumeattributesclassesRetrieveVolumeattributesclass",
 			http: "get",
 			path: `/apis/storage.k8s.io/v1/watch/volumeattributesclasses/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["v1watchvolumeattributesclassesRetrieveVolumeattributesclass"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * get available resources
-	 *
-	 * `GET /apis/storage.k8s.io/v1beta1/` — risk: medium
-	 */
-	async storageK8sIoV1beta1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "getStorageV1beta1APIResources",
-			namespace: "apis",
-			method: "storageK8sIoV1beta1",
-			http: "get",
-			path: `/apis/storage.k8s.io/v1beta1/`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["storageK8sIoV1beta1"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * list or watch objects of kind VolumeAttributesClass
-	 *
-	 * `GET /apis/storage.k8s.io/v1beta1/volumeattributesclasses` — risk: medium
-	 */
-	async getV1beta1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "listStorageV1beta1VolumeAttributesClass",
-			namespace: "apis",
-			method: "getV1beta1Volumeattributesclasses",
-			http: "get",
-			path: `/apis/storage.k8s.io/v1beta1/volumeattributesclasses`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["getV1beta1Volumeattributesclasses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * create a VolumeAttributesClass
-	 *
-	 * `POST /apis/storage.k8s.io/v1beta1/volumeattributesclasses` — risk: medium
-	 */
-	async postV1beta1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "createStorageV1beta1VolumeAttributesClass",
-			namespace: "apis",
-			method: "postV1beta1Volumeattributesclasses",
-			http: "post",
-			path: `/apis/storage.k8s.io/v1beta1/volumeattributesclasses`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["postV1beta1Volumeattributesclasses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * delete collection of VolumeAttributesClass
-	 *
-	 * `DELETE /apis/storage.k8s.io/v1beta1/volumeattributesclasses` — risk: medium
-	 */
-	async deleteV1beta1Volumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "deleteStorageV1beta1CollectionVolumeAttributesClass",
-			namespace: "apis",
-			method: "deleteV1beta1Volumeattributesclasses",
-			http: "delete",
-			path: `/apis/storage.k8s.io/v1beta1/volumeattributesclasses`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["deleteV1beta1Volumeattributesclasses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * read the specified VolumeAttributesClass
-	 *
-	 * `GET /apis/storage.k8s.io/v1beta1/volumeattributesclasses/{name}` — risk: medium
-	 */
-	async v1beta1volumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "readStorageV1beta1VolumeAttributesClass",
-			namespace: "apis",
-			method: "v1beta1volumeattributesclassesRetrieveVolumeattributesclass",
-			http: "get",
-			path: `/apis/storage.k8s.io/v1beta1/volumeattributesclasses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1volumeattributesclassesRetrieveVolumeattributesclass"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * replace the specified VolumeAttributesClass
-	 *
-	 * `PUT /apis/storage.k8s.io/v1beta1/volumeattributesclasses/{name}` — risk: medium
-	 */
-	async putV1beta1Volumeattributesclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "replaceStorageV1beta1VolumeAttributesClass",
-			namespace: "apis",
-			method: "putV1beta1Volumeattributesclasses",
-			http: "put",
-			path: `/apis/storage.k8s.io/v1beta1/volumeattributesclasses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["putV1beta1Volumeattributesclasses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * partially update the specified VolumeAttributesClass
-	 *
-	 * `PATCH /apis/storage.k8s.io/v1beta1/volumeattributesclasses/{name}` — risk: medium
-	 */
-	async patchV1beta1Volumeattributesclasses(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "patchStorageV1beta1VolumeAttributesClass",
-			namespace: "apis",
-			method: "patchV1beta1Volumeattributesclasses",
-			http: "patch",
-			path: `/apis/storage.k8s.io/v1beta1/volumeattributesclasses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["patchV1beta1Volumeattributesclasses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * delete a VolumeAttributesClass
-	 *
-	 * `DELETE /apis/storage.k8s.io/v1beta1/volumeattributesclasses/{name}` — risk: medium
-	 */
-	async v1beta1volumeattributesclassesDeleteVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "deleteStorageV1beta1VolumeAttributesClass",
-			namespace: "apis",
-			method: "v1beta1volumeattributesclassesDeleteVolumeattributesclass",
-			http: "delete",
-			path: `/apis/storage.k8s.io/v1beta1/volumeattributesclasses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1volumeattributesclassesDeleteVolumeattributesclass"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * watch individual changes to a list of VolumeAttributesClass. deprecated: use the 'watch' parameter with a list operation instead.
-	 *
-	 * `GET /apis/storage.k8s.io/v1beta1/watch/volumeattributesclasses` — risk: medium
-	 */
-	async v1beta1watchVolumeattributesclasses(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "watchStorageV1beta1VolumeAttributesClassList",
-			namespace: "apis",
-			method: "v1beta1watchVolumeattributesclasses",
-			http: "get",
-			path: `/apis/storage.k8s.io/v1beta1/watch/volumeattributesclasses`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1watchVolumeattributesclasses"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * watch changes to an object of kind VolumeAttributesClass. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
-	 *
-	 * `GET /apis/storage.k8s.io/v1beta1/watch/volumeattributesclasses/{name}` — risk: medium
-	 */
-	async v1beta1watchvolumeattributesclassesRetrieveVolumeattributesclass(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "watchStorageV1beta1VolumeAttributesClass",
-			namespace: "apis",
-			method: "v1beta1watchvolumeattributesclassesRetrieveVolumeattributesclass",
-			http: "get",
-			path: `/apis/storage.k8s.io/v1beta1/watch/volumeattributesclasses/${name}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["v1beta1watchvolumeattributesclassesRetrieveVolumeattributesclass"],
+			overrides: this.overrides["watchvolumeattributesclassesRetrieveVolumeattributesclass"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24099,6 +25551,292 @@ export class ApisResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStoragemigrationK8sIo"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * get available resources
+	 *
+	 * `GET /apis/storagemigration.k8s.io/v1/` — risk: medium
+	 */
+	async storagemigrationK8sIoV1(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getStoragemigrationV1APIResources",
+			namespace: "apis",
+			method: "storagemigrationK8sIoV1",
+			http: "get",
+			path: `/apis/storagemigration.k8s.io/v1/`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["storagemigrationK8sIoV1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * list or watch objects of kind StorageVersionMigration
+	 *
+	 * `GET /apis/storagemigration.k8s.io/v1/storageversionmigrations` — risk: medium
+	 */
+	async getV1Storageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "listStoragemigrationV1StorageVersionMigration",
+			namespace: "apis",
+			method: "getV1Storageversionmigrations",
+			http: "get",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getV1Storageversionmigrations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * create a StorageVersionMigration
+	 *
+	 * `POST /apis/storagemigration.k8s.io/v1/storageversionmigrations` — risk: medium
+	 */
+	async postV1Storageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "createStoragemigrationV1StorageVersionMigration",
+			namespace: "apis",
+			method: "postV1Storageversionmigrations",
+			http: "post",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["postV1Storageversionmigrations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete collection of StorageVersionMigration
+	 *
+	 * `DELETE /apis/storagemigration.k8s.io/v1/storageversionmigrations` — risk: medium
+	 */
+	async deleteV1Storageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteStoragemigrationV1CollectionStorageVersionMigration",
+			namespace: "apis",
+			method: "deleteV1Storageversionmigrations",
+			http: "delete",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteV1Storageversionmigrations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read the specified StorageVersionMigration
+	 *
+	 * `GET /apis/storagemigration.k8s.io/v1/storageversionmigrations/{name}` — risk: medium
+	 */
+	async v1storageversionmigrationsRetrieveStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readStoragemigrationV1StorageVersionMigration",
+			namespace: "apis",
+			method: "v1storageversionmigrationsRetrieveStorageversionmigration",
+			http: "get",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1storageversionmigrationsRetrieveStorageversionmigration"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace the specified StorageVersionMigration
+	 *
+	 * `PUT /apis/storagemigration.k8s.io/v1/storageversionmigrations/{name}` — risk: medium
+	 */
+	async putV1Storageversionmigrations(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceStoragemigrationV1StorageVersionMigration",
+			namespace: "apis",
+			method: "putV1Storageversionmigrations",
+			http: "put",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putV1Storageversionmigrations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update the specified StorageVersionMigration
+	 *
+	 * `PATCH /apis/storagemigration.k8s.io/v1/storageversionmigrations/{name}` — risk: medium
+	 */
+	async patchV1Storageversionmigrations(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchStoragemigrationV1StorageVersionMigration",
+			namespace: "apis",
+			method: "patchV1Storageversionmigrations",
+			http: "patch",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchV1Storageversionmigrations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * delete a StorageVersionMigration
+	 *
+	 * `DELETE /apis/storagemigration.k8s.io/v1/storageversionmigrations/{name}` — risk: medium
+	 */
+	async v1storageversionmigrationsDeleteStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteStoragemigrationV1StorageVersionMigration",
+			namespace: "apis",
+			method: "v1storageversionmigrationsDeleteStorageversionmigration",
+			http: "delete",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1storageversionmigrationsDeleteStorageversionmigration"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * read status of the specified StorageVersionMigration
+	 *
+	 * `GET /apis/storagemigration.k8s.io/v1/storageversionmigrations/{name}/status` — risk: medium
+	 */
+	async getStoragemigrationK8sIov1storageversionmigrationsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "readStoragemigrationV1StorageVersionMigrationStatus",
+			namespace: "apis",
+			method: "getStoragemigrationK8sIov1storageversionmigrationsStatus",
+			http: "get",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getStoragemigrationK8sIov1storageversionmigrationsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * replace status of the specified StorageVersionMigration
+	 *
+	 * `PUT /apis/storagemigration.k8s.io/v1/storageversionmigrations/{name}/status` — risk: medium
+	 */
+	async putStoragemigrationK8sIov1storageversionmigrationsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "replaceStoragemigrationV1StorageVersionMigrationStatus",
+			namespace: "apis",
+			method: "putStoragemigrationK8sIov1storageversionmigrationsStatus",
+			http: "put",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["putStoragemigrationK8sIov1storageversionmigrationsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * partially update status of the specified StorageVersionMigration
+	 *
+	 * `PATCH /apis/storagemigration.k8s.io/v1/storageversionmigrations/{name}/status` — risk: medium
+	 */
+	async patchStoragemigrationK8sIov1storageversionmigrationsStatus(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchStoragemigrationV1StorageVersionMigrationStatus",
+			namespace: "apis",
+			method: "patchStoragemigrationK8sIov1storageversionmigrationsStatus",
+			http: "patch",
+			path: `/apis/storagemigration.k8s.io/v1/storageversionmigrations/${name}/status`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["patchStoragemigrationK8sIov1storageversionmigrationsStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch individual changes to a list of StorageVersionMigration. deprecated: use the 'watch' parameter with a list operation instead.
+	 *
+	 * `GET /apis/storagemigration.k8s.io/v1/watch/storageversionmigrations` — risk: medium
+	 */
+	async v1watchStorageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchStoragemigrationV1StorageVersionMigrationList",
+			namespace: "apis",
+			method: "v1watchStorageversionmigrations",
+			http: "get",
+			path: `/apis/storagemigration.k8s.io/v1/watch/storageversionmigrations`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1watchStorageversionmigrations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * watch changes to an object of kind StorageVersionMigration. deprecated: use the 'watch' parameter with a list operation instead, filtered to a single item with the 'fieldSelector' parameter.
+	 *
+	 * `GET /apis/storagemigration.k8s.io/v1/watch/storageversionmigrations/{name}` — risk: medium
+	 */
+	async v1watchstorageversionmigrationsRetrieveStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "watchStoragemigrationV1StorageVersionMigration",
+			namespace: "apis",
+			method: "v1watchstorageversionmigrationsRetrieveStorageversionmigration",
+			http: "get",
+			path: `/apis/storagemigration.k8s.io/v1/watch/storageversionmigrations/${name}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["v1watchstorageversionmigrationsRetrieveStorageversionmigration"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24133,16 +25871,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations` — risk: medium
 	 */
-	async storageversionmigrations_0(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async getV1beta1Storageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "listStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
-			method: "storageversionmigrations_0",
+			method: "getV1beta1Storageversionmigrations",
 			http: "get",
 			path: `/apis/storagemigration.k8s.io/v1beta1/storageversionmigrations`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["storageversionmigrations_0"],
+			overrides: this.overrides["getV1beta1Storageversionmigrations"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24155,16 +25893,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `POST /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations` — risk: medium
 	 */
-	async storageversionmigrations_1(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async postV1beta1Storageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "createStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
-			method: "storageversionmigrations_1",
+			method: "postV1beta1Storageversionmigrations",
 			http: "post",
 			path: `/apis/storagemigration.k8s.io/v1beta1/storageversionmigrations`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["storageversionmigrations_1"],
+			overrides: this.overrides["postV1beta1Storageversionmigrations"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24177,16 +25915,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations` — risk: medium
 	 */
-	async storageversionmigrations_2(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async deleteV1beta1Storageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStoragemigrationV1beta1CollectionStorageVersionMigration",
 			namespace: "apis",
-			method: "storageversionmigrations_2",
+			method: "deleteV1beta1Storageversionmigrations",
 			http: "delete",
 			path: `/apis/storagemigration.k8s.io/v1beta1/storageversionmigrations`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["storageversionmigrations_2"],
+			overrides: this.overrides["deleteV1beta1Storageversionmigrations"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24199,16 +25937,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}` — risk: medium
 	 */
-	async storageversionmigrationsRetrieveStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1storageversionmigrationsRetrieveStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "readStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
-			method: "storageversionmigrationsRetrieveStorageversionmigration",
+			method: "v1beta1storageversionmigrationsRetrieveStorageversionmigration",
 			http: "get",
 			path: `/apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["storageversionmigrationsRetrieveStorageversionmigration"],
+			overrides: this.overrides["v1beta1storageversionmigrationsRetrieveStorageversionmigration"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24221,16 +25959,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PUT /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}` — risk: medium
 	 */
-	async storageversionmigrations_3(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async putV1beta1Storageversionmigrations(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "replaceStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
-			method: "storageversionmigrations_3",
+			method: "putV1beta1Storageversionmigrations",
 			http: "put",
 			path: `/apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["storageversionmigrations_3"],
+			overrides: this.overrides["putV1beta1Storageversionmigrations"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24243,16 +25981,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `PATCH /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}` — risk: medium
 	 */
-	async storageversionmigrations_4(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async patchV1beta1Storageversionmigrations(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "patchStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
-			method: "storageversionmigrations_4",
+			method: "patchV1beta1Storageversionmigrations",
 			http: "patch",
 			path: `/apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["storageversionmigrations_4"],
+			overrides: this.overrides["patchV1beta1Storageversionmigrations"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24265,16 +26003,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `DELETE /apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/{name}` — risk: medium
 	 */
-	async deleteStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1storageversionmigrationsDeleteStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "deleteStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
-			method: "deleteStorageversionmigration",
+			method: "v1beta1storageversionmigrationsDeleteStorageversionmigration",
 			http: "delete",
 			path: `/apis/storagemigration.k8s.io/v1beta1/storageversionmigrations/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["deleteStorageversionmigration"],
+			overrides: this.overrides["v1beta1storageversionmigrationsDeleteStorageversionmigration"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24353,16 +26091,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/watch/storageversionmigrations` — risk: medium
 	 */
-	async watchStorageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1watchStorageversionmigrations(options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStoragemigrationV1beta1StorageVersionMigrationList",
 			namespace: "apis",
-			method: "watchStorageversionmigrations",
+			method: "v1beta1watchStorageversionmigrations",
 			http: "get",
 			path: `/apis/storagemigration.k8s.io/v1beta1/watch/storageversionmigrations`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchStorageversionmigrations"],
+			overrides: this.overrides["v1beta1watchStorageversionmigrations"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24375,16 +26113,16 @@ export class ApisResource extends RpcTarget {
 	 *
 	 * `GET /apis/storagemigration.k8s.io/v1beta1/watch/storageversionmigrations/{name}` — risk: medium
 	 */
-	async watchstorageversionmigrationsRetrieveStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async v1beta1watchstorageversionmigrationsRetrieveStorageversionmigration(name: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "watchStoragemigrationV1beta1StorageVersionMigration",
 			namespace: "apis",
-			method: "watchstorageversionmigrationsRetrieveStorageversionmigration",
+			method: "v1beta1watchstorageversionmigrationsRetrieveStorageversionmigration",
 			http: "get",
 			path: `/apis/storagemigration.k8s.io/v1beta1/watch/storageversionmigrations/${name}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["watchstorageversionmigrationsRetrieveStorageversionmigration"],
+			overrides: this.overrides["v1beta1watchstorageversionmigrationsRetrieveStorageversionmigration"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,

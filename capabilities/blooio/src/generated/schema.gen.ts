@@ -1,4 +1,78 @@
 export type paths = {
+    "/analytics/risk-tolerance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get risk-tolerance report
+         * @description Returns the per-number risk-tolerance report for every dedicated and inbound number in the organization over a bounded time window. Numbers are returned sorted by descending risk score (riskiest first).
+         *
+         *     Each entry carries a `risk_score` (0-100), a `risk_level` (`low`/`medium`/`high`), a `line_type` indicating which scoring profile was applied, the raw `metrics` used to derive it, the ten scored `risk_factors` (value + points + status per factor), and a `daily_data` time series of new inbound/outbound conversations for charting.
+         *
+         *     **Scope** — Org-scoped: any API key in the organization returns the full scorable fleet, regardless of which numbers the key is attached to.
+         *
+         *     **Eligibility** — Requires at least one dedicated number (Dedicated Commercial or Dedicated Enterprise) or inbound number (Inbound Basic). Organizations with only shared or trial numbers receive `403 dedicated_plan_required`. Inbound numbers are scored with the reply-only factor profile described on the Analytics tag.
+         *
+         *     **Computation** — Real-time; recomputed from Postgres on every request (no cache). Definitions used across the metrics: a *conversation* is keyed by contact (or group); a *new conversation* is one whose all-time first message falls inside the window; a *reply* is a conversation that received 3 or more inbound messages; *bursts* are the peak count in any single UTC hour of the window. The expensive message-similarity (SimHash) metric is included automatically for fleets of 5 numbers or fewer, and otherwise only when `compute=true` (larger fleets return `message_similarity_percentage: null` unless requested).
+         */
+        get: operations["getRiskTolerance"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/analytics/risk-tolerance/{number}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get risk-tolerance report for a number
+         * @description Returns the risk-tolerance report for a single number in the organization: its `risk_score`, `risk_level`, `line_type`, `metrics`, `risk_factors`, and `daily_data` time series, computed over the requested window.
+         *
+         *     **Scope** — Org-scoped: any API key in the organization can query any of the organization's numbers.
+         *
+         *     **Eligibility** — Requires the number to be on a dedicated plan (Dedicated Commercial or Dedicated Enterprise) or an inbound plan (Inbound Basic). Shared, trial, and unplanned numbers return `403 dedicated_plan_required`. A number that isn't assigned to the organization returns `404`, and a non-E.164 `number` returns `400`. Inbound numbers are scored with the reply-only factor profile described on the Analytics tag.
+         *
+         *     **Computation** — Same real-time compute and metric definitions as the org-wide report (a *reply* is a conversation with 3+ inbound messages; *bursts* are the peak in any single UTC hour; a *new conversation* is one whose first-ever message falls in the window). SimHash message similarity is included automatically for this single number unless the org is large and `compute=true` is omitted.
+         */
+        get: operations["getNumberRiskTolerance"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/analytics/risk-tolerance/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get risk-tolerance summary
+         * @description Returns a lightweight cached rollup of the organization's most recent risk scores (highest score/level and the count of high-risk numbers). Read from a cache populated by the full report; returns zeros with `computed_at: null` when the organization has never been scored. This endpoint never recomputes, so it is cheap to poll on load.
+         */
+        get: operations["getRiskSummary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/chats": {
         parameters: {
             query?: never;
@@ -55,7 +129,17 @@ export type paths = {
          * Set chat background
          * @description Set or update the background image for a conversation. Works for both 1-on-1 and group chats.
          *
-         *     The uploaded image is converted into a PosterKit-compatible archive and applied to the iMessage conversation on the linked device. Supported formats: JPEG, PNG, GIF, WebP, HEIC/HEIF. Maximum file size: 10 MB.
+         *     The request body must be `multipart/form-data` with a single `background` field containing the **raw image file bytes** (not a URL or base64 string). Supported formats: JPEG, PNG, GIF, WebP, HEIC/HEIF. Maximum file size: 10 MB.
+         *
+         *     **Example with curl** — note the `@` prefix that tells curl to read the file from disk:
+         *
+         *     ```bash
+         *     curl -X PUT "https://api.blooio.com/v2/api/chats/%2B15551234567/background" \
+         *       -H "Authorization: Bearer YOUR_API_KEY" \
+         *       -F "background=@/path/to/image.jpg;type=image/jpeg"
+         *     ```
+         *
+         *     When the chat id is a phone number, percent-encode the leading `+` as `%2B` in the URL path.
          */
         put: operations["setChatBackground"];
         post?: never;
@@ -81,6 +165,8 @@ export type paths = {
         /**
          * Share contact card
          * @description Stage the contact card (Name & Photo) for sharing in a chat. The contact card will be piggybacked onto the next outgoing message (text or attachment) sent to this chat. This is idempotent — calling it multiple times is harmless.
+         *
+         *     ⚠️ **Plan requirement:** Contact card sharing is only available on **Dedicated Commercial** and **Dedicated Enterprise** plans. Numbers on other plans receive a `403`.
          */
         post: operations["shareContactCard"];
         delete?: never;
@@ -99,6 +185,8 @@ export type paths = {
         /**
          * List messages in a chat
          * @description List all messages in a conversation with optional filtering.
+         *
+         *     A conversation must already exist: this returns `404` for an address the organization has never exchanged a message with, rather than an empty list. Use `GET /chats` to enumerate the conversations that do exist.
          */
         get: operations["listChatMessages"];
         put?: never;
@@ -107,6 +195,8 @@ export type paths = {
          * @description Send a message to a chat. The chatId can be: (1) E.164 phone number, (2) email address, (3) group ID (grp_xxxx), or (4) comma-separated list of phone/email for multi-recipient chats. For multi-recipient, an unnamed group is automatically created or reused if the exact participant combination already exists. For explicit groups, the group must be linked to an existing iMessage chat.
          *
          *     **iMessage send-with-effect:** set the optional `effect` field to attach an Apple expressive send (slam, loud, gentle, invisible-ink) or screen effect (echo, spotlight, balloons, confetti, love, lasers, fireworks, celebration). Effects are an iMessage-only feature — when the recipient is on SMS/RCS the message is delivered without the animation. Effects are not supported in multipart (`parts`) mode.
+         *
+         *     **Threaded replies (iMessage inline reply):** set the optional `reply_to` field to send the outgoing message as a reply to a specific earlier message. Two shapes are accepted: `{ "message_id": "msg_…" }` references a Blooio-minted message in the same chat (most common — the message_id returned by an earlier send or surfaced on a `message.received` webhook), or `{ "guid": "…", "part_index": 0 }` references the raw iMessage GUID for the rare case where the parent wasn't recorded by Blooio. The reply must target the same chat and the same from-number as the new send, and the parent must be no older than 30 days (the iMessage on-device retention horizon). Reply support is iMessage-only and is rejected on Twilio, dashboard-Twilio, and hybrid send paths; it's also rejected on multi-message fan-outs (`text` array or per-part URL-balloon batch). See the `400` responses for the full set of `reply_target_*` error codes.
          */
         post: operations["sendMessage"];
         delete?: never;
@@ -149,8 +239,6 @@ export type paths = {
          * @description Add or remove a reaction to a message. Supports classic iMessage tapbacks (love, like, dislike, laugh, emphasize, question) and emoji reactions (e.g. +😂, -😂).
          *
          *     The messageId can be an explicit message ID (e.g., msg_xxx) or a relative index (-1 for last message, -2 for second-to-last, etc.). When using relative indices, you can optionally filter by message direction (inbound/outbound only).
-         *
-         *     Emoji reactions require macOS 14 (Sonoma) or later on the device.
          */
         post: operations["addReaction"];
         delete?: never;
@@ -250,14 +338,14 @@ export type paths = {
         put?: never;
         /**
          * Start typing indicator
-         * @description Start the typing indicator for a chat. The indicator shows the recipient that you are typing.
+         * @description Start the typing indicator for a chat. The indicator shows the recipient that you are typing. Works for both 1:1 chats (pass a phone number or email as `chatId`) and group chats (pass the group ID, e.g. `grp_...`); in a group every participant sees the indicator.
          *
          *     **RCS limitation:** typing indicators are only delivered for iMessage chats — the RCS protocol does not carry composing state. Calls against RCS-routed chats return 200 with a `warning` field and have no visible effect on the recipient.
          */
         post: operations["startTyping"];
         /**
          * Stop typing indicator
-         * @description Stop the typing indicator for a chat.
+         * @description Stop the typing indicator for a chat. Works for both 1:1 chats (pass a phone number or email as `chatId`) and group chats (pass the group ID, e.g. `grp_...`).
          *
          *     **RCS limitation:** typing indicators are only delivered for iMessage chats — the RCS protocol does not carry composing state. Calls against RCS-routed chats return 200 with a `warning` field and have no visible effect on the recipient.
          */
@@ -637,6 +725,30 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/me/numbers/{number}/call-forwarding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Request call forwarding
+         * @description Open a request to forward calls from one of your numbers to another phone number.
+         *
+         *     This does **not** instantly reconfigure forwarding — it opens a support request that the Blooio team fulfils, and the change typically takes effect within one business day. The `{number}` path parameter is the source number to forward, and `forward_to` is the destination.
+         *
+         *     Only **dedicated** or **inbound** numbers owned by your organization can be forwarded; shared numbers cannot, because the underlying line is shared across organizations. Both numbers must be valid US numbers.
+         */
+        post: operations["requestCallForwarding"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/me/numbers/{number}/contact-card": {
         parameters: {
             query?: never;
@@ -654,6 +766,8 @@ export type paths = {
         /**
          * Update contact card
          * @description Update the personal contact card (Name & Photo) for the specified phone number. All fields are optional — only provided fields are updated.
+         *
+         *     ⚠️ **Plan requirement:** Setting the `first_name`, `last_name`, or `avatar` is only available on **Dedicated Commercial** and **Dedicated Enterprise** plans. Numbers on other plans receive a `403`.
          */
         put: operations["updateMyContactCard"];
         post?: never;
@@ -727,8 +841,9 @@ export type paths = {
         get: operations["listWebhooks"];
         put?: never;
         /**
-         * Create a webhook
-         * @description Create a new webhook subscription.
+         * Create a webhook (closed)
+         * @deprecated
+         * @description Registration through this endpoint is closed and returns 410. Use POST /v4/webhooks to create new subscriptions. Existing webhooks keep working and can still be listed, updated, and deleted here. Re-posting the URL of a webhook that already exists still returns 200 with that webhook, so idempotent provisioning scripts continue to work unchanged.
          */
         post: operations["createWebhook"];
         delete?: never;
@@ -830,6 +945,13 @@ export type webhooks = Record<string, never>;
 export type components = {
     schemas: {
         Chat: {
+            /** @description Identifier for the active chat background */
+            background_id?: string | null;
+            /**
+             * Format: uri
+             * @description Public URL of the chat background image (if one has been set via the API)
+             */
+            background_url?: string | null;
             /** @description Contact info (only for non-group chats) */
             contact?: {
                 contact_id?: string;
@@ -863,6 +985,11 @@ export type components = {
         ChatBackgroundResponse: {
             /** @description Unique identifier for the current background, or null if none */
             background_id?: string | null;
+            /**
+             * Format: uri
+             * @description Public URL of the persisted background image stored in R2. Returned after a successful PUT and on GET when a background has been set through the API. May be null if persistence failed or the background was set outside of the API.
+             */
+            background_url?: string | null;
             /** @description Version number of the background (for cache invalidation) */
             background_version?: number | null;
             /** @description Whether the background was changed by this operation (only present on PUT) */
@@ -873,6 +1000,13 @@ export type components = {
             has_background?: boolean;
         };
         ChatDetail: {
+            /** @description Identifier for the active chat background */
+            background_id?: string | null;
+            /**
+             * Format: uri
+             * @description Public URL of the chat background image (if one has been set via the API)
+             */
+            background_url?: string | null;
             /** @description Contact info (only for non-group chats) */
             contact?: {
                 contact_id?: string;
@@ -1087,16 +1221,32 @@ export type components = {
             error?: string | null;
             /** @description Phone number or email of the contact, or group ID for group messages */
             external_id?: string;
+            /**
+             * @description Markdown for a rich-text (bold/italic/underline/strikethrough) message. Omitted entirely when the message carries no styling, so its presence is how you detect rich text.
+             *
+             *     Present in both directions: on an outbound send made with `format: "markdown"`, and on an inbound iMessage whose sender styled their text — so styling a customer applied in Messages arrives here even though your integration never asked for it.
+             *
+             *     Always a normalized re-serialization of the message's actual styling rather than an echo of the source string: bold is spelled `**`, italic `*`, underline `++`, strikethrough `~~`, and any character that would otherwise read as a delimiter is backslash-escaped. Re-sending this value verbatim with `format: "markdown"` reproduces the same styled message. Blooio iMessage only. This is the SAME field delivered on the message webhooks, so a message reads identically via REST or webhook.
+             */
+            formatted_text?: string;
             /** @description Organization phone number (from-number) used for this message */
             internal_id?: string | null;
             message_id?: string;
-            /** @enum {string|null} */
-            protocol?: "imessage" | "sms" | "rcs" | "non-imessage" | null;
+            /**
+             * @description Transport used to carry the message; never null. `pending` = accepted and dispatched, wire service not resolved yet (settles within seconds of send); `imessage` = delivered over iMessage (blue bubble); `rcs` = delivered over RCS; `sms` = fell back to SMS/MMS (green bubble); `unknown` = accepted by the carrier but the wire service could not be resolved before the tracking window closed (see `error`).
+             * @enum {string}
+             */
+            protocol?: "pending" | "unknown" | "imessage" | "sms" | "rcs";
             /** @description Reactions on this message (tapbacks and emoji reactions) */
             reactions?: components["schemas"]["Reaction"][];
+            /** @description Present only on inline-reply messages. Omitted entirely for top-level messages. */
+            reply_to?: components["schemas"]["ReplyToInfo"] | null;
             /** @description Sender's phone number or email for inbound group messages. Null for outbound messages and 1-1 chats. */
             sender?: string | null;
-            /** @enum {string|null} */
+            /**
+             * @description Delivery lifecycle state. `pending` = persisted and being prepared for dispatch; `queued` = accepted and waiting to be handed to Apple/the carrier; `sent` = handed off to Apple/the carrier (protocol resolution happens around here); `delivered` = a delivery receipt was received; `failed` = could not be delivered (see `error`); `cancellation_requested` = a cancel was requested for a still-queued message (best-effort); `cancelled` = cancelled before dispatch. Inbound messages are surfaced via webhooks with `received`; read receipts arrive as a `read` event.
+             * @enum {string|null}
+             */
             status?: "pending" | "queued" | "sent" | "delivered" | "failed" | "cancellation_requested" | "cancelled" | null;
             text?: string | null;
             /** Format: int64 */
@@ -1116,16 +1266,32 @@ export type components = {
             /** @enum {string} */
             direction?: "inbound" | "outbound";
             error?: string | null;
+            /**
+             * @description Markdown for a rich-text (bold/italic/underline/strikethrough) message. Omitted entirely when the message carries no styling, so its presence is how you detect rich text.
+             *
+             *     Present in both directions: on an outbound send made with `format: "markdown"`, and on an inbound iMessage whose sender styled their text — so styling a customer applied in Messages arrives here even though your integration never asked for it.
+             *
+             *     Always a normalized re-serialization of the message's actual styling rather than an echo of the source string: bold is spelled `**`, italic `*`, underline `++`, strikethrough `~~`, and any character that would otherwise read as a delimiter is backslash-escaped. Re-sending this value verbatim with `format: "markdown"` reproduces the same styled message. Blooio iMessage only. This is the SAME field delivered on the message webhooks, so a message reads identically via REST or webhook.
+             */
+            formatted_text?: string;
             /** @description Organization phone number (from-number) used for this message */
             internal_id?: string | null;
             message_id?: string;
-            /** @enum {string|null} */
-            protocol?: "imessage" | "sms" | "rcs" | "non-imessage" | null;
+            /**
+             * @description Transport used to carry the message; never null. `pending` = accepted and dispatched, wire service not resolved yet (settles within seconds of send); `imessage` = delivered over iMessage (blue bubble); `rcs` = delivered over RCS; `sms` = fell back to SMS/MMS (green bubble); `unknown` = accepted by the carrier but the wire service could not be resolved before the tracking window closed (see `error`).
+             * @enum {string}
+             */
+            protocol?: "pending" | "unknown" | "imessage" | "sms" | "rcs";
             /** @description Reactions on this message (tapbacks and emoji reactions) */
             reactions?: components["schemas"]["Reaction"][];
+            /** @description Present only on inline-reply messages. Omitted entirely for top-level messages. */
+            reply_to?: components["schemas"]["ReplyToInfo"] | null;
             /** @description Sender's phone number or email for inbound group messages. Null for outbound messages and 1-1 chats. */
             sender?: string | null;
-            /** @enum {string|null} */
+            /**
+             * @description Delivery lifecycle state. `pending` = persisted and being prepared for dispatch; `queued` = accepted and waiting to be handed to Apple/the carrier; `sent` = handed off to Apple/the carrier (protocol resolution happens around here); `delivered` = a delivery receipt was received; `failed` = could not be delivered (see `error`); `cancellation_requested` = a cancel was requested for a still-queued message (best-effort); `cancelled` = cancelled before dispatch. Inbound messages are surfaced via webhooks with `received`; read receipts arrive as a `read` event.
+             * @enum {string|null}
+             */
             status?: "pending" | "queued" | "sent" | "delivered" | "failed" | "cancellation_requested" | "cancelled" | null;
             text?: string | null;
             /** Format: int64 */
@@ -1139,9 +1305,15 @@ export type components = {
             direction?: "inbound" | "outbound";
             error?: string | null;
             message_id?: string;
-            /** @enum {string|null} */
-            protocol?: "imessage" | "sms" | "rcs" | "non-imessage" | null;
-            /** @enum {string|null} */
+            /**
+             * @description Transport used to carry the message; never null. `pending` = accepted and dispatched, wire service not resolved yet (settles within seconds of send); `imessage` = delivered over iMessage (blue bubble); `rcs` = delivered over RCS; `sms` = fell back to SMS/MMS (green bubble); `unknown` = accepted by the carrier but the wire service could not be resolved before the tracking window closed (see `error`).
+             * @enum {string}
+             */
+            protocol?: "pending" | "unknown" | "imessage" | "sms" | "rcs";
+            /**
+             * @description Delivery lifecycle state. `pending` = persisted and being prepared for dispatch; `queued` = accepted and waiting to be handed to Apple/the carrier; `sent` = handed off to Apple/the carrier (protocol resolution happens around here); `delivered` = a delivery receipt was received; `failed` = could not be delivered (see `error`); `cancellation_requested` = a cancel was requested for a still-queued message (best-effort); `cancelled` = cancelled before dispatch. Inbound messages are surfaced via webhooks with `received`; read receipts arrive as a `read` event.
+             * @enum {string|null}
+             */
             status?: "pending" | "queued" | "sent" | "delivered" | "failed" | "cancellation_requested" | "cancelled" | null;
             /** Format: int64 */
             time_delivered?: number | null;
@@ -1257,7 +1429,7 @@ export type components = {
              *
              *     **Classic tapbacks:** `+love`, `-love`, `+like`, `-like`, `+dislike`, `-dislike`, `+laugh`, `-laugh`, `+emphasize`, `-emphasize`, `+question`, `-question`
              *
-             *     **Emoji reactions:** Any emoji prefixed with `+` or `-` (e.g. `+😂`, `-😂`, `+👍`, `-🔥`). Emoji reactions require macOS 14 (Sonoma) or later on the device.
+             *     **Emoji reactions:** Any emoji prefixed with `+` or `-` (e.g. `+😂`, `-😂`, `+👍`, `-🔥`).
              * @example +love
              * @example -like
              * @example +😂
@@ -1298,9 +1470,216 @@ export type components = {
              */
             status?: "read";
         };
+        /** @description Inline-reply parent reference. Identical shape on `message.received` webhooks and on every GET endpoint that returns a single message or a list of messages. */
+        ReplyToInfo: {
+            /** @description The raw iMessage GUID of the parent. Always populated on real inline replies; the on-device record-of-truth identifier that survives even when `message_id` cannot be resolved. */
+            guid: string | null;
+            /** @description The Blooio `message_id` of the parent message. NULL when the parent isn't in our `messages` table (e.g., the original was sent from outside Blooio's pipeline). */
+            message_id: string | null;
+            /**
+             * @description Which part of the parent was replied to. 0 for the common single-part case.
+             * @default 0
+             */
+            part_index: number;
+        };
+        /** @description Inline-reply target on `POST /chats/{chatId}/messages`. Pass either `message_id` (preferred — references a Blooio-minted message) or `guid` (raw iMessage GUID, useful for replying to messages received before the row was minted in Blooio). The new send is dispatched to Lava with the resolved `selectedMessageGuid` + `partIndex`, which iMessage renders as an inline reply on the recipient's device. */
+        ReplyToRequest: {
+            /** @description Raw iMessage GUID of the parent. When supplied without a `message_id`, Blooio attempts to look up the parent via `provider_message_guid`; if the parent isn't in our table the send still proceeds (Lava will thread on the device when possible) and the response carries `parent_unresolved: true`. */
+            guid?: string;
+            /** @description Blooio `message_id` of the parent. Must belong to the same chat, same from-number, and be no older than 30 days. Returns 404 `reply_target_not_found` if unknown. */
+            message_id?: string;
+            /**
+             * @description Which part of the parent to reply to. Defaults to 0 (covers the 99% case of replying to a single-part text message).
+             * @default 0
+             */
+            part_index: number;
+        };
+        RiskDailyData: {
+            inbound_conversations?: components["schemas"]["RiskDailySeriesPoint"][];
+            outbound_conversations?: components["schemas"]["RiskDailySeriesPoint"][];
+        };
+        RiskDailySeriesPoint: {
+            count?: number;
+            /**
+             * @description UTC calendar day (YYYY-MM-DD).
+             * @example 2026-07-01
+             */
+            date?: string;
+        };
+        /** @description A single scored risk signal. Positive scores raise risk; negative scores (bonuses) lower it. */
+        RiskFactor: {
+            /** @description Burst factors only. Recency multiplier applied to the base band score, `0.5 ^ (age_days / 21)` with a floor of `0.25`. A burst is evidence that ages: without this, one two-minute event held a number at high risk for the entire window. Only the burst factors decay; every other factor is already a window average. */
+            decay_weight?: number;
+            /**
+             * @description Relative weight of this factor in the overall score.
+             * @enum {string}
+             */
+            impact?: "low" | "medium" | "high" | "very_high";
+            /** @description Burst factors only (`newConversationBursts`, `messageBursts`). UTC date (`YYYY-MM-DD`) on which the window reported in `value` began. */
+            peak_at?: string | null;
+            /** @description Sample size backing the value, when the factor guards on a minimum sample. */
+            sampleSize?: number;
+            /** @description Points this factor contributed to the total risk score. */
+            score?: number;
+            /** @description Burst factors only. UTC date (`YYYY-MM-DD`) of the window described by `scored_value`. */
+            scored_at?: string | null;
+            /** @description Burst factors only. The window count the `score` was actually taken from. Because each daily candidate is aged before comparison, the costliest burst is not always the biggest one: a month-old 639/h can score less than a 240/h from yesterday. Equals `value` whenever the peak is also the scored window. */
+            scored_value?: number;
+            /**
+             * @description Qualitative status for display. `not_applicable` means the factor doesn't apply to this line type (e.g. outbound-initiation factors on a reply-only inbound number) and contributed 0 points.
+             * @enum {string}
+             */
+            status?: "ok" | "bonus" | "warning" | "high" | "insufficient_data" | "not_applicable";
+            /** @description The measured value for this factor (units depend on the factor). */
+            value?: number | null;
+        };
+        /** @description The ten additive risk factors that sum (clamped to 0-100) into `risk_score`. Each factor reports its measured `value`, the `score` (points) it contributed, a `status`, and its `impact` weight. Positive scores raise risk; negative scores are bonuses. Some factors only score once a minimum sample is reached (otherwise `status: insufficient_data`, `score: 0`). The scoring described below is for `dedicated` lines; where an inbound (reply-only) line differs, the difference is noted on the factor. */
+        RiskFactors: {
+            /** @description Avg inbound-initiated conversations/day (bonus). Scoring: >=100 = -20, 50-100 = -15, 30-50 = -10, 15-30 = -5, else 0. Organic demand lowers risk. **Inbound lines:** the value is still reported but earns no bonus, since inbound volume is the product working as sold rather than evidence of earned trust. */
+            inboundConversations?: components["schemas"]["RiskFactor"];
+            /** @description Avg inbound messages per conversation. Scoring: <3 = +25 (with >= 3 conversations), else 0. **Inbound lines:** relaxed to <1.5 = +10, because a customer asking one question and getting an answer is the expected shape of an inbound thread. */
+            inboundMsgCount?: components["schemas"]["RiskFactor"];
+            /** @description Inbound share of all messages. Scoring: <=10% = +20, 11-29% = +10, >=30% = 0. Requires >= 10 messages to score. Detects one-way traffic. */
+            inboundOutboundRatio?: components["schemas"]["RiskFactor"];
+            /** @description Percentage of new conversations the customer started (gradient). Scoring ranges from -15 (>=90% inbound) up to +20 (<20% inbound). Requires >= 5 new conversations to score. **Inbound lines:** `not_applicable`, always 0 — a reply-only line sits at ~100% by construction. */
+            inboundPercentage?: components["schemas"]["RiskFactor"];
+            /** @description Peak outbound messages in any sliding 60-minute window. Base scoring: >200 = +30, 150-200 = +20, 100-150 = +10, else 0, then multiplied by `decay_weight`. */
+            messageBursts?: components["schemas"]["RiskFactor"];
+            /** @description Largest near-identical outbound cluster (SimHash) as a percentage of qualifying messages (>= 50 chars). Scoring: >70% = +15, 50-70% = +8, <30% = -2. Only evaluated with >= 20 qualifying messages and when the expensive metric was computed; otherwise `value: null`, `score: 0`. */
+            messageSimilarity?: components["schemas"]["RiskFactor"];
+            /** @description Peak new conversations the number itself opened in any sliding 60-minute window; conversations the customer started are excluded on every line type, so a rush of inbound demand is never mistaken for a blast. Base scoring: >60 = +40, 40-60 = +30, 25-40 = +20, 15-25 = +10, else 0. The base score is then multiplied by `decay_weight` (see `RiskFactor`), so an old burst costs less than the same burst today. Very-high weight; hallmark of mass-outreach automation. */
+            newConversationBursts?: components["schemas"]["RiskFactor"];
+            /** @description Avg outbound-initiated conversations/day. Scoring: >50 = +30, 40-50 = +20, 30-40 = +8, else 0. Cold-outreach volume. **Inbound lines:** `not_applicable`, always 0 — a reply-only line cannot open cold threads. */
+            outboundConversations?: components["schemas"]["RiskFactor"];
+            /** @description Percentage of conversations with 3+ inbound messages. Scoring: <20% = +35, 20-30% = +20, 30-40% = +8, >=50% = -5. Requires >= 10 conversations to score. Highest-weight (very_high) factor. */
+            replyRate?: components["schemas"]["RiskFactor"];
+            /** @description Distinct contacts messaged in the window. Scoring: >2000 = +15, 1500-2000 = +8, else 0. */
+            totalContacts?: components["schemas"]["RiskFactor"];
+        };
+        /** @description Raw and derived usage metrics for a number over the window. A *conversation* is keyed by contact (1:1) or group; a *new conversation* is one whose all-time first message falls inside the window; a *reply* is a conversation that received 3 or more inbound messages. Averages divide by the days the number could actually send in -- the window length capped to the number's own tenure -- not by the days that happened to have activity. So a line that was quiet for half the period still reads as low volume, while one that only existed for the last 9 days of a 30-day window reports its real pace instead of a third of it. */
+        RiskMetrics: {
+            /** @description `total_messages / total_conversations` (0 when there are no conversations). */
+            avg_conversation_depth?: number;
+            /** @description New inbound-initiated conversations (customer messaged first) in the window, divided by days active. High values indicate organic demand (risk-lowering). */
+            avg_inbound_conversations_per_day?: number;
+            /** @description Mean inbound messages per conversation in the window. Below 3 (with >= 3 conversations) indicates shallow, low-engagement outreach. */
+            avg_inbound_messages_per_conversation?: number;
+            /** @description `total_messages` divided by days active. */
+            avg_messages_per_day?: number;
+            /** @description New outbound-initiated conversations started in the window, divided by days active (see the schema description). High values indicate cold-outreach volume (risk-raising). */
+            avg_outbound_conversations_per_day?: number;
+            /** @description Count of new conversations the customer started in the window. */
+            inbound_initiated?: number;
+            /** @description Share of new conversations that the customer started, as a percentage: `inbound_initiated / (inbound_initiated + outbound_initiated) * 100`. Higher is healthier. Only scored once there are >= 5 new conversations. */
+            inbound_initiated_percentage?: number;
+            /** @description Inbound messages as a percentage of all messages: `total_inbound_messages / total_messages * 100`. Low values mean one-way (monologuing) traffic. Only scored once there are >= 10 messages. */
+            inbound_outbound_message_ratio?: number;
+            /** @description Peak outbound messages sent in any sliding 60-minute window (burst detection). Sustained rates above ~100/hour signal automation. */
+            max_messages_per_hour?: number;
+            /** @description Peak number of NEW conversations the number itself opened in any sliding 60-minute window (burst detection). The window slides rather than snapping to clock hours, so a blast straddling :59 is reported at its real rate instead of being split across two buckets. Conversations the customer started are excluded, on every line type. A human pace is roughly <= 15/hour; sustained higher rates signal automation. */
+            max_new_conversations_per_hour?: number;
+            /** @description Templated-content signal: the largest cluster of near-identical outbound messages (by SimHash) as a percentage of qualifying messages. Only outbound messages with >= 50 characters count, and a valid ratio needs >= 20 qualifying messages. `null` when not computed (large fleet without `compute=true`) or below the minimum sample. */
+            message_similarity_percentage?: number | null;
+            /** @description Count of new conversations this number started in the window. */
+            outbound_initiated?: number;
+            /** @description Percentage of conversations that received a meaningful reply, defined as 3 or more inbound messages: `conversations_with_3plus_inbound / total_conversations * 100`. One of the strongest spam signals; only scored once there are >= 10 conversations. */
+            reply_rate?: number;
+            /** @description Distinct contacts (conversation keys) messaged in the window. Large lists suggest broadcast/spam usage. */
+            total_contacts?: number;
+            /** @description Conversations with any message activity in the window. */
+            total_conversations?: number;
+            /** @description Inbound message count in the window. */
+            total_inbound_messages?: number;
+            /** @description Inbound + outbound messages in the window (excludes deleted). */
+            total_messages?: number;
+            /** @description Outbound message count in the window. */
+            total_outbound_messages?: number;
+        };
+        /** @description Per-number risk report. */
+        RiskPhoneReport: {
+            allocation_id?: string;
+            daily_data?: components["schemas"]["RiskDailyData"];
+            /** @description Whether the number sent, received, or reached anyone in the window. Every factor guards on a minimum sample, so a number with no traffic sums to `risk_score: 0` -- the same score a well-behaved line earns. Treat `false` as "nothing to score yet" rather than "lowest risk": don't present the score, and exclude the number from fleet averages. */
+            has_activity?: boolean;
+            /**
+             * @description The line's allocation type, which determines the scoring profile applied. `inbound` lines are reply-only and use the reduced factor profile described on the Analytics tag; everything else is scored on the full dedicated profile.
+             * @enum {string|null}
+             */
+            line_type?: "dedicated" | "inbound" | "2fa" | null;
+            metrics?: components["schemas"]["RiskMetrics"];
+            /** @example +15551234567 */
+            phone_number?: string;
+            risk_factors?: components["schemas"]["RiskFactors"];
+            /**
+             * @description Banding of `risk_score`: `low` = 0-29 (healthy), `medium` = 30-59 (monitor), `high` = 60-100 (likely to be filtered/suspended by carriers).
+             * @enum {string}
+             */
+            risk_level?: "low" | "medium" | "high";
+            /** @description Overall risk score, 0 (lowest) to 100 (highest). Clamped sum of the ten `risk_factors`. */
+            risk_score?: number;
+        };
+        RiskToleranceNumberReport: components["schemas"]["RiskPhoneReport"] & {
+            /** Format: int64 */
+            calculated_at?: number;
+            computed_with_expensive_metrics?: boolean;
+            period_days?: number;
+            window?: components["schemas"]["RiskWindow"];
+        };
+        /** @description Organization-wide risk report for all dedicated and inbound numbers. */
+        RiskToleranceReport: {
+            /**
+             * Format: int64
+             * @description When the report was computed (Unix epoch ms).
+             */
+            calculated_at?: number;
+            /** @description Whether the message-similarity metric was included. */
+            computed_with_expensive_metrics?: boolean;
+            period_days?: number;
+            /** @description Per-number reports, sorted by descending risk score. */
+            phone_numbers?: components["schemas"]["RiskPhoneReport"][];
+            window?: components["schemas"]["RiskWindow"];
+        };
+        /** @description Cached rollup of the organization's most recent risk scores. */
+        RiskToleranceSummary: {
+            /**
+             * Format: int64
+             * @description When the cached summary was last computed (Unix epoch ms), or null if never.
+             */
+            computed_at?: number | null;
+            high_risk_count?: number;
+            high_risk_phones?: {
+                phone_number?: string;
+                /** @enum {string} */
+                risk_level?: "low" | "medium" | "high";
+                risk_score?: number;
+            }[];
+            /** @enum {string} */
+            max_risk_level?: "low" | "medium" | "high";
+            max_risk_score?: number;
+            phone_count?: number;
+        };
+        /** @description The concrete time window the report was computed over. */
+        RiskWindow: {
+            /**
+             * Format: int64
+             * @description Window start (Unix epoch ms).
+             */
+            from?: number;
+            /** @description True when the caller supplied no window params (default 30 days). */
+            is_default?: boolean;
+            /**
+             * Format: int64
+             * @description Window end (Unix epoch ms).
+             */
+            to?: number;
+        };
         /** @description Request body for sending a message */
         SendMessageRequest: {
-            /** @description Array of attachment URLs or objects with url/name */
+            /**
+             * @description Array of attachment URLs or objects with url/name.
+             *
+             *     **Voice memos:** a single audio file (`.mp3`, `.m4a`, `.wav`, `.aac`, `.opus`, `.ogg`) is automatically sent as a voice memo (the native waveform/scrubber bubble), not a plain audio-file attachment — no extra field is needed. A voice memo is a standalone bubble, so it cannot be combined with `text` or any other attachment; send the voice memo and the text as two separate messages.
+             */
             attachments?: (string | {
                 name?: string;
                 url: string;
@@ -1333,6 +1712,29 @@ export type components = {
              * @enum {string|null}
              */
             effect?: "slam" | "loud" | "gentle" | "invisible-ink" | "echo" | "spotlight" | "balloons" | "confetti" | "love" | "lasers" | "fireworks" | "celebration" | "none" | null;
+            /**
+             * @description How to interpret `text` (and each `parts[].text`). Defaults to `plain`, which sends the string exactly as given.
+             *
+             *     With `markdown`, four constructs are parsed and delivered as real iMessage rich text — the recipient sees styled text, not delimiters:
+             *
+             *     | Construct | Syntax |
+             *     | --- | --- |
+             *     | Bold | `**bold**` or `__bold__` |
+             *     | Italic | `*italic*` or `_italic_` |
+             *     | Underline | `++underline++` |
+             *     | Strikethrough | `~~strike~~` |
+             *
+             *     They nest freely (`**bold and _italic_**`). Everything else Markdown can express — headings, lists, links, code spans, blockquotes, images — is NOT styling iMessage can carry, so it is passed through as literal characters: `[Blooio](https://blooio.com)` is delivered with its brackets and URL intact, and `# Heading` keeps its `#`. Escape a delimiter with a backslash (`\*not italic\*`) to send it literally.
+             *
+             *     The styling travels in the message's attributed body, so the stored `text` and the `text` returned on reads and webhooks is always the plain string the recipient sees, with the delimiters removed. The Markdown itself comes back as `formatted_text`, re-serialized into a normalized spelling rather than echoed verbatim (`__bold__` returns as `**bold**`).
+             *
+             *     Only valid on Blooio iMessage channels — `400 format_unsupported_for_channel_type` on any other channel type, since no other channel type has a rich-text equivalent and would otherwise deliver your delimiters as literal text. Rich text also requires the message to be delivered over iMessage: a Blooio send that falls back to SMS arrives as unstyled plain text (the `text` string), because SMS cannot carry styling.
+             *
+             *     Applies to a text send and to `parts`. Rejected with `400 invalid_content` when combined with `attachments` — a media caption is not a styled bubble, so send the media and the styled text as two messages — when set without `text` or `parts`, when the Markdown source exceeds 20000 characters, or when it compiles to more than 256 distinct formatting ranges.
+             * @default plain
+             * @enum {string}
+             */
+            format: "plain" | "markdown";
             /** @description E.164 phone number to send from. For Twilio API keys, this is optional — if omitted, the first assigned Twilio number is auto-selected. For Blooio (iMessage) API keys, this selects a specific number from your pool. Must be a number assigned to your API key. */
             from_number?: string;
             /** @description Optional. Override the rich-link-preview image and/or title on URL messages. See the LinkPreview schema. When omitted, Blooio auto-generates the preview from the page's Open Graph tags. */
@@ -1355,8 +1757,10 @@ export type components = {
                 /** @description URL to an attachment for this part. Mutually exclusive with 'text'. */
                 url?: string;
             }[];
+            /** @description Optional. Send this message as an iMessage inline reply targeting a specific earlier message. iMessage-only — rejected on Twilio, hybrid, and multi-message fan-outs (`text` array or URL-balloon batch). */
+            reply_to?: components["schemas"]["ReplyToRequest"] | null;
             /**
-             * @description If true, the contact card (Name & Photo) will be shared with this message. The contact card is piggybacked onto the outgoing message. Defaults to false.
+             * @description If true, the contact card (Name & Photo) will be shared with this message. The contact card is piggybacked onto the outgoing message. Defaults to false. ⚠️ Only available on **Dedicated Commercial** and **Dedicated Enterprise** plans — other plans receive a `403`.
              * @default false
              */
             share_contact: boolean;
@@ -1377,10 +1781,12 @@ export type components = {
             message_id?: string;
             /** @description IDs of sent messages. Present when `text` is an array or when `parts` uses per-part `link_preview` (URL-balloon batch mode). */
             message_ids?: string[];
+            /** @description Present (and `true`) only when `reply_to.guid` was supplied without a `message_id` and the GUID didn't map to any Blooio-minted row. The send still proceeds and the device may still thread it; this flag signals that Blooio couldn't link the new message to a known parent. */
+            parent_unresolved?: boolean;
             /** @description List of participants (present for multi-recipient) */
             participants?: string[];
             /**
-             * @description Initial status of the message(s)
+             * @description Initial status of the message(s). `queued` = accepted for delivery (the normal 202 result); `failed` = rejected before dispatch. Subsequent transitions (`sent` → `delivered`, or `failed`) are reported via the status endpoint and `message.status` webhooks.
              * @enum {string}
              */
             status?: "queued" | "failed";
@@ -1441,6 +1847,16 @@ export type components = {
                 url?: string;
             }[] | null;
             /**
+             * @description The device's own identifier for the group conversation this message arrived in (only on `message.received` when is_group=true). Two group chats can hold the same members and are then indistinguishable by `group_id` and `participants` alone; `chat_guid` is what tells them apart. Matches the `chat_guid` on GET /groups/{groupId}.
+             * @example iMessage;+;chat123456789
+             */
+            chat_guid?: string | null;
+            /**
+             * @description The name the device reports for the conversation (only on `message.received` when is_group=true). May differ from `group_name`, or be present when `group_name` is null.
+             * @example Sales Team
+             */
+            chat_name?: string | null;
+            /**
              * Format: int64
              * @description Timestamp when message was delivered (for message.delivered events)
              */
@@ -1456,6 +1872,14 @@ export type components = {
             event?: string;
             /** @description Recipient identifier (phone number, email, or group ID) */
             external_id?: string;
+            /**
+             * @description Markdown for a rich-text (bold/italic/underline/strikethrough) message. Omitted entirely when the message carries no styling, so its presence is how you detect rich text.
+             *
+             *     Present in both directions: on an outbound send made with `format: "markdown"`, and on an inbound iMessage whose sender styled their text — so styling a customer applied in Messages arrives here even though your integration never asked for it.
+             *
+             *     Always a normalized re-serialization of the message's actual styling rather than an echo of the source string: bold is spelled `**`, italic `*`, underline `++`, strikethrough `~~`, and any character that would otherwise read as a delimiter is backslash-escaped. Re-sending this value verbatim with `format: "markdown"` reproduces the same styled message. Blooio iMessage only. This is the SAME field delivered on the message webhooks, so a message reads identically via REST or webhook.
+             */
+            formatted_text?: string;
             /** @description Group ID (only present when is_group=true) */
             group_id?: string | null;
             /** @description Group display name (only present when is_group=true) */
@@ -1466,17 +1890,17 @@ export type components = {
             is_group?: boolean;
             /** @description Unique message identifier */
             message_id?: string;
-            /** @description Array of group participants (only present when is_group=true) */
+            /** @description Array of group participants (only present when is_group=true). One entry per person: a participant appears once even if Blooio holds more than one identity for their number. */
             participants?: {
                 contact_id?: string;
                 identifier?: string;
                 name?: string | null;
             }[] | null;
             /**
-             * @description Message protocol
-             * @enum {string|null}
+             * @description Transport used to carry the message; never null. `pending` = accepted and dispatched, wire service not resolved yet (settles within seconds of send); `imessage` = delivered over iMessage (blue bubble); `rcs` = delivered over RCS; `sms` = fell back to SMS/MMS (green bubble); `unknown` = accepted by the carrier but the wire service could not be resolved before the tracking window closed (see `error`).
+             * @enum {string}
              */
-            protocol?: "imessage" | "sms" | "rcs" | "non-imessage" | null;
+            protocol?: "pending" | "unknown" | "imessage" | "sms" | "rcs";
             /**
              * Format: int64
              * @description Timestamp when message was read (for message.read events)
@@ -1490,7 +1914,7 @@ export type components = {
              */
             sent_at?: number | null;
             /**
-             * @description Message status
+             * @description Message status carried by the event. `queued` / `pending` = accepted, not yet handed off; `sent` = handed to Apple/the carrier; `delivered` = a delivery receipt was received; `read` = a read receipt was received (iMessage, when the recipient has read receipts on); `failed` = delivery failed (see `error_code` / `error_message`); `received` = an inbound message arrived.
              * @enum {string}
              */
             status?: "queued" | "pending" | "sent" | "delivered" | "failed" | "read" | "received";
@@ -1537,8 +1961,26 @@ export type components = {
                 "application/json": components["schemas"]["Error"];
             };
         };
+        /** @description No conversation exists for this chatId (`code: chat_not_found`; the requested address is echoed as `chat_id`). A chat comes into existence with the first message sent to or received from an address, so a valid but never-messaged address returns this rather than an empty result. Sending with `POST /chats/{chatId}/messages` creates it. */
+        ChatNotFound: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Error"];
+            };
+        };
         /** @description Resource not found */
         NotFound: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Error"];
+            };
+        };
+        /** @description Endpoint is documented but not available yet */
+        NotImplemented: {
             headers: {
                 [name: string]: unknown;
             };
@@ -1565,21 +2007,29 @@ export type components = {
          */
         ContactIdParam: string;
         /**
-         * @description Group ID
+         * @description Unique identifier of the group chat, prefixed with `grp_` (e.g. `grp_abc123def456`). Returned by the create-group and list-groups endpoints.
          * @example grp_abc123def456
          */
         GroupIdParam: string;
-        /** @description Maximum number of items to return (1-200) */
+        /** @description Maximum number of items to return in a single response. Must be between 1 and 200; defaults to 50. Use together with `offset` to page through large result sets. */
         LimitParam: number;
         /**
-         * @description Message ID
+         * @description Unique identifier of the message, prefixed with `msg_` (e.g. `msg_abc123def456`). Returned in the response when you send a message and in inbound message webhooks.
          * @example msg_abc123def456
          */
         MessageIdParam: string;
-        /** @description Number of items to skip */
+        /** @description Number of items to skip before returning results. Combine with `limit` for page-based pagination (e.g. `offset=50&limit=50` returns the second page). Defaults to 0. */
         OffsetParam: number;
+        /** @description Set to `true` to force the expensive message-similarity metric. Small fleets (<= 5 numbers) always compute it; larger fleets omit it unless this flag is set, so `message_similarity_percentage` may be `null` otherwise. */
+        RiskComputeParam: boolean;
+        /** @description Length of the reporting window in days, ending now. Between 1 and 365; defaults to 30. Ignored when `from`/`to` are supplied. */
+        RiskDaysParam: number;
+        /** @description Window start as a Unix epoch timestamp in milliseconds. When supplied, overrides `days`. */
+        RiskFromParam: number;
+        /** @description Window end as a Unix epoch timestamp in milliseconds. Defaults to now. */
+        RiskToParam: number;
         /**
-         * @description Webhook ID
+         * @description Unique identifier of the webhook subscription, prefixed with `wh_` (e.g. `wh_abc123def456`). Returned when you create or list webhooks.
          * @example wh_abc123def456
          */
         WebhookIdParam: string;
@@ -1590,12 +2040,119 @@ export type components = {
 };
 export type $defs = Record<string, never>;
 export interface operations {
+    getRiskTolerance: {
+        parameters: {
+            query?: {
+                /** @description Set to `true` to force the expensive message-similarity metric. Small fleets (<= 5 numbers) always compute it; larger fleets omit it unless this flag is set, so `message_similarity_percentage` may be `null` otherwise. */
+                compute?: components["parameters"]["RiskComputeParam"];
+                /** @description Length of the reporting window in days, ending now. Between 1 and 365; defaults to 30. Ignored when `from`/`to` are supplied. */
+                days?: components["parameters"]["RiskDaysParam"];
+                /** @description Window start as a Unix epoch timestamp in milliseconds. When supplied, overrides `days`. */
+                from?: components["parameters"]["RiskFromParam"];
+                /** @description Window end as a Unix epoch timestamp in milliseconds. Defaults to now. */
+                to?: components["parameters"]["RiskToParam"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Risk report for the organization's dedicated and inbound numbers */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RiskToleranceReport"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            /** @description Organization has no dedicated or inbound numbers (`dedicated_plan_required`) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    getNumberRiskTolerance: {
+        parameters: {
+            query?: {
+                /** @description Set to `true` to force the expensive message-similarity metric. Small fleets (<= 5 numbers) always compute it; larger fleets omit it unless this flag is set, so `message_similarity_percentage` may be `null` otherwise. */
+                compute?: components["parameters"]["RiskComputeParam"];
+                /** @description Length of the reporting window in days, ending now. Between 1 and 365; defaults to 30. Ignored when `from`/`to` are supplied. */
+                days?: components["parameters"]["RiskDaysParam"];
+                /** @description Window start as a Unix epoch timestamp in milliseconds. When supplied, overrides `days`. */
+                from?: components["parameters"]["RiskFromParam"];
+                /** @description Window end as a Unix epoch timestamp in milliseconds. Defaults to now. */
+                to?: components["parameters"]["RiskToParam"];
+            };
+            header?: never;
+            path: {
+                /**
+                 * @description E.164 phone number (URL-encoded, e.g. %2B15551234567)
+                 * @example %2B15551234567
+                 */
+                number: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Risk report for the number */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RiskToleranceNumberReport"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            401: components["responses"]["Unauthorized"];
+            /** @description Number is not on a dedicated or inbound plan (`dedicated_plan_required`) */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            404: components["responses"]["NotFound"];
+        };
+    };
+    getRiskSummary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cached risk summary */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RiskToleranceSummary"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+        };
+    };
     listChats: {
         parameters: {
             query?: {
-                /** @description Maximum number of items to return (1-200) */
+                /** @description Maximum number of items to return in a single response. Must be between 1 and 200; defaults to 50. Use together with `offset` to page through large result sets. */
                 limit?: components["parameters"]["LimitParam"];
-                /** @description Number of items to skip */
+                /** @description Number of items to skip before returning results. Combine with `limit` for page-based pagination (e.g. `offset=50&limit=50` returns the second page). Defaults to 0. */
                 offset?: components["parameters"]["OffsetParam"];
                 /** @description Search query (matches phone/email or contact name) */
                 q?: string;
@@ -1646,7 +2203,7 @@ export interface operations {
             };
             400: components["responses"]["BadRequest"];
             401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
+            404: components["responses"]["ChatNotFound"];
         };
     };
     getChatBackground: {
@@ -1706,7 +2263,7 @@ export interface operations {
                 "multipart/form-data": {
                     /**
                      * Format: binary
-                     * @description The image file to set as the chat background
+                     * @description Binary image file upload (JPEG, PNG, GIF, WebP, HEIC/HEIF, max 10 MB). Send as a file field in `multipart/form-data` — e.g. `-F "background=@/path/to/image.jpg"` with curl, or a `File`/`Blob` appended to `FormData` in JavaScript. Do NOT send a URL or base64 string.
                      */
                     background: string;
                 };
@@ -1840,9 +2397,9 @@ export interface operations {
             query?: {
                 /** @description Filter by message direction */
                 direction?: "inbound" | "outbound";
-                /** @description Maximum number of items to return (1-200) */
+                /** @description Maximum number of items to return in a single response. Must be between 1 and 200; defaults to 50. Use together with `offset` to page through large result sets. */
                 limit?: components["parameters"]["LimitParam"];
-                /** @description Number of items to skip */
+                /** @description Number of items to skip before returning results. Combine with `limit` for page-based pagination (e.g. `offset=50&limit=50` returns the second page). Defaults to 0. */
                 offset?: components["parameters"]["OffsetParam"];
                 /** @description Only messages sent after this timestamp (ms) */
                 since?: number;
@@ -1875,7 +2432,7 @@ export interface operations {
             };
             400: components["responses"]["BadRequest"];
             401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
+            404: components["responses"]["ChatNotFound"];
         };
     };
     sendMessage: {
@@ -1915,13 +2472,43 @@ export interface operations {
                     "application/json": components["schemas"]["SendMessageResponse"];
                 };
             };
-            400: components["responses"]["BadRequest"];
+            /**
+             * @description Bad request. Threaded-reply failures use the response body's `code` field:
+             *     - `reply_target_invalid` — `reply_to` was supplied but missing both `message_id` and `guid`, or the resolved parent has no provider GUID.
+             *     - `reply_target_chat_mismatch` — the parent message lives in a different chat than the new send.
+             *     - `reply_target_device_mismatch` — the parent was sent or received on a different line (allocation). Switch the from-number to match.
+             *     - `reply_target_expired` — the parent is older than the 30-day iMessage on-device retention window and may have been purged from the device.
+             *     - `reply_target_not_supported` — `reply_to` was used on a path that doesn't support inline replies (Twilio, hybrid, or multi-message fan-out).
+             *     - Other validation failures (missing content, invalid recipient, etc.) — no `code` field.
+             */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": "ApiError",
+                     *       "message": "You can only reply to messages from the last 30 days",
+                     *       "status": 400,
+                     *       "code": "reply_target_expired"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
             401: components["responses"]["Unauthorized"];
             /**
              * @description Forbidden. The response body's `code` field disambiguates the specific failure:
              *     - `inbound_only_no_prior_inbound` — the sender is on the Inbound plan and the recipient has never messaged this number first. Inbound numbers are reply-only. Body also includes `allocation_id` and `external_id`.
+             *     - `conversation_content_restricted` — messaging safety: links, media, and attachments are not allowed before the recipient's first written reply (or in a re-engagement of an inactive conversation). An emoji reaction does not unlock them. Send plain text first.
+             *     - `safety_new_conversations_paused` — messaging safety: brand-new conversations from this number are temporarily paused; replies to existing conversations are unaffected.
+             *     - `safety_reply_only` — messaging safety: outbound from this number is restricted to conversations with prior inbound.
+             *     - `safety_account_review` — messaging safety: the number is blocked pending account review.
              *     - Emergency number
              *     - Integration-assigned number that can't be sent from manually
+             *
+             *     Number-level safety actions (`safety_*`) clear automatically as the underlying sending pattern ages out.
              */
             403: {
                 headers: {
@@ -1941,11 +2528,36 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
-            404: components["responses"]["NotFound"];
             /**
-             * @description Too many requests. Two possible `code`s on this endpoint:
+             * @description Not found. Threaded-reply failures use the response body's `code` field:
+             *     - `reply_target_not_found` — `reply_to.message_id` did not match any message in this organization.
+             *     - Other 404s (e.g., chat not found) have no `code`.
+             */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": "ApiError",
+                     *       "message": "Reply target message not found",
+                     *       "status": 404,
+                     *       "code": "reply_target_not_found"
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /**
+             * @description Too many requests. Possible `code`s on this endpoint:
              *     - `outbound_limit_reached` — org-level new-contact cap (configured in Settings) tripped. Body includes `limit`, `current`, `mode`, and on per-number mode `allocation_id` + `sender_number`.
              *     - `new_conversation_limit_reached` — shared plan's daily new-conversation cap reached. Body includes `plan_id`, `cap`, `current`. Existing conversations continue to send.
+             *     - `conversation_awaiting_reply` — messaging safety: up to 3 messages may be sent to a new recipient before they respond. Body includes `pre_reply_outbound_count` and `limit`.
+             *     - `conversation_streak_limit` — messaging safety: consecutive-message cap since the recipient's last response was reached. Body includes `current_streak` and `limit`.
+             *     - `conversation_inactive_paused` — messaging safety: no response in 14+ days and the single re-engagement message was already sent.
+             *
+             *     Conversation-state limits lift as soon as the recipient responds, and an emoji reaction counts: a tapback clears the consecutive-message counter and keeps a thread from going inactive. Only writing back raises the cap and unlocks links, media, and attachments.
              */
             429: {
                 headers: {
@@ -1974,7 +2586,7 @@ export interface operations {
                 /** @description Chat identifier. Can be: (1) phone number in E.164 format (e.g., +15551234567), (2) email address, (3) group ID (grp_xxxx), or (4) comma-separated list of phone numbers/emails for multi-recipient group chats (e.g., +15551234567,+15559876543). All values should be URL-encoded. */
                 chatId: components["parameters"]["ChatIdParam"];
                 /**
-                 * @description Message ID
+                 * @description Unique identifier of the message, prefixed with `msg_` (e.g. `msg_abc123def456`). Returned in the response when you send a message and in inbound message webhooks.
                  * @example msg_abc123def456
                  */
                 messageId: components["parameters"]["MessageIdParam"];
@@ -2055,7 +2667,7 @@ export interface operations {
                 /** @description Chat identifier. Can be: (1) phone number in E.164 format (e.g., +15551234567), (2) email address, (3) group ID (grp_xxxx), or (4) comma-separated list of phone numbers/emails for multi-recipient group chats (e.g., +15551234567,+15559876543). All values should be URL-encoded. */
                 chatId: components["parameters"]["ChatIdParam"];
                 /**
-                 * @description Message ID
+                 * @description Unique identifier of the message, prefixed with `msg_` (e.g. `msg_abc123def456`). Returned in the response when you send a message and in inbound message webhooks.
                  * @example msg_abc123def456
                  */
                 messageId: components["parameters"]["MessageIdParam"];
@@ -2300,9 +2912,9 @@ export interface operations {
     listContacts: {
         parameters: {
             query?: {
-                /** @description Maximum number of items to return (1-200) */
+                /** @description Maximum number of items to return in a single response. Must be between 1 and 200; defaults to 50. Use together with `offset` to page through large result sets. */
                 limit?: components["parameters"]["LimitParam"];
-                /** @description Number of items to skip */
+                /** @description Number of items to skip before returning results. Combine with `limit` for page-based pagination (e.g. `offset=50&limit=50` returns the second page). Defaults to 0. */
                 offset?: components["parameters"]["OffsetParam"];
                 /** @description Search query (matches identifier or name) */
                 q?: string;
@@ -2327,6 +2939,7 @@ export interface operations {
                     };
                 };
             };
+            400: components["responses"]["BadRequest"];
             401: components["responses"]["Unauthorized"];
         };
     };
@@ -2517,6 +3130,7 @@ export interface operations {
             };
             400: components["responses"]["BadRequest"];
             401: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
             /** @description No active number available to check capabilities */
             503: {
                 headers: {
@@ -2676,34 +3290,15 @@ export interface operations {
             };
         };
         responses: {
-            /** @description FaceTime call initiated */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @description The handle that was called */
-                        handle?: string;
-                        /**
-                         * @description Shareable FaceTime link
-                         * @example https://facetime.apple.com/join#v=1&p=xxx
-                         */
-                        link?: string;
-                        success?: boolean;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
+            501: components["responses"]["NotImplemented"];
         };
     };
     listGroups: {
         parameters: {
             query?: {
-                /** @description Maximum number of items to return (1-200) */
+                /** @description Maximum number of items to return in a single response. Must be between 1 and 200; defaults to 50. Use together with `offset` to page through large result sets. */
                 limit?: components["parameters"]["LimitParam"];
-                /** @description Number of items to skip */
+                /** @description Number of items to skip before returning results. Combine with `limit` for page-based pagination (e.g. `offset=50&limit=50` returns the second page). Defaults to 0. */
                 offset?: components["parameters"]["OffsetParam"];
                 /** @description Search query (matches group name) */
                 q?: string;
@@ -2728,6 +3323,7 @@ export interface operations {
                     };
                 };
             };
+            400: components["responses"]["BadRequest"];
             401: components["responses"]["Unauthorized"];
         };
     };
@@ -2796,7 +3392,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Group ID
+                 * @description Unique identifier of the group chat, prefixed with `grp_` (e.g. `grp_abc123def456`). Returned by the create-group and list-groups endpoints.
                  * @example grp_abc123def456
                  */
                 groupId: components["parameters"]["GroupIdParam"];
@@ -2824,7 +3420,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Group ID
+                 * @description Unique identifier of the group chat, prefixed with `grp_` (e.g. `grp_abc123def456`). Returned by the create-group and list-groups endpoints.
                  * @example grp_abc123def456
                  */
                 groupId: components["parameters"]["GroupIdParam"];
@@ -2874,7 +3470,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Group ID
+                 * @description Unique identifier of the group chat, prefixed with `grp_` (e.g. `grp_abc123def456`). Returned by the create-group and list-groups endpoints.
                  * @example grp_abc123def456
                  */
                 groupId: components["parameters"]["GroupIdParam"];
@@ -2915,7 +3511,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Group ID
+                 * @description Unique identifier of the group chat, prefixed with `grp_` (e.g. `grp_abc123def456`). Returned by the create-group and list-groups endpoints.
                  * @example grp_abc123def456
                  */
                 groupId: components["parameters"]["GroupIdParam"];
@@ -2972,7 +3568,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Group ID
+                 * @description Unique identifier of the group chat, prefixed with `grp_` (e.g. `grp_abc123def456`). Returned by the create-group and list-groups endpoints.
                  * @example grp_abc123def456
                  */
                 groupId: components["parameters"]["GroupIdParam"];
@@ -3016,15 +3612,15 @@ export interface operations {
     listGroupMembers: {
         parameters: {
             query?: {
-                /** @description Maximum number of items to return (1-200) */
+                /** @description Maximum number of items to return in a single response. Must be between 1 and 200; defaults to 50. Use together with `offset` to page through large result sets. */
                 limit?: components["parameters"]["LimitParam"];
-                /** @description Number of items to skip */
+                /** @description Number of items to skip before returning results. Combine with `limit` for page-based pagination (e.g. `offset=50&limit=50` returns the second page). Defaults to 0. */
                 offset?: components["parameters"]["OffsetParam"];
             };
             header?: never;
             path: {
                 /**
-                 * @description Group ID
+                 * @description Unique identifier of the group chat, prefixed with `grp_` (e.g. `grp_abc123def456`). Returned by the create-group and list-groups endpoints.
                  * @example grp_abc123def456
                  */
                 groupId: components["parameters"]["GroupIdParam"];
@@ -3061,7 +3657,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Group ID
+                 * @description Unique identifier of the group chat, prefixed with `grp_` (e.g. `grp_abc123def456`). Returned by the create-group and list-groups endpoints.
                  * @example grp_abc123def456
                  */
                 groupId: components["parameters"]["GroupIdParam"];
@@ -3080,48 +3676,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Contact is already a member */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        member?: components["schemas"]["GroupMember"];
-                        message?: string;
-                    };
-                };
-            };
-            /** @description Member added */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @description Whether a new contact was created for this member */
-                        contact_created?: boolean;
-                        member?: components["schemas"]["GroupMember"];
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            /** @description Coming soon - endpoint temporarily disabled */
-            501: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example Coming soon */
-                        error?: string;
-                        /** @example Adding group members is coming soon */
-                        message?: string;
-                    };
-                };
-            };
+            501: components["responses"]["NotImplemented"];
         };
     };
     removeGroupMember: {
@@ -3135,7 +3690,7 @@ export interface operations {
                  */
                 contactId: components["parameters"]["ContactIdParam"];
                 /**
-                 * @description Group ID
+                 * @description Unique identifier of the group chat, prefixed with `grp_` (e.g. `grp_abc123def456`). Returned by the create-group and list-groups endpoints.
                  * @example grp_abc123def456
                  */
                 groupId: components["parameters"]["GroupIdParam"];
@@ -3144,36 +3699,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Member removed */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** Format: int64 */
-                        removed_at?: number;
-                        success?: boolean;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            /** @description Coming soon - endpoint temporarily disabled */
-            501: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @example Coming soon */
-                        error?: string;
-                        /** @example Removing group members is coming soon */
-                        message?: string;
-                    };
-                };
-            };
+            501: components["responses"]["NotImplemented"];
         };
     };
     listLocationContacts: {
@@ -3315,6 +3841,71 @@ export interface operations {
                 };
             };
             401: components["responses"]["Unauthorized"];
+        };
+    };
+    requestCallForwarding: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Source E.164 phone number to forward (URL-encoded, e.g., %2B15551234567). Must be a dedicated or inbound number owned by your organization. */
+                number: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Destination US phone number that calls should be forwarded to. E.164 format recommended (e.g., +15559876543).
+                     * @example +15559876543
+                     */
+                    forward_to: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Call forwarding request created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Destination number (E.164)
+                         * @example +15559876543
+                         */
+                        forward_to?: string;
+                        /**
+                         * @description Source number (E.164)
+                         * @example +15551234567
+                         */
+                        number?: string;
+                        /**
+                         * @description Ticket status
+                         * @example open
+                         */
+                        status?: string;
+                        /** @example true */
+                        success?: boolean;
+                        /**
+                         * @description Identifier of the support ticket tracking this request
+                         * @example tkt_abc123
+                         */
+                        ticket_id?: string;
+                    };
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            401: components["responses"]["Unauthorized"];
+            /** @description Ticket creation is disabled for your organization */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     getMyContactCard: {
@@ -3589,19 +4180,13 @@ export interface operations {
                 "application/json": {
                     /**
                      * Format: int64
-                     * @description Expiration timestamp (-1 for no expiration)
+                     * @description Ignored. Retained so existing request bodies stay valid.
                      * @default -1
                      */
                     valid_until?: number;
                     /**
-                     * @description Type of events to receive
-                     * @default message
-                     * @enum {string}
-                     */
-                    webhook_type?: "message" | "status" | "all";
-                    /**
                      * Format: uri
-                     * @description URL to receive webhook events
+                     * @description URL of an existing webhook, for the idempotent 200 response. A URL that does not already exist returns 410.
                      * @example https://example.com/webhook
                      */
                     webhook_url: string;
@@ -3624,27 +4209,6 @@ export interface operations {
                     };
                 };
             };
-            /** @description Webhook created. The signing_secret is shown only once - store it securely. */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** Format: int64 */
-                        created_at?: number;
-                        /** @enum {string} */
-                        scope?: "api_key" | "organization";
-                        /** @description The webhook signing secret. Store this securely - it will not be shown again. */
-                        signing_secret?: string;
-                        webhook_id?: string;
-                        /** @enum {string} */
-                        webhook_type?: "message" | "status" | "all";
-                        /** Format: uri */
-                        webhook_url?: string;
-                    };
-                };
-            };
             400: components["responses"]["BadRequest"];
             401: components["responses"]["Unauthorized"];
             /** @description Webhook limit reached (max 64 per organization) */
@@ -3656,6 +4220,17 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
+            /** @description Registration through this endpoint is closed. Use POST /v4/webhooks. */
+            410: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error?: string;
+                    };
+                };
+            };
         };
     };
     getWebhook: {
@@ -3664,7 +4239,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Webhook ID
+                 * @description Unique identifier of the webhook subscription, prefixed with `wh_` (e.g. `wh_abc123def456`). Returned when you create or list webhooks.
                  * @example wh_abc123def456
                  */
                 webhookId: components["parameters"]["WebhookIdParam"];
@@ -3692,7 +4267,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Webhook ID
+                 * @description Unique identifier of the webhook subscription, prefixed with `wh_` (e.g. `wh_abc123def456`). Returned when you create or list webhooks.
                  * @example wh_abc123def456
                  */
                 webhookId: components["parameters"]["WebhookIdParam"];
@@ -3724,7 +4299,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Webhook ID
+                 * @description Unique identifier of the webhook subscription, prefixed with `wh_` (e.g. `wh_abc123def456`). Returned when you create or list webhooks.
                  * @example wh_abc123def456
                  */
                 webhookId: components["parameters"]["WebhookIdParam"];
@@ -3767,13 +4342,13 @@ export interface operations {
     listWebhookLogs: {
         parameters: {
             query?: {
-                /** @description Maximum number of items to return (1-200) */
+                /** @description Maximum number of items to return in a single response. Must be between 1 and 200; defaults to 50. Use together with `offset` to page through large result sets. */
                 limit?: components["parameters"]["LimitParam"];
                 /** @description Maximum HTTP status code */
                 max_status?: number;
                 /** @description Minimum HTTP status code */
                 min_status?: number;
-                /** @description Number of items to skip */
+                /** @description Number of items to skip before returning results. Combine with `limit` for page-based pagination (e.g. `offset=50&limit=50` returns the second page). Defaults to 0. */
                 offset?: components["parameters"]["OffsetParam"];
                 /** @description Sort order by attempted time */
                 sort?: "asc" | "desc";
@@ -3783,7 +4358,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Webhook ID
+                 * @description Unique identifier of the webhook subscription, prefixed with `wh_` (e.g. `wh_abc123def456`). Returned when you create or list webhooks.
                  * @example wh_abc123def456
                  */
                 webhookId: components["parameters"]["WebhookIdParam"];
@@ -3825,7 +4400,7 @@ export interface operations {
                 /** @description Event ID to replay */
                 eventId: string;
                 /**
-                 * @description Webhook ID
+                 * @description Unique identifier of the webhook subscription, prefixed with `wh_` (e.g. `wh_abc123def456`). Returned when you create or list webhooks.
                  * @example wh_abc123def456
                  */
                 webhookId: components["parameters"]["WebhookIdParam"];
@@ -3877,7 +4452,7 @@ export interface operations {
             header?: never;
             path: {
                 /**
-                 * @description Webhook ID
+                 * @description Unique identifier of the webhook subscription, prefixed with `wh_` (e.g. `wh_abc123def456`). Returned when you create or list webhooks.
                  * @example wh_abc123def456
                  */
                 webhookId: components["parameters"]["WebhookIdParam"];

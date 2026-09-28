@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Blooio API v2 v2.0.0
-// Operations:  54
+// Operations:  58
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -13,6 +13,7 @@ export const manifest = {
 	"listNumbers": {"namespace":"me","method":"listNumbers","http":"get","path":"/me/numbers","risk":"medium"},
 	"getMyContactCard": {"namespace":"me","method":"contactCard_0","http":"get","path":"/me/numbers/{number}/contact-card","risk":"medium"},
 	"updateMyContactCard": {"namespace":"me","method":"contactCard_1","http":"put","path":"/me/numbers/{number}/contact-card","risk":"medium"},
+	"requestCallForwarding": {"namespace":"me","method":"callForwarding","http":"post","path":"/me/numbers/{number}/call-forwarding","risk":"medium"},
 	"listContacts": {"namespace":"contacts","method":"list","http":"get","path":"/contacts","risk":"low"},
 	"createContact": {"namespace":"contacts","method":"create","http":"post","path":"/contacts","risk":"medium"},
 	"getContact": {"namespace":"contacts","method":"retrieve","http":"get","path":"/contacts/{contactId}","risk":"low"},
@@ -62,7 +63,10 @@ export const manifest = {
 	"removeChatBackground": {"namespace":"chats","method":"background_1","http":"delete","path":"/chats/{chatId}/background","risk":"medium"},
 	"lookupPhoneNumber": {"namespace":"phone-numbers","method":"listLookup","http":"get","path":"/phone-numbers/lookup","risk":"medium"},
 	"lookupPhoneNumberPost": {"namespace":"phone-numbers","method":"createLookup","http":"post","path":"/phone-numbers/lookup","risk":"medium"},
-	"batchLookupPhoneNumbers": {"namespace":"phone-numbers","method":"createBatch","http":"post","path":"/phone-numbers/batch","risk":"medium"}
+	"batchLookupPhoneNumbers": {"namespace":"phone-numbers","method":"createBatch","http":"post","path":"/phone-numbers/batch","risk":"medium"},
+	"getRiskTolerance": {"namespace":"analytics","method":"listRiskTolerance","http":"get","path":"/analytics/risk-tolerance","risk":"medium"},
+	"getRiskSummary": {"namespace":"analytics","method":"summary","http":"get","path":"/analytics/risk-tolerance/summary","risk":"medium"},
+	"getNumberRiskTolerance": {"namespace":"analytics","method":"retrieveRiskTolerance","http":"get","path":"/analytics/risk-tolerance/{number}","risk":"medium"}
 } as const;
 
 export type OperationId = keyof typeof manifest;
