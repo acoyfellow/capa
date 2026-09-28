@@ -9,8 +9,8 @@
 	// Required secrets (set after deploy):
 	//   wrangler secret put GITLAB_API_KEY
 	//
-	// Optional (for self-managed cfdata behind Cloudflare Access):
-	//   wrangler secret put GITLAB_BASE_URL_OVERRIDE   # e.g. https://gitlab.cfdata.org
+	// Optional (for self-managed GitLab behind Cloudflare Access):
+	//   wrangler secret put GITLAB_BASE_URL_OVERRIDE   # e.g. https://gitlab.example.com
 	//   wrangler secret put CF_ACCESS_CLIENT_ID
 	//   wrangler secret put CF_ACCESS_CLIENT_SECRET
 	//

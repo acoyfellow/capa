@@ -9,8 +9,8 @@
 	// Required secrets (set after deploy):
 	//   wrangler secret put JIRA_API_KEY
 	//
-	// Optional (for Jira Server / Data Center, e.g. cfdata internal):
-	//   wrangler secret put JIRA_BASE_URL_OVERRIDE   # e.g. https://jira.cfdata.org
+	// Optional (for Jira Server / Data Center, e.g. behind Cloudflare Access):
+	//   wrangler secret put JIRA_BASE_URL_OVERRIDE   # e.g. https://jira.example.com
 	//
 	// Bind from a caller Worker:
 	//   "services": [

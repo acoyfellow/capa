@@ -49,10 +49,10 @@ const { result: pipeline } = await env.GITLAB.pipelines.retry({
 });
 ```
 
-### Connect to a self-managed instance (e.g. `gitlab.cfdata.org`)
+### Connect to a self-managed instance (e.g. `gitlab.example.com`)
 
 ```bash
-wrangler secret put GITLAB_BASE_URL_OVERRIDE   # https://gitlab.cfdata.org
+wrangler secret put GITLAB_BASE_URL_OVERRIDE   # https://gitlab.example.com
 wrangler secret put CF_ACCESS_CLIENT_ID        # Cloudflare Access service token
 wrangler secret put CF_ACCESS_CLIENT_SECRET    # Cloudflare Access service token secret
 ```
@@ -124,11 +124,11 @@ Every other operation gets a generic `httpStatus 2xx` assertion.
 |---|---|
 | `GITLAB_API_KEY` | GitLab → User Settings → Access Tokens |
 
-### Optional secrets (self-managed / cfdata)
+### Optional secrets (self-managed)
 
 | Secret | When needed |
 |---|---|
-| `GITLAB_BASE_URL_OVERRIDE` | Self-managed GitLab (e.g. `https://gitlab.cfdata.org`) |
+| `GITLAB_BASE_URL_OVERRIDE` | Self-managed GitLab (e.g. `https://gitlab.example.com`) |
 | `CF_ACCESS_CLIENT_ID` | Cloudflare Access in front of GitLab |
 | `CF_ACCESS_CLIENT_SECRET` | Cloudflare Access in front of GitLab |
 
