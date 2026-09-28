@@ -12,7 +12,7 @@
 	},
 	"auth": "bearer",
 	"contentType": "json",
-	"operations": 1111,
+	"operations": 1190,
 	"namespaces": 6,
 	"publicHttpRoute": false,
 	"evidenceContract": "capa.evidence.v0"

@@ -83,6 +83,10 @@ export type paths = {
         /**
          * Ask question
          * @description Sends an AI request to supported LLMs and returns an answer specifically focused on the user's question given the provided context.
+         *
+         *     You can ask a question about a single file, several files, or the entire contents of a Box Hub. To search across and ask questions about everything in a Box Hub, send a single item with `type` set to `hubs` and the Hub's ID as the `id`. Box AI answers the question using the indexed content of all files in that Hub.
+         *
+         *     Asking questions about a Box Hub requires Box AI for Hubs to be enabled in the Admin Console before the Hub is created, so that its content is indexed.
          */
         post: operations["post_ai_ask"];
         delete?: never;
@@ -314,11 +318,9 @@ export type paths = {
          *     If a collaboration is being created with a group, access to
          *     this endpoint is dependent on the group's ability to be invited.
          *
-         *     If collaboration is in `pending` status, the following fields
-         *     are redacted:
-         *     - `login` and `name` are hidden if a collaboration was created
-         *     using `user_id`,
-         *     -  `name` is hidden if a collaboration was created using `login`.
+         *     If collaboration is in `pending` status, field `name` is redacted when:
+         *     - a collaboration was created using `user_id`,
+         *     - a collaboration was created using `login`.
          */
         post: operations["post_collaborations"];
         delete?: never;
@@ -1479,6 +1481,31 @@ export type paths = {
         get: operations["get_files_upload_sessions_id_parts"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/files/upload_sessions/{upload_session_id}/plan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Plan upload session
+         * @description Plan an upload session by checking which parts already exist on the server.
+         *     This endpoint allows clients to optimize uploads by skipping parts that
+         *     have already been uploaded (cache hits) and only uploading missing parts.
+         *
+         *     The actual endpoint URL is returned by the [`Create upload session`](e://post-files-upload-sessions)
+         *     and [`Get upload session`](e://get-files-upload-sessions-id) endpoints.
+         */
+        post: operations["post_files_upload_sessions_id_plan"];
         delete?: never;
         options?: never;
         head?: never;
@@ -5173,11 +5200,16 @@ export type components = {
              * @example true
              */
             include_citations?: boolean;
-            /** @description The items to be processed by the LLM, often files. */
+            /**
+             * @description The items to be processed by the LLM, often files.
+             *     To search across and ask questions about the contents of a Box Hub,
+             *     pass a single item with `type` set to `hubs`. See the item `type`
+             *     property for details.
+             */
             items: components["schemas"]["AiItemAsk"][];
             /**
-             * @description Box AI handles text documents with text representations up to 1MB in size, or a maximum of 25 files,
-             *     whichever comes first. If the text file size exceeds 1MB, the first 1MB of text representation will be processed.
+             * @description Box AI handles text documents with text representations up to 2MB in size, or a maximum of 25 files,
+             *     whichever comes first. If the text file size exceeds 2MB, the first 2MB of text representation will be processed.
              *     Box AI handles image documents with a resolution of 1024 x 1024 pixels, with a maximum of 5 images or 5 pages
              *     for multi-page images. If the number of image or image pages exceeds 5, the first 5 images or pages will
              *     be processed. If you set mode parameter to `single_item_qa`, the items array can have one element only.
@@ -5268,6 +5300,17 @@ export type components = {
          */
         AiExtractAgent: components["schemas"]["AiAgentReference"] | components["schemas"]["AiAgentExtract"];
         /**
+         * AI Extract Field Option
+         * @description An option for an AI extract field.
+         */
+        AiExtractFieldOption: {
+            /**
+             * @description A unique identifier for the option.
+             * @example First Name
+             */
+            key: string;
+        };
+        /**
          * AI extract response
          * @description AI extract response.
          *     The content of this response may vary depending on
@@ -5297,11 +5340,18 @@ export type components = {
                  * @example Name
                  */
                 displayName?: string;
+                /** @description The nested fields for this field. Used with `struct` and `table` field types to define the nested structure. */
+                fields?: components["schemas"]["AiExtractSubField"][];
                 /**
                  * @description A unique identifier for the field.
                  * @example name
                  */
                 key: string;
+                /**
+                 * @description The namespace of the taxonomy source. Required if using `taxonomy` type field from an existing taxonomy.
+                 * @example enterprise_123
+                 */
+                namespace?: string;
                 /**
                  * @description A list of options for this field. This is most often used in combination with the `enum` and `multiSelect` field types.
                  * @example [
@@ -5321,23 +5371,38 @@ export type components = {
                     key: string;
                 }[];
                 /**
+                 * @example {
+                 *       "multiSelect": false,
+                 *       "selectableLevels": [
+                 *         1,
+                 *         2
+                 *       ]
+                 *     }
+                 */
+                options_rules?: components["schemas"]["AiOptionsRules"];
+                /**
                  * @description The context about the key that may include how to find and format it.
                  * @example Name is the first and last name from the email address
                  */
                 prompt?: string;
                 /**
-                 * @description The type of the field. It can include but is not limited to `string`, `float`, `date`, `enum`, and `multiSelect`.
+                 * @description The identifier for a taxonomy, which corresponds to the `key` of the taxonomy source. Required if using `taxonomy` type field.
+                 * @example certification_taxonomy
+                 */
+                taxonomy_key?: string;
+                /**
+                 * @description The type of the field. It can include but is not limited to `string`, `float`, `date`, `enum`, `multiSelect`,`taxonomy`, `struct`, and `table`.
                  * @example enum
                  */
                 type?: string;
             }[];
             /**
-             * @description A flag to indicate whether confidence scores for every extracted field should be returned.
+             * @description A flag to indicate whether confidence scores for every extracted field should be returned. Estimates the likelihood that an extracted metadata field value is accurate and correct. Displays a numerical and categorical confidence score to help users and automated systems quickly determine extraction reliability.
              * @example true
              */
             include_confidence_score?: boolean;
             /**
-             * @description A flag to indicate whether references for every extracted field should be returned.
+             * @description A flag to indicate whether references for every extracted field should be returned. References and bounding boxes show where the agent extracted the metadata from. They help you check for accuracy and fix any mistakes. References are short, exact quotes from the original document used to verify results. Bounding boxes highlight the specific areas on the page where that text is found.
              * @example true
              */
             include_reference?: boolean;
@@ -5370,6 +5435,23 @@ export type components = {
                  */
                 type?: "metadata_template";
             };
+            /**
+             * @description The taxonomy sources to be used for the structured extraction. They can either be an existing file or a taxonomy.
+             *     For your request to work, `fields` must also be provided. `taxonomy_sources` is not supported with `metadata_template`.
+             * @example [
+             *       {
+             *         "type": "taxonomy",
+             *         "taxonomy_key": "certification_taxonomy",
+             *         "namespace": "enterprise_123"
+             *       },
+             *       {
+             *         "type": "file",
+             *         "taxonomy_key": "industry_taxonomy",
+             *         "id": "1234567890"
+             *       }
+             *     ]
+             */
+            taxonomy_sources?: components["schemas"]["AiTaxonomySource"][];
         };
         /**
          * AI Extract Structured Request agent
@@ -5404,6 +5486,39 @@ export type components = {
             };
         };
         /**
+         * AI Extract Structured Nested Field
+         * @description A nested field definition for structured and table field types used in AI extraction.
+         */
+        AiExtractSubField: {
+            /**
+             * @description A description of the nested field.
+             * @example The street name of the address.
+             */
+            description?: string;
+            /**
+             * @description The display name of the nested field.
+             * @example Street Name
+             */
+            displayName?: string;
+            /**
+             * @description A unique identifier for the nested field.
+             * @example street_name
+             */
+            key: string;
+            /** @description A list of options for this nested field. Used with `enum` and `multiSelect` types. */
+            options?: components["schemas"]["AiExtractFieldOption"][];
+            /**
+             * @description Context about the nested field that may include how to find and how to format it.
+             * @example The street name from the address section
+             */
+            prompt?: string;
+            /**
+             * @description The type of the nested field. Allowed types include `string`, `float`, `date`, `number`, `text`, `boolean`, `enum` and `multiSelect`.
+             * @example string
+             */
+            type?: string;
+        };
+        /**
          * AI Item (Base)
          * @description The item to be processed by the LLM.
          */
@@ -5436,12 +5551,14 @@ export type components = {
              */
             content?: string;
             /**
-             * @description The ID of the file.
+             * @description The ID of the file, or the ID of the Box Hub when `type` is `hubs`.
              * @example 123
              */
             id: string;
             /**
-             * @description The type of the item. A `hubs` item must be used as a single item.
+             * @description The type of the item. Use `file` to ask a question about a file, or `hubs` to
+             *     search across and ask a question about the entire contents of a Box Hub.
+             *     A `hubs` item must be the only item in the request.
              * @example file
              * @enum {string}
              */
@@ -5612,6 +5729,23 @@ export type components = {
         } & {
             /** @description The list of AI Agents. */
             entries: components["schemas"]["AiSingleAgentResponse--Full"][];
+        };
+        /**
+         * AI Options Rules
+         * @description An object for a `taxonomy` type template field containing configuration for taxonomy options. Required if using `taxonomy` type field.
+         */
+        AiOptionsRules: {
+            /**
+             * @description Indicates whether the field is a multi-select field.
+             *     If true, the field can have multiple values.
+             * @example true
+             */
+            multi_select?: boolean;
+            /**
+             * @description The selectable levels for the field.
+             *     This is used to limit the levels of the taxonomy that can be selected.
+             */
+            selectable_levels?: number[];
         };
         /**
          * AI response
@@ -6022,6 +6156,55 @@ export type components = {
             type: "ai_agent_text_gen";
         };
         /**
+         * AI Taxonomy File Reference
+         * @description A taxonomy `.csv` file to be used for the structured extraction. For your request to work, `fields` must also be provided.
+         */
+        AiTaxonomyFileReference: {
+            /**
+             * @description The ID of the taxonomy source. Required if the type is `file` and unsupported if the type is `taxonomy`.
+             * @example 1234567890
+             */
+            id?: string;
+            /**
+             * @description The identifier for a taxonomy, which corresponds to the `taxonomy_key` of the taxonomy source.
+             * @example certification_taxonomy
+             */
+            taxonomy_key?: string;
+            /**
+             * @description The type of the taxonomy source.
+             * @example file
+             * @enum {string}
+             */
+            type?: "file";
+        };
+        /**
+         * AI Taxonomy Reference
+         * @description A taxonomy source to be used for the structured extraction. For your request to work, `fields` must also be provided.
+         */
+        AiTaxonomyReference: {
+            /**
+             * @description The namespace of the taxonomy source.
+             * @example enterprise_123
+             */
+            namespace?: string;
+            /**
+             * @description The identifier for a taxonomy, which corresponds to the `taxonomy_key` of the taxonomy source.
+             * @example certification_taxonomy
+             */
+            taxonomy_key?: string;
+            /**
+             * @description The type of the taxonomy source.
+             * @example taxonomy
+             * @enum {string}
+             */
+            type?: "taxonomy";
+        };
+        /**
+         * AI Taxonomy Source
+         * @description A taxonomy source to be used for the structured extraction. It can either be an existing CSV file or a taxonomy.
+         */
+        AiTaxonomySource: components["schemas"]["AiTaxonomyReference"] | components["schemas"]["AiTaxonomyFileReference"];
+        /**
          * AI text gen request
          * @description AI text gen request object.
          */
@@ -6033,8 +6216,8 @@ export type components = {
              * @description The items to be processed by the LLM, often files.
              *     The array can include **exactly one** element.
              *
-             *     **Note**: Box AI handles documents with text representations up to 1MB in size.
-             *     If the file size exceeds 1MB, the first 1MB of text representation will be processed.
+             *     **Note**: Box AI handles documents with text representations up to 2MB in size.
+             *     If the file size exceeds 2MB, the first 2MB of text representation will be processed.
              */
             items: {
                 /**
@@ -6523,7 +6706,7 @@ export type components = {
             role?: "editor" | "viewer" | "previewer" | "uploader" | "previewer uploader" | "viewer uploader" | "co-owner" | "owner";
             /**
              * @description The status of the collaboration invitation. If the status
-             *     is `pending`, `login` and `name` return an empty string.
+             *     is `pending`, `name` returns an empty string.
              * @example accepted
              * @enum {string}
              */
@@ -6703,9 +6886,10 @@ export type components = {
         };
         /**
          * Collaboration item
-         * @description A collaboration item.
+         * @description A mini representation of the file, folder, or web link that a
+         *     collaboration is granted on.
          */
-        CollaborationItem: components["schemas"]["File"] | components["schemas"]["Folder"] | components["schemas"]["WebLink"];
+        CollaborationItem: components["schemas"]["File--Mini"] | components["schemas"]["Folder--Mini"] | components["schemas"]["WebLink--Mini"];
         /**
          * Collaborations
          * @description A list of collaborations.
@@ -7266,7 +7450,7 @@ export type components = {
              * @example f82c3ba03e41f7e8a7608363cc6c0390183c3f83
              */
             event_id?: string;
-            event_type?: ("ACCESS_GRANTED" | "ACCESS_REVOKED" | "ADD_DEVICE_ASSOCIATION" | "ADD_LOGIN_ACTIVITY_DEVICE" | "ADMIN_LOGIN" | "AI_SECURITY_DETECTION" | "ANNOTATIONV2_CREATE" | "ANNOTATIONV2_DELETE" | "ANNOTATIONV2_EDIT" | "APPLICATION_CREATED" | "APPLICATION_PUBLIC_KEY_ADDED" | "APPLICATION_PUBLIC_KEY_DELETED" | "BOX_AI_USER_FAILED_REQUEST" | "BOX_AI_USER_REQUEST" | "CHANGE_ADMIN_ROLE" | "CHANGE_FOLDER_PERMISSION" | "COLLABORATION_ACCEPT" | "COLLABORATION_EXPIRATION" | "COLLABORATION_INVITE" | "COLLABORATION_REMOVE" | "COLLABORATION_ROLE_CHANGE" | "COLLAB_ADD_COLLABORATOR" | "COLLAB_INVITE_COLLABORATOR" | "COLLAB_REMOVE_COLLABORATOR" | "COLLAB_ROLE_CHANGE" | "COLLECTION_CREATE" | "COLLECTION_DELETE" | "COLLECTION_ITEM_CREATE" | "COLLECTION_ITEM_DELETE" | "COLLECTION_ITEM_UPDATE" | "COLLECTION_UPDATE" | "COMMENT_CREATE" | "COMMENT_DELETE" | "CONTENT_ACCESS" | "CONTENT_RECOVERY_REPORT_CREATE" | "CONTENT_RECOVERY_REPORT_DELETE" | "CONTENT_RECOVERY_REPORT_INITIATE" | "CONTENT_WORKFLOW_ABNORMAL_DOWNLOAD_ACTIVITY" | "CONTENT_WORKFLOW_AUTOMATION_ADD" | "CONTENT_WORKFLOW_AUTOMATION_DELETE" | "CONTENT_WORKFLOW_POLICY_ADD" | "CONTENT_WORKFLOW_SHARING_POLICY_VIOLATION" | "CONTENT_WORKFLOW_UPLOAD_POLICY_VIOLATION" | "COPY" | "DATA_RETENTION_CREATE_RETENTION" | "DATA_RETENTION_REMOVE_RETENTION" | "DELETE" | "DELETE_USER" | "DEVICE_TRUST_CHECK_FAILED" | "DISABLE_MULTI_FACTOR_AUTH" | "DOWNLOAD" | "EDIT" | "EDIT_USER" | "EDR_CROWDSTRIKE_ACCESS_ALLOWED_NO_CROWDSTRIKE_DEVICE" | "EDR_CROWDSTRIKE_ACCESS_REVOKED" | "EDR_CROWDSTRIKE_BOX_TOOLS_OUTDATED" | "EDR_CROWDSTRIKE_DEVICE_DETECTED" | "EDR_CROWDSTRIKE_DRIVE_OUTDATED" | "EDR_CROWDSTRIKE_NO_BOX_TOOLS" | "EMAIL_ALIAS_CONFIRM" | "EMAIL_ALIAS_REMOVE" | "ENABLE_MULTI_FACTOR_AUTH" | "ENABLE_TWO_FACTOR_AUTH" | "ENTERPRISE_APP_AUTHORIZATION_UPDATE" | "EXTERNAL_COLLAB_SECURITY_SETTINGS" | "FAILED_LOGIN" | "FILE_MARKED_MALICIOUS" | "FILE_WATERMARKED_DOWNLOAD" | "GROUP_ADD_ITEM" | "GROUP_ADD_USER" | "GROUP_ADMIN_CREATED" | "GROUP_ADMIN_DELETED" | "GROUP_ADMIN_PERMISSIONS_UPDATED" | "GROUP_CREATION" | "GROUP_DELETION" | "GROUP_EDITED" | "GROUP_REMOVE_ITEM" | "GROUP_REMOVE_USER" | "ITEM_ASSOCIATION_CREATED" | "ITEM_ASSOCIATION_DELETED" | "ITEM_ASSOCIATION_UPDATED" | "ITEM_COPY" | "ITEM_CREATE" | "ITEM_DOWNLOAD" | "ITEM_EMAIL_SEND" | "ITEM_MAKE_CURRENT_VERSION" | "ITEM_MODIFY" | "ITEM_MOVE" | "ITEM_OPEN" | "ITEM_PREVIEW" | "ITEM_RENAME" | "ITEM_SHARED" | "ITEM_SHARED_CREATE" | "ITEM_SHARED_UNSHARE" | "ITEM_SHARED_UPDATE" | "ITEM_SYNC" | "ITEM_TRASH" | "ITEM_UNDELETE_VIA_TRASH" | "ITEM_UNSYNC" | "ITEM_UPLOAD" | "LEGAL_HOLD_ASSIGNMENT_CREATE" | "LEGAL_HOLD_ASSIGNMENT_DELETE" | "LEGAL_HOLD_POLICY_CREATE" | "LEGAL_HOLD_POLICY_DELETE" | "LEGAL_HOLD_POLICY_UPDATE" | "LOCK" | "LOCK_CREATE" | "LOCK_DESTROY" | "LOGIN" | "MASTER_INVITE_ACCEPT" | "MASTER_INVITE_REJECT" | "METADATA_INSTANCE_CREATE" | "METADATA_INSTANCE_DELETE" | "METADATA_INSTANCE_UPDATE" | "METADATA_TEMPLATE_CREATE" | "METADATA_TEMPLATE_DELETE" | "METADATA_TEMPLATE_UPDATE" | "MOVE" | "NEW_USER" | "OAUTH2_ACCESS_TOKEN_REVOKE" | "PREVIEW" | "REMOVE_DEVICE_ASSOCIATION" | "REMOVE_LOGIN_ACTIVITY_DEVICE" | "RENAME" | "RETENTION_POLICY_ASSIGNMENT_ADD" | "SHARE" | "SHARED_LINK_REDIRECT_OUT_OF_SHARED_CONTEXT" | "SHARED_LINK_SEND" | "SHARE_EXPIRATION" | "SHIELD_ACCESS_POLICY_CREATED" | "SHIELD_ACCESS_POLICY_DELETED" | "SHIELD_ACCESS_POLICY_UPDATED" | "SHIELD_ALERT" | "SHIELD_DOWNLOAD_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED_MISSING_JUSTIFICATION" | "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED_MISSING_JUSTIFICATION" | "SHIELD_EXTERNAL_COLLAB_INVITE_JUSTIFIED" | "SHIELD_INFORMATION_BARRIER_COLLAB_BLOCKED" | "SHIELD_INFORMATION_BARRIER_DISABLED" | "SHIELD_INFORMATION_BARRIER_ENABLED" | "SHIELD_INFORMATION_BARRIER_GROUP_ADD_USER_BLOCKED" | "SHIELD_INFORMATION_BARRIER_ITEM_COPY_BLOCKED" | "SHIELD_INFORMATION_BARRIER_ITEM_MOVE_BLOCKED" | "SHIELD_INFORMATION_BARRIER_ITEM_OWNER_TRANSFER_BLOCKED" | "SHIELD_INFORMATION_BARRIER_PENDING" | "SHIELD_INFORMATION_BARRIER_SHARED_ITEM_ACCESS_BLOCKED" | "SHIELD_JUSTIFICATION_APPROVAL" | "SHIELD_SHARED_LINK_ACCESS_BLOCKED" | "SHIELD_SHARED_LINK_STATUS_RESTRICTED_ON_CREATE" | "SHIELD_SHARED_LINK_STATUS_RESTRICTED_ON_UPDATE" | "SIGN_DOCUMENT_ASSIGNED" | "SIGN_DOCUMENT_CANCELLED" | "SIGN_DOCUMENT_COMPLETED" | "SIGN_DOCUMENT_CONVERTED" | "SIGN_DOCUMENT_CREATED" | "SIGN_DOCUMENT_DECLINED" | "SIGN_DOCUMENT_EXPIRED" | "SIGN_DOCUMENT_SIGNED" | "SIGN_DOCUMENT_VIEWED_BY_SIGNED" | "SIGN_DOCUMENT_VIEWED_BY_SIGNER" | "SIGNER_DOWNLOADED" | "SIGNER_FORWARDED" | "STORAGE_EXPIRATION" | "TAG_ITEM_CREATE" | "TASK_ASSIGNMENT_CREATE" | "TASK_ASSIGNMENT_DELETE" | "TASK_ASSIGNMENT_UPDATE" | "TASK_CREATE" | "TASK_UPDATE" | "TERMS_OF_SERVICE_ACCEPT" | "TERMS_OF_SERVICE_REJECT" | "UNDELETE" | "UNLOCK" | "UNSHARE" | "UPDATE_COLLABORATION_EXPIRATION" | "UPDATE_SHARE_EXPIRATION" | "UPLOAD" | "USER_AUTHENTICATE_OAUTH2_ACCESS_TOKEN_CREATE" | "WATERMARK_LABEL_CREATE" | "WATERMARK_LABEL_DELETE") & unknown;
+            event_type?: ("ACCESS_GRANTED" | "ACCESS_REVOKED" | "ADD_DEVICE_ASSOCIATION" | "ADD_LOGIN_ACTIVITY_DEVICE" | "ADMIN_LOGIN" | "ADVANCED_FOLDER_SETTINGS_UPDATE" | "AI_SECURITY_DETECTION" | "ANNOTATIONV2_CREATE" | "ANNOTATIONV2_DELETE" | "ANNOTATIONV2_EDIT" | "APPLICATION_CREATED" | "APPLICATION_PUBLIC_KEY_ADDED" | "APPLICATION_PUBLIC_KEY_DELETED" | "BOX_AI_USER_FAILED_REQUEST" | "BOX_AI_USER_REQUEST" | "CHANGE_ADMIN_ROLE" | "CHANGE_FOLDER_PERMISSION" | "COLLABORATION_ACCEPT" | "COLLABORATION_EXPIRATION" | "COLLABORATION_INVITE" | "COLLABORATION_REMOVE" | "COLLABORATION_ROLE_CHANGE" | "COLLAB_ADD_COLLABORATOR" | "COLLAB_INVITE_COLLABORATOR" | "COLLAB_REMOVE_COLLABORATOR" | "COLLAB_ROLE_CHANGE" | "COLLECTION_CREATE" | "COLLECTION_DELETE" | "COLLECTION_ITEM_CREATE" | "COLLECTION_ITEM_DELETE" | "COLLECTION_ITEM_UPDATE" | "COLLECTION_UPDATE" | "COMMENT_CREATE" | "COMMENT_DELETE" | "COMMENT_EDIT" | "CONTENT_ACCESS" | "CONTENT_RECOVERY_REPORT_CREATE" | "CONTENT_RECOVERY_REPORT_DELETE" | "CONTENT_RECOVERY_REPORT_INITIATE" | "CONTENT_WORKFLOW_ABNORMAL_DOWNLOAD_ACTIVITY" | "CONTENT_WORKFLOW_AUTOMATION_ADD" | "CONTENT_WORKFLOW_AUTOMATION_DELETE" | "CONTENT_WORKFLOW_POLICY_ADD" | "CONTENT_WORKFLOW_SHARING_POLICY_VIOLATION" | "CONTENT_WORKFLOW_UPLOAD_POLICY_VIOLATION" | "COPY" | "DATA_RETENTION_CREATE_RETENTION" | "DATA_RETENTION_REMOVE_RETENTION" | "DELETE" | "DELETE_USER" | "DEVICE_TRUST_CHECK_FAILED" | "DISABLE_MULTI_FACTOR_AUTH" | "DOWNLOAD" | "EDIT" | "EDIT_USER" | "EDR_CROWDSTRIKE_ACCESS_ALLOWED_NO_CROWDSTRIKE_DEVICE" | "EDR_CROWDSTRIKE_ACCESS_REVOKED" | "EDR_CROWDSTRIKE_BOX_TOOLS_OUTDATED" | "EDR_CROWDSTRIKE_DEVICE_DETECTED" | "EDR_CROWDSTRIKE_DRIVE_OUTDATED" | "EDR_CROWDSTRIKE_NO_BOX_TOOLS" | "EMAIL_ALIAS_CONFIRM" | "EMAIL_ALIAS_PRIMARY" | "EMAIL_ALIAS_REMOVE" | "EMAIL_UPLOAD_DISABLED" | "EMAIL_UPLOAD_ENABLED" | "ENABLE_MULTI_FACTOR_AUTH" | "ENABLE_TWO_FACTOR_AUTH" | "ENTERPRISE_APP_AUTHORIZATION_UPDATE" | "EXTERNAL_COLLAB_SECURITY_SETTINGS" | "FAILED_LOGIN" | "FAVORITE" | "FILE_MARKED_MALICIOUS" | "FILE_REQUEST_CREATE" | "FILE_REQUEST_DELETE" | "FILE_REQUEST_UPDATE" | "FILE_VERSION_RESTORE" | "FILE_WATERMARKED_DOWNLOAD" | "GROUP_ADD_ITEM" | "GROUP_ADD_USER" | "GROUP_ADMIN_CREATED" | "GROUP_ADMIN_DELETED" | "GROUP_ADMIN_PERMISSIONS_UPDATED" | "GROUP_CREATION" | "GROUP_DELETION" | "GROUP_EDITED" | "GROUP_REMOVE_ITEM" | "GROUP_REMOVE_USER" | "ILLEGAL_ITEM_OWNERSHIP_TRANSFER_BY_USER" | "ITEM_ASSOCIATION_CREATED" | "ITEM_ASSOCIATION_DELETED" | "ITEM_ASSOCIATION_UPDATED" | "ITEM_COPY" | "ITEM_CREATE" | "ITEM_DOWNLOAD" | "ITEM_EMAIL_SEND" | "ITEM_MAKE_CURRENT_VERSION" | "ITEM_MODIFY" | "ITEM_MOVE" | "ITEM_OPEN" | "ITEM_PREVIEW" | "ITEM_RENAME" | "ITEM_SHARED" | "ITEM_SHARED_CREATE" | "ITEM_SHARED_UNSHARE" | "ITEM_SHARED_UPDATE" | "ITEM_SYNC" | "ITEM_TRASH" | "ITEM_UNDELETE_VIA_TRASH" | "ITEM_UNSYNC" | "ITEM_UPLOAD" | "LEGAL_HOLD_ASSIGNMENT_CREATE" | "LEGAL_HOLD_ASSIGNMENT_DELETE" | "LEGAL_HOLD_POLICY_CREATE" | "LEGAL_HOLD_POLICY_DELETE" | "LEGAL_HOLD_POLICY_UPDATE" | "LOCK" | "LOCK_CREATE" | "LOCK_DESTROY" | "LOGIN" | "MASTER_INVITE_ACCEPT" | "MASTER_INVITE_REJECT" | "METADATA_CASCADE_POLICY_APPLY" | "METADATA_CASCADE_POLICY_CREATE" | "METADATA_INSTANCE_COPY" | "METADATA_INSTANCE_CREATE" | "METADATA_INSTANCE_DELETE" | "METADATA_INSTANCE_UPDATE" | "METADATA_TEMPLATE_CREATE" | "METADATA_TEMPLATE_DELETE" | "METADATA_TEMPLATE_UPDATE" | "MOVE" | "NEW_USER" | "OAUTH2_ACCESS_TOKEN_REVOKE" | "OAUTH2_REFRESH_TOKEN_REVOKE" | "PREVIEW" | "REMOVE_DEVICE_ASSOCIATION" | "REMOVE_LOGIN_ACTIVITY_DEVICE" | "RENAME" | "RETENTION_POLICY_ASSIGNMENT_ADD" | "SHARE" | "SHARED_LINK_REDIRECT_OUT_OF_SHARED_CONTEXT" | "SHARED_LINK_SEND" | "SHARE_EXPIRATION" | "SHIELD_ACCESS_POLICY_CREATED" | "SHIELD_ACCESS_POLICY_DELETED" | "SHIELD_ACCESS_POLICY_UPDATED" | "SHIELD_ALERT" | "SHIELD_DOWNLOAD_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED_MISSING_JUSTIFICATION" | "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED_MISSING_JUSTIFICATION" | "SHIELD_EXTERNAL_COLLAB_INVITE_JUSTIFIED" | "SHIELD_INFORMATION_BARRIER_COLLAB_BLOCKED" | "SHIELD_INFORMATION_BARRIER_DISABLED" | "SHIELD_INFORMATION_BARRIER_ENABLED" | "SHIELD_INFORMATION_BARRIER_GROUP_ADD_USER_BLOCKED" | "SHIELD_INFORMATION_BARRIER_ITEM_COPY_BLOCKED" | "SHIELD_INFORMATION_BARRIER_ITEM_MOVE_BLOCKED" | "SHIELD_INFORMATION_BARRIER_ITEM_OWNER_TRANSFER_BLOCKED" | "SHIELD_INFORMATION_BARRIER_PENDING" | "SHIELD_INFORMATION_BARRIER_SHARED_ITEM_ACCESS_BLOCKED" | "SHIELD_JUSTIFICATION_APPROVAL" | "SHIELD_PREVIEW_BLOCKED" | "SHIELD_SHARED_LINK_ACCESS_BLOCKED" | "SHIELD_SHARED_LINK_STATUS_RESTRICTED_ON_CREATE" | "SHIELD_SHARED_LINK_STATUS_RESTRICTED_ON_UPDATE" | "SIGN_DOCUMENT_ASSIGNED" | "SIGN_DOCUMENT_CANCELLED" | "SIGN_DOCUMENT_COMPLETED" | "SIGN_DOCUMENT_CONVERTED" | "SIGN_DOCUMENT_CREATED" | "SIGN_DOCUMENT_DECLINED" | "SIGN_DOCUMENT_EXPIRED" | "SIGN_DOCUMENT_SIGNED" | "SIGN_DOCUMENT_VIEWED_BY_SIGNED" | "SIGN_DOCUMENT_VIEWED_BY_SIGNER" | "SIGNER_DOWNLOADED" | "SIGNER_FORWARDED" | "STORAGE_EXPIRATION" | "TAG_ITEM_CREATE" | "TASK_ASSIGNMENT_CREATE" | "TASK_ASSIGNMENT_DELETE" | "TASK_ASSIGNMENT_UPDATE" | "TASK_CREATE" | "TASK_UPDATE" | "TERMS_OF_SERVICE_ACCEPT" | "TERMS_OF_SERVICE_REJECT" | "UNDELETE" | "UNFAVORITE" | "UNLOCK" | "UNSHARE" | "UPDATE_COLLABORATION_EXPIRATION" | "UPDATE_SHARE_EXPIRATION" | "UPLOAD" | "USER_AUTHENTICATE_OAUTH2_ACCESS_TOKEN_CREATE" | "WATERMARK_LABEL_CREATE" | "WATERMARK_LABEL_DELETE" | "WORKFLOW_AUTOMATION_CREATE" | "WORKFLOW_AUTOMATION_DELETE" | "WORKFLOW_AUTOMATION_UPDATE") & unknown;
             /**
              * Format: date-time
              * @description When the event object was recorded in database.
@@ -7420,7 +7604,7 @@ export type components = {
              * @example 2012-12-12T10:53:43-08:00
              */
             purged_at?: string | null;
-            shared_link?: {
+            shared_link?: ({
                 /**
                  * @description The access level for this shared link.
                  *
@@ -7541,7 +7725,7 @@ export type components = {
                  * @example https://acme.app.box.com/v/my_url/
                  */
                 vanity_url?: string | null;
-            } & unknown & unknown;
+            } & unknown) | null;
             /**
              * @description The file size in bytes. Be careful parsing this integer as it can
              *     get very large and cause an integer overflow.
@@ -7601,7 +7785,29 @@ export type components = {
              *     ]
              */
             allowed_invitee_roles?: ("editor" | "viewer" | "previewer" | "uploader" | "previewer uploader" | "viewer uploader" | "co-owner")[];
-            classification?: {
+            /**
+             * @description The shared link access levels the authenticated user is allowed to
+             *     use when creating or updating a shared link for this file.
+             *
+             *     The list depends on item policy and user authorization, so it may be
+             *     narrower than the levels available to the owner. An empty array means
+             *     no access level is available to this user.
+             * @example [
+             *       "open"
+             *     ]
+             */
+            allowed_shared_link_access_levels?: ("open" | "company" | "collaborators")[];
+            /**
+             * Format: url
+             * @description A stable API URL for the file content endpoint,
+             *     `/2.0/files/{id}/content`. Unlike `download_url`, authorization is
+             *     evaluated when the URL is requested with a valid access token.
+             *
+             *     This field is only returned for files, not folders or web links.
+             * @example https://api.box.com/2.0/files/12345/content
+             */
+            authenticated_download_url?: string;
+            classification?: ({
                 /**
                  * @description The color that is used to display the
                  *     classification label in a user-interface. Colors are defined by the admin
@@ -7619,7 +7825,14 @@ export type components = {
                  * @example Top Secret
                  */
                 name?: string;
-            } & unknown & unknown;
+            } & unknown) | null;
+            /**
+             * @description The collections that this file belongs to.
+             *
+             *     For more information, see the
+             *     [collections guide](https://developer.box.com/guides/collections).
+             */
+            collections?: components["schemas"]["Collection"][];
             /**
              * @description The number of comments on this file.
              * @example 10
@@ -7631,6 +7844,16 @@ export type components = {
              * @example 2012-12-12T10:53:43-08:00
              */
             disposition_at?: string | null;
+            /**
+             * Format: url
+             * @description A pre-authorized, expiring URL for directly downloading the file's
+             *     content. Requires authentication and is valid only for the current
+             *     session.
+             *
+             *     This field is only returned for files, not folders or web links.
+             * @example https://dl.boxcloud.com/d/1/example_token/download
+             */
+            download_url?: string;
             /**
              * Format: date-time
              * @description When the file will automatically be deleted.
@@ -7697,6 +7920,15 @@ export type components = {
              * @example true
              */
             is_associated_with_app_item?: boolean;
+            /**
+             * @description Whether the file's binary content is eligible to be downloaded.
+             *
+             *     This is a content-level flag and does not reflect whether the
+             *     current user is authorized to download the file. Use
+             *     `permissions.can_download`, when available, for that.
+             * @example true
+             */
+            is_download_available?: boolean;
             /**
              * @description Specifies if this file is owned by a user outside of the
              *     authenticated enterprise.
@@ -8860,11 +9092,12 @@ export type components = {
              */
             allowed_invitee_roles?: ("editor" | "viewer" | "previewer" | "uploader" | "previewer uploader" | "viewer uploader" | "co-owner")[];
             /**
-             * @description A list of access levels that are available
-             *     for this folder.
+             * @description The shared link access levels the authenticated user is allowed to
+             *     use when creating or updating a shared link for this folder.
              *
-             *     For some folders, like the root folder, this will always
-             *     be an empty list as sharing is not allowed at that level.
+             *     The list depends on item policy and user authorization. For some
+             *     folders, like the root folder, this is always empty as sharing is
+             *     not allowed at that level.
              * @example [
              *       "open"
              *     ]
@@ -8900,6 +9133,13 @@ export type components = {
                  */
                 name?: string;
             } & unknown & unknown;
+            /**
+             * @description The collections that this folder belongs to.
+             *
+             *     For more information, see the
+             *     [collections guide](https://developer.box.com/guides/collections).
+             */
+            collections?: components["schemas"]["Collection"][];
             /**
              * @description Specifies if this folder has any other collaborators.
              * @example true
@@ -12348,6 +12588,12 @@ export type components = {
              */
             created_at?: string;
             /**
+             * @description When the sign request is in an error state, identifies the specific
+             *     reason. Null when no error code applies.
+             * @example cfr11_validation_failed
+             */
+            readonly error_code?: string | null;
+            /**
              * Format: date-time
              * @description Timestamp indicating when all signing actions completed.
              * @example 2025-02-02T12:00:00Z
@@ -12416,7 +12662,7 @@ export type components = {
              * @example converting
              * @enum {string}
              */
-            status?: "converting" | "created" | "sent" | "viewed" | "signed" | "cancelled" | "declined" | "error_converting" | "error_sending" | "expired" | "finalizing" | "error_finalizing";
+            status?: "converting" | "created" | "sent" | "viewed" | "signed" | "cancelled" | "declined" | "error" | "error_converting" | "error_sending" | "expired" | "finalizing" | "error_finalizing";
             /**
              * @description The value will always be `sign-request`.
              * @example sign-request
@@ -12487,6 +12733,12 @@ export type components = {
              * @example https://www.example.com
              */
             redirect_url?: string | null;
+            /**
+             * @description The flow type of the sign request. Values can include `standard` or `cfr11`.
+             *     When not specified during creation, a default is chosen based on admin settings.
+             * @example standard
+             */
+            request_flow?: string | null;
             /**
              * @description When a signature request is created from a template this field will indicate the id of that template.
              * @example 123075213-af2c8822-3ef2-4952-8557-52d69c2fe9cb
@@ -12760,6 +13012,13 @@ export type components = {
              */
             content_type?: "signature" | "initial" | "stamp" | "date" | "checkbox" | "text" | "full_name" | "first_name" | "last_name" | "company" | "title" | "email" | "attachment" | "radio" | "dropdown";
             /**
+             * @description Indicates whether the signer's input has been validated through re-authentication.
+             *     Applicable only for signature or initial content types in a `cfr11` request flow.
+             *     The value is `null` for standard request flows or non-applicable input types.
+             * @example true
+             */
+            is_validated?: boolean | null;
+            /**
              * @description Index of page that the input is on.
              * @example 4
              */
@@ -12769,6 +13028,12 @@ export type components = {
              * @example true
              */
             read_only?: boolean;
+            /**
+             * @description The reason for the signer's input, applicable to signature or initial content types
+             *     in a `cfr11` request flow. The value is `null` when not applicable.
+             * @example I read and approve this document
+             */
+            reason?: string | null;
             /**
              * @description Type of input.
              * @example text
@@ -12923,7 +13188,7 @@ export type components = {
          *     The format can be selected from a predefined list of options (e.g., email, phone number, date) or
          *     defined using a custom regular expression.
          */
-        SignRequestSignerInputValidation: components["schemas"]["SignRequestSignerInputEmailValidation"] | components["schemas"]["SignRequestSignerInputCustomValidation"] | components["schemas"]["SignRequestSignerInputZIPValidation"] | components["schemas"]["SignRequestSignerInputZIP4Validation"] | components["schemas"]["SignRequestSignerInputSSNValidation"] | components["schemas"]["SignRequestSignerInputNumberWithPeriodValidation"] | components["schemas"]["SignRequestSignerInputNumberWithCommaValidation"] | components["schemas"]["SignRequestSignerInputDateISOValidation"] | components["schemas"]["SignRequestSignerInputDateUSValidation"] | components["schemas"]["SignRequestSignerInputDateEUValidation"] | components["schemas"]["SignRequestSignerInputDateAsiaValidation"];
+        SignRequestSignerInputValidation: components["schemas"]["SignRequestSignerInputEmailValidation"] | components["schemas"]["SignRequestSignerInputCustomValidation"] | components["schemas"]["SignRequestSignerInputZIPValidation"] | components["schemas"]["SignRequestSignerInputZIP4Validation"] | components["schemas"]["SignRequestSignerInputZIPJPValidation"] | components["schemas"]["SignRequestSignerInputSSNValidation"] | components["schemas"]["SignRequestSignerInputNumberWithPeriodValidation"] | components["schemas"]["SignRequestSignerInputNumberWithCommaValidation"] | components["schemas"]["SignRequestSignerInputDateISOValidation"] | components["schemas"]["SignRequestSignerInputDateUSValidation"] | components["schemas"]["SignRequestSignerInputDateEUValidation"] | components["schemas"]["SignRequestSignerInputDateAsiaValidation"];
         /**
          * Sign Request Signer Input ZIP 4 Validation
          * @description Specifies the validation rules for a text field input by the signer.
@@ -12936,6 +13201,19 @@ export type components = {
              * @enum {string}
              */
             validation_type: "zip_4";
+        };
+        /**
+         * Sign Request Signer Input ZIP JP Validation
+         * @description Specifies the validation rules for a text field input by the signer.
+         *     If set, this validation is mandatory.
+         */
+        SignRequestSignerInputZIPJPValidation: {
+            /**
+             * @description Validates that the text input is a Japanese ZIP code.
+             * @example zip_jp
+             * @enum {string}
+             */
+            validation_type: "zip_jp";
         };
         /**
          * Sign Request Signer Input ZIP Validation
@@ -13131,6 +13409,11 @@ export type components = {
                  */
                 url?: string;
             } | null;
+            /**
+             * @description The sign flow of sign requests created from the template. Values can include `standard` or `cfr11`.
+             * @example standard
+             */
+            request_flow?: string | null;
             /**
              * @description Array of signers for the template.
              *
@@ -14954,6 +15237,63 @@ export type components = {
             size?: number;
         };
         /**
+         * Upload part plan
+         * @description Represents a planned upload part with `SHA-512` hash
+         *     for upload session planning.
+         */
+        UploadPartPlan: {
+            /**
+             * Format: int64
+             * @description The offset of the chunk within the file
+             *     in bytes. The lower bound of the position
+             *     of the chunk within the file.
+             * @example 0
+             */
+            offset: number;
+            /**
+             * @description The `SHA-512` hash of the chunk.
+             * @example 1f40fc92da241694750979ee6cf582f2d5d7c8b5d9c7f3b8a6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1
+             */
+            sha512: string;
+            /**
+             * Format: int64
+             * @description The size of the chunk in bytes.
+             * @example 8388608
+             */
+            size: number;
+        };
+        /**
+         * Upload part plan hit
+         * @description Represents a planned upload part that already exists
+         *     on the server (cache hit).
+         */
+        UploadPartPlanHit: {
+            /**
+             * Format: int64
+             * @description The offset of the chunk within the file
+             *     in bytes. The lower bound of the position
+             *     of the chunk within the file.
+             * @example 0
+             */
+            offset: number;
+            /**
+             * @description The unique ID of the chunk.
+             * @example BFDF5379
+             */
+            part_id: string;
+            /**
+             * @description The `SHA-512` hash of the chunk.
+             * @example 1f40fc92da241694750979ee6cf582f2d5d7c8b5d9c7f3b8a6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1
+             */
+            sha512: string;
+            /**
+             * Format: int64
+             * @description The size of the chunk in bytes.
+             * @example 8388608
+             */
+            size: number;
+        };
+        /**
          * Upload parts
          * @description A list of uploaded chunks for an upload
          *     session.
@@ -15065,6 +15405,12 @@ export type components = {
                  */
                 log_event?: string;
                 /**
+                 * @description The URL used to plan the upload session by checking which parts
+                 *     already exist on the server.
+                 * @example https://{box-upload-server}/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/plan
+                 */
+                plan?: string;
+                /**
                  * @description The URL used to get the status of the upload.
                  * @example https://{box-upload-server}/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD
                  */
@@ -15094,6 +15440,68 @@ export type components = {
              * @enum {string}
              */
             type?: "upload_session";
+        };
+        /**
+         * Upload session plan request
+         * @description Request body for planning an upload session.
+         *     This allows checking which parts already exist
+         *     on the server before uploading.
+         */
+        UploadSessionPlanRequest: {
+            /**
+             * @description The list of parts to check for existence.
+             * @example [
+             *       {
+             *         "offset": 0,
+             *         "size": 8388608,
+             *         "sha512": "1f40fc92da241694750979ee6cf582f2..."
+             *       },
+             *       {
+             *         "offset": 8388608,
+             *         "size": 8388608,
+             *         "sha512": "b109f3bbbc244eb82441917ed06d618b..."
+             *       }
+             *     ]
+             */
+            parts: components["schemas"]["UploadPartPlan"][];
+        };
+        /**
+         * Upload session plan response
+         * @description Response from planning an upload session.
+         *     Contains information about which parts already
+         *     exist (hits) and which need to be uploaded (misses).
+         */
+        UploadSessionPlanResponse: {
+            /**
+             * @description Parts that already exist on the server and
+             *     do not need to be uploaded again.
+             * @example [
+             *       {
+             *         "offset": 0,
+             *         "size": 8388608,
+             *         "sha512": "1f40fc92da241694750979ee6cf582f2...",
+             *         "part_id": "BFDF5379"
+             *       }
+             *     ]
+             */
+            hits: components["schemas"]["UploadPartPlanHit"][];
+            /**
+             * @description Parts that do not exist on the server and
+             *     need to be uploaded.
+             * @example [
+             *       {
+             *         "offset": 8388608,
+             *         "size": 8388608,
+             *         "sha512": "b109f3bbbc244eb82441917ed06d618b..."
+             *       }
+             *     ]
+             */
+            misses: components["schemas"]["UploadPartPlan"][];
+            /**
+             * @description The unique identifier for this upload session.
+             * @example F971964745A5CD0C001BBE4E58196BFD
+             */
+            upload_session_id: string;
         };
         /**
          * Upload URL
@@ -15236,7 +15644,7 @@ export type components = {
             is_active?: boolean;
             /**
              * Format: email
-             * @description The primary email address of this user. If the collaboration status is `pending`, an empty string is returned.
+             * @description The primary email address of this user. If the collaboration status is `pending`, a login value is returned.
              * @example ceo@example.com
              */
             login?: string;
@@ -15288,6 +15696,13 @@ export type components = {
              * @example https://example.app.box.com/
              */
             hostname?: string;
+            /**
+             * @description Whether collaborators can access content owned by the user when the
+             *     user is inactive. This setting preserves existing collaborator access
+             *     and does not grant new permissions.
+             * @example true
+             */
+            is_collaborated_content_available_when_owner_inactive?: boolean;
             /**
              * @description Whether to exempt the user from Enterprise device limits.
              * @example true
@@ -15599,6 +16014,25 @@ export type components = {
          */
         WebLink: components["schemas"]["WebLink--Mini"] & {
             /**
+             * @description The shared link access levels the authenticated user is allowed to
+             *     use when creating or updating a shared link for this web link.
+             *
+             *     The list depends on item policy and user authorization, so it may be
+             *     narrower than the levels available to the owner. An empty array means
+             *     no access level is available to this user.
+             * @example [
+             *       "open"
+             *     ]
+             */
+            allowed_shared_link_access_levels?: ("open" | "company" | "collaborators")[];
+            /**
+             * @description The collections that this web link belongs to.
+             *
+             *     For more information, see the
+             *     [collections guide](https://developer.box.com/guides/collections).
+             */
+            collections?: components["schemas"]["Collection"][];
+            /**
              * Format: date-time
              * @description When this file was created on Box’s servers.
              * @example 2012-12-12T10:53:43-08:00
@@ -15645,7 +16079,7 @@ export type components = {
              * @example 2012-12-12T10:53:43-08:00
              */
             purged_at?: string | null;
-            shared_link?: {
+            shared_link?: ({
                 /**
                  * @description The access level for this shared link.
                  *
@@ -15766,7 +16200,7 @@ export type components = {
                  * @example https://acme.app.box.com/v/my_url/
                  */
                 vanity_url?: string | null;
-            } & unknown & unknown;
+            } & unknown) | null;
             /**
              * Format: date-time
              * @description When this file was moved to the trash.
@@ -18079,7 +18513,7 @@ export interface operations {
                  *       "ACCESS_GRANTED"
                  *     ]
                  */
-                event_type?: ("ACCESS_GRANTED" | "ACCESS_REVOKED" | "ADD_DEVICE_ASSOCIATION" | "ADD_LOGIN_ACTIVITY_DEVICE" | "ADMIN_LOGIN" | "APPLICATION_CREATED" | "APPLICATION_PUBLIC_KEY_ADDED" | "APPLICATION_PUBLIC_KEY_DELETED" | "CHANGE_ADMIN_ROLE" | "CHANGE_FOLDER_PERMISSION" | "COLLABORATION_ACCEPT" | "COLLABORATION_EXPIRATION" | "COLLABORATION_INVITE" | "COLLABORATION_REMOVE" | "COLLABORATION_ROLE_CHANGE" | "COMMENT_CREATE" | "COMMENT_DELETE" | "CONTENT_WORKFLOW_ABNORMAL_DOWNLOAD_ACTIVITY" | "CONTENT_WORKFLOW_AUTOMATION_ADD" | "CONTENT_WORKFLOW_AUTOMATION_DELETE" | "CONTENT_WORKFLOW_POLICY_ADD" | "CONTENT_WORKFLOW_SHARING_POLICY_VIOLATION" | "CONTENT_WORKFLOW_UPLOAD_POLICY_VIOLATION" | "COPY" | "DATA_RETENTION_CREATE_RETENTION" | "DATA_RETENTION_REMOVE_RETENTION" | "DELETE" | "DELETE_USER" | "DEVICE_TRUST_CHECK_FAILED" | "DOWNLOAD" | "EDIT" | "EDIT_USER" | "EMAIL_ALIAS_CONFIRM" | "EMAIL_ALIAS_REMOVE" | "ENTERPRISE_APP_AUTHORIZATION_UPDATE" | "EXTERNAL_COLLAB_SECURITY_SETTINGS" | "FAILED_LOGIN" | "FILE_MARKED_MALICIOUS" | "FILE_WATERMARKED_DOWNLOAD" | "GROUP_ADD_ITEM" | "GROUP_ADD_USER" | "GROUP_CREATION" | "GROUP_DELETION" | "GROUP_EDITED" | "GROUP_REMOVE_ITEM" | "GROUP_REMOVE_USER" | "ITEM_EMAIL_SEND" | "ITEM_MODIFY" | "ITEM_OPEN" | "ITEM_SHARED_UPDATE" | "ITEM_SYNC" | "ITEM_UNSYNC" | "LEGAL_HOLD_ASSIGNMENT_CREATE" | "LEGAL_HOLD_ASSIGNMENT_DELETE" | "LEGAL_HOLD_POLICY_CREATE" | "LEGAL_HOLD_POLICY_DELETE" | "LEGAL_HOLD_POLICY_UPDATE" | "LOCK" | "LOGIN" | "METADATA_INSTANCE_CREATE" | "METADATA_INSTANCE_DELETE" | "METADATA_INSTANCE_UPDATE" | "METADATA_TEMPLATE_CREATE" | "METADATA_TEMPLATE_DELETE" | "METADATA_TEMPLATE_UPDATE" | "MOVE" | "NEW_USER" | "OAUTH2_ACCESS_TOKEN_REVOKE" | "PREVIEW" | "REMOVE_DEVICE_ASSOCIATION" | "REMOVE_LOGIN_ACTIVITY_DEVICE" | "RENAME" | "RETENTION_POLICY_ASSIGNMENT_ADD" | "SHARE" | "SHARED_LINK_SEND" | "SHARE_EXPIRATION" | "SHIELD_ALERT" | "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED_MISSING_JUSTIFICATION" | "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED_MISSING_JUSTIFICATION" | "SHIELD_JUSTIFICATION_APPROVAL" | "SHIELD_SHARED_LINK_ACCESS_BLOCKED" | "SHIELD_SHARED_LINK_STATUS_RESTRICTED_ON_CREATE" | "SHIELD_SHARED_LINK_STATUS_RESTRICTED_ON_UPDATE" | "SIGN_DOCUMENT_ASSIGNED" | "SIGN_DOCUMENT_CANCELLED" | "SIGN_DOCUMENT_COMPLETED" | "SIGN_DOCUMENT_CONVERTED" | "SIGN_DOCUMENT_CREATED" | "SIGN_DOCUMENT_DECLINED" | "SIGN_DOCUMENT_EXPIRED" | "SIGN_DOCUMENT_SIGNED" | "SIGN_DOCUMENT_VIEWED_BY_SIGNED" | "SIGNER_DOWNLOADED" | "SIGNER_FORWARDED" | "STORAGE_EXPIRATION" | "TASK_ASSIGNMENT_CREATE" | "TASK_ASSIGNMENT_DELETE" | "TASK_ASSIGNMENT_UPDATE" | "TASK_CREATE" | "TASK_UPDATE" | "TERMS_OF_SERVICE_ACCEPT" | "TERMS_OF_SERVICE_REJECT" | "UNDELETE" | "UNLOCK" | "UNSHARE" | "UPDATE_COLLABORATION_EXPIRATION" | "UPDATE_SHARE_EXPIRATION" | "UPLOAD" | "USER_AUTHENTICATE_OAUTH2_ACCESS_TOKEN_CREATE" | "WATERMARK_LABEL_CREATE" | "WATERMARK_LABEL_DELETE")[];
+                event_type?: ("ACCESS_GRANTED" | "ACCESS_REVOKED" | "ADD_DEVICE_ASSOCIATION" | "ADD_LOGIN_ACTIVITY_DEVICE" | "ADMIN_LOGIN" | "ADVANCED_FOLDER_SETTINGS_UPDATE" | "APPLICATION_CREATED" | "APPLICATION_PUBLIC_KEY_ADDED" | "APPLICATION_PUBLIC_KEY_DELETED" | "CHANGE_ADMIN_ROLE" | "CHANGE_FOLDER_PERMISSION" | "COLLABORATION_ACCEPT" | "COLLABORATION_EXPIRATION" | "COLLABORATION_INVITE" | "COLLABORATION_REMOVE" | "COLLABORATION_ROLE_CHANGE" | "COMMENT_CREATE" | "COMMENT_DELETE" | "COMMENT_EDIT" | "CONTENT_WORKFLOW_ABNORMAL_DOWNLOAD_ACTIVITY" | "CONTENT_WORKFLOW_AUTOMATION_ADD" | "CONTENT_WORKFLOW_AUTOMATION_DELETE" | "CONTENT_WORKFLOW_POLICY_ADD" | "CONTENT_WORKFLOW_SHARING_POLICY_VIOLATION" | "CONTENT_WORKFLOW_UPLOAD_POLICY_VIOLATION" | "COPY" | "DATA_RETENTION_CREATE_RETENTION" | "DATA_RETENTION_REMOVE_RETENTION" | "DELETE" | "DELETE_USER" | "DEVICE_TRUST_CHECK_FAILED" | "DOWNLOAD" | "EDIT" | "EDIT_USER" | "EMAIL_ALIAS_CONFIRM" | "EMAIL_ALIAS_PRIMARY" | "EMAIL_ALIAS_REMOVE" | "EMAIL_UPLOAD_DISABLED" | "EMAIL_UPLOAD_ENABLED" | "ENTERPRISE_APP_AUTHORIZATION_UPDATE" | "EXTERNAL_COLLAB_SECURITY_SETTINGS" | "FAILED_LOGIN" | "FAVORITE" | "FILE_MARKED_MALICIOUS" | "FILE_REQUEST_CREATE" | "FILE_REQUEST_DELETE" | "FILE_REQUEST_UPDATE" | "FILE_VERSION_RESTORE" | "FILE_WATERMARKED_DOWNLOAD" | "GROUP_ADD_ITEM" | "GROUP_ADD_USER" | "GROUP_CREATION" | "GROUP_DELETION" | "GROUP_EDITED" | "GROUP_REMOVE_ITEM" | "GROUP_REMOVE_USER" | "ILLEGAL_ITEM_OWNERSHIP_TRANSFER_BY_USER" | "ITEM_EMAIL_SEND" | "ITEM_MODIFY" | "ITEM_OPEN" | "ITEM_SHARED_UPDATE" | "ITEM_SYNC" | "ITEM_UNSYNC" | "LEGAL_HOLD_ASSIGNMENT_CREATE" | "LEGAL_HOLD_ASSIGNMENT_DELETE" | "LEGAL_HOLD_POLICY_CREATE" | "LEGAL_HOLD_POLICY_DELETE" | "LEGAL_HOLD_POLICY_UPDATE" | "LOCK" | "LOGIN" | "METADATA_CASCADE_POLICY_APPLY" | "METADATA_CASCADE_POLICY_CREATE" | "METADATA_INSTANCE_COPY" | "METADATA_INSTANCE_CREATE" | "METADATA_INSTANCE_DELETE" | "METADATA_INSTANCE_UPDATE" | "METADATA_TEMPLATE_CREATE" | "METADATA_TEMPLATE_DELETE" | "METADATA_TEMPLATE_UPDATE" | "MOVE" | "NEW_USER" | "OAUTH2_ACCESS_TOKEN_REVOKE" | "OAUTH2_REFRESH_TOKEN_REVOKE" | "PREVIEW" | "REMOVE_DEVICE_ASSOCIATION" | "REMOVE_LOGIN_ACTIVITY_DEVICE" | "RENAME" | "RETENTION_POLICY_ASSIGNMENT_ADD" | "SHARE" | "SHARED_LINK_SEND" | "SHARE_EXPIRATION" | "SHIELD_ALERT" | "SHIELD_DOWNLOAD_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_ACCESS_BLOCKED_MISSING_JUSTIFICATION" | "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED" | "SHIELD_EXTERNAL_COLLAB_INVITE_BLOCKED_MISSING_JUSTIFICATION" | "SHIELD_JUSTIFICATION_APPROVAL" | "SHIELD_PREVIEW_BLOCKED" | "SHIELD_SHARED_LINK_ACCESS_BLOCKED" | "SHIELD_SHARED_LINK_STATUS_RESTRICTED_ON_CREATE" | "SHIELD_SHARED_LINK_STATUS_RESTRICTED_ON_UPDATE" | "SIGN_DOCUMENT_ASSIGNED" | "SIGN_DOCUMENT_CANCELLED" | "SIGN_DOCUMENT_COMPLETED" | "SIGN_DOCUMENT_CONVERTED" | "SIGN_DOCUMENT_CREATED" | "SIGN_DOCUMENT_DECLINED" | "SIGN_DOCUMENT_EXPIRED" | "SIGN_DOCUMENT_SIGNED" | "SIGN_DOCUMENT_VIEWED_BY_SIGNED" | "SIGNER_DOWNLOADED" | "SIGNER_FORWARDED" | "STORAGE_EXPIRATION" | "TASK_ASSIGNMENT_CREATE" | "TASK_ASSIGNMENT_DELETE" | "TASK_ASSIGNMENT_UPDATE" | "TASK_CREATE" | "TASK_UPDATE" | "TERMS_OF_SERVICE_ACCEPT" | "TERMS_OF_SERVICE_REJECT" | "UNDELETE" | "UNFAVORITE" | "UNLOCK" | "UNSHARE" | "UPDATE_COLLABORATION_EXPIRATION" | "UPDATE_SHARE_EXPIRATION" | "UPLOAD" | "USER_AUTHENTICATE_OAUTH2_ACCESS_TOKEN_CREATE" | "WATERMARK_LABEL_CREATE" | "WATERMARK_LABEL_DELETE" | "WORKFLOW_AUTOMATION_CREATE" | "WORKFLOW_AUTOMATION_DELETE" | "WORKFLOW_AUTOMATION_UPDATE")[];
                 /**
                  * @description Limits the number of events returned.
                  *
@@ -23461,6 +23895,57 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UploadParts"];
+                };
+            };
+            /** @description An unexpected client error. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClientError"];
+                };
+            };
+        };
+    };
+    post_files_upload_sessions_id_plan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description The ID of the upload session.
+                 * @example D5E3F7A
+                 */
+                upload_session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["UploadSessionPlanRequest"];
+            };
+        };
+        responses: {
+            /**
+             * @description Returns information about which parts already exist (hits)
+             *     and which parts need to be uploaded (misses).
+             */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UploadSessionPlanResponse"];
+                };
+            };
+            /** @description Returns an error if the upload session cannot be found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClientError"];
                 };
             };
             /** @description An unexpected client error. */
@@ -32628,6 +33113,18 @@ export interface operations {
                     "application/json": components["schemas"]["ClientError"];
                 };
             };
+            /**
+             * @description Returns an error if the user does not have the required permissions
+             *     to create a retention policy.
+             */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClientError"];
+                };
+            };
             /** @description Returns an error if a retention policy with the given name already exists. */
             409: {
                 headers: {
@@ -37447,6 +37944,13 @@ export interface operations {
                      * @example my-user-1234
                      */
                     external_app_user_id?: string;
+                    /**
+                     * @description Whether collaborators can access content owned by the user when
+                     *     the user is inactive. This setting preserves existing
+                     *     collaborator access and does not grant new permissions.
+                     * @example true
+                     */
+                    is_collaborated_content_available_when_owner_inactive?: boolean;
                     /**
                      * @description Whether to exempt the user from enterprise device limits.
                      * @example true

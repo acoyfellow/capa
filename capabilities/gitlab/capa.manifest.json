@@ -12,8 +12,8 @@
 	},
 	"auth": "private-token",
 	"contentType": "json",
-	"operations": 1047,
-	"namespaces": 51,
+	"operations": 1072,
+	"namespaces": 50,
 	"publicHttpRoute": false,
 	"evidenceContract": "capa.evidence.v0"
 }

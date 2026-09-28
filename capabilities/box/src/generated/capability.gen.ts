@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Box Platform API v2024.0
-// Operations:  294
+// Operations:  295
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -465,6 +465,30 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["parts"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Plan an upload session by checking which parts already exist on the server.
+This endpoint allows clients to optimize uploads by skipping parts that
+have already been uploaded (cache hits) and only upl
+	 *
+	 * `POST /files/upload_sessions/{upload_session_id}/plan` — risk: medium
+	 */
+	async plan(uploadSessionId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "post_files_upload_sessions_id_plan",
+			namespace: "files",
+			method: "plan",
+			http: "post",
+			path: `/files/upload_sessions/${uploadSessionId}/plan`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["plan"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -6913,6 +6937,8 @@ export class AiResource extends RpcTarget {
 
 	/**
 	 * Sends an AI request to supported LLMs and returns an answer specifically focused on the user's question given the provided context.
+
+You can ask a question about a single file, several files, or the e
 	 *
 	 * `POST /ai/ask` — risk: medium
 	 */

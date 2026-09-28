@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Discord HTTP API (Preview) v10
-// Operations:  233
+// Operations:  246
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -2359,6 +2359,28 @@ export class GuildsResource extends RpcTarget {
 	}
 
 	/**
+	 * Modifies the incident actions of the guild
+	 *
+	 * `PUT /guilds/{guild_id}/incident-actions` — risk: medium
+	 */
+	async incidentActions(guildId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "update_guild_incident_actions",
+			namespace: "guilds",
+			method: "incidentActions",
+			http: "put",
+			path: `/guilds/${guildId}/incident-actions`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["incidentActions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * list_guild_integrations
 	 *
 	 * `GET /guilds/{guild_id}/integrations` — risk: medium
@@ -3107,20 +3129,130 @@ export class GuildsResource extends RpcTarget {
 	}
 
 	/**
+	 * Create an exception to a recurring guild scheduled event
+	 *
+	 * `POST /guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/exceptions` — risk: medium
+	 */
+	async exceptions_0(guildId: string, guildScheduledEventId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "create_guild_scheduled_event_exception",
+			namespace: "guilds",
+			method: "exceptions_0",
+			http: "post",
+			path: `/guilds/${guildId}/scheduled-events/${guildScheduledEventId}/exceptions`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["exceptions_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Modify an exception to a recurring guild scheduled event
+	 *
+	 * `PATCH /guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/exceptions/{exception_id}` — risk: medium
+	 */
+	async exceptions_1(guildId: string, guildScheduledEventId: string, exceptionId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "update_guild_scheduled_event_exception",
+			namespace: "guilds",
+			method: "exceptions_1",
+			http: "patch",
+			path: `/guilds/${guildId}/scheduled-events/${guildScheduledEventId}/exceptions/${exceptionId}`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["exceptions_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Delete an exception to a recurring guild scheduled event
+	 *
+	 * `DELETE /guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/exceptions/{exception_id}` — risk: medium
+	 */
+	async deleteException(guildId: string, guildScheduledEventId: string, exceptionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "delete_guild_scheduled_event_exception",
+			namespace: "guilds",
+			method: "deleteException",
+			http: "delete",
+			path: `/guilds/${guildId}/scheduled-events/${guildScheduledEventId}/exceptions/${exceptionId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteException"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * list_guild_scheduled_event_users
 	 *
 	 * `GET /guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/users` — risk: medium
 	 */
-	async users(guildId: string, guildScheduledEventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async users_0(guildId: string, guildScheduledEventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "list_guild_scheduled_event_users",
 			namespace: "guilds",
-			method: "users",
+			method: "users_0",
 			http: "get",
 			path: `/guilds/${guildId}/scheduled-events/${guildScheduledEventId}/users`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["users"],
+			overrides: this.overrides["users_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Get the count of users subscribed to a guild scheduled event
+	 *
+	 * `GET /guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/users/counts` — risk: medium
+	 */
+	async counts(guildId: string, guildScheduledEventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "count_guild_scheduled_event_users",
+			namespace: "guilds",
+			method: "counts",
+			http: "get",
+			path: `/guilds/${guildId}/scheduled-events/${guildScheduledEventId}/users/counts`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["counts"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Get a list of users subscribed to a guild scheduled event exception
+	 *
+	 * `GET /guilds/{guild_id}/scheduled-events/{guild_scheduled_event_id}/{guild_scheduled_event_exception_id}/users` — risk: medium
+	 */
+	async users_1(guildId: string, guildScheduledEventId: string, guildScheduledEventExceptionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "list_guild_scheduled_event_exception_users",
+			namespace: "guilds",
+			method: "users_1",
+			http: "get",
+			path: `/guilds/${guildId}/scheduled-events/${guildScheduledEventId}/${guildScheduledEventExceptionId}/users`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["users_1"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -3857,16 +3989,60 @@ export class InvitesResource extends RpcTarget {
 	 *
 	 * `PUT /invites/{code}/target-users` — risk: medium
 	 */
-	async targetUsers(code: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async targetUsers_0(code: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "update_invite_target_users",
 			namespace: "invites",
-			method: "targetUsers",
+			method: "targetUsers_0",
 			http: "put",
 			path: `/invites/${code}/target-users`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["targetUsers"],
+			overrides: this.overrides["targetUsers_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Add multiple target users to an existing invite.
+	 *
+	 * `POST /invites/{code}/target-users/bulk-add` — risk: medium
+	 */
+	async bulkAdd(code: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "bulk_add_invite_target_users",
+			namespace: "invites",
+			method: "bulkAdd",
+			http: "post",
+			path: `/invites/${code}/target-users/bulk-add`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["bulkAdd"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Remove multiple target users from an existing invite.
+	 *
+	 * `POST /invites/{code}/target-users/bulk-delete` — risk: medium
+	 */
+	async bulkDelete(code: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "bulk_remove_invite_target_users",
+			namespace: "invites",
+			method: "bulkDelete",
+			http: "post",
+			path: `/invites/${code}/target-users/bulk-delete`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["bulkDelete"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -3889,6 +4065,50 @@ export class InvitesResource extends RpcTarget {
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["jobStatus"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Add a target user to an existing invite.
+	 *
+	 * `PUT /invites/{code}/target-users/{user_id}` — risk: medium
+	 */
+	async targetUsers_1(code: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "add_invite_target_user",
+			namespace: "invites",
+			method: "targetUsers_1",
+			http: "put",
+			path: `/invites/${code}/target-users/${userId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["targetUsers_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Remove a target user from an existing invite.
+	 *
+	 * `DELETE /invites/{code}/target-users/{user_id}` — risk: medium
+	 */
+	async deleteTargetUser(code: string, userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "remove_invite_target_user",
+			namespace: "invites",
+			method: "deleteTargetUser",
+			http: "delete",
+			path: `/invites/${code}/target-users/${userId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteTargetUser"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -3987,6 +4207,28 @@ export class LobbiesResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["patch"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Deletes the specified lobby if it exists. It is safe to call even if the lobby is already deleted.
+	 *
+	 * `DELETE /lobbies/{lobby_id}` — risk: medium
+	 */
+	async del(lobbyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "delete_lobby",
+			namespace: "lobbies",
+			method: "del",
+			http: "delete",
+			path: `/lobbies/${lobbyId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["del"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -4425,6 +4667,60 @@ export class PartnerSdkResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["tokenBot"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+}
+
+export class SkusResource extends RpcTarget {
+	constructor(
+		private apiKey: string | undefined,
+		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
+		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
+	) {
+		super();
+	}
+
+	/**
+	 * Returns all subscriptions containing the SKU, filtered by user.
+	 *
+	 * `GET /skus/{sku_id}/subscriptions` — risk: medium
+	 */
+	async listSubscriptions(skuId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "get_sku_subscriptions",
+			namespace: "skus",
+			method: "listSubscriptions",
+			http: "get",
+			path: `/skus/${skuId}/subscriptions`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listSubscriptions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Get a subscription by its ID.
+	 *
+	 * `GET /skus/{sku_id}/subscriptions/{subscription_id}` — risk: medium
+	 */
+	async retrieveSubscription(skuId: string, subscriptionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "get_sku_subscription",
+			namespace: "skus",
+			method: "retrieveSubscription",
+			http: "get",
+			path: `/skus/${skuId}/subscriptions/${subscriptionId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveSubscription"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -5337,6 +5633,10 @@ export class DiscordCapability extends WorkerEntrypoint<Env> {
 
 	get partnerSdk(): PartnerSdkResource {
 		return new PartnerSdkResource(this.env.DISCORD_API_KEY, this.overrides["partner-sdk"] || {}, this.runtimeConfig);
+	}
+
+	get skus(): SkusResource {
+		return new SkusResource(this.env.DISCORD_API_KEY, this.overrides["skus"] || {}, this.runtimeConfig);
 	}
 
 	get soundboardDefaultSounds(): SoundboardDefaultSoundsResource {

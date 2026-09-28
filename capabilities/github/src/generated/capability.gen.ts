@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitHub v3 REST API v1.1.4
-// Operations:  1183
+// Operations:  1223
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -726,7 +726,9 @@ export class AssignmentsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a GitHub Classroom assignment. Assignment will only be returned if the current user is an administrator of the GitHub Classroom for the assignment.
+	 * > [!WARNING]
+> **Closed notice:** This operation is no longer available as of August 28, 2026.
+> For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
 	 *
 	 * `GET /assignments/{assignment_id}` — risk: low
 	 */
@@ -748,7 +750,9 @@ export class AssignmentsResource extends RpcTarget {
 	}
 
 	/**
-	 * Lists any assignment repositories that have been created by students accepting a GitHub Classroom assignment. Accepted assignments will only be returned if the current user is an administrator of the 
+	 * > [!WARNING]
+> **Closed notice:** This operation is no longer available as of August 28, 2026.
+> For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
 	 *
 	 * `GET /assignments/{assignment_id}/accepted_assignments` — risk: medium
 	 */
@@ -770,7 +774,9 @@ export class AssignmentsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets grades for a GitHub Classroom assignment. Grades will only be returned if the current user is an administrator of the GitHub Classroom for the assignment.
+	 * > [!WARNING]
+> **Closed notice:** This operation is no longer available as of August 28, 2026.
+> For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
 	 *
 	 * `GET /assignments/{assignment_id}/grades` — risk: medium
 	 */
@@ -802,7 +808,9 @@ export class ClassroomsResource extends RpcTarget {
 	}
 
 	/**
-	 * Lists GitHub Classroom classrooms for the current user. Classrooms will only be returned if the current user is an administrator of one or more GitHub Classrooms.
+	 * > [!WARNING]
+> **Closed notice:** This operation is no longer available as of August 28, 2026.
+> For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
 	 *
 	 * `GET /classrooms` — risk: low
 	 */
@@ -824,7 +832,9 @@ export class ClassroomsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a GitHub Classroom classroom for the current user. Classroom will only be returned if the current user is an administrator of the GitHub Classroom.
+	 * > [!WARNING]
+> **Closed notice:** This operation is no longer available as of August 28, 2026.
+> For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
 	 *
 	 * `GET /classrooms/{classroom_id}` — risk: low
 	 */
@@ -846,7 +856,9 @@ export class ClassroomsResource extends RpcTarget {
 	}
 
 	/**
-	 * Lists GitHub Classroom assignments for a classroom. Assignments will only be returned if the current user is an administrator of the GitHub Classroom.
+	 * > [!WARNING]
+> **Closed notice:** This operation is no longer available as of August 28, 2026.
+> For more information, see the [GitHub Classroom sunset notice](https://gh.io/classroom-sunset).
 	 *
 	 * `GET /classrooms/{classroom_id}/assignments` — risk: medium
 	 */
@@ -1444,6 +1456,28 @@ Th
 	}
 
 	/**
+	 * Use this endpoint to retrieve download links for the Copilot enterprise repository report for a specific day. The report provides per-repository pull request metrics for Copilot across the enterprise,
+	 *
+	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/repos-1-day` — risk: medium
+	 */
+	async repos1Day(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "copilot/copilot-enterprise-repos-one-day-report",
+			namespace: "enterprises",
+			method: "repos1Day",
+			http: "get",
+			path: `/enterprises/${enterprise}/copilot/metrics/reports/repos-1-day`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["repos1Day"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Use this endpoint to retrieve download links for the Copilot enterprise user-teams report for a specific day. The report provides user-team join data for Copilot across the enterprise, with one entry 
 	 *
 	 * `GET /enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day` — risk: medium
@@ -1542,16 +1576,16 @@ using this endpoint. Organiza
 	 *
 	 * `POST /enterprises/{enterprise}/copilot/policies/coding_agent/organizations` — risk: medium
 	 */
-	async postCopilotpoliciescodingAgentOrganizations(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async organizations_0(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/add-organizations-to-enterprise-coding-agent-policy",
 			namespace: "enterprises",
-			method: "postCopilotpoliciescodingAgentOrganizations",
+			method: "organizations_0",
 			http: "post",
 			path: `/enterprises/${enterprise}/copilot/policies/coding_agent/organizations`,
 			risk: "medium",
 			body,
-			overrides: this.overrides["postCopilotpoliciescodingAgentOrganizations"],
+			overrides: this.overrides["organizations_0"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -1567,16 +1601,16 @@ using this endpoint. Organiz
 	 *
 	 * `DELETE /enterprises/{enterprise}/copilot/policies/coding_agent/organizations` — risk: medium
 	 */
-	async deleteCopilotpoliciescodingAgentOrganizations(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async organizations_1(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "copilot/remove-organizations-from-enterprise-coding-agent-policy",
 			namespace: "enterprises",
-			method: "deleteCopilotpoliciescodingAgentOrganizations",
+			method: "organizations_1",
 			http: "delete",
 			path: `/enterprises/${enterprise}/copilot/policies/coding_agent/organizations`,
 			risk: "medium",
 			body,
-			overrides: this.overrides["deleteCopilotpoliciescodingAgentOrganizations"],
+			overrides: this.overrides["organizations_1"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -1674,382 +1708,6 @@ The authent
 			risk: "medium",
 			body,
 			overrides: this.overrides["defaultLevel"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * List all teams in the enterprise for the authenticated user
-	 *
-	 * `GET /enterprises/{enterprise}/teams` — risk: medium
-	 */
-	async listTeams(enterprise: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-teams/list",
-			namespace: "enterprises",
-			method: "listTeams",
-			http: "get",
-			path: `/enterprises/${enterprise}/teams`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["listTeams"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * To create an enterprise team, the authenticated user must be an owner of the enterprise.
-	 *
-	 * `POST /enterprises/{enterprise}/teams` — risk: medium
-	 */
-	async createTeam(enterprise: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-teams/create",
-			namespace: "enterprises",
-			method: "createTeam",
-			http: "post",
-			path: `/enterprises/${enterprise}/teams`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["createTeam"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Lists all team members in an enterprise team.
-	 *
-	 * `GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships` — risk: medium
-	 */
-	async memberships_0(enterprise: string, enterpriseTeam: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-memberships/list",
-			namespace: "enterprises",
-			method: "memberships_0",
-			http: "get",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/memberships`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["memberships_0"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Add multiple team members to an enterprise team.
-	 *
-	 * `POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/add` — risk: medium
-	 */
-	async membershipsAdd(enterprise: string, enterpriseTeam: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-memberships/bulk-add",
-			namespace: "enterprises",
-			method: "membershipsAdd",
-			http: "post",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/memberships/add`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["membershipsAdd"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Remove multiple team members from an enterprise team.
-	 *
-	 * `POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove` — risk: medium
-	 */
-	async membershipsRemove(enterprise: string, enterpriseTeam: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-memberships/bulk-remove",
-			namespace: "enterprises",
-			method: "membershipsRemove",
-			http: "post",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/memberships/remove`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["membershipsRemove"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Returns whether the user is a member of the enterprise team.
-	 *
-	 * `GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}` — risk: medium
-	 */
-	async retrieveMembership(enterprise: string, enterpriseTeam: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-memberships/get",
-			namespace: "enterprises",
-			method: "retrieveMembership",
-			http: "get",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/memberships/${username}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["retrieveMembership"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Add a team member to an enterprise team.
-	 *
-	 * `PUT /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}` — risk: medium
-	 */
-	async memberships_1(enterprise: string, enterpriseTeam: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-memberships/add",
-			namespace: "enterprises",
-			method: "memberships_1",
-			http: "put",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/memberships/${username}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["memberships_1"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Remove membership of a specific user from a particular team in an enterprise.
-	 *
-	 * `DELETE /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}` — risk: medium
-	 */
-	async deleteMembership(enterprise: string, enterpriseTeam: string, username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-memberships/remove",
-			namespace: "enterprises",
-			method: "deleteMembership",
-			http: "delete",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/memberships/${username}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["deleteMembership"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Get all organizations assigned to an enterprise team
-	 *
-	 * `GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations` — risk: medium
-	 */
-	async getTeamsOrganizations(enterprise: string, enterpriseTeam: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-organizations/get-assignments",
-			namespace: "enterprises",
-			method: "getTeamsOrganizations",
-			http: "get",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/organizations`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["getTeamsOrganizations"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Assign an enterprise team to multiple organizations.
-	 *
-	 * `POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/add` — risk: medium
-	 */
-	async organizationsAdd(enterprise: string, enterpriseTeam: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-organizations/bulk-add",
-			namespace: "enterprises",
-			method: "organizationsAdd",
-			http: "post",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/organizations/add`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["organizationsAdd"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Unassign an enterprise team from multiple organizations.
-	 *
-	 * `POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/remove` — risk: medium
-	 */
-	async organizationsRemove(enterprise: string, enterpriseTeam: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-organizations/bulk-remove",
-			namespace: "enterprises",
-			method: "organizationsRemove",
-			http: "post",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/organizations/remove`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["organizationsRemove"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Check if an enterprise team is assigned to an organization
-	 *
-	 * `GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}` — risk: medium
-	 */
-	async retrieveOrganization(enterprise: string, enterpriseTeam: string, org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-organizations/get-assignment",
-			namespace: "enterprises",
-			method: "retrieveOrganization",
-			http: "get",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/organizations/${org}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["retrieveOrganization"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Assign an enterprise team to an organization.
-	 *
-	 * `PUT /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}` — risk: medium
-	 */
-	async putTeamsOrganizations(enterprise: string, enterpriseTeam: string, org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-organizations/add",
-			namespace: "enterprises",
-			method: "putTeamsOrganizations",
-			http: "put",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/organizations/${org}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["putTeamsOrganizations"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Unassign an enterprise team from an organization.
-	 *
-	 * `DELETE /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}` — risk: medium
-	 */
-	async deleteOrganization(enterprise: string, enterpriseTeam: string, org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-team-organizations/delete",
-			namespace: "enterprises",
-			method: "deleteOrganization",
-			http: "delete",
-			path: `/enterprises/${enterprise}/teams/${enterpriseTeam}/organizations/${org}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["deleteOrganization"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * Gets a team using the team's slug. To create the slug, GitHub replaces special characters in the name string, changes all words to lowercase, and replaces spaces with a `-` separator and adds the "ent
-	 *
-	 * `GET /enterprises/{enterprise}/teams/{team_slug}` — risk: medium
-	 */
-	async retrieveTeam(enterprise: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-teams/get",
-			namespace: "enterprises",
-			method: "retrieveTeam",
-			http: "get",
-			path: `/enterprises/${enterprise}/teams/${teamSlug}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["retrieveTeam"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * To edit a team, the authenticated user must be an enterprise owner.
-	 *
-	 * `PATCH /enterprises/{enterprise}/teams/{team_slug}` — risk: medium
-	 */
-	async teams(enterprise: string, teamSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-teams/update",
-			namespace: "enterprises",
-			method: "teams",
-			http: "patch",
-			path: `/enterprises/${enterprise}/teams/${teamSlug}`,
-			risk: "medium",
-			body,
-			overrides: this.overrides["teams"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
-	 * To delete an enterprise team, the authenticated user must be an enterprise owner.
-
-If you are an enterprise owner, deleting an enterprise team will delete all of its IdP mappings as well.
-	 *
-	 * `DELETE /enterprises/{enterprise}/teams/{team_slug}` — risk: medium
-	 */
-	async deleteTeam(enterprise: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "enterprise-teams/delete",
-			namespace: "enterprises",
-			method: "deleteTeam",
-			http: "delete",
-			path: `/enterprises/${enterprise}/teams/${teamSlug}`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["deleteTeam"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -3393,11 +3051,32 @@ OAuth tokens and personal access toke
 	}
 
 	/**
-	 * > [!NOTE]
-> This endpoint is in public preview and is subject to change.
+	 * Gets a report of AI credit usage for an organization. To use this endpoint, you must be an administrator of an organization within an enterprise or an organization account.
 
-Gets all budgets for an organization. The authenticated user must be an organization admin or billing manager.
-Each page retur
+**Note:** Only data from t
+	 *
+	 * `GET /organizations/{org}/settings/billing/ai_credit/usage` — risk: medium
+	 */
+	async aiCreditUsage(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "billing/get-github-billing-ai-credit-usage-report-org",
+			namespace: "organizations",
+			method: "aiCreditUsage",
+			http: "get",
+			path: `/organizations/${org}/settings/billing/ai_credit/usage`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["aiCreditUsage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Gets all budgets for an organization. The authenticated user must be an organization admin or billing manager.
+Each page returns up to 100 budgets.
 	 *
 	 * `GET /organizations/{org}/settings/billing/budgets` — risk: medium
 	 */
@@ -3419,10 +3098,30 @@ Each page retur
 	}
 
 	/**
-	 * > [!NOTE]
-> This endpoint is in public preview and is subject to change.
+	 * Creates a new budget for an organization. The authenticated user must be an
+organization admin or billing manager.
+	 *
+	 * `POST /organizations/{org}/settings/billing/budgets` — risk: medium
+	 */
+	async budgets_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "billing/create-organization-budget",
+			namespace: "organizations",
+			method: "budgets_1",
+			http: "post",
+			path: `/organizations/${org}/settings/billing/budgets`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["budgets_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
 
-Gets a budget by ID. The authenticated user must be an organization admin or billing manager.
+	/**
+	 * Gets a budget by ID. The authenticated user must be an organization admin or billing manager.
 	 *
 	 * `GET /organizations/{org}/settings/billing/budgets/{budget_id}` — risk: medium
 	 */
@@ -3444,23 +3143,20 @@ Gets a budget by ID. The authenticated user must be an organization admin or bil
 	}
 
 	/**
-	 * > [!NOTE]
-> This endpoint is in public preview and is subject to change.
-
-Updates an existing budget for an organization. The authenticated user must be an organization admin or billing manager.
+	 * Updates an existing budget for an organization. The authenticated user must be an organization admin or billing manager.
 	 *
 	 * `PATCH /organizations/{org}/settings/billing/budgets/{budget_id}` — risk: medium
 	 */
-	async budgets_1(org: string, budgetId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async budgets_2(org: string, budgetId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/update-budget-org",
 			namespace: "organizations",
-			method: "budgets_1",
+			method: "budgets_2",
 			http: "patch",
 			path: `/organizations/${org}/settings/billing/budgets/${budgetId}`,
 			risk: "medium",
 			body,
-			overrides: this.overrides["budgets_1"],
+			overrides: this.overrides["budgets_2"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -3469,10 +3165,7 @@ Updates an existing budget for an organization. The authenticated user must be a
 	}
 
 	/**
-	 * > [!NOTE]
-> This endpoint is in public preview and is subject to change.
-
-Deletes a budget by ID for an organization. The authenticated user must be an organization admin or billing manager.
+	 * Deletes a budget by ID for an organization. The authenticated user must be an organization admin or billing manager.
 	 *
 	 * `DELETE /organizations/{org}/settings/billing/budgets/{budget_id}` — risk: medium
 	 */
@@ -3524,16 +3217,16 @@ Deletes a budget by ID for an organization. The authenticated user must be an or
 	 *
 	 * `GET /organizations/{org}/settings/billing/usage` — risk: medium
 	 */
-	async usage_1(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async usage_2(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-github-billing-usage-report-org",
 			namespace: "organizations",
-			method: "usage_1",
+			method: "usage_2",
 			http: "get",
 			path: `/organizations/${org}/settings/billing/usage`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["usage_1"],
+			overrides: this.overrides["usage_2"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -4696,6 +4389,118 @@ can submit approving pull request reviews. For more informatio
 	}
 
 	/**
+	 * List all Actions policies for an organization.
+	 *
+	 * `GET /orgs/{org}/actions/policies` — risk: medium
+	 */
+	async policies_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/get-org-actions-policies",
+			namespace: "orgs",
+			method: "policies_0",
+			http: "get",
+			path: `/orgs/${org}/actions/policies`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["policies_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Create an Actions policy for an organization.
+Omitting `workflow_path` targets all workflows without storing an explicit condition.
+	 *
+	 * `POST /orgs/{org}/actions/policies` — risk: medium
+	 */
+	async policies_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/create-org-actions-policy",
+			namespace: "orgs",
+			method: "policies_1",
+			http: "post",
+			path: `/orgs/${org}/actions/policies`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["policies_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Get a specific Actions policy for an organization.
+	 *
+	 * `GET /orgs/{org}/actions/policies/{policy_id}` — risk: medium
+	 */
+	async retrievePolicy(org: string, policyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/get-org-actions-policy",
+			namespace: "orgs",
+			method: "retrievePolicy",
+			http: "get",
+			path: `/orgs/${org}/actions/policies/${policyId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrievePolicy"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Update an Actions policy for an organization.
+Omitting `workflow_path` preserves the policy's existing workflow targeting.
+	 *
+	 * `PUT /orgs/{org}/actions/policies/{policy_id}` — risk: medium
+	 */
+	async policies_2(org: string, policyId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/update-org-actions-policy",
+			namespace: "orgs",
+			method: "policies_2",
+			http: "put",
+			path: `/orgs/${org}/actions/policies/${policyId}`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["policies_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Delete an Actions policy for an organization.
+	 *
+	 * `DELETE /orgs/{org}/actions/policies/{policy_id}` — risk: medium
+	 */
+	async deletePolicy(org: string, policyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/delete-org-actions-policy",
+			namespace: "orgs",
+			method: "deletePolicy",
+			http: "delete",
+			path: `/orgs/${org}/actions/policies/${policyId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deletePolicy"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Lists all self-hosted runner groups configured in an organization and inherited from an enterprise.
 
 OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoi
@@ -5046,6 +4851,31 @@ OAuth app tokens and personal access tokens (classic
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["runners_3"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Gets the end-of-life schedule for a specific runner version in an organization. Returns the runner version
+and the dates when registration and runtime support will end.
+
+Authenticated users must have 
+	 *
+	 * `GET /orgs/{org}/actions/runners/deprecations/{version}` — risk: medium
+	 */
+	async retrieveDeprecation(org: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/get-runner-version-deprecation-for-org",
+			namespace: "orgs",
+			method: "retrieveDeprecation",
+			http: "get",
+			path: `/orgs/${org}/actions/runners/deprecations/${version}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveDeprecation"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -6280,6 +6110,52 @@ If proposed records in the 'deployments' field have identical 'cluster', 'logica
 	}
 
 	/**
+	 * Create a background job to set deployment records for a given cluster.
+Performs validation and permission checks synchronously, returning rejected
+deployments immediately, then enqueues a background j
+	 *
+	 * `POST /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}/jobs` — risk: medium
+	 */
+	async jobs(org: string, cluster: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "orgs/create-cluster-deployment-records-job",
+			namespace: "orgs",
+			method: "jobs",
+			http: "post",
+			path: `/orgs/${org}/artifacts/metadata/deployment-record/cluster/${cluster}/jobs`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["jobs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Get the status and results of a previously created cluster deployment records job.
+	 *
+	 * `GET /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}/jobs/{job_id}` — risk: medium
+	 */
+	async retrieveJob(org: string, cluster: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "orgs/get-cluster-deployment-records-job",
+			namespace: "orgs",
+			method: "retrieveJob",
+			http: "get",
+			path: `/orgs/${org}/artifacts/metadata/deployment-record/cluster/${cluster}/jobs/${jobId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveJob"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Create metadata storage records for artifacts associated with an organization.
 This endpoint will create a new artifact storage record on behalf of any artifact matching the provided digest and
 associ
@@ -6326,9 +6202,9 @@ associ
 	}
 
 	/**
-	 * List a collection of artifact storage records with a given subject digest that are associated with repositories owned by an organization.
+	 * List artifact storage records with a given subject digest for repositories owned by an organization.
 
-The collection of storage records returned by this endpoint i
+Results are filtered by the authenticated user's permissions; records for repositories the user ca
 	 *
 	 * `GET /orgs/{org}/artifacts/{subject_digest}/metadata/storage-records` — risk: medium
 	 */
@@ -6697,6 +6573,60 @@ OAuth app tokens and personal access tokens (classic) ne
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCampaign"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * > [!NOTE]
+> This endpoint is in public preview and is subject to change.
+
+Gets the AI Scan setting stored on an organization.
+
+The response reports the value stored on the organization. Organization r
+	 *
+	 * `GET /orgs/{org}/code-scanning/ai-scan` — risk: medium
+	 */
+	async aiScan_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-scanning/get-ai-scan-enablement-for-org",
+			namespace: "orgs",
+			method: "aiScan_0",
+			http: "get",
+			path: `/orgs/${org}/code-scanning/ai-scan`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["aiScan_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * > [!NOTE]
+> This endpoint is in public preview and is subject to change.
+
+Updates the AI Scan setting stored on an organization.
+
+The organization respects the enterprise policy, so enabling is reject
+	 *
+	 * `PATCH /orgs/{org}/code-scanning/ai-scan` — risk: medium
+	 */
+	async aiScan_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-scanning/update-ai-scan-enablement-for-org",
+			namespace: "orgs",
+			method: "aiScan_1",
+			http: "patch",
+			path: `/orgs/${org}/code-scanning/ai-scan`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["aiScan_1"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -7999,31 +7929,6 @@ To configure these settings, go to the organization's settings
 	}
 
 	/**
-	 * Use this endpoint to see a breakdown of aggregated metrics for various GitHub Copilot features. See the response schema tab for detailed metrics definitions.
-
-> [!NOTE]
-> This endpoint will only retur
-	 *
-	 * `GET /orgs/{org}/copilot/metrics` — risk: medium
-	 */
-	async copilotMetrics(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "copilot/copilot-metrics-for-organization",
-			namespace: "orgs",
-			method: "copilotMetrics",
-			http: "get",
-			path: `/orgs/${org}/copilot/metrics`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["copilotMetrics"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
 	 * Use this endpoint to retrieve download links for the Copilot organization usage metrics report for a specific day. The report provides comprehensive usage data for Copilot features across the organiza
 	 *
 	 * `GET /orgs/{org}/copilot/metrics/reports/organization-1-day` — risk: medium
@@ -8060,6 +7965,28 @@ To configure these settings, go to the organization's settings
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["organization28DayLatest"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Use this endpoint to retrieve download links for the Copilot organization repository report for a specific day. The report provides per-repository pull request metrics for Copilot across the organizat
+	 *
+	 * `GET /orgs/{org}/copilot/metrics/reports/repos-1-day` — risk: medium
+	 */
+	async repos1Day(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "copilot/copilot-organization-repos-one-day-report",
+			namespace: "orgs",
+			method: "repos1Day",
+			http: "get",
+			path: `/orgs/${org}/copilot/metrics/reports/repos-1-day`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["repos1Day"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -8795,6 +8722,8 @@ OAuth app tokens and personal access to
 
 	/**
 	 * Get API request count statistics for an actor broken down by route within a specified time frame.
+
+Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. D
 	 *
 	 * `GET /orgs/{org}/insights/api/route-stats/{actor_type}/{actor_id}` — risk: medium
 	 */
@@ -8817,6 +8746,8 @@ OAuth app tokens and personal access to
 
 	/**
 	 * Get API request statistics for all subjects within an organization within a specified time frame. Subjects can be users or GitHub Apps.
+
+Under normal conditions, you can expect API data to appear with
 	 *
 	 * `GET /orgs/{org}/insights/api/subject-stats` — risk: medium
 	 */
@@ -8839,6 +8770,8 @@ OAuth app tokens and personal access to
 
 	/**
 	 * Get overall statistics of API requests made within an organization by all users and apps within a specified time frame.
+
+Under normal conditions, you can expect API data to appear within 4–6 hours aft
 	 *
 	 * `GET /orgs/{org}/insights/api/summary-stats` — risk: medium
 	 */
@@ -8861,6 +8794,8 @@ OAuth app tokens and personal access to
 
 	/**
 	 * Get overall statistics of API requests within the organization for a user.
+
+Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. During incidents or peri
 	 *
 	 * `GET /orgs/{org}/insights/api/summary-stats/users/{user_id}` — risk: medium
 	 */
@@ -8883,6 +8818,8 @@ OAuth app tokens and personal access to
 
 	/**
 	 * Get overall statistics of API requests within the organization made by a specific actor. Actors can be GitHub App installations, OAuth apps or other tokens on behalf of a user.
+
+Under normal condition
 	 *
 	 * `GET /orgs/{org}/insights/api/summary-stats/{actor_type}/{actor_id}` — risk: medium
 	 */
@@ -8905,6 +8842,8 @@ OAuth app tokens and personal access to
 
 	/**
 	 * Get the number of API requests and rate-limited requests made within an organization over a specified time period.
+
+Under normal conditions, you can expect API data to appear within 4–6 hours after ma
 	 *
 	 * `GET /orgs/{org}/insights/api/time-stats` — risk: medium
 	 */
@@ -8927,6 +8866,8 @@ OAuth app tokens and personal access to
 
 	/**
 	 * Get the number of API requests and rate-limited requests made within an organization by a specific user over a specified time period.
+
+Under normal conditions, you can expect API data to appear within
 	 *
 	 * `GET /orgs/{org}/insights/api/time-stats/users/{user_id}` — risk: medium
 	 */
@@ -8949,6 +8890,8 @@ OAuth app tokens and personal access to
 
 	/**
 	 * Get the number of API requests and rate-limited requests made within an organization by a specific actor within a specified time period.
+
+Under normal conditions, you can expect API data to appear wit
 	 *
 	 * `GET /orgs/{org}/insights/api/time-stats/{actor_type}/{actor_id}` — risk: medium
 	 */
@@ -8971,6 +8914,8 @@ OAuth app tokens and personal access to
 
 	/**
 	 * Get API usage statistics within an organization for a user broken down by the type of access.
+
+Under normal conditions, you can expect API data to appear within 4–6 hours after making a request. Durin
 	 *
 	 * `GET /orgs/{org}/insights/api/user-stats/{user_id}` — risk: medium
 	 */
@@ -9099,6 +9044,56 @@ The authenticated user must be an organization owner to use th
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["interactionLimits_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Gets the pull request creation cap configuration for an organization.
+The cap limits the total number of open pull requests a user can have across all public
+repositories in the organization at one ti
+	 *
+	 * `GET /orgs/{org}/interaction-limits/pulls/creation-cap` — risk: medium
+	 */
+	async creationCap_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "interactions/get-pull-request-creation-cap-for-org",
+			namespace: "orgs",
+			method: "creationCap_0",
+			http: "get",
+			path: `/orgs/${org}/interaction-limits/pulls/creation-cap`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["creationCap_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Updates the pull request creation cap for an organization. The cap limits the total number
+of open pull requests a user can have across all public repositories in the organization
+at one time.
+
+Only u
+	 *
+	 * `PATCH /orgs/{org}/interaction-limits/pulls/creation-cap` — risk: medium
+	 */
+	async creationCap_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "interactions/update-pull-request-creation-cap-for-org",
+			namespace: "orgs",
+			method: "creationCap_1",
+			http: "patch",
+			path: `/orgs/${org}/interaction-limits/pulls/creation-cap`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["creationCap_1"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -11449,6 +11444,102 @@ The authenticated user must be an administrator or security manager for the orga
 	}
 
 	/**
+	 * Lists secret scanning custom patterns for an organization.
+
+Personal access tokens (classic) need the `read:org` scope to use this endpoint.
+	 *
+	 * `GET /orgs/{org}/secret-scanning/custom-patterns` — risk: medium
+	 */
+	async customPatterns_0(org: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "secret-scanning/list-org-custom-patterns",
+			namespace: "orgs",
+			method: "customPatterns_0",
+			http: "get",
+			path: `/orgs/${org}/secret-scanning/custom-patterns`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["customPatterns_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Bulk creates secret scanning custom patterns for an organization.
+
+Personal access tokens (classic) need the `write:org` scope to use this endpoint.
+	 *
+	 * `POST /orgs/{org}/secret-scanning/custom-patterns` — risk: medium
+	 */
+	async customPatterns_1(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "secret-scanning/bulk-create-org-custom-patterns",
+			namespace: "orgs",
+			method: "customPatterns_1",
+			http: "post",
+			path: `/orgs/${org}/secret-scanning/custom-patterns`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["customPatterns_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Bulk deletes secret scanning custom patterns for an organization.
+
+Personal access tokens (classic) need the `write:org` scope to use this endpoint.
+	 *
+	 * `DELETE /orgs/{org}/secret-scanning/custom-patterns` — risk: medium
+	 */
+	async customPatterns_2(org: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "secret-scanning/bulk-delete-org-custom-patterns",
+			namespace: "orgs",
+			method: "customPatterns_2",
+			http: "delete",
+			path: `/orgs/${org}/secret-scanning/custom-patterns`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["customPatterns_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Updates a secret scanning custom pattern for an organization.
+
+Personal access tokens (classic) need the `write:org` scope to use this endpoint.
+	 *
+	 * `PATCH /orgs/{org}/secret-scanning/custom-patterns/{pattern_id}` — risk: medium
+	 */
+	async customPatterns_3(org: string, patternId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "secret-scanning/update-org-custom-pattern",
+			namespace: "orgs",
+			method: "customPatterns_3",
+			http: "patch",
+			path: `/orgs/${org}/secret-scanning/custom-patterns/${patternId}`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["customPatterns_3"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Lists the secret scanning pattern configurations for an organization.
 
 Personal access tokens (classic) need the `read:org` scope to use this endpoint.
@@ -11874,31 +11965,6 @@ OAuth app tokens and personal access tokens (classic) need the `read:network_con
 	}
 
 	/**
-	 * Use this endpoint to see a breakdown of aggregated metrics for various GitHub Copilot features. See the response schema tab for detailed metrics definitions.
-
-> [!NOTE]
-> This endpoint will only retur
-	 *
-	 * `GET /orgs/{org}/team/{team_slug}/copilot/metrics` — risk: medium
-	 */
-	async teamcopilotMetrics(org: string, teamSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "copilot/copilot-metrics-for-team",
-			namespace: "orgs",
-			method: "teamcopilotMetrics",
-			http: "get",
-			path: `/orgs/${org}/team/${teamSlug}/copilot/metrics`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["teamcopilotMetrics"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-
-	/**
 	 * Lists all teams in an organization that are visible to the authenticated user.
 	 *
 	 * `GET /orgs/{org}/teams` — risk: medium
@@ -12040,7 +12106,7 @@ If you are an organization owner, deleting a parent team will delete all of its 
 	/**
 	 * Team members will include the members of child teams.
 
-To list members in a team, the team must be visible to the authenticated user.
+Each member includes their `role` on the team (`member` or `maintainer`) and an `inherited` flag indicating whether the membership is inherited f
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}/members` — risk: medium
 	 */
@@ -12137,8 +12203,10 @@ Team synchronization is available for organizations using GitHub
 	/**
 	 * Lists a team's repositories visible to the authenticated user.
 
+OAuth app tokens and personal access tokens (classic) need the `read:org` or `repo` scope to use this endpoint.
+
 > [!NOTE]
-> You can also specify a team by `org_id` and `team_id` using the route `GET /organizations/{org_id}/team/{team_id}/repos`.
+> You can als
 	 *
 	 * `GET /orgs/{org}/teams/{team_slug}/repos` — risk: medium
 	 */
@@ -13239,6 +13307,118 @@ For more information,
 	}
 
 	/**
+	 * List all Actions policies for a repository.
+	 *
+	 * `GET /repos/{owner}/{repo}/actions/policies` — risk: medium
+	 */
+	async policies_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/get-repo-actions-policies",
+			namespace: "repos",
+			method: "policies_0",
+			http: "get",
+			path: `/repos/${owner}/${repo}/actions/policies`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["policies_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Create an Actions policy for a repository.
+Omitting `workflow_path` targets all workflows without storing an explicit condition.
+	 *
+	 * `POST /repos/{owner}/{repo}/actions/policies` — risk: medium
+	 */
+	async policies_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/create-repo-actions-policy",
+			namespace: "repos",
+			method: "policies_1",
+			http: "post",
+			path: `/repos/${owner}/${repo}/actions/policies`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["policies_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Get a specific Actions policy for a repository.
+	 *
+	 * `GET /repos/{owner}/{repo}/actions/policies/{policy_id}` — risk: medium
+	 */
+	async retrievePolicy(owner: string, repo: string, policyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/get-repo-actions-policy",
+			namespace: "repos",
+			method: "retrievePolicy",
+			http: "get",
+			path: `/repos/${owner}/${repo}/actions/policies/${policyId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrievePolicy"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Update an Actions policy for a repository.
+Omitting `workflow_path` preserves the policy's existing workflow targeting.
+	 *
+	 * `PUT /repos/{owner}/{repo}/actions/policies/{policy_id}` — risk: medium
+	 */
+	async policies_2(owner: string, repo: string, policyId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/update-repo-actions-policy",
+			namespace: "repos",
+			method: "policies_2",
+			http: "put",
+			path: `/repos/${owner}/${repo}/actions/policies/${policyId}`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["policies_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Delete an Actions policy for a repository.
+	 *
+	 * `DELETE /repos/{owner}/{repo}/actions/policies/{policy_id}` — risk: medium
+	 */
+	async deletePolicy(owner: string, repo: string, policyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/delete-repo-actions-policy",
+			namespace: "repos",
+			method: "deletePolicy",
+			http: "delete",
+			path: `/repos/${owner}/${repo}/actions/policies/${policyId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deletePolicy"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Lists all self-hosted runners configured in a repository.
 
 Authenticated users must have admin access to the repository to use this endpoint.
@@ -13257,6 +13437,31 @@ OAuth app tokens and personal access tokens (classic) nee
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["runners"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Gets the end-of-life schedule for a specific runner version in a repository. Returns the runner version
+and the dates when registration and runtime support will end.
+
+Authenticated users must have adm
+	 *
+	 * `GET /repos/{owner}/{repo}/actions/runners/deprecations/{version}` — risk: medium
+	 */
+	async retrieveDeprecation(owner: string, repo: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "actions/get-runner-version-deprecation-for-repo",
+			namespace: "repos",
+			method: "retrieveDeprecation",
+			http: "get",
+			path: `/repos/${owner}/${repo}/actions/runners/deprecations/${version}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveDeprecation"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -13645,16 +13850,16 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	 *
 	 * `POST /repos/{owner}/{repo}/actions/runs/{run_id}/approve` — risk: medium
 	 */
-	async approve(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async actionsrunsApprove(owner: string, repo: string, runId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "actions/approve-workflow-run",
 			namespace: "repos",
-			method: "approve",
+			method: "actionsrunsApprove",
 			http: "post",
 			path: `/repos/${owner}/${repo}/actions/runs/${runId}/approve`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["approve"],
+			overrides: this.overrides["actionsrunsApprove"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -16102,6 +16307,156 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	}
 
 	/**
+	 * Lists code quality findings for a repository.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo
+	 *
+	 * `GET /repos/{owner}/{repo}/code-quality/findings` — risk: medium
+	 */
+	async findings(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-quality/list-findings-for-repo",
+			namespace: "repos",
+			method: "findings",
+			http: "get",
+			path: `/repos/${owner}/${repo}/code-quality/findings`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["findings"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Gets a single code quality finding.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to
+	 *
+	 * `GET /repos/{owner}/{repo}/code-quality/findings/{finding_number}` — risk: medium
+	 */
+	async retrieveFinding(owner: string, repo: string, findingNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-quality/get-finding",
+			namespace: "repos",
+			method: "retrieveFinding",
+			http: "get",
+			path: `/repos/${owner}/${repo}/code-quality/findings/${findingNumber}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveFinding"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Gets a code quality setup configuration.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` sco
+	 *
+	 * `GET /repos/{owner}/{repo}/code-quality/setup` — risk: medium
+	 */
+	async setup_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-quality/get-setup",
+			namespace: "repos",
+			method: "setup_0",
+			http: "get",
+			path: `/repos/${owner}/${repo}/code-quality/setup`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["setup_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Updates a code quality setup configuration.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` 
+	 *
+	 * `PATCH /repos/{owner}/{repo}/code-quality/setup` — risk: medium
+	 */
+	async setup_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-quality/update-setup",
+			namespace: "repos",
+			method: "setup_1",
+			http: "patch",
+			path: `/repos/${owner}/${repo}/code-quality/setup`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["setup_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * > [!NOTE]
+> This endpoint is in public preview and is subject to change.
+
+Gets whether AI Scan is enabled for a repository.
+
+OAuth app tokens and personal access tokens (classic) need the `security_ev
+	 *
+	 * `GET /repos/{owner}/{repo}/code-scanning/ai-scan` — risk: medium
+	 */
+	async aiScan_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-scanning/get-ai-scan-enablement",
+			namespace: "repos",
+			method: "aiScan_0",
+			http: "get",
+			path: `/repos/${owner}/${repo}/code-scanning/ai-scan`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["aiScan_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * > [!NOTE]
+> This endpoint is in public preview and is subject to change.
+
+Updates whether AI Scan is enabled for a repository.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` sc
+	 *
+	 * `PATCH /repos/{owner}/{repo}/code-scanning/ai-scan` — risk: medium
+	 */
+	async aiScan_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "code-scanning/update-ai-scan-enablement",
+			namespace: "repos",
+			method: "aiScan_1",
+			http: "patch",
+			path: `/repos/${owner}/${repo}/code-scanning/ai-scan`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["aiScan_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Lists code scanning alerts.
 
 The response includes a `most_recent_instance` object.
@@ -16199,11 +16554,9 @@ OAuth app tokens and personal access tokens (classic) need the `security_events`
 	}
 
 	/**
-	 * Creates an autofix for a code scanning alert.
+	 * Creates an autofix for a code scanning alert from the repository's default branch.
 
-If a new autofix is to be created as a result of this request or is currently being generated, then this endpoint will return a 202 Accepted response.
-
-I
+If a new autofix is to be created as a result of this request or is currently being generated, then this endpoint wi
 	 *
 	 * `POST /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix` — risk: medium
 	 */
@@ -17258,7 +17611,7 @@ This endpoint supports the following custom media types. For more information, s
 	/**
 	 * Create a comment for a commit using its `:commit_sha`.
 
-This endpoint triggers [notifications](https://docs.github.com/github/managing-subscriptions-and-notifications-on-github/about-notifications). C
+Access to commit comments can be controlled by organization owners. For more information, see "[Managing commit comments for your organization](
 	 *
 	 * `POST /repos/{owner}/{repo}/commits/{commit_sha}/comments` — risk: medium
 	 */
@@ -17799,7 +18152,8 @@ OAuth app tokens and personal access tokens (classic) need the `repo` scope to u
 	}
 
 	/**
-	 * Exports the software bill of materials (SBOM) for a repository in SPDX JSON format.
+	 * > [!WARNING]
+> **Closing down notice:** This operation is closing down and will not be accessible after November 13, 2026. Please migrate to the asynchronous flow. Use "[Request generation of a softwa
 	 *
 	 * `GET /repos/{owner}/{repo}/dependency-graph/sbom` — risk: medium
 	 */
@@ -19040,6 +19394,28 @@ If `truncated` is `true` in the response then the number of items in the `tree` 
 	}
 
 	/**
+	 * Returns the hash algorithm used to store repository objects.
+	 *
+	 * `GET /repos/{owner}/{repo}/hash-algorithm` — risk: medium
+	 */
+	async listHashAlgorithm(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "repos/get-hash-algorithm",
+			namespace: "repos",
+			method: "listHashAlgorithm",
+			http: "get",
+			path: `/repos/${owner}/${repo}/hash-algorithm`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listHashAlgorithm"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Lists webhooks for a repository. `last response` may return null if there have not been any deliveries within 30 days.
 	 *
 	 * `GET /repos/{owner}/{repo}/hooks` — risk: medium
@@ -19659,6 +20035,133 @@ You can learn more about our LFS featu
 	}
 
 	/**
+	 * Lists the users that are on the pull request creation cap bypass list for a
+repository. Users on this list can create pull requests regardless of any
+configured pull request creation cap.
+
+Only users 
+	 *
+	 * `GET /repos/{owner}/{repo}/interaction-limits/pulls/bypass-list` — risk: medium
+	 */
+	async bypassList_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "interactions/get-pull-request-bypass-list-for-repo",
+			namespace: "repos",
+			method: "bypassList_0",
+			http: "get",
+			path: `/repos/${owner}/${repo}/interaction-limits/pulls/bypass-list`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["bypassList_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Adds users to the pull request creation cap bypass list for a repository.
+Users on this list can create pull requests regardless of any configured
+pull request creation cap.
+
+Only users with maintaine
+	 *
+	 * `PUT /repos/{owner}/{repo}/interaction-limits/pulls/bypass-list` — risk: medium
+	 */
+	async bypassList_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "interactions/set-pull-request-bypass-list-for-repo",
+			namespace: "repos",
+			method: "bypassList_1",
+			http: "put",
+			path: `/repos/${owner}/${repo}/interaction-limits/pulls/bypass-list`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["bypassList_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Removes users from the pull request creation cap bypass list for a repository.
+Removed users will be subject to any configured pull request creation cap.
+
+Only users with maintainer permissions can mo
+	 *
+	 * `DELETE /repos/{owner}/{repo}/interaction-limits/pulls/bypass-list` — risk: medium
+	 */
+	async bypassList_2(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "interactions/remove-pull-request-bypass-list-for-repo",
+			namespace: "repos",
+			method: "bypassList_2",
+			http: "delete",
+			path: `/repos/${owner}/${repo}/interaction-limits/pulls/bypass-list`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["bypassList_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Gets the pull request creation cap configuration for a repository.
+The cap limits the number of open pull requests a user can have at one time.
+
+Only users with admin access to the repository can view
+	 *
+	 * `GET /repos/{owner}/{repo}/interaction-limits/pulls/creation-cap` — risk: medium
+	 */
+	async creationCap_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "interactions/get-pull-request-creation-cap-for-repo",
+			namespace: "repos",
+			method: "creationCap_0",
+			http: "get",
+			path: `/repos/${owner}/${repo}/interaction-limits/pulls/creation-cap`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["creationCap_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Updates the pull request creation cap for a repository. The cap limits the number
+of open pull requests a user can have at one time.
+
+Only users with admin access to the repository can configure the c
+	 *
+	 * `PATCH /repos/{owner}/{repo}/interaction-limits/pulls/creation-cap` — risk: medium
+	 */
+	async creationCap_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "interactions/update-pull-request-creation-cap-for-repo",
+			namespace: "repos",
+			method: "creationCap_1",
+			http: "patch",
+			path: `/repos/${owner}/${repo}/interaction-limits/pulls/creation-cap`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["creationCap_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * When authenticating as a user with admin rights to a repository, this endpoint will list all currently open repository invitations.
 	 *
 	 * `GET /repos/{owner}/{repo}/invitations` — risk: medium
@@ -19717,6 +20220,29 @@ You can learn more about our LFS featu
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteInvitation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Lists issue types available for a repository (inherited from its organization owner, with any per-repository overrides applied).
+OAuth app tokens and personal access tokens (classic) need the `repo` s
+	 *
+	 * `GET /repos/{owner}/{repo}/issue-types` — risk: medium
+	 */
+	async listIssueTypes(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "repos/list-issue-types",
+			namespace: "repos",
+			method: "listIssueTypes",
+			http: "get",
+			path: `/repos/${owner}/${repo}/issue-types`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listIssueTypes"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -20656,6 +21182,80 @@ Delete a reaction to an [issue](htt
 	}
 
 	/**
+	 * You can use the REST API to list the issues that are related to an issue.
+
+This endpoint supports the following custom media types. For more information, see [Media types](https://docs.github.com/rest
+	 *
+	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/relates_to` — risk: medium
+	 */
+	async relatesTo_0(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "issues/list-relates-to",
+			namespace: "repos",
+			method: "relatesTo_0",
+			http: "get",
+			path: `/repos/${owner}/${repo}/issues/${issueNumber}/relates_to`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["relatesTo_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * You can use the REST API to mark an issue as related to another issue.
+
+Creating content too quickly using this endpoint may result in secondary rate limiting.
+For more information, see [Rate limits f
+	 *
+	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/relates_to` — risk: medium
+	 */
+	async relatesTo_1(owner: string, repo: string, issueNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "issues/add-relates-to",
+			namespace: "repos",
+			method: "relatesTo_1",
+			http: "post",
+			path: `/repos/${owner}/${repo}/issues/${issueNumber}/relates_to`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["relatesTo_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * You can use the REST API to remove a 'relates to' relationship between two issues.
+
+Removing content too quickly using this endpoint may result in secondary rate limiting.
+For more information, see [R
+	 *
+	 * `DELETE /repos/{owner}/{repo}/issues/{issue_number}/relates_to/{issue_id}` — risk: medium
+	 */
+	async deleteRelatesTo(owner: string, repo: string, issueNumber: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "issues/remove-relates-to",
+			namespace: "repos",
+			method: "deleteRelatesTo",
+			http: "delete",
+			path: `/repos/${owner}/${repo}/issues/${issueNumber}/relates_to/${issueId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteRelatesTo"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * You can use the REST API to remove a sub-issue from an issue.
 Removing content too quickly using this endpoint may result in secondary rate limiting.
 For more information, see "[Rate limits for the AP
@@ -20743,6 +21343,76 @@ For more information, see "[Rate limits for the API](http
 			risk: "medium",
 			body,
 			overrides: this.overrides["priority"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Lists the suggestions on an issue. A suggestion is an agent-proposed change to an issue's type, labels, fields, assignees, or closed state that a maintainer can approve or dismiss.
+
+By default only pe
+	 *
+	 * `GET /repos/{owner}/{repo}/issues/{issue_number}/suggestions` — risk: medium
+	 */
+	async suggestions(owner: string, repo: string, issueNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "issues/list-suggestions",
+			namespace: "repos",
+			method: "suggestions",
+			http: "get",
+			path: `/repos/${owner}/${repo}/issues/${issueNumber}/suggestions`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["suggestions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Approves a pending suggestion on an issue. Applies the proposed change (creating the corresponding timeline event), transitions the suggestion to `approved`, and dismisses any competing pending sugges
+	 *
+	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/suggestions/{suggestion_id}/approve` — risk: medium
+	 */
+	async issuessuggestionsApprove(owner: string, repo: string, issueNumber: string, suggestionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "issues/approve-suggestion",
+			namespace: "repos",
+			method: "issuessuggestionsApprove",
+			http: "post",
+			path: `/repos/${owner}/${repo}/issues/${issueNumber}/suggestions/${suggestionId}/approve`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["issuessuggestionsApprove"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Dismisses a pending suggestion on an issue. Transitions the suggestion to `dismissed` without applying any change or creating a timeline event.
+
+Requires triage access to the repository. This endpoint
+	 *
+	 * `POST /repos/{owner}/{repo}/issues/{issue_number}/suggestions/{suggestion_id}/dismiss` — risk: medium
+	 */
+	async dismiss(owner: string, repo: string, issueNumber: string, suggestionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "issues/dismiss-suggestion",
+			namespace: "repos",
+			method: "dismiss",
+			http: "post",
+			path: `/repos/${owner}/${repo}/issues/${issueNumber}/suggestions/${suggestionId}/dismiss`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["dismiss"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22057,8 +22727,8 @@ This endpoint supports the following
 	}
 
 	/**
-	 * Merges a pull request into the base branch.
-This endpoint triggers [notifications](https://docs.github.com/github/managing-subscriptions-and-notifications-on-github/about-notifications). Creating cont
+	 * > [!NOTE]
+> We recommend using the [asynchronous merge API](https://docs.github.com/rest/pulls/pulls#merge-a-pull-request-asynchronously) instead. This endpoint does not support stacked pull requests 
 	 *
 	 * `PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge` — risk: medium
 	 */
@@ -22072,6 +22742,52 @@ This endpoint triggers [notifications](https://docs.github.com/github/managing-s
 			risk: "medium",
 			body,
 			overrides: this.overrides["merge_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Merges a pull request into the base branch in the background or adds it to a merge queue. Background processing allows certain types of errors to be retried and reduces the risk of timeouts for comple
+	 *
+	 * `PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge-async` — risk: medium
+	 */
+	async mergeAsync(owner: string, repo: string, pullNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "pulls/merge-async",
+			namespace: "repos",
+			method: "mergeAsync",
+			http: "put",
+			path: `/repos/${owner}/${repo}/pulls/${pullNumber}/merge-async`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["mergeAsync"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Fetches the current result of an asynchronous merge request, identified by the UUID that was returned when the merge was requested.
+
+While the request's status is `pending`, the response includes the 
+	 *
+	 * `GET /repos/{owner}/{repo}/pulls/{pull_number}/merge-async/{uuid}` — risk: medium
+	 */
+	async retrieveMergeAsync(owner: string, repo: string, pullNumber: string, uuid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "pulls/get-merge-async-result",
+			namespace: "repos",
+			method: "retrieveMergeAsync",
+			http: "get",
+			path: `/repos/${owner}/${repo}/pulls/${pullNumber}/merge-async/${uuid}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveMergeAsync"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -22433,7 +23149,8 @@ This endpoint supports the following custom media types. For more information, s
 	/**
 	 * Users with push access to the repository can create a release.
 
-This endpoint triggers [notifications](https://docs.github.com/github/managing-subscriptions-and-notifications-on-github/about-notificat
+> [!NOTE]
+> If the commit identified by `target_commitish` (or, when `target_commitish` is omitted, the latest commit on the default bra
 	 *
 	 * `POST /repos/{owner}/{repo}/releases` — risk: medium
 	 */
@@ -22618,6 +23335,9 @@ The latest release is the most recent non-prerelease, non-draft release, sorted 
 
 	/**
 	 * Users with push access to the repository can edit a release.
+
+> [!NOTE]
+> If the resolved target commit (the new value of `target_commitish` if you are changing it, otherwise the existing target) adds
 	 *
 	 * `PATCH /repos/{owner}/{repo}/releases/{release_id}` — risk: medium
 	 */
@@ -22960,16 +23680,16 @@ making the API request has write access to the ruleset.
 	 *
 	 * `GET /repos/{owner}/{repo}/rulesets/{ruleset_id}/history` — risk: medium
 	 */
-	async history(owner: string, repo: string, rulesetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async rulesetsHistory(owner: string, repo: string, rulesetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "repos/get-repo-ruleset-history",
 			namespace: "repos",
-			method: "history",
+			method: "rulesetsHistory",
 			http: "get",
 			path: `/repos/${owner}/${repo}/rulesets/${rulesetId}/history`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["history"],
+			overrides: this.overrides["rulesetsHistory"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23090,6 +23810,102 @@ The authenticated user must be an administrator for the repository or for the or
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["locations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Lists secret scanning custom patterns for a repository.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. If this endpoint is only used with public rep
+	 *
+	 * `GET /repos/{owner}/{repo}/secret-scanning/custom-patterns` — risk: medium
+	 */
+	async customPatterns_0(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "secret-scanning/list-repo-custom-patterns",
+			namespace: "repos",
+			method: "customPatterns_0",
+			http: "get",
+			path: `/repos/${owner}/${repo}/secret-scanning/custom-patterns`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["customPatterns_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Bulk creates secret scanning custom patterns for a repository.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. If this endpoint is only used with pub
+	 *
+	 * `POST /repos/{owner}/{repo}/secret-scanning/custom-patterns` — risk: medium
+	 */
+	async customPatterns_1(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "secret-scanning/bulk-create-repo-custom-patterns",
+			namespace: "repos",
+			method: "customPatterns_1",
+			http: "post",
+			path: `/repos/${owner}/${repo}/secret-scanning/custom-patterns`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["customPatterns_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Bulk deletes secret scanning custom patterns for a repository.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. If this endpoint is only used with pub
+	 *
+	 * `DELETE /repos/{owner}/{repo}/secret-scanning/custom-patterns` — risk: medium
+	 */
+	async customPatterns_2(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "secret-scanning/bulk-delete-repo-custom-patterns",
+			namespace: "repos",
+			method: "customPatterns_2",
+			http: "delete",
+			path: `/repos/${owner}/${repo}/secret-scanning/custom-patterns`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["customPatterns_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Updates a secret scanning custom pattern for a repository.
+
+OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint. If this endpoint is only used with public 
+	 *
+	 * `PATCH /repos/{owner}/{repo}/secret-scanning/custom-patterns/{pattern_id}` — risk: medium
+	 */
+	async customPatterns_3(owner: string, repo: string, patternId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "secret-scanning/update-repo-custom-pattern",
+			namespace: "repos",
+			method: "customPatterns_3",
+			http: "patch",
+			path: `/repos/${owner}/${repo}/secret-scanning/custom-patterns/${patternId}`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["customPatterns_3"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -23319,6 +24135,121 @@ In order to update any security advisory, the authenticated user must be a secur
 	}
 
 	/**
+	 * Lists pull request stacks in a repository.
+	 *
+	 * `GET /repos/{owner}/{repo}/stacks` — risk: medium
+	 */
+	async listStacks(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "pull-request-stacks/list",
+			namespace: "repos",
+			method: "listStacks",
+			http: "get",
+			path: `/repos/${owner}/${repo}/stacks`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listStacks"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Creates a stack from an ordered list of pull request numbers. Provide the pull
+request numbers from the bottom of the stack to the top. Each pull request's
+base ref must match the previous pull reques
+	 *
+	 * `POST /repos/{owner}/{repo}/stacks` — risk: medium
+	 */
+	async createStack(owner: string, repo: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "pull-request-stacks/create",
+			namespace: "repos",
+			method: "createStack",
+			http: "post",
+			path: `/repos/${owner}/${repo}/stacks`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["createStack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Gets a pull request stack by providing its stack number.
+	 *
+	 * `GET /repos/{owner}/{repo}/stacks/{stack_number}` — risk: medium
+	 */
+	async retrieveStack(owner: string, repo: string, stackNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "pull-request-stacks/get",
+			namespace: "repos",
+			method: "retrieveStack",
+			http: "get",
+			path: `/repos/${owner}/${repo}/stacks/${stackNumber}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveStack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Appends an ordered list of pull request numbers onto the top of an existing
+stack. Provide only the pull requests you want to add, from the current top of
+the stack upward. The first new pull request'
+	 *
+	 * `POST /repos/{owner}/{repo}/stacks/{stack_number}/add` — risk: medium
+	 */
+	async add(owner: string, repo: string, stackNumber: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "pull-request-stacks/add",
+			namespace: "repos",
+			method: "add",
+			http: "post",
+			path: `/repos/${owner}/${repo}/stacks/${stackNumber}/add`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["add"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Removes the unmerged pull requests from a stack. Pull requests that cannot be
+unstacked (for example, those that are queued for merge) are left in place. When pull requests remain in the stack, the up
+	 *
+	 * `POST /repos/{owner}/{repo}/stacks/{stack_number}/unstack` — risk: medium
+	 */
+	async unstack(owner: string, repo: string, stackNumber: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "pull-request-stacks/unstack",
+			namespace: "repos",
+			method: "unstack",
+			http: "post",
+			path: `/repos/${owner}/${repo}/stacks/${stackNumber}/unstack`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["unstack"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Lists the people that have starred the repository.
 
 This endpoint supports the following custom media types. For more information, see "[Media types](https://docs.github.com/rest/using-the-rest-api/ge
@@ -23335,6 +24266,50 @@ This endpoint supports the following custom media types. For more information, s
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStargazers"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Gets the current number of users who have starred the repository. Users who previously starred the repository but later removed their star are not included.
+	 *
+	 * `GET /repos/{owner}/{repo}/stargazers/count` — risk: medium
+	 */
+	async count(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "activity/get-stargazer-count-for-repo",
+			namespace: "repos",
+			method: "count",
+			http: "get",
+			path: `/repos/${owner}/${repo}/stargazers/count`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["count"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Returns repository stars grouped by calendar weeks, most recent first. Pages move backward toward the repository's creation week, and weeks within a page are ordered newest to oldest, so concatenating
+	 *
+	 * `GET /repos/{owner}/{repo}/stargazers/history` — risk: medium
+	 */
+	async stargazersHistory(owner: string, repo: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "activity/get-stargazer-history-for-repo",
+			namespace: "repos",
+			method: "stargazersHistory",
+			http: "get",
+			path: `/repos/${owner}/${repo}/stargazers/history`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["stargazersHistory"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -24516,7 +25491,7 @@ export class UserResource extends RpcTarget {
 	}
 
 	/**
-	 * OAuth app tokens and personal access tokens (classic) need the `user` scope in order for the response to include private profile information.
+	 * OAuth app tokens and personal access tokens (classic) need the `read:user` scope, or the broader `user` scope, for this endpoint to return the private user response. The private user response includes
 	 *
 	 * `GET /user` — risk: low
 	 */
@@ -26775,7 +27750,7 @@ Note: Pagination is powered exclusively by the `since` parameter. Use
 	/**
 	 * Provides publicly available information about someone with a GitHub account.
 
-If you are requesting information about an [Enterprise Managed User](https://docs.github.com/enterprise-cloud@latest/admin
+If the specified user has a [private profile](https://docs.github.com/account-and-profile/concepts/personal-profile#privat
 	 *
 	 * `GET /users/{username}` — risk: low
 	 */
@@ -27351,6 +28326,8 @@ OAuth app tokens and personal access token
 
 	/**
 	 * Lists the people following the specified user.
+
+If the specified user has a [private profile](https://docs.github.com/account-and-profile/concepts/personal-profile#private-profiles), this endpoint ret
 	 *
 	 * `GET /users/{username}/followers` — risk: medium
 	 */
@@ -27373,6 +28350,8 @@ OAuth app tokens and personal access token
 
 	/**
 	 * Lists the people who the specified user follows.
+
+If the specified user has a [private profile](https://docs.github.com/account-and-profile/concepts/personal-profile#private-profiles), this endpoint r
 	 *
 	 * `GET /users/{username}/following` — risk: medium
 	 */
@@ -28060,6 +29039,30 @@ given user, you will see private events. Otherwise, you'll only see public event
 	}
 
 	/**
+	 * Gets a report of AI credit usage for a user.
+
+**Note:** Only data from the past 24 months is accessible via this endpoint.
+	 *
+	 * `GET /users/{username}/settings/billing/ai_credit/usage` — risk: medium
+	 */
+	async aiCreditUsage(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "billing/get-github-billing-ai-credit-usage-report-user",
+			namespace: "users",
+			method: "aiCreditUsage",
+			http: "get",
+			path: `/users/${username}/settings/billing/ai_credit/usage`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["aiCreditUsage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Gets a report of premium request usage for a user.
 
 **Note:** Only data from the past 24 months is accessible via this endpoint.
@@ -28090,16 +29093,16 @@ given user, you will see private events. Otherwise, you'll only see public event
 	 *
 	 * `GET /users/{username}/settings/billing/usage` — risk: medium
 	 */
-	async usage_1(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async usage_2(username: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "billing/get-github-billing-usage-report-user",
 			namespace: "users",
-			method: "usage_1",
+			method: "usage_2",
 			http: "get",
 			path: `/users/${username}/settings/billing/usage`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["usage_1"],
+			overrides: this.overrides["usage_2"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -28181,7 +29184,7 @@ Gets a summary report of usage for a user.
 	/**
 	 * Lists repositories a user has starred.
 
-This endpoint supports the following custom media types. For more information, see "[Media types](https://docs.github.com/rest/using-the-rest-api/getting-starte
+If the specified user has a [private profile](https://docs.github.com/account-and-profile/concepts/personal-profile#private-profiles), this endpoint returns an 
 	 *
 	 * `GET /users/{username}/starred` — risk: medium
 	 */

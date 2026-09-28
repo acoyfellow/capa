@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: GitLab API vv4
-// Operations:  1047
+// Operations:  1072
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -19,7 +19,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Lists all access requests for a specified group that are viewable by the authenticated user.
 	 *
 	 * `GET /api/v4/groups/{id}/access_requests` — risk: medium
 	 */
@@ -41,7 +41,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Requests access to a specified group for the authenticated user.
 	 *
 	 * `POST /api/v4/groups/{id}/access_requests` — risk: medium
 	 */
@@ -63,7 +63,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Approves an access request for a specified user in a group.
 	 *
 	 * `PUT /api/v4/groups/{id}/access_requests/{user_id}/approve` — risk: medium
 	 */
@@ -85,7 +85,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Denies an access request for a specified user in a group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/access_requests/{user_id}` — risk: medium
 	 */
@@ -107,7 +107,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9
+	 * Lists all emoji reactions for a specified epic. This endpoint can be accessed without authentication if the epic is publicly accessible.
 	 *
 	 * `GET /api/v4/groups/{id}/epics/{epic_iid}/award_emoji` — risk: medium
 	 */
@@ -129,7 +129,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add an emoji reaction on the specified awardable. This feature was introduced in 8.9
+	 * Adds an emoji reaction to an epic.
 	 *
 	 * `POST /api/v4/groups/{id}/epics/{epic_iid}/award_emoji` — risk: medium
 	 */
@@ -151,7 +151,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9
+	 * Retrieves a specified emoji reaction from an epic. This endpoint can be accessed without authentication if the epic is publicly accessible.
 	 *
 	 * `GET /api/v4/groups/{id}/epics/{epic_iid}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -173,7 +173,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9
+	 * Deletes a specified emoji reaction from an epic. Only an administrator or the user who added the reaction can delete it.
 	 *
 	 * `DELETE /api/v4/groups/{id}/epics/{epic_iid}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -195,7 +195,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9
+	 * Lists all emoji reactions for a specified comment on an epic. This endpoint can be accessed without authentication if the comment is publicly accessible.
 	 *
 	 * `GET /api/v4/groups/{id}/epics/{epic_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
@@ -217,7 +217,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add an emoji reaction on the specified awardable. This feature was introduced in 8.9
+	 * Adds an emoji reaction to a comment on an epic.
 	 *
 	 * `POST /api/v4/groups/{id}/epics/{epic_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
@@ -239,7 +239,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9
+	 * Retrieves a specified emoji reaction from a comment on an epic. This endpoint can be accessed without authentication if the comment is publicly accessible.
 	 *
 	 * `GET /api/v4/groups/{id}/epics/{epic_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -261,7 +261,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9
+	 * Deletes a specified emoji reaction from a comment on an epic. Only an administrator or the user who added the reaction can delete it.
 	 *
 	 * `DELETE /api/v4/groups/{id}/epics/{epic_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -283,7 +283,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Lists all badges for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/badges` — risk: medium
 	 */
@@ -305,7 +305,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Creates a badge for a specified group.
 	 *
 	 * `POST /api/v4/groups/{id}/badges` — risk: medium
 	 */
@@ -327,7 +327,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Previews the final `link_url` and `image_url` for a specified group after resolving the placeholder interpolation.
 	 *
 	 * `GET /api/v4/groups/{id}/badges/render` — risk: medium
 	 */
@@ -349,7 +349,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Retrieves a specified badge for a group.
 	 *
 	 * `GET /api/v4/groups/{id}/badges/{badge_id}` — risk: medium
 	 */
@@ -371,7 +371,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Updates a specified badge for a group.
 	 *
 	 * `PUT /api/v4/groups/{id}/badges/{badge_id}` — risk: medium
 	 */
@@ -393,7 +393,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Deletes a specified badge from a group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/badges/{badge_id}` — risk: medium
 	 */
@@ -415,7 +415,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all custom attributes on a group
+	 * Lists all custom attributes for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/custom_attributes` — risk: medium
 	 */
@@ -437,7 +437,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a custom attribute on a group
+	 * Retrieves a specified custom attribute for a group.
 	 *
 	 * `GET /api/v4/groups/{id}/custom_attributes/{key}` — risk: medium
 	 */
@@ -459,7 +459,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set a custom attribute on a group
+	 * Creates or updates a custom attribute for a specified group. If the attribute already exists, it is updated, otherwise a new attribute is created.
 	 *
 	 * `PUT /api/v4/groups/{id}/custom_attributes/{key}` — risk: medium
 	 */
@@ -481,7 +481,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a custom attribute on a group
+	 * Deletes a specified custom attribute for a group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/custom_attributes/{key}` — risk: medium
 	 */
@@ -503,7 +503,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a groups list
+	 * Lists all visible groups for the authenticated user. Unauthenticated requests return only public groups.
 	 *
 	 * `GET /api/v4/groups` — risk: low
 	 */
@@ -525,7 +525,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a group. Available only for users who can create groups.
+	 * Creates a project group. Available only for users who can create groups.
 	 *
 	 * `POST /api/v4/groups` — risk: medium
 	 */
@@ -547,7 +547,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single group, with containing projects.
+	 * Retrieves a specified group by ID or path.
 	 *
 	 * `GET /api/v4/groups/{id}` — risk: low
 	 */
@@ -569,7 +569,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update a group. Available only for users who can administrate groups.
+	 * Updates the attributes for a specified group. You must be an administrator or have the Owner role for the group.
 	 *
 	 * `PUT /api/v4/groups/{id}` — risk: medium
 	 */
@@ -591,7 +591,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove a group.
+	 * Schedules a group for deletion. Groups are deleted at the end of the retention period (30 days by default). Use the `permanently_remove` param to override the retention period.
 	 *
 	 * `DELETE /api/v4/groups/{id}` — risk: medium
 	 */
@@ -613,7 +613,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Archive a group
+	 * Archives a specified group. You must be an administrator or have the Owner role for the group.
 	 *
 	 * `POST /api/v4/groups/{id}/archive` — risk: medium
 	 */
@@ -635,7 +635,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Unarchive a group
+	 * Unarchives a specified group. You must be an administrator or have the Owner role for the group.
 	 *
 	 * `POST /api/v4/groups/{id}/unarchive` — risk: medium
 	 */
@@ -657,7 +657,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Restore a group.
+	 * Restores a specified group that was previously scheduled for deletion. Can not restore groups outside of the retention period (30 days by default).
 	 *
 	 * `POST /api/v4/groups/{id}/restore` — risk: medium
 	 */
@@ -679,7 +679,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of shared groups this group was invited to
+	 * Lists all groups shared with a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/groups/shared` — risk: medium
 	 */
@@ -701,7 +701,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of invited groups in this group
+	 * Lists all groups invited to a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/invited_groups` — risk: medium
 	 */
@@ -723,7 +723,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of projects in this group.
+	 * Lists all projects in a specified group accessible to the authenticated user. Unauthenticated requests return only public projects with a limited subset of attributes.
 	 *
 	 * `GET /api/v4/groups/{id}/projects` — risk: medium
 	 */
@@ -745,7 +745,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of shared projects in this group
+	 * Lists all projects shared with a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/projects/shared` — risk: medium
 	 */
@@ -767,7 +767,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of subgroups in this group.
+	 * Lists all subgroups for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/subgroups` — risk: medium
 	 */
@@ -789,7 +789,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of descendant groups of this group.
+	 * Lists all descendant groups for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/descendant_groups` — risk: medium
 	 */
@@ -811,7 +811,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Transfer a project to the group namespace. Available only for admin.
+	 * Transfers a specified project to another group. Administrators only.
 	 *
 	 * `POST /api/v4/groups/{id}/projects/{project_id}` — risk: medium
 	 */
@@ -833,7 +833,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the groups to where the current group can be transferred to
+	 * Lists all groups that a specified source group can be transferred to.
 	 *
 	 * `GET /api/v4/groups/{id}/transfer_locations` — risk: medium
 	 */
@@ -855,7 +855,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Transfer a group to a new parent group or promote a subgroup to a top-level group
+	 * Transfers a group to another parent group or transforms a subgroup into a top-level group. You must be an administrator or have the Owner role for the group.
 	 *
 	 * `POST /api/v4/groups/{id}/transfer` — risk: medium
 	 */
@@ -899,7 +899,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Share a group with a group
+	 * Adds a group to a group.
 	 *
 	 * `POST /api/v4/groups/{id}/share` — risk: medium
 	 */
@@ -921,7 +921,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Unshare a group with a group
+	 * Removes a group from a group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/share/{group_id}` — risk: medium
 	 */
@@ -943,7 +943,29 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Sync a group with LDAP.
+	 * Removes a shared project targeting this group. The group Owner can remove a shared project without access to the source project.
+	 *
+	 * `DELETE /api/v4/groups/{id}/shared_projects/{project_id}` — risk: medium
+	 */
+	async deleteSharedProject(id: string, projectId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteApiV4GroupsIdSharedProjectsProjectId",
+			namespace: "groups",
+			method: "deleteSharedProject",
+			http: "delete",
+			path: `/api/v4/groups/${id}/shared_projects/${projectId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteSharedProject"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Syncs a specified group with its linked LDAP group. You must be an administrator or have the Owner role for the group.
 	 *
 	 * `POST /api/v4/groups/{id}/ldap_sync` — risk: medium
 	 */
@@ -965,7 +987,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of audit events in this group.
+	 * Lists all audit events for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/audit_events` — risk: medium
 	 */
@@ -987,7 +1009,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a specific audit event in this group.
+	 * Retrieves an audit event for a specified group. Only available to group Owners and administrators.
 	 *
 	 * `GET /api/v4/groups/{id}/audit_events/{audit_event_id}` — risk: medium
 	 */
@@ -1009,7 +1031,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of SAML users of the group
+	 * Lists all SAML users for a specified top-level group. Use the `page` and `per_page` pagination parameters to filter the results.
 	 *
 	 * `GET /api/v4/groups/{id}/saml_users` — risk: medium
 	 */
@@ -1031,7 +1053,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of users provisioned by the group
+	 * Lists all provisioned users for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/provisioned_users` — risk: medium
 	 */
@@ -1053,7 +1075,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of ssh certificates created for a group.
+	 * Lists all SSH certificates for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/ssh_certificates` — risk: medium
 	 */
@@ -1075,7 +1097,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a ssh certificate for a group.
+	 * Adds a group SSH certificate for a specified group.
 	 *
 	 * `POST /api/v4/groups/{id}/ssh_certificates` — risk: medium
 	 */
@@ -1097,7 +1119,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a Groups::SshCertificate
+	 * Deletes a specified group SSH certificate.
 	 *
 	 * `DELETE /api/v4/groups/{id}/ssh_certificates/{ssh_certificates_id}` — risk: medium
 	 */
@@ -1119,7 +1141,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * List all runners available in the group as well as its ancestor groups, including any allowed shared runners.
+	 * Lists all runners available in a specified group and any ancestor groups, including any allowed instance runners.
 	 *
 	 * `GET /api/v4/groups/{id}/runners` — risk: medium
 	 */
@@ -1141,7 +1163,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Reset runner registration token
+	 * Resets the runner registration token for a specified group.
 	 *
 	 * `POST /api/v4/groups/{id}/runners/reset_registration_token` — risk: medium
 	 */
@@ -1185,7 +1207,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Schedules for deletion the cached manifests and blobs for a group.This endpoint requires the Owner role for the group.
+	 * Purges the dependency proxy for a specified group and schedules the cached manifests and blobs for deletion. This endpoint requires the Owner role for the group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/dependency_proxy/cache` — risk: medium
 	 */
@@ -1207,7 +1229,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of a group's deploy tokens. This feature was introduced in GitLab 12.9.
+	 * Lists all group deploy tokens.
 	 *
 	 * `GET /api/v4/groups/{id}/deploy_tokens` — risk: medium
 	 */
@@ -1229,7 +1251,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a new deploy token for a group. This feature was introduced in GitLab 12.9.
+	 * Creates a group deploy token.
 	 *
 	 * `POST /api/v4/groups/{id}/deploy_tokens` — risk: medium
 	 */
@@ -1273,7 +1295,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a deploy token from the group. This feature was introduced in GitLab 12.9.
+	 * Deletes a group deploy token.
 	 *
 	 * `DELETE /api/v4/groups/{id}/deploy_tokens/{token_id}` — risk: medium
 	 */
@@ -1295,7 +1317,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.0
+	 * Downloads a group avatar image.
 	 *
 	 * `GET /api/v4/groups/{id}/avatar` — risk: medium
 	 */
@@ -1317,7 +1339,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.1. Returns a list of group clusters.
+	 * Lists all group clusters for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/clusters` — risk: medium
 	 */
@@ -1339,7 +1361,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.1. Gets a single group cluster.
+	 * Retrieves a specified group cluster.
 	 *
 	 * `GET /api/v4/groups/{id}/clusters/{cluster_id}` — risk: medium
 	 */
@@ -1361,7 +1383,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.1. Updates an existing group cluster.
+	 * Updates a specified group cluster.
 	 *
 	 * `PUT /api/v4/groups/{id}/clusters/{cluster_id}` — risk: medium
 	 */
@@ -1383,7 +1405,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.1. Deletes an existing group cluster. Does not remove existing resources within the connected Kubernetes cluster.
+	 * Deletes a specified group cluster. Does not remove existing resources in the connected Kubernetes cluster.
 	 *
 	 * `DELETE /api/v4/groups/{id}/clusters/{cluster_id}` — risk: medium
 	 */
@@ -1405,7 +1427,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.1. Adds an existing Kubernetes cluster to the group.
+	 * Creates a group cluster for a specified group by adding an existing Kubernetes cluster.
 	 *
 	 * `POST /api/v4/groups/{id}/clusters/user` — risk: medium
 	 */
@@ -1427,7 +1449,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of registry repositories in a group. This feature was introduced in GitLab 12.2.
+	 * Lists all registry repositories for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/registry/repositories` — risk: medium
 	 */
@@ -1449,7 +1471,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Lists all Debian distributions for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/-/debian_distributions` — risk: medium
 	 */
@@ -1471,7 +1493,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Creates a Debian group distribution for a specified group.
 	 *
 	 * `POST /api/v4/groups/{id}/-/debian_distributions` — risk: medium
 	 */
@@ -1493,7 +1515,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Retrieves a specified Debian group distribution for a group.
 	 *
 	 * `GET /api/v4/groups/{id}/-/debian_distributions/{codename}` — risk: medium
 	 */
@@ -1515,7 +1537,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Updates a specified Debian group distribution for a group.
 	 *
 	 * `PUT /api/v4/groups/{id}/-/debian_distributions/{codename}` — risk: medium
 	 */
@@ -1537,7 +1559,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Deletes a specified Debian group distribution for a group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/-/debian_distributions/{codename}` — risk: medium
 	 */
@@ -1559,7 +1581,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.4
+	 * Retrieves a specified Debian group distribution key for a group.
 	 *
 	 * `GET /api/v4/groups/{id}/-/debian_distributions/{codename}/key.asc` — risk: medium
 	 */
@@ -1581,7 +1603,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5.
+	 * Retrieves the exported archive for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/export/download` — risk: medium
 	 */
@@ -1603,7 +1625,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5.
+	 * Creates a group export for a specified group.
 	 *
 	 * `POST /api/v4/groups/{id}/export` — risk: medium
 	 */
@@ -1625,7 +1647,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.12
+	 * Schedules a relations export for a specified group.
 	 *
 	 * `POST /api/v4/groups/{id}/export_relations` — risk: medium
 	 */
@@ -1647,7 +1669,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.12
+	 * Downloads a group relations export file.
 	 *
 	 * `GET /api/v4/groups/{id}/export_relations/download` — risk: medium
 	 */
@@ -1669,7 +1691,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.12
+	 * Retrieves the status of a relations export for a group.
 	 *
 	 * `GET /api/v4/groups/{id}/export_relations/status` — risk: medium
 	 */
@@ -1713,7 +1735,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.8
+	 * Creates a group import. The maximum import file size can be set by the Administrator on GitLab Self-Managed (defaults to `0` (unlimited)).
 	 *
 	 * `POST /api/v4/groups/import` — risk: medium
 	 */
@@ -1735,7 +1757,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of project packages at the group level. This feature was introduced in GitLab 12.5
+	 * Lists all packages for a specified group. When accessed without authentication, only packages of public projects are returned. By default, packages with `default`, `deprecated`, and `error` status are
 	 *
 	 * `GET /api/v4/groups/{id}/packages` — risk: medium
 	 */
@@ -1757,8 +1779,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Downloads a CSV file of pending placeholder assignments for a group.
-          This feature was added in GitLab 17.10
+	 * Retrieves a CSV file with a list of pending reassignments. This feature was introduced in GitLab 17.10.
 	 *
 	 * `GET /api/v4/groups/{id}/placeholder_reassignments` — risk: medium
 	 */
@@ -1780,7 +1801,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Uploads a CSV file containing placeholder reassignments for a group
+	 * Reassigns placeholder users with an uploaded CSV file.
 	 *
 	 * `POST /api/v4/groups/{id}/placeholder_reassignments` — risk: medium
 	 */
@@ -1825,7 +1846,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of group-level variables
+	 * Lists all variables for a specified group. Use the `page` and `per_page` pagination parameters to control the pagination of results.
 	 *
 	 * `GET /api/v4/groups/{id}/variables` — risk: medium
 	 */
@@ -1847,7 +1868,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new variable in a group
+	 * Creates a group variable.
 	 *
 	 * `POST /api/v4/groups/{id}/variables` — risk: medium
 	 */
@@ -1869,7 +1890,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the details of a group’s specific variable
+	 * Retrieves details of a specified group variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `GET /api/v4/groups/{id}/variables/{key}` — risk: medium
 	 */
@@ -1891,7 +1912,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an existing variable from a group
+	 * Updates a specified group variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `PUT /api/v4/groups/{id}/variables/{key}` — risk: medium
 	 */
@@ -1913,7 +1934,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete an existing variable from a group
+	 * Deletes a specified group variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `DELETE /api/v4/groups/{id}/variables/{key}` — risk: medium
 	 */
@@ -1935,7 +1956,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all active integrations.
+	 * Lists all active integrations.
 	 *
 	 * `GET /api/v4/groups/{id}/integrations` — risk: medium
 	 */
@@ -1957,7 +1978,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Apple App Store integration.
+	 * Creates or updates the Apple App Store integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/apple-app-store` — risk: medium
 	 */
@@ -1979,7 +2000,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Asana integration.
+	 * Creates or updates the Asana integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/asana` — risk: medium
 	 */
@@ -2001,7 +2022,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Assembla integration.
+	 * Creates or updates the Assembla integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/assembla` — risk: medium
 	 */
@@ -2023,7 +2044,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Bamboo integration.
+	 * Creates or updates the Bamboo integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/bamboo` — risk: medium
 	 */
@@ -2045,7 +2066,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Bugzilla integration.
+	 * Creates or updates the Bugzilla integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/bugzilla` — risk: medium
 	 */
@@ -2067,7 +2088,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Buildkite integration.
+	 * Creates or updates the Buildkite integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/buildkite` — risk: medium
 	 */
@@ -2089,7 +2110,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Campfire integration.
+	 * Creates or updates the Campfire integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/campfire` — risk: medium
 	 */
@@ -2111,7 +2132,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Confluence integration.
+	 * Creates or updates the Confluence integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/confluence` — risk: medium
 	 */
@@ -2133,7 +2154,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Custom Issue Tracker integration.
+	 * Creates or updates the Custom Issue Tracker integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/custom-issue-tracker` — risk: medium
 	 */
@@ -2155,7 +2176,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Datadog integration.
+	 * Creates or updates the Datadog integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/datadog` — risk: medium
 	 */
@@ -2177,7 +2198,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Diffblue Cover integration.
+	 * Creates or updates the Diffblue Cover integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/diffblue-cover` — risk: medium
 	 */
@@ -2199,7 +2220,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Discord integration.
+	 * Creates or updates the Discord integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/discord` — risk: medium
 	 */
@@ -2221,7 +2242,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Drone Ci integration.
+	 * Creates or updates the Drone Ci integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/drone-ci` — risk: medium
 	 */
@@ -2243,7 +2264,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Emails On Push integration.
+	 * Creates or updates the Emails On Push integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/emails-on-push` — risk: medium
 	 */
@@ -2265,7 +2286,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set External Wiki integration.
+	 * Creates or updates the External Wiki integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/external-wiki` — risk: medium
 	 */
@@ -2287,7 +2308,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Gitlab Slack Application integration.
+	 * Creates or updates the Gitlab Slack Application integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/gitlab-slack-application` — risk: medium
 	 */
@@ -2309,7 +2330,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Google Play integration.
+	 * Creates or updates the Google Play integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/google-play` — risk: medium
 	 */
@@ -2331,7 +2352,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Hangouts Chat integration.
+	 * Creates or updates the Hangouts Chat integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/hangouts-chat` — risk: medium
 	 */
@@ -2353,7 +2374,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Harbor integration.
+	 * Creates or updates the Harbor integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/harbor` — risk: medium
 	 */
@@ -2375,7 +2396,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Irker integration.
+	 * Creates or updates the Irker integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/irker` — risk: medium
 	 */
@@ -2397,7 +2418,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Jenkins integration.
+	 * Creates or updates the Jenkins integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/jenkins` — risk: medium
 	 */
@@ -2419,7 +2440,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Jira integration.
+	 * Creates or updates the Jira integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/jira` — risk: medium
 	 */
@@ -2441,7 +2462,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Jira Cloud App integration.
+	 * Creates or updates the Jira Cloud App integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/jira-cloud-app` — risk: medium
 	 */
@@ -2463,7 +2484,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Linear integration.
+	 * Creates or updates the Linear integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/linear` — risk: medium
 	 */
@@ -2485,7 +2506,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Matrix integration.
+	 * Creates or updates the Matrix integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/matrix` — risk: medium
 	 */
@@ -2507,7 +2528,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mattermost Slash Commands integration.
+	 * Creates or updates the Mattermost Slash Commands integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/mattermost-slash-commands` — risk: medium
 	 */
@@ -2529,7 +2550,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Packagist integration.
+	 * Creates or updates the Packagist integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/packagist` — risk: medium
 	 */
@@ -2551,7 +2572,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Phorge integration.
+	 * Creates or updates the Phorge integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/phorge` — risk: medium
 	 */
@@ -2573,7 +2594,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pipelines Email integration.
+	 * Creates or updates the Pipelines Email integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/pipelines-email` — risk: medium
 	 */
@@ -2595,7 +2616,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pivotaltracker integration.
+	 * Creates or updates the Pivotaltracker integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/pivotaltracker` — risk: medium
 	 */
@@ -2617,7 +2638,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pumble integration.
+	 * Creates or updates the Pumble integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/pumble` — risk: medium
 	 */
@@ -2639,7 +2660,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pushover integration.
+	 * Creates or updates the Pushover integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/pushover` — risk: medium
 	 */
@@ -2661,7 +2682,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Redmine integration.
+	 * Creates or updates the Redmine integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/redmine` — risk: medium
 	 */
@@ -2683,7 +2704,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Ewm integration.
+	 * Creates or updates the Ewm integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/ewm` — risk: medium
 	 */
@@ -2705,7 +2726,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Youtrack integration.
+	 * Creates or updates the Youtrack integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/youtrack` — risk: medium
 	 */
@@ -2727,7 +2748,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Clickup integration.
+	 * Creates or updates the Clickup integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/clickup` — risk: medium
 	 */
@@ -2749,7 +2770,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Slack integration.
+	 * Creates or updates the Slack integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/slack` — risk: medium
 	 */
@@ -2771,7 +2792,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Microsoft Teams integration.
+	 * Creates or updates the Microsoft Teams integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/microsoft-teams` — risk: medium
 	 */
@@ -2793,7 +2814,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mattermost integration.
+	 * Creates or updates the Mattermost integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/mattermost` — risk: medium
 	 */
@@ -2815,7 +2836,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Teamcity integration.
+	 * Creates or updates the Teamcity integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/teamcity` — risk: medium
 	 */
@@ -2837,7 +2858,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Telegram integration.
+	 * Creates or updates the Telegram integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/telegram` — risk: medium
 	 */
@@ -2859,7 +2880,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Unify Circuit integration.
+	 * Creates or updates the Unify Circuit integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/unify-circuit` — risk: medium
 	 */
@@ -2881,7 +2902,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Webex Teams integration.
+	 * Creates or updates the Webex Teams integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/webex-teams` — risk: medium
 	 */
@@ -2903,7 +2924,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Zentao integration.
+	 * Creates or updates the Zentao integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/zentao` — risk: medium
 	 */
@@ -2925,7 +2946,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Squash Tm integration.
+	 * Creates or updates the Squash Tm integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/squash-tm` — risk: medium
 	 */
@@ -2947,7 +2968,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Github integration.
+	 * Creates or updates the Github integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/github` — risk: medium
 	 */
@@ -2969,7 +2990,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Git Guardian integration.
+	 * Creates or updates the Git Guardian integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/git-guardian` — risk: medium
 	 */
@@ -2991,7 +3012,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Google Cloud Platform Artifact Registry integration.
+	 * Creates or updates the Google Cloud Platform Artifact Registry integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/google-cloud-platform-artifact-registry` — risk: medium
 	 */
@@ -3013,7 +3034,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Google Cloud Platform Workload Identity Federation integration.
+	 * Creates or updates the Google Cloud Platform Workload Identity Federation integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/google-cloud-platform-workload-identity-federation` — risk: medium
 	 */
@@ -3035,7 +3056,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mock Ci integration.
+	 * Creates or updates the Mock Ci integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/mock-ci` — risk: medium
 	 */
@@ -3057,7 +3078,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mock Monitoring integration.
+	 * Creates or updates the Mock Monitoring integration.
 	 *
 	 * `PUT /api/v4/groups/{id}/integrations/mock-monitoring` — risk: medium
 	 */
@@ -3079,7 +3100,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the integration settings.
+	 * Retrieves the settings for a specified integration.
 	 *
 	 * `GET /api/v4/groups/{id}/integrations/{slug}` — risk: medium
 	 */
@@ -3101,7 +3122,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Disable the integration. Integration settings are preserved.
+	 * Disables a specified integration. Integration settings are preserved.
 	 *
 	 * `DELETE /api/v4/groups/{id}/integrations/{slug}` — risk: medium
 	 */
@@ -3123,7 +3144,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.6
+	 * Lists all pending invitations for a specified group viewable by the authenticated user. Returns invitations to direct members only, and not through inherited ancestor groups. This function takes pagin
 	 *
 	 * `GET /api/v4/groups/{id}/invitations` — risk: medium
 	 */
@@ -3145,7 +3166,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.6
+	 * Adds a member to a group. You can specify a user ID or invite a user by email.
 	 *
 	 * `POST /api/v4/groups/{id}/invitations` — risk: medium
 	 */
@@ -3167,7 +3188,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates a group or project invitation.
+	 * Updates a pending invitation to a group.
 	 *
 	 * `PUT /api/v4/groups/{id}/invitations/{email}` — risk: medium
 	 */
@@ -3189,7 +3210,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes an invitation from a group or project.
+	 * Deletes a pending invitation to a specified email address for a group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/invitations/{email}` — risk: medium
 	 */
@@ -3211,7 +3232,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of group issues
+	 * Lists all issues for a specified group. If the group is private, you must provide credentials to authorize. In most cases, you should authenticate with a personal access token.
 	 *
 	 * `GET /api/v4/groups/{id}/issues` — risk: medium
 	 */
@@ -3233,7 +3254,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get statistics for the list of group issues
+	 * Retrieves statistics for issues in a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/issues_statistics` — risk: medium
 	 */
@@ -3277,7 +3298,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the list of uploads of a group
+	 * Lists all uploads for a specified group sorted by `created_at` in descending order. You must have the Maintainer or Owner role for the group.
 	 *
 	 * `GET /api/v4/groups/{id}/uploads` — risk: medium
 	 */
@@ -3321,7 +3342,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Download a single group upload by ID
+	 * Downloads an uploaded file with a specified ID. You must have the Maintainer or Owner role for the group.
 	 *
 	 * `GET /api/v4/groups/{id}/uploads/{upload_id}` — risk: medium
 	 */
@@ -3343,7 +3364,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a single group upload
+	 * Deletes an uploaded file with a specified ID. You must have the Maintainer or Owner role for the group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/uploads/{upload_id}` — risk: medium
 	 */
@@ -3365,7 +3386,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Download a single group upload by secret and filename
+	 * Downloads an uploaded file with a specified secret and filename. You must have the Guest, Planner, Reporter, Developer, Maintainer, or Owner role for the group.
 	 *
 	 * `GET /api/v4/groups/{id}/uploads/{secret}/{filename}` — risk: medium
 	 */
@@ -3387,7 +3408,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a single group upload by secret and filename
+	 * Deletes an uploaded file with a specified secret and filename. You must have the Maintainer or Owner role for the group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/uploads/{secret}/{filename}` — risk: medium
 	 */
@@ -3409,8 +3430,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a list of group or project members viewable by the authenticated user,
-          excluding those with inherited membership from ancestor groups.
+	 * Lists all direct members of a specified group viewable by the authenticated user. Does not return inherited members from ancestor groups or invited groups.
 	 *
 	 * `GET /api/v4/groups/{id}/members` — risk: medium
 	 */
@@ -3432,7 +3452,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Adds a member to a group or project.
+	 * Adds a member to a specified group.
 	 *
 	 * `POST /api/v4/groups/{id}/members` — risk: medium
 	 */
@@ -3454,8 +3474,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a list of group or project members viewable by the authenticated user,
-          including those with inherited membership from ancestor groups.
+	 * Lists all members of a specified group viewable by the authenticated user. Also returns inherited members from ancestor groups or invited groups. If a user is a member of this group and one or more an
 	 *
 	 * `GET /api/v4/groups/{id}/members/all` — risk: medium
 	 */
@@ -3477,7 +3496,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a member of a group or project.
+	 * Retrieves a specified member of a group. Returns only direct members and not inherited members through ancestor groups.
 	 *
 	 * `GET /api/v4/groups/{id}/members/{user_id}` — risk: medium
 	 */
@@ -3499,7 +3518,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates a member of a group or project.
+	 * Updates a specified member of a group.
 	 *
 	 * `PUT /api/v4/groups/{id}/members/{user_id}` — risk: medium
 	 */
@@ -3521,7 +3540,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a user from a group or project.
+	 * Removes a specified user from a group. The user must be a direct member.
 	 *
 	 * `DELETE /api/v4/groups/{id}/members/{user_id}` — risk: medium
 	 */
@@ -3543,7 +3562,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a member of a group or project, including those who gained membership through ancestor group
+	 * Retrieves a specified member of a group. Returns direct members and members inherited or invited through ancestor groups.
 	 *
 	 * `GET /api/v4/groups/{id}/members/all/{user_id}` — risk: medium
 	 */
@@ -3565,7 +3584,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Overrides the access level of an LDAP group member.
+	 * Sets the override flag for a member of a group. By default, the access level of LDAP group members is set to the value specified by LDAP through Group Sync.
 	 *
 	 * `POST /api/v4/groups/{id}/members/{user_id}/override` — risk: medium
 	 */
@@ -3587,7 +3606,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove an LDAP group member access level override.
+	 * Removes an LDAP access level override for a member of a group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/members/{user_id}/override` — risk: medium
 	 */
@@ -3609,7 +3628,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Approves a pending member
+	 * Approves a specified pending user for a top-level group and any subgroups or projects.
 	 *
 	 * `PUT /api/v4/groups/{id}/members/{member_id}/approve` — risk: medium
 	 */
@@ -3631,7 +3650,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Approves all pending members
+	 * Approves all pending users for a specified top-level group and any subgroups or projects.
 	 *
 	 * `POST /api/v4/groups/{id}/members/approve_all` — risk: medium
 	 */
@@ -3653,7 +3672,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Lists all pending members for a group including invited users
+	 * Lists all members in an `awaiting` state and those who are invited but do not have a GitLab account for a specified group and any subgroups and projects. This operation works on top-level groups only.
 	 *
 	 * `GET /api/v4/groups/{id}/pending_members` — risk: medium
 	 */
@@ -3675,7 +3694,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a list of billable users of top-level group.
+	 * Lists all billable members of a specified top-level group. Includes members in any subgroups or projects. You must have the Owner role for the group.
 	 *
 	 * `GET /api/v4/groups/{id}/billable_members` — risk: medium
 	 */
@@ -3697,7 +3716,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Changes the state of the memberships of a user in the group
+	 * Updates the membership state for a specified user in a group.
 	 *
 	 * `PUT /api/v4/groups/{id}/members/{user_id}/state` — risk: medium
 	 */
@@ -3719,7 +3738,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the direct memberships of a billable user of a top-level group.
+	 * Lists all memberships for a specified billable member of a group. The response represents only direct memberships. Inherited memberships are not included.
 	 *
 	 * `GET /api/v4/groups/{id}/billable_members/{user_id}/memberships` — risk: medium
 	 */
@@ -3741,7 +3760,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the indirect memberships of a billable user of a top-level group.
+	 * Lists all indirect memberships for a billable member of a group. This operation works on top-level groups only. It does not work on subgroups.
 	 *
 	 * `GET /api/v4/groups/{id}/billable_members/{user_id}/indirect` — risk: medium
 	 */
@@ -3763,7 +3782,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a billable member from a group or project.
+	 * Removes a specified billable member from a group and its subgroups and projects. The user does not need to be a group member to qualify for removal. For example, if the user was added directly to a pr
 	 *
 	 * `DELETE /api/v4/groups/{id}/billable_members/{user_id}` — risk: medium
 	 */
@@ -3785,7 +3804,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all merge requests for this group and its subgroups.
+	 * Lists all merge requests for a specified group and any subgroups.
 	 *
 	 * `GET /api/v4/groups/{id}/merge_requests` — risk: medium
 	 */
@@ -3939,7 +3958,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.1
+	 * Lists all packages for a specified group in an HTML file.
 	 *
 	 * `GET /api/v4/groups/{id}/-/packages/pypi/simple` — risk: medium
 	 */
@@ -3961,7 +3980,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Returns a list of group releases.
+	 * Lists all releases for projects in a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/releases` — risk: medium
 	 */
@@ -3983,7 +4002,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Rotates a resource access token by passing it to the API in a header
+	 * Rotates a group access token by passing it to the API in a header.
 	 *
 	 * `POST /api/v4/groups/{id}/access_tokens/self/rotate` — risk: medium
 	 */
@@ -4027,7 +4046,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of wiki pages
+	 * Lists all wiki pages for a specified group.
 	 *
 	 * `GET /api/v4/groups/{id}/wikis` — risk: medium
 	 */
@@ -4049,7 +4068,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a wiki page
+	 * Creates a wiki page for a specified group. Requests can define the title, slug, and content.
 	 *
 	 * `POST /api/v4/groups/{id}/wikis` — risk: medium
 	 */
@@ -4071,7 +4090,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a wiki page
+	 * Retrieves a specified wiki page for a group.
 	 *
 	 * `GET /api/v4/groups/{id}/wikis/{slug}` — risk: medium
 	 */
@@ -4093,7 +4112,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update a wiki page
+	 * Updates a specified wiki page for a group.
 	 *
 	 * `PUT /api/v4/groups/{id}/wikis/{slug}` — risk: medium
 	 */
@@ -4115,7 +4134,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a wiki page
+	 * Deletes a specified wiki page from a group.
 	 *
 	 * `DELETE /api/v4/groups/{id}/wikis/{slug}` — risk: medium
 	 */
@@ -4137,7 +4156,7 @@ export class GroupsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.3.
+	 * Uploads a file to the `uploads` directory in a specified group wiki.
 	 *
 	 * `POST /api/v4/groups/{id}/wikis/attachments` — risk: medium
 	 */
@@ -4169,7 +4188,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Lists all access requests for a specified project that are viewable by the authenticated user.
 	 *
 	 * `GET /api/v4/projects/{id}/access_requests` — risk: medium
 	 */
@@ -4191,7 +4210,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Requests access to a specified project for the authenticated user.
 	 *
 	 * `POST /api/v4/projects/{id}/access_requests` — risk: medium
 	 */
@@ -4213,7 +4232,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Approves an access request for a specified user in a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/access_requests/{user_id}/approve` — risk: medium
 	 */
@@ -4235,7 +4254,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Denies an access request for a specified user in a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/access_requests/{user_id}` — risk: medium
 	 */
@@ -4279,7 +4298,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Metric Images for alert
+	 * Lists all metric images for a specified alert.
 	 *
 	 * `GET /api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images` — risk: medium
 	 */
@@ -4301,7 +4320,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Upload a metric image for an alert
+	 * Uploads a metric image for a specified alert.
 	 *
 	 * `POST /api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images` — risk: medium
 	 */
@@ -4323,7 +4342,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update a metric image for an alert
+	 * Updates a specified metric image for an alert.
 	 *
 	 * `PUT /api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/{metric_image_id}` — risk: medium
 	 */
@@ -4345,7 +4364,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove a metric image for an alert
+	 * Deletes a specified metric image for an alert.
 	 *
 	 * `DELETE /api/v4/projects/{id}/alert_management_alerts/{alert_iid}/metric_images/{metric_image_id}` — risk: medium
 	 */
@@ -4367,7 +4386,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9
+	 * Lists all emoji reactions for a specified issue. This endpoint can be accessed without authentication if the issue is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/award_emoji` — risk: medium
 	 */
@@ -4389,7 +4408,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add an emoji reaction on the specified awardable. This feature was introduced in 8.9
+	 * Adds an emoji reaction to an issue.
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/award_emoji` — risk: medium
 	 */
@@ -4411,7 +4430,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9
+	 * Retrieves a specified emoji reaction from an issue. This endpoint can be accessed without authentication if the issue is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4433,7 +4452,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9
+	 * Deletes a specified emoji reaction from an issue. Only an administrator or the user who added the reaction can delete it.
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4455,7 +4474,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9
+	 * Lists all emoji reactions for a specified comment on an issue. This endpoint can be accessed without authentication if the comment is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
@@ -4477,7 +4496,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add an emoji reaction on the specified awardable. This feature was introduced in 8.9
+	 * Adds an emoji reaction to a comment on an issue.
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
@@ -4499,7 +4518,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9
+	 * Retrieves a specified emoji reaction from a comment on an issue. This endpoint can be accessed without authentication if the comment is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4521,7 +4540,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9
+	 * Deletes a specified emoji reaction from a comment on an issue. Only an administrator or the user who added the reaction can delete it.
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4543,7 +4562,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9
+	 * Lists all emoji reactions for a specified merge request. This endpoint can be accessed without authentication if the merge request is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/award_emoji` — risk: medium
 	 */
@@ -4565,7 +4584,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add an emoji reaction on the specified awardable. This feature was introduced in 8.9
+	 * Adds an emoji reaction to a merge request.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/award_emoji` — risk: medium
 	 */
@@ -4587,7 +4606,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9
+	 * Retrieves a specified emoji reaction from a merge request. This endpoint can be accessed without authentication if the merge request is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4609,7 +4628,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9
+	 * Deletes a specified emoji reaction from a merge request. Only an administrator or the user who added the reaction can delete it.
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4631,7 +4650,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9
+	 * Lists all emoji reactions for a specified comment on a merge request. This endpoint can be accessed without authentication if the comment is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
@@ -4653,7 +4672,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add an emoji reaction on the specified awardable. This feature was introduced in 8.9
+	 * Adds an emoji reaction to a comment on a merge request.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/notes/{note_id}/award_emoji` — risk: medium
 	 */
@@ -4675,7 +4694,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9
+	 * Retrieves a specified emoji reaction from a comment on a merge request. This endpoint can be accessed without authentication if the comment is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4697,7 +4716,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9
+	 * Deletes a specified emoji reaction from a comment on a merge request. Only an administrator or the user who added the reaction can delete it.
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4719,7 +4738,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9
+	 * Lists all emoji reactions for a specified snippet. This endpoint can be accessed without authentication if the snippet is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/award_emoji` — risk: medium
 	 */
@@ -4741,7 +4760,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add an emoji reaction on the specified awardable. This feature was introduced in 8.9
+	 * Adds an emoji reaction to a snippet.
 	 *
 	 * `POST /api/v4/projects/{id}/snippets/{snippet_id}/award_emoji` — risk: medium
 	 */
@@ -4763,7 +4782,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9
+	 * Retrieves a specified emoji reaction from a snippet. This endpoint can be accessed without authentication if the snippet is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4785,7 +4804,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9
+	 * Deletes a specified emoji reaction from a snippet. Only an administrator or the user who added the reaction can delete it.
 	 *
 	 * `DELETE /api/v4/projects/{id}/snippets/{snippet_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4807,7 +4826,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all emoji reactions for a specified awardable. This feature was introduced in 8.9
+	 * Lists all emoji reactions for a specified comment on a snippet. This endpoint can be accessed without authentication if the comment is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/notes/{note_id}/award_emoji` — risk: medium
 	 */
@@ -4829,7 +4848,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add an emoji reaction on the specified awardable. This feature was introduced in 8.9
+	 * Adds an emoji reaction to a comment on a snippet.
 	 *
 	 * `POST /api/v4/projects/{id}/snippets/{snippet_id}/notes/{note_id}/award_emoji` — risk: medium
 	 */
@@ -4851,7 +4870,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single emoji reaction from an issue, snippet, or merge request. This feature was introduced in 8.9
+	 * Retrieves a specified emoji reaction from a comment on a snippet. This endpoint can be accessed without authentication if the comment is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4873,7 +4892,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Only an administrator or the author of the reaction can delete an emoji reaction. This feature was introduced in 8.9
+	 * Deletes a specified emoji reaction from a comment on a snippet. Only an administrator or the user who added the reaction can delete it.
 	 *
 	 * `DELETE /api/v4/projects/{id}/snippets/{snippet_id}/notes/{note_id}/award_emoji/{award_id}` — risk: medium
 	 */
@@ -4895,7 +4914,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Lists all badges for a specified project, including group badges.
 	 *
 	 * `GET /api/v4/projects/{id}/badges` — risk: medium
 	 */
@@ -4917,7 +4936,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Creates a badge for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/badges` — risk: medium
 	 */
@@ -4939,7 +4958,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Previews the final `link_url` and `image_url` for a specified project after resolving the placeholder interpolation.
 	 *
 	 * `GET /api/v4/projects/{id}/badges/render` — risk: medium
 	 */
@@ -4961,7 +4980,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Retrieves a specified badge for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/badges/{badge_id}` — risk: medium
 	 */
@@ -4983,7 +5002,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Updates a specified badge for a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/badges/{badge_id}` — risk: medium
 	 */
@@ -5005,7 +5024,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Deletes a specified badge from a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/badges/{badge_id}` — risk: medium
 	 */
@@ -5027,7 +5046,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a project repository branches
+	 * Lists all repository branches from a specified project, sorted alphabetically by name. Search by name, or use regular expressions to find specific branch patterns. Returns detailed information about t
 	 *
 	 * `GET /api/v4/projects/{id}/repository/branches` — risk: medium
 	 */
@@ -5049,7 +5068,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create branch
+	 * Creates a branch in the repository.
 	 *
 	 * `POST /api/v4/projects/{id}/repository/branches` — risk: medium
 	 */
@@ -5071,7 +5090,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single repository branch
+	 * Retrieves a specified project repository branch.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/branches/{branch}` — risk: medium
 	 */
@@ -5093,7 +5112,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a branch
+	 * Deletes a specified branch from the repository.
 	 *
 	 * `DELETE /api/v4/projects/{id}/repository/branches/{branch}` — risk: medium
 	 */
@@ -5159,7 +5178,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete all merged branches
+	 * Deletes all branches that are merged into the default branch for a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/repository/merged_branches` — risk: medium
 	 */
@@ -5203,7 +5222,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.10
+	 * Retrieves the artifacts archive for the latest successful job on a specified branch or tag.
 	 *
 	 * `GET /api/v4/projects/{id}/jobs/artifacts/{ref_name}/download` — risk: medium
 	 */
@@ -5247,7 +5266,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.9
+	 * Deletes job artifacts from a specified job in a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/jobs/{job_id}/artifacts` — risk: medium
 	 */
@@ -5269,7 +5288,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Lists all files and directories in the artifacts archive without extracting them
+	 * Lists all files in a specified artifacts archive without extracting them.
 	 *
 	 * `GET /api/v4/projects/{id}/jobs/{job_id}/artifacts/tree` — risk: medium
 	 */
@@ -5291,7 +5310,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Keep the artifacts to prevent them from being deleted
+	 * Retains job artifacts. Prevents artifacts for a job from being automatically deleted when they reach their expiration date.
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/artifacts/keep` — risk: medium
 	 */
@@ -5313,7 +5332,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Expire the artifacts files from a project
+	 * Deletes job artifacts from all jobs in a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/artifacts` — risk: medium
 	 */
@@ -5335,7 +5354,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a projects jobs
+	 * Lists all jobs for a specified project. By default, this request returns 20 results at a time because the API results are paginated.
 	 *
 	 * `GET /api/v4/projects/{id}/jobs` — risk: medium
 	 */
@@ -5357,7 +5376,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a specific job of a project
+	 * Retrieves a job with the specified job ID.
 	 *
 	 * `GET /api/v4/projects/{id}/jobs/{job_id}` — risk: medium
 	 */
@@ -5379,7 +5398,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a trace of a specific job of a project
+	 * Retrieves a log file for a job.
 	 *
 	 * `GET /api/v4/projects/{id}/jobs/{job_id}/trace` — risk: medium
 	 */
@@ -5401,7 +5420,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Cancel a specific job of a project
+	 * Cancels a specified job in a project.
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/cancel` — risk: medium
 	 */
@@ -5423,7 +5442,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Retry a specific job of a project
+	 * Retries a specified job in a project.
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/retry` — risk: medium
 	 */
@@ -5445,7 +5464,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Erase job (remove artifacts and the trace)
+	 * Erases a specified job in a project. This removes job artifacts and the job log.
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/erase` — risk: medium
 	 */
@@ -5467,7 +5486,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was added in GitLab 8.11
+	 * Runs a specified job. For a job in manual status, triggers an action to start the job.
 	 *
 	 * `POST /api/v4/projects/{id}/jobs/{job_id}/play` — risk: medium
 	 */
@@ -5489,7 +5508,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all resource groups for a project
+	 * Lists all resource groups for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/resource_groups` — risk: medium
 	 */
@@ -5511,7 +5530,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a specific resource group
+	 * Retrieves a specified resource group for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/resource_groups/{key}` — risk: medium
 	 */
@@ -5533,7 +5552,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates an existing resource group's properties.
+	 * Updates the properties for a specified resource group. It returns `200` if the resource group was successfully updated. In case of an error, a status code `400` is returned.
 	 *
 	 * `PUT /api/v4/projects/{id}/resource_groups/{key}` — risk: medium
 	 */
@@ -5555,7 +5574,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Show current job for a specific resource group
+	 * Retrieves the current job for a specified resource group in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/resource_groups/{key}/current_job` — risk: medium
 	 */
@@ -5577,7 +5596,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List upcoming jobs for a specific resource group
+	 * Lists all upcoming jobs for a specified resource group.
 	 *
 	 * `GET /api/v4/projects/{id}/resource_groups/{key}/upcoming_jobs` — risk: medium
 	 */
@@ -5621,7 +5640,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Assign an available project runner to the project.
+	 * Assigns an available project runner to a project.
 	 *
 	 * `POST /api/v4/projects/{id}/runners` — risk: medium
 	 */
@@ -5643,7 +5662,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * It is not possible to unassign a runner from the owner project. If so, an error is returned. Use the call to delete a runner instead.
+	 * Unassigns a specified project runner from a project. You cannot unassign a runner from the owner project. Use the delete a runner operation instead.
 	 *
 	 * `DELETE /api/v4/projects/{id}/runners/{runner_id}` — risk: medium
 	 */
@@ -5665,7 +5684,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Reset runner registration token
+	 * Resets the runner registration token for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/runners/reset_registration_token` — risk: medium
 	 */
@@ -5687,7 +5706,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get list of secure files in a project
+	 * Lists all secure files for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/secure_files` — risk: medium
 	 */
@@ -5709,7 +5728,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a secure file
+	 * Creates a secure file in a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/secure_files` — risk: medium
 	 */
@@ -5731,7 +5750,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the details of a specific secure file in a project
+	 * Retrieves details of a specified secure file in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/secure_files/{secure_file_id}` — risk: medium
 	 */
@@ -5753,7 +5772,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove a secure file
+	 * Deletes a specified secure file from a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/secure_files/{secure_file_id}` — risk: medium
 	 */
@@ -5775,7 +5794,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Download secure file
+	 * Downloads the contents of a specified secure file in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/secure_files/{secure_file_id}/download` — risk: medium
 	 */
@@ -5797,7 +5816,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Lists all pipelines in a project. By default, child pipelines are not included in the results. To return child pipelines, set `source` to `parent_pipeline`.
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines` — risk: medium
 	 */
@@ -5819,7 +5838,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.14
+	 * Creates a pipeline in the specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline` — risk: medium
 	 */
@@ -5841,7 +5860,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.3
+	 * Retrieves the latest pipeline for the most recent commit on a specified ref in a project. If no pipeline exists for the commit, a `403` status code is returned. Use the `page` and `per_page` paginatio
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/latest` — risk: medium
 	 */
@@ -5863,7 +5882,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11
+	 * Retrieves a specified pipeline from a project. You can also get a child pipeline.
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}` — risk: medium
 	 */
@@ -5885,7 +5904,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.6
+	 * Deletes a specified pipeline for a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/pipelines/{pipeline_id}` — risk: medium
 	 */
@@ -5907,7 +5926,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get pipeline jobs
+	 * Lists all jobs for a specified pipeline.
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/jobs` — risk: medium
 	 */
@@ -5929,7 +5948,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get pipeline bridge jobs
+	 * Deprecated in GitLab 19.2. Use trigger_jobs endpoint instead.
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/bridges` — risk: medium
 	 */
@@ -5951,7 +5970,29 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.11
+	 * Lists all trigger jobs for a specified pipeline.
+	 *
+	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/trigger_jobs` — risk: medium
+	 */
+	async triggerJobs(id: string, pipelineId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4ProjectsIdPipelinesPipelineIdTriggerJobs",
+			namespace: "projects",
+			method: "triggerJobs",
+			http: "get",
+			path: `/api/v4/projects/${id}/pipelines/${pipelineId}/trigger_jobs`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["triggerJobs"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Lists all pipeline variables for a specified pipeline.
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/variables` — risk: medium
 	 */
@@ -5973,7 +6014,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.0.
+	 * Retrieves a test report for a pipeline.
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/test_report` — risk: medium
 	 */
@@ -5995,7 +6036,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.2
+	 * Retrieves a test report summary for a pipeline.
 	 *
 	 * `GET /api/v4/projects/{id}/pipelines/{pipeline_id}/test_report_summary` — risk: medium
 	 */
@@ -6017,7 +6058,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.6
+	 * Updates pipeline metadata. The metadata contains the name of the pipeline. This feature was introduced in GitLab 16.6.
 	 *
 	 * `PUT /api/v4/projects/{id}/pipelines/{pipeline_id}/metadata` — risk: medium
 	 */
@@ -6039,7 +6080,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Retries failed or canceled jobs in a pipeline. If there are no failed or canceled jobs in the pipeline, calling this endpoint has no effect.
 	 *
 	 * `POST /api/v4/projects/{id}/pipelines/{pipeline_id}/retry` — risk: medium
 	 */
@@ -6061,7 +6102,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Cancels all jobs in a specified pipeline.
 	 *
 	 * `POST /api/v4/projects/{id}/pipelines/{pipeline_id}/cancel` — risk: medium
 	 */
@@ -6083,7 +6124,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all pipeline schedules
+	 * Lists all pipeline schedules for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules` — risk: medium
 	 */
@@ -6105,7 +6146,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new pipeline schedule
+	 * Creates a pipeline schedule.
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules` — risk: medium
 	 */
@@ -6127,7 +6168,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single pipeline schedule
+	 * Retrieves a pipeline schedule for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}` — risk: medium
 	 */
@@ -6149,7 +6190,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Edit a pipeline schedule
+	 * Updates a pipeline schedule for a project. After the update is done, it is rescheduled automatically.
 	 *
 	 * `PUT /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}` — risk: medium
 	 */
@@ -6171,7 +6212,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a pipeline schedule
+	 * Deletes a pipeline schedule for a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}` — risk: medium
 	 */
@@ -6193,7 +6234,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all pipelines triggered from a pipeline schedule
+	 * Lists all pipelines triggered by a pipeline schedule in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/pipelines` — risk: medium
 	 */
@@ -6215,7 +6256,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Take ownership of a pipeline schedule
+	 * Creates or updates the owner of a pipeline schedule for a project.
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/take_ownership` — risk: medium
 	 */
@@ -6237,7 +6278,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was added in GitLab 12.8
+	 * Runs a pipeline schedule immediately. The next scheduled run of this pipeline is not affected.
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/play` — risk: medium
 	 */
@@ -6259,7 +6300,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new pipeline schedule variable
+	 * Creates a variable for a pipeline schedule.
 	 *
 	 * `POST /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables` — risk: medium
 	 */
@@ -6281,7 +6322,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single pipeline schedule variable
+	 * Retrieves a specified variable for a pipeline schedule.
 	 *
 	 * `GET /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}` — risk: medium
 	 */
@@ -6303,7 +6344,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Edit a pipeline schedule variable
+	 * Updates a variable for a pipeline schedule.
 	 *
 	 * `PUT /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}` — risk: medium
 	 */
@@ -6325,7 +6366,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a pipeline schedule variable
+	 * Deletes a specified variable for a pipeline schedule.
 	 *
 	 * `DELETE /api/v4/projects/{id}/pipeline_schedules/{pipeline_schedule_id}/variables/{key}` — risk: medium
 	 */
@@ -6347,7 +6388,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Trigger a GitLab project pipeline
+	 * Triggers a pipeline with a token. With a CI/CD job token, the triggered pipeline is a multi-project pipeline. The job that authenticates the request becomes associated with the upstream pipeline, whic
 	 *
 	 * `POST /api/v4/projects/{id}/(ref/{ref}/)trigger/pipeline` — risk: medium
 	 */
@@ -6369,7 +6410,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get trigger tokens list
+	 * Lists all pipeline trigger tokens for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/triggers` — risk: medium
 	 */
@@ -6391,7 +6432,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a trigger token
+	 * Creates a pipeline trigger token for a project.
 	 *
 	 * `POST /api/v4/projects/{id}/triggers` — risk: medium
 	 */
@@ -6413,7 +6454,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get specific trigger token of a project
+	 * Retrieves details of a pipeline trigger token for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/triggers/{trigger_id}` — risk: medium
 	 */
@@ -6435,7 +6476,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update a trigger token
+	 * Updates a pipeline trigger token for a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/triggers/{trigger_id}` — risk: medium
 	 */
@@ -6457,7 +6498,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a trigger token
+	 * Deletes a pipeline trigger token for a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/triggers/{trigger_id}` — risk: medium
 	 */
@@ -6479,7 +6520,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get project variables
+	 * Lists all variables for a project. Use the `page` and `per_page` pagination parameters to control the pagination of results.
 	 *
 	 * `GET /api/v4/projects/{id}/variables` — risk: medium
 	 */
@@ -6501,7 +6542,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new variable in a project
+	 * Creates a variable. If a variable with the same `key` already exists, the variable must have a different `environment_scope`. Otherwise, GitLab returns a message similar to: `VARIABLE_NAME has already
 	 *
 	 * `POST /api/v4/projects/{id}/variables` — risk: medium
 	 */
@@ -6523,7 +6564,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the details of a single variable from a project
+	 * Retrieves details of a specified variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `GET /api/v4/projects/{id}/variables/{key}` — risk: medium
 	 */
@@ -6545,7 +6586,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an existing variable from a project
+	 * Updates a project variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `PUT /api/v4/projects/{id}/variables/{key}` — risk: medium
 	 */
@@ -6567,7 +6608,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete an existing variable from a project
+	 * Deletes a project variable. If there are multiple variables with the same key, use `filter` to select the correct `environment_scope`.
 	 *
 	 * `DELETE /api/v4/projects/{id}/variables/{key}` — risk: medium
 	 */
@@ -6589,7 +6630,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.0. Returns a list of tokens for an agent.
+	 * Lists all active tokens for an agent. You must have the Developer, Maintainer, or Owner role to use this endpoint.
 	 *
 	 * `GET /api/v4/projects/{id}/cluster_agents/{agent_id}/tokens` — risk: medium
 	 */
@@ -6611,7 +6652,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.0. Creates a new token for an agent.
+	 * Creates a token for an agent. You must have the Maintainer or Owner role to use this endpoint. An agent can have only two active tokens at one time.
 	 *
 	 * `POST /api/v4/projects/{id}/cluster_agents/{agent_id}/tokens` — risk: medium
 	 */
@@ -6633,7 +6674,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.0. Gets a single agent token.
+	 * Retrieves a specified agent token. You must have the Developer, Maintainer, or Owner role to use this endpoint. Returns a `404` if the agent token has been revoked.
 	 *
 	 * `GET /api/v4/projects/{id}/cluster_agents/{agent_id}/tokens/{token_id}` — risk: medium
 	 */
@@ -6655,7 +6696,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.0. Revokes an agent token.
+	 * Revokes an agent token. You must have the Maintainer or Owner role to use this endpoint.
 	 *
 	 * `DELETE /api/v4/projects/{id}/cluster_agents/{agent_id}/tokens/{token_id}` — risk: medium
 	 */
@@ -6677,7 +6718,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.10. Returns the list of agents registered for the project.
+	 * Lists all agents registered for the project. You must have the Developer, Maintainer, or Owner role to use this endpoint.
 	 *
 	 * `GET /api/v4/projects/{id}/cluster_agents` — risk: medium
 	 */
@@ -6699,7 +6740,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.10. Registers an agent to the project.
+	 * Creates an agent for the project. You must have the Maintainer or Owner role to use this endpoint.
 	 *
 	 * `POST /api/v4/projects/{id}/cluster_agents` — risk: medium
 	 */
@@ -6721,7 +6762,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.10. Gets a single agent details.
+	 * Retrieves details on a specified agent. You must have the Developer, Maintainer, or Owner role to use this endpoint.
 	 *
 	 * `GET /api/v4/projects/{id}/cluster_agents/{agent_id}` — risk: medium
 	 */
@@ -6743,7 +6784,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.10. Deletes an existing agent registration.
+	 * Deletes an existing agent registration. You must have the Maintainer or Owner role to use this endpoint.
 	 *
 	 * `DELETE /api/v4/projects/{id}/cluster_agents/{agent_id}` — risk: medium
 	 */
@@ -6787,7 +6828,117 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a project repository commits
+	 * Returns newline-delimited JSON, one line per published version, most recently published first. Limited to the 500 most recently published versions.
+	 *
+	 * `GET /api/v4/projects/{id}/packages/cargo/1/{package_name}` — risk: medium
+	 */
+	async retrieve1(id: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4ProjectsIdPackagesCargo1PackageName",
+			namespace: "projects",
+			method: "retrieve1",
+			http: "get",
+			path: `/api/v4/projects/${id}/packages/cargo/1/${packageName}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieve1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Returns newline-delimited JSON, one line per published version, most recently published first. Limited to the 500 most recently published versions.
+	 *
+	 * `GET /api/v4/projects/{id}/packages/cargo/2/{package_name}` — risk: medium
+	 */
+	async retrieve2(id: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4ProjectsIdPackagesCargo2PackageName",
+			namespace: "projects",
+			method: "retrieve2",
+			http: "get",
+			path: `/api/v4/projects/${id}/packages/cargo/2/${packageName}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieve2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Returns newline-delimited JSON, one line per published version, most recently published first. Limited to the 500 most recently published versions.
+	 *
+	 * `GET /api/v4/projects/{id}/packages/cargo/3/{first_char}/{package_name}` — risk: medium
+	 */
+	async retrieve3(id: string, firstChar: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4ProjectsIdPackagesCargo3FirstCharPackageName",
+			namespace: "projects",
+			method: "retrieve3",
+			http: "get",
+			path: `/api/v4/projects/${id}/packages/cargo/3/${firstChar}/${packageName}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieve3"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Returns newline-delimited JSON, one line per published version, most recently published first. Limited to the 500 most recently published versions.
+	 *
+	 * `GET /api/v4/projects/{id}/packages/cargo/{prefix_1}/{prefix_2}/{package_name}` — risk: medium
+	 */
+	async retrieveCargo(id: string, prefix1: string, prefix2: string, packageName: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4ProjectsIdPackagesCargoPrefix1Prefix2PackageName",
+			namespace: "projects",
+			method: "retrieveCargo",
+			http: "get",
+			path: `/api/v4/projects/${id}/packages/cargo/${prefix1}/${prefix2}/${packageName}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveCargo"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * This endpoint serves the .crate file for a given package name and version
+	 *
+	 * `GET /api/v4/projects/{id}/packages/cargo/{package_name}/{package_version}/download` — risk: medium
+	 */
+	async packagescargoDownload(id: string, packageName: string, packageVersion: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4ProjectsIdPackagesCargoPackageNamePackageVersionDownload",
+			namespace: "projects",
+			method: "packagescargoDownload",
+			http: "get",
+			path: `/api/v4/projects/${id}/packages/cargo/${packageName}/${packageVersion}/download`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["packagescargoDownload"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Lists all commits for a specified project repository.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits` — risk: medium
 	 */
@@ -6831,7 +6982,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a specific commit of a project
+	 * Retrieves a specified commit identified by the commit hash or name of a branch or tag.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}` — risk: medium
 	 */
@@ -6853,7 +7004,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the diff for a specific commit of a project
+	 * Retrieves the diff of a commit in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/diff` — risk: medium
 	 */
@@ -6875,7 +7026,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a commit's comments
+	 * Lists all the comments of a commit in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/comments` — risk: medium
 	 */
@@ -6897,7 +7048,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Post comment to commit
+	 * Creates a comment on a commit. To comment on a specific line in a file, specify the full commit SHA, `path`, `line`, and set `line_type` to `new`.
 	 *
 	 * `POST /api/v4/projects/{id}/repository/commits/{sha}/comments` — risk: medium
 	 */
@@ -6919,7 +7070,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the sequence count of a commit SHA
+	 * Retrieves the commit sequence for a specified commit.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/sequence` — risk: medium
 	 */
@@ -6941,7 +7092,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.15
+	 * Cherry-picks a commit to a specified branch.
 	 *
 	 * `POST /api/v4/projects/{id}/repository/commits/{sha}/cherry_pick` — risk: medium
 	 */
@@ -6963,7 +7114,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.5
+	 * Reverts a commit in a specified branch.
 	 *
 	 * `POST /api/v4/projects/{id}/repository/commits/{sha}/revert` — risk: medium
 	 */
@@ -6985,7 +7136,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6
+	 * Lists all references (from branches or tags) a commit is pushed to. The pagination parameters `page` and `per_page` can be used to restrict the list of references.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/refs` — risk: medium
 	 */
@@ -7007,7 +7158,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get Merge Requests associated with a commit
+	 * Lists all merge requests associated with a specified commit.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/merge_requests` — risk: medium
 	 */
@@ -7029,7 +7180,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a commit's signature
+	 * Retrieves the signature from a commit, if it is signed. For unsigned commits, it results in a 404 response.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/signature` — risk: medium
 	 */
@@ -7051,7 +7202,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a commit's statuses
+	 * Lists all commit statuses for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/commits/{sha}/statuses` — risk: medium
 	 */
@@ -7073,7 +7224,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Post status to a commit
+	 * Creates or updates the status of a commit represented by a job in an `external` stage. If the commit is associated with a merge request, target the commit in the merge request source branch.
 	 *
 	 * `POST /api/v4/projects/{id}/statuses/{sha}` — risk: medium
 	 */
@@ -7095,7 +7246,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.1
+	 * Creates a Composer package from a specified Git tag or branch for a project.
 	 *
 	 * `POST /api/v4/projects/{id}/packages/composer` — risk: medium
 	 */
@@ -7117,7 +7268,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.2
+	 * Retrieves an authentication token. Creates a JSON Web Token (JWT) for use as a Bearer header in other requests to the package registry.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/users/authenticate` — risk: medium
 	 */
@@ -7139,7 +7290,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Verifies authentication credentials for a Conan package registry.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/users/check_credentials` — risk: medium
 	 */
@@ -7161,7 +7312,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Searches the instance for a specified Conan package.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/search` — risk: low
 	 */
@@ -7183,7 +7334,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.0
+	 * Retrieves the metadata for all package references of a specified package. This feature was introduced in GitLab 18.0.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/search` — risk: low
 	 */
@@ -7205,7 +7356,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.2
+	 * Verifies availability of a Conan repository.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/ping` — risk: medium
 	 */
@@ -7227,7 +7378,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a snapshot of the files for a specified Conan package and reference. The snapshot is a list of filenames with their associated MD5 hash.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}` — risk: medium
 	 */
@@ -7249,7 +7400,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a snapshot of the files for a specified Conan recipe. The snapshot is a list of filenames with their associated MD5 hash.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}` — risk: medium
 	 */
@@ -7271,7 +7422,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Deletes a specified Conan recipe and associated package files from the package registry.
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}` — risk: medium
 	 */
@@ -7293,7 +7444,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a manifest that includes a list of files and associated download URLs for a specified package.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest` — risk: medium
 	 */
@@ -7315,7 +7466,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a manifest that includes a list of files and associated download URLs for a specified recipe.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/digest` — risk: medium
 	 */
@@ -7337,7 +7488,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Lists all files and associated download URLs for a specified package in the package registry. Returns the same payload as the package manifest endpoint.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls` — risk: medium
 	 */
@@ -7359,7 +7510,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Lists all files and associated download URLs for a specified recipe in the package registry. Returns the same payload as the recipe manifest endpoint.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/download_urls` — risk: medium
 	 */
@@ -7381,7 +7532,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Lists all the upload URLs for a specified collection of package files. The request must include a JSON object with the name and size of the individual files.
 	 *
 	 * `POST /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls` — risk: medium
 	 */
@@ -7403,7 +7554,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Lists all the upload URLs for a specified collection of recipe files. The request must include a JSON object with the name and size of the individual files.
 	 *
 	 * `POST /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/upload_urls` — risk: medium
 	 */
@@ -7425,7 +7576,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Retrieves a specified recipe file from the package registry. You must use the download URL returned from the recipe download URLs endpoint.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}` — risk: medium
 	 */
@@ -7447,7 +7598,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Uploads a specified recipe file to the package registry. You must use the upload URL returned from the recipe upload URLs endpoint.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}` — risk: medium
 	 */
@@ -7469,7 +7620,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Authorizes the Conan recipe file.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize` — risk: medium
 	 */
@@ -7491,7 +7642,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a specified package file from the package registry. You must use the download URL returned from the package download URLs endpoint.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}` — risk: medium
 	 */
@@ -7513,7 +7664,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Uploads a specified package file to the package registry. You must use the upload URL returned from the package upload URLs endpoint.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}` — risk: medium
 	 */
@@ -7535,7 +7686,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Authorizes the Conan package file.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize` — risk: medium
 	 */
@@ -7557,7 +7708,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.2
+	 * Retrieves an authentication token. Creates a JSON Web Token (JWT) for use as a Bearer header in other requests to the package registry.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/users/authenticate` — risk: medium
 	 */
@@ -7579,7 +7730,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Verifies authentication credentials for a Conan package registry.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/users/check_credentials` — risk: medium
 	 */
@@ -7601,7 +7752,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Searches the instance for a specified Conan package.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/search` — risk: low
 	 */
@@ -7623,7 +7774,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.0
+	 * Retrieves the metadata for all package references of a specified package. This feature was introduced in GitLab 18.0.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/search` — risk: low
 	 */
@@ -7645,7 +7796,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.11
+	 * Retrieves the revision hash and creation date of the latest package recipe. This feature was introduced in GitLab 17.11.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/latest` — risk: medium
 	 */
@@ -7667,7 +7818,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.11
+	 * Lists all revisions for a package recipe. This feature was introduced in GitLab 17.11.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions` — risk: medium
 	 */
@@ -7689,7 +7840,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.1
+	 * Deletes a specified recipe revision from the registry. If the recipe revision is the only one, the package is deleted as well. This feature was introduced in GitLab 18.1.
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}` — risk: medium
 	 */
@@ -7711,7 +7862,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.11
+	 * Lists all recipe files from the package registry. This feature was introduced in GitLab 17.11.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files` — risk: medium
 	 */
@@ -7733,7 +7884,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.8
+	 * Retrieves a specified recipe file from the package registry. This feature was introduced in GitLab 17.8.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}` — risk: medium
 	 */
@@ -7755,7 +7906,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.10
+	 * Uploads a specified recipe file to the package registry. This feature was introduced in GitLab 17.10.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}` — risk: medium
 	 */
@@ -7777,7 +7928,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.10
+	 * Authorizes the Conan recipe file. This feature was introduced in GitLab 17.10.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/files/{file_name}/authorize` — risk: medium
 	 */
@@ -7799,7 +7950,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.1
+	 * Retrieves the metadata for all package references associated with a specified recipe revision. This feature was introduced in GitLab 18.1.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/search` — risk: low
 	 */
@@ -7821,7 +7972,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.11
+	 * Retrieves the revision hash and creation date of the latest package revision for a specified recipe revision and package reference. This feature was introduced in GitLab 17.11.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/latest` — risk: medium
 	 */
@@ -7843,7 +7994,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.0
+	 * Lists all package revisions for a specified recipe revision and package reference. This feature was introduced in GitLab 18.0.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions` — risk: medium
 	 */
@@ -7865,7 +8016,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.1
+	 * Deletes a specified package revision from the registry. If the package reference has only one package revision, the package reference is deleted as well. This feature was introduced in GitLab 18.1.
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}` — risk: medium
 	 */
@@ -7887,7 +8038,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.0
+	 * Lists all package files. This feature was introduced in GitLab 18.0.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files` — risk: medium
 	 */
@@ -7909,7 +8060,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.11
+	 * Retrieves a specified package file from the package registry. This feature was introduced in GitLab 17.11.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files/{file_name}` — risk: medium
 	 */
@@ -7931,7 +8082,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.11
+	 * Uploads a specified package file to the package registry. This feature was introduced in GitLab 17.11.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files/{file_name}` — risk: medium
 	 */
@@ -7953,7 +8104,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.11
+	 * Authorizes the Conan package file. This feature was introduced in GitLab 17.11.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/conan/v2/conans/{package_name}/{package_version}/{package_username}/{package_channel}/revisions/{recipe_revision}/packages/{conan_package_reference}/revisions/{package_revision}/files/{file_name}/authorize` — risk: medium
 	 */
@@ -7975,7 +8126,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.2
+	 * Downloads a specified Debian package file for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/debian/pool/{distribution}/{letter}/{package_name}/{package_version}/{file_name}` — risk: medium
 	 */
@@ -7997,7 +8148,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.0
+	 * Uploads a Debian package file for a specified project.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/debian/{file_name}` — risk: medium
 	 */
@@ -8041,7 +8192,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of a project's deploy keys.
+	 * Lists all deploy keys for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/deploy_keys` — risk: medium
 	 */
@@ -8063,7 +8214,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a new deploy key for a project. If the deploy key already exists in another project, it's joined to the current project only if the original one is accessible by the same user.
+	 * Adds a deploy key for a specified project. If the deploy key already exists in another project, it is joined to the current project only if the original one is accessible by the same user.
 	 *
 	 * `POST /api/v4/projects/{id}/deploy_keys` — risk: medium
 	 */
@@ -8085,7 +8236,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single key.
+	 * Retrieves a specified deploy key.
 	 *
 	 * `GET /api/v4/projects/{id}/deploy_keys/{key_id}` — risk: medium
 	 */
@@ -8129,7 +8280,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a deploy key from the project. If the deploy key is used only for this project, it's deleted from the system.
+	 * Deletes a deploy key from the project. If the deploy key is used only for this project, it is deleted from the system.
 	 *
 	 * `DELETE /api/v4/projects/{id}/deploy_keys/{key_id}` — risk: medium
 	 */
@@ -8151,7 +8302,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Enables a deploy key for a project so this can be used. Returns the enabled key, with a status code 201 when successful. This feature was added in GitLab 8.11.
+	 * Enables a deploy key for a project so this can be used. Returns the enabled key, with a status code 201 when successful.
 	 *
 	 * `POST /api/v4/projects/{id}/deploy_keys/{key_id}/enable` — risk: medium
 	 */
@@ -8173,7 +8324,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of a project's deploy tokens. This feature was introduced in GitLab 12.9.
+	 * Lists all project deploy tokens.
 	 *
 	 * `GET /api/v4/projects/{id}/deploy_tokens` — risk: medium
 	 */
@@ -8195,7 +8346,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a new deploy token for a project. This feature was introduced in GitLab 12.9.
+	 * Creates a project deploy token.
 	 *
 	 * `POST /api/v4/projects/{id}/deploy_tokens` — risk: medium
 	 */
@@ -8217,7 +8368,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single project's deploy token by ID. This feature was introduced in GitLab 14.9.
+	 * Retrieves a project deploy token.
 	 *
 	 * `GET /api/v4/projects/{id}/deploy_tokens/{token_id}` — risk: medium
 	 */
@@ -8239,7 +8390,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.9.
+	 * Deletes a project deploy token.
 	 *
 	 * `DELETE /api/v4/projects/{id}/deploy_tokens/{token_id}` — risk: medium
 	 */
@@ -8261,7 +8412,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of deployments in a project. This feature was introduced in GitLab 8.11.
+	 * Lists all deployments in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/deployments` — risk: medium
 	 */
@@ -8283,7 +8434,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4.
+	 * Creates a deployment.
 	 *
 	 * `POST /api/v4/projects/{id}/deployments` — risk: medium
 	 */
@@ -8305,7 +8456,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.11.
+	 * Retrieves a specified deployment.
 	 *
 	 * `GET /api/v4/projects/{id}/deployments/{deployment_id}` — risk: medium
 	 */
@@ -8327,7 +8478,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4.
+	 * Updates a specified deployment.
 	 *
 	 * `PUT /api/v4/projects/{id}/deployments/{deployment_id}` — risk: medium
 	 */
@@ -8349,7 +8500,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a specific deployment that is not currently the last deployment for an environment or in a running state. This feature was introduced in GitLab 15.3.
+	 * Deletes a specified deployment that is not currently the last deployment for an environment or in a `running` state.
 	 *
 	 * `DELETE /api/v4/projects/{id}/deployments/{deployment_id}` — risk: medium
 	 */
@@ -8371,7 +8522,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Retrieves the list of merge requests shipped with a given deployment. This feature was introduced in GitLab 12.7.
+	 * Lists all merge requests shipped with a specified deployment.
 	 *
 	 * `GET /api/v4/projects/{id}/deployments/{deployment_id}/merge_requests` — risk: medium
 	 */
@@ -8393,7 +8544,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.8.
+	 * Approves or rejects a deployment.
 	 *
 	 * `POST /api/v4/projects/{id}/deployments/{deployment_id}/approval` — risk: medium
 	 */
@@ -8415,7 +8566,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of merge request draft notes
+	 * Lists all merge request draft notes.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes` — risk: medium
 	 */
@@ -8437,7 +8588,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new draft note
+	 * Creates a draft note for a specified merge request.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes` — risk: medium
 	 */
@@ -8459,7 +8610,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single draft note
+	 * Retrieves a draft note for a specified merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}` — risk: medium
 	 */
@@ -8481,7 +8632,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Modify an existing draft note
+	 * Updates a draft note for a specified merge request.
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}` — risk: medium
 	 */
@@ -8503,7 +8654,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a draft note
+	 * Deletes a draft note for a specified merge request.
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}` — risk: medium
 	 */
@@ -8525,7 +8676,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Publish a pending draft note
+	 * Publishes a draft note for a specified merge request.
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/{draft_note_id}/publish` — risk: medium
 	 */
@@ -8547,11 +8698,11 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Bulk publish all pending draft notes
+	 * Publishes all pending draft notes for the current user on the specified merge request. Optionally sets the reviewer state and posts a summary note.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/draft_notes/bulk_publish` — risk: medium
 	 */
-	async bulkPublish(id: string, mergeRequestIid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async bulkPublish(id: string, mergeRequestIid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4ProjectsIdMergeRequestsMergeRequestIidDraftNotesBulkPublish",
 			namespace: "projects",
@@ -8559,7 +8710,7 @@ export class ProjectsResource extends RpcTarget {
 			http: "post",
 			path: `/api/v4/projects/${id}/merge_requests/${mergeRequestIid}/draft_notes/bulk_publish`,
 			risk: "medium",
-			body: undefined,
+			body,
 			overrides: this.overrides["bulkPublish"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
@@ -8569,7 +8720,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all environments for a given project. This feature was introduced in GitLab 8.11.
+	 * Lists all environments for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/environments` — risk: medium
 	 */
@@ -8591,7 +8742,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a new environment with the given name and `external_url`. It returns `201` if the environment was successfully created, `400` for wrong parameters. This feature was introduced in GitLab 8.11.
+	 * Creates an environment for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/environments` — risk: medium
 	 */
@@ -8613,7 +8764,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a specific environment
+	 * Retrieves a specified environment for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/environments/{environment_id}` — risk: medium
 	 */
@@ -8635,7 +8786,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates an existing environment name and/or `external_url`. It returns `200` if the environment was successfully updated. In case of an error, a status code `400` is returned. This feature was introdu
+	 * Updates an existing environment for a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/environments/{environment_id}` — risk: medium
 	 */
@@ -8657,7 +8808,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * It returns 204 if the environment was successfully deleted, and 404 if the environment does not exist. This feature was introduced in GitLab 8.11.
+	 * Deletes an environment from a project. The environment must be stopped first.
 	 *
 	 * `DELETE /api/v4/projects/{id}/environments/{environment_id}` — risk: medium
 	 */
@@ -8679,7 +8830,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * It schedules for deletion multiple environments that have already been stopped and are in the review app folder. The actual deletion is performed after 1 week from the time of execution. By default, i
+	 * Schedules multiple stopped review apps for deletion. The deletion is performed after 1 week. By default, only environments 30 days or older are deleted.
 	 *
 	 * `DELETE /api/v4/projects/{id}/environments/review_apps` — risk: medium
 	 */
@@ -8701,7 +8852,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * It returns 200 if the environment was successfully stopped.
+	 * Stops a specified running environment.
 	 *
 	 * `POST /api/v4/projects/{id}/environments/{environment_id}/stop` — risk: medium
 	 */
@@ -8723,7 +8874,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * It returns `200` if stale environment check was scheduled successfully
+	 * Stops all environments that were last modified or deployed to before a specified date. Excludes protected environments.
 	 *
 	 * `POST /api/v4/projects/{id}/environments/stop_stale` — risk: medium
 	 */
@@ -8745,7 +8896,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List all client keys. This feature was introduced in GitLab 14.3.
+	 * Lists all integrated error tracking client keys for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/error_tracking/client_keys` — risk: medium
 	 */
@@ -8767,7 +8918,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a new client key for a project. The public key attribute is generated automatically.This feature was introduced in GitLab 14.3.
+	 * Creates a client key for integrated error tracking in a specified project. The public key attribute is generated automatically.
 	 *
 	 * `POST /api/v4/projects/{id}/error_tracking/client_keys` — risk: medium
 	 */
@@ -8789,7 +8940,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a client key from the project. This feature was introduced in GitLab 14.3.
+	 * Deletes an integrated error tracking client key from a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/error_tracking/client_keys/{key_id}` — risk: medium
 	 */
@@ -8811,7 +8962,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get error tracking settings for the project. This feature was introduced in GitLab 12.7.
+	 * Retrieves the Error Tracking settings for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/error_tracking/settings` — risk: medium
 	 */
@@ -8833,7 +8984,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update Error Tracking settings for a project. Only for users with Maintainer role for the project.
+	 * Creates Error Tracking settings for a specified project. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `PUT /api/v4/projects/{id}/error_tracking/settings` — risk: medium
 	 */
@@ -8855,7 +9006,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * The API allows you to enable or disable the Error Tracking settings for a project.Only for users with the Maintainer role for the project.
+	 * Updates Error Tracking settings for a specified project. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `PATCH /api/v4/projects/{id}/error_tracking/settings` — risk: medium
 	 */
@@ -8877,7 +9028,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets all feature flags of the requested project. This feature was introduced in GitLab 12.5.
+	 * Lists all feature flags of the requested project. Use the `page` and `per_page` pagination parameters to control the pagination of results.
 	 *
 	 * `GET /api/v4/projects/{id}/feature_flags` — risk: medium
 	 */
@@ -8899,7 +9050,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a new feature flag. This feature was introduced in GitLab 12.5.
+	 * Creates a feature flag for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/feature_flags` — risk: medium
 	 */
@@ -8921,7 +9072,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a single feature flag. This feature was introduced in GitLab 12.5.
+	 * Retrieves a specified feature flag.
 	 *
 	 * `GET /api/v4/projects/{id}/feature_flags/{feature_flag_name}` — risk: medium
 	 */
@@ -8943,7 +9094,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates a feature flag. This feature was introduced in GitLab 13.2.
+	 * Updates a specified feature flag.
 	 *
 	 * `PUT /api/v4/projects/{id}/feature_flags/{feature_flag_name}` — risk: medium
 	 */
@@ -8965,7 +9116,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Deletes a feature flag. This feature was introduced in GitLab 12.5.
+	 * Deletes a specified feature flag.
 	 *
 	 * `DELETE /api/v4/projects/{id}/feature_flags/{feature_flag_name}` — risk: medium
 	 */
@@ -8987,7 +9138,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets all feature flag user lists for the requested project. This feature was introduced in GitLab 12.10.
+	 * Lists all feature flag user lists for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/feature_flags_user_lists` — risk: medium
 	 */
@@ -9009,7 +9160,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a feature flag user list. This feature was introduced in GitLab 12.10.
+	 * Creates a feature flag user list in a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/feature_flags_user_lists` — risk: medium
 	 */
@@ -9031,7 +9182,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a feature flag user list. This feature was introduced in GitLab 12.10.
+	 * Retrieves a specified feature flag user list.
 	 *
 	 * `GET /api/v4/projects/{id}/feature_flags_user_lists/{iid}` — risk: medium
 	 */
@@ -9053,7 +9204,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates a feature flag user list. This feature was introduced in GitLab 12.10.
+	 * Updates a specified feature flag user list.
 	 *
 	 * `PUT /api/v4/projects/{id}/feature_flags_user_lists/{iid}` — risk: medium
 	 */
@@ -9075,7 +9226,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Deletes a feature flag user list. This feature was introduced in GitLab 12.10.
+	 * Deletes a specified feature flag user list.
 	 *
 	 * `DELETE /api/v4/projects/{id}/feature_flags_user_lists/{iid}` — risk: medium
 	 */
@@ -9097,7 +9248,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get blame file from the repository
+	 * Retrieves blame history for a specified file in a repository. Each blame range contains lines and their corresponding commit information.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/files/{file_path}/blame` — risk: medium
 	 */
@@ -9119,7 +9270,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get raw file contents from the repository
+	 * Retrieves the raw file contents for a specified file in a repository.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/files/{file_path}/raw` — risk: medium
 	 */
@@ -9141,7 +9292,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a file from the repository
+	 * Retrieves information about a specified file in a repository. This includes information like the name, size, and the file contents. File content is Base64 encoded.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/files/{file_path}` — risk: medium
 	 */
@@ -9163,7 +9314,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create new file in repository
+	 * Creates a file in a specified repository. Use the Commits API to create multiple files with a single request.
 	 *
 	 * `POST /api/v4/projects/{id}/repository/files/{file_path}` — risk: medium
 	 */
@@ -9185,7 +9336,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update existing file in repository
+	 * Updates a specified file in a repository. Use the Commits API to update multiple files with a single request.
 	 *
 	 * `PUT /api/v4/projects/{id}/repository/files/{file_path}` — risk: medium
 	 */
@@ -9207,7 +9358,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete an existing file in repository
+	 * Deletes a specified file in a repository. Use the Commits API to delete multiple files with a single request.
 	 *
 	 * `DELETE /api/v4/projects/{id}/repository/files/{file_path}` — risk: medium
 	 */
@@ -9229,7 +9380,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Paginated list of Freeze Periods, sorted by created_at in ascending order. This feature was introduced in GitLab 13.0.
+	 * Lists all freeze periods for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/freeze_periods` — risk: medium
 	 */
@@ -9251,7 +9402,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a freeze period. This feature was introduced in GitLab 13.0.
+	 * Creates a freeze period for a specified project. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `POST /api/v4/projects/{id}/freeze_periods` — risk: medium
 	 */
@@ -9273,7 +9424,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a freeze period for the given `freeze_period_id`. This feature was introduced in GitLab 13.0.
+	 * Retrieves a freeze period for a specified `freeze_period_id`. You must have the Reporter, Developer, Maintainer, or Owner role for the project.
 	 *
 	 * `GET /api/v4/projects/{id}/freeze_periods/{freeze_period_id}` — risk: medium
 	 */
@@ -9295,7 +9446,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates a freeze period for the given `freeze_period_id`. This feature was introduced in GitLab 13.0.
+	 * Updates a freeze period for a specified `freeze_period_id`. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `PUT /api/v4/projects/{id}/freeze_periods/{freeze_period_id}` — risk: medium
 	 */
@@ -9317,7 +9468,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Deletes a freeze period for the given `freeze_period_id`. This feature was introduced in GitLab 13.0.
+	 * Deletes a freeze period for a specified `freeze_period_id`. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/freeze_periods/{freeze_period_id}` — risk: medium
 	 */
@@ -9339,7 +9490,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.0
+	 * Downloads a specified chart index for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/helm/{channel}/index.yaml` — risk: medium
 	 */
@@ -9361,7 +9512,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.0
+	 * Downloads a specified chart for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/helm/{channel}/charts/{file_name}.tgz` — risk: medium
 	 */
@@ -9405,7 +9556,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.0
+	 * Uploads a specified chart for a project.
 	 *
 	 * `POST /api/v4/projects/{id}/packages/helm/api/{channel}/charts` — risk: medium
 	 */
@@ -9427,7 +9578,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all active integrations.
+	 * Lists all active integrations.
 	 *
 	 * `GET /api/v4/projects/{id}/services` — risk: medium
 	 */
@@ -9449,7 +9600,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Apple App Store integration.
+	 * Creates or updates the Apple App Store integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/apple-app-store` — risk: medium
 	 */
@@ -9471,7 +9622,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Asana integration.
+	 * Creates or updates the Asana integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/asana` — risk: medium
 	 */
@@ -9493,7 +9644,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Assembla integration.
+	 * Creates or updates the Assembla integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/assembla` — risk: medium
 	 */
@@ -9515,7 +9666,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Bamboo integration.
+	 * Creates or updates the Bamboo integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/bamboo` — risk: medium
 	 */
@@ -9537,7 +9688,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Bugzilla integration.
+	 * Creates or updates the Bugzilla integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/bugzilla` — risk: medium
 	 */
@@ -9559,7 +9710,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Buildkite integration.
+	 * Creates or updates the Buildkite integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/buildkite` — risk: medium
 	 */
@@ -9581,7 +9732,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Campfire integration.
+	 * Creates or updates the Campfire integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/campfire` — risk: medium
 	 */
@@ -9603,7 +9754,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Confluence integration.
+	 * Creates or updates the Confluence integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/confluence` — risk: medium
 	 */
@@ -9625,7 +9776,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Custom Issue Tracker integration.
+	 * Creates or updates the Custom Issue Tracker integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/custom-issue-tracker` — risk: medium
 	 */
@@ -9647,7 +9798,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Datadog integration.
+	 * Creates or updates the Datadog integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/datadog` — risk: medium
 	 */
@@ -9669,7 +9820,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Diffblue Cover integration.
+	 * Creates or updates the Diffblue Cover integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/diffblue-cover` — risk: medium
 	 */
@@ -9691,7 +9842,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Discord integration.
+	 * Creates or updates the Discord integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/discord` — risk: medium
 	 */
@@ -9713,7 +9864,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Drone Ci integration.
+	 * Creates or updates the Drone Ci integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/drone-ci` — risk: medium
 	 */
@@ -9735,7 +9886,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Emails On Push integration.
+	 * Creates or updates the Emails On Push integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/emails-on-push` — risk: medium
 	 */
@@ -9757,7 +9908,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set External Wiki integration.
+	 * Creates or updates the External Wiki integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/external-wiki` — risk: medium
 	 */
@@ -9779,7 +9930,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Gitlab Slack Application integration.
+	 * Creates or updates the Gitlab Slack Application integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/gitlab-slack-application` — risk: medium
 	 */
@@ -9801,7 +9952,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Google Play integration.
+	 * Creates or updates the Google Play integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/google-play` — risk: medium
 	 */
@@ -9823,7 +9974,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Hangouts Chat integration.
+	 * Creates or updates the Hangouts Chat integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/hangouts-chat` — risk: medium
 	 */
@@ -9845,7 +9996,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Harbor integration.
+	 * Creates or updates the Harbor integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/harbor` — risk: medium
 	 */
@@ -9867,7 +10018,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Irker integration.
+	 * Creates or updates the Irker integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/irker` — risk: medium
 	 */
@@ -9889,7 +10040,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Jenkins integration.
+	 * Creates or updates the Jenkins integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/jenkins` — risk: medium
 	 */
@@ -9911,7 +10062,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Jira integration.
+	 * Creates or updates the Jira integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/jira` — risk: medium
 	 */
@@ -9933,7 +10084,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Jira Cloud App integration.
+	 * Creates or updates the Jira Cloud App integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/jira-cloud-app` — risk: medium
 	 */
@@ -9955,7 +10106,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Linear integration.
+	 * Creates or updates the Linear integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/linear` — risk: medium
 	 */
@@ -9977,7 +10128,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Matrix integration.
+	 * Creates or updates the Matrix integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/matrix` — risk: medium
 	 */
@@ -9999,7 +10150,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mattermost Slash Commands integration.
+	 * Creates or updates the Mattermost Slash Commands integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/mattermost-slash-commands` — risk: medium
 	 */
@@ -10021,7 +10172,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Packagist integration.
+	 * Creates or updates the Packagist integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/packagist` — risk: medium
 	 */
@@ -10043,7 +10194,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Phorge integration.
+	 * Creates or updates the Phorge integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/phorge` — risk: medium
 	 */
@@ -10065,7 +10216,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pipelines Email integration.
+	 * Creates or updates the Pipelines Email integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/pipelines-email` — risk: medium
 	 */
@@ -10087,7 +10238,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pivotaltracker integration.
+	 * Creates or updates the Pivotaltracker integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/pivotaltracker` — risk: medium
 	 */
@@ -10109,7 +10260,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pumble integration.
+	 * Creates or updates the Pumble integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/pumble` — risk: medium
 	 */
@@ -10131,7 +10282,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pushover integration.
+	 * Creates or updates the Pushover integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/pushover` — risk: medium
 	 */
@@ -10153,7 +10304,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Redmine integration.
+	 * Creates or updates the Redmine integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/redmine` — risk: medium
 	 */
@@ -10175,7 +10326,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Ewm integration.
+	 * Creates or updates the Ewm integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/ewm` — risk: medium
 	 */
@@ -10197,7 +10348,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Youtrack integration.
+	 * Creates or updates the Youtrack integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/youtrack` — risk: medium
 	 */
@@ -10219,7 +10370,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Clickup integration.
+	 * Creates or updates the Clickup integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/clickup` — risk: medium
 	 */
@@ -10241,7 +10392,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Slack integration.
+	 * Creates or updates the Slack integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/slack` — risk: medium
 	 */
@@ -10263,7 +10414,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Microsoft Teams integration.
+	 * Creates or updates the Microsoft Teams integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/microsoft-teams` — risk: medium
 	 */
@@ -10285,7 +10436,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mattermost integration.
+	 * Creates or updates the Mattermost integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/mattermost` — risk: medium
 	 */
@@ -10307,7 +10458,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Teamcity integration.
+	 * Creates or updates the Teamcity integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/teamcity` — risk: medium
 	 */
@@ -10329,7 +10480,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Telegram integration.
+	 * Creates or updates the Telegram integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/telegram` — risk: medium
 	 */
@@ -10351,7 +10502,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Unify Circuit integration.
+	 * Creates or updates the Unify Circuit integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/unify-circuit` — risk: medium
 	 */
@@ -10373,7 +10524,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Webex Teams integration.
+	 * Creates or updates the Webex Teams integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/webex-teams` — risk: medium
 	 */
@@ -10395,7 +10546,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Zentao integration.
+	 * Creates or updates the Zentao integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/zentao` — risk: medium
 	 */
@@ -10417,7 +10568,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Squash Tm integration.
+	 * Creates or updates the Squash Tm integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/squash-tm` — risk: medium
 	 */
@@ -10439,7 +10590,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Github integration.
+	 * Creates or updates the Github integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/github` — risk: medium
 	 */
@@ -10461,7 +10612,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Git Guardian integration.
+	 * Creates or updates the Git Guardian integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/git-guardian` — risk: medium
 	 */
@@ -10483,7 +10634,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Google Cloud Platform Artifact Registry integration.
+	 * Creates or updates the Google Cloud Platform Artifact Registry integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/google-cloud-platform-artifact-registry` — risk: medium
 	 */
@@ -10505,7 +10656,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Google Cloud Platform Workload Identity Federation integration.
+	 * Creates or updates the Google Cloud Platform Workload Identity Federation integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/google-cloud-platform-workload-identity-federation` — risk: medium
 	 */
@@ -10527,7 +10678,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mock Ci integration.
+	 * Creates or updates the Mock Ci integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/mock-ci` — risk: medium
 	 */
@@ -10549,7 +10700,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mock Monitoring integration.
+	 * Creates or updates the Mock Monitoring integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/services/mock-monitoring` — risk: medium
 	 */
@@ -10571,7 +10722,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the integration settings.
+	 * Retrieves the settings for a specified integration.
 	 *
 	 * `GET /api/v4/projects/{id}/services/{slug}` — risk: medium
 	 */
@@ -10593,7 +10744,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Disable the integration. Integration settings are preserved.
+	 * Disables a specified integration. Integration settings are preserved.
 	 *
 	 * `DELETE /api/v4/projects/{id}/services/{slug}` — risk: medium
 	 */
@@ -10615,7 +10766,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Added in GitLab 8.13
+	 * Triggers a slash command for mattermost-slash-commands.
 	 *
 	 * `POST /api/v4/projects/{id}/services/mattermost_slash_commands/trigger` — risk: medium
 	 */
@@ -10637,7 +10788,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all active integrations.
+	 * Lists all active integrations.
 	 *
 	 * `GET /api/v4/projects/{id}/integrations` — risk: medium
 	 */
@@ -10659,7 +10810,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Apple App Store integration.
+	 * Creates or updates the Apple App Store integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/apple-app-store` — risk: medium
 	 */
@@ -10681,7 +10832,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Asana integration.
+	 * Creates or updates the Asana integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/asana` — risk: medium
 	 */
@@ -10703,7 +10854,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Assembla integration.
+	 * Creates or updates the Assembla integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/assembla` — risk: medium
 	 */
@@ -10725,7 +10876,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Bamboo integration.
+	 * Creates or updates the Bamboo integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/bamboo` — risk: medium
 	 */
@@ -10747,7 +10898,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Bugzilla integration.
+	 * Creates or updates the Bugzilla integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/bugzilla` — risk: medium
 	 */
@@ -10769,7 +10920,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Buildkite integration.
+	 * Creates or updates the Buildkite integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/buildkite` — risk: medium
 	 */
@@ -10791,7 +10942,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Campfire integration.
+	 * Creates or updates the Campfire integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/campfire` — risk: medium
 	 */
@@ -10813,7 +10964,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Confluence integration.
+	 * Creates or updates the Confluence integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/confluence` — risk: medium
 	 */
@@ -10835,7 +10986,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Custom Issue Tracker integration.
+	 * Creates or updates the Custom Issue Tracker integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/custom-issue-tracker` — risk: medium
 	 */
@@ -10857,7 +11008,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Datadog integration.
+	 * Creates or updates the Datadog integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/datadog` — risk: medium
 	 */
@@ -10879,7 +11030,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Diffblue Cover integration.
+	 * Creates or updates the Diffblue Cover integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/diffblue-cover` — risk: medium
 	 */
@@ -10901,7 +11052,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Discord integration.
+	 * Creates or updates the Discord integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/discord` — risk: medium
 	 */
@@ -10923,7 +11074,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Drone Ci integration.
+	 * Creates or updates the Drone Ci integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/drone-ci` — risk: medium
 	 */
@@ -10945,7 +11096,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Emails On Push integration.
+	 * Creates or updates the Emails On Push integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/emails-on-push` — risk: medium
 	 */
@@ -10967,7 +11118,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set External Wiki integration.
+	 * Creates or updates the External Wiki integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/external-wiki` — risk: medium
 	 */
@@ -10989,7 +11140,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Gitlab Slack Application integration.
+	 * Creates or updates the Gitlab Slack Application integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/gitlab-slack-application` — risk: medium
 	 */
@@ -11011,7 +11162,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Google Play integration.
+	 * Creates or updates the Google Play integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/google-play` — risk: medium
 	 */
@@ -11033,7 +11184,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Hangouts Chat integration.
+	 * Creates or updates the Hangouts Chat integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/hangouts-chat` — risk: medium
 	 */
@@ -11055,7 +11206,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Harbor integration.
+	 * Creates or updates the Harbor integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/harbor` — risk: medium
 	 */
@@ -11077,7 +11228,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Irker integration.
+	 * Creates or updates the Irker integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/irker` — risk: medium
 	 */
@@ -11099,7 +11250,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Jenkins integration.
+	 * Creates or updates the Jenkins integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/jenkins` — risk: medium
 	 */
@@ -11121,7 +11272,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Jira integration.
+	 * Creates or updates the Jira integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/jira` — risk: medium
 	 */
@@ -11143,7 +11294,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Jira Cloud App integration.
+	 * Creates or updates the Jira Cloud App integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/jira-cloud-app` — risk: medium
 	 */
@@ -11165,7 +11316,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Linear integration.
+	 * Creates or updates the Linear integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/linear` — risk: medium
 	 */
@@ -11187,7 +11338,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Matrix integration.
+	 * Creates or updates the Matrix integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/matrix` — risk: medium
 	 */
@@ -11209,7 +11360,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mattermost Slash Commands integration.
+	 * Creates or updates the Mattermost Slash Commands integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/mattermost-slash-commands` — risk: medium
 	 */
@@ -11231,7 +11382,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Packagist integration.
+	 * Creates or updates the Packagist integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/packagist` — risk: medium
 	 */
@@ -11253,7 +11404,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Phorge integration.
+	 * Creates or updates the Phorge integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/phorge` — risk: medium
 	 */
@@ -11275,7 +11426,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pipelines Email integration.
+	 * Creates or updates the Pipelines Email integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/pipelines-email` — risk: medium
 	 */
@@ -11297,7 +11448,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pivotaltracker integration.
+	 * Creates or updates the Pivotaltracker integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/pivotaltracker` — risk: medium
 	 */
@@ -11319,7 +11470,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pumble integration.
+	 * Creates or updates the Pumble integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/pumble` — risk: medium
 	 */
@@ -11341,7 +11492,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Pushover integration.
+	 * Creates or updates the Pushover integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/pushover` — risk: medium
 	 */
@@ -11363,7 +11514,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Redmine integration.
+	 * Creates or updates the Redmine integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/redmine` — risk: medium
 	 */
@@ -11385,7 +11536,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Ewm integration.
+	 * Creates or updates the Ewm integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/ewm` — risk: medium
 	 */
@@ -11407,7 +11558,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Youtrack integration.
+	 * Creates or updates the Youtrack integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/youtrack` — risk: medium
 	 */
@@ -11429,7 +11580,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Clickup integration.
+	 * Creates or updates the Clickup integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/clickup` — risk: medium
 	 */
@@ -11451,7 +11602,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Slack integration.
+	 * Creates or updates the Slack integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/slack` — risk: medium
 	 */
@@ -11473,7 +11624,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Microsoft Teams integration.
+	 * Creates or updates the Microsoft Teams integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/microsoft-teams` — risk: medium
 	 */
@@ -11495,7 +11646,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mattermost integration.
+	 * Creates or updates the Mattermost integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/mattermost` — risk: medium
 	 */
@@ -11517,7 +11668,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Teamcity integration.
+	 * Creates or updates the Teamcity integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/teamcity` — risk: medium
 	 */
@@ -11539,7 +11690,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Telegram integration.
+	 * Creates or updates the Telegram integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/telegram` — risk: medium
 	 */
@@ -11561,7 +11712,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Unify Circuit integration.
+	 * Creates or updates the Unify Circuit integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/unify-circuit` — risk: medium
 	 */
@@ -11583,7 +11734,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Webex Teams integration.
+	 * Creates or updates the Webex Teams integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/webex-teams` — risk: medium
 	 */
@@ -11605,7 +11756,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Zentao integration.
+	 * Creates or updates the Zentao integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/zentao` — risk: medium
 	 */
@@ -11627,7 +11778,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Squash Tm integration.
+	 * Creates or updates the Squash Tm integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/squash-tm` — risk: medium
 	 */
@@ -11649,7 +11800,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Github integration.
+	 * Creates or updates the Github integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/github` — risk: medium
 	 */
@@ -11671,7 +11822,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Git Guardian integration.
+	 * Creates or updates the Git Guardian integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/git-guardian` — risk: medium
 	 */
@@ -11693,7 +11844,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Google Cloud Platform Artifact Registry integration.
+	 * Creates or updates the Google Cloud Platform Artifact Registry integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/google-cloud-platform-artifact-registry` — risk: medium
 	 */
@@ -11715,7 +11866,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Google Cloud Platform Workload Identity Federation integration.
+	 * Creates or updates the Google Cloud Platform Workload Identity Federation integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/google-cloud-platform-workload-identity-federation` — risk: medium
 	 */
@@ -11737,7 +11888,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mock Ci integration.
+	 * Creates or updates the Mock Ci integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/mock-ci` — risk: medium
 	 */
@@ -11759,7 +11910,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set Mock Monitoring integration.
+	 * Creates or updates the Mock Monitoring integration.
 	 *
 	 * `PUT /api/v4/projects/{id}/integrations/mock-monitoring` — risk: medium
 	 */
@@ -11781,7 +11932,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the integration settings.
+	 * Retrieves the settings for a specified integration.
 	 *
 	 * `GET /api/v4/projects/{id}/integrations/{slug}` — risk: medium
 	 */
@@ -11803,7 +11954,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Disable the integration. Integration settings are preserved.
+	 * Disables a specified integration. Integration settings are preserved.
 	 *
 	 * `DELETE /api/v4/projects/{id}/integrations/{slug}` — risk: medium
 	 */
@@ -11825,7 +11976,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Added in GitLab 8.13
+	 * Triggers a slash command for mattermost-slash-commands.
 	 *
 	 * `POST /api/v4/projects/{id}/integrations/mattermost_slash_commands/trigger` — risk: medium
 	 */
@@ -11847,7 +11998,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.6
+	 * Lists all pending invitations for a specified project viewable by the authenticated user. Returns invitations to direct members only, and not through inherited ancestor groups. This function takes pag
 	 *
 	 * `GET /api/v4/projects/{id}/invitations` — risk: medium
 	 */
@@ -11869,7 +12020,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.6
+	 * Adds a member to a project. You can specify a user ID or invite a user by email.
 	 *
 	 * `POST /api/v4/projects/{id}/invitations` — risk: medium
 	 */
@@ -11891,7 +12042,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates a group or project invitation.
+	 * Updates a pending invitation to a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/invitations/{email}` — risk: medium
 	 */
@@ -11913,7 +12064,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes an invitation from a group or project.
+	 * Deletes a pending invitation to a specified email address for a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/invitations/{email}` — risk: medium
 	 */
@@ -11935,7 +12086,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of a given issue’s linked issues, sorted by the relationship creation datetime (ascending).Issues are filtered according to the user authorizations.
+	 * Lists all linked issues for a specified issue, sorted by the relationship creation datetime (ascending). Issues are filtered according to the user authorizations.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/links` — risk: medium
 	 */
@@ -11957,7 +12108,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a two-way relation between two issues.The user must be allowed to update both issues to succeed.
+	 * Creates a two-way relationship between two issues. The user must be allowed to update both issues to succeed.
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/links` — risk: medium
 	 */
@@ -11979,7 +12130,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets details about an issue link. This feature was introduced in GitLab 15.1.
+	 * Retrieves a specified issue link.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/links/{issue_link_id}` — risk: medium
 	 */
@@ -12001,7 +12152,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Deletes an issue link, thus removes the two-way relationship.
+	 * Deletes a specified issue link, removing the two-way relationship.
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}/links/{issue_link_id}` — risk: medium
 	 */
@@ -12023,7 +12174,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Sets an estimated time of work for this issue.
+	 * Sets an estimated time of work for a specified issue.
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/time_estimate` — risk: medium
 	 */
@@ -12045,7 +12196,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Resets the estimated time for this issue to 0 seconds.
+	 * Resets the estimated time for a specified issue to `0` seconds.
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/reset_time_estimate` — risk: medium
 	 */
@@ -12067,7 +12218,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Adds spent time for this issue.
+	 * Adds spent time for a specified issue.
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/add_spent_time` — risk: medium
 	 */
@@ -12089,7 +12240,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Resets the total spent time for this issue to 0 seconds.
+	 * Resets the total spent time for a specified issue to `0` seconds.
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/reset_spent_time` — risk: medium
 	 */
@@ -12111,7 +12262,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get time tracking stats
+	 * Retrieves time tracking stats for a specified issue, including time estimate and time spent in seconds and human-readable format (for example, `1h 30m`).
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/time_stats` — risk: medium
 	 */
@@ -12133,7 +12284,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of project issues
+	 * Lists all issues for a specified project. If the project is private, you need to provide credentials to authorize. In most cases, you should authenticate with a personal access token.
 	 *
 	 * `GET /api/v4/projects/{id}/issues` — risk: medium
 	 */
@@ -12155,7 +12306,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new project issue
+	 * Creates an issue for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/issues` — risk: medium
 	 */
@@ -12177,7 +12328,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get statistics for the list of project issues
+	 * Retrieves statistics for issues in a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/issues_statistics` — risk: medium
 	 */
@@ -12199,7 +12350,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single project issue
+	 * Retrieves a specified issue for a project. If the project is private or the issue is confidential, you need to provide credentials to authorize. In most cases, you should authenticate with a personal 
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}` — risk: medium
 	 */
@@ -12221,7 +12372,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an existing issue
+	 * Updates a specified issue for a project. This request is also used to close or reopen an issue using the `state_event` parameter. At least one of the following parameters is required for the request t
 	 *
 	 * `PUT /api/v4/projects/{id}/issues/{issue_iid}` — risk: medium
 	 */
@@ -12243,7 +12394,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a project issue
+	 * Deletes a specified issue.
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}` — risk: medium
 	 */
@@ -12265,7 +12416,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Reorder an existing issue
+	 * Updates the order of a specified issue in a project. You can see the results when sorting issues manually.
 	 *
 	 * `PUT /api/v4/projects/{id}/issues/{issue_iid}/reorder` — risk: medium
 	 */
@@ -12287,7 +12438,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Move an existing issue
+	 * Moves a specified issue to a different project. If the target project is the source project or the user has insufficient permissions, an error message with status code `400` is returned. If a label or
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/move` — risk: medium
 	 */
@@ -12309,7 +12460,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Clone an existing issue
+	 * Clones a specified issue to a project. Copies as much data as possible as long as the target project contains equivalent criteria, such as labels or milestones. If you have insufficient permissions, a
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/clone` — risk: medium
 	 */
@@ -12331,7 +12482,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List merge requests that are related to the issue
+	 * Lists all merge requests that are related to a specified issue. If the project is private or the issue is confidential, you need to provide credentials to authorize. In most cases, you should authenti
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/related_merge_requests` — risk: medium
 	 */
@@ -12353,7 +12504,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List merge requests closing issue
+	 * Lists all merge requests that close a specified issue when merged. If the project is private or the issue is confidential, you need to provide credentials to authorize. In most cases, you should authe
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/closed_by` — risk: medium
 	 */
@@ -12375,7 +12526,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List participants for an issue
+	 * Lists all users that are participants in a specified issue. If the project is private or the issue is confidential, you need to provide credentials to authorize. In most cases, you should authenticate
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/participants` — risk: medium
 	 */
@@ -12397,7 +12548,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the user agent details for an issue
+	 * Retrieves user agent details for an issue.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/user_agent_detail` — risk: medium
 	 */
@@ -12419,7 +12570,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Upload a metric image for an incident
+	 * Authorizes uploading a metric image for a specified incident.
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/metric_images/authorize` — risk: medium
 	 */
@@ -12441,7 +12592,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Metric Images for issue
+	 * Lists all metric images for an incident.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{issue_iid}/metric_images` — risk: medium
 	 */
@@ -12463,7 +12614,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Upload a metric image for an issue
+	 * Uploads a screenshot of metric charts for an incident. Available only for incidents.
 	 *
 	 * `POST /api/v4/projects/{id}/issues/{issue_iid}/metric_images` — risk: medium
 	 */
@@ -12485,7 +12636,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update a metric image for an issue
+	 * Updates a metric image for an incident.
 	 *
 	 * `PUT /api/v4/projects/{id}/issues/{issue_iid}/metric_images/{metric_image_id}` — risk: medium
 	 */
@@ -12507,7 +12658,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove a metric image for an issue
+	 * Deletes a metric image from an incident.
 	 *
 	 * `DELETE /api/v4/projects/{id}/issues/{issue_iid}/metric_images/{metric_image_id}` — risk: medium
 	 */
@@ -12529,8 +12680,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Checks if a project’s .gitlab-ci.yml configuration in a given commit (by default HEAD of the
-        project’s default branch) is valid
+	 * Validates the `.gitlab-ci.yml` configuration for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/ci/lint` — risk: medium
 	 */
@@ -12552,7 +12702,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Checks if CI/CD YAML configuration is valid. This endpoint has namespace specific context
+	 * Validates a provided CI/CD configuration in the context of a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/ci/lint` — risk: medium
 	 */
@@ -12596,7 +12746,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the list of uploads of a project
+	 * Lists all uploads of a project sorted by `created_at` in descending order. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `GET /api/v4/projects/{id}/uploads` — risk: medium
 	 */
@@ -12618,7 +12768,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Upload a file
+	 * Creates an upload.
 	 *
 	 * `POST /api/v4/projects/{id}/uploads` — risk: medium
 	 */
@@ -12640,7 +12790,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Download a single project upload by ID
+	 * Downloads an uploaded file with a specified ID. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `GET /api/v4/projects/{id}/uploads/{upload_id}` — risk: medium
 	 */
@@ -12662,7 +12812,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a single project upload by ID
+	 * Deletes an uploaded file with a specified ID. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/uploads/{upload_id}` — risk: medium
 	 */
@@ -12684,7 +12834,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Download a single project upload by secret and filename
+	 * Downloads an uploaded file with a specified secret and filename. You must have the Guest, Planner, Reporter, Developer, Maintainer, or Owner role for the project.
 	 *
 	 * `GET /api/v4/projects/{id}/uploads/{secret}/{filename}` — risk: medium
 	 */
@@ -12706,7 +12856,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a single project upload by secret and filename
+	 * Deletes an uploaded file with a specified secret and filename. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/uploads/{secret}/{filename}` — risk: medium
 	 */
@@ -12728,8 +12878,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a list of group or project members viewable by the authenticated user,
-          excluding those with inherited membership from ancestor groups.
+	 * Lists all direct members of a specified project viewable by the authenticated user. Does not return inherited members from ancestor groups or invited groups.
 	 *
 	 * `GET /api/v4/projects/{id}/members` — risk: medium
 	 */
@@ -12751,7 +12900,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Adds a member to a group or project.
+	 * Adds a member to a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/members` — risk: medium
 	 */
@@ -12773,8 +12922,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a list of group or project members viewable by the authenticated user,
-          including those with inherited membership from ancestor groups.
+	 * Lists all members of a specified project viewable by the authenticated user. Also returns inherited members from ancestor groups or invited groups. If a user is a member of this project and one or mor
 	 *
 	 * `GET /api/v4/projects/{id}/members/all` — risk: medium
 	 */
@@ -12796,7 +12944,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a member of a group or project.
+	 * Retrieves a specified member of a project. Returns only direct members and not inherited members through ancestor groups.
 	 *
 	 * `GET /api/v4/projects/{id}/members/{user_id}` — risk: medium
 	 */
@@ -12818,7 +12966,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates a member of a group or project.
+	 * Updates a specified member of a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/members/{user_id}` — risk: medium
 	 */
@@ -12840,7 +12988,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a user from a group or project.
+	 * Removes a specified user from a project. The user must be a direct member.
 	 *
 	 * `DELETE /api/v4/projects/{id}/members/{user_id}` — risk: medium
 	 */
@@ -12862,7 +13010,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a member of a group or project, including those who gained membership through ancestor group
+	 * Retrieves a specified member of a project. Returns direct members and members inherited or invited through ancestor groups.
 	 *
 	 * `GET /api/v4/projects/{id}/members/all/{user_id}` — risk: medium
 	 */
@@ -12884,7 +13032,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a merge request to add missing CI configuration
+	 * Creates a merge request to add CI configuration to a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/create_ci_config` — risk: medium
 	 */
@@ -12906,7 +13054,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Sets an estimated time of work for this merge_request.
+	 * Sets an estimated time of work for a specified merge request.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/time_estimate` — risk: medium
 	 */
@@ -12928,7 +13076,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Resets the estimated time for this merge_request to 0 seconds.
+	 * Resets the estimated time for a specified merge request to `0` seconds.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/reset_time_estimate` — risk: medium
 	 */
@@ -12950,7 +13098,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Adds spent time for this merge_request.
+	 * Adds spent time for a specified merge request.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/add_spent_time` — risk: medium
 	 */
@@ -12972,7 +13120,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Resets the total spent time for this merge_request to 0 seconds.
+	 * Resets the total spent time for a specified merge request to `0` seconds.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/reset_spent_time` — risk: medium
 	 */
@@ -12994,7 +13142,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get time tracking stats
+	 * Retrieves time tracking stats for a specified merge request, including time estimate and time spent in seconds and human-readable format (for example, `1h 30m`).
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/time_stats` — risk: medium
 	 */
@@ -13016,7 +13164,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all merge requests for this project.
+	 * Lists all project merge requests.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests` — risk: medium
 	 */
@@ -13038,7 +13186,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new merge request.
+	 * Creates a merge request for a project.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests` — risk: medium
 	 */
@@ -13060,7 +13208,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Shows information about a single merge request. Note: the `changes_count` value in the response is a string, not an integer. This is because when an merge request has too many changes to display and s
+	 * Retrieves a merge request for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}` — risk: medium
 	 */
@@ -13082,7 +13230,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates an existing merge request. You can change the target branch, title, or even close the merge request.
+	 * Updates a merge request for a specified project.
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}` — risk: medium
 	 */
@@ -13104,7 +13252,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Only for administrators and project owners. Deletes the merge request in question. 
+	 * Deletes a specified merge request for a project. Administrators and project Owners only.
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}` — risk: medium
 	 */
@@ -13126,7 +13274,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of merge request participants.
+	 * Retrieves participants for a specified merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/participants` — risk: medium
 	 */
@@ -13148,7 +13296,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of merge request reviewers.
+	 * Retrieves reviewers for a specified merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/reviewers` — risk: medium
 	 */
@@ -13170,7 +13318,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of merge request commits.
+	 * Retrieves commits for a specified merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/commits` — risk: medium
 	 */
@@ -13192,7 +13340,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of merge request context commits.
+	 * Lists all context commits for a specified merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits` — risk: medium
 	 */
@@ -13214,7 +13362,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a list of merge request context commits.
+	 * Creates context commits for a specified merge request.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits` — risk: medium
 	 */
@@ -13236,7 +13384,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a list of merge request context commits.
+	 * Deletes specified context commits from a merge request.
 	 *
 	 * `DELETE /api/v4/projects/{id}/merge_requests/{merge_request_iid}/context_commits` — risk: medium
 	 */
@@ -13258,7 +13406,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Shows information about the merge request including its files and changes.
+	 * Retrieves changes for a specified merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/changes` — risk: medium
 	 */
@@ -13280,7 +13428,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of merge request diffs.
+	 * Lists all merge request diffs.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/diffs` — risk: medium
 	 */
@@ -13302,7 +13450,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the raw diffs of a merge request that can used programmatically.
+	 * Retrieves the raw diffs of the files changed in a merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/raw_diffs` — risk: medium
 	 */
@@ -13324,7 +13472,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of merge request pipelines.
+	 * Lists all merge request pipelines.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/pipelines` — risk: medium
 	 */
@@ -13346,7 +13494,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new pipeline for a merge request. A pipeline created via this endpoint doesn’t run a regular branch/tag pipeline. It requires `.gitlab-ci.yml` to be configured with `only: [merge_requests]` t
+	 * Creates a merge request pipeline. Pipelines created with this operation must configure `.gitlab-ci.yml` with `only: [merge_requests]` to create jobs.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/pipelines` — risk: medium
 	 */
@@ -13368,7 +13516,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Accept and merge changes submitted with the merge request using this API.
+	 * Merges a merge request. Accepts and merges changes submitted with the merge request.
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge` — risk: medium
 	 */
@@ -13390,7 +13538,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Returns the up to date merge-ref HEAD commit
+	 * Merges the changes between the merge request source and target branches into the `refs/merge-requests/:iid/merge` ref, of the target project repository, if possible. This ref has the state the target 
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/merge_ref` — risk: medium
 	 */
@@ -13412,7 +13560,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Cancel merge if "Merge When Pipeline Succeeds" is enabled
+	 * Cancels an automatic merge for a merge request that has been set to merge when the pipeline succeeds.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/cancel_merge_when_pipeline_succeeds` — risk: medium
 	 */
@@ -13434,7 +13582,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Automatically rebase the `source_branch` of the merge request against its `target_branch`. This feature was added in GitLab 11.6
+	 * Rebases a merge request. Automatically rebases the `source_branch` of the merge request against its `target_branch`.
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/rebase` — risk: medium
 	 */
@@ -13456,7 +13604,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all the issues that would be closed by merging the provided merge request.
+	 * Lists all issues that close on merge.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/closes_issues` — risk: medium
 	 */
@@ -13478,7 +13626,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all the related issues from title, description, commits, comments and discussions of the merge request.
+	 * Lists all issues related to the merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/related_issues` — risk: medium
 	 */
@@ -13500,7 +13648,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List approvals for merge request
+	 * Retrieves the approval state for a specified merge request. In the response, `approved_by` contains information about all approvers of the merge request, regardless of whether those approvals satisfy 
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/approvals` — risk: medium
 	 */
@@ -13544,7 +13692,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Approve a merge request
+	 * Approves a specified merge request. The currently authenticated user must be an eligible approver. The `sha` parameter ensures you are approving the current version of the merge request. If defined, t
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/approve` — risk: medium
 	 */
@@ -13566,7 +13714,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove an approval from a merge request
+	 * Unapproves a merge request. Removes the approval for the currently authenticated user from a specified merge request.
 	 *
 	 * `POST /api/v4/projects/{id}/merge_requests/{merge_request_iid}/unapprove` — risk: medium
 	 */
@@ -13588,7 +13736,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Clear all approvals of merge request. This feature was added in GitLab 15.4
+	 * Resets all approvals for a specified merge request. Available only to bot users with a valid project or group token. Human users receive a `401 Unauthorized` response.
 	 *
 	 * `PUT /api/v4/projects/{id}/merge_requests/{merge_request_iid}/reset_approvals` — risk: medium
 	 */
@@ -13610,7 +13758,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get approval state of merge request
+	 * Retrieves approval details for a specified merge request. If a user has modified the approval rules for the merge request, the response includes `approval_rules_overwritten`.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/approval_state` — risk: medium
 	 */
@@ -13632,7 +13780,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.12.
+	 * Retrieves merge request diff versions.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/versions` — risk: medium
 	 */
@@ -13654,7 +13802,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.12.
+	 * Retrieves a merge request diff version.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{merge_request_iid}/versions/{version_id}` — risk: medium
 	 */
@@ -13720,7 +13868,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create was introduced in GitLab 11.8 & deprecate support was added in 16.0
+	 * Creates or deprecates an NPM package for a specified project. Deprecate support was added in GitLab 16.0.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/npm/{package_name}` — risk: medium
 	 */
@@ -13786,7 +13934,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.2
+	 * Uploads a NuGet v2 package file for a specified project.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/nuget/v2` — risk: medium
 	 */
@@ -13852,7 +14000,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Uploads a NuGet v3 package file for a specified project.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/nuget` — risk: medium
 	 */
@@ -13896,7 +14044,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.1
+	 * Uploads a specified NuGet symbol package file (`.snupkg`) for a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/packages/nuget/symbolpackage` — risk: medium
 	 */
@@ -14006,7 +14154,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of package files of a single package
+	 * Lists all package files for a specified package.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/{package_id}/package_files` — risk: medium
 	 */
@@ -14028,7 +14176,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.12
+	 * Deletes a specified package file.
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/{package_id}/package_files/{package_file_id}` — risk: medium
 	 */
@@ -14072,7 +14220,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get pages URL and other settings. This feature was introduced in Gitlab 16.8
+	 * Retrieves Pages settings for a specified project. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `GET /api/v4/projects/{id}/pages` — risk: medium
 	 */
@@ -14094,7 +14242,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update page settings for a project. User must have administrative access.
+	 * Updates Pages settings for a specified project. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `PATCH /api/v4/projects/{id}/pages` — risk: medium
 	 */
@@ -14116,7 +14264,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove pages. The user must have administrator access. This feature was introduced in GitLab 12.6
+	 * Unpublishes Pages from a specified project. You must have the Maintainer or Owner role for the project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/pages` — risk: medium
 	 */
@@ -14138,7 +14286,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all pages domains
+	 * Lists all Pages domains in a specified project. You must have permissions to view Pages domains.
 	 *
 	 * `GET /api/v4/projects/{id}/pages/domains` — risk: medium
 	 */
@@ -14160,7 +14308,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new pages domain
+	 * Creates a Pages domain in a specified project. You must have permissions to create Pages domains.
 	 *
 	 * `POST /api/v4/projects/{id}/pages/domains` — risk: medium
 	 */
@@ -14182,7 +14330,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single pages domain
+	 * Retrieves a Pages domain from a specified project. You must have permissions to view Pages domains.
 	 *
 	 * `GET /api/v4/projects/{id}/pages/domains/{domain}` — risk: medium
 	 */
@@ -14204,7 +14352,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates a pages domain
+	 * Updates a specified Pages domain in a project. You must have permissions to change an existing Pages domain.
 	 *
 	 * `PUT /api/v4/projects/{id}/pages/domains/{domain}` — risk: medium
 	 */
@@ -14226,7 +14374,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a pages domain
+	 * Deletes a specified Pages domain in a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/pages/domains/{domain}` — risk: medium
 	 */
@@ -14248,7 +14396,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Verify a pages domain
+	 * Verifies a specified Pages domain in a project. You must have permissions to update Pages domains.
 	 *
 	 * `PUT /api/v4/projects/{id}/pages/domains/{domain}/verify` — risk: medium
 	 */
@@ -14270,7 +14418,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.9
+	 * Downloads a project avatar. You can access this endpoint without authentication if the project is publicly accessible. This feature was introduced in GitLab 16.9.
 	 *
 	 * `GET /api/v4/projects/{id}/avatar` — risk: medium
 	 */
@@ -14292,7 +14440,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.7. Returns a list of project clusters.
+	 * Lists all clusters in a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/clusters` — risk: medium
 	 */
@@ -14314,7 +14462,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.7. Gets a single project cluster.
+	 * Retrieves a specified cluster in a project.
 	 *
 	 * `GET /api/v4/projects/{id}/clusters/{cluster_id}` — risk: medium
 	 */
@@ -14336,7 +14484,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.7. Updates an existing project cluster.
+	 * Updates a cluster in a specified project.
 	 *
 	 * `PUT /api/v4/projects/{id}/clusters/{cluster_id}` — risk: medium
 	 */
@@ -14358,7 +14506,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.7. Deletes an existing project cluster. Does not remove existing resources within the connected Kubernetes cluster.
+	 * Deletes a specified cluster from a project. Does not remove existing resources in the connected Kubernetes cluster.
 	 *
 	 * `DELETE /api/v4/projects/{id}/clusters/{cluster_id}` — risk: medium
 	 */
@@ -14380,7 +14528,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.7. Adds an existing Kubernetes cluster to the project.
+	 * Adds a cluster to a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/clusters/user` — risk: medium
 	 */
@@ -14402,7 +14550,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.8.
+	 * Lists all registry repositories for a specified project. Responses are paginated and return 20 results by default.
 	 *
 	 * `GET /api/v4/projects/{id}/registry/repositories` — risk: medium
 	 */
@@ -14424,7 +14572,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.8.
+	 * Deletes a specified repository in the registry. This operation is executed asynchronously and might take some time to execute.
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/repositories/{repository_id}` — risk: medium
 	 */
@@ -14446,7 +14594,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.8.
+	 * Lists all tags for a specified registry repository. Responses are paginated and return 20 results by default.
 	 *
 	 * `GET /api/v4/projects/{id}/registry/repositories/{repository_id}/tags` — risk: medium
 	 */
@@ -14468,7 +14616,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.8.
+	 * Deletes multiple registry repository tags based on the specified criteria.
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/repositories/{repository_id}/tags` — risk: medium
 	 */
@@ -14490,7 +14638,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.8.
+	 * Retrieves details of a specified registry repository tag.
 	 *
 	 * `GET /api/v4/projects/{id}/registry/repositories/{repository_id}/tags/{tag_name}` — risk: medium
 	 */
@@ -14512,7 +14660,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.8.
+	 * Deletes a specified container registry repository tag.
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/repositories/{repository_id}/tags/{tag_name}` — risk: medium
 	 */
@@ -14534,7 +14682,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get list of container registry protection rules for a project
+	 * Lists all container repository protection rules for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/registry/protection/repository/rules` — risk: medium
 	 */
@@ -14556,7 +14704,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a container protection rule for a project
+	 * Creates a container repository protection rule for a specified project to control who can push or delete container images.
 	 *
 	 * `POST /api/v4/projects/{id}/registry/protection/repository/rules` — risk: medium
 	 */
@@ -14578,7 +14726,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update a container protection rule for a project
+	 * Updates a container repository protection rule for a specified project.
 	 *
 	 * `PATCH /api/v4/projects/{id}/registry/protection/repository/rules/{protection_rule_id}` — risk: medium
 	 */
@@ -14600,7 +14748,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete container protection rule
+	 * Deletes a specified container repository protection rule.
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/protection/repository/rules/{protection_rule_id}` — risk: medium
 	 */
@@ -14622,7 +14770,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.7.
+	 * Lists all container registry protection tag rules for a project. This feature was introduced in GitLab 18.7.
 	 *
 	 * `GET /api/v4/projects/{id}/registry/protection/tag/rules` — risk: medium
 	 */
@@ -14644,7 +14792,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.8.
+	 * Creates a container registry protection tag rule for a project to control who can push or delete container tags. This feature was introduced in GitLab 18.8.
 	 *
 	 * `POST /api/v4/projects/{id}/registry/protection/tag/rules` — risk: medium
 	 */
@@ -14666,7 +14814,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.9.
+	 * Updates a container registry protection tag rule for a project. This feature was introduced in GitLab 18.9.
 	 *
 	 * `PATCH /api/v4/projects/{id}/registry/protection/tag/rules/{protection_rule_id}` — risk: medium
 	 */
@@ -14688,7 +14836,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.9.
+	 * Deletes a container registry protection tag rule from a project. This feature was introduced in GitLab 18.9.
 	 *
 	 * `DELETE /api/v4/projects/{id}/registry/protection/tag/rules/{protection_rule_id}` — risk: medium
 	 */
@@ -14710,7 +14858,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Lists all Debian distributions for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/debian_distributions` — risk: medium
 	 */
@@ -14732,7 +14880,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Creates a Debian project distribution for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/debian_distributions` — risk: medium
 	 */
@@ -14754,7 +14902,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Retrieves a specified Debian project distribution for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/debian_distributions/{codename}` — risk: medium
 	 */
@@ -14776,7 +14924,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Updates a specified Debian project distribution for a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/debian_distributions/{codename}` — risk: medium
 	 */
@@ -14798,7 +14946,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.0
+	 * Deletes a specified Debian project distribution for a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/debian_distributions/{codename}` — risk: medium
 	 */
@@ -14820,7 +14968,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in 14.4
+	 * Retrieves a specified Debian project distribution key for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/debian_distributions/{codename}/key.asc` — risk: medium
 	 */
@@ -14842,7 +14990,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List a project's visible events
+	 * Lists all visible events for a specified project. When a push exceeds the Push event activities limit, a single bulk push event is returned instead of individual commit events. Bulk push events have l
 	 *
 	 * `GET /api/v4/projects/{id}/events` — risk: medium
 	 */
@@ -14864,7 +15012,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Retrieves the status of the most recent export for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/export` — risk: medium
 	 */
@@ -14886,7 +15034,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Exports a project. Use the `upload` hash parameter to upload the exported project to a web server or any S3-compatible platform.
 	 *
 	 * `POST /api/v4/projects/{id}/export` — risk: medium
 	 */
@@ -14908,7 +15056,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Downloads the most recent export of a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/export/download` — risk: medium
 	 */
@@ -14930,7 +15078,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.4
+	 * Schedules a relations export for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/export_relations` — risk: medium
 	 */
@@ -14952,7 +15100,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.4
+	 * Downloads a project relations export file.
 	 *
 	 * `GET /api/v4/projects/{id}/export_relations/download` — risk: medium
 	 */
@@ -14974,7 +15122,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.4
+	 * Retrieves the status of a relations export for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/export_relations/status` — risk: medium
 	 */
@@ -14996,7 +15144,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Sets a URL variable for a webhook
+	 * Updates a URL variable for a specified webhook.
 	 *
 	 * `PUT /api/v4/projects/{id}/hooks/{hook_id}/url_variables/{key}` — risk: medium
 	 */
@@ -15018,7 +15166,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a URL variable from a webhook
+	 * Deletes a URL variable from a specified webhook.
 	 *
 	 * `DELETE /api/v4/projects/{id}/hooks/{hook_id}/url_variables/{key}` — risk: medium
 	 */
@@ -15040,7 +15188,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Sets a custom header for a webhook
+	 * Updates a custom header for a specified webhook.
 	 *
 	 * `PUT /api/v4/projects/{id}/hooks/{hook_id}/custom_headers/{key}` — risk: medium
 	 */
@@ -15062,7 +15210,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a custom header from a webhook
+	 * Deletes a custom header from a specified webhook.
 	 *
 	 * `DELETE /api/v4/projects/{id}/hooks/{hook_id}/custom_headers/{key}` — risk: medium
 	 */
@@ -15084,7 +15232,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of project hooks
+	 * Lists all webhooks for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/hooks` — risk: medium
 	 */
@@ -15106,7 +15254,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Adds a hook to a specified project
+	 * Adds a webhook to a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/hooks` — risk: medium
 	 */
@@ -15128,7 +15276,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a specific hook for a project
+	 * Retrieves a specified webhook for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/hooks/{hook_id}` — risk: medium
 	 */
@@ -15150,7 +15298,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Edits a hook for a specified project.
+	 * Updates a specified webhook for a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/hooks/{hook_id}` — risk: medium
 	 */
@@ -15172,7 +15320,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a hook from a project. This is an idempotent method and can be called multiple times. Either the hook is available or not.
+	 * Deletes a specified webhook for a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/hooks/{hook_id}` — risk: medium
 	 */
@@ -15194,7 +15342,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List web hook logs by hook id
+	 * Lists all events for a specified webhook.
 	 *
 	 * `GET /api/v4/projects/{id}/hooks/{hook_id}/events` — risk: medium
 	 */
@@ -15216,7 +15364,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Triggers a hook test
+	 * Triggers a test webhook. This endpoint has a rate limit of five requests per minute for each authenticated user for a given project or group. On GitLab Self-Managed and GitLab Dedicated, an administra
 	 *
 	 * `POST /api/v4/projects/{id}/hooks/{hook_id}/test/{trigger}` — risk: medium
 	 */
@@ -15238,7 +15386,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Resend a webhook event
+	 * Resends a webhook event. This endpoint has a rate limit of five requests per minute for each authenticated user for a given project or group. On GitLab Self-Managed and GitLab Dedicated, an administra
 	 *
 	 * `POST /api/v4/projects/{id}/hooks/{hook_id}/events/{hook_log_id}/resend` — risk: medium
 	 */
@@ -15282,7 +15430,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Imports a project from a local archive.
 	 *
 	 * `POST /api/v4/projects/import` — risk: medium
 	 */
@@ -15304,7 +15452,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.6.
+	 * Retrieves the status of the most recent import for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/import` — risk: medium
 	 */
@@ -15326,7 +15474,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.10.
+	 * Imports a project from a specified Git URL. This feature was introduced in GitLab 18.10.
 	 *
 	 * `POST /api/v4/projects/{id}/import/git` — risk: medium
 	 */
@@ -15348,7 +15496,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.2.
+	 * Imports a project from a remote archive.
 	 *
 	 * `POST /api/v4/projects/remote-import` — risk: medium
 	 */
@@ -15370,7 +15518,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.11
+	 * Authorizes uploading a project relation import file. This feature was introduced in GitLab 16.11.
 	 *
 	 * `POST /api/v4/projects/import-relation/authorize` — risk: medium
 	 */
@@ -15392,7 +15540,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.11.
+	 * Imports project resources included with a project archive. The type of item to import is controlled by the `relation` attribute. Skips items that were previously imported. This feature was introduced 
 	 *
 	 * `POST /api/v4/projects/import-relation` — risk: medium
 	 */
@@ -15414,7 +15562,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.11.
+	 * Retrieves the status of the most recent relation import for a specified project. Because only one relation import can be scheduled at a time, you can use this endpoint to check whether the previous im
 	 *
 	 * `GET /api/v4/projects/{id}/relation-imports` — risk: medium
 	 */
@@ -15436,7 +15584,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.9.
+	 * Imports a project from an archive stored in a specified AWS S3 bucket.
 	 *
 	 * `POST /api/v4/projects/remote-import-s3` — risk: medium
 	 */
@@ -15458,7 +15606,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Fetch CI_JOB_TOKEN access settings.
+	 * Retrieves the CI/CD job token access settings (job token scope) of a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/job_token_scope` — risk: medium
 	 */
@@ -15480,7 +15628,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Patch CI_JOB_TOKEN access settings.
+	 * Updates the **Authorized groups and projects** setting (job token scope) of a specified project.
 	 *
 	 * `PATCH /api/v4/projects/{id}/job_token_scope` — risk: medium
 	 */
@@ -15502,7 +15650,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Fetch project inbound allowlist for CI_JOB_TOKEN access settings.
+	 * Lists all projects in the CI/CD job token allowlist of a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/job_token_scope/allowlist` — risk: medium
 	 */
@@ -15524,7 +15672,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add target project to allowlist.
+	 * Adds a project to the CI/CD job token allowlist of a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/job_token_scope/allowlist` — risk: medium
 	 */
@@ -15546,7 +15694,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Fetch project groups allowlist for CI_JOB_TOKEN access settings.
+	 * Lists all groups in the CI/CD job token allowlist of a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/job_token_scope/groups_allowlist` — risk: medium
 	 */
@@ -15568,7 +15716,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add target group to allowlist.
+	 * Adds a group to the CI/CD job token allowlist of a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/job_token_scope/groups_allowlist` — risk: medium
 	 */
@@ -15590,7 +15738,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete target group from allowlist.
+	 * Deletes a group from the CI/CD job token allowlist of a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/job_token_scope/groups_allowlist/{target_group_id}` — risk: medium
 	 */
@@ -15612,7 +15760,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete project from allowlist.
+	 * Deletes a project from the CI/CD job token allowlist of a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/job_token_scope/allowlist/{target_project_id}` — risk: medium
 	 */
@@ -15634,7 +15782,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.8
+	 * Lists all packages for a specified project. All package types are included in results. Unauthenticated requests return only packages of public projects. By default, packages with `default`, `deprecate
 	 *
 	 * `GET /api/v4/projects/{id}/packages` — risk: medium
 	 */
@@ -15656,7 +15804,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.9
+	 * Retrieves a specified project package. Only packages with status `default` or `deprecated` are returned.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/{package_id}` — risk: medium
 	 */
@@ -15678,7 +15826,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.9
+	 * Deletes a specified project package.
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/{package_id}` — risk: medium
 	 */
@@ -15700,7 +15848,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.1
+	 * Lists all pipelines for a specified package. The results are sorted by `id` in descending order. The results are paginated and return up to 20 records per page. This feature was introduced in GitLab 1
 	 *
 	 * `GET /api/v4/projects/{id}/packages/{package_id}/pipelines` — risk: medium
 	 */
@@ -15722,7 +15870,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get list of package protection rules for a project
+	 * Lists all package protection rules for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/protection/rules` — risk: medium
 	 */
@@ -15744,7 +15892,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a package protection rule for a project
+	 * Creates a package protection rule for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/packages/protection/rules` — risk: medium
 	 */
@@ -15766,7 +15914,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update a package protection rule for a project
+	 * Updates a package protection rule for a specified project.
 	 *
 	 * `PATCH /api/v4/projects/{id}/packages/protection/rules/{package_protection_rule_id}` — risk: medium
 	 */
@@ -15788,7 +15936,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete package protection rule
+	 * Deletes a package protection rule from a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/packages/protection/rules/{package_protection_rule_id}` — risk: medium
 	 */
@@ -15810,7 +15958,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.7
+	 * Downloads snapshot of a Git repository.
 	 *
 	 * `GET /api/v4/projects/{id}/snapshot` — risk: medium
 	 */
@@ -15832,7 +15980,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all project snippets
+	 * Lists all snippets for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/snippets` — risk: medium
 	 */
@@ -15854,7 +16002,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new project snippet
+	 * Creates a project snippet. The user must have permission to create snippets.
 	 *
 	 * `POST /api/v4/projects/{id}/snippets` — risk: medium
 	 */
@@ -15876,7 +16024,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single project snippet
+	 * Retrieves a specified project snippet.
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}` — risk: medium
 	 */
@@ -15898,7 +16046,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an existing project snippet
+	 * Updates a specified project snippet. The user must have permission to modify snippets. Updates to snippets with multiple files must use the `files` attribute.
 	 *
 	 * `PUT /api/v4/projects/{id}/snippets/{snippet_id}` — risk: medium
 	 */
@@ -15920,7 +16068,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a project snippet
+	 * Deletes a specified project snippet.
 	 *
 	 * `DELETE /api/v4/projects/{id}/snippets/{snippet_id}` — risk: medium
 	 */
@@ -15942,7 +16090,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a raw project snippet
+	 * Retrieves the raw contents of a specified project snippet as plain text
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/raw` — risk: medium
 	 */
@@ -15964,7 +16112,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get raw project snippet file contents from the repository
+	 * Retrieves the raw file content from a snippet repository as plain text.
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/files/{ref}/{file_path}/raw` — risk: medium
 	 */
@@ -15986,7 +16134,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the user agent details for a project snippet
+	 * Retrieves user agent details for a specified snippet. Available only for administrators.
 	 *
 	 * `GET /api/v4/projects/{id}/snippets/{snippet_id}/user_agent_detail` — risk: medium
 	 */
@@ -16008,7 +16156,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the list of project fetch statistics for the last 30 days
+	 * Retrieves the clone and pull statistics for the last 30 days from a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/statistics` — risk: medium
 	 */
@@ -16030,7 +16178,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This endpoint was introduced in GitLab 11.4
+	 * Lists all templates of a specified type for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/templates/{type}` — risk: medium
 	 */
@@ -16052,7 +16200,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This endpoint was introduced in GitLab 11.4
+	 * Retrieves a template of a specified type for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/templates/{type}/{name}` — risk: medium
 	 */
@@ -16074,7 +16222,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all custom attributes on a project
+	 * Lists all custom attributes for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/custom_attributes` — risk: medium
 	 */
@@ -16096,7 +16244,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a custom attribute on a project
+	 * Retrieves a specified custom attribute for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/custom_attributes/{key}` — risk: medium
 	 */
@@ -16118,7 +16266,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Set a custom attribute on a project
+	 * Creates or updates a custom attribute for a specified project. If the attribute already exists, it is updated, otherwise a new attribute is created.
 	 *
 	 * `PUT /api/v4/projects/{id}/custom_attributes/{key}` — risk: medium
 	 */
@@ -16140,7 +16288,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a custom attribute on a project
+	 * Deletes a specified custom attribute for a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/custom_attributes/{key}` — risk: medium
 	 */
@@ -16162,7 +16310,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Restore a project
+	 * Restores a specified project that was marked for deletion.
 	 *
 	 * `POST /api/v4/projects/{id}/restore` — risk: medium
 	 */
@@ -16184,7 +16332,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of visible projects for authenticated user
+	 * Lists all projects. Unauthenticated requests return only public projects with a limited subset of attributes. You can filter responses by custom attributes.
 	 *
 	 * `GET /api/v4/projects` — risk: low
 	 */
@@ -16206,7 +16354,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create new project
+	 * Creates a project owned by the authenticated user. If your HTTP repository is not publicly accessible, add authentication information to the URL `https://username:password@gitlab.company.com/group/pro
 	 *
 	 * `POST /api/v4/projects` — risk: medium
 	 */
@@ -16228,7 +16376,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create new project for a specified user. Only available to admin users.
+	 * Creates a project for a user. Administrators only.
 	 *
 	 * `POST /api/v4/projects/user/{user_id}` — risk: medium
 	 */
@@ -16250,7 +16398,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Returns group that can be shared with the given project
+	 * Lists all groups that can be invited to a project.
 	 *
 	 * `GET /api/v4/projects/{id}/share_locations` — risk: medium
 	 */
@@ -16272,7 +16420,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single project
+	 * Retrieves details on a specified project. This endpoint can be accessed without authentication if the project is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}` — risk: low
 	 */
@@ -16294,7 +16442,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an existing project
+	 * Updates an existing project. If your HTTP repository is not publicly accessible, add authentication information to the URL `https://username:password@gitlab.company.com/group/project.git`, where `pass
 	 *
 	 * `PUT /api/v4/projects/{id}` — risk: medium
 	 */
@@ -16316,7 +16464,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a project
+	 * Deletes a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}` — risk: medium
 	 */
@@ -16338,7 +16486,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Fork new project for the current user or provided namespace.
+	 * Creates a fork of a project.
 	 *
 	 * `POST /api/v4/projects/{id}/fork` — risk: medium
 	 */
@@ -16360,7 +16508,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove a forked_from relationship
+	 * Deletes a fork relationship between projects.
 	 *
 	 * `DELETE /api/v4/projects/{id}/fork` — risk: medium
 	 */
@@ -16382,7 +16530,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List forks of this project
+	 * Lists all forks of a project.
 	 *
 	 * `GET /api/v4/projects/{id}/forks` — risk: medium
 	 */
@@ -16426,7 +16574,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Archive a project
+	 * Archives a specified project. You must be an administrator or be assigned the Owner role on the project.
 	 *
 	 * `POST /api/v4/projects/{id}/archive` — risk: medium
 	 */
@@ -16448,7 +16596,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Unarchive a project
+	 * Unarchives a specified project. You must be an administrator or have the Owner role on the project.
 	 *
 	 * `POST /api/v4/projects/{id}/unarchive` — risk: medium
 	 */
@@ -16470,7 +16618,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Star a project
+	 * Stars a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/star` — risk: medium
 	 */
@@ -16492,7 +16640,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Unstar a project
+	 * Unstars a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/unstar` — risk: medium
 	 */
@@ -16514,7 +16662,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the users who starred a project
+	 * Lists all users who starred a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/starrers` — risk: medium
 	 */
@@ -16536,7 +16684,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get languages in project repository
+	 * Retrieves information about all programming languages used in a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/languages` — risk: medium
 	 */
@@ -16558,7 +16706,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Mark this project as forked from another
+	 * Creates a fork relationship between a project and an upstream project.
 	 *
 	 * `POST /api/v4/projects/{id}/fork/{forked_from_id}` — risk: medium
 	 */
@@ -16580,7 +16728,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Share the project with a group
+	 * Shares a specified project with a group.
 	 *
 	 * `POST /api/v4/projects/{id}/share` — risk: medium
 	 */
@@ -16602,7 +16750,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove a group share
+	 * Deletes a shared project link in a group.
 	 *
 	 * `DELETE /api/v4/projects/{id}/share/{group_id}` — risk: medium
 	 */
@@ -16624,7 +16772,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.2
+	 * Imports members from another project. If the role of the importing member for the target project is a Maintainer, then members with the Owner role for the source project are imported with the Maintain
 	 *
 	 * `POST /api/v4/projects/{id}/import_project_members/{project_id}` — risk: medium
 	 */
@@ -16646,7 +16794,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the users list of a project
+	 * Lists all members with access to a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/users` — risk: medium
 	 */
@@ -16668,7 +16816,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get ancestor and shared groups for a project
+	 * Lists all ancestor groups for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/groups` — risk: medium
 	 */
@@ -16690,7 +16838,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of invited groups in this project
+	 * Lists all invited groups in a project. Unauthenticated requests return only public invited groups. Limited to 60 requests a minute per user account for authenticated requires and per IP address for un
 	 *
 	 * `GET /api/v4/projects/{id}/invited_groups` — risk: medium
 	 */
@@ -16712,7 +16860,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 9.0.
+	 * Starts the housekeeping task for a project.
 	 *
 	 * `POST /api/v4/projects/{id}/housekeeping` — risk: medium
 	 */
@@ -16756,7 +16904,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Transfer a project to a new namespace
+	 * Transfers a project to another namespace.
 	 *
 	 * `PUT /api/v4/projects/{id}/transfer` — risk: medium
 	 */
@@ -16778,7 +16926,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the namespaces to where the project can be transferred
+	 * Lists all namespaces where a specified project can be transferred.
 	 *
 	 * `GET /api/v4/projects/{id}/transfer_locations` — risk: medium
 	 */
@@ -16800,7 +16948,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Show the storage information
+	 * Retrieves the path to repository storage for a specified project. If you are using Gitaly Cluster (Praefect), see Praefect-generated replica paths instead. Administrators only.
 	 *
 	 * `GET /api/v4/projects/{id}/storage` — risk: medium
 	 */
@@ -16822,7 +16970,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of audit events in this project.
+	 * Lists all audit events for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/audit_events` — risk: medium
 	 */
@@ -16844,7 +16992,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a specific audit event in this project.
+	 * Retrieves an audit event for a specified project. Only available to users with at least the Developer role for the project.
 	 *
 	 * `GET /api/v4/projects/{id}/audit_events/{audit_event_id}` — risk: medium
 	 */
@@ -16866,7 +17014,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a project's protected branches
+	 * Lists all protected branches for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/protected_branches` — risk: medium
 	 */
@@ -16888,7 +17036,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Protect a single branch
+	 * Protects a specified repository branch or several project repository branches using a wildcard protected branch.
 	 *
 	 * `POST /api/v4/projects/{id}/protected_branches` — risk: medium
 	 */
@@ -16910,7 +17058,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single protected branch
+	 * Retrieves a specified protected branch or wildcard protected branch.
 	 *
 	 * `GET /api/v4/projects/{id}/protected_branches/{name}` — risk: medium
 	 */
@@ -16932,7 +17080,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update a protected branch
+	 * Updates a protected branch for a specified project.
 	 *
 	 * `PATCH /api/v4/projects/{id}/protected_branches/{name}` — risk: medium
 	 */
@@ -16954,7 +17102,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Unprotect a single branch
+	 * Unprotects a specified protected branch or wildcard protected branch.
 	 *
 	 * `DELETE /api/v4/projects/{id}/protected_branches/{name}` — risk: medium
 	 */
@@ -16976,7 +17124,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.3.
+	 * Lists all protected tags for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/protected_tags` — risk: medium
 	 */
@@ -16998,7 +17146,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.3.
+	 * Protects a specified repository tag using a wildcard protected tag.
 	 *
 	 * `POST /api/v4/projects/{id}/protected_tags` — risk: medium
 	 */
@@ -17020,7 +17168,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.3.
+	 * Retrieves a specified protected tag or wildcard protected tag.
 	 *
 	 * `GET /api/v4/projects/{id}/protected_tags/{name}` — risk: medium
 	 */
@@ -17042,7 +17190,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.3.
+	 * Unprotects a specified protected tag or wildcard protected tag.
 	 *
 	 * `DELETE /api/v4/projects/{id}/protected_tags/{name}` — risk: medium
 	 */
@@ -17064,7 +17212,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.1
+	 * Lists all packages for a specified project in an HTML file.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/pypi/simple` — risk: medium
 	 */
@@ -17086,7 +17234,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.10
+	 * Uploads a PyPI package for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/packages/pypi` — risk: medium
 	 */
@@ -17130,7 +17278,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Returns a paginated list of releases. This feature was introduced in GitLab 11.7.
+	 * Lists all releases for a specified project. Sorted by `released_at`.
 	 *
 	 * `GET /api/v4/projects/{id}/releases` — risk: medium
 	 */
@@ -17152,7 +17300,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a release. Developer level access to the project is required to create a release. This feature was introduced in GitLab 11.7.
+	 * Creates a release. Developer level access to the project is required to create a release.
 	 *
 	 * `POST /api/v4/projects/{id}/releases` — risk: medium
 	 */
@@ -17174,7 +17322,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a release for the given tag. This feature was introduced in GitLab 11.7.
+	 * Retrieves a release with a specified tag name.
 	 *
 	 * `GET /api/v4/projects/{id}/releases/{tag_name}` — risk: medium
 	 */
@@ -17196,7 +17344,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Updates a release. Developer level access to the project is required to update a release. This feature was introduced in GitLab 11.7.
+	 * Updates a release. Developer level access to the project is required to update a release.
 	 *
 	 * `PUT /api/v4/projects/{id}/releases/{tag_name}` — risk: medium
 	 */
@@ -17240,7 +17388,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates an evidence for an existing Release. This feature was introduced in GitLab 12.10.
+	 * Generates an evidence for an existing release.
 	 *
 	 * `POST /api/v4/projects/{id}/releases/{tag_name}/evidence` — risk: medium
 	 */
@@ -17262,7 +17410,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get assets as links from a release. This feature was introduced in GitLab 11.7.
+	 * Lists all assets as links from a release.
 	 *
 	 * `GET /api/v4/projects/{id}/releases/{tag_name}/assets/links` — risk: medium
 	 */
@@ -17284,7 +17432,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create an asset as a link from a release. This feature was introduced in GitLab 11.7.
+	 * Creates an asset link for a specified release.
 	 *
 	 * `POST /api/v4/projects/{id}/releases/{tag_name}/assets/links` — risk: medium
 	 */
@@ -17306,7 +17454,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get an asset as a link from a release. This feature was introduced in GitLab 11.7.
+	 * Retrieves a specified asset as a link from a release.
 	 *
 	 * `GET /api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}` — risk: medium
 	 */
@@ -17328,7 +17476,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an asset as a link from a release. This feature was introduced in GitLab 11.7.
+	 * Updates a specified asset link for a release.
 	 *
 	 * `PUT /api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}` — risk: medium
 	 */
@@ -17350,7 +17498,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Deletes an asset as a link from a release. This feature was introduced in GitLab 11.7.
+	 * Deletes a specified asset link from a release.
 	 *
 	 * `DELETE /api/v4/projects/{id}/releases/{tag_name}/assets/links/{link_id}` — risk: medium
 	 */
@@ -17372,7 +17520,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * List the project's remote mirrors
+	 * Lists all remote mirrors for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/remote_mirrors` — risk: medium
 	 */
@@ -17394,7 +17542,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create remote mirror for a project
+	 * Creates a push mirror.
 	 *
 	 * `POST /api/v4/projects/{id}/remote_mirrors` — risk: medium
 	 */
@@ -17416,7 +17564,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single remote mirror
+	 * Retrieves a specified remote mirror for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/remote_mirrors/{mirror_id}` — risk: medium
 	 */
@@ -17438,7 +17586,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update the attributes of a single remote mirror
+	 * Updates the configuration or operational status of a specified remote mirror.
 	 *
 	 * `PUT /api/v4/projects/{id}/remote_mirrors/{mirror_id}` — risk: medium
 	 */
@@ -17460,7 +17608,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.10
+	 * Deletes a specified remote mirror from a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/remote_mirrors/{mirror_id}` — risk: medium
 	 */
@@ -17482,7 +17630,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Triggers a push mirror operation
+	 * Forces an update to a push mirror.
 	 *
 	 * `POST /api/v4/projects/{id}/remote_mirrors/{mirror_id}/sync` — risk: medium
 	 */
@@ -17504,7 +17652,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the public key of a single remote mirror
+	 * Retrieves the public key of a specified remote mirror that uses SSH authentication.
 	 *
 	 * `GET /api/v4/projects/{id}/remote_mirrors/{mirror_id}/public_key` — risk: medium
 	 */
@@ -17526,7 +17674,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a project repository tree
+	 * Lists all repository files and directories in a specified project. This endpoint can be accessed without authentication if the repository is publicly accessible. This command provides essentially the 
 	 *
 	 * `GET /api/v4/projects/{id}/repository/tree` — risk: medium
 	 */
@@ -17548,7 +17696,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get raw blob contents from the repository
+	 * Retrieves the raw file contents for a blob, by blob SHA. This endpoint can be accessed without authentication if the repository is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/blobs/{sha}/raw` — risk: medium
 	 */
@@ -17570,7 +17718,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a blob from the repository
+	 * Retrieves information, such as size and content, about blobs in a repository. Blob content is Base64 encoded. This endpoint can be accessed without authentication, if the repository is publicly access
 	 *
 	 * `GET /api/v4/projects/{id}/repository/blobs/{sha}` — risk: medium
 	 */
@@ -17592,7 +17740,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get an archive of the repository
+	 * Retrieves the file archive of a specified repository. This endpoint can be accessed without authentication if the repository is publicly accessible. For GitLab.com users, this endpoint has a rate limi
 	 *
 	 * `GET /api/v4/projects/{id}/repository/archive` — risk: medium
 	 */
@@ -17614,7 +17762,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Compare two branches, tags, or commits
+	 * Compares branches, tags, or commits. Retrieves the differences between two branches, tags, or commits in a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/compare` — risk: medium
 	 */
@@ -17636,7 +17784,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get repository health
+	 * Retrieves statistics related to the health of a project repository. This endpoint is rate-limited to 5 requests/hour per project when `generate` is `true`. Available only to users with push access to 
 	 *
 	 * `GET /api/v4/projects/{id}/repository/health` — risk: medium
 	 */
@@ -17658,7 +17806,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get repository contributors
+	 * Retrieves a list of contributors to a specified repository.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/contributors` — risk: medium
 	 */
@@ -17680,7 +17828,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the common ancestor between commits
+	 * Retrieves the merge base for two specified commits.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/merge_base` — risk: medium
 	 */
@@ -17702,7 +17850,95 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.6
+	 * Each blob is truncated to the first 1 MB; the `truncated` field indicates when this happens.
+	 *
+	 * `POST /api/v4/projects/{id}/repository/blobs/batch` — risk: medium
+	 */
+	async batch(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "postApiV4ProjectsIdRepositoryBlobsBatch",
+			namespace: "projects",
+			method: "batch",
+			http: "post",
+			path: `/api/v4/projects/${id}/repository/blobs/batch`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["batch"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Returns the path, change status, and file modes for every path that differs between two refs.
+	 *
+	 * `GET /api/v4/projects/{id}/repository/changed_paths` — risk: medium
+	 */
+	async changedPaths(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4ProjectsIdRepositoryChangedPaths",
+			namespace: "projects",
+			method: "changedPaths",
+			http: "get",
+			path: `/api/v4/projects/${id}/repository/changed_paths`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["changedPaths"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Retrieve diverging commit counts between two refs
+	 *
+	 * `GET /api/v4/projects/{id}/repository/diverging_commits` — risk: medium
+	 */
+	async divergingCommits(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4ProjectsIdRepositoryDivergingCommits",
+			namespace: "projects",
+			method: "divergingCommits",
+			http: "get",
+			path: `/api/v4/projects/${id}/repository/diverging_commits`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["divergingCommits"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Returns the number of added and deleted lines for every file that differs between two refs.
+	 *
+	 * `GET /api/v4/projects/{id}/repository/diff_stats` — risk: medium
+	 */
+	async diffStats(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4ProjectsIdRepositoryDiffStats",
+			namespace: "projects",
+			method: "diffStats",
+			http: "get",
+			path: `/api/v4/projects/${id}/repository/diff_stats`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["diffStats"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Generates changelog data based on commits in a repository, without committing them to a changelog file. Works exactly like `POST /projects/:id/repository/changelog`, except the changelog data is not c
 	 *
 	 * `GET /api/v4/projects/{id}/repository/changelog` — risk: medium
 	 */
@@ -17724,7 +17960,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.9
+	 * Adds changelog data to file.
 	 *
 	 * `POST /api/v4/projects/{id}/repository/changelog` — risk: medium
 	 */
@@ -17746,7 +17982,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Rotates a resource access token by passing it to the API in a header
+	 * Rotates a project access token by passing it to the API in a header.
 	 *
 	 * `POST /api/v4/projects/{id}/access_tokens/self/rotate` — risk: medium
 	 */
@@ -17768,7 +18004,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a list of all milestone events for a single Issue
+	 * Lists all milestone events for a specified issue.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{eventable_id}/resource_milestone_events` — risk: medium
 	 */
@@ -17790,7 +18026,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Returns a single milestone event for a specific project Issue
+	 * Retrieves a specified milestone event for a project issue.
 	 *
 	 * `GET /api/v4/projects/{id}/issues/{eventable_id}/resource_milestone_events/{event_id}` — risk: medium
 	 */
@@ -17812,7 +18048,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Gets a list of all milestone events for a single Merge request
+	 * Lists all milestone events for a specified merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{eventable_id}/resource_milestone_events` — risk: medium
 	 */
@@ -17834,7 +18070,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Returns a single milestone event for a specific project Merge request
+	 * Retrieves a specified milestone event for a project merge request.
 	 *
 	 * `GET /api/v4/projects/{id}/merge_requests/{eventable_id}/resource_milestone_events/{event_id}` — risk: medium
 	 */
@@ -17900,7 +18136,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.9
+	 * Downloads a RubyGems spec index file (specs.4.8.gz, latest_specs.4.8.gz, or prerelease_specs.4.8.gz) for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/rubygems/{file_name}` — risk: medium
 	 */
@@ -17922,7 +18158,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.9
+	 * Downloads a gemspec file in Marshal format for a specified gem version.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/rubygems/quick/Marshal.4.8/{file_name}` — risk: medium
 	 */
@@ -17944,7 +18180,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.9
+	 * Downloads a specified gem file for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/rubygems/gems/{file_name}` — risk: medium
 	 */
@@ -17988,7 +18224,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.9
+	 * Uploads a gem for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/packages/rubygems/api/v1/gems` — risk: medium
 	 */
@@ -18010,7 +18246,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.9
+	 * Retrieves a list of dependencies for specified gems. The response is a marshalled array of hashes for all versions of the requested gems. Because the response is marshalled, you can store it in a file
 	 *
 	 * `GET /api/v4/projects/{id}/packages/rubygems/api/v1/dependencies` — risk: medium
 	 */
@@ -18032,7 +18268,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 10.5.
+	 * Searches for content in a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/(-/)search` — risk: medium
 	 */
@@ -18054,7 +18290,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update existing submodule reference in repository
+	 * Updates a reference for a specified submodule.
 	 *
 	 * `PUT /api/v4/projects/{id}/repository/submodules/{submodule}` — risk: medium
 	 */
@@ -18076,7 +18312,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.7
+	 * Lists all attestations for a specified project and artifact hash. This feature was introduced in GitLab 18.7.
 	 *
 	 * `GET /api/v4/projects/{id}/attestations/{subject_digest}` — risk: medium
 	 */
@@ -18120,7 +18356,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a project repository tags
+	 * Lists all repository tags from a project, sorted by update date and time in descending order.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/tags` — risk: medium
 	 */
@@ -18142,7 +18378,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new repository tag
+	 * Creates a tag in the repository that points to a specified reference.
 	 *
 	 * `POST /api/v4/projects/{id}/repository/tags` — risk: medium
 	 */
@@ -18164,7 +18400,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a single repository tag
+	 * Retrieves a repository tag with a specified name. This endpoint can be accessed without authentication if the repository is publicly accessible.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/tags/{tag_name}` — risk: medium
 	 */
@@ -18186,7 +18422,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a repository tag
+	 * Deletes a specified repository tag.
 	 *
 	 * `DELETE /api/v4/projects/{id}/repository/tags/{tag_name}` — risk: medium
 	 */
@@ -18208,7 +18444,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a tag's signature
+	 * Retrieves the X.509 signature from a signed tag. Unsigned tags return a `404 Not Found` response.
 	 *
 	 * `GET /api/v4/projects/{id}/repository/tags/{tag_name}/signature` — risk: medium
 	 */
@@ -18230,7 +18466,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.7
+	 * Downloads the latest version of a specified module. This feature was introduced in GitLab 16.7.
 	 *
 	 * `GET /api/v4/projects/{id}/packages/terraform/modules/{module_name}/{module_system}` — risk: medium
 	 */
@@ -18252,7 +18488,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a Terraform state by its name
+	 * Retrieves a Terraform state by name for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/terraform/state/{name}` — risk: medium
 	 */
@@ -18274,7 +18510,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Add a new Terraform state or update an existing one
+	 * Creates or updates a Terraform state for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/terraform/state/{name}` — risk: medium
 	 */
@@ -18296,7 +18532,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a Terraform state of a certain name
+	 * Deletes a Terraform state for a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/terraform/state/{name}` — risk: medium
 	 */
@@ -18318,7 +18554,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.5
+	 * Authorizes uploading a Terraform state for a specified project. This feature was introduced in GitLab 18.5.
 	 *
 	 * `POST /api/v4/projects/{id}/terraform/state/{name}/authorize` — risk: medium
 	 */
@@ -18340,7 +18576,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Lock a Terraform state of a certain name
+	 * Locks a Terraform state for a specified project.
 	 *
 	 * `POST /api/v4/projects/{id}/terraform/state/{name}/lock` — risk: medium
 	 */
@@ -18362,7 +18598,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Unlock a Terraform state of a certain name
+	 * Unlocks a Terraform state for a specified project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/terraform/state/{name}/lock` — risk: medium
 	 */
@@ -18388,16 +18624,16 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/v4/projects/{id}/terraform/state_protection_rules` — risk: medium
 	 */
-	async stateProtectionRules(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async stateProtectionRules_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "getApiV4ProjectsIdTerraformStateProtectionRules",
 			namespace: "projects",
-			method: "stateProtectionRules",
+			method: "stateProtectionRules_0",
 			http: "get",
 			path: `/api/v4/projects/${id}/terraform/state_protection_rules`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["stateProtectionRules"],
+			overrides: this.overrides["stateProtectionRules_0"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -18406,7 +18642,73 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a Terraform state version
+	 * This feature was introduced in GitLab 19.1.
+	 *
+	 * `POST /api/v4/projects/{id}/terraform/state_protection_rules` — risk: medium
+	 */
+	async stateProtectionRules_1(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "postApiV4ProjectsIdTerraformStateProtectionRules",
+			namespace: "projects",
+			method: "stateProtectionRules_1",
+			http: "post",
+			path: `/api/v4/projects/${id}/terraform/state_protection_rules`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["stateProtectionRules_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * This feature was introduced in GitLab 19.0.
+	 *
+	 * `PATCH /api/v4/projects/{id}/terraform/state_protection_rules/{terraform_state_protection_rule_id}` — risk: medium
+	 */
+	async stateProtectionRules_2(id: string, terraformStateProtectionRuleId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "patchApiV4ProjectsIdTerraformStateProtectionRulesTerraformStateProtectionRuleId",
+			namespace: "projects",
+			method: "stateProtectionRules_2",
+			http: "patch",
+			path: `/api/v4/projects/${id}/terraform/state_protection_rules/${terraformStateProtectionRuleId}`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["stateProtectionRules_2"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * This feature was introduced in GitLab 19.0.
+	 *
+	 * `DELETE /api/v4/projects/{id}/terraform/state_protection_rules/{terraform_state_protection_rule_id}` — risk: medium
+	 */
+	async deleteStateProtectionRule(id: string, terraformStateProtectionRuleId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteApiV4ProjectsIdTerraformStateProtectionRulesTerraformStateProtectionRuleId",
+			namespace: "projects",
+			method: "deleteStateProtectionRule",
+			http: "delete",
+			path: `/api/v4/projects/${id}/terraform/state_protection_rules/${terraformStateProtectionRuleId}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteStateProtectionRule"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Retrieves a specified Terraform state version.
 	 *
 	 * `GET /api/v4/projects/{id}/terraform/state/{name}/versions/{serial}` — risk: medium
 	 */
@@ -18428,7 +18730,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a Terraform state version
+	 * Deletes a specified Terraform state version.
 	 *
 	 * `DELETE /api/v4/projects/{id}/terraform/state/{name}/versions/{serial}` — risk: medium
 	 */
@@ -18450,7 +18752,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of wiki pages
+	 * Lists all wiki pages for a specified project.
 	 *
 	 * `GET /api/v4/projects/{id}/wikis` — risk: medium
 	 */
@@ -18472,7 +18774,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a wiki page
+	 * Creates a wiki page for a specified project. Requests can define the title, slug, and content.
 	 *
 	 * `POST /api/v4/projects/{id}/wikis` — risk: medium
 	 */
@@ -18494,7 +18796,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a wiki page
+	 * Retrieves a specified wiki page for a project.
 	 *
 	 * `GET /api/v4/projects/{id}/wikis/{slug}` — risk: medium
 	 */
@@ -18516,7 +18818,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Update a wiki page
+	 * Updates a specified wiki page for a project.
 	 *
 	 * `PUT /api/v4/projects/{id}/wikis/{slug}` — risk: medium
 	 */
@@ -18538,7 +18840,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a wiki page
+	 * Deletes a specified wiki page from a project.
 	 *
 	 * `DELETE /api/v4/projects/{id}/wikis/{slug}` — risk: medium
 	 */
@@ -18560,7 +18862,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.3.
+	 * Uploads a file to the `uploads` directory in a specified project wiki.
 	 *
 	 * `POST /api/v4/projects/{id}/wikis/attachments` — risk: medium
 	 */
@@ -18680,7 +18982,95 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * List all instance-level variables
+	 * This feature was introduced in GitLab 19.1.
+	 *
+	 * `GET /api/v4/admin/batched_background_operations` — risk: medium
+	 */
+	async listBatchedBackgroundOperations(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4AdminBatchedBackgroundOperations",
+			namespace: "admin",
+			method: "listBatchedBackgroundOperations",
+			http: "get",
+			path: `/api/v4/admin/batched_background_operations`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listBatchedBackgroundOperations"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * This feature was introduced in GitLab 19.1.
+	 *
+	 * `GET /api/v4/admin/batched_background_operations/{id}` — risk: medium
+	 */
+	async retrieveBatchedBackgroundOperation(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4AdminBatchedBackgroundOperationsId",
+			namespace: "admin",
+			method: "retrieveBatchedBackgroundOperation",
+			http: "get",
+			path: `/api/v4/admin/batched_background_operations/${id}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["retrieveBatchedBackgroundOperation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * This feature was introduced in GitLab 19.2.
+	 *
+	 * `PUT /api/v4/admin/batched_background_operations/{id}/stop` — risk: medium
+	 */
+	async stop(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "putApiV4AdminBatchedBackgroundOperationsIdStop",
+			namespace: "admin",
+			method: "stop",
+			http: "put",
+			path: `/api/v4/admin/batched_background_operations/${id}/stop`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["stop"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * This feature was introduced in GitLab 19.2.
+	 *
+	 * `PUT /api/v4/admin/batched_background_operations/{id}/restart` — risk: medium
+	 */
+	async restart(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "putApiV4AdminBatchedBackgroundOperationsIdRestart",
+			namespace: "admin",
+			method: "restart",
+			http: "put",
+			path: `/api/v4/admin/batched_background_operations/${id}/restart`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["restart"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Lists all instance-level variables. Use the `page` and `per_page` pagination parameters to control the pagination of results.
 	 *
 	 * `GET /api/v4/admin/ci/variables` — risk: medium
 	 */
@@ -18702,7 +19092,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a new instance-level variable
+	 * Creates a instance-level variable. The maximum number of instance-level variables can be changed.
 	 *
 	 * `POST /api/v4/admin/ci/variables` — risk: medium
 	 */
@@ -18724,7 +19114,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the details of a specific instance-level variable
+	 * Retrieves details of a specified instance-level variable.
 	 *
 	 * `GET /api/v4/admin/ci/variables/{key}` — risk: medium
 	 */
@@ -18746,7 +19136,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * Update an instance-level variable
+	 * Updates a specified instance variable.
 	 *
 	 * `PUT /api/v4/admin/ci/variables/{key}` — risk: medium
 	 */
@@ -18768,7 +19158,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete an existing instance-level variable
+	 * Deletes a specified instance variable.
 	 *
 	 * `DELETE /api/v4/admin/ci/variables/{key}` — risk: medium
 	 */
@@ -18812,7 +19202,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.2. Returns a list of instance clusters.
+	 * Lists all instance clusters for the instance.
 	 *
 	 * `GET /api/v4/admin/clusters` — risk: medium
 	 */
@@ -18834,7 +19224,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.2. Returns a single instance cluster.
+	 * Retrieves a specified instance cluster.
 	 *
 	 * `GET /api/v4/admin/clusters/{cluster_id}` — risk: medium
 	 */
@@ -18856,7 +19246,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.2. Updates an existing instance cluster.
+	 * Updates an existing instance cluster.
 	 *
 	 * `PUT /api/v4/admin/clusters/{cluster_id}` — risk: medium
 	 */
@@ -18878,7 +19268,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.2. Deletes an existing instance cluster. Does not remove existing resources within the connected Kubernetes cluster.
+	 * Deletes an existing instance cluster. Does not remove existing resources in the connected Kubernetes cluster.
 	 *
 	 * `DELETE /api/v4/admin/clusters/{cluster_id}` — risk: medium
 	 */
@@ -18900,7 +19290,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.2. Adds an existing Kubernetes instance cluster.
+	 * Creates an instance cluster by adding an existing Kubernetes cluster.
 	 *
 	 * `POST /api/v4/admin/clusters/add` — risk: medium
 	 */
@@ -18922,7 +19312,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * List pending database migrations
+	 * Lists all pending migrations for the instance.
 	 *
 	 * `GET /api/v4/admin/migrations/pending` — risk: medium
 	 */
@@ -18944,7 +19334,7 @@ export class AdminResource extends RpcTarget {
 	}
 
 	/**
-	 * Mark the migration as successfully executed
+	 * Updates the status of a migration to indicate a successful execution. This prevent them from being executed by the `db:migrate` tasks. Use this API to skip failing migrations after you determine they 
 	 *
 	 * `POST /api/v4/admin/migrations/{timestamp}/mark` — risk: medium
 	 */
@@ -18976,7 +19366,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.12.
+	 * Lists all broadcast messages for the instance.
 	 *
 	 * `GET /api/v4/broadcast_messages` — risk: low
 	 */
@@ -18998,7 +19388,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.12.
+	 * Creates a broadcast message.
 	 *
 	 * `POST /api/v4/broadcast_messages` — risk: medium
 	 */
@@ -19020,7 +19410,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.12.
+	 * Retrieves a specified broadcast message.
 	 *
 	 * `GET /api/v4/broadcast_messages/{id}` — risk: low
 	 */
@@ -19042,7 +19432,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.12.
+	 * Updates a specified broadcast message.
 	 *
 	 * `PUT /api/v4/broadcast_messages/{id}` — risk: medium
 	 */
@@ -19064,7 +19454,7 @@ export class BroadcastMessagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.12.
+	 * Deletes a specified broadcast message.
 	 *
 	 * `DELETE /api/v4/broadcast_messages/{id}` — risk: medium
 	 */
@@ -19226,7 +19616,7 @@ export class BulkImportsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.1.
+	 * Lists all group or project migrations.
 	 *
 	 * `GET /api/v4/bulk_imports` — risk: low
 	 */
@@ -19248,7 +19638,7 @@ export class BulkImportsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.2.
+	 * Starts a group or project migration. To migrate a project, specify `entities[project_entity]`.
 	 *
 	 * `POST /api/v4/bulk_imports` — risk: medium
 	 */
@@ -19270,7 +19660,7 @@ export class BulkImportsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.1.
+	 * Lists all group or project migration entities.
 	 *
 	 * `GET /api/v4/bulk_imports/entities` — risk: medium
 	 */
@@ -19292,7 +19682,7 @@ export class BulkImportsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.1.
+	 * Retrieves details of a group or project migration.
 	 *
 	 * `GET /api/v4/bulk_imports/{import_id}` — risk: low
 	 */
@@ -19314,7 +19704,7 @@ export class BulkImportsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.1.
+	 * Lists all group or project migration entities for a specified migration.
 	 *
 	 * `GET /api/v4/bulk_imports/{import_id}/entities` — risk: medium
 	 */
@@ -19336,7 +19726,7 @@ export class BulkImportsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.1.
+	 * Retrieves details of a group or project migration entity.
 	 *
 	 * `GET /api/v4/bulk_imports/{import_id}/entities/{entity_id}` — risk: medium
 	 */
@@ -19358,7 +19748,7 @@ export class BulkImportsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.6
+	 * Lists all failed import records for a group or project migration entity. This feature was introduced in GitLab 16.6.
 	 *
 	 * `GET /api/v4/bulk_imports/{import_id}/entities/{entity_id}/failures` — risk: medium
 	 */
@@ -19380,7 +19770,7 @@ export class BulkImportsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.1
+	 * Cancels a direct transfer migration. This feature was introduced in GitLab 17.1.
 	 *
 	 * `POST /api/v4/bulk_imports/{import_id}/cancel` — risk: medium
 	 */
@@ -19412,7 +19802,7 @@ export class JobResource extends RpcTarget {
 	}
 
 	/**
-	 * Get current job using job token
+	 * Retrieves a job that was generated by a specified job token.
 	 *
 	 * `GET /api/v4/job` — risk: low
 	 */
@@ -19434,7 +19824,7 @@ export class JobResource extends RpcTarget {
 	}
 
 	/**
-	 * Retrieves a list of agents for the given job token
+	 * Lists all GitLab agents for Kubernetes with a specified `CI_JOB_TOKEN`.
 	 *
 	 * `GET /api/v4/job/allowed_agents` — risk: medium
 	 */
@@ -19466,7 +19856,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Get runners available for user
+	 * Lists all runners available to the user. For group runners, you must have the Owner role in the owner namespace.
 	 *
 	 * `GET /api/v4/runners` — risk: low
 	 */
@@ -19488,7 +19878,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Register a new runner for the instance
+	 * Creates a runner.
 	 *
 	 * `POST /api/v4/runners` — risk: medium
 	 */
@@ -19510,7 +19900,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Delete a registered runner
+	 * Deletes a specified registered runner.
 	 *
 	 * `DELETE /api/v4/runners` — risk: medium
 	 */
@@ -19554,7 +19944,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Validate authentication credentials
+	 * Verifies authentication for a registered runner.
 	 *
 	 * `POST /api/v4/runners/verify` — risk: medium
 	 */
@@ -19576,7 +19966,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Reset runner authentication token with current token
+	 * Resets a runner authentication token with the token used to authenticate the request.
 	 *
 	 * `POST /api/v4/runners/reset_authentication_token` — risk: medium
 	 */
@@ -19598,7 +19988,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * This endpoint can be used by the runner to retrieve information about the Job Router.
+	 * Discovers Job Router information for a runner. You must provide a valid runner authentication token.
 	 *
 	 * `GET /api/v4/runners/router/discovery` — risk: medium
 	 */
@@ -19620,7 +20010,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all runners in the GitLab instance (shared and project). Access is restricted to users with either administrator access or auditor access.
+	 * Lists all runners in the GitLab instance (project and shared). You must have either administrator access or auditor access.
 	 *
 	 * `GET /api/v4/runners/all` — risk: medium
 	 */
@@ -19642,7 +20032,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * At least the Maintainer role is required to get runner details at the project and group level. Instance-level runner details via this endpoint are available to all signed in users.
+	 * Retrieves details of a runner. Instance runner details are available to all authenticated users through this endpoint. For groups and projects, you must have the Maintainer or Owner role for the assoc
 	 *
 	 * `GET /api/v4/runners/{id}` — risk: low
 	 */
@@ -19664,7 +20054,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Update runner's details
+	 * Updates a specified runner.
 	 *
 	 * `PUT /api/v4/runners/{id}` — risk: medium
 	 */
@@ -19686,7 +20076,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Remove a runner
+	 * Deletes a specified runner.
 	 *
 	 * `DELETE /api/v4/runners/{id}` — risk: medium
 	 */
@@ -19708,7 +20098,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all runner's managers
+	 * List all managers for a specified runner.
 	 *
 	 * `GET /api/v4/runners/{id}/managers` — risk: medium
 	 */
@@ -19752,7 +20142,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * List jobs that are being processed or were processed by the specified runner. The list of jobs is limited to projects where the user has at least the Reporter role.
+	 * Lists all jobs that are being processed or were processed by a specified runner. The list of jobs is limited to projects where the user has the Reporter, Developer, Maintainer, or Owner role.
 	 *
 	 * `GET /api/v4/runners/{id}/jobs` — risk: medium
 	 */
@@ -19774,7 +20164,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Reset runner authentication token
+	 * Resets the authentication token for a specified runner.
 	 *
 	 * `POST /api/v4/runners/{id}/reset_authentication_token` — risk: medium
 	 */
@@ -19796,7 +20186,7 @@ export class RunnersResource extends RpcTarget {
 	}
 
 	/**
-	 * Reset runner registration token
+	 * Resets the runner registration token for the GitLab instance.
 	 *
 	 * `POST /api/v4/runners/reset_registration_token` — risk: medium
 	 */
@@ -19828,7 +20218,7 @@ export class JobsResource extends RpcTarget {
 	}
 
 	/**
-	 * Request a job
+	 * Requests a job for a runner to execute.
 	 *
 	 * `POST /api/v4/jobs/request` — risk: medium
 	 */
@@ -19872,6 +20262,28 @@ export class JobsResource extends RpcTarget {
 	}
 
 	/**
+	 * Retrieves the runtime environment key linked to a job, if the job is resuming a suspended environment.
+	 *
+	 * `GET /api/v4/jobs/{id}/runtime_environment_key` — risk: medium
+	 */
+	async listRuntimeEnvironmentKey(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4JobsIdRuntimeEnvironmentKey",
+			namespace: "jobs",
+			method: "listRuntimeEnvironmentKey",
+			http: "get",
+			path: `/api/v4/jobs/${id}/runtime_environment_key`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listRuntimeEnvironmentKey"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
 	 * Append a patch to the job trace
 	 *
 	 * `PATCH /api/v4/jobs/{id}/trace` — risk: medium
@@ -19894,7 +20306,7 @@ export class JobsResource extends RpcTarget {
 	}
 
 	/**
-	 * Authorize uploading job artifact
+	 * Authorizes uploading artifacts for a specified job.
 	 *
 	 * `POST /api/v4/jobs/{id}/artifacts/authorize` — risk: medium
 	 */
@@ -19916,7 +20328,7 @@ export class JobsResource extends RpcTarget {
 	}
 
 	/**
-	 * Download the artifacts file for job
+	 * Downloads artifacts for a specified job.
 	 *
 	 * `GET /api/v4/jobs/{id}/artifacts` — risk: medium
 	 */
@@ -19938,7 +20350,7 @@ export class JobsResource extends RpcTarget {
 	}
 
 	/**
-	 * Upload a job artifact
+	 * Uploads artifacts for a specified job.
 	 *
 	 * `POST /api/v4/jobs/{id}/artifacts` — risk: medium
 	 */
@@ -19960,41 +20372,6 @@ export class JobsResource extends RpcTarget {
 	}
 }
 
-export class ChaosResource extends RpcTarget {
-	constructor(
-		private apiKey: string | undefined,
-		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
-		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
-	) {
-		super();
-	}
-
-	/**
-	 * Picks a project by random ID and checks the `ebonet_chaos_tests` feature flag.
-When enabled, introduces a 20% chance of a 500 error and a 20% chance of
-a 300ms delay. Returns 200 OK otherwise.
-
-	 *
-	 * `GET /api/v4/chaos/test` — risk: medium
-	 */
-	async listTest(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
-			operationId: "getApiV4ChaosTest",
-			namespace: "chaos",
-			method: "listTest",
-			http: "get",
-			path: `/api/v4/chaos/test`,
-			risk: "medium",
-			body: undefined,
-			overrides: this.overrides["listTest"],
-			baseUrl: this.runtimeConfig?.baseUrl,
-			extraHeaders: this.runtimeConfig?.extraHeaders,
-			prefixOverride: this.runtimeConfig?.prefixOverride,
-			options,
-		});
-	}
-}
-
 export class GroupResource extends RpcTarget {
 	constructor(
 		private apiKey: string | undefined,
@@ -20005,7 +20382,7 @@ export class GroupResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.1
+	 * Retrieves the repository URL templates for requesting individual packages for a group.
 	 *
 	 * `GET /api/v4/group/{id}/-/packages/composer/packages` — risk: medium
 	 */
@@ -20027,7 +20404,7 @@ export class GroupResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.1
+	 * Lists all repository packages for a specified group. Composer V2 is recommended over V1.
 	 *
 	 * `GET /api/v4/group/{id}/-/packages/composer/p/{sha}` — risk: medium
 	 */
@@ -20059,7 +20436,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.2
+	 * Retrieves an authentication token. Creates a JSON Web Token (JWT) for use as a Bearer header in other requests to the package registry.
 	 *
 	 * `GET /api/v4/packages/conan/v1/users/authenticate` — risk: medium
 	 */
@@ -20081,7 +20458,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Verifies authentication credentials for a Conan package registry.
 	 *
 	 * `GET /api/v4/packages/conan/v1/users/check_credentials` — risk: medium
 	 */
@@ -20103,7 +20480,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Searches the instance for a specified Conan package.
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/search` — risk: low
 	 */
@@ -20125,7 +20502,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 18.0
+	 * Retrieves the metadata for all package references of a specified package. This feature was introduced in GitLab 18.0.
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/search` — risk: low
 	 */
@@ -20147,7 +20524,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.2
+	 * Verifies availability of a Conan repository.
 	 *
 	 * `GET /api/v4/packages/conan/v1/ping` — risk: medium
 	 */
@@ -20169,7 +20546,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a snapshot of the files for a specified Conan package and reference. The snapshot is a list of filenames with their associated MD5 hash.
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}` — risk: medium
 	 */
@@ -20191,7 +20568,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a snapshot of the files for a specified Conan recipe. The snapshot is a list of filenames with their associated MD5 hash.
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}` — risk: medium
 	 */
@@ -20213,7 +20590,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Deletes a specified Conan recipe and associated package files from the package registry.
 	 *
 	 * `DELETE /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}` — risk: medium
 	 */
@@ -20235,7 +20612,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a manifest that includes a list of files and associated download URLs for a specified package.
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest` — risk: medium
 	 */
@@ -20257,7 +20634,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a manifest that includes a list of files and associated download URLs for a specified recipe.
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/digest` — risk: medium
 	 */
@@ -20279,7 +20656,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Lists all files and associated download URLs for a specified package in the package registry. Returns the same payload as the package manifest endpoint.
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls` — risk: medium
 	 */
@@ -20301,7 +20678,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Lists all files and associated download URLs for a specified recipe in the package registry. Returns the same payload as the recipe manifest endpoint.
 	 *
 	 * `GET /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/download_urls` — risk: medium
 	 */
@@ -20323,7 +20700,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Lists all the upload URLs for a specified collection of package files. The request must include a JSON object with the name and size of the individual files.
 	 *
 	 * `POST /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls` — risk: medium
 	 */
@@ -20345,7 +20722,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.4
+	 * Lists all the upload URLs for a specified collection of recipe files. The request must include a JSON object with the name and size of the individual files.
 	 *
 	 * `POST /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/upload_urls` — risk: medium
 	 */
@@ -20367,7 +20744,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Retrieves a specified recipe file from the package registry. You must use the download URL returned from the recipe download URLs endpoint.
 	 *
 	 * `GET /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}` — risk: medium
 	 */
@@ -20389,7 +20766,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Uploads a specified recipe file to the package registry. You must use the upload URL returned from the recipe upload URLs endpoint.
 	 *
 	 * `PUT /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}` — risk: medium
 	 */
@@ -20411,7 +20788,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Authorizes the Conan recipe file.
 	 *
 	 * `PUT /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize` — risk: medium
 	 */
@@ -20433,7 +20810,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.5
+	 * Retrieves a specified package file from the package registry. You must use the download URL returned from the package download URLs endpoint.
 	 *
 	 * `GET /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}` — risk: medium
 	 */
@@ -20455,7 +20832,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Uploads a specified package file to the package registry. You must use the upload URL returned from the package upload URLs endpoint.
 	 *
 	 * `PUT /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}` — risk: medium
 	 */
@@ -20477,7 +20854,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 12.6
+	 * Authorizes the Conan package file.
 	 *
 	 * `PUT /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize` — risk: medium
 	 */
@@ -20543,7 +20920,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * List versions for a module
+	 * Lists all available versions for a specified module.
 	 *
 	 * `GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/versions` — risk: medium
 	 */
@@ -20565,7 +20942,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * Download the latest version of a module
+	 * Retrieves download URL for latest module version.
 	 *
 	 * `GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}/download` — risk: medium
 	 */
@@ -20587,7 +20964,7 @@ export class PackagesResource extends RpcTarget {
 	}
 
 	/**
-	 * Get details about the latest version of a module
+	 * Retrieves latest version for a specified module.
 	 *
 	 * `GET /api/v4/packages/terraform/modules/v1/{module_namespace}/{module_name}/{module_system}` — risk: medium
 	 */
@@ -20651,7 +21028,7 @@ export class RegistryResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.6.
+	 * Retrieves details of a specified container registry repository.
 	 *
 	 * `GET /api/v4/registry/repositories/{id}` — risk: medium
 	 */
@@ -20715,7 +21092,7 @@ export class EventsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 9.3.
+	 * Lists all events for the authenticated user. Does not return events associated with epics or merge requests. Returns bulk push events with limited commit details.
 	 *
 	 * `GET /api/v4/events` — risk: low
 	 */
@@ -20747,7 +21124,7 @@ export class UsersResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.13.
+	 * Retrieves the contribution events for a specified user. Does not return events associated with epics or merge requests. Returns bulk push events with limited commit details.
 	 *
 	 * `GET /api/v4/users/{id}/events` — risk: medium
 	 */
@@ -20769,7 +21146,7 @@ export class UsersResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a user projects
+	 * Lists all personal projects for a specified user. Does not return group or subgroup projects. If the user profile is private, returns only an empty list.
 	 *
 	 * `GET /api/v4/users/{user_id}/projects` — risk: medium
 	 */
@@ -20791,7 +21168,7 @@ export class UsersResource extends RpcTarget {
 	}
 
 	/**
-	 * Get projects that a user has contributed to
+	 * Lists all contributions to visible projects for a specified user. Returns only contributions in the past year.
 	 *
 	 * `GET /api/v4/users/{user_id}/contributed_projects` — risk: medium
 	 */
@@ -20813,7 +21190,7 @@ export class UsersResource extends RpcTarget {
 	}
 
 	/**
-	 * Get projects starred by a user
+	 * Lists all visible projects starred by a specified user. Unauthenticated requests return only public projects.
 	 *
 	 * `GET /api/v4/users/{user_id}/starred_projects` — risk: medium
 	 */
@@ -20845,7 +21222,7 @@ export class FeaturesResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all persisted features, with its gate values.
+	 * Lists all feature flags for the instance.
 	 *
 	 * `GET /api/v4/features` — risk: low
 	 */
@@ -20867,7 +21244,7 @@ export class FeaturesResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all feature definitions.
+	 * Lists all feature flag definitions.
 	 *
 	 * `GET /api/v4/features/definitions` — risk: medium
 	 */
@@ -20889,7 +21266,7 @@ export class FeaturesResource extends RpcTarget {
 	}
 
 	/**
-	 * Set a feature's gate value. If a feature with the given name doesn't exist yet, it's created. The value can be a boolean, or an integer to indicate percentage of time.
+	 * Creates or updates a feature flag value. If a feature with the given name doesn't exist yet, the operation creates one. The value can be a boolean or an integer to indicate percentage of time.
 	 *
 	 * `POST /api/v4/features/{name}` — risk: medium
 	 */
@@ -20911,7 +21288,7 @@ export class FeaturesResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a feature gate. Response is equal when the gate exists, or doesn't.
+	 * Deletes a feature gate. Returns the same response if the feature gate does not exist.
 	 *
 	 * `DELETE /api/v4/features/{name}` — risk: medium
 	 */
@@ -21023,6 +21400,28 @@ export class GeoResource extends RpcTarget {
 			risk: "medium",
 			body,
 			overrides: this.overrides["createStatu"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Reports resources that persistently fail verification on a secondary
+	 *
+	 * `POST /api/v4/geo/failures` — risk: medium
+	 */
+	async createFailure(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "postApiV4GeoFailures",
+			namespace: "geo",
+			method: "createFailure",
+			http: "post",
+			path: `/api/v4/geo/failures`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["createFailure"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -21155,7 +21554,7 @@ export class GlqlResource extends RpcTarget {
 	}
 
 	/**
-	 * Execute a GLQL (GitLab Query Language) query
+	 * Executes a GLQL query to search and filter GitLab resources.
 	 *
 	 * `POST /api/v4/glql` — risk: medium
 	 */
@@ -21257,16 +21656,126 @@ export class IntegrationsResource extends RpcTarget {
 	 *
 	 * `POST /api/v4/integrations/jira_connect/subscriptions` — risk: medium
 	 */
-	async subscriptions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+	async jiraConnectSubscriptions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
 		return fetchProof(this.apiKey, {
 			operationId: "postApiV4IntegrationsJiraConnectSubscriptions",
 			namespace: "integrations",
-			method: "subscriptions",
+			method: "jiraConnectSubscriptions",
 			http: "post",
 			path: `/api/v4/integrations/jira_connect/subscriptions`,
 			risk: "medium",
 			body,
-			overrides: this.overrides["subscriptions"],
+			overrides: this.overrides["jiraConnectSubscriptions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Sets the GitLab instance the installation points at. Omit instance_url (or send null) for GitLab.com. Requires a Jira site or organization admin.
+	 *
+	 * `PUT /api/v4/integrations/jira_forge/installation` — risk: medium
+	 */
+	async installation(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "putApiV4IntegrationsJiraForgeInstallation",
+			namespace: "integrations",
+			method: "installation",
+			http: "put",
+			path: `/api/v4/integrations/jira_forge/installation`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["installation"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Stores the Forge app system OAuth token (X-Forge-Oauth-System header) and the Jira apiBaseUrl (from the FIT), so GitLab pushes dev-info directly to Jira. See Atlassian::Forge::SystemTokenClient.
+	 *
+	 * `POST /api/v4/integrations/jira_forge/installation/forge_token` — risk: medium
+	 */
+	async forgeToken(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "postApiV4IntegrationsJiraForgeInstallationForgeToken",
+			namespace: "integrations",
+			method: "forgeToken",
+			http: "post",
+			path: `/api/v4/integrations/jira_forge/installation/forge_token`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["forgeToken"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Lists the GitLab namespaces subscribed to the Forge installation.
+	 *
+	 * `GET /api/v4/integrations/jira_forge/subscriptions` — risk: medium
+	 */
+	async getJiraForgeSubscriptions(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "getApiV4IntegrationsJiraForgeSubscriptions",
+			namespace: "integrations",
+			method: "getJiraForgeSubscriptions",
+			http: "get",
+			path: `/api/v4/integrations/jira_forge/subscriptions`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["getJiraForgeSubscriptions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Subscribes a GitLab namespace to the Forge installation so its development data syncs to Jira. Authenticated as the GitLab user (OAuth); the Jira installation and user are resolved from the Forge invo
+	 *
+	 * `POST /api/v4/integrations/jira_forge/subscriptions` — risk: medium
+	 */
+	async postJiraForgeSubscriptions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "postApiV4IntegrationsJiraForgeSubscriptions",
+			namespace: "integrations",
+			method: "postJiraForgeSubscriptions",
+			http: "post",
+			path: `/api/v4/integrations/jira_forge/subscriptions`,
+			risk: "medium",
+			body,
+			overrides: this.overrides["postJiraForgeSubscriptions"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * Unsubscribes a GitLab namespace from the Forge installation.
+	 *
+	 * `DELETE /api/v4/integrations/jira_forge/subscriptions/{id}` — risk: medium
+	 */
+	async deleteSubscription(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteApiV4IntegrationsJiraForgeSubscriptionsId",
+			namespace: "integrations",
+			method: "deleteSubscription",
+			http: "delete",
+			path: `/api/v4/integrations/jira_forge/subscriptions/${id}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["deleteSubscription"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -21285,7 +21794,7 @@ export class IssuesResource extends RpcTarget {
 	}
 
 	/**
-	 * Get currently authenticated user's issues
+	 * Lists all issues accessible by the currently authenticated user. By default, returns only issues created by the current user. To list all issues, use parameter `scope=all`.
 	 *
 	 * `GET /api/v4/issues` — risk: low
 	 */
@@ -21307,7 +21816,7 @@ export class IssuesResource extends RpcTarget {
 	}
 
 	/**
-	 * Get specified issue (admin only)
+	 * Retrieves a specified issue. Administrators only.
 	 *
 	 * `GET /api/v4/issues/{id}` — risk: low
 	 */
@@ -21339,8 +21848,7 @@ export class KeysResource extends RpcTarget {
 	}
 
 	/**
-	 * Get SSH key with user by ID of an SSH key. Note only administrators can lookup SSH key with user by ID\
-        of an SSH key
+	 * Retrieves user by SSH key ID. Administrators only.
 	 *
 	 * `GET /api/v4/keys/{id}` — risk: low
 	 */
@@ -21362,8 +21870,7 @@ export class KeysResource extends RpcTarget {
 	}
 
 	/**
-	 * You can search for a user that owns a specific SSH key. Note only administrators can lookup SSH key\
-        with the fingerprint of an SSH key
+	 * Retrieves user by SSH key fingerprint. Administrators only.
 	 *
 	 * `GET /api/v4/keys` — risk: low
 	 */
@@ -21395,7 +21902,7 @@ export class MarkdownResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.0.
+	 * Renders Markdown content as HTML.
 	 *
 	 * `POST /api/v4/markdown` — risk: medium
 	 */
@@ -21427,7 +21934,7 @@ export class MergeRequestsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all merge requests the authenticated user has access to. By default it returns only merge requests created by the current user. To get all merge requests, use parameter `scope=all`.
+	 * Lists all merge requests accessible to the authenticated user. By default, returns only merge requests created by the current user. Use `scope=all` to get all merge requests.
 	 *
 	 * `GET /api/v4/merge_requests` — risk: low
 	 */
@@ -21459,7 +21966,7 @@ export class NamespacesResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a namespace by ID
+	 * Retrieves a specified namespace.
 	 *
 	 * `GET /api/v4/namespaces/{id}` — risk: low
 	 */
@@ -21503,7 +22010,7 @@ export class NamespacesResource extends RpcTarget {
 	}
 
 	/**
-	 * Returns the subscription for the namespace
+	 * Retrieves GitLab subscription details for a specified namespace.
 	 *
 	 * `GET /api/v4/namespaces/{id}/gitlab_subscription` — risk: medium
 	 */
@@ -21591,7 +22098,7 @@ export class NamespacesResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of the namespaces of the authenticated user. If the user is an administrator, a list of all namespaces in the GitLab instance is shown.
+	 * Lists all namespaces available to the current user. If the user is an administrator, this endpoint returns all namespaces in the instance.
 	 *
 	 * `GET /api/v4/namespaces` — risk: low
 	 */
@@ -21613,7 +22120,7 @@ export class NamespacesResource extends RpcTarget {
 	}
 
 	/**
-	 * Get existence of a namespace by path. Suggests a new namespace path that does not already exist.
+	 * Verifies that a namespace is available for use.
 	 *
 	 * `GET /api/v4/namespaces/{id}/exists` — risk: medium
 	 */
@@ -21645,7 +22152,7 @@ export class OfflineExportsResource extends RpcTarget {
 	}
 
 	/**
-	 * Lists all offline transfer exports
+	 * Lists all offline transfer exports. For more information, see https://docs.gitlab.com/user/group/import/offline_transfer_migrations/
 	 *
 	 * `GET /api/v4/offline_exports` — risk: low
 	 */
@@ -21667,7 +22174,7 @@ export class OfflineExportsResource extends RpcTarget {
 	}
 
 	/**
-	 * Initiates a new offline transfer export
+	 * Initiates a new offline transfer export. For more information, see https://docs.gitlab.com/user/group/import/offline_transfer_migrations/
 	 *
 	 * `POST /api/v4/offline_exports` — risk: medium
 	 */
@@ -21689,7 +22196,7 @@ export class OfflineExportsResource extends RpcTarget {
 	}
 
 	/**
-	 * Retrieves details of an offline transfer export
+	 * Retrieves details of an offline transfer export. For more information, see https://docs.gitlab.com/user/group/import/offline_transfer_migrations/
 	 *
 	 * `GET /api/v4/offline_exports/{id}` — risk: low
 	 */
@@ -21721,7 +22228,7 @@ export class OfflineImportsResource extends RpcTarget {
 	}
 
 	/**
-	 * Initiates a new offline transfer import from object storage
+	 * Initiates a new offline transfer import from object storage. For more information, see https://docs.gitlab.com/user/group/import/offline_transfer_migrations/
 	 *
 	 * `POST /api/v4/offline_imports` — risk: medium
 	 */
@@ -21753,9 +22260,7 @@ export class OrganizationsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.5. \
-                    This feature is behind the `allow_organization_creation` feature flag. \
-                    In GitLab 18.3, feature flag changed to `
+	 * Creates an organization. This feature was introduced in GitLab 17.5. This feature is behind the `allow_organization_creation` feature flag. In GitLab 18.3, the feature flag changed to `organization_sw
 	 *
 	 * `POST /api/v4/organizations` — risk: medium
 	 */
@@ -21775,6 +22280,28 @@ export class OrganizationsResource extends RpcTarget {
 			options,
 		});
 	}
+
+	/**
+	 * This feature was introduced in GitLab 19.2.
+	 *
+	 * `DELETE /api/v4/organizations/{id}` — risk: medium
+	 */
+	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "deleteApiV4OrganizationsId",
+			namespace: "organizations",
+			method: "del",
+			http: "delete",
+			path: `/api/v4/organizations/${id}`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["del"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
 }
 
 export class PagesResource extends RpcTarget {
@@ -21787,7 +22314,7 @@ export class PagesResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all pages domains
+	 * Lists all Pages domains on the instance. You must have administrator access to the instance.
 	 *
 	 * `GET /api/v4/pages/domains` — risk: medium
 	 */
@@ -21819,7 +22346,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the details of a personal access token by passing it to the API in a header
+	 * Retrieves a specified personal access token by passing it to the API in a header.
 	 *
 	 * `GET /api/v4/personal_access_tokens/self` — risk: medium
 	 */
@@ -21841,7 +22368,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	}
 
 	/**
-	 * Revoke a personal access token by passing it to the API in a header
+	 * Revokes a personal access token by passing it to the API in a header.
 	 *
 	 * `DELETE /api/v4/personal_access_tokens/self` — risk: medium
 	 */
@@ -21863,7 +22390,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	}
 
 	/**
-	 * Get groups and projects this personal access token can access by passing it to the API in a header
+	 * Lists all groups and projects accessible by the personal access token used to authenticate the request. Generally, this includes any groups or projects that the user is a member of.
 	 *
 	 * `GET /api/v4/personal_access_tokens/self/associations` — risk: medium
 	 */
@@ -21907,7 +22434,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	}
 
 	/**
-	 * Get all personal access tokens the authenticated user has access to.
+	 * Lists all personal access tokens accessible by the authenticated user. For administrators, returns all personal access tokens in the instance. For non-administrators, returns all of their personal acc
 	 *
 	 * `GET /api/v4/personal_access_tokens` — risk: low
 	 */
@@ -21929,7 +22456,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a personal access token by using the ID of the personal access token.
+	 * Retrieves details for a specified personal access token. Administrators can retrieve details on any token. Non-administrators can only retrieve details on their own tokens.
 	 *
 	 * `GET /api/v4/personal_access_tokens/{id}` — risk: low
 	 */
@@ -21951,7 +22478,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	}
 
 	/**
-	 * Revoke a personal access token by using the ID of the personal access token.
+	 * Revokes a specified personal access token. Administrators can revoke tokens for any user. Non-administrators can only revoke their own tokens.
 	 *
 	 * `DELETE /api/v4/personal_access_tokens/{id}` — risk: medium
 	 */
@@ -21973,7 +22500,7 @@ export class PersonalAccessTokensResource extends RpcTarget {
 	}
 
 	/**
-	 * Rotates a personal access token.
+	 * Rotates a specified personal access token. This revokes the previous token and creates a token that expires after one week. Administrators can revoke tokens for any user. Non-administrators can only r
 	 *
 	 * `POST /api/v4/personal_access_tokens/{id}/rotate` — risk: medium
 	 */
@@ -22037,7 +22564,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.15.
+	 * Lists all snippets for the currently authenticated user.
 	 *
 	 * `GET /api/v4/snippets` — risk: low
 	 */
@@ -22059,7 +22586,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.15.
+	 * Creates a snippet.
 	 *
 	 * `POST /api/v4/snippets` — risk: medium
 	 */
@@ -22081,7 +22608,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.15.
+	 * Lists all public snippets accessible to the currently authenticated user.
 	 *
 	 * `GET /api/v4/snippets/public` — risk: medium
 	 */
@@ -22103,7 +22630,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.3.
+	 * Lists all snippets available to the currently authenticated user. Users with Administrator or Auditor access levels can see all snippets (both personal and project). This feature was introduced in Git
 	 *
 	 * `GET /api/v4/snippets/all` — risk: medium
 	 */
@@ -22125,7 +22652,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.15.
+	 * Retrieves a specified snippet.
 	 *
 	 * `GET /api/v4/snippets/{id}` — risk: low
 	 */
@@ -22147,7 +22674,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.15.
+	 * Updates a specified snippet.
 	 *
 	 * `PUT /api/v4/snippets/{id}` — risk: medium
 	 */
@@ -22169,7 +22696,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.15.
+	 * Deletes a specified snippet.
 	 *
 	 * `DELETE /api/v4/snippets/{id}` — risk: medium
 	 */
@@ -22191,7 +22718,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 8.15.
+	 * Retrieves the raw contents of a specified snippet as plain text
 	 *
 	 * `GET /api/v4/snippets/{id}/raw` — risk: medium
 	 */
@@ -22213,7 +22740,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get raw snippet file contents from the repository
+	 * Retrieves the raw file content from a snippet as plain text.
 	 *
 	 * `GET /api/v4/snippets/{id}/files/{ref}/{file_path}/raw` — risk: medium
 	 */
@@ -22235,7 +22762,7 @@ export class SnippetsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the user agent details for a snippet
+	 * Retrieves user agent details for a specified snippet.
 	 *
 	 * `GET /api/v4/snippets/{id}/user_agent_detail` — risk: medium
 	 */
@@ -22267,7 +22794,7 @@ export class SuggestionsResource extends RpcTarget {
 	}
 
 	/**
-	 * Apply suggestion patch in the Merge Request it was created
+	 * Applies a suggested patch in a merge request. You must have the Developer, Maintainer, or Owner role.
 	 *
 	 * `PUT /api/v4/suggestions/{id}/apply` — risk: medium
 	 */
@@ -22289,7 +22816,7 @@ export class SuggestionsResource extends RpcTarget {
 	}
 
 	/**
-	 * Apply multiple suggestion patches in the Merge Request where they were created
+	 * Applies multiple suggested patches in a merge request. You must have the Developer, Maintainer, or Owner role.
 	 *
 	 * `PUT /api/v4/suggestions/batch_apply` — risk: medium
 	 */
@@ -22321,7 +22848,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Sets a URL variable for a webhook
+	 * Updates a URL variable for a specified webhook.
 	 *
 	 * `PUT /api/v4/hooks/{hook_id}/url_variables/{key}` — risk: medium
 	 */
@@ -22343,7 +22870,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a URL variable from a webhook
+	 * Deletes a URL variable from a specified webhook.
 	 *
 	 * `DELETE /api/v4/hooks/{hook_id}/url_variables/{key}` — risk: medium
 	 */
@@ -22365,7 +22892,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Sets a custom header for a webhook
+	 * Updates a custom header for a specified webhook.
 	 *
 	 * `PUT /api/v4/hooks/{hook_id}/custom_headers/{key}` — risk: medium
 	 */
@@ -22387,7 +22914,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Removes a custom header from a webhook
+	 * Deletes a custom header from a specified webhook.
 	 *
 	 * `DELETE /api/v4/hooks/{hook_id}/custom_headers/{key}` — risk: medium
 	 */
@@ -22409,7 +22936,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all system hooks
+	 * Lists all system hooks for the instance.
 	 *
 	 * `GET /api/v4/hooks` — risk: low
 	 */
@@ -22431,7 +22958,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Add a new system hook
+	 * Creates a system hook.
 	 *
 	 * `POST /api/v4/hooks` — risk: medium
 	 */
@@ -22453,7 +22980,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a system hook by its ID. Introduced in GitLab 14.9.
+	 * Retrieves a specified system hook.
 	 *
 	 * `GET /api/v4/hooks/{hook_id}` — risk: low
 	 */
@@ -22475,7 +23002,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Tests a webhook by triggering a test event
+	 * Creates a test run for a webhook. Executes the webhook with mock data.
 	 *
 	 * `POST /api/v4/hooks/{hook_id}` — risk: medium
 	 */
@@ -22497,7 +23024,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Edits a system hook
+	 * Updates a specified system hook.
 	 *
 	 * `PUT /api/v4/hooks/{hook_id}` — risk: medium
 	 */
@@ -22519,7 +23046,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Deletes a system hook
+	 * Deletes a specified system hook. Administrators only.
 	 *
 	 * `DELETE /api/v4/hooks/{hook_id}` — risk: medium
 	 */
@@ -22715,7 +23242,7 @@ export class UsageDataResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.3.
+	 * Tracks one or more GitLab internal events in a single request. Each event increments Service Ping counters in Redis and is optionally sent to Snowplow. This feature was introduced in GitLab 17.3.
 	 *
 	 * `POST /api/v4/usage_data/track_events` — risk: medium
 	 */
@@ -22737,7 +23264,7 @@ export class UsageDataResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.11.
+	 * Downloads all metric definitions as a single YAML file.
 	 *
 	 * `GET /api/v4/usage_data/metric_definitions` — risk: medium
 	 */
@@ -22759,7 +23286,7 @@ export class UsageDataResource extends RpcTarget {
 	}
 
 	/**
-	 * Introduces in Gitlab 16.9. Requires personal access token with read_service_ping scope.
+	 * Retrieves the Service Ping payload from the application cache as JSON. If no cached payload is available, returns an empty response. Requires a personal access token with the `read_service_ping` scope
 	 *
 	 * `GET /api/v4/usage_data/service_ping` — risk: medium
 	 */
@@ -22781,7 +23308,7 @@ export class UsageDataResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 16.2.
+	 * Tracks a GitLab internal event. This action increments Service Ping counters in Redis and is optionally sent to Snowplow. Introduced in GitLab 16.2.
 	 *
 	 * `POST /api/v4/usage_data/track_event` — risk: medium
 	 */
@@ -22803,7 +23330,7 @@ export class UsageDataResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.11.
+	 * Lists all non-SQL metrics data used in the Service ping. This action is behind the `usage_data_non_sql_metrics` feature flag. Administrators only.
 	 *
 	 * `GET /api/v4/usage_data/non_sql_metrics` — risk: medium
 	 */
@@ -22825,7 +23352,7 @@ export class UsageDataResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.11.
+	 * Lists all raw SQL queries used to compute Service Ping. This action is behind the `usage_data_queries_api` feature flag. Administrators only.
 	 *
 	 * `GET /api/v4/usage_data/queries` — risk: medium
 	 */
@@ -23009,7 +23536,7 @@ export class ApplicationResource extends RpcTarget {
 	}
 
 	/**
-	 * Get the current application statistics
+	 * Retrieves the current application statistics for this GitLab instance.
 	 *
 	 * `GET /api/v4/application/statistics` — risk: medium
 	 */
@@ -23041,7 +23568,7 @@ export class DiscoverCertBasedClustersResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.9. It will be removed in 18.0.
+	 * Lists all certificate-based clusters associated with a project. This feature was introduced in GitLab 17.9.
 	 *
 	 * `GET /api/v4/discover-cert-based-clusters` — risk: low
 	 */
@@ -23073,7 +23600,7 @@ export class DeployKeysResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all deploy keys across all projects of the GitLab instance. This endpoint requires administrator access and is not available on GitLab.com.
+	 * Lists all deploy keys for the instance.
 	 *
 	 * `GET /api/v4/deploy_keys` — risk: low
 	 */
@@ -23095,7 +23622,7 @@ export class DeployKeysResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a deploy key for the GitLab instance. This endpoint requires administrator access.
+	 * Creates a deploy key for the GitLab instance. Requires administrator access.
 	 *
 	 * `POST /api/v4/deploy_keys` — risk: medium
 	 */
@@ -23127,7 +23654,7 @@ export class DeployTokensResource extends RpcTarget {
 	}
 
 	/**
-	 * Get a list of all deploy tokens across the GitLab instance. This endpoint requires administrator access. This feature was introduced in GitLab 12.9.
+	 * Lists all deploy tokens for the instance.
 	 *
 	 * `GET /api/v4/deploy_tokens` — risk: low
 	 */
@@ -23159,7 +23686,7 @@ export class Import_Resource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.0.
+	 * Imports a repository from Bitbucket Cloud to GitLab. Prerequisites: - The prerequisites for Bitbucket Cloud importer. This feature was introduced in GitLab 17.0.
 	 *
 	 * `POST /api/v4/import/bitbucket` — risk: medium
 	 */
@@ -23181,7 +23708,7 @@ export class Import_Resource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 13.2.
+	 * Imports a repository from Bitbucket Server to GitLab. The Bitbucket Project Key is only used for finding the repository in Bitbucket. You must specify a `target_namespace` if you want to import the re
 	 *
 	 * `POST /api/v4/import/bitbucket_server` — risk: medium
 	 */
@@ -23203,7 +23730,7 @@ export class Import_Resource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 11.3.4.
+	 * Imports a repository from GitHub to GitLab.
 	 *
 	 * `POST /api/v4/import/github` — risk: medium
 	 */
@@ -23225,7 +23752,7 @@ export class Import_Resource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.5
+	 * Cancels an in-progress import of a GitHub project to GitLab.
 	 *
 	 * `POST /api/v4/import/github/cancel` — risk: medium
 	 */
@@ -23247,7 +23774,7 @@ export class Import_Resource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.8
+	 * Imports personal GitHub gists into GitLab snippets. You can import gists with up to 10 files. GitHub gists with more than 10 files are skipped. You should manually migrate these GitHub gists. If any g
 	 *
 	 * `POST /api/v4/import/github/gists` — risk: medium
 	 */
@@ -23279,7 +23806,7 @@ export class SlackResource extends RpcTarget {
 	}
 
 	/**
-	 * Added in GitLab 9.4
+	 * Triggers a global slack command.
 	 *
 	 * `POST /api/v4/slack/trigger` — risk: medium
 	 */
@@ -23311,7 +23838,7 @@ export class IssuesStatisticsResource extends RpcTarget {
 	}
 
 	/**
-	 * Get currently authenticated user's issues statistics
+	 * Retrieves statistics for issues accessible by the currently authenticated user. By default, returns only issues created by the current user. To get all issues, set the `scope` attribute to `all`.
 	 *
 	 * `GET /api/v4/issues_statistics` — risk: low
 	 */
@@ -23343,7 +23870,7 @@ export class MetadataResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.2.
+	 * Retrieves metadata information for the GitLab instance.
 	 *
 	 * `GET /api/v4/metadata` — risk: low
 	 */
@@ -23407,7 +23934,7 @@ export class TopicsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.5.
+	 * Lists all project topics sorted by the number of associated projects.
 	 *
 	 * `GET /api/v4/topics` — risk: low
 	 */
@@ -23429,7 +23956,7 @@ export class TopicsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.5.
+	 * Creates a project topic. Administrators only.
 	 *
 	 * `POST /api/v4/topics` — risk: medium
 	 */
@@ -23451,7 +23978,7 @@ export class TopicsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.5.
+	 * Retrieves a specified project topic.
 	 *
 	 * `GET /api/v4/topics/{id}` — risk: low
 	 */
@@ -23473,7 +24000,7 @@ export class TopicsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.5.
+	 * Updates a specified project topic. Administrators only.
 	 *
 	 * `PUT /api/v4/topics/{id}` — risk: medium
 	 */
@@ -23495,7 +24022,7 @@ export class TopicsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 14.9.
+	 * Deletes a specified project topic. Administrators only.
 	 *
 	 * `DELETE /api/v4/topics/{id}` — risk: medium
 	 */
@@ -23517,7 +24044,7 @@ export class TopicsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 15.4.
+	 * Merges a source topic into a target topic. This action deletes the source topic and moves all assigned projects to the target topic. Administrators only.
 	 *
 	 * `POST /api/v4/topics/merge` — risk: medium
 	 */
@@ -23549,7 +24076,7 @@ export class WebCommitsResource extends RpcTarget {
 	}
 
 	/**
-	 * This feature was introduced in GitLab 17.4.
+	 * Retrieves the GitLab public key for signing web commits. This feature was introduced in GitLab 17.4.
 	 *
 	 * `GET /api/v4/web_commits/public_key` — risk: medium
 	 */
@@ -23617,10 +24144,6 @@ export class GitlabCapability extends WorkerEntrypoint<Env> {
 
 	get jobs(): JobsResource {
 		return new JobsResource(this.env.GITLAB_API_KEY, this.overrides["jobs"] || {}, this.runtimeConfig);
-	}
-
-	get chaos(): ChaosResource {
-		return new ChaosResource(this.env.GITLAB_API_KEY, this.overrides["chaos"] || {}, this.runtimeConfig);
 	}
 
 	get group(): GroupResource {

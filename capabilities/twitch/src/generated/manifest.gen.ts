@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Twitch API Swagger UI (Unofficial) vhelix
-// Operations:  144
+// Operations:  149
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -24,6 +24,7 @@ export const manifest = {
 	"get-game-analytics": {"namespace":"analytics","method":"listGames","http":"get","path":"/analytics/games","risk":"medium"},
 	"get-bits-leaderboard": {"namespace":"bits","method":"listLeaderboard","http":"get","path":"/bits/leaderboard","risk":"medium"},
 	"get-cheermotes": {"namespace":"bits","method":"listCheermotes","http":"get","path":"/bits/cheermotes","risk":"medium"},
+	"get-custom-power-up": {"namespace":"bits","method":"listCustomPowerUps","http":"get","path":"/bits/custom_power_ups","risk":"medium"},
 	"get-extension-bits-products": {"namespace":"bits","method":"listExtensions","http":"get","path":"/bits/extensions","risk":"medium"},
 	"update-extension-bits-product": {"namespace":"bits","method":"extensions","http":"put","path":"/bits/extensions","risk":"medium"},
 	"get-extension-transactions": {"namespace":"extensions","method":"listTransactions","http":"get","path":"/extensions/transactions","risk":"medium"},
@@ -57,6 +58,10 @@ export const manifest = {
 	"send-chat-announcement": {"namespace":"chat","method":"createAnnouncement","http":"post","path":"/chat/announcements","risk":"medium"},
 	"send-a-shoutout": {"namespace":"chat","method":"createShoutout","http":"post","path":"/chat/shoutouts","risk":"medium"},
 	"send-chat-message": {"namespace":"chat","method":"createMessage","http":"post","path":"/chat/messages","risk":"medium"},
+	"get-pinned-chat-message": {"namespace":"chat","method":"listPins","http":"get","path":"/chat/pins","risk":"medium"},
+	"pin-chat-message": {"namespace":"chat","method":"pins_0","http":"put","path":"/chat/pins","risk":"medium"},
+	"update-pinned-chat-message": {"namespace":"chat","method":"pins_1","http":"patch","path":"/chat/pins","risk":"medium"},
+	"unpin-chat-message": {"namespace":"chat","method":"pins_2","http":"delete","path":"/chat/pins","risk":"medium"},
 	"get-user-chat-color": {"namespace":"chat","method":"listColor","http":"get","path":"/chat/color","risk":"medium"},
 	"update-user-chat-color": {"namespace":"chat","method":"color","http":"put","path":"/chat/color","risk":"medium"},
 	"get-shared-chat-session": {"namespace":"shared_chat","method":"listSession","http":"get","path":"/shared_chat/session","risk":"medium"},

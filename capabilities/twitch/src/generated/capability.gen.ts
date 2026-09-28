@@ -2,7 +2,7 @@
 // Regenerate with: bun run codegen
 //
 // Source spec: Twitch API Swagger UI (Unofficial) vhelix
-// Operations:  144
+// Operations:  149
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
@@ -416,6 +416,32 @@ Requires an [ap
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCheermotes"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * NEW Gets a list of custom Power-ups that the specified broadcaster created.
+
+**NOTE**: A channel may offer a maximum of 50 custom Power-ups, which includes both enabled and disabled Power-ups.
+
+__Auth
+	 *
+	 * `GET /bits/custom_power_ups` — risk: medium
+	 */
+	async listCustomPowerUps(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "get-custom-power-up",
+			namespace: "bits",
+			method: "listCustomPowerUps",
+			http: "get",
+			path: `/bits/custom_power_ups`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listCustomPowerUps"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -1210,11 +1236,7 @@ __Authorization:__
 	/**
 	 * Sends an announcement to the broadcaster’s chat room.
 
-**Rate Limits**: One announcement may be sent every 2 seconds.
-
-__Authorization:__
-
-Requires a [user access token](https://dev.twitch.tv/docs/aut
+**Rate Limits**: One announcement may be sent every 2 seconds.**NOTE:** When sending announcements during a Shared Chat session, behaviors differ
 	 *
 	 * `POST /chat/announcements` — risk: medium
 	 */
@@ -1276,6 +1298,110 @@ Requires a [user access token](https://dev.twitch.tv/docs/aut
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMessage"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * NEW Gets the currently pinned message for the specified broadcaster’s chat room, including message fragments. Only one mod-pinned message can be active per channel at a time.
+
+__Authorization:__
+
+Requ
+	 *
+	 * `GET /chat/pins` — risk: medium
+	 */
+	async listPins(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "get-pinned-chat-message",
+			namespace: "chat",
+			method: "listPins",
+			http: "get",
+			path: `/chat/pins`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["listPins"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * NEW Pins a chat message to the top of the specified broadcaster’s chat room. Only one mod-pinned message can be active per channel at a time. If a mod-pinned message already exists, it is automaticall
+	 *
+	 * `PUT /chat/pins` — risk: medium
+	 */
+	async pins_0(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "pin-chat-message",
+			namespace: "chat",
+			method: "pins_0",
+			http: "put",
+			path: `/chat/pins`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["pins_0"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * NEW Updates the duration of an existing pinned chat message.
+
+__Authorization:__
+
+Requires one of the following:
+
+* A [user access token](https://dev.twitch.tv/docs/authentication#user-access-tokens) 
+	 *
+	 * `PATCH /chat/pins` — risk: medium
+	 */
+	async pins_1(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "update-pinned-chat-message",
+			namespace: "chat",
+			method: "pins_1",
+			http: "patch",
+			path: `/chat/pins`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["pins_1"],
+			baseUrl: this.runtimeConfig?.baseUrl,
+			extraHeaders: this.runtimeConfig?.extraHeaders,
+			prefixOverride: this.runtimeConfig?.prefixOverride,
+			options,
+		});
+	}
+
+	/**
+	 * NEW Unpins a pinned chat message from the specified broadcaster’s chat room.
+
+__Authorization:__
+
+Requires one of the following:
+
+* A [user access token](https://dev.twitch.tv/docs/authentication#user
+	 *
+	 * `DELETE /chat/pins` — risk: medium
+	 */
+	async pins_2(options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.apiKey, {
+			operationId: "unpin-chat-message",
+			namespace: "chat",
+			method: "pins_2",
+			http: "delete",
+			path: `/chat/pins`,
+			risk: "medium",
+			body: undefined,
+			overrides: this.overrides["pins_2"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
@@ -1346,11 +1472,11 @@ export class SharedChatResource extends RpcTarget {
 	}
 
 	/**
-	 * NEW Retrieves the active shared chat session for a channel.
+	 * Retrieves the active shared chat session for a channel.
 
 __Authorization:__
 
-Requires an [app access token](https://dev.twitch.tv/docs/cli/token-command/#app-access-token) or [user access token](h
+Requires an [app access token](https://dev.twitch.tv/docs/cli/token-command/#app-access-token) or [user access token](https
 	 *
 	 * `GET /shared_chat/session` — risk: medium
 	 */
@@ -1430,9 +1556,7 @@ This API captures up to 90 seconds of the broadcaster’s stream. The 90 seconds
 	}
 
 	/**
-	 * NEW Provides URLs to download the video file(s) for the specified clips. For information about clips, see [How to use clips](https://help.twitch.tv/s/article/how-to-use-clips).
-
-**Rate Limits**: Limit
+	 * NEW Provides URLs to download the video file(s) for the specified clips. For information about clips, see [How to use clips](https://help.twitch.tv/s/article/how-to-use-clips). These links are tempora
 	 *
 	 * `GET /clips/downloads` — risk: medium
 	 */
@@ -1668,9 +1792,9 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#
 	}
 
 	/**
-	 * Updates shard(s) for a [conduit](https://dev.twitch.tv/docs/eventsub/handling-conduit-events/).
+	 * Updates shard(s) for a [conduit](https://dev.twitch.tv/docs/eventsub/handling-conduit-events/). You can update up to 100 shards in a single request.
 
-**NOTE:** Shard IDs are indexed starting at 0, so a conduit with a `shard_count` of 5 will have shards 
+**NOTE:** Shard IDs are indexed starting at 0, so 
 	 *
 	 * `PATCH /eventsub/conduits/shards` — risk: medium
 	 */
@@ -2283,12 +2407,12 @@ export class HypetrainResource extends RpcTarget {
 	}
 
 	/**
-	 * NEW Get the status of a Hype Train for the specified broadcaster.
+	 * Get the status of a Hype Train for the specified broadcaster.
 
 __Authorization:__
 
 * Requires an [user access token](https://dev.twitch.tv/docs/authentication/#user-access-tokens).
-* Requires OAut
+* Requires OAuth Sc
 	 *
 	 * `GET /hypetrain/status` — risk: medium
 	 */
@@ -2346,7 +2470,9 @@ AutoMod is a moderation tool that holds inappropriate or harassing chat messages
 	/**
 	 * Allow or deny the message that AutoMod flagged for review. For information about AutoMod, see [How to Use AutoMod](https://help.twitch.tv/s/article/how-to-use-automod).
 
-To get messages that AutoMod i
+__Authorization:__
+
+Requires o
 	 *
 	 * `POST /moderation/automod/message` — risk: medium
 	 */
@@ -3459,7 +3585,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	}
 
 	/**
-	 * Adds a marker to a live stream. A marker is an arbitrary point in a live stream that the broadcaster or editor wants to mark, so they can return to that spot later to create video highlights (see Vide
+	 * Adds a marker to a live stream. A marker is an arbitrary point in a live stream that the broadcaster or editor wants to mark, so they can return to that spot later to create video highlights. For more
 	 *
 	 * `POST /streams/markers` — risk: medium
 	 */
