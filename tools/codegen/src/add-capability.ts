@@ -114,8 +114,8 @@ const apiSecret = `${bindingName}_API_KEY`;
 const packageName = `@capa/${entry.name}`;
 const title = manifest.source?.title || entry.name;
 
-writeFileSync(resolve(srcDir, "index.ts"), `/**\n * capa-${entry.name} — ${title} wrapped as a JSRPC capability.\n *\n * ${manifest.operations.toLocaleString("en-US")} operations across ${manifest.namespaces.toLocaleString("en-US")} namespaces, generated from OpenAPI.\n * Bind the service as ${bindingName} and call env.${bindingName}.<namespace>.<method>(input).\n */\n\nimport { ${className} as ${generatedClassName} } from \"./generated/capability.gen.ts\";\nimport { overrides } from \"./overrides.ts\";\n\nexport class ${className} extends ${generatedClassName} {\n\tconstructor(ctx: ExecutionContext, env: Env) {\n\t\tsuper(ctx, env);\n\t\tthis.overrides = overrides;\n\t}\n}\n\ninterface Env {\n\t${apiSecret}: string;\n}\n\nexport default {\n\tfetch(): Response {\n\t\treturn new Response(\"capa-${entry.name} is JSRPC-only. Bind via service binding.\", {\n\t\t\tstatus: 404,\n\t\t\theaders: { \"content-type\": \"text/plain\" },\n\t\t});\n\t},\n} satisfies ExportedHandler<Env>;\n`);
-writeFileSync(resolve(srcDir, "overrides.ts"), `/** Per-method evidence assertions can be added here. */\nimport type { MethodOverride } from \"./generated/runtime.ts\";\n\nexport const overrides: Record<string, Record<string, MethodOverride>> = {};\n`);
+writeFileSync(resolve(srcDir, "index.ts"), `import { ${className} as ${generatedClassName} } from \"./generated/capability.gen.ts\";\nimport { overrides } from \"./overrides.ts\";\n\nexport class ${className} extends ${generatedClassName} {\n\tconstructor(ctx: ExecutionContext, env: Env) {\n\t\tsuper(ctx, env);\n\t\tthis.overrides = overrides;\n\t}\n}\n\ninterface Env {\n\t${apiSecret}: string;\n}\n\nexport default {\n\tfetch(): Response {\n\t\treturn new Response(\"capa-${entry.name} is JSRPC-only. Bind via service binding.\", {\n\t\t\tstatus: 404,\n\t\t\theaders: { \"content-type\": \"text/plain\" },\n\t\t});\n\t},\n} satisfies ExportedHandler<Env>;\n`);
+writeFileSync(resolve(srcDir, "overrides.ts"), `import type { MethodOverride } from \"./generated/runtime.ts\";\n\nexport const overrides: Record<string, Record<string, MethodOverride>> = {};\n`);
 writeFileSync(resolve(capabilityDir, ".gitignore"), "node_modules\n.dev.vars\n.wrangler\n");
 writeFileSync(resolve(capabilityDir, "package.json"), `${JSON.stringify({
 	name: packageName,
@@ -123,13 +123,13 @@ writeFileSync(resolve(capabilityDir, "package.json"), `${JSON.stringify({
 	private: true,
 	type: "module",
 	scripts: { deploy: "wrangler deploy", dev: "wrangler dev", types: "wrangler types" },
-	devDependencies: { "@cloudflare/workers-types": "^4.20260425.1", typescript: "^5.6.0", wrangler: "^4.85.0" },
+	devDependencies: { "@cloudflare/workers-types": "^4.20260702.1", typescript: "^5.6.0", wrangler: "^4.142.0" },
 }, null, "\t")}\n`);
 writeFileSync(resolve(capabilityDir, "tsconfig.json"), `${JSON.stringify({
 	compilerOptions: { target: "es2022", module: "es2022", moduleResolution: "bundler", strict: true, esModuleInterop: true, skipLibCheck: true, resolveJsonModule: true, allowImportingTsExtensions: true, noEmit: true, types: ["@cloudflare/workers-types/2023-07-01"], lib: ["es2022"] },
 	include: ["src/**/*.ts"],
 }, null, "\t")}\n`);
-writeFileSync(resolve(capabilityDir, "wrangler.jsonc"), `{\n\t\"$schema\": \"../../node_modules/wrangler/config-schema.json\",\n\t\"name\": \"capa-${entry.name}\",\n\t\"main\": \"src/index.ts\",\n\t\"compatibility_date\": \"2026-04-17\",\n\t\"compatibility_flags\": [\"nodejs_compat\"],\n\t\"workers_dev\": false,\n\t\"observability\": { \"enabled\": true }\n\t// Required secret: wrangler secret put ${apiSecret}\n\t// Service binding entrypoint: ${className}\n}\n`);
+writeFileSync(resolve(capabilityDir, "wrangler.jsonc"), `{\n\t\"$schema\": \"../../node_modules/wrangler/config-schema.json\",\n\t\"name\": \"capa-${entry.name}\",\n\t\"main\": \"src/index.ts\",\n\t\"compatibility_date\": \"2026-04-17\",\n\t\"compatibility_flags\": [\"nodejs_compat\"],\n\t\"workers_dev\": false,\n\t\"observability\": { \"enabled\": true }\n}\n`);
 writeFileSync(resolve(capabilityDir, "README.md"), `# capa-${entry.name}\n\n${title} as a generated Cloudflare JSRPC service binding. **${manifest.operations.toLocaleString("en-US")} operations, ${manifest.namespaces.toLocaleString("en-US")} namespaces.**\n\n## Deploy\n\n\`\`\`bash\nwrangler secret put ${apiSecret}\nwrangler deploy\n\`\`\`\n\nBind \`capa-${entry.name}\` from a caller Worker with entrypoint \`${className}\`. Every call returns \`{ result, evidence }\`.\n\n| Field | Value |\n|---|---|\n| Source spec | \`${entry.spec}\` |\n| Upstream | \`${entry.baseUrl}\` |\n| Prefix | \`${entry.prefix}\` |\n| Auth | \`${entry.auth}\` |\n| Request body | \`${entry.contentType}\` |\n\nGenerated files under \`src/generated/\` are codegen output; add API-specific evidence overrides in \`src/overrides.ts\`.\n`);
 
 console.log(`✓ generated full scaffold ${entry.out}`);

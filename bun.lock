@@ -50,6 +50,15 @@
         "wrangler": "^4.142.0",
       },
     },
+    "capabilities/htmlcsstoimage": {
+      "name": "@capa/htmlcsstoimage",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "^4.20260702.1",
+        "typescript": "^5.6.0",
+        "wrangler": "^4.142.0",
+      },
+    },
     "capabilities/jira": {
       "name": "@capa/jira",
       "version": "0.0.1",
@@ -192,6 +201,8 @@
     "@capa/github": ["@capa/github@workspace:capabilities/github"],
 
     "@capa/gitlab": ["@capa/gitlab@workspace:capabilities/gitlab"],
+
+    "@capa/htmlcsstoimage": ["@capa/htmlcsstoimage@workspace:capabilities/htmlcsstoimage"],
 
     "@capa/jira": ["@capa/jira@workspace:capabilities/jira"],
 

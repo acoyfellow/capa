@@ -105,6 +105,13 @@
 			"sha256": "d6a7c454f861b762cb3ede6af3a137c61ce57d4d43a38c3ffa1ee6fe1c9251ae",
 			"version": "2.0.0",
 			"checkedAt": "2026-09-28T15:22:39.000Z"
+		},
+		"htmlcsstoimage": {
+			"name": "htmlcsstoimage",
+			"spec": "https://htmlcsstoimage.com/openapi/v1.json",
+			"sha256": "80e8caecb0efffe24fb4df0f9a7b02345d829259e0b5f857afcca1d492d6ba25",
+			"version": "1.0.0",
+			"checkedAt": "2026-09-28T14:17:40.000Z"
 		}
 	}
 }
