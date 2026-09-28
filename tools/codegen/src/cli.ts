@@ -45,6 +45,7 @@ import swagger2openapi from "swagger2openapi";
 import yaml from "js-yaml";
 import { parseSpec } from "./parse-spec.ts";
 import { emit } from "./emit.ts";
+import { distilledPlan } from "./distilled-index.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -195,7 +196,9 @@ async function main() {
 	const schemaTs = astToString(ast);
 
 	console.log(`→ emitting capability code`);
-	const { capability, manifest } = emit(codegen, args.name);
+	const distilled = distilledPlan(codegen, args.name);
+	if (distilled.provider) console.log(`  Distilled backend: ${distilled.matched}/${codegen.operationCount} operations matched`);
+	const { capability, manifest } = emit(codegen, args.name, distilled.bindings, distilled.provider);
 	const capabilityManifest = {
 		name: args.name,
 		entrypoint: `${toPascalCase(args.name)}Capability`,
