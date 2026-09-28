@@ -57,10 +57,10 @@ const { result: transition } = await env.JIRA.issueTransitions.doTransition({
 });
 ```
 
-### Connect to Jira Server / Data Center (e.g. internal cfdata)
+### Connect to Jira Server / Data Center (self-hosted)
 
 ```bash
-wrangler secret put JIRA_BASE_URL_OVERRIDE   # e.g. https://jira.cfdata.org
+wrangler secret put JIRA_BASE_URL_OVERRIDE   # e.g. https://jira.example.com
 ```
 
 When `JIRA_BASE_URL_OVERRIDE` is set, the runtime automatically switches API paths from `/rest/api/3` to `/rest/api/2` (Jira Server / Data Center convention). If you need a different prefix, edit `src/index.ts`.
@@ -128,11 +128,11 @@ Every other operation gets a generic `httpStatus 2xx` assertion.
 |---|---|
 | `JIRA_API_KEY` | `email:api_token` — Jira → Account Settings → Security → API tokens |
 
-### Optional secrets (Jira Server / cfdata)
+### Optional secrets (Jira Server / Data Center)
 
 | Secret | When needed |
 |---|---|
-| `JIRA_BASE_URL_OVERRIDE` | Self-managed Jira (e.g. `https://jira.cfdata.org`) |
+| `JIRA_BASE_URL_OVERRIDE` | Self-managed Jira (e.g. `https://jira.example.com`) |
 
 ### Public HTTP route
 

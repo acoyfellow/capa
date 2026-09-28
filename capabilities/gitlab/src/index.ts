@@ -20,7 +20,6 @@
  *
  * Configuration:
  *   GITLAB_API_KEY                  PRIVATE-TOKEN scoped to your account
- *   GITLAB_BASE_URL_OVERRIDE        (optional) e.g. https://gitlab.cfdata.org for self-managed
  *   CF_ACCESS_CLIENT_ID             (optional) when behind Cloudflare Access
  *   CF_ACCESS_CLIENT_SECRET         (optional) when behind Cloudflare Access
  */

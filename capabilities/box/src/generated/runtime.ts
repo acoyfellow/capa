@@ -74,7 +74,6 @@ export interface FetchProofArgs {
 	overrides?: MethodOverride;
 	/** Optional override for the BASE_URL (e.g. self-hosted GitLab). */
 	baseUrl?: string;
-	/** Optional extra request headers (e.g. CF-Access-Jwt-Assertion for cfdata). */
 	extraHeaders?: Record<string, string>;
 	/** Optional prefix replacement (e.g. /rest/api/3 → /rest/api/2). */
 	prefixOverride?: string;

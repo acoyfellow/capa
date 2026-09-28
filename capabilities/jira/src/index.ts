@@ -22,7 +22,6 @@
  *
  * Configuration:
  *   JIRA_API_KEY                  email:api_token pair (runtime base64 encodes for Basic auth)
- *   JIRA_BASE_URL_OVERRIDE        (optional) e.g. https://jira.cfdata.org for Jira Server
  */
 
 import { JiraCapability as GeneratedJiraCapability } from "./generated/capability.gen.ts";
