@@ -151,4 +151,13 @@ export const capabilityRegistry: CapabilityRegistryEntry[] = [
 		auth: "bearer",
 		contentType: "json",
 	},
+	{
+		name: "htmlcsstoimage",
+		spec: "https://htmlcsstoimage.com/openapi/v1.json",
+		out: "capabilities/htmlcsstoimage",
+		baseUrl: "https://hcti.io",
+		prefix: "/v1",
+		auth: "basic",
+		contentType: "json",
+	},
 ];

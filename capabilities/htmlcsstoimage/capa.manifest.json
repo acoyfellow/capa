@@ -1,0 +1,19 @@
+{
+	"name": "htmlcsstoimage",
+	"entrypoint": "HtmlcsstoimageCapability",
+	"source": {
+		"spec": "https://htmlcsstoimage.com/openapi/v1.json",
+		"title": "HTML/CSS to Image API",
+		"version": "1.0.0"
+	},
+	"upstream": {
+		"baseUrl": "https://hcti.io",
+		"prefix": "/v1"
+	},
+	"auth": "basic",
+	"contentType": "json",
+	"operations": 38,
+	"namespaces": 9,
+	"publicHttpRoute": false,
+	"evidenceContract": "capa.evidence.v0"
+}

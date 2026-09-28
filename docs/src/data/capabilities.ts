@@ -63,6 +63,10 @@ export interface CapabilityDisplay {
 }
 
 const DISPLAY: Record<string, CapabilityDisplay> = {
+	htmlcsstoimage: {
+		tagline: 'Render HTML/CSS or URLs to PNG, JPG, WebP, or PDF — images, templates, OG configs, and storage.',
+		requiredSecrets: ['HTMLCSSTOIMAGE_API_KEY'],
+	},
 	blooio: {
 		tagline: 'Send iMessage from anywhere — chats, messages, contacts, groups, FaceTime, and webhooks.',
 		requiredSecrets: ['BLOOIO_API_KEY'],
