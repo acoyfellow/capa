@@ -35,7 +35,9 @@ jobs:
           if [ "$code" = "2" ]; then exit 2; fi
           echo "drift=$([ "$code" = "1" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
           breaking=$(jq -r '[.changed[] | select(.breaksAutomaticRefresh == true) | .name] | join(", ")' artifacts/spec-watch/report.json)
-          echo "breaking=$breaking" >> "$GITHUB_OUTPUT"
+          title="Refresh upstream specs"
+          if [ -n "$breaking" ]; then title="$title (breaking: $breaking)"; fi
+          echo "title=$title" >> "$GITHUB_OUTPUT"
 
       - name: Regenerate bindings and refresh spec lock
         if: steps.watch.outputs.drift == 'true'
@@ -57,7 +59,7 @@ jobs:
           branch: automation/spec-refresh
           delete-branch: true
           commit-message: Refresh bindings from upstream OpenAPI specs
-          title: ${{ steps.watch.outputs.breaking != '' && format('Refresh upstream specs (breaking: {0})', steps.watch.outputs.breaking) || 'Refresh upstream specs' }}
+          title: ${{ steps.watch.outputs.title }}
           body-path: artifacts/spec-watch/report.md
           add-paths: |
             capabilities/**
