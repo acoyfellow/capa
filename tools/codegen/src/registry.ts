@@ -6,6 +6,7 @@ export interface CapabilityRegistryEntry {
 	prefix: string;
 	auth: "bearer" | "private-token" | "basic";
 	contentType: "form" | "json";
+	naming?: "path" | "operationId";
 }
 
 /**
@@ -159,5 +160,6 @@ export const capabilityRegistry: CapabilityRegistryEntry[] = [
 		prefix: "/v1",
 		auth: "basic",
 		contentType: "json",
+		naming: "operationId",
 	},
 ];

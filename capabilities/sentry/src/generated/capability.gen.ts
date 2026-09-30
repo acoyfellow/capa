@@ -3,12 +3,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 
 export class OrganizationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -21,8 +21,8 @@ This is particularly useful for requests with a user bound context. For API key-
 	 *
 	 * `GET /api/0/organizations/` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizations",
 			namespace: "organizations",
 			method: "list",
@@ -35,7 +35,7 @@ This is particularly useful for requests with a user bound context. For API key-
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -44,13 +44,13 @@ such as membership access and teams.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/` — risk: low
 	 */
-	async retrieve(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganization",
 			namespace: "organizations",
 			method: "retrieve",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -58,7 +58,7 @@ such as membership access and teams.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -66,13 +66,13 @@ such as membership access and teams.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/` — risk: medium
 	 */
-	async put(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganization",
 			namespace: "organizations",
 			method: "put",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -80,7 +80,7 @@ such as membership access and teams.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -92,13 +92,13 @@ Return AI conversations ordered by latest span time.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/agents/conversations/` — risk: medium
 	 */
-	async conversations(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async conversations(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/agents/conversations/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/agents/conversations/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationAIConversations",
 			namespace: "organizations",
 			method: "conversations",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/agents/conversations/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/agents/conversations/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["conversations"],
@@ -106,7 +106,7 @@ Return AI conversations ordered by latest span time.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/agents/conversations/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -118,13 +118,13 @@ Message, tool, and response attributes contain their recorde
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/agents/conversations/{conversation_id}/` — risk: medium
 	 */
-	async retrieveConversation(organizationIdOrSlug: string, conversationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveConversation(organizationIdOrSlug: string, conversationId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/agents/conversations/{conversation_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/agents/conversations/{conversation_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "retrieveOrganizationAIConversation",
 			namespace: "organizations",
 			method: "retrieveConversation",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/agents/conversations/${conversationId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/agents/conversations/${encodeURIComponent(conversationId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveConversation"],
@@ -132,7 +132,7 @@ Message, tool, and response attributes contain their recorde
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/agents/conversations/{conversation_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -140,13 +140,13 @@ Message, tool, and response attributes contain their recorde
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/config/integrations/` — risk: medium
 	 */
-	async configIntegrations(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async configIntegrations(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/config/integrations/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/config/integrations/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationConfigIntegrations",
 			namespace: "organizations",
 			method: "configIntegrations",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/config/integrations/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/config/integrations/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["configIntegrations"],
@@ -154,7 +154,7 @@ Message, tool, and response attributes contain their recorde
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/config/integrations/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -162,13 +162,13 @@ Message, tool, and response attributes contain their recorde
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/dashboards/` — risk: medium
 	 */
-	async listDashboards(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listDashboards(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationDashboards",
 			namespace: "organizations",
 			method: "listDashboards",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/dashboards/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/dashboards/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDashboards"],
@@ -176,7 +176,7 @@ Message, tool, and response attributes contain their recorde
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -184,13 +184,13 @@ Message, tool, and response attributes contain their recorde
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/dashboards/` — risk: medium
 	 */
-	async createDashboard(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createDashboard(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationDashboard",
 			namespace: "organizations",
 			method: "createDashboard",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/dashboards/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/dashboards/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createDashboard"],
@@ -198,7 +198,7 @@ Message, tool, and response attributes contain their recorde
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -206,13 +206,13 @@ Message, tool, and response attributes contain their recorde
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/` — risk: medium
 	 */
-	async retrieveDashboard(organizationIdOrSlug: string, dashboardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveDashboard(organizationIdOrSlug: string, dashboardId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationDashboard",
 			namespace: "organizations",
 			method: "retrieveDashboard",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/dashboards/${dashboardId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/dashboards/${encodeURIComponent(dashboardId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDashboard"],
@@ -220,7 +220,7 @@ Message, tool, and response attributes contain their recorde
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -231,13 +231,13 @@ display type
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/` — risk: medium
 	 */
-	async dashboards(organizationIdOrSlug: string, dashboardId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async dashboards(organizationIdOrSlug: string, dashboardId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationDashboard",
 			namespace: "organizations",
 			method: "dashboards",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/dashboards/${dashboardId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/dashboards/${encodeURIComponent(dashboardId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["dashboards"],
@@ -245,7 +245,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -253,13 +253,13 @@ display type
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/` — risk: medium
 	 */
-	async deleteDashboard(organizationIdOrSlug: string, dashboardId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteDashboard(organizationIdOrSlug: string, dashboardId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationDashboard",
 			namespace: "organizations",
 			method: "deleteDashboard",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/dashboards/${dashboardId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/dashboards/${encodeURIComponent(dashboardId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDashboard"],
@@ -267,7 +267,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -275,13 +275,13 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/detectors/` — risk: medium
 	 */
-	async listDetectors(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listDetectors(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/detectors/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/detectors/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationDetectors",
 			namespace: "organizations",
 			method: "listDetectors",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/detectors/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/detectors/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDetectors"],
@@ -289,7 +289,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/detectors/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -297,13 +297,13 @@ display type
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/detectors/` — risk: medium
 	 */
-	async detectors_0(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async detectors_0(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/detectors/"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/detectors/"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/detectors/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationDetectors",
 			namespace: "organizations",
 			method: "detectors_0",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/detectors/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/detectors/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["detectors_0"],
@@ -311,7 +311,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/detectors/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -319,13 +319,13 @@ display type
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/detectors/` — risk: medium
 	 */
-	async detectors_1(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async detectors_1(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/detectors/"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationDetectors",
 			namespace: "organizations",
 			method: "detectors_1",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/detectors/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/detectors/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["detectors_1"],
@@ -333,7 +333,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -341,13 +341,13 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/` — risk: medium
 	 */
-	async retrieveDetector(organizationIdOrSlug: string, detectorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveDetector(organizationIdOrSlug: string, detectorId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationDetector",
 			namespace: "organizations",
 			method: "retrieveDetector",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/detectors/${detectorId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/detectors/${encodeURIComponent(detectorId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDetector"],
@@ -355,7 +355,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -363,13 +363,13 @@ display type
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/` — risk: medium
 	 */
-	async detectors_2(organizationIdOrSlug: string, detectorId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async detectors_2(organizationIdOrSlug: string, detectorId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationDetector",
 			namespace: "organizations",
 			method: "detectors_2",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/detectors/${detectorId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/detectors/${encodeURIComponent(detectorId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["detectors_2"],
@@ -377,7 +377,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -385,13 +385,13 @@ display type
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/` — risk: medium
 	 */
-	async deleteDetector(organizationIdOrSlug: string, detectorId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteDetector(organizationIdOrSlug: string, detectorId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationDetector",
 			namespace: "organizations",
 			method: "deleteDetector",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/detectors/${detectorId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/detectors/${encodeURIComponent(detectorId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDetector"],
@@ -399,7 +399,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -407,13 +407,13 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/discover/saved/` — risk: medium
 	 */
-	async saved_0(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async saved_0(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationDiscoverSavedQueries",
 			namespace: "organizations",
 			method: "saved_0",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/discover/saved/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/discover/saved/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["saved_0"],
@@ -421,7 +421,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -429,13 +429,13 @@ display type
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/discover/saved/` — risk: medium
 	 */
-	async saved_1(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async saved_1(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationDiscoverSavedQuery",
 			namespace: "organizations",
 			method: "saved_1",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/discover/saved/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/discover/saved/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["saved_1"],
@@ -443,7 +443,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -451,13 +451,13 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/` — risk: medium
 	 */
-	async retrieveSaved(organizationIdOrSlug: string, queryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveSaved(organizationIdOrSlug: string, queryId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationDiscoverSavedQuery",
 			namespace: "organizations",
 			method: "retrieveSaved",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/discover/saved/${queryId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/discover/saved/${encodeURIComponent(queryId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveSaved"],
@@ -465,7 +465,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -473,13 +473,13 @@ display type
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/` — risk: medium
 	 */
-	async saved_2(organizationIdOrSlug: string, queryId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async saved_2(organizationIdOrSlug: string, queryId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationDiscoverSavedQuery",
 			namespace: "organizations",
 			method: "saved_2",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/discover/saved/${queryId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/discover/saved/${encodeURIComponent(queryId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["saved_2"],
@@ -487,7 +487,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -495,13 +495,13 @@ display type
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/` — risk: medium
 	 */
-	async deleteSaved(organizationIdOrSlug: string, queryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteSaved(organizationIdOrSlug: string, queryId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationDiscoverSavedQuery",
 			namespace: "organizations",
 			method: "deleteSaved",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/discover/saved/${queryId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/discover/saved/${encodeURIComponent(queryId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteSaved"],
@@ -509,7 +509,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -517,13 +517,13 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/environments/` — risk: medium
 	 */
-	async listEnvironments(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEnvironments(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/environments/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/environments/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationEnvironments",
 			namespace: "organizations",
 			method: "listEnvironments",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/environments/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/environments/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEnvironments"],
@@ -531,7 +531,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/environments/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -539,13 +539,13 @@ display type
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/eventids/{event_id}/` — risk: medium
 	 */
-	async retrieveEventid(organizationIdOrSlug: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveEventid(organizationIdOrSlug: string, eventId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/eventids/{event_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "resolveOrganizationEventId",
 			namespace: "organizations",
 			method: "retrieveEventid",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/eventids/${eventId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/eventids/${encodeURIComponent(eventId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveEventid"],
@@ -553,7 +553,7 @@ display type
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/eventids/{event_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -566,13 +566,13 @@ The `field` query parameter
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/events/` — risk: medium
 	 */
-	async listEvents(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEvents(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/events/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/events/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationEvents",
 			namespace: "organizations",
 			method: "listEvents",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/events/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/events/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEvents"],
@@ -580,7 +580,7 @@ The `field` query parameter
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/events/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -591,13 +591,13 @@ on the parameters passe
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/events-timeseries/` — risk: medium
 	 */
-	async listEventsTimeseries(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEventsTimeseries(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/events-timeseries/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/events-timeseries/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationEventsTimeseries",
 			namespace: "organizations",
 			method: "listEventsTimeseries",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/events-timeseries/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/events-timeseries/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEventsTimeseries"],
@@ -605,7 +605,7 @@ on the parameters passe
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/events-timeseries/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -613,13 +613,13 @@ on the parameters passe
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/external-users/` — risk: medium
 	 */
-	async createExternalUser(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createExternalUser(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/external-users/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/external-users/"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationExternalUser",
 			namespace: "organizations",
 			method: "createExternalUser",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/external-users/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/external-users/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createExternalUser"],
@@ -627,7 +627,7 @@ on the parameters passe
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/external-users/"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -635,13 +635,13 @@ on the parameters passe
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/` — risk: medium
 	 */
-	async externalUsers(organizationIdOrSlug: string, externalUserId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async externalUsers(organizationIdOrSlug: string, externalUserId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationExternalUser",
 			namespace: "organizations",
 			method: "externalUsers",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/external-users/${externalUserId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/external-users/${encodeURIComponent(externalUserId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["externalUsers"],
@@ -649,7 +649,7 @@ on the parameters passe
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -657,13 +657,13 @@ on the parameters passe
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/` — risk: medium
 	 */
-	async deleteExternalUser(organizationIdOrSlug: string, externalUserId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteExternalUser(organizationIdOrSlug: string, externalUserId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationExternalUser",
 			namespace: "organizations",
 			method: "deleteExternalUser",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/external-users/${externalUserId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/external-users/${encodeURIComponent(externalUserId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteExternalUser"],
@@ -671,7 +671,7 @@ on the parameters passe
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -679,13 +679,13 @@ on the parameters passe
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/forwarding/` — risk: medium
 	 */
-	async listForwarding(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listForwarding(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/forwarding/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationForwarding",
 			namespace: "organizations",
 			method: "listForwarding",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/forwarding/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/forwarding/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listForwarding"],
@@ -693,7 +693,7 @@ on the parameters passe
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/forwarding/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -704,13 +704,13 @@ Project-specific overrides can only be created after creating the data
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/forwarding/` — risk: medium
 	 */
-	async createForwarding(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createForwarding(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/forwarding/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/forwarding/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationForwarding",
 			namespace: "organizations",
 			method: "createForwarding",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/forwarding/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/forwarding/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createForwarding"],
@@ -718,7 +718,7 @@ Project-specific overrides can only be created after creating the data
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/forwarding/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -728,13 +728,13 @@ configuration to be pr
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/` — risk: medium
 	 */
-	async forwarding(organizationIdOrSlug: string, dataForwarderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async forwarding(organizationIdOrSlug: string, dataForwarderId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationForwarding",
 			namespace: "organizations",
 			method: "forwarding",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/forwarding/${dataForwarderId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/forwarding/${encodeURIComponent(dataForwarderId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["forwarding"],
@@ -742,7 +742,7 @@ configuration to be pr
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -750,13 +750,13 @@ configuration to be pr
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/` — risk: medium
 	 */
-	async deleteForwarding(organizationIdOrSlug: string, dataForwarderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteForwarding(organizationIdOrSlug: string, dataForwarderId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationForwarding",
 			namespace: "organizations",
 			method: "deleteForwarding",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/forwarding/${dataForwarderId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/forwarding/${encodeURIComponent(dataForwarderId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteForwarding"],
@@ -764,7 +764,7 @@ configuration to be pr
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -775,13 +775,13 @@ Retrieve a list of custom views for the current organization member.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/group-search-views/` — risk: medium
 	 */
-	async listGroupSearchViews(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listGroupSearchViews(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/group-search-views/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/group-search-views/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationIssueViews",
 			namespace: "organizations",
 			method: "listGroupSearchViews",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/group-search-views/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/group-search-views/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listGroupSearchViews"],
@@ -789,7 +789,7 @@ Retrieve a list of custom views for the current organization member.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/group-search-views/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -797,13 +797,13 @@ Retrieve a list of custom views for the current organization member.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/group-search-views/` — risk: medium
 	 */
-	async createGroupSearchView(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createGroupSearchView(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/group-search-views/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/group-search-views/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationIssueView",
 			namespace: "organizations",
 			method: "createGroupSearchView",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/group-search-views/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/group-search-views/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createGroupSearchView"],
@@ -811,7 +811,7 @@ Retrieve a list of custom views for the current organization member.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/group-search-views/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -819,13 +819,13 @@ Retrieve a list of custom views for the current organization member.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/integrations/` — risk: medium
 	 */
-	async listIntegrations(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listIntegrations(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/integrations/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/integrations/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationIntegrations",
 			namespace: "organizations",
 			method: "listIntegrations",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/integrations/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/integrations/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIntegrations"],
@@ -833,7 +833,7 @@ Retrieve a list of custom views for the current organization member.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/integrations/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -843,13 +843,13 @@ integration_id.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/` — risk: medium
 	 */
-	async integrationsRetrieveIntegration(organizationIdOrSlug: string, integrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async integrationsRetrieveIntegration(organizationIdOrSlug: string, integrationId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationIntegration",
 			namespace: "organizations",
 			method: "integrationsRetrieveIntegration",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/integrations/${integrationId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/integrations/${encodeURIComponent(integrationId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["integrationsRetrieveIntegration"],
@@ -857,7 +857,7 @@ integration_id.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -867,13 +867,13 @@ integration_id.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/` — risk: medium
 	 */
-	async integrationsDeleteIntegration(organizationIdOrSlug: string, integrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async integrationsDeleteIntegration(organizationIdOrSlug: string, integrationId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationIntegration",
 			namespace: "organizations",
 			method: "integrationsDeleteIntegration",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/integrations/${integrationId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/integrations/${encodeURIComponent(integrationId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["integrationsDeleteIntegration"],
@@ -881,7 +881,7 @@ integration_id.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -894,13 +894,13 @@ Gets all repo
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/repos/` — risk: medium
 	 */
-	async repos(organizationIdOrSlug: string, integrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async repos(organizationIdOrSlug: string, integrationId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/repos/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/repos/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationIntegrationRepositories",
 			namespace: "organizations",
 			method: "repos",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/integrations/${integrationId}/repos/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/integrations/${encodeURIComponent(integrationId)}/repos/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["repos"],
@@ -908,7 +908,7 @@ Gets all repo
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/repos/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -916,13 +916,13 @@ Gets all repo
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/` — risk: medium
 	 */
-	async listIssues(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listIssues(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationIssues",
 			namespace: "organizations",
 			method: "listIssues",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIssues"],
@@ -930,7 +930,7 @@ Gets all repo
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -940,13 +940,13 @@ Gets all repo
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/issues/` — risk: medium
 	 */
-	async issues_0(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async issues_0(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationIssues",
 			namespace: "organizations",
 			method: "issues_0",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["issues_0"],
@@ -954,7 +954,7 @@ Gets all repo
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -962,13 +962,13 @@ Gets all repo
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/issues/` — risk: medium
 	 */
-	async issues_1(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async issues_1(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationIssues",
 			namespace: "organizations",
 			method: "issues_1",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issues_1"],
@@ -976,7 +976,7 @@ Gets all repo
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -986,13 +986,13 @@ Response includes pending invites that are approved by organization owners or ma
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/members/` — risk: medium
 	 */
-	async listMembers(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMembers(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/members/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationMembers",
 			namespace: "organizations",
 			method: "listMembers",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/members/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/members/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMembers"],
@@ -1000,7 +1000,7 @@ Response includes pending invites that are approved by organization owners or ma
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1008,13 +1008,13 @@ Response includes pending invites that are approved by organization owners or ma
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/members/` — risk: medium
 	 */
-	async createMember(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createMember(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/members/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "addOrganizationMember",
 			namespace: "organizations",
 			method: "createMember",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/members/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/members/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMember"],
@@ -1022,7 +1022,7 @@ Response includes pending invites that are approved by organization owners or ma
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1032,13 +1032,13 @@ Response will be a pending invite if it has been approved by organization owners
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/members/{member_id}/` — risk: medium
 	 */
-	async retrieveMember(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMember(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationMember",
 			namespace: "organizations",
 			method: "retrieveMember",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/members/${memberId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/members/${encodeURIComponent(memberId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMember"],
@@ -1046,7 +1046,7 @@ Response will be a pending invite if it has been approved by organization owners
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1054,13 +1054,13 @@ Response will be a pending invite if it has been approved by organization owners
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/members/{member_id}/` — risk: medium
 	 */
-	async members(organizationIdOrSlug: string, memberId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async members(organizationIdOrSlug: string, memberId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationMember",
 			namespace: "organizations",
 			method: "members",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/members/${memberId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/members/${encodeURIComponent(memberId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["members"],
@@ -1068,7 +1068,7 @@ Response will be a pending invite if it has been approved by organization owners
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1076,13 +1076,13 @@ Response will be a pending invite if it has been approved by organization owners
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/members/{member_id}/` — risk: medium
 	 */
-	async deleteMember(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMember(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationMember",
 			namespace: "organizations",
 			method: "deleteMember",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/members/${memberId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/members/${encodeURIComponent(memberId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMember"],
@@ -1090,7 +1090,7 @@ Response will be a pending invite if it has been approved by organization owners
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1100,13 +1100,13 @@ Response will be a pending invite if it has been approved by organization owners
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async updateTeam(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateTeam(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "addOrganizationMemberTeam",
 			namespace: "organizations",
 			method: "updateTeam",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/members/${memberId}/teams/${teamIdOrSlug}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/members/${encodeURIComponent(memberId)}/teams/${encodeURIComponent(teamIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["updateTeam"],
@@ -1114,7 +1114,7 @@ Response will be a pending invite if it has been approved by organization owners
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1125,13 +1125,13 @@ automatically granted a minimum team role of `admin` on all team
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async teams(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async teams(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationMemberTeam",
 			namespace: "organizations",
 			method: "teams",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/members/${memberId}/teams/${teamIdOrSlug}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/members/${encodeURIComponent(memberId)}/teams/${encodeURIComponent(teamIdOrSlug)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["teams"],
@@ -1139,7 +1139,7 @@ automatically granted a minimum team role of `admin` on all team
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1151,13 +1151,13 @@ table outlines the accepted scopes.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async deleteTeam(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteTeam(organizationIdOrSlug: string, memberId: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationMemberTeam",
 			namespace: "organizations",
 			method: "deleteTeam",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/members/${memberId}/teams/${teamIdOrSlug}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/members/${encodeURIComponent(memberId)}/teams/${encodeURIComponent(teamIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteTeam"],
@@ -1165,7 +1165,7 @@ table outlines the accepted scopes.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1173,13 +1173,13 @@ table outlines the accepted scopes.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/monitors/` — risk: medium
 	 */
-	async listMonitors(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMonitors(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/monitors/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationMonitors",
 			namespace: "organizations",
 			method: "listMonitors",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/monitors/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/monitors/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMonitors"],
@@ -1187,7 +1187,7 @@ table outlines the accepted scopes.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1195,13 +1195,13 @@ table outlines the accepted scopes.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/monitors/` — risk: medium
 	 */
-	async createMonitor(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createMonitor(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/monitors/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationMonitor",
 			namespace: "organizations",
 			method: "createMonitor",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/monitors/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/monitors/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMonitor"],
@@ -1209,7 +1209,7 @@ table outlines the accepted scopes.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1217,13 +1217,13 @@ table outlines the accepted scopes.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async retrieveMonitor(organizationIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMonitor(organizationIdOrSlug: string, monitorIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationMonitor",
 			namespace: "organizations",
 			method: "retrieveMonitor",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/monitors/${monitorIdOrSlug}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/monitors/${encodeURIComponent(monitorIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMonitor"],
@@ -1231,7 +1231,7 @@ table outlines the accepted scopes.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1239,13 +1239,13 @@ table outlines the accepted scopes.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async monitors(organizationIdOrSlug: string, monitorIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async monitors(organizationIdOrSlug: string, monitorIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationMonitor",
 			namespace: "organizations",
 			method: "monitors",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/monitors/${monitorIdOrSlug}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/monitors/${encodeURIComponent(monitorIdOrSlug)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["monitors"],
@@ -1253,7 +1253,7 @@ table outlines the accepted scopes.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1261,13 +1261,13 @@ table outlines the accepted scopes.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async deleteMonitor(organizationIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMonitor(organizationIdOrSlug: string, monitorIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationMonitor",
 			namespace: "organizations",
 			method: "deleteMonitor",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/monitors/${monitorIdOrSlug}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/monitors/${encodeURIComponent(monitorIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMonitor"],
@@ -1275,7 +1275,7 @@ table outlines the accepted scopes.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1283,13 +1283,13 @@ table outlines the accepted scopes.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/` — risk: medium
 	 */
-	async checkins(organizationIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async checkins(organizationIdOrSlug: string, monitorIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationMonitorCheckins",
 			namespace: "organizations",
 			method: "checkins",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/monitors/${monitorIdOrSlug}/checkins/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/monitors/${encodeURIComponent(monitorIdOrSlug)}/checkins/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["checkins"],
@@ -1297,7 +1297,7 @@ table outlines the accepted scopes.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1307,13 +1307,13 @@ Notification Actions notify a set of members when an action has been triggered t
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/notifications/actions/` — risk: medium
 	 */
-	async actions_0(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async actions_0(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/"]["get"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationNotificationsActions",
 			namespace: "organizations",
 			method: "actions_0",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/notifications/actions/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/notifications/actions/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["actions_0"],
@@ -1321,7 +1321,7 @@ Notification Actions notify a set of members when an action has been triggered t
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/"]["get"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1332,13 +1332,13 @@ For exam
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/notifications/actions/` — risk: medium
 	 */
-	async actions_1(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async actions_1(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationNotificationsAction",
 			namespace: "organizations",
 			method: "actions_1",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/notifications/actions/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/notifications/actions/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["actions_1"],
@@ -1346,7 +1346,7 @@ For exam
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1356,13 +1356,13 @@ Notification Actions notify a set of members when an action has been triggered t
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/` — risk: medium
 	 */
-	async retrieveAction(organizationIdOrSlug: string, actionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveAction(organizationIdOrSlug: string, actionId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationNotificationsAction",
 			namespace: "organizations",
 			method: "retrieveAction",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/notifications/actions/${actionId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/notifications/actions/${encodeURIComponent(actionId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAction"],
@@ -1370,7 +1370,7 @@ Notification Actions notify a set of members when an action has been triggered t
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1381,13 +1381,13 @@ For example, org
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/` — risk: medium
 	 */
-	async actions_2(organizationIdOrSlug: string, actionId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async actions_2(organizationIdOrSlug: string, actionId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/"]["put"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationNotificationsAction",
 			namespace: "organizations",
 			method: "actions_2",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/notifications/actions/${actionId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/notifications/actions/${encodeURIComponent(actionId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["actions_2"],
@@ -1395,7 +1395,7 @@ For example, org
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/"]["put"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1406,13 +1406,13 @@ For example, org
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/` — risk: medium
 	 */
-	async deleteAction(organizationIdOrSlug: string, actionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteAction(organizationIdOrSlug: string, actionId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationNotificationsAction",
 			namespace: "organizations",
 			method: "deleteAction",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/notifications/actions/${actionId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/notifications/actions/${encodeURIComponent(actionId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteAction"],
@@ -1420,7 +1420,7 @@ For example, org
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1431,13 +1431,13 @@ including whether the artifact is installable, the install URL, download cou
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/install-details/` — risk: medium
 	 */
-	async installDetails(organizationIdOrSlug: string, artifactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async installDetails(organizationIdOrSlug: string, artifactId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/install-details/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationPreprodArtifactInstallDetails",
 			namespace: "organizations",
 			method: "installDetails",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/preprodartifacts/${artifactId}/install-details/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/preprodartifacts/${encodeURIComponent(artifactId)}/install-details/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["installDetails"],
@@ -1445,7 +1445,7 @@ including whether the artifact is installable, the install URL, download cou
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/install-details/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1456,13 +1456,13 @@ When a base artifact exists (either from commit comparison or v
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/size-analysis/` — risk: medium
 	 */
-	async sizeAnalysis(organizationIdOrSlug: string, artifactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async sizeAnalysis(organizationIdOrSlug: string, artifactId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/size-analysis/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/size-analysis/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationPreprodArtifactSizeAnalysis",
 			namespace: "organizations",
 			method: "sizeAnalysis",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/preprodartifacts/${artifactId}/size-analysis/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/preprodartifacts/${encodeURIComponent(artifactId)}/size-analysis/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["sizeAnalysis"],
@@ -1470,7 +1470,7 @@ When a base artifact exists (either from commit comparison or v
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/size-analysis/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1482,13 +1482,13 @@ categorized into `changed`, `added`,
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/` — risk: medium
 	 */
-	async retrieveSnapshot(organizationIdOrSlug: string, snapshotId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveSnapshot(organizationIdOrSlug: string, snapshotId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationPreprodArtifactSnapshot",
 			namespace: "organizations",
 			method: "retrieveSnapshot",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/preprodartifacts/snapshots/${snapshotId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/preprodartifacts/snapshots/${encodeURIComponent(snapshotId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveSnapshot"],
@@ -1496,7 +1496,7 @@ categorized into `changed`, `added`,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1509,13 +1509,13 @@ This e
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/` — risk: medium
 	 */
-	async deleteSnapshot(organizationIdOrSlug: string, snapshotId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteSnapshot(organizationIdOrSlug: string, snapshotId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationPreprodArtifactSnapshot",
 			namespace: "organizations",
 			method: "deleteSnapshot",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/preprodartifacts/snapshots/${snapshotId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/preprodartifacts/snapshots/${encodeURIComponent(snapshotId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteSnapshot"],
@@ -1523,7 +1523,7 @@ This e
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1534,13 +1534,13 @@ hash. The response includes head and base image metadata, co
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/images/{image_identifier}/` — risk: medium
 	 */
-	async retrieveImage(organizationIdOrSlug: string, snapshotId: string, imageIdentifier: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveImage(organizationIdOrSlug: string, snapshotId: string, imageIdentifier: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/images/{image_identifier}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationPreprodArtifactSnapshotImage",
 			namespace: "organizations",
 			method: "retrieveImage",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/preprodartifacts/snapshots/${snapshotId}/images/${imageIdentifier}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/preprodartifacts/snapshots/${encodeURIComponent(snapshotId)}/images/${encodeURIComponent(imageIdentifier)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveImage"],
@@ -1548,7 +1548,7 @@ hash. The response includes head and base image metadata, co
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/images/{image_identifier}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1559,13 +1559,13 @@ from a base branch like `main`). Use the optional `branch` and `project`
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/latest-base/` — risk: medium
 	 */
-	async latestBase(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async latestBase(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/latest-base/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/latest-base/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationPreprodArtifactSnapshotLatestBase",
 			namespace: "organizations",
 			method: "latestBase",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/preprodartifacts/snapshots/latest-base/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/preprodartifacts/snapshots/latest-base/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["latestBase"],
@@ -1573,7 +1573,7 @@ from a base branch like `main`). Use the optional `branch` and `project`
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/latest-base/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1585,13 +1585,13 @@ Requires continuous profiling to be enabled for the orga
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/profiling/chunks/` — risk: medium
 	 */
-	async chunks(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async chunks(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/profiling/chunks/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/profiling/chunks/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationProfilingChunks",
 			namespace: "organizations",
 			method: "chunks",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/profiling/chunks/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/profiling/chunks/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["chunks"],
@@ -1599,7 +1599,7 @@ Requires continuous profiling to be enabled for the orga
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/profiling/chunks/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1610,13 +1610,13 @@ Pass `expand=metrics` to include aggregated function metric
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/profiling/flamegraph/` — risk: medium
 	 */
-	async flamegraph(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async flamegraph(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/profiling/flamegraph/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/profiling/flamegraph/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationProfilingFlamegraph",
 			namespace: "organizations",
 			method: "flamegraph",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/profiling/flamegraph/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/profiling/flamegraph/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["flamegraph"],
@@ -1624,7 +1624,7 @@ Pass `expand=metrics` to include aggregated function metric
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/profiling/flamegraph/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1635,13 +1635,13 @@ to identify
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/project-keys/` — risk: medium
 	 */
-	async listProjectKeys(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listProjectKeys(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/project-keys/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/project-keys/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationProjectKeys",
 			namespace: "organizations",
 			method: "listProjectKeys",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/project-keys/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/project-keys/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProjectKeys"],
@@ -1649,7 +1649,7 @@ to identify
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/project-keys/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1657,13 +1657,13 @@ to identify
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/projects/` — risk: medium
 	 */
-	async listProjects(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listProjects(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/projects/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/projects/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationProjects",
 			namespace: "organizations",
 			method: "listProjects",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/projects/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/projects/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProjects"],
@@ -1671,7 +1671,7 @@ to identify
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/projects/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1679,13 +1679,13 @@ to identify
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/projects/` — risk: medium
 	 */
-	async createProject(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createProject(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/projects/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/projects/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationProject",
 			namespace: "organizations",
 			method: "createProject",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/projects/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/projects/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createProject"],
@@ -1693,7 +1693,7 @@ to identify
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/projects/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1701,13 +1701,13 @@ to identify
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/projects/{project_id_or_slug}/detectors/` — risk: medium
 	 */
-	async projectsDetectors(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async projectsDetectors(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/projects/{project_id_or_slug}/detectors/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/projects/{project_id_or_slug}/detectors/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationProjectDetector",
 			namespace: "organizations",
 			method: "projectsDetectors",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/projects/${projectIdOrSlug}/detectors/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/projects/${encodeURIComponent(projectIdOrSlug)}/detectors/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["projectsDetectors"],
@@ -1715,7 +1715,7 @@ to identify
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/projects/{project_id_or_slug}/detectors/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1723,13 +1723,13 @@ to identify
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/relay_usage/` — risk: medium
 	 */
-	async listRelayUsage(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listRelayUsage(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/relay_usage/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationRelayUsage",
 			namespace: "organizations",
 			method: "listRelayUsage",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/relay_usage/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/relay_usage/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRelayUsage"],
@@ -1737,7 +1737,7 @@ to identify
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/relay_usage/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1749,13 +1749,13 @@ Constructs a response key'd off \{`rel
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/release-threshold-statuses/` — risk: medium
 	 */
-	async listReleaseThresholdStatuses(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listReleaseThresholdStatuses(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/release-threshold-statuses/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/release-threshold-statuses/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationReleaseThresholdStatuses",
 			namespace: "organizations",
 			method: "listReleaseThresholdStatuses",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/release-threshold-statuses/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/release-threshold-statuses/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listReleaseThresholdStatuses"],
@@ -1763,7 +1763,7 @@ Constructs a response key'd off \{`rel
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/release-threshold-statuses/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1771,13 +1771,13 @@ Constructs a response key'd off \{`rel
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/` — risk: medium
 	 */
-	async listReleases(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listReleases(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationReleases",
 			namespace: "organizations",
 			method: "listReleases",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listReleases"],
@@ -1785,7 +1785,7 @@ Constructs a response key'd off \{`rel
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1795,13 +1795,13 @@ have introduced them, and are require
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/releases/` — risk: medium
 	 */
-	async createReleas(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createReleas(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationRelease",
 			namespace: "organizations",
 			method: "createReleas",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createReleas"],
@@ -1809,7 +1809,7 @@ have introduced them, and are require
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1817,13 +1817,13 @@ have introduced them, and are require
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/` — risk: medium
 	 */
-	async retrieveReleas(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveReleas(organizationIdOrSlug: string, version: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationRelease",
 			namespace: "organizations",
 			method: "retrieveReleas",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveReleas"],
@@ -1831,7 +1831,7 @@ have introduced them, and are require
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1840,13 +1840,13 @@ the release (the ref, url, and dates).
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/releases/{version}/` — risk: medium
 	 */
-	async releases(organizationIdOrSlug: string, version: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async releases(organizationIdOrSlug: string, version: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationRelease",
 			namespace: "organizations",
 			method: "releases",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["releases"],
@@ -1854,7 +1854,7 @@ the release (the ref, url, and dates).
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1862,13 +1862,13 @@ the release (the ref, url, and dates).
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/releases/{version}/` — risk: medium
 	 */
-	async deleteReleas(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteReleas(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationRelease",
 			namespace: "organizations",
 			method: "deleteReleas",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteReleas"],
@@ -1876,7 +1876,7 @@ the release (the ref, url, and dates).
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1884,13 +1884,13 @@ the release (the ref, url, and dates).
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/commits/` — risk: medium
 	 */
-	async releasesCommits(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async releasesCommits(organizationIdOrSlug: string, version: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/commits/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/commits/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationReleaseCommits",
 			namespace: "organizations",
 			method: "releasesCommits",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/commits/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/commits/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["releasesCommits"],
@@ -1898,7 +1898,7 @@ the release (the ref, url, and dates).
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/commits/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1906,13 +1906,13 @@ the release (the ref, url, and dates).
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/` — risk: medium
 	 */
-	async deploys_0(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deploys_0(organizationIdOrSlug: string, version: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationReleaseDeploys",
 			namespace: "organizations",
 			method: "deploys_0",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/deploys/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/deploys/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deploys_0"],
@@ -1920,7 +1920,7 @@ the release (the ref, url, and dates).
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1928,13 +1928,13 @@ the release (the ref, url, and dates).
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/` — risk: medium
 	 */
-	async deploys_1(organizationIdOrSlug: string, version: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deploys_1(organizationIdOrSlug: string, version: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationReleaseDeploy",
 			namespace: "organizations",
 			method: "deploys_1",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/deploys/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/deploys/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["deploys_1"],
@@ -1942,7 +1942,7 @@ the release (the ref, url, and dates).
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1950,13 +1950,13 @@ the release (the ref, url, and dates).
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/` — risk: medium
 	 */
-	async files_0(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async files_0(organizationIdOrSlug: string, version: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationReleaseFiles",
 			namespace: "organizations",
 			method: "files_0",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/files/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/files/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["files_0"],
@@ -1964,7 +1964,7 @@ the release (the ref, url, and dates).
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1975,13 +1975,13 @@ region-specific domain (e.g. `us.sentry.io` or `de.sentry.io`).
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/` — risk: medium
 	 */
-	async files_1(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async files_1(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "uploadOrganizationReleaseFile",
 			namespace: "organizations",
 			method: "files_1",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/files/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/files/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["files_1"],
@@ -1989,7 +1989,7 @@ region-specific domain (e.g. `us.sentry.io` or `de.sentry.io`).
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1998,13 +1998,13 @@ contents unless `download` is set.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async retrieveFile(organizationIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveFile(organizationIdOrSlug: string, version: string, fileId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationReleaseFile",
 			namespace: "organizations",
 			method: "retrieveFile",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/files/${fileId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/files/${encodeURIComponent(fileId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveFile"],
@@ -2012,7 +2012,7 @@ contents unless `download` is set.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2021,13 +2021,13 @@ can be changed.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async files_2(organizationIdOrSlug: string, version: string, fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async files_2(organizationIdOrSlug: string, version: string, fileId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationReleaseFile",
 			namespace: "organizations",
 			method: "files_2",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/files/${fileId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/files/${encodeURIComponent(fileId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["files_2"],
@@ -2035,7 +2035,7 @@ can be changed.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2044,13 +2044,13 @@ storage.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async deleteFile(organizationIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteFile(organizationIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationReleaseFile",
 			namespace: "organizations",
 			method: "deleteFile",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/files/${fileId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/files/${encodeURIComponent(fileId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteFile"],
@@ -2058,7 +2058,7 @@ storage.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2068,13 +2068,13 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/replay-count/` — risk: medium
 	 */
-	async listReplayCount(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listReplayCount(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/replay-count/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/replay-count/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationReplayCount",
 			namespace: "organizations",
 			method: "listReplayCount",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/replay-count/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/replay-count/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listReplayCount"],
@@ -2082,7 +2082,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/replay-count/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2090,13 +2090,13 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/replay-selectors/` — risk: medium
 	 */
-	async listReplaySelectors(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listReplaySelectors(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/replay-selectors/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/replay-selectors/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationReplaySelectors",
 			namespace: "organizations",
 			method: "listReplaySelectors",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/replay-selectors/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/replay-selectors/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listReplaySelectors"],
@@ -2104,7 +2104,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/replay-selectors/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2112,13 +2112,13 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/replays/` — risk: medium
 	 */
-	async listReplays(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listReplays(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/replays/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/replays/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationReplays",
 			namespace: "organizations",
 			method: "listReplays",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/replays/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/replays/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listReplays"],
@@ -2126,7 +2126,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/replays/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2134,13 +2134,13 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/replays/{replay_id}/` — risk: medium
 	 */
-	async retrieveReplay(organizationIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveReplay(organizationIdOrSlug: string, replayId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/replays/{replay_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/replays/{replay_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationReplay",
 			namespace: "organizations",
 			method: "retrieveReplay",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/replays/${replayId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/replays/${encodeURIComponent(replayId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveReplay"],
@@ -2148,7 +2148,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/replays/{replay_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2156,13 +2156,13 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/repos/` — risk: medium
 	 */
-	async listRepos(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listRepos(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/repos/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/repos/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationRepos",
 			namespace: "organizations",
 			method: "listRepos",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/repos/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/repos/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRepos"],
@@ -2170,7 +2170,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/repos/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2178,13 +2178,13 @@ The `query` parameter is required. It is a search query that includes exactly on
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/repos/{repo_id}/commits/` — risk: medium
 	 */
-	async reposCommits(organizationIdOrSlug: string, repoId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async reposCommits(organizationIdOrSlug: string, repoId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/repos/{repo_id}/commits/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/repos/{repo_id}/commits/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationRepoCommits",
 			namespace: "organizations",
 			method: "reposCommits",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/repos/${repoId}/commits/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/repos/${encodeURIComponent(repoId)}/commits/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["reposCommits"],
@@ -2192,7 +2192,7 @@ The `query` parameter is required. It is a search query that includes exactly on
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/repos/{repo_id}/commits/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2202,13 +2202,13 @@ Note that the members field will only contain up to 10,000 members.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups` — risk: medium
 	 */
-	async Groups_0(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Groups_0(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationScimV2Groups",
 			namespace: "organizations",
 			method: "Groups_0",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Groups`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Groups`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Groups_0"],
@@ -2216,7 +2216,7 @@ Note that the members field will only contain up to 10,000 members.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2228,13 +2228,13 @@ Note that teams are always created with an
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups` — risk: medium
 	 */
-	async Groups_1(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Groups_1(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "provisionOrganizationScimV2Group",
 			namespace: "organizations",
 			method: "Groups_1",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Groups`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Groups`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["Groups_1"],
@@ -2242,7 +2242,7 @@ Note that teams are always created with an
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2251,13 +2251,13 @@ Note that teams are always created with an
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}` — risk: medium
 	 */
-	async retrieveGroup(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveGroup(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationScimV2Group",
 			namespace: "organizations",
 			method: "retrieveGroup",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Groups/${teamIdOrSlug}`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Groups/${encodeURIComponent(teamIdOrSlug)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveGroup"],
@@ -2265,7 +2265,7 @@ Note that teams are always created with an
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2273,13 +2273,13 @@ Note that teams are always created with an
 	 *
 	 * `PATCH /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}` — risk: medium
 	 */
-	async Groups_2(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Groups_2(organizationIdOrSlug: string, teamIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationScimV2Group",
 			namespace: "organizations",
 			method: "Groups_2",
 			http: "patch",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Groups/${teamIdOrSlug}`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Groups/${encodeURIComponent(teamIdOrSlug)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["Groups_2"],
@@ -2287,7 +2287,7 @@ Note that teams are always created with an
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2295,13 +2295,13 @@ Note that teams are always created with an
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}` — risk: medium
 	 */
-	async deleteGroup(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteGroup(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationScimV2Group",
 			namespace: "organizations",
 			method: "deleteGroup",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Groups/${teamIdOrSlug}`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Groups/${encodeURIComponent(teamIdOrSlug)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteGroup"],
@@ -2309,7 +2309,7 @@ Note that teams are always created with an
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2317,13 +2317,13 @@ Note that teams are always created with an
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Users` — risk: medium
 	 */
-	async Users_0(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Users_0(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Users"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Users"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationScimV2Users",
 			namespace: "organizations",
 			method: "Users_0",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Users`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Users`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Users_0"],
@@ -2331,7 +2331,7 @@ Note that teams are always created with an
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Users"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2341,13 +2341,13 @@ Note that this API does not support setting secondary emails.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/scim/v2/Users` — risk: medium
 	 */
-	async Users_1(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Users_1(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Users"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Users"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "provisionOrganizationScimV2User",
 			namespace: "organizations",
 			method: "Users_1",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Users`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Users`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["Users_1"],
@@ -2355,7 +2355,7 @@ Note that this API does not support setting secondary emails.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Users"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2365,13 +2365,13 @@ Sentry's SCIM API does not currently
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}` — risk: medium
 	 */
-	async retrieveUser(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveUser(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationScimV2User",
 			namespace: "organizations",
 			method: "retrieveUser",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Users/${memberId}`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Users/${encodeURIComponent(memberId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveUser"],
@@ -2379,7 +2379,7 @@ Sentry's SCIM API does not currently
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2387,13 +2387,13 @@ Sentry's SCIM API does not currently
 	 *
 	 * `PATCH /api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}` — risk: medium
 	 */
-	async Users_2(organizationIdOrSlug: string, memberId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Users_2(organizationIdOrSlug: string, memberId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationScimV2User",
 			namespace: "organizations",
 			method: "Users_2",
 			http: "patch",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Users/${memberId}`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Users/${encodeURIComponent(memberId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["Users_2"],
@@ -2401,7 +2401,7 @@ Sentry's SCIM API does not currently
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2409,13 +2409,13 @@ Sentry's SCIM API does not currently
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}` — risk: medium
 	 */
-	async deleteUser(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteUser(organizationIdOrSlug: string, memberId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationScimV2User",
 			namespace: "organizations",
 			method: "deleteUser",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/scim/v2/Users/${memberId}`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/scim/v2/Users/${encodeURIComponent(memberId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUser"],
@@ -2423,7 +2423,7 @@ Sentry's SCIM API does not currently
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2433,13 +2433,13 @@ Retrieve prepared UI components for installed custom integrations, including iss
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/sentry-app-components/` — risk: medium
 	 */
-	async listSentryAppComponents(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSentryAppComponents(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/sentry-app-components/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/sentry-app-components/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationSentryAppComponents",
 			namespace: "organizations",
 			method: "listSentryAppComponents",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/sentry-app-components/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/sentry-app-components/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSentryAppComponents"],
@@ -2447,7 +2447,7 @@ Retrieve prepared UI components for installed custom integrations, including iss
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/sentry-app-components/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2455,13 +2455,13 @@ Retrieve prepared UI components for installed custom integrations, including iss
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/sentry-apps/` — risk: medium
 	 */
-	async listSentryApps(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSentryApps(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/sentry-apps/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationSentryApps",
 			namespace: "organizations",
 			method: "listSentryApps",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/sentry-apps/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/sentry-apps/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSentryApps"],
@@ -2469,7 +2469,7 @@ Retrieve prepared UI components for installed custom integrations, including iss
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/sentry-apps/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2481,13 +2481,13 @@ The date range i
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/sessions/` — risk: medium
 	 */
-	async listSessions(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSessions(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/sessions/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/sessions/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationSessions",
 			namespace: "organizations",
 			method: "listSessions",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/sessions/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/sessions/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSessions"],
@@ -2495,7 +2495,7 @@ The date range i
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/sessions/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2503,13 +2503,13 @@ The date range i
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/shortids/{issue_id}/` — risk: medium
 	 */
-	async retrieveShortid(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveShortid(organizationIdOrSlug: string, issueId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/shortids/{issue_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/shortids/{issue_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "resolveOrganizationShortId",
 			namespace: "organizations",
 			method: "retrieveShortid",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/shortids/${issueId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/shortids/${encodeURIComponent(issueId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveShortid"],
@@ -2517,7 +2517,7 @@ The date range i
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/shortids/{issue_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2525,13 +2525,13 @@ The date range i
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/stats-summary/` — risk: medium
 	 */
-	async listStatsSummary(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listStatsSummary(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/stats-summary/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/stats-summary/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationStatsSummary",
 			namespace: "organizations",
 			method: "listStatsSummary",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/stats-summary/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/stats-summary/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStatsSummary"],
@@ -2539,7 +2539,7 @@ The date range i
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/stats-summary/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2548,13 +2548,13 @@ Select a field, define a date range, and group or filter by columns.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/stats_v2/` — risk: medium
 	 */
-	async listStatsV2(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listStatsV2(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/stats_v2/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/stats_v2/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationStatsV2",
 			namespace: "organizations",
 			method: "listStatsV2",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/stats_v2/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/stats_v2/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStatsV2"],
@@ -2562,7 +2562,7 @@ Select a field, define a date range, and group or filter by columns.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/stats_v2/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2570,13 +2570,13 @@ Select a field, define a date range, and group or filter by columns.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/tags/` — risk: medium
 	 */
-	async listTags(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTags(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/tags/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/tags/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationTags",
 			namespace: "organizations",
 			method: "listTags",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/tags/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/tags/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTags"],
@@ -2584,7 +2584,7 @@ Select a field, define a date range, and group or filter by columns.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/tags/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2592,13 +2592,13 @@ Select a field, define a date range, and group or filter by columns.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/teams/` — risk: medium
 	 */
-	async listTeams(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTeams(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/teams/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/teams/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationTeams",
 			namespace: "organizations",
 			method: "listTeams",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/teams/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/teams/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTeams"],
@@ -2606,7 +2606,7 @@ Select a field, define a date range, and group or filter by columns.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/teams/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2615,13 +2615,13 @@ or `slug` body params to be set.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/teams/` — risk: medium
 	 */
-	async createTeam(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTeam(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/teams/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/teams/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationTeam",
 			namespace: "organizations",
 			method: "createTeam",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/teams/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/teams/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createTeam"],
@@ -2629,7 +2629,7 @@ or `slug` body params to be set.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/teams/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2638,13 +2638,13 @@ trace metrics, etc.), with optional substring and structured filtering.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/trace-items/attributes/` — risk: medium
 	 */
-	async attributes(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async attributes(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/trace-items/attributes/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace-items/attributes/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationTraceItemAttributes",
 			namespace: "organizations",
 			method: "attributes",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/trace-items/attributes/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/trace-items/attributes/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["attributes"],
@@ -2652,7 +2652,7 @@ trace metrics, etc.), with optional substring and structured filtering.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace-items/attributes/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2662,13 +2662,13 @@ List trace metrics (name, type, unit, count, last seen) with optional context.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/trace-items/metrics/` — risk: medium
 	 */
-	async metrics(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async metrics(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/trace-items/metrics/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace-items/metrics/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationTraceMetrics",
 			namespace: "organizations",
 			method: "metrics",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/trace-items/metrics/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/trace-items/metrics/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["metrics"],
@@ -2676,7 +2676,7 @@ List trace metrics (name, type, unit, count, last seen) with optional context.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace-items/metrics/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2686,13 +2686,13 @@ time range.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/trace-items/stats/` — risk: medium
 	 */
-	async stats(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async stats(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/trace-items/stats/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace-items/stats/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Retrieve Trace Item Statistics",
 			namespace: "organizations",
 			method: "stats",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/trace-items/stats/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/trace-items/stats/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["stats"],
@@ -2700,7 +2700,7 @@ time range.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace-items/stats/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2710,13 +2710,13 @@ and per-transaction child-count breakdowns.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/trace-meta/{trace_id}/` — risk: medium
 	 */
-	async retrieveTraceMeta(organizationIdOrSlug: string, traceId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveTraceMeta(organizationIdOrSlug: string, traceId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/trace-meta/{trace_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace-meta/{trace_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationTraceMeta",
 			namespace: "organizations",
 			method: "retrieveTraceMeta",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/trace-meta/${traceId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/trace-meta/${encodeURIComponent(traceId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTraceMeta"],
@@ -2724,7 +2724,7 @@ and per-transaction child-count breakdowns.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace-meta/{trace_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2735,13 +2735,13 @@ and `occurrences` a
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/trace/{trace_id}/` — risk: medium
 	 */
-	async retrieveTrace(organizationIdOrSlug: string, traceId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveTrace(organizationIdOrSlug: string, traceId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/trace/{trace_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace/{trace_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationTrace",
 			namespace: "organizations",
 			method: "retrieveTrace",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/trace/${traceId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/trace/${encodeURIComponent(traceId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTrace"],
@@ -2749,7 +2749,7 @@ and `occurrences` a
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/trace/{trace_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2758,13 +2758,13 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/user-teams/` — risk: medium
 	 */
-	async listUserTeams(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listUserTeams(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/user-teams/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationUserTeams",
 			namespace: "organizations",
 			method: "listUserTeams",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/user-teams/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/user-teams/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listUserTeams"],
@@ -2772,7 +2772,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/user-teams/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2780,13 +2780,13 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/workflows/` — risk: medium
 	 */
-	async listWorkflows(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listWorkflows(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationWorkflows",
 			namespace: "organizations",
 			method: "listWorkflows",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/workflows/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/workflows/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listWorkflows"],
@@ -2794,7 +2794,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2802,13 +2802,13 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/workflows/` — risk: medium
 	 */
-	async createWorkflow(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createWorkflow(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createOrganizationWorkflow",
 			namespace: "organizations",
 			method: "createWorkflow",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/workflows/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/workflows/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createWorkflow"],
@@ -2816,7 +2816,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2824,13 +2824,13 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/workflows/` — risk: medium
 	 */
-	async workflows_0(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async workflows_0(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationWorkflows",
 			namespace: "organizations",
 			method: "workflows_0",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/workflows/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/workflows/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["workflows_0"],
@@ -2838,7 +2838,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2846,13 +2846,13 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/workflows/` — risk: medium
 	 */
-	async workflows_1(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async workflows_1(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/workflows/"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationWorkflows",
 			namespace: "organizations",
 			method: "workflows_1",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/workflows/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/workflows/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["workflows_1"],
@@ -2860,7 +2860,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2868,13 +2868,13 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/` — risk: medium
 	 */
-	async retrieveWorkflow(organizationIdOrSlug: string, workflowId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveWorkflow(organizationIdOrSlug: string, workflowId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationWorkflow",
 			namespace: "organizations",
 			method: "retrieveWorkflow",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/workflows/${workflowId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/workflows/${encodeURIComponent(workflowId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveWorkflow"],
@@ -2882,7 +2882,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2890,13 +2890,13 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/` — risk: medium
 	 */
-	async workflows_2(organizationIdOrSlug: string, workflowId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async workflows_2(organizationIdOrSlug: string, workflowId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationWorkflow",
 			namespace: "organizations",
 			method: "workflows_2",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/workflows/${workflowId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/workflows/${encodeURIComponent(workflowId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["workflows_2"],
@@ -2904,7 +2904,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2912,13 +2912,13 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/` — risk: medium
 	 */
-	async deleteWorkflow(organizationIdOrSlug: string, workflowId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteWorkflow(organizationIdOrSlug: string, workflowId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationWorkflow",
 			namespace: "organizations",
 			method: "deleteWorkflow",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/workflows/${workflowId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/workflows/${encodeURIComponent(workflowId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteWorkflow"],
@@ -2926,7 +2926,7 @@ Note that this endpoint is restricted to [user auth tokens](https://docs.sentry.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2935,13 +2935,13 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/values/` — risk: medium
 	 */
-	async values(organizationIdOrSlug: string, issueId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async values(organizationIdOrSlug: string, issueId: string, key: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/values/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/values/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationIssueTagValues",
 			namespace: "organizations",
 			method: "values",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/tags/${key}/values/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/tags/${encodeURIComponent(key)}/values/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["values"],
@@ -2949,7 +2949,7 @@ Returns at most 1000 values when paginated.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/values/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2957,13 +2957,13 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/commitfiles/` — risk: medium
 	 */
-	async commitfiles(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async commitfiles(organizationIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "Retrieve Files Changed in a Release's Commits",
 			namespace: "organizations",
 			method: "commitfiles",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/releases/${version}/commitfiles/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/releases/${encodeURIComponent(version)}/commitfiles/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["commitfiles"],
@@ -2971,7 +2971,7 @@ Returns at most 1000 values when paginated.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2979,13 +2979,13 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/sentry-app-installations/` — risk: medium
 	 */
-	async listSentryAppInstallations(organizationIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSentryAppInstallations(organizationIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/sentry-app-installations/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/sentry-app-installations/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "List an Organization's Integration Platform Installations",
 			namespace: "organizations",
 			method: "listSentryAppInstallations",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/sentry-app-installations/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/sentry-app-installations/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSentryAppInstallations"],
@@ -2993,7 +2993,7 @@ Returns at most 1000 values when paginated.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/sentry-app-installations/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3001,13 +3001,13 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/spike-protections/` — risk: medium
 	 */
-	async createSpikeProtection(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSpikeProtection(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/spike-protections/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "Enable Spike Protection",
 			namespace: "organizations",
 			method: "createSpikeProtection",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/spike-protections/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/spike-protections/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createSpikeProtection"],
@@ -3015,7 +3015,7 @@ Returns at most 1000 values when paginated.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3023,13 +3023,13 @@ Returns at most 1000 values when paginated.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/spike-protections/` — risk: medium
 	 */
-	async spikeProtections(organizationIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async spikeProtections(organizationIdOrSlug: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/spike-protections/"]["delete"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "Disable Spike Protection",
 			namespace: "organizations",
 			method: "spikeProtections",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/spike-protections/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/spike-protections/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["spikeProtections"],
@@ -3037,7 +3037,7 @@ Returns at most 1000 values when paginated.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3046,13 +3046,13 @@ and user-report counts, and a summary of the latest event.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/` — risk: medium
 	 */
-	async retrieveIssue(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveIssue(organizationIdOrSlug: string, issueId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationIssue",
 			namespace: "organizations",
 			method: "retrieveIssue",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveIssue"],
@@ -3060,7 +3060,7 @@ and user-report counts, and a summary of the latest event.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3069,13 +3069,13 @@ are modified.
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/` — risk: medium
 	 */
-	async issues_2(organizationIdOrSlug: string, issueId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async issues_2(organizationIdOrSlug: string, issueId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateOrganizationIssue",
 			namespace: "organizations",
 			method: "issues_2",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["issues_2"],
@@ -3083,7 +3083,7 @@ are modified.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3091,13 +3091,13 @@ are modified.
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/` — risk: medium
 	 */
-	async deleteIssue(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteIssue(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationIssue",
 			namespace: "organizations",
 			method: "deleteIssue",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteIssue"],
@@ -3105,7 +3105,7 @@ are modified.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3118,13 +3118,13 @@ Retrieve the current detailed state of an issue fix process for a specific issue
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/` — risk: medium
 	 */
-	async autofix_0(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async autofix_0(organizationIdOrSlug: string, issueId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationIssueAutofixState",
 			namespace: "organizations",
 			method: "autofix_0",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/autofix/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/autofix/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["autofix_0"],
@@ -3132,7 +3132,7 @@ Retrieve the current detailed state of an issue fix process for a specific issue
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3147,13 +3147,13 @@ The issue fix process can:
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/` — risk: medium
 	 */
-	async autofix_1(organizationIdOrSlug: string, issueId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async autofix_1(organizationIdOrSlug: string, issueId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "startOrganizationIssueAutofix",
 			namespace: "organizations",
 			method: "autofix_1",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/autofix/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/autofix/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["autofix_1"],
@@ -3161,7 +3161,7 @@ The issue fix process can:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3169,13 +3169,13 @@ The issue fix process can:
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/` — risk: medium
 	 */
-	async events(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async events(organizationIdOrSlug: string, issueId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationIssueEvents",
 			namespace: "organizations",
 			method: "events",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/events/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/events/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["events"],
@@ -3183,7 +3183,7 @@ The issue fix process can:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3191,13 +3191,13 @@ The issue fix process can:
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/{event_id}/` — risk: medium
 	 */
-	async retrieveEvent(organizationIdOrSlug: string, issueId: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveEvent(organizationIdOrSlug: string, issueId: string, eventId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/{event_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/{event_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationIssueEvent",
 			namespace: "organizations",
 			method: "retrieveEvent",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/events/${eventId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/events/${encodeURIComponent(eventId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveEvent"],
@@ -3205,7 +3205,7 @@ The issue fix process can:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/{event_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3213,13 +3213,13 @@ The issue fix process can:
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/external-issues/` — risk: medium
 	 */
-	async externalIssues(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async externalIssues(organizationIdOrSlug: string, issueId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/external-issues/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/external-issues/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationIssueExternalIssues",
 			namespace: "organizations",
 			method: "externalIssues",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/external-issues/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/external-issues/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["externalIssues"],
@@ -3227,7 +3227,7 @@ The issue fix process can:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/external-issues/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3237,13 +3237,13 @@ Remove a custom integration's association with a Sentry issue. The external issu
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/external-issues/{external_issue_id}/` — risk: medium
 	 */
-	async deleteExternalIssue(organizationIdOrSlug: string, issueId: string, externalIssueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteExternalIssue(organizationIdOrSlug: string, issueId: string, externalIssueId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteOrganizationIssueExternalIssue",
 			namespace: "organizations",
 			method: "deleteExternalIssue",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/external-issues/${externalIssueId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/external-issues/${encodeURIComponent(externalIssueId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteExternalIssue"],
@@ -3251,7 +3251,7 @@ Remove a custom integration's association with a Sentry issue. The external issu
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3260,13 +3260,13 @@ signature used to aggregate individual events into this issue.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/hashes/` — risk: medium
 	 */
-	async hashes(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async hashes(organizationIdOrSlug: string, issueId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/hashes/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/hashes/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationIssueHashes",
 			namespace: "organizations",
 			method: "hashes",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/hashes/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/hashes/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["hashes"],
@@ -3274,7 +3274,7 @@ signature used to aggregate individual events into this issue.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/hashes/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3285,13 +3285,13 @@ linked to this Sentry issue through each integration.
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/` — risk: medium
 	 */
-	async getIssuesIntegrations(organizationIdOrSlug: string, issueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getIssuesIntegrations(organizationIdOrSlug: string, issueId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listOrganizationIssueIntegrations",
 			namespace: "organizations",
 			method: "getIssuesIntegrations",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/integrations/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/integrations/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getIssuesIntegrations"],
@@ -3299,7 +3299,7 @@ linked to this Sentry issue through each integration.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3309,13 +3309,13 @@ one. The returned `linkIssueConfig`/`createIssueCon
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/` — risk: medium
 	 */
-	async issuesintegrationsRetrieveIntegration(organizationIdOrSlug: string, issueId: string, integrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async issuesintegrationsRetrieveIntegration(organizationIdOrSlug: string, issueId: string, integrationId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Retrieve an Integration's Issue Config for an Issue",
 			namespace: "organizations",
 			method: "issuesintegrationsRetrieveIntegration",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/integrations/${integrationId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/integrations/${encodeURIComponent(integrationId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesintegrationsRetrieveIntegration"],
@@ -3323,7 +3323,7 @@ one. The returned `linkIssueConfig`/`createIssueCon
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3333,13 +3333,13 @@ integration-specific; fetch them from the `createIssu
 	 *
 	 * `POST /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/` — risk: medium
 	 */
-	async updateIntegration(organizationIdOrSlug: string, issueId: string, integrationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateIntegration(organizationIdOrSlug: string, issueId: string, integrationId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Create an External Issue and Link It to an Issue",
 			namespace: "organizations",
 			method: "updateIntegration",
 			http: "post",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/integrations/${integrationId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/integrations/${encodeURIComponent(integrationId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateIntegration"],
@@ -3347,7 +3347,7 @@ integration-specific; fetch them from the `createIssu
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3357,13 +3357,13 @@ are integration-specific; fetch them from the `
 	 *
 	 * `PUT /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/` — risk: medium
 	 */
-	async putIssuesIntegrations(organizationIdOrSlug: string, issueId: string, integrationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async putIssuesIntegrations(organizationIdOrSlug: string, issueId: string, integrationId: string, body?: NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Link an Existing External Issue to an Issue",
 			namespace: "organizations",
 			method: "putIssuesIntegrations",
 			http: "put",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/integrations/${integrationId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/integrations/${encodeURIComponent(integrationId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["putIssuesIntegrations"],
@@ -3371,7 +3371,7 @@ are integration-specific; fetch them from the `
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3381,13 +3381,13 @@ entirely. An absent link also returns 204. This does no
 	 *
 	 * `DELETE /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/` — risk: medium
 	 */
-	async issuesintegrationsDeleteIntegration(organizationIdOrSlug: string, issueId: string, integrationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async issuesintegrationsDeleteIntegration(organizationIdOrSlug: string, issueId: string, integrationId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "Unlink an External Issue from an Issue",
 			namespace: "organizations",
 			method: "issuesintegrationsDeleteIntegration",
 			http: "delete",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/integrations/${integrationId}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/integrations/${encodeURIComponent(integrationId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issuesintegrationsDeleteIntegration"],
@@ -3395,7 +3395,7 @@ entirely. An absent link also returns 204. This does no
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3403,13 +3403,13 @@ entirely. An absent link also returns 204. This does no
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/` — risk: medium
 	 */
-	async retrieveTag(organizationIdOrSlug: string, issueId: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveTag(organizationIdOrSlug: string, issueId: string, key: string, options?: QueryCallOptions<NonNullable<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getOrganizationIssueTag",
 			namespace: "organizations",
 			method: "retrieveTag",
 			http: "get",
-			path: `/api/0/organizations/${organizationIdOrSlug}/issues/${issueId}/tags/${key}/`,
+			path: `/api/0/organizations/${encodeURIComponent(organizationIdOrSlug)}/issues/${encodeURIComponent(issueId)}/tags/${encodeURIComponent(key)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTag"],
@@ -3417,13 +3417,13 @@ entirely. An absent link also returns 204. This does no
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ProjectsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3435,13 +3435,13 @@ export class ProjectsResource extends RpcTarget {
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/` — risk: low
 	 */
-	async retrieve(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProject",
 			namespace: "projects",
 			method: "retrieve",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -3449,7 +3449,7 @@ export class ProjectsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3460,13 +3460,13 @@ Note that solely having the **`project:read`** scope restricts updatable setting
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/` — risk: medium
 	 */
-	async update(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateProject",
 			namespace: "projects",
 			method: "update",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -3474,7 +3474,7 @@ Note that solely having the **`project:read`** scope restricts updatable setting
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3485,13 +3485,13 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/` — risk: medium
 	 */
-	async del(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteProject",
 			namespace: "projects",
 			method: "del",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -3499,7 +3499,7 @@ begun the state of a project changes and will be hidden from most public vi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3507,13 +3507,13 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/` — risk: medium
 	 */
-	async listCodeowners(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCodeowners(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectCodeOwners",
 			namespace: "projects",
 			method: "listCodeowners",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/codeowners/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/codeowners/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCodeowners"],
@@ -3521,7 +3521,7 @@ begun the state of a project changes and will be hidden from most public vi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3529,13 +3529,13 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/` — risk: medium
 	 */
-	async createCodeowner(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createCodeowner(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createProjectCodeOwners",
 			namespace: "projects",
 			method: "createCodeowner",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/codeowners/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/codeowners/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createCodeowner"],
@@ -3543,7 +3543,7 @@ begun the state of a project changes and will be hidden from most public vi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3551,13 +3551,13 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/` — risk: medium
 	 */
-	async retrieveCodeowner(organizationIdOrSlug: string, projectIdOrSlug: string, codeownersId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveCodeowner(organizationIdOrSlug: string, projectIdOrSlug: string, codeownersId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "retrieveProjectCodeOwners",
 			namespace: "projects",
 			method: "retrieveCodeowner",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/codeowners/${codeownersId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/codeowners/${encodeURIComponent(codeownersId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCodeowner"],
@@ -3565,7 +3565,7 @@ begun the state of a project changes and will be hidden from most public vi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3573,13 +3573,13 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/` — risk: medium
 	 */
-	async codeowners(organizationIdOrSlug: string, projectIdOrSlug: string, codeownersId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async codeowners(organizationIdOrSlug: string, projectIdOrSlug: string, codeownersId: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateProjectCodeOwners",
 			namespace: "projects",
 			method: "codeowners",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/codeowners/${codeownersId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/codeowners/${encodeURIComponent(codeownersId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["codeowners"],
@@ -3587,7 +3587,7 @@ begun the state of a project changes and will be hidden from most public vi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3595,13 +3595,13 @@ begun the state of a project changes and will be hidden from most public vi
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/` — risk: medium
 	 */
-	async deleteCodeowner(organizationIdOrSlug: string, projectIdOrSlug: string, codeownersId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteCodeowner(organizationIdOrSlug: string, projectIdOrSlug: string, codeownersId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteProjectCodeOwners",
 			namespace: "projects",
 			method: "deleteCodeowner",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/codeowners/${codeownersId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/codeowners/${encodeURIComponent(codeownersId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCodeowner"],
@@ -3609,7 +3609,7 @@ begun the state of a project changes and will be hidden from most public vi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3619,13 +3619,13 @@ List the custom inbound filters configured for a project.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/` — risk: medium
 	 */
-	async listCustomInboundFilters(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCustomInboundFilters(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "List a Project's Custom Inbound Filters",
 			namespace: "projects",
 			method: "listCustomInboundFilters",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/custom-inbound-filters/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/custom-inbound-filters/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCustomInboundFilters"],
@@ -3633,7 +3633,7 @@ List the custom inbound filters configured for a project.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3643,13 +3643,13 @@ Create a custom inbound filter for a project.
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/` — risk: medium
 	 */
-	async createCustomInboundFilter(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createCustomInboundFilter(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Create a Custom Inbound Filter",
 			namespace: "projects",
 			method: "createCustomInboundFilter",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/custom-inbound-filters/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/custom-inbound-filters/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createCustomInboundFilter"],
@@ -3657,7 +3657,7 @@ Create a custom inbound filter for a project.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3667,13 +3667,13 @@ Retrieve a single custom inbound filter.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/` — risk: medium
 	 */
-	async retrieveCustomInboundFilter(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveCustomInboundFilter(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Retrieve a Custom Inbound Filter",
 			namespace: "projects",
 			method: "retrieveCustomInboundFilter",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/custom-inbound-filters/${filterId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/custom-inbound-filters/${encodeURIComponent(filterId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCustomInboundFilter"],
@@ -3681,7 +3681,7 @@ Retrieve a single custom inbound filter.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3691,13 +3691,13 @@ Update a custom inbound filter's name, active state, or conditions.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/` — risk: medium
 	 */
-	async customInboundFilters(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async customInboundFilters(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Update a Custom Inbound Filter",
 			namespace: "projects",
 			method: "customInboundFilters",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/custom-inbound-filters/${filterId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/custom-inbound-filters/${encodeURIComponent(filterId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["customInboundFilters"],
@@ -3705,7 +3705,7 @@ Update a custom inbound filter's name, active state, or conditions.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3715,13 +3715,13 @@ Delete a custom inbound filter.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/` — risk: medium
 	 */
-	async deleteCustomInboundFilter(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteCustomInboundFilter(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "Delete a Custom Inbound Filter",
 			namespace: "projects",
 			method: "deleteCustomInboundFilter",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/custom-inbound-filters/${filterId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/custom-inbound-filters/${encodeURIComponent(filterId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCustomInboundFilter"],
@@ -3729,7 +3729,7 @@ Delete a custom inbound filter.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3737,13 +3737,13 @@ Delete a custom inbound filter.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/` — risk: medium
 	 */
-	async listEnvironments(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEnvironments(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectEnvironments",
 			namespace: "projects",
 			method: "listEnvironments",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/environments/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/environments/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEnvironments"],
@@ -3751,7 +3751,7 @@ Delete a custom inbound filter.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3759,13 +3759,13 @@ Delete a custom inbound filter.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/` — risk: medium
 	 */
-	async environments_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async environments_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Bulk Update Project Environments",
 			namespace: "projects",
 			method: "environments_0",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/environments/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/environments/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["environments_0"],
@@ -3773,7 +3773,7 @@ Delete a custom inbound filter.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3781,13 +3781,13 @@ Delete a custom inbound filter.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/` — risk: medium
 	 */
-	async retrieveEnvironment(organizationIdOrSlug: string, projectIdOrSlug: string, environment: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveEnvironment(organizationIdOrSlug: string, projectIdOrSlug: string, environment: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectEnvironment",
 			namespace: "projects",
 			method: "retrieveEnvironment",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/environments/${environment}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/environments/${encodeURIComponent(environment)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveEnvironment"],
@@ -3795,7 +3795,7 @@ Delete a custom inbound filter.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3803,13 +3803,13 @@ Delete a custom inbound filter.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/` — risk: medium
 	 */
-	async environments_1(organizationIdOrSlug: string, projectIdOrSlug: string, environment: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async environments_1(organizationIdOrSlug: string, projectIdOrSlug: string, environment: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateProjectEnvironment",
 			namespace: "projects",
 			method: "environments_1",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/environments/${environment}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/environments/${encodeURIComponent(environment)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["environments_1"],
@@ -3817,7 +3817,7 @@ Delete a custom inbound filter.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3825,13 +3825,13 @@ Delete a custom inbound filter.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/` — risk: medium
 	 */
-	async listEvents(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEvents(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectEvents",
 			namespace: "projects",
 			method: "listEvents",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/events/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/events/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEvents"],
@@ -3839,7 +3839,7 @@ Delete a custom inbound filter.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3847,13 +3847,13 @@ Delete a custom inbound filter.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/` — risk: medium
 	 */
-	async retrieveEvent(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveEvent(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectEvent",
 			namespace: "projects",
 			method: "retrieveEvent",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/events/${eventId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/events/${encodeURIComponent(eventId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveEvent"],
@@ -3861,7 +3861,7 @@ Delete a custom inbound filter.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3871,13 +3871,13 @@ Requires the `event-attachments` organization feature.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/` — risk: medium
 	 */
-	async attachments(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async attachments(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectEventAttachments",
 			namespace: "projects",
 			method: "attachments",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/events/${eventId}/attachments/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/events/${encodeURIComponent(eventId)}/attachments/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["attachments"],
@@ -3885,7 +3885,7 @@ Requires the `event-attachments` organization feature.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3896,13 +3896,13 @@ Requires the `event-attachments` organization feature.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/{attachment_id}/` — risk: medium
 	 */
-	async retrieveAttachment(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, attachmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveAttachment(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, attachmentId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/{attachment_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/{attachment_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectEventAttachment",
 			namespace: "projects",
 			method: "retrieveAttachment",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/events/${eventId}/attachments/${attachmentId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/events/${encodeURIComponent(eventId)}/attachments/${encodeURIComponent(attachmentId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAttachment"],
@@ -3910,7 +3910,7 @@ Requires the `event-attachments` organization feature.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/{attachment_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3918,13 +3918,13 @@ Requires the `event-attachments` organization feature.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/source-map-debug/` — risk: medium
 	 */
-	async sourceMapDebug(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async sourceMapDebug(organizationIdOrSlug: string, projectIdOrSlug: string, eventId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/source-map-debug/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectEventSourceMapDebug",
 			namespace: "projects",
 			method: "sourceMapDebug",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/events/${eventId}/source-map-debug/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/events/${encodeURIComponent(eventId)}/source-map-debug/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["sourceMapDebug"],
@@ -3932,7 +3932,7 @@ Requires the `event-attachments` organization feature.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/source-map-debug/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3940,13 +3940,13 @@ Requires the `event-attachments` organization feature.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/` — risk: medium
 	 */
-	async dsyms(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async dsyms(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectDebugFiles",
 			namespace: "projects",
 			method: "dsyms",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/files/dsyms/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/files/dsyms/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["dsyms"],
@@ -3954,7 +3954,7 @@ Requires the `event-attachments` organization feature.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3963,13 +3963,13 @@ Requires the `event-attachments` organization feature.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/` — risk: medium
 	 */
-	async listFilters(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listFilters(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectFilters",
 			namespace: "projects",
 			method: "listFilters",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/filters/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/filters/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listFilters"],
@@ -3977,7 +3977,7 @@ Requires the `event-attachments` organization feature.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3985,13 +3985,13 @@ Requires the `event-attachments` organization feature.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/{filter_id}/` — risk: medium
 	 */
-	async filters(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async filters(organizationIdOrSlug: string, projectIdOrSlug: string, filterId: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/{filter_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateProjectFilter",
 			namespace: "projects",
 			method: "filters",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/filters/${filterId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/filters/${encodeURIComponent(filterId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["filters"],
@@ -3999,7 +3999,7 @@ Requires the `event-attachments` organization feature.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4007,13 +4007,13 @@ Requires the `event-attachments` organization feature.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/` — risk: medium
 	 */
-	async listKeys(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listKeys(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectKeys",
 			namespace: "projects",
 			method: "listKeys",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/keys/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/keys/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listKeys"],
@@ -4021,7 +4021,7 @@ Requires the `event-attachments` organization feature.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4030,13 +4030,13 @@ are generated by the server.
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/` — risk: medium
 	 */
-	async createKey(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createKey(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createProjectKey",
 			namespace: "projects",
 			method: "createKey",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/keys/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/keys/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createKey"],
@@ -4044,7 +4044,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4052,13 +4052,13 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/` — risk: medium
 	 */
-	async retrieveKey(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveKey(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectKey",
 			namespace: "projects",
 			method: "retrieveKey",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/keys/${keyId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/keys/${encodeURIComponent(keyId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveKey"],
@@ -4066,7 +4066,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4074,13 +4074,13 @@ are generated by the server.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/` — risk: medium
 	 */
-	async keys(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async keys(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateProjectKey",
 			namespace: "projects",
 			method: "keys",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/keys/${keyId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/keys/${encodeURIComponent(keyId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["keys"],
@@ -4088,7 +4088,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4096,13 +4096,13 @@ are generated by the server.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/` — risk: medium
 	 */
-	async deleteKey(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteKey(organizationIdOrSlug: string, projectIdOrSlug: string, keyId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteProjectKey",
 			namespace: "projects",
 			method: "deleteKey",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/keys/${keyId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/keys/${encodeURIComponent(keyId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteKey"],
@@ -4110,7 +4110,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4118,13 +4118,13 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/members/` — risk: medium
 	 */
-	async listMembers(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMembers(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/members/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectMembers",
 			namespace: "projects",
 			method: "listMembers",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/members/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/members/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMembers"],
@@ -4132,7 +4132,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/members/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4140,13 +4140,13 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async retrieveMonitor(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMonitor(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectMonitor",
 			namespace: "projects",
 			method: "retrieveMonitor",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/monitors/${monitorIdOrSlug}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/monitors/${encodeURIComponent(monitorIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMonitor"],
@@ -4154,7 +4154,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4162,13 +4162,13 @@ are generated by the server.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async monitors(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async monitors(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateProjectMonitor",
 			namespace: "projects",
 			method: "monitors",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/monitors/${monitorIdOrSlug}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/monitors/${encodeURIComponent(monitorIdOrSlug)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["monitors"],
@@ -4176,7 +4176,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4184,13 +4184,13 @@ are generated by the server.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/` — risk: medium
 	 */
-	async deleteMonitor(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMonitor(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteProjectMonitor",
 			namespace: "projects",
 			method: "deleteMonitor",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/monitors/${monitorIdOrSlug}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/monitors/${encodeURIComponent(monitorIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMonitor"],
@@ -4198,7 +4198,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4206,13 +4206,13 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/` — risk: medium
 	 */
-	async checkins(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async checkins(organizationIdOrSlug: string, projectIdOrSlug: string, monitorIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectMonitorCheckins",
 			namespace: "projects",
 			method: "checkins",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/monitors/${monitorIdOrSlug}/checkins/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/monitors/${encodeURIComponent(monitorIdOrSlug)}/checkins/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["checkins"],
@@ -4220,7 +4220,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4228,13 +4228,13 @@ are generated by the server.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/` — risk: medium
 	 */
-	async listOwnership(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listOwnership(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectOwnership",
 			namespace: "projects",
 			method: "listOwnership",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/ownership/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/ownership/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listOwnership"],
@@ -4242,7 +4242,7 @@ are generated by the server.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4251,13 +4251,13 @@ attributes submitted are modified.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/` — risk: medium
 	 */
-	async ownership(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async ownership(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/"]["put"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateProjectOwnership",
 			namespace: "projects",
 			method: "ownership",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/ownership/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/ownership/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["ownership"],
@@ -4265,7 +4265,7 @@ attributes submitted are modified.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/"]["put"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4276,13 +4276,13 @@ want external CI to evaluate the same Si
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-check-rules/` — risk: medium
 	 */
-	async sizeAnalysisStatusCheckRules(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async sizeAnalysisStatusCheckRules(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-check-rules/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectPreprodSizeAnalysisStatusCheckRules",
 			namespace: "projects",
 			method: "sizeAnalysisStatusCheckRules",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/preprod/size-analysis/status-check-rules/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/preprod/size-analysis/status-check-rules/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["sizeAnalysisStatusCheckRules"],
@@ -4290,7 +4290,7 @@ want external CI to evaluate the same Si
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-check-rules/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4302,13 +4302,13 @@ The sa
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-checks/skip/` — risk: medium
 	 */
-	async sizeAnalysisstatusChecksSkip(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async sizeAnalysisstatusChecksSkip(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-checks/skip/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "createProjectPreprodSizeAnalysisSkippedStatusCheck",
 			namespace: "projects",
 			method: "sizeAnalysisstatusChecksSkip",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/preprod/size-analysis/status-checks/skip/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/preprod/size-analysis/status-checks/skip/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["sizeAnalysisstatusChecksSkip"],
@@ -4316,7 +4316,7 @@ The sa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4327,13 +4327,13 @@ change-type rules that Sentry uses. The endpoint retu
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-check-rules/` — risk: medium
 	 */
-	async snapshotsStatusCheckRules(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async snapshotsStatusCheckRules(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-check-rules/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectPreprodSnapshotStatusCheckRules",
 			namespace: "projects",
 			method: "snapshotsStatusCheckRules",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/preprod/snapshots/status-check-rules/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/preprod/snapshots/status-check-rules/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["snapshotsStatusCheckRules"],
@@ -4341,7 +4341,7 @@ change-type rules that Sentry uses. The endpoint retu
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-check-rules/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4353,13 +4353,13 @@ The sa
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-checks/skip/` — risk: medium
 	 */
-	async snapshotsstatusChecksSkip(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async snapshotsstatusChecksSkip(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-checks/skip/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "createProjectPreprodSnapshotSkippedStatusCheck",
 			namespace: "projects",
 			method: "snapshotsstatusChecksSkip",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/preprod/snapshots/status-checks/skip/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/preprod/snapshots/status-checks/skip/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["snapshotsstatusChecksSkip"],
@@ -4367,7 +4367,7 @@ The sa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4379,13 +4379,13 @@ whether an update is a
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/build-distribution/latest/` — risk: medium
 	 */
-	async latest(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async latest(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/build-distribution/latest/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/build-distribution/latest/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectInstallableBuildLatest",
 			namespace: "projects",
 			method: "latest",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/preprodartifacts/build-distribution/latest/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/preprodartifacts/build-distribution/latest/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["latest"],
@@ -4393,7 +4393,7 @@ whether an update is a
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/build-distribution/latest/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4405,13 +4405,13 @@ and optional VCS fi
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/snapshots/` — risk: medium
 	 */
-	async snapshots(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async snapshots(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/snapshots/"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "uploadProjectPreprodArtifactSnapshot",
 			namespace: "projects",
 			method: "snapshots",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/preprodartifacts/snapshots/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/preprodartifacts/snapshots/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["snapshots"],
@@ -4419,7 +4419,7 @@ and optional VCS fi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/snapshots/"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4432,13 +4432,13 @@ Requires profiling to be enabled for the org
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/profiling/profiles/{profile_id}/` — risk: medium
 	 */
-	async retrieveProfile(organizationIdOrSlug: string, projectIdOrSlug: string, profileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveProfile(organizationIdOrSlug: string, projectIdOrSlug: string, profileId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/profiling/profiles/{profile_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectProfilingProfile",
 			namespace: "projects",
 			method: "retrieveProfile",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/profiling/profiles/${profileId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/profiling/profiles/${encodeURIComponent(profileId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveProfile"],
@@ -4446,7 +4446,7 @@ Requires profiling to be enabled for the org
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/profiling/profiles/{profile_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4454,13 +4454,13 @@ Requires profiling to be enabled for the org
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/` — risk: medium
 	 */
-	async listReleases(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listReleases(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectReleases",
 			namespace: "projects",
 			method: "listReleases",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/releases/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/releases/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listReleases"],
@@ -4468,7 +4468,7 @@ Requires profiling to be enabled for the org
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4476,13 +4476,13 @@ Requires profiling to be enabled for the org
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/commits/` — risk: medium
 	 */
-	async commits(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async commits(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/commits/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/commits/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectReleaseCommits",
 			namespace: "projects",
 			method: "commits",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/releases/${version}/commits/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/releases/${encodeURIComponent(version)}/commits/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["commits"],
@@ -4490,7 +4490,7 @@ Requires profiling to be enabled for the org
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/commits/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4498,13 +4498,13 @@ Requires profiling to be enabled for the org
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/` — risk: medium
 	 */
-	async files_0(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async files_0(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectReleaseFiles",
 			namespace: "projects",
 			method: "files_0",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/releases/${version}/files/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/releases/${encodeURIComponent(version)}/files/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["files_0"],
@@ -4512,7 +4512,7 @@ Requires profiling to be enabled for the org
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4523,13 +4523,13 @@ region-specific domain (e.g. `us.sentry.io` or `de.sentry.io`).
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/` — risk: medium
 	 */
-	async files_1(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async files_1(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "uploadProjectReleaseFile",
 			namespace: "projects",
 			method: "files_1",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/releases/${version}/files/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/releases/${encodeURIComponent(version)}/files/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["files_1"],
@@ -4537,7 +4537,7 @@ region-specific domain (e.g. `us.sentry.io` or `de.sentry.io`).
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4546,13 +4546,13 @@ contents unless `download` is set.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async retrieveFile(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveFile(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectReleaseFile",
 			namespace: "projects",
 			method: "retrieveFile",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/releases/${version}/files/${fileId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/releases/${encodeURIComponent(version)}/files/${encodeURIComponent(fileId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveFile"],
@@ -4560,7 +4560,7 @@ contents unless `download` is set.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4569,13 +4569,13 @@ can be changed.
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async files_2(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async files_2(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateProjectReleaseFile",
 			namespace: "projects",
 			method: "files_2",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/releases/${version}/files/${fileId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/releases/${encodeURIComponent(version)}/files/${encodeURIComponent(fileId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["files_2"],
@@ -4583,7 +4583,7 @@ can be changed.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4592,13 +4592,13 @@ storage, unless it is stored as part of an artifact bundle.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/` — risk: medium
 	 */
-	async deleteFile(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteFile(organizationIdOrSlug: string, projectIdOrSlug: string, version: string, fileId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteProjectReleaseFile",
 			namespace: "projects",
 			method: "deleteFile",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/releases/${version}/files/${fileId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/releases/${encodeURIComponent(version)}/files/${encodeURIComponent(fileId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteFile"],
@@ -4606,7 +4606,7 @@ storage, unless it is stored as part of an artifact bundle.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4614,13 +4614,13 @@ storage, unless it is stored as part of an artifact bundle.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/` — risk: medium
 	 */
-	async deleteReplay(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteReplay(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteProjectReplay",
 			namespace: "projects",
 			method: "deleteReplay",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/replays/${replayId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/replays/${encodeURIComponent(replayId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteReplay"],
@@ -4628,7 +4628,7 @@ storage, unless it is stored as part of an artifact bundle.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4636,13 +4636,13 @@ storage, unless it is stored as part of an artifact bundle.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/clicks/` — risk: medium
 	 */
-	async clicks(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async clicks(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/clicks/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/clicks/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectReplayClicks",
 			namespace: "projects",
 			method: "clicks",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/replays/${replayId}/clicks/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/replays/${encodeURIComponent(replayId)}/clicks/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["clicks"],
@@ -4650,7 +4650,7 @@ storage, unless it is stored as part of an artifact bundle.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/clicks/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4658,13 +4658,13 @@ storage, unless it is stored as part of an artifact bundle.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/` — risk: medium
 	 */
-	async recordingSegments(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async recordingSegments(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectReplayRecordingSegments",
 			namespace: "projects",
 			method: "recordingSegments",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/replays/${replayId}/recording-segments/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/replays/${encodeURIComponent(replayId)}/recording-segments/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["recordingSegments"],
@@ -4672,7 +4672,7 @@ storage, unless it is stored as part of an artifact bundle.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4680,13 +4680,13 @@ storage, unless it is stored as part of an artifact bundle.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/{segment_id}/` — risk: medium
 	 */
-	async retrieveRecordingSegment(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, segmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveRecordingSegment(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, segmentId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/{segment_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectReplayRecordingSegment",
 			namespace: "projects",
 			method: "retrieveRecordingSegment",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/replays/${replayId}/recording-segments/${segmentId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/replays/${encodeURIComponent(replayId)}/recording-segments/${encodeURIComponent(segmentId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveRecordingSegment"],
@@ -4694,7 +4694,7 @@ storage, unless it is stored as part of an artifact bundle.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/{segment_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4702,13 +4702,13 @@ storage, unless it is stored as part of an artifact bundle.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/viewed-by/` — risk: medium
 	 */
-	async viewedBy(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async viewedBy(organizationIdOrSlug: string, projectIdOrSlug: string, replayId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/viewed-by/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectReplayViewedBy",
 			namespace: "projects",
 			method: "viewedBy",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/replays/${replayId}/viewed-by/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/replays/${encodeURIComponent(replayId)}/viewed-by/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["viewedBy"],
@@ -4716,7 +4716,7 @@ storage, unless it is stored as part of an artifact bundle.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/viewed-by/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4724,13 +4724,13 @@ storage, unless it is stored as part of an artifact bundle.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/` — risk: medium
 	 */
-	async delete_0(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async delete_0(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectReplayDeletionJobs",
 			namespace: "projects",
 			method: "delete_0",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/replays/jobs/delete/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/replays/jobs/delete/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["delete_0"],
@@ -4738,7 +4738,7 @@ storage, unless it is stored as part of an artifact bundle.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4746,13 +4746,13 @@ storage, unless it is stored as part of an artifact bundle.
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/` — risk: medium
 	 */
-	async delete_1(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async delete_1(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createProjectReplayDeletionJob",
 			namespace: "projects",
 			method: "delete_1",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/replays/jobs/delete/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/replays/jobs/delete/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["delete_1"],
@@ -4760,7 +4760,7 @@ storage, unless it is stored as part of an artifact bundle.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4768,13 +4768,13 @@ storage, unless it is stored as part of an artifact bundle.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/{job_id}/` — risk: medium
 	 */
-	async retrieveDelete(organizationIdOrSlug: string, projectIdOrSlug: string, jobId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveDelete(organizationIdOrSlug: string, projectIdOrSlug: string, jobId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/{job_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getProjectReplayDeletionJob",
 			namespace: "projects",
 			method: "retrieveDelete",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/replays/jobs/delete/${jobId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/replays/jobs/delete/${encodeURIComponent(jobId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDelete"],
@@ -4782,7 +4782,7 @@ storage, unless it is stored as part of an artifact bundle.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/{job_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4794,13 +4794,13 @@ only need the
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/` — risk: medium
 	 */
-	async listRepo(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listRepo(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectRepositories",
 			namespace: "projects",
 			method: "listRepo",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/repo/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/repo/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRepo"],
@@ -4808,7 +4808,7 @@ only need the
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4818,13 +4818,13 @@ returns 200 if the link already exists, 201 if created.
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/` — risk: medium
 	 */
-	async createRepo(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createRepo(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "linkProjectRepository",
 			namespace: "projects",
 			method: "createRepo",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/repo/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/repo/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createRepo"],
@@ -4832,7 +4832,7 @@ returns 200 if the link already exists, 201 if created.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4844,13 +4844,13 @@ This endpoint may chan
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/stats/` — risk: medium
 	 */
-	async listStats(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listStats(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/stats/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/stats/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectStats",
 			namespace: "projects",
 			method: "listStats",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/stats/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/stats/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStats"],
@@ -4858,7 +4858,7 @@ This endpoint may chan
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/stats/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4866,13 +4866,13 @@ This endpoint may chan
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/` — risk: medium
 	 */
-	async listSymbolSources(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSymbolSources(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectSymbolSources",
 			namespace: "projects",
 			method: "listSymbolSources",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/symbol-sources/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/symbol-sources/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSymbolSources"],
@@ -4880,7 +4880,7 @@ This endpoint may chan
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4888,13 +4888,13 @@ This endpoint may chan
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/` — risk: medium
 	 */
-	async createSymbolSource(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSymbolSource(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "addProjectSymbolSource",
 			namespace: "projects",
 			method: "createSymbolSource",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/symbol-sources/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/symbol-sources/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createSymbolSource"],
@@ -4902,7 +4902,7 @@ This endpoint may chan
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4910,13 +4910,13 @@ This endpoint may chan
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/` — risk: medium
 	 */
-	async symbolSources_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async symbolSources_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateProjectSymbolSource",
 			namespace: "projects",
 			method: "symbolSources_0",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/symbol-sources/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/symbol-sources/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["symbolSources_0"],
@@ -4924,7 +4924,7 @@ This endpoint may chan
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4932,13 +4932,13 @@ This endpoint may chan
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/` — risk: medium
 	 */
-	async symbolSources_1(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async symbolSources_1(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteProjectSymbolSource",
 			namespace: "projects",
 			method: "symbolSources_1",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/symbol-sources/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/symbol-sources/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["symbolSources_1"],
@@ -4946,7 +4946,7 @@ This endpoint may chan
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4954,13 +4954,13 @@ This endpoint may chan
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/` — risk: medium
 	 */
-	async listTeams(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTeams(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectTeams",
 			namespace: "projects",
 			method: "listTeams",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/teams/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/teams/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTeams"],
@@ -4968,7 +4968,7 @@ This endpoint may chan
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4976,13 +4976,13 @@ This endpoint may chan
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async updateTeam(organizationIdOrSlug: string, projectIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateTeam(organizationIdOrSlug: string, projectIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "addProjectTeam",
 			namespace: "projects",
 			method: "updateTeam",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/teams/${teamIdOrSlug}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/teams/${encodeURIComponent(teamIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["updateTeam"],
@@ -4990,7 +4990,7 @@ This endpoint may chan
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5000,13 +5000,13 @@ Note that Team Admins can only revoke access to teams they are admins of.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/` — risk: medium
 	 */
-	async deleteTeam(organizationIdOrSlug: string, projectIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteTeam(organizationIdOrSlug: string, projectIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteProjectTeam",
 			namespace: "projects",
 			method: "deleteTeam",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/teams/${teamIdOrSlug}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/teams/${encodeURIComponent(teamIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteTeam"],
@@ -5014,7 +5014,7 @@ Note that Team Admins can only revoke access to teams they are admins of.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5022,13 +5022,13 @@ Note that Team Admins can only revoke access to teams they are admins of.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/users/` — risk: medium
 	 */
-	async listUsers(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listUsers(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/users/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/users/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listProjectUsers",
 			namespace: "projects",
 			method: "listUsers",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/users/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/users/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listUsers"],
@@ -5036,7 +5036,7 @@ Note that Team Admins can only revoke access to teams they are admins of.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/users/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5048,13 +5048,13 @@ When [paginated](/api/pagination) can return at most 1000 values.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/tags/{key}/values/` — risk: medium
 	 */
-	async values(organizationIdOrSlug: string, projectIdOrSlug: string, key: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async values(organizationIdOrSlug: string, projectIdOrSlug: string, key: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/tags/{key}/values/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/tags/{key}/values/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "List a Tag's Values",
 			namespace: "projects",
 			method: "values",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/tags/${key}/values/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/tags/${encodeURIComponent(key)}/values/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["values"],
@@ -5062,7 +5062,7 @@ When [paginated](/api/pagination) can return at most 1000 values.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/tags/{key}/values/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5072,13 +5072,13 @@ When [paginated](/api/pagination) can return at most 1000 values.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/` — risk: medium
 	 */
-	async listUserFeedback(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listUserFeedback(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "List a Project's User Feedback",
 			namespace: "projects",
 			method: "listUserFeedback",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/user-feedback/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/user-feedback/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listUserFeedback"],
@@ -5086,7 +5086,7 @@ When [paginated](/api/pagination) can return at most 1000 values.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5094,13 +5094,13 @@ When [paginated](/api/pagination) can return at most 1000 values.
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/` — risk: medium
 	 */
-	async createUserFeedback(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createUserFeedback(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Submit User Feedback",
 			namespace: "projects",
 			method: "createUserFeedback",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/user-feedback/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/user-feedback/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createUserFeedback"],
@@ -5108,7 +5108,7 @@ When [paginated](/api/pagination) can return at most 1000 values.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5116,13 +5116,13 @@ When [paginated](/api/pagination) can return at most 1000 values.
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/` — risk: medium
 	 */
-	async listHooks(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listHooks(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "List a Project's Service Hooks",
 			namespace: "projects",
 			method: "listHooks",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/hooks/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/hooks/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listHooks"],
@@ -5130,7 +5130,7 @@ When [paginated](/api/pagination) can return at most 1000 values.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5145,13 +5145,13 @@ This endpoint requires the
 	 *
 	 * `POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/` — risk: medium
 	 */
-	async createHook(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createHook(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Register a New Service Hook",
 			namespace: "projects",
 			method: "createHook",
 			http: "post",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/hooks/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/hooks/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createHook"],
@@ -5159,7 +5159,7 @@ This endpoint requires the
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5167,13 +5167,13 @@ This endpoint requires the
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/` — risk: medium
 	 */
-	async retrieveHook(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveHook(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Retrieve a Service Hook",
 			namespace: "projects",
 			method: "retrieveHook",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/hooks/${hookId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/hooks/${encodeURIComponent(hookId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveHook"],
@@ -5181,7 +5181,7 @@ This endpoint requires the
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5189,13 +5189,13 @@ This endpoint requires the
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/` — risk: medium
 	 */
-	async hooks(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async hooks(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Update a Service Hook",
 			namespace: "projects",
 			method: "hooks",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/hooks/${hookId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/hooks/${encodeURIComponent(hookId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["hooks"],
@@ -5203,7 +5203,7 @@ This endpoint requires the
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5211,13 +5211,13 @@ This endpoint requires the
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/` — risk: medium
 	 */
-	async deleteHook(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteHook(organizationIdOrSlug: string, projectIdOrSlug: string, hookId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "Remove a Service Hook",
 			namespace: "projects",
 			method: "deleteHook",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/hooks/${hookId}/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/hooks/${encodeURIComponent(hookId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteHook"],
@@ -5225,7 +5225,7 @@ This endpoint requires the
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -5236,13 +5236,13 @@ Re
 	 *
 	 * `GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/` — risk: medium
 	 */
-	async listIssues(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listIssues(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "List a Project's Issues",
 			namespace: "projects",
 			method: "listIssues",
 			http: "get",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/issues/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/issues/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIssues"],
@@ -5250,7 +5250,7 @@ Re
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5260,13 +5260,13 @@ Re
 	 *
 	 * `PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/` — risk: medium
 	 */
-	async issues_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async issues_0(organizationIdOrSlug: string, projectIdOrSlug: string, body?: NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Bulk Mutate a List of Issues",
 			namespace: "projects",
 			method: "issues_0",
 			http: "put",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/issues/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/issues/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["issues_0"],
@@ -5274,7 +5274,7 @@ Re
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5285,13 +5285,13 @@ Only queries by 'id' are accepted.
 	 *
 	 * `DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/` — risk: medium
 	 */
-	async issues_1(organizationIdOrSlug: string, projectIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async issues_1(organizationIdOrSlug: string, projectIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "Bulk Remove a List of Issues",
 			namespace: "projects",
 			method: "issues_1",
 			http: "delete",
-			path: `/api/0/projects/${organizationIdOrSlug}/${projectIdOrSlug}/issues/`,
+			path: `/api/0/projects/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(projectIdOrSlug)}/issues/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["issues_1"],
@@ -5299,13 +5299,13 @@ Only queries by 'id' are accepted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class SeerResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5320,8 +5320,8 @@ This endpoint does not require authentication and can be used to disc
 	 *
 	 * `GET /api/0/seer/models/` — risk: medium
 	 */
-	async listModels(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listModels(options?: CallOptions): Promise<ProofResult<paths["/api/0/seer/models/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listSeerModels",
 			namespace: "seer",
 			method: "listModels",
@@ -5334,13 +5334,13 @@ This endpoint does not require authentication and can be used to disc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/seer/models/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class SentryAppInstallationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5355,13 +5355,13 @@ Submit the app-specific form fields alongside
 	 *
 	 * `POST /api/0/sentry-app-installations/{uuid}/external-issue-actions/` — risk: medium
 	 */
-	async createExternalIssueAction(uuid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createExternalIssueAction(uuid: string, body?: NonNullable<paths["/api/0/sentry-app-installations/{uuid}/external-issue-actions/"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/api/0/sentry-app-installations/{uuid}/external-issue-actions/"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/sentry-app-installations/{uuid}/external-issue-actions/"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "executeSentryAppInstallationExternalIssueAction",
 			namespace: "sentry-app-installations",
 			method: "createExternalIssueAction",
 			http: "post",
-			path: `/api/0/sentry-app-installations/${uuid}/external-issue-actions/`,
+			path: `/api/0/sentry-app-installations/${encodeURIComponent(uuid)}/external-issue-actions/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createExternalIssueAction"],
@@ -5369,7 +5369,7 @@ Submit the app-specific form fields alongside
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/sentry-app-installations/{uuid}/external-issue-actions/"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5379,13 +5379,13 @@ Request select options from the installed app. Each choice contains its value fo
 	 *
 	 * `GET /api/0/sentry-app-installations/{uuid}/external-requests/` — risk: medium
 	 */
-	async listExternalRequests(uuid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listExternalRequests(uuid: string, options?: QueryCallOptions<NonNullable<paths["/api/0/sentry-app-installations/{uuid}/external-requests/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/sentry-app-installations/{uuid}/external-requests/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getSentryAppInstallationExternalRequestOptions",
 			namespace: "sentry-app-installations",
 			method: "listExternalRequests",
 			http: "get",
-			path: `/api/0/sentry-app-installations/${uuid}/external-requests/`,
+			path: `/api/0/sentry-app-installations/${encodeURIComponent(uuid)}/external-requests/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listExternalRequests"],
@@ -5393,7 +5393,7 @@ Request select options from the installed app. Each choice contains its value fo
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/sentry-app-installations/{uuid}/external-requests/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5401,13 +5401,13 @@ Request select options from the installed app. Each choice contains its value fo
 	 *
 	 * `POST /api/0/sentry-app-installations/{uuid}/external-issues/` — risk: medium
 	 */
-	async createExternalIssue(uuid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createExternalIssue(uuid: string, body?: NonNullable<paths["/api/0/sentry-app-installations/{uuid}/external-issues/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/sentry-app-installations/{uuid}/external-issues/"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "Create or update an External Issue",
 			namespace: "sentry-app-installations",
 			method: "createExternalIssue",
 			http: "post",
-			path: `/api/0/sentry-app-installations/${uuid}/external-issues/`,
+			path: `/api/0/sentry-app-installations/${encodeURIComponent(uuid)}/external-issues/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createExternalIssue"],
@@ -5415,7 +5415,7 @@ Request select options from the installed app. Each choice contains its value fo
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/sentry-app-installations/{uuid}/external-issues/"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5423,13 +5423,13 @@ Request select options from the installed app. Each choice contains its value fo
 	 *
 	 * `DELETE /api/0/sentry-app-installations/{uuid}/external-issues/{external_issue_id}/` — risk: medium
 	 */
-	async deleteExternalIssue(uuid: string, externalIssueId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteExternalIssue(uuid: string, externalIssueId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "Delete an External Issue",
 			namespace: "sentry-app-installations",
 			method: "deleteExternalIssue",
 			http: "delete",
-			path: `/api/0/sentry-app-installations/${uuid}/external-issues/${externalIssueId}/`,
+			path: `/api/0/sentry-app-installations/${encodeURIComponent(uuid)}/external-issues/${encodeURIComponent(externalIssueId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteExternalIssue"],
@@ -5437,13 +5437,13 @@ Request select options from the installed app. Each choice contains its value fo
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class SentryAppsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5455,13 +5455,13 @@ export class SentryAppsResource extends RpcTarget {
 	 *
 	 * `GET /api/0/sentry-apps/{sentry_app_id_or_slug}/` — risk: low
 	 */
-	async retrieve(sentryAppIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(sentryAppIdOrSlug: string, options?: CallOptions): Promise<ProofResult<paths["/api/0/sentry-apps/{sentry_app_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getSentryApp",
 			namespace: "sentry-apps",
 			method: "retrieve",
 			http: "get",
-			path: `/api/0/sentry-apps/${sentryAppIdOrSlug}/`,
+			path: `/api/0/sentry-apps/${encodeURIComponent(sentryAppIdOrSlug)}/`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5469,7 +5469,7 @@ export class SentryAppsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/sentry-apps/{sentry_app_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5477,13 +5477,13 @@ export class SentryAppsResource extends RpcTarget {
 	 *
 	 * `PUT /api/0/sentry-apps/{sentry_app_id_or_slug}/` — risk: medium
 	 */
-	async put(sentryAppIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(sentryAppIdOrSlug: string, body?: NonNullable<paths["/api/0/sentry-apps/{sentry_app_id_or_slug}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/sentry-apps/{sentry_app_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateSentryApp",
 			namespace: "sentry-apps",
 			method: "put",
 			http: "put",
-			path: `/api/0/sentry-apps/${sentryAppIdOrSlug}/`,
+			path: `/api/0/sentry-apps/${encodeURIComponent(sentryAppIdOrSlug)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -5491,7 +5491,7 @@ export class SentryAppsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/sentry-apps/{sentry_app_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5499,13 +5499,13 @@ export class SentryAppsResource extends RpcTarget {
 	 *
 	 * `DELETE /api/0/sentry-apps/{sentry_app_id_or_slug}/` — risk: medium
 	 */
-	async del(sentryAppIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(sentryAppIdOrSlug: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteSentryApp",
 			namespace: "sentry-apps",
 			method: "del",
 			http: "delete",
-			path: `/api/0/sentry-apps/${sentryAppIdOrSlug}/`,
+			path: `/api/0/sentry-apps/${encodeURIComponent(sentryAppIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -5513,13 +5513,13 @@ export class SentryAppsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class TeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5531,13 +5531,13 @@ export class TeamsResource extends RpcTarget {
 	 *
 	 * `GET /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/` — risk: low
 	 */
-	async retrieve(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(organizationIdOrSlug: string, teamIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getTeam",
 			namespace: "teams",
 			method: "retrieve",
 			http: "get",
-			path: `/api/0/teams/${organizationIdOrSlug}/${teamIdOrSlug}/`,
+			path: `/api/0/teams/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(teamIdOrSlug)}/`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5545,7 +5545,7 @@ export class TeamsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5554,13 +5554,13 @@ team.
 	 *
 	 * `PUT /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/` — risk: medium
 	 */
-	async update(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(organizationIdOrSlug: string, teamIdOrSlug: string, body?: NonNullable<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateTeam",
 			namespace: "teams",
 			method: "update",
 			http: "put",
-			path: `/api/0/teams/${organizationIdOrSlug}/${teamIdOrSlug}/`,
+			path: `/api/0/teams/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(teamIdOrSlug)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -5568,7 +5568,7 @@ team.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5579,13 +5579,13 @@ immediate. Teams will have their slug released while waiting for deletion.
 	 *
 	 * `DELETE /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/` — risk: medium
 	 */
-	async del(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteTeam",
 			namespace: "teams",
 			method: "del",
 			http: "delete",
-			path: `/api/0/teams/${organizationIdOrSlug}/${teamIdOrSlug}/`,
+			path: `/api/0/teams/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(teamIdOrSlug)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -5593,7 +5593,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -5601,13 +5601,13 @@ immediate. Teams will have their slug released while waiting for deletion.
 	 *
 	 * `POST /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/` — risk: medium
 	 */
-	async createExternalTeam(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createExternalTeam(organizationIdOrSlug: string, teamIdOrSlug: string, body?: NonNullable<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createTeamExternalTeam",
 			namespace: "teams",
 			method: "createExternalTeam",
 			http: "post",
-			path: `/api/0/teams/${organizationIdOrSlug}/${teamIdOrSlug}/external-teams/`,
+			path: `/api/0/teams/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(teamIdOrSlug)}/external-teams/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createExternalTeam"],
@@ -5615,7 +5615,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5623,13 +5623,13 @@ immediate. Teams will have their slug released while waiting for deletion.
 	 *
 	 * `PUT /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/` — risk: medium
 	 */
-	async externalTeams(organizationIdOrSlug: string, teamIdOrSlug: string, externalTeamId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async externalTeams(organizationIdOrSlug: string, teamIdOrSlug: string, externalTeamId: string, body?: NonNullable<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateTeamExternalTeam",
 			namespace: "teams",
 			method: "externalTeams",
 			http: "put",
-			path: `/api/0/teams/${organizationIdOrSlug}/${teamIdOrSlug}/external-teams/${externalTeamId}/`,
+			path: `/api/0/teams/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(teamIdOrSlug)}/external-teams/${encodeURIComponent(externalTeamId)}/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["externalTeams"],
@@ -5637,7 +5637,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5645,13 +5645,13 @@ immediate. Teams will have their slug released while waiting for deletion.
 	 *
 	 * `DELETE /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/` — risk: medium
 	 */
-	async deleteExternalTeam(organizationIdOrSlug: string, teamIdOrSlug: string, externalTeamId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteExternalTeam(organizationIdOrSlug: string, teamIdOrSlug: string, externalTeamId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteTeamExternalTeam",
 			namespace: "teams",
 			method: "deleteExternalTeam",
 			http: "delete",
-			path: `/api/0/teams/${organizationIdOrSlug}/${teamIdOrSlug}/external-teams/${externalTeamId}/`,
+			path: `/api/0/teams/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(teamIdOrSlug)}/external-teams/${encodeURIComponent(externalTeamId)}/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteExternalTeam"],
@@ -5659,7 +5659,7 @@ immediate. Teams will have their slug released while waiting for deletion.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -5669,13 +5669,13 @@ The response will not include members with pending invites.
 	 *
 	 * `GET /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/members/` — risk: medium
 	 */
-	async listMembers(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMembers(organizationIdOrSlug: string, teamIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/members/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/members/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listTeamMembers",
 			namespace: "teams",
 			method: "listMembers",
 			http: "get",
-			path: `/api/0/teams/${organizationIdOrSlug}/${teamIdOrSlug}/members/`,
+			path: `/api/0/teams/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(teamIdOrSlug)}/members/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMembers"],
@@ -5683,7 +5683,7 @@ The response will not include members with pending invites.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/members/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5691,13 +5691,13 @@ The response will not include members with pending invites.
 	 *
 	 * `GET /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/` — risk: medium
 	 */
-	async listProjects(organizationIdOrSlug: string, teamIdOrSlug: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listProjects(organizationIdOrSlug: string, teamIdOrSlug: string, options?: QueryCallOptions<NonNullable<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listTeamProjects",
 			namespace: "teams",
 			method: "listProjects",
 			http: "get",
-			path: `/api/0/teams/${organizationIdOrSlug}/${teamIdOrSlug}/projects/`,
+			path: `/api/0/teams/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(teamIdOrSlug)}/projects/`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listProjects"],
@@ -5705,7 +5705,7 @@ The response will not include members with pending invites.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5716,13 +5716,13 @@ The response will not include members with pending invites.
 	 *
 	 * `POST /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/` — risk: medium
 	 */
-	async createProject(organizationIdOrSlug: string, teamIdOrSlug: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createProject(organizationIdOrSlug: string, teamIdOrSlug: string, body?: NonNullable<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createTeamProject",
 			namespace: "teams",
 			method: "createProject",
 			http: "post",
-			path: `/api/0/teams/${organizationIdOrSlug}/${teamIdOrSlug}/projects/`,
+			path: `/api/0/teams/${encodeURIComponent(organizationIdOrSlug)}/${encodeURIComponent(teamIdOrSlug)}/projects/`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createProject"],
@@ -5730,39 +5730,44 @@ The response will not include members with pending invites.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 interface Env {
 	SENTRY_API_KEY?: string;
+	SENTRY_USER_ID?: string;
 }
 
 export class SentryCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
 	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
+	protected providerCredentials(): import("./runtime.ts").Credentials {
+		return { apiKey: this.env.SENTRY_API_KEY, username: this.env.SENTRY_USER_ID };
+	}
+
 	get organizations(): OrganizationsResource {
-		return new OrganizationsResource(this.env.SENTRY_API_KEY, this.overrides["organizations"] || {}, this.runtimeConfig);
+		return new OrganizationsResource(this.providerCredentials(), this.overrides["organizations"] || {}, this.runtimeConfig);
 	}
 
 	get projects(): ProjectsResource {
-		return new ProjectsResource(this.env.SENTRY_API_KEY, this.overrides["projects"] || {}, this.runtimeConfig);
+		return new ProjectsResource(this.providerCredentials(), this.overrides["projects"] || {}, this.runtimeConfig);
 	}
 
 	get seer(): SeerResource {
-		return new SeerResource(this.env.SENTRY_API_KEY, this.overrides["seer"] || {}, this.runtimeConfig);
+		return new SeerResource(this.providerCredentials(), this.overrides["seer"] || {}, this.runtimeConfig);
 	}
 
 	get sentryAppInstallations(): SentryAppInstallationsResource {
-		return new SentryAppInstallationsResource(this.env.SENTRY_API_KEY, this.overrides["sentry-app-installations"] || {}, this.runtimeConfig);
+		return new SentryAppInstallationsResource(this.providerCredentials(), this.overrides["sentry-app-installations"] || {}, this.runtimeConfig);
 	}
 
 	get sentryApps(): SentryAppsResource {
-		return new SentryAppsResource(this.env.SENTRY_API_KEY, this.overrides["sentry-apps"] || {}, this.runtimeConfig);
+		return new SentryAppsResource(this.providerCredentials(), this.overrides["sentry-apps"] || {}, this.runtimeConfig);
 	}
 
 	get teams(): TeamsResource {
-		return new TeamsResource(this.env.SENTRY_API_KEY, this.overrides["teams"] || {}, this.runtimeConfig);
+		return new TeamsResource(this.providerCredentials(), this.overrides["teams"] || {}, this.runtimeConfig);
 	}
 }

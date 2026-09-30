@@ -3,12 +3,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 
 export class AdminAppsApproveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20,8 +20,8 @@ export class AdminAppsApproveResource extends RpcTarget {
 	 *
 	 * `POST /admin.apps.approve` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.apps.approve"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.apps.approve"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_apps_approve",
 			namespace: "admin.apps.approve",
 			method: "create",
@@ -34,13 +34,13 @@ export class AdminAppsApproveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.apps.approve"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminAppsApprovedListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -52,8 +52,8 @@ export class AdminAppsApprovedListResource extends RpcTarget {
 	 *
 	 * `GET /admin.apps.approved.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.apps.approved.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.apps.approved.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_apps_approved_list",
 			namespace: "admin.apps.approved.list",
 			method: "list",
@@ -66,13 +66,13 @@ export class AdminAppsApprovedListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.apps.approved.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminAppsRequestsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -84,8 +84,8 @@ export class AdminAppsRequestsListResource extends RpcTarget {
 	 *
 	 * `GET /admin.apps.requests.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.apps.requests.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.apps.requests.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_apps_requests_list",
 			namespace: "admin.apps.requests.list",
 			method: "list",
@@ -98,13 +98,13 @@ export class AdminAppsRequestsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.apps.requests.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminAppsRestrictResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -116,8 +116,8 @@ export class AdminAppsRestrictResource extends RpcTarget {
 	 *
 	 * `POST /admin.apps.restrict` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.apps.restrict"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.apps.restrict"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_apps_restrict",
 			namespace: "admin.apps.restrict",
 			method: "create",
@@ -130,13 +130,13 @@ export class AdminAppsRestrictResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.apps.restrict"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminAppsRestrictedListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -148,8 +148,8 @@ export class AdminAppsRestrictedListResource extends RpcTarget {
 	 *
 	 * `GET /admin.apps.restricted.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.apps.restricted.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.apps.restricted.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_apps_restricted_list",
 			namespace: "admin.apps.restricted.list",
 			method: "list",
@@ -162,13 +162,13 @@ export class AdminAppsRestrictedListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.apps.restricted.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsArchiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -180,8 +180,8 @@ export class AdminConversationsArchiveResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.archive` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.archive"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.archive"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_archive",
 			namespace: "admin.conversations.archive",
 			method: "create",
@@ -194,13 +194,13 @@ export class AdminConversationsArchiveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.archive"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsConvertToPrivateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -212,8 +212,8 @@ export class AdminConversationsConvertToPrivateResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.convertToPrivate` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.convertToPrivate"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.convertToPrivate"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_convertToPrivate",
 			namespace: "admin.conversations.convertToPrivate",
 			method: "create",
@@ -226,13 +226,13 @@ export class AdminConversationsConvertToPrivateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.convertToPrivate"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsCreateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -244,8 +244,8 @@ export class AdminConversationsCreateResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.create` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.create"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.create"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_create",
 			namespace: "admin.conversations.create",
 			method: "create",
@@ -258,13 +258,13 @@ export class AdminConversationsCreateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.create"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -276,8 +276,8 @@ export class AdminConversationsDeleteResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.delete` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.delete"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.delete"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_delete",
 			namespace: "admin.conversations.delete",
 			method: "create",
@@ -290,13 +290,13 @@ export class AdminConversationsDeleteResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.delete"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsDisconnectSharedResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -308,8 +308,8 @@ export class AdminConversationsDisconnectSharedResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.disconnectShared` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.disconnectShared"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.disconnectShared"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_disconnectShared",
 			namespace: "admin.conversations.disconnectShared",
 			method: "create",
@@ -322,13 +322,13 @@ export class AdminConversationsDisconnectSharedResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.disconnectShared"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsEkmListOriginalConnectedChannelInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -340,8 +340,8 @@ export class AdminConversationsEkmListOriginalConnectedChannelInfoResource exten
 	 *
 	 * `GET /admin.conversations.ekm.listOriginalConnectedChannelInfo` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.conversations.ekm.listOriginalConnectedChannelInfo"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.conversations.ekm.listOriginalConnectedChannelInfo"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_ekm_listOriginalConnectedChannelInfo",
 			namespace: "admin.conversations.ekm.listOriginalConnectedChannelInfo",
 			method: "list",
@@ -354,13 +354,13 @@ export class AdminConversationsEkmListOriginalConnectedChannelInfoResource exten
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.ekm.listOriginalConnectedChannelInfo"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsGetConversationPrefsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -372,8 +372,8 @@ export class AdminConversationsGetConversationPrefsResource extends RpcTarget {
 	 *
 	 * `GET /admin.conversations.getConversationPrefs` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.conversations.getConversationPrefs"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.conversations.getConversationPrefs"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_getConversationPrefs",
 			namespace: "admin.conversations.getConversationPrefs",
 			method: "list",
@@ -386,13 +386,13 @@ export class AdminConversationsGetConversationPrefsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.getConversationPrefs"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsGetTeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -404,8 +404,8 @@ export class AdminConversationsGetTeamsResource extends RpcTarget {
 	 *
 	 * `GET /admin.conversations.getTeams` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.conversations.getTeams"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.conversations.getTeams"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_getTeams",
 			namespace: "admin.conversations.getTeams",
 			method: "list",
@@ -418,13 +418,13 @@ export class AdminConversationsGetTeamsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.getTeams"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsInviteResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -436,8 +436,8 @@ export class AdminConversationsInviteResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.invite` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.invite"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.invite"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_invite",
 			namespace: "admin.conversations.invite",
 			method: "create",
@@ -450,13 +450,13 @@ export class AdminConversationsInviteResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.invite"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsRenameResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -468,8 +468,8 @@ export class AdminConversationsRenameResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.rename` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.rename"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.rename"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_rename",
 			namespace: "admin.conversations.rename",
 			method: "create",
@@ -482,13 +482,13 @@ export class AdminConversationsRenameResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.rename"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsRestrictAccessAddGroupResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -500,8 +500,8 @@ export class AdminConversationsRestrictAccessAddGroupResource extends RpcTarget 
 	 *
 	 * `POST /admin.conversations.restrictAccess.addGroup` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.restrictAccess.addGroup"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.restrictAccess.addGroup"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_restrictAccess_addGroup",
 			namespace: "admin.conversations.restrictAccess.addGroup",
 			method: "create",
@@ -514,13 +514,13 @@ export class AdminConversationsRestrictAccessAddGroupResource extends RpcTarget 
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.restrictAccess.addGroup"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsRestrictAccessListGroupsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -532,8 +532,8 @@ export class AdminConversationsRestrictAccessListGroupsResource extends RpcTarge
 	 *
 	 * `GET /admin.conversations.restrictAccess.listGroups` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.conversations.restrictAccess.listGroups"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.conversations.restrictAccess.listGroups"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_restrictAccess_listGroups",
 			namespace: "admin.conversations.restrictAccess.listGroups",
 			method: "list",
@@ -546,13 +546,13 @@ export class AdminConversationsRestrictAccessListGroupsResource extends RpcTarge
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.restrictAccess.listGroups"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsRestrictAccessRemoveGroupResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -564,8 +564,8 @@ export class AdminConversationsRestrictAccessRemoveGroupResource extends RpcTarg
 	 *
 	 * `POST /admin.conversations.restrictAccess.removeGroup` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.restrictAccess.removeGroup"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.restrictAccess.removeGroup"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_restrictAccess_removeGroup",
 			namespace: "admin.conversations.restrictAccess.removeGroup",
 			method: "create",
@@ -578,13 +578,13 @@ export class AdminConversationsRestrictAccessRemoveGroupResource extends RpcTarg
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.restrictAccess.removeGroup"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsSearchResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -596,8 +596,8 @@ export class AdminConversationsSearchResource extends RpcTarget {
 	 *
 	 * `GET /admin.conversations.search` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.conversations.search"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.conversations.search"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_search",
 			namespace: "admin.conversations.search",
 			method: "list",
@@ -610,13 +610,13 @@ export class AdminConversationsSearchResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.search"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsSetConversationPrefsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -628,8 +628,8 @@ export class AdminConversationsSetConversationPrefsResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.setConversationPrefs` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.setConversationPrefs"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.setConversationPrefs"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_setConversationPrefs",
 			namespace: "admin.conversations.setConversationPrefs",
 			method: "create",
@@ -642,13 +642,13 @@ export class AdminConversationsSetConversationPrefsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.setConversationPrefs"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsSetTeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -660,8 +660,8 @@ export class AdminConversationsSetTeamsResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.setTeams` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.setTeams"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.setTeams"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_setTeams",
 			namespace: "admin.conversations.setTeams",
 			method: "create",
@@ -674,13 +674,13 @@ export class AdminConversationsSetTeamsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.setTeams"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminConversationsUnarchiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -692,8 +692,8 @@ export class AdminConversationsUnarchiveResource extends RpcTarget {
 	 *
 	 * `POST /admin.conversations.unarchive` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.conversations.unarchive"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.conversations.unarchive"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_conversations_unarchive",
 			namespace: "admin.conversations.unarchive",
 			method: "create",
@@ -706,13 +706,13 @@ export class AdminConversationsUnarchiveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.conversations.unarchive"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminEmojiAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -724,8 +724,8 @@ export class AdminEmojiAddResource extends RpcTarget {
 	 *
 	 * `POST /admin.emoji.add` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.emoji.add"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.emoji.add"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_emoji_add",
 			namespace: "admin.emoji.add",
 			method: "create",
@@ -738,13 +738,13 @@ export class AdminEmojiAddResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.emoji.add"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminEmojiAddAliasResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -756,8 +756,8 @@ export class AdminEmojiAddAliasResource extends RpcTarget {
 	 *
 	 * `POST /admin.emoji.addAlias` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.emoji.addAlias"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.emoji.addAlias"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_emoji_addAlias",
 			namespace: "admin.emoji.addAlias",
 			method: "create",
@@ -770,13 +770,13 @@ export class AdminEmojiAddAliasResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.emoji.addAlias"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminEmojiListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -788,8 +788,8 @@ export class AdminEmojiListResource extends RpcTarget {
 	 *
 	 * `GET /admin.emoji.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.emoji.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.emoji.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_emoji_list",
 			namespace: "admin.emoji.list",
 			method: "list",
@@ -802,13 +802,13 @@ export class AdminEmojiListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.emoji.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminEmojiRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -820,8 +820,8 @@ export class AdminEmojiRemoveResource extends RpcTarget {
 	 *
 	 * `POST /admin.emoji.remove` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.emoji.remove"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.emoji.remove"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_emoji_remove",
 			namespace: "admin.emoji.remove",
 			method: "create",
@@ -834,13 +834,13 @@ export class AdminEmojiRemoveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.emoji.remove"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminEmojiRenameResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -852,8 +852,8 @@ export class AdminEmojiRenameResource extends RpcTarget {
 	 *
 	 * `POST /admin.emoji.rename` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.emoji.rename"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.emoji.rename"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_emoji_rename",
 			namespace: "admin.emoji.rename",
 			method: "create",
@@ -866,13 +866,13 @@ export class AdminEmojiRenameResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.emoji.rename"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminInviteRequestsApproveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -884,8 +884,8 @@ export class AdminInviteRequestsApproveResource extends RpcTarget {
 	 *
 	 * `POST /admin.inviteRequests.approve` — risk: medium
 	 */
-	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(options?: CallOptions): Promise<ProofResult<paths["/admin.inviteRequests.approve"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_inviteRequests_approve",
 			namespace: "admin.inviteRequests.approve",
 			method: "create",
@@ -898,13 +898,13 @@ export class AdminInviteRequestsApproveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.inviteRequests.approve"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminInviteRequestsApprovedListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -916,8 +916,8 @@ export class AdminInviteRequestsApprovedListResource extends RpcTarget {
 	 *
 	 * `GET /admin.inviteRequests.approved.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.inviteRequests.approved.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.inviteRequests.approved.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_inviteRequests_approved_list",
 			namespace: "admin.inviteRequests.approved.list",
 			method: "list",
@@ -930,13 +930,13 @@ export class AdminInviteRequestsApprovedListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.inviteRequests.approved.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminInviteRequestsDeniedListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -948,8 +948,8 @@ export class AdminInviteRequestsDeniedListResource extends RpcTarget {
 	 *
 	 * `GET /admin.inviteRequests.denied.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.inviteRequests.denied.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.inviteRequests.denied.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_inviteRequests_denied_list",
 			namespace: "admin.inviteRequests.denied.list",
 			method: "list",
@@ -962,13 +962,13 @@ export class AdminInviteRequestsDeniedListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.inviteRequests.denied.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminInviteRequestsDenyResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -980,8 +980,8 @@ export class AdminInviteRequestsDenyResource extends RpcTarget {
 	 *
 	 * `POST /admin.inviteRequests.deny` — risk: medium
 	 */
-	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(options?: CallOptions): Promise<ProofResult<paths["/admin.inviteRequests.deny"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_inviteRequests_deny",
 			namespace: "admin.inviteRequests.deny",
 			method: "create",
@@ -994,13 +994,13 @@ export class AdminInviteRequestsDenyResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.inviteRequests.deny"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminInviteRequestsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1012,8 +1012,8 @@ export class AdminInviteRequestsListResource extends RpcTarget {
 	 *
 	 * `GET /admin.inviteRequests.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.inviteRequests.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.inviteRequests.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_inviteRequests_list",
 			namespace: "admin.inviteRequests.list",
 			method: "list",
@@ -1026,13 +1026,13 @@ export class AdminInviteRequestsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.inviteRequests.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsAdminsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1044,8 +1044,8 @@ export class AdminTeamsAdminsListResource extends RpcTarget {
 	 *
 	 * `GET /admin.teams.admins.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.teams.admins.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.teams.admins.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_admins_list",
 			namespace: "admin.teams.admins.list",
 			method: "list",
@@ -1058,13 +1058,13 @@ export class AdminTeamsAdminsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.admins.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsCreateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1076,8 +1076,8 @@ export class AdminTeamsCreateResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.create` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.teams.create"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.teams.create"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_create",
 			namespace: "admin.teams.create",
 			method: "create",
@@ -1090,13 +1090,13 @@ export class AdminTeamsCreateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.create"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1108,8 +1108,8 @@ export class AdminTeamsListResource extends RpcTarget {
 	 *
 	 * `GET /admin.teams.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.teams.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.teams.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_list",
 			namespace: "admin.teams.list",
 			method: "list",
@@ -1122,13 +1122,13 @@ export class AdminTeamsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsOwnersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1140,8 +1140,8 @@ export class AdminTeamsOwnersListResource extends RpcTarget {
 	 *
 	 * `GET /admin.teams.owners.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.teams.owners.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.teams.owners.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_owners_list",
 			namespace: "admin.teams.owners.list",
 			method: "list",
@@ -1154,13 +1154,13 @@ export class AdminTeamsOwnersListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.owners.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsSettingsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1172,8 +1172,8 @@ export class AdminTeamsSettingsInfoResource extends RpcTarget {
 	 *
 	 * `GET /admin.teams.settings.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.teams.settings.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.teams.settings.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_settings_info",
 			namespace: "admin.teams.settings.info",
 			method: "list",
@@ -1186,13 +1186,13 @@ export class AdminTeamsSettingsInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.settings.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsSettingsSetDefaultChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1204,8 +1204,8 @@ export class AdminTeamsSettingsSetDefaultChannelsResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setDefaultChannels` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.teams.settings.setDefaultChannels"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.teams.settings.setDefaultChannels"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_settings_setDefaultChannels",
 			namespace: "admin.teams.settings.setDefaultChannels",
 			method: "create",
@@ -1218,13 +1218,13 @@ export class AdminTeamsSettingsSetDefaultChannelsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.settings.setDefaultChannels"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsSettingsSetDescriptionResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1236,8 +1236,8 @@ export class AdminTeamsSettingsSetDescriptionResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setDescription` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.teams.settings.setDescription"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.teams.settings.setDescription"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_settings_setDescription",
 			namespace: "admin.teams.settings.setDescription",
 			method: "create",
@@ -1250,13 +1250,13 @@ export class AdminTeamsSettingsSetDescriptionResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.settings.setDescription"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsSettingsSetDiscoverabilityResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1268,8 +1268,8 @@ export class AdminTeamsSettingsSetDiscoverabilityResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setDiscoverability` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.teams.settings.setDiscoverability"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.teams.settings.setDiscoverability"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_settings_setDiscoverability",
 			namespace: "admin.teams.settings.setDiscoverability",
 			method: "create",
@@ -1282,13 +1282,13 @@ export class AdminTeamsSettingsSetDiscoverabilityResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.settings.setDiscoverability"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsSettingsSetIconResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1300,8 +1300,8 @@ export class AdminTeamsSettingsSetIconResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setIcon` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.teams.settings.setIcon"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.teams.settings.setIcon"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_settings_setIcon",
 			namespace: "admin.teams.settings.setIcon",
 			method: "create",
@@ -1314,13 +1314,13 @@ export class AdminTeamsSettingsSetIconResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.settings.setIcon"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminTeamsSettingsSetNameResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1332,8 +1332,8 @@ export class AdminTeamsSettingsSetNameResource extends RpcTarget {
 	 *
 	 * `POST /admin.teams.settings.setName` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.teams.settings.setName"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.teams.settings.setName"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_teams_settings_setName",
 			namespace: "admin.teams.settings.setName",
 			method: "create",
@@ -1346,13 +1346,13 @@ export class AdminTeamsSettingsSetNameResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.teams.settings.setName"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsergroupsAddChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1364,8 +1364,8 @@ export class AdminUsergroupsAddChannelsResource extends RpcTarget {
 	 *
 	 * `POST /admin.usergroups.addChannels` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.usergroups.addChannels"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.usergroups.addChannels"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_usergroups_addChannels",
 			namespace: "admin.usergroups.addChannels",
 			method: "create",
@@ -1378,13 +1378,13 @@ export class AdminUsergroupsAddChannelsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.usergroups.addChannels"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsergroupsAddTeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1396,8 +1396,8 @@ export class AdminUsergroupsAddTeamsResource extends RpcTarget {
 	 *
 	 * `POST /admin.usergroups.addTeams` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.usergroups.addTeams"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.usergroups.addTeams"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_usergroups_addTeams",
 			namespace: "admin.usergroups.addTeams",
 			method: "create",
@@ -1410,13 +1410,13 @@ export class AdminUsergroupsAddTeamsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.usergroups.addTeams"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsergroupsListChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1428,8 +1428,8 @@ export class AdminUsergroupsListChannelsResource extends RpcTarget {
 	 *
 	 * `GET /admin.usergroups.listChannels` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.usergroups.listChannels"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.usergroups.listChannels"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_usergroups_listChannels",
 			namespace: "admin.usergroups.listChannels",
 			method: "list",
@@ -1442,13 +1442,13 @@ export class AdminUsergroupsListChannelsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.usergroups.listChannels"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsergroupsRemoveChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1460,8 +1460,8 @@ export class AdminUsergroupsRemoveChannelsResource extends RpcTarget {
 	 *
 	 * `POST /admin.usergroups.removeChannels` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.usergroups.removeChannels"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.usergroups.removeChannels"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_usergroups_removeChannels",
 			namespace: "admin.usergroups.removeChannels",
 			method: "create",
@@ -1474,13 +1474,13 @@ export class AdminUsergroupsRemoveChannelsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.usergroups.removeChannels"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersAssignResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1492,8 +1492,8 @@ export class AdminUsersAssignResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.assign` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.users.assign"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.users.assign"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_assign",
 			namespace: "admin.users.assign",
 			method: "create",
@@ -1506,13 +1506,13 @@ export class AdminUsersAssignResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.assign"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersInviteResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1524,8 +1524,8 @@ export class AdminUsersInviteResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.invite` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.users.invite"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.users.invite"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_invite",
 			namespace: "admin.users.invite",
 			method: "create",
@@ -1538,13 +1538,13 @@ export class AdminUsersInviteResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.invite"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1556,8 +1556,8 @@ export class AdminUsersListResource extends RpcTarget {
 	 *
 	 * `GET /admin.users.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/admin.users.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/admin.users.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_list",
 			namespace: "admin.users.list",
 			method: "list",
@@ -1570,13 +1570,13 @@ export class AdminUsersListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1588,8 +1588,8 @@ export class AdminUsersRemoveResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.remove` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.users.remove"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.users.remove"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_remove",
 			namespace: "admin.users.remove",
 			method: "create",
@@ -1602,13 +1602,13 @@ export class AdminUsersRemoveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.remove"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersSessionInvalidateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1620,8 +1620,8 @@ export class AdminUsersSessionInvalidateResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.session.invalidate` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.users.session.invalidate"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.users.session.invalidate"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_session_invalidate",
 			namespace: "admin.users.session.invalidate",
 			method: "create",
@@ -1634,13 +1634,13 @@ export class AdminUsersSessionInvalidateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.session.invalidate"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersSessionResetResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1652,8 +1652,8 @@ export class AdminUsersSessionResetResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.session.reset` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.users.session.reset"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.users.session.reset"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_session_reset",
 			namespace: "admin.users.session.reset",
 			method: "create",
@@ -1666,13 +1666,13 @@ export class AdminUsersSessionResetResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.session.reset"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersSetAdminResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1684,8 +1684,8 @@ export class AdminUsersSetAdminResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.setAdmin` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.users.setAdmin"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.users.setAdmin"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_setAdmin",
 			namespace: "admin.users.setAdmin",
 			method: "create",
@@ -1698,13 +1698,13 @@ export class AdminUsersSetAdminResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.setAdmin"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersSetExpirationResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1716,8 +1716,8 @@ export class AdminUsersSetExpirationResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.setExpiration` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.users.setExpiration"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.users.setExpiration"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_setExpiration",
 			namespace: "admin.users.setExpiration",
 			method: "create",
@@ -1730,13 +1730,13 @@ export class AdminUsersSetExpirationResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.setExpiration"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersSetOwnerResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1748,8 +1748,8 @@ export class AdminUsersSetOwnerResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.setOwner` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.users.setOwner"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.users.setOwner"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_setOwner",
 			namespace: "admin.users.setOwner",
 			method: "create",
@@ -1762,13 +1762,13 @@ export class AdminUsersSetOwnerResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.setOwner"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AdminUsersSetRegularResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1780,8 +1780,8 @@ export class AdminUsersSetRegularResource extends RpcTarget {
 	 *
 	 * `POST /admin.users.setRegular` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/admin.users.setRegular"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/admin.users.setRegular"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "admin_users_setRegular",
 			namespace: "admin.users.setRegular",
 			method: "create",
@@ -1794,13 +1794,13 @@ export class AdminUsersSetRegularResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/admin.users.setRegular"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ApiTestResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1812,8 +1812,8 @@ export class ApiTestResource extends RpcTarget {
 	 *
 	 * `GET /api.test` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/api.test"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/api.test"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "api_test",
 			namespace: "api.test",
 			method: "list",
@@ -1826,13 +1826,13 @@ export class ApiTestResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/api.test"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AppsEventAuthorizationsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1844,8 +1844,8 @@ export class AppsEventAuthorizationsListResource extends RpcTarget {
 	 *
 	 * `GET /apps.event.authorizations.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/apps.event.authorizations.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/apps.event.authorizations.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "apps_event_authorizations_list",
 			namespace: "apps.event.authorizations.list",
 			method: "list",
@@ -1858,13 +1858,13 @@ export class AppsEventAuthorizationsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/apps.event.authorizations.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AppsPermissionsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1876,8 +1876,8 @@ export class AppsPermissionsInfoResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/apps.permissions.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/apps.permissions.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "apps_permissions_info",
 			namespace: "apps.permissions.info",
 			method: "list",
@@ -1890,13 +1890,13 @@ export class AppsPermissionsInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/apps.permissions.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AppsPermissionsRequestResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1908,8 +1908,8 @@ export class AppsPermissionsRequestResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.request` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/apps.permissions.request"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/apps.permissions.request"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "apps_permissions_request",
 			namespace: "apps.permissions.request",
 			method: "list",
@@ -1922,13 +1922,13 @@ export class AppsPermissionsRequestResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/apps.permissions.request"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AppsPermissionsResourcesListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1940,8 +1940,8 @@ export class AppsPermissionsResourcesListResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.resources.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/apps.permissions.resources.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/apps.permissions.resources.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "apps_permissions_resources_list",
 			namespace: "apps.permissions.resources.list",
 			method: "list",
@@ -1954,13 +1954,13 @@ export class AppsPermissionsResourcesListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/apps.permissions.resources.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AppsPermissionsScopesListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1972,8 +1972,8 @@ export class AppsPermissionsScopesListResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.scopes.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/apps.permissions.scopes.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/apps.permissions.scopes.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "apps_permissions_scopes_list",
 			namespace: "apps.permissions.scopes.list",
 			method: "list",
@@ -1986,13 +1986,13 @@ export class AppsPermissionsScopesListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/apps.permissions.scopes.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AppsPermissionsUsersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2004,8 +2004,8 @@ export class AppsPermissionsUsersListResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.users.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/apps.permissions.users.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/apps.permissions.users.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "apps_permissions_users_list",
 			namespace: "apps.permissions.users.list",
 			method: "list",
@@ -2018,13 +2018,13 @@ export class AppsPermissionsUsersListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/apps.permissions.users.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AppsPermissionsUsersRequestResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2036,8 +2036,8 @@ export class AppsPermissionsUsersRequestResource extends RpcTarget {
 	 *
 	 * `GET /apps.permissions.users.request` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/apps.permissions.users.request"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/apps.permissions.users.request"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "apps_permissions_users_request",
 			namespace: "apps.permissions.users.request",
 			method: "list",
@@ -2050,13 +2050,13 @@ export class AppsPermissionsUsersRequestResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/apps.permissions.users.request"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AppsUninstallResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2068,8 +2068,8 @@ export class AppsUninstallResource extends RpcTarget {
 	 *
 	 * `GET /apps.uninstall` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/apps.uninstall"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/apps.uninstall"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "apps_uninstall",
 			namespace: "apps.uninstall",
 			method: "list",
@@ -2082,13 +2082,13 @@ export class AppsUninstallResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/apps.uninstall"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AuthRevokeResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2100,8 +2100,8 @@ export class AuthRevokeResource extends RpcTarget {
 	 *
 	 * `GET /auth.revoke` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/auth.revoke"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/auth.revoke"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "auth_revoke",
 			namespace: "auth.revoke",
 			method: "list",
@@ -2114,13 +2114,13 @@ export class AuthRevokeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/auth.revoke"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AuthTestResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2132,8 +2132,8 @@ export class AuthTestResource extends RpcTarget {
 	 *
 	 * `GET /auth.test` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: CallOptions): Promise<ProofResult<paths["/auth.test"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "auth_test",
 			namespace: "auth.test",
 			method: "list",
@@ -2146,13 +2146,13 @@ export class AuthTestResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/auth.test"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class BotsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2164,8 +2164,8 @@ export class BotsInfoResource extends RpcTarget {
 	 *
 	 * `GET /bots.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/bots.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/bots.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "bots_info",
 			namespace: "bots.info",
 			method: "list",
@@ -2178,13 +2178,13 @@ export class BotsInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/bots.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CallsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2196,8 +2196,8 @@ export class CallsAddResource extends RpcTarget {
 	 *
 	 * `POST /calls.add` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/calls.add"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/calls.add"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "calls_add",
 			namespace: "calls.add",
 			method: "create",
@@ -2210,13 +2210,13 @@ export class CallsAddResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/calls.add"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CallsEndResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2228,8 +2228,8 @@ export class CallsEndResource extends RpcTarget {
 	 *
 	 * `POST /calls.end` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/calls.end"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/calls.end"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "calls_end",
 			namespace: "calls.end",
 			method: "create",
@@ -2242,13 +2242,13 @@ export class CallsEndResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/calls.end"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CallsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2260,8 +2260,8 @@ export class CallsInfoResource extends RpcTarget {
 	 *
 	 * `GET /calls.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/calls.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/calls.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "calls_info",
 			namespace: "calls.info",
 			method: "list",
@@ -2274,13 +2274,13 @@ export class CallsInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/calls.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CallsParticipantsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2292,8 +2292,8 @@ export class CallsParticipantsAddResource extends RpcTarget {
 	 *
 	 * `POST /calls.participants.add` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/calls.participants.add"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/calls.participants.add"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "calls_participants_add",
 			namespace: "calls.participants.add",
 			method: "create",
@@ -2306,13 +2306,13 @@ export class CallsParticipantsAddResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/calls.participants.add"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CallsParticipantsRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2324,8 +2324,8 @@ export class CallsParticipantsRemoveResource extends RpcTarget {
 	 *
 	 * `POST /calls.participants.remove` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/calls.participants.remove"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/calls.participants.remove"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "calls_participants_remove",
 			namespace: "calls.participants.remove",
 			method: "create",
@@ -2338,13 +2338,13 @@ export class CallsParticipantsRemoveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/calls.participants.remove"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CallsUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2356,8 +2356,8 @@ export class CallsUpdateResource extends RpcTarget {
 	 *
 	 * `POST /calls.update` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/calls.update"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/calls.update"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "calls_update",
 			namespace: "calls.update",
 			method: "create",
@@ -2370,13 +2370,13 @@ export class CallsUpdateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/calls.update"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2388,8 +2388,8 @@ export class ChatDeleteResource extends RpcTarget {
 	 *
 	 * `POST /chat.delete` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/chat.delete"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/chat.delete"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_delete",
 			namespace: "chat.delete",
 			method: "create",
@@ -2402,13 +2402,13 @@ export class ChatDeleteResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.delete"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatDeleteScheduledMessageResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2420,8 +2420,8 @@ export class ChatDeleteScheduledMessageResource extends RpcTarget {
 	 *
 	 * `POST /chat.deleteScheduledMessage` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/chat.deleteScheduledMessage"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/chat.deleteScheduledMessage"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_deleteScheduledMessage",
 			namespace: "chat.deleteScheduledMessage",
 			method: "create",
@@ -2434,13 +2434,13 @@ export class ChatDeleteScheduledMessageResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.deleteScheduledMessage"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatGetPermalinkResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2452,8 +2452,8 @@ export class ChatGetPermalinkResource extends RpcTarget {
 	 *
 	 * `GET /chat.getPermalink` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/chat.getPermalink"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat.getPermalink"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_getPermalink",
 			namespace: "chat.getPermalink",
 			method: "list",
@@ -2466,13 +2466,13 @@ export class ChatGetPermalinkResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.getPermalink"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatMeMessageResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2484,8 +2484,8 @@ export class ChatMeMessageResource extends RpcTarget {
 	 *
 	 * `POST /chat.meMessage` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/chat.meMessage"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/chat.meMessage"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_meMessage",
 			namespace: "chat.meMessage",
 			method: "create",
@@ -2498,13 +2498,13 @@ export class ChatMeMessageResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.meMessage"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatPostEphemeralResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2516,8 +2516,8 @@ export class ChatPostEphemeralResource extends RpcTarget {
 	 *
 	 * `POST /chat.postEphemeral` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/chat.postEphemeral"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/chat.postEphemeral"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_postEphemeral",
 			namespace: "chat.postEphemeral",
 			method: "create",
@@ -2530,13 +2530,13 @@ export class ChatPostEphemeralResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.postEphemeral"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatPostMessageResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2548,8 +2548,8 @@ export class ChatPostMessageResource extends RpcTarget {
 	 *
 	 * `POST /chat.postMessage` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/chat.postMessage"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/chat.postMessage"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_postMessage",
 			namespace: "chat.postMessage",
 			method: "create",
@@ -2562,13 +2562,13 @@ export class ChatPostMessageResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.postMessage"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatScheduleMessageResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2580,8 +2580,8 @@ export class ChatScheduleMessageResource extends RpcTarget {
 	 *
 	 * `POST /chat.scheduleMessage` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/chat.scheduleMessage"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/chat.scheduleMessage"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_scheduleMessage",
 			namespace: "chat.scheduleMessage",
 			method: "create",
@@ -2594,13 +2594,13 @@ export class ChatScheduleMessageResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.scheduleMessage"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatScheduledMessagesListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2612,8 +2612,8 @@ export class ChatScheduledMessagesListResource extends RpcTarget {
 	 *
 	 * `GET /chat.scheduledMessages.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/chat.scheduledMessages.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat.scheduledMessages.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_scheduledMessages_list",
 			namespace: "chat.scheduledMessages.list",
 			method: "list",
@@ -2626,13 +2626,13 @@ export class ChatScheduledMessagesListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.scheduledMessages.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatUnfurlResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2644,8 +2644,8 @@ export class ChatUnfurlResource extends RpcTarget {
 	 *
 	 * `POST /chat.unfurl` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/chat.unfurl"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/chat.unfurl"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_unfurl",
 			namespace: "chat.unfurl",
 			method: "create",
@@ -2658,13 +2658,13 @@ export class ChatUnfurlResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.unfurl"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2676,8 +2676,8 @@ export class ChatUpdateResource extends RpcTarget {
 	 *
 	 * `POST /chat.update` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/chat.update"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/chat.update"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "chat_update",
 			namespace: "chat.update",
 			method: "create",
@@ -2690,13 +2690,13 @@ export class ChatUpdateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat.update"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsArchiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2708,8 +2708,8 @@ export class ConversationsArchiveResource extends RpcTarget {
 	 *
 	 * `POST /conversations.archive` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.archive"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.archive"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_archive",
 			namespace: "conversations.archive",
 			method: "create",
@@ -2722,13 +2722,13 @@ export class ConversationsArchiveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.archive"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsCloseResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2740,8 +2740,8 @@ export class ConversationsCloseResource extends RpcTarget {
 	 *
 	 * `POST /conversations.close` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.close"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.close"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_close",
 			namespace: "conversations.close",
 			method: "create",
@@ -2754,13 +2754,13 @@ export class ConversationsCloseResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.close"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsCreateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2772,8 +2772,8 @@ export class ConversationsCreateResource extends RpcTarget {
 	 *
 	 * `POST /conversations.create` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.create"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.create"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_create",
 			namespace: "conversations.create",
 			method: "create",
@@ -2786,13 +2786,13 @@ export class ConversationsCreateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.create"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsHistoryResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2804,8 +2804,8 @@ export class ConversationsHistoryResource extends RpcTarget {
 	 *
 	 * `GET /conversations.history` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/conversations.history"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/conversations.history"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_history",
 			namespace: "conversations.history",
 			method: "list",
@@ -2818,13 +2818,13 @@ export class ConversationsHistoryResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.history"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2836,8 +2836,8 @@ export class ConversationsInfoResource extends RpcTarget {
 	 *
 	 * `GET /conversations.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/conversations.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/conversations.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_info",
 			namespace: "conversations.info",
 			method: "list",
@@ -2850,13 +2850,13 @@ export class ConversationsInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsInviteResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2868,8 +2868,8 @@ export class ConversationsInviteResource extends RpcTarget {
 	 *
 	 * `POST /conversations.invite` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.invite"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.invite"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_invite",
 			namespace: "conversations.invite",
 			method: "create",
@@ -2882,13 +2882,13 @@ export class ConversationsInviteResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.invite"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsJoinResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2900,8 +2900,8 @@ export class ConversationsJoinResource extends RpcTarget {
 	 *
 	 * `POST /conversations.join` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.join"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.join"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_join",
 			namespace: "conversations.join",
 			method: "create",
@@ -2914,13 +2914,13 @@ export class ConversationsJoinResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.join"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsKickResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2932,8 +2932,8 @@ export class ConversationsKickResource extends RpcTarget {
 	 *
 	 * `POST /conversations.kick` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.kick"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.kick"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_kick",
 			namespace: "conversations.kick",
 			method: "create",
@@ -2946,13 +2946,13 @@ export class ConversationsKickResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.kick"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsLeaveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2964,8 +2964,8 @@ export class ConversationsLeaveResource extends RpcTarget {
 	 *
 	 * `POST /conversations.leave` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.leave"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.leave"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_leave",
 			namespace: "conversations.leave",
 			method: "create",
@@ -2978,13 +2978,13 @@ export class ConversationsLeaveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.leave"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2996,8 +2996,8 @@ export class ConversationsListResource extends RpcTarget {
 	 *
 	 * `GET /conversations.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/conversations.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/conversations.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_list",
 			namespace: "conversations.list",
 			method: "list",
@@ -3010,13 +3010,13 @@ export class ConversationsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsMarkResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3028,8 +3028,8 @@ export class ConversationsMarkResource extends RpcTarget {
 	 *
 	 * `POST /conversations.mark` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.mark"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.mark"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_mark",
 			namespace: "conversations.mark",
 			method: "create",
@@ -3042,13 +3042,13 @@ export class ConversationsMarkResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.mark"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsMembersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3060,8 +3060,8 @@ export class ConversationsMembersResource extends RpcTarget {
 	 *
 	 * `GET /conversations.members` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/conversations.members"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/conversations.members"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_members",
 			namespace: "conversations.members",
 			method: "list",
@@ -3074,13 +3074,13 @@ export class ConversationsMembersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.members"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsOpenResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3092,8 +3092,8 @@ export class ConversationsOpenResource extends RpcTarget {
 	 *
 	 * `POST /conversations.open` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.open"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.open"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_open",
 			namespace: "conversations.open",
 			method: "create",
@@ -3106,13 +3106,13 @@ export class ConversationsOpenResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.open"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsRenameResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3124,8 +3124,8 @@ export class ConversationsRenameResource extends RpcTarget {
 	 *
 	 * `POST /conversations.rename` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.rename"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.rename"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_rename",
 			namespace: "conversations.rename",
 			method: "create",
@@ -3138,13 +3138,13 @@ export class ConversationsRenameResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.rename"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsRepliesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3156,8 +3156,8 @@ export class ConversationsRepliesResource extends RpcTarget {
 	 *
 	 * `GET /conversations.replies` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/conversations.replies"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/conversations.replies"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_replies",
 			namespace: "conversations.replies",
 			method: "list",
@@ -3170,13 +3170,13 @@ export class ConversationsRepliesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.replies"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsSetPurposeResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3188,8 +3188,8 @@ export class ConversationsSetPurposeResource extends RpcTarget {
 	 *
 	 * `POST /conversations.setPurpose` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.setPurpose"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.setPurpose"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_setPurpose",
 			namespace: "conversations.setPurpose",
 			method: "create",
@@ -3202,13 +3202,13 @@ export class ConversationsSetPurposeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.setPurpose"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsSetTopicResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3220,8 +3220,8 @@ export class ConversationsSetTopicResource extends RpcTarget {
 	 *
 	 * `POST /conversations.setTopic` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.setTopic"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.setTopic"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_setTopic",
 			namespace: "conversations.setTopic",
 			method: "create",
@@ -3234,13 +3234,13 @@ export class ConversationsSetTopicResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.setTopic"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ConversationsUnarchiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3252,8 +3252,8 @@ export class ConversationsUnarchiveResource extends RpcTarget {
 	 *
 	 * `POST /conversations.unarchive` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/conversations.unarchive"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/conversations.unarchive"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "conversations_unarchive",
 			namespace: "conversations.unarchive",
 			method: "create",
@@ -3266,13 +3266,13 @@ export class ConversationsUnarchiveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/conversations.unarchive"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class DialogOpenResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3284,8 +3284,8 @@ export class DialogOpenResource extends RpcTarget {
 	 *
 	 * `GET /dialog.open` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/dialog.open"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/dialog.open"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dialog_open",
 			namespace: "dialog.open",
 			method: "list",
@@ -3298,13 +3298,13 @@ export class DialogOpenResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/dialog.open"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class DndEndDndResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3316,8 +3316,8 @@ export class DndEndDndResource extends RpcTarget {
 	 *
 	 * `POST /dnd.endDnd` — risk: medium
 	 */
-	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(options?: CallOptions): Promise<ProofResult<paths["/dnd.endDnd"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dnd_endDnd",
 			namespace: "dnd.endDnd",
 			method: "create",
@@ -3330,13 +3330,13 @@ export class DndEndDndResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/dnd.endDnd"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class DndEndSnoozeResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3348,8 +3348,8 @@ export class DndEndSnoozeResource extends RpcTarget {
 	 *
 	 * `POST /dnd.endSnooze` — risk: medium
 	 */
-	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(options?: CallOptions): Promise<ProofResult<paths["/dnd.endSnooze"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dnd_endSnooze",
 			namespace: "dnd.endSnooze",
 			method: "create",
@@ -3362,13 +3362,13 @@ export class DndEndSnoozeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/dnd.endSnooze"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class DndInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3380,8 +3380,8 @@ export class DndInfoResource extends RpcTarget {
 	 *
 	 * `GET /dnd.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/dnd.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/dnd.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dnd_info",
 			namespace: "dnd.info",
 			method: "list",
@@ -3394,13 +3394,13 @@ export class DndInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/dnd.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class DndSetSnoozeResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3412,8 +3412,8 @@ export class DndSetSnoozeResource extends RpcTarget {
 	 *
 	 * `POST /dnd.setSnooze` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/dnd.setSnooze"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/dnd.setSnooze"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dnd_setSnooze",
 			namespace: "dnd.setSnooze",
 			method: "create",
@@ -3426,13 +3426,13 @@ export class DndSetSnoozeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/dnd.setSnooze"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class DndTeamInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3444,8 +3444,8 @@ export class DndTeamInfoResource extends RpcTarget {
 	 *
 	 * `GET /dnd.teamInfo` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/dnd.teamInfo"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/dnd.teamInfo"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dnd_teamInfo",
 			namespace: "dnd.teamInfo",
 			method: "list",
@@ -3458,13 +3458,13 @@ export class DndTeamInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/dnd.teamInfo"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class EmojiListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3476,8 +3476,8 @@ export class EmojiListResource extends RpcTarget {
 	 *
 	 * `GET /emoji.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/emoji.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/emoji.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "emoji_list",
 			namespace: "emoji.list",
 			method: "list",
@@ -3490,13 +3490,13 @@ export class EmojiListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/emoji.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesCommentsDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3508,8 +3508,8 @@ export class FilesCommentsDeleteResource extends RpcTarget {
 	 *
 	 * `POST /files.comments.delete` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/files.comments.delete"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/files.comments.delete"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_comments_delete",
 			namespace: "files.comments.delete",
 			method: "create",
@@ -3522,13 +3522,13 @@ export class FilesCommentsDeleteResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.comments.delete"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3540,8 +3540,8 @@ export class FilesDeleteResource extends RpcTarget {
 	 *
 	 * `POST /files.delete` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/files.delete"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/files.delete"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_delete",
 			namespace: "files.delete",
 			method: "create",
@@ -3554,13 +3554,13 @@ export class FilesDeleteResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.delete"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3572,8 +3572,8 @@ export class FilesInfoResource extends RpcTarget {
 	 *
 	 * `GET /files.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/files.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_info",
 			namespace: "files.info",
 			method: "list",
@@ -3586,13 +3586,13 @@ export class FilesInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3604,8 +3604,8 @@ export class FilesListResource extends RpcTarget {
 	 *
 	 * `GET /files.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/files.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_list",
 			namespace: "files.list",
 			method: "list",
@@ -3618,13 +3618,13 @@ export class FilesListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesRemoteAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3636,8 +3636,8 @@ export class FilesRemoteAddResource extends RpcTarget {
 	 *
 	 * `POST /files.remote.add` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/files.remote.add"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/files.remote.add"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_remote_add",
 			namespace: "files.remote.add",
 			method: "create",
@@ -3650,13 +3650,13 @@ export class FilesRemoteAddResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.remote.add"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesRemoteInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3668,8 +3668,8 @@ export class FilesRemoteInfoResource extends RpcTarget {
 	 *
 	 * `GET /files.remote.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/files.remote.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files.remote.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_remote_info",
 			namespace: "files.remote.info",
 			method: "list",
@@ -3682,13 +3682,13 @@ export class FilesRemoteInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.remote.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesRemoteListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3700,8 +3700,8 @@ export class FilesRemoteListResource extends RpcTarget {
 	 *
 	 * `GET /files.remote.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/files.remote.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files.remote.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_remote_list",
 			namespace: "files.remote.list",
 			method: "list",
@@ -3714,13 +3714,13 @@ export class FilesRemoteListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.remote.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesRemoteRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3732,8 +3732,8 @@ export class FilesRemoteRemoveResource extends RpcTarget {
 	 *
 	 * `POST /files.remote.remove` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/files.remote.remove"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/files.remote.remove"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_remote_remove",
 			namespace: "files.remote.remove",
 			method: "create",
@@ -3746,13 +3746,13 @@ export class FilesRemoteRemoveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.remote.remove"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesRemoteShareResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3764,8 +3764,8 @@ export class FilesRemoteShareResource extends RpcTarget {
 	 *
 	 * `GET /files.remote.share` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/files.remote.share"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files.remote.share"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_remote_share",
 			namespace: "files.remote.share",
 			method: "list",
@@ -3778,13 +3778,13 @@ export class FilesRemoteShareResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.remote.share"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesRemoteUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3796,8 +3796,8 @@ export class FilesRemoteUpdateResource extends RpcTarget {
 	 *
 	 * `POST /files.remote.update` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/files.remote.update"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/files.remote.update"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_remote_update",
 			namespace: "files.remote.update",
 			method: "create",
@@ -3810,13 +3810,13 @@ export class FilesRemoteUpdateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.remote.update"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesRevokePublicURLResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3828,8 +3828,8 @@ export class FilesRevokePublicURLResource extends RpcTarget {
 	 *
 	 * `POST /files.revokePublicURL` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/files.revokePublicURL"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/files.revokePublicURL"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_revokePublicURL",
 			namespace: "files.revokePublicURL",
 			method: "create",
@@ -3842,13 +3842,13 @@ export class FilesRevokePublicURLResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.revokePublicURL"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesSharedPublicURLResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3860,8 +3860,8 @@ export class FilesSharedPublicURLResource extends RpcTarget {
 	 *
 	 * `POST /files.sharedPublicURL` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/files.sharedPublicURL"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/files.sharedPublicURL"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_sharedPublicURL",
 			namespace: "files.sharedPublicURL",
 			method: "create",
@@ -3874,13 +3874,13 @@ export class FilesSharedPublicURLResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.sharedPublicURL"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FilesUploadResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3892,8 +3892,8 @@ export class FilesUploadResource extends RpcTarget {
 	 *
 	 * `POST /files.upload` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/files.upload"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/files.upload"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "files_upload",
 			namespace: "files.upload",
 			method: "create",
@@ -3906,13 +3906,13 @@ export class FilesUploadResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files.upload"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class MigrationExchangeResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3924,8 +3924,8 @@ export class MigrationExchangeResource extends RpcTarget {
 	 *
 	 * `GET /migration.exchange` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/migration.exchange"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/migration.exchange"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "migration_exchange",
 			namespace: "migration.exchange",
 			method: "list",
@@ -3938,13 +3938,13 @@ export class MigrationExchangeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/migration.exchange"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class OauthAccessResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3956,8 +3956,8 @@ export class OauthAccessResource extends RpcTarget {
 	 *
 	 * `GET /oauth.access` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/oauth.access"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/oauth.access"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "oauth_access",
 			namespace: "oauth.access",
 			method: "list",
@@ -3970,13 +3970,13 @@ export class OauthAccessResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/oauth.access"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class OauthTokenResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3988,8 +3988,8 @@ export class OauthTokenResource extends RpcTarget {
 	 *
 	 * `GET /oauth.token` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/oauth.token"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/oauth.token"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "oauth_token",
 			namespace: "oauth.token",
 			method: "list",
@@ -4002,13 +4002,13 @@ export class OauthTokenResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/oauth.token"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class OauthV2AccessResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4020,8 +4020,8 @@ export class OauthV2AccessResource extends RpcTarget {
 	 *
 	 * `GET /oauth.v2.access` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/oauth.v2.access"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/oauth.v2.access"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "oauth_v2_access",
 			namespace: "oauth.v2.access",
 			method: "list",
@@ -4034,13 +4034,13 @@ export class OauthV2AccessResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/oauth.v2.access"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class PinsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4052,8 +4052,8 @@ export class PinsAddResource extends RpcTarget {
 	 *
 	 * `POST /pins.add` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/pins.add"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/pins.add"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "pins_add",
 			namespace: "pins.add",
 			method: "create",
@@ -4066,13 +4066,13 @@ export class PinsAddResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/pins.add"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class PinsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4084,8 +4084,8 @@ export class PinsListResource extends RpcTarget {
 	 *
 	 * `GET /pins.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/pins.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/pins.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "pins_list",
 			namespace: "pins.list",
 			method: "list",
@@ -4098,13 +4098,13 @@ export class PinsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/pins.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class PinsRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4116,8 +4116,8 @@ export class PinsRemoveResource extends RpcTarget {
 	 *
 	 * `POST /pins.remove` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/pins.remove"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/pins.remove"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "pins_remove",
 			namespace: "pins.remove",
 			method: "create",
@@ -4130,13 +4130,13 @@ export class PinsRemoveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/pins.remove"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ReactionsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4148,8 +4148,8 @@ export class ReactionsAddResource extends RpcTarget {
 	 *
 	 * `POST /reactions.add` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/reactions.add"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/reactions.add"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reactions_add",
 			namespace: "reactions.add",
 			method: "create",
@@ -4162,13 +4162,13 @@ export class ReactionsAddResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/reactions.add"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ReactionsGetResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4180,8 +4180,8 @@ export class ReactionsGetResource extends RpcTarget {
 	 *
 	 * `GET /reactions.get` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/reactions.get"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/reactions.get"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reactions_get",
 			namespace: "reactions.get",
 			method: "list",
@@ -4194,13 +4194,13 @@ export class ReactionsGetResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/reactions.get"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ReactionsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4212,8 +4212,8 @@ export class ReactionsListResource extends RpcTarget {
 	 *
 	 * `GET /reactions.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/reactions.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/reactions.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reactions_list",
 			namespace: "reactions.list",
 			method: "list",
@@ -4226,13 +4226,13 @@ export class ReactionsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/reactions.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ReactionsRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4244,8 +4244,8 @@ export class ReactionsRemoveResource extends RpcTarget {
 	 *
 	 * `POST /reactions.remove` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/reactions.remove"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/reactions.remove"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reactions_remove",
 			namespace: "reactions.remove",
 			method: "create",
@@ -4258,13 +4258,13 @@ export class ReactionsRemoveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/reactions.remove"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RemindersAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4276,8 +4276,8 @@ export class RemindersAddResource extends RpcTarget {
 	 *
 	 * `POST /reminders.add` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/reminders.add"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/reminders.add"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reminders_add",
 			namespace: "reminders.add",
 			method: "create",
@@ -4290,13 +4290,13 @@ export class RemindersAddResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/reminders.add"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RemindersCompleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4308,8 +4308,8 @@ export class RemindersCompleteResource extends RpcTarget {
 	 *
 	 * `POST /reminders.complete` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/reminders.complete"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/reminders.complete"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reminders_complete",
 			namespace: "reminders.complete",
 			method: "create",
@@ -4322,13 +4322,13 @@ export class RemindersCompleteResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/reminders.complete"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RemindersDeleteResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4340,8 +4340,8 @@ export class RemindersDeleteResource extends RpcTarget {
 	 *
 	 * `POST /reminders.delete` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/reminders.delete"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/reminders.delete"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reminders_delete",
 			namespace: "reminders.delete",
 			method: "create",
@@ -4354,13 +4354,13 @@ export class RemindersDeleteResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/reminders.delete"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RemindersInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4372,8 +4372,8 @@ export class RemindersInfoResource extends RpcTarget {
 	 *
 	 * `GET /reminders.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/reminders.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/reminders.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reminders_info",
 			namespace: "reminders.info",
 			method: "list",
@@ -4386,13 +4386,13 @@ export class RemindersInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/reminders.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RemindersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4404,8 +4404,8 @@ export class RemindersListResource extends RpcTarget {
 	 *
 	 * `GET /reminders.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/reminders.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/reminders.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reminders_list",
 			namespace: "reminders.list",
 			method: "list",
@@ -4418,13 +4418,13 @@ export class RemindersListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/reminders.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RtmConnectResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4436,8 +4436,8 @@ export class RtmConnectResource extends RpcTarget {
 	 *
 	 * `GET /rtm.connect` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/rtm.connect"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/rtm.connect"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "rtm_connect",
 			namespace: "rtm.connect",
 			method: "list",
@@ -4450,13 +4450,13 @@ export class RtmConnectResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/rtm.connect"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class SearchMessagesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4468,8 +4468,8 @@ export class SearchMessagesResource extends RpcTarget {
 	 *
 	 * `GET /search.messages` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/search.messages"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/search.messages"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "search_messages",
 			namespace: "search.messages",
 			method: "list",
@@ -4482,13 +4482,13 @@ export class SearchMessagesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/search.messages"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class StarsAddResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4500,8 +4500,8 @@ export class StarsAddResource extends RpcTarget {
 	 *
 	 * `POST /stars.add` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/stars.add"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/stars.add"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "stars_add",
 			namespace: "stars.add",
 			method: "create",
@@ -4514,13 +4514,13 @@ export class StarsAddResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/stars.add"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class StarsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4532,8 +4532,8 @@ export class StarsListResource extends RpcTarget {
 	 *
 	 * `GET /stars.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/stars.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/stars.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "stars_list",
 			namespace: "stars.list",
 			method: "list",
@@ -4546,13 +4546,13 @@ export class StarsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/stars.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class StarsRemoveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4564,8 +4564,8 @@ export class StarsRemoveResource extends RpcTarget {
 	 *
 	 * `POST /stars.remove` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/stars.remove"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/stars.remove"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "stars_remove",
 			namespace: "stars.remove",
 			method: "create",
@@ -4578,13 +4578,13 @@ export class StarsRemoveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/stars.remove"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TeamAccessLogsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4596,8 +4596,8 @@ export class TeamAccessLogsResource extends RpcTarget {
 	 *
 	 * `GET /team.accessLogs` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/team.accessLogs"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/team.accessLogs"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "team_accessLogs",
 			namespace: "team.accessLogs",
 			method: "list",
@@ -4610,13 +4610,13 @@ export class TeamAccessLogsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/team.accessLogs"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TeamBillableInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4628,8 +4628,8 @@ export class TeamBillableInfoResource extends RpcTarget {
 	 *
 	 * `GET /team.billableInfo` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/team.billableInfo"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/team.billableInfo"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "team_billableInfo",
 			namespace: "team.billableInfo",
 			method: "list",
@@ -4642,13 +4642,13 @@ export class TeamBillableInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/team.billableInfo"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TeamInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4660,8 +4660,8 @@ export class TeamInfoResource extends RpcTarget {
 	 *
 	 * `GET /team.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/team.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/team.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "team_info",
 			namespace: "team.info",
 			method: "list",
@@ -4674,13 +4674,13 @@ export class TeamInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/team.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TeamIntegrationLogsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4692,8 +4692,8 @@ export class TeamIntegrationLogsResource extends RpcTarget {
 	 *
 	 * `GET /team.integrationLogs` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/team.integrationLogs"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/team.integrationLogs"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "team_integrationLogs",
 			namespace: "team.integrationLogs",
 			method: "list",
@@ -4706,13 +4706,13 @@ export class TeamIntegrationLogsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/team.integrationLogs"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TeamProfileGetResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4724,8 +4724,8 @@ export class TeamProfileGetResource extends RpcTarget {
 	 *
 	 * `GET /team.profile.get` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/team.profile.get"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/team.profile.get"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "team_profile_get",
 			namespace: "team.profile.get",
 			method: "list",
@@ -4738,13 +4738,13 @@ export class TeamProfileGetResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/team.profile.get"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsergroupsCreateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4756,8 +4756,8 @@ export class UsergroupsCreateResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.create` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/usergroups.create"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/usergroups.create"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "usergroups_create",
 			namespace: "usergroups.create",
 			method: "create",
@@ -4770,13 +4770,13 @@ export class UsergroupsCreateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/usergroups.create"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsergroupsDisableResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4788,8 +4788,8 @@ export class UsergroupsDisableResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.disable` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/usergroups.disable"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/usergroups.disable"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "usergroups_disable",
 			namespace: "usergroups.disable",
 			method: "create",
@@ -4802,13 +4802,13 @@ export class UsergroupsDisableResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/usergroups.disable"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsergroupsEnableResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4820,8 +4820,8 @@ export class UsergroupsEnableResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.enable` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/usergroups.enable"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/usergroups.enable"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "usergroups_enable",
 			namespace: "usergroups.enable",
 			method: "create",
@@ -4834,13 +4834,13 @@ export class UsergroupsEnableResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/usergroups.enable"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsergroupsListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4852,8 +4852,8 @@ export class UsergroupsListResource extends RpcTarget {
 	 *
 	 * `GET /usergroups.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/usergroups.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/usergroups.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "usergroups_list",
 			namespace: "usergroups.list",
 			method: "list",
@@ -4866,13 +4866,13 @@ export class UsergroupsListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/usergroups.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsergroupsUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4884,8 +4884,8 @@ export class UsergroupsUpdateResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.update` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/usergroups.update"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/usergroups.update"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "usergroups_update",
 			namespace: "usergroups.update",
 			method: "create",
@@ -4898,13 +4898,13 @@ export class UsergroupsUpdateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/usergroups.update"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsergroupsUsersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4916,8 +4916,8 @@ export class UsergroupsUsersListResource extends RpcTarget {
 	 *
 	 * `GET /usergroups.users.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/usergroups.users.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/usergroups.users.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "usergroups_users_list",
 			namespace: "usergroups.users.list",
 			method: "list",
@@ -4930,13 +4930,13 @@ export class UsergroupsUsersListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/usergroups.users.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsergroupsUsersUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4948,8 +4948,8 @@ export class UsergroupsUsersUpdateResource extends RpcTarget {
 	 *
 	 * `POST /usergroups.users.update` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/usergroups.users.update"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/usergroups.users.update"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "usergroups_users_update",
 			namespace: "usergroups.users.update",
 			method: "create",
@@ -4962,13 +4962,13 @@ export class UsergroupsUsersUpdateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/usergroups.users.update"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersConversationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4980,8 +4980,8 @@ export class UsersConversationsResource extends RpcTarget {
 	 *
 	 * `GET /users.conversations` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/users.conversations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users.conversations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_conversations",
 			namespace: "users.conversations",
 			method: "list",
@@ -4994,13 +4994,13 @@ export class UsersConversationsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.conversations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersDeletePhotoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5012,8 +5012,8 @@ export class UsersDeletePhotoResource extends RpcTarget {
 	 *
 	 * `POST /users.deletePhoto` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/users.deletePhoto"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/users.deletePhoto"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_deletePhoto",
 			namespace: "users.deletePhoto",
 			method: "create",
@@ -5026,13 +5026,13 @@ export class UsersDeletePhotoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.deletePhoto"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersGetPresenceResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5044,8 +5044,8 @@ export class UsersGetPresenceResource extends RpcTarget {
 	 *
 	 * `GET /users.getPresence` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/users.getPresence"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users.getPresence"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_getPresence",
 			namespace: "users.getPresence",
 			method: "list",
@@ -5058,13 +5058,13 @@ export class UsersGetPresenceResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.getPresence"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersIdentityResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5076,8 +5076,8 @@ export class UsersIdentityResource extends RpcTarget {
 	 *
 	 * `GET /users.identity` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/users.identity"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users.identity"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_identity",
 			namespace: "users.identity",
 			method: "list",
@@ -5090,13 +5090,13 @@ export class UsersIdentityResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.identity"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersInfoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5108,8 +5108,8 @@ export class UsersInfoResource extends RpcTarget {
 	 *
 	 * `GET /users.info` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/users.info"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users.info"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_info",
 			namespace: "users.info",
 			method: "list",
@@ -5122,13 +5122,13 @@ export class UsersInfoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.info"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersListResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5140,8 +5140,8 @@ export class UsersListResource extends RpcTarget {
 	 *
 	 * `GET /users.list` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/users.list"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users.list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_list",
 			namespace: "users.list",
 			method: "list",
@@ -5154,13 +5154,13 @@ export class UsersListResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersLookupByEmailResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5172,8 +5172,8 @@ export class UsersLookupByEmailResource extends RpcTarget {
 	 *
 	 * `GET /users.lookupByEmail` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/users.lookupByEmail"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users.lookupByEmail"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_lookupByEmail",
 			namespace: "users.lookupByEmail",
 			method: "list",
@@ -5186,13 +5186,13 @@ export class UsersLookupByEmailResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.lookupByEmail"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersProfileGetResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5204,8 +5204,8 @@ export class UsersProfileGetResource extends RpcTarget {
 	 *
 	 * `GET /users.profile.get` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/users.profile.get"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users.profile.get"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_profile_get",
 			namespace: "users.profile.get",
 			method: "list",
@@ -5218,13 +5218,13 @@ export class UsersProfileGetResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.profile.get"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersProfileSetResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5236,8 +5236,8 @@ export class UsersProfileSetResource extends RpcTarget {
 	 *
 	 * `POST /users.profile.set` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/users.profile.set"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/users.profile.set"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_profile_set",
 			namespace: "users.profile.set",
 			method: "create",
@@ -5250,13 +5250,13 @@ export class UsersProfileSetResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.profile.set"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersSetActiveResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5268,8 +5268,8 @@ export class UsersSetActiveResource extends RpcTarget {
 	 *
 	 * `POST /users.setActive` — risk: medium
 	 */
-	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(options?: CallOptions): Promise<ProofResult<paths["/users.setActive"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_setActive",
 			namespace: "users.setActive",
 			method: "create",
@@ -5282,13 +5282,13 @@ export class UsersSetActiveResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.setActive"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersSetPhotoResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5300,8 +5300,8 @@ export class UsersSetPhotoResource extends RpcTarget {
 	 *
 	 * `POST /users.setPhoto` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/users.setPhoto"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/users.setPhoto"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_setPhoto",
 			namespace: "users.setPhoto",
 			method: "create",
@@ -5314,13 +5314,13 @@ export class UsersSetPhotoResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.setPhoto"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersSetPresenceResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5332,8 +5332,8 @@ export class UsersSetPresenceResource extends RpcTarget {
 	 *
 	 * `POST /users.setPresence` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/users.setPresence"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/users.setPresence"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users_setPresence",
 			namespace: "users.setPresence",
 			method: "create",
@@ -5346,13 +5346,13 @@ export class UsersSetPresenceResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users.setPresence"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ViewsOpenResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5364,8 +5364,8 @@ export class ViewsOpenResource extends RpcTarget {
 	 *
 	 * `GET /views.open` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/views.open"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/views.open"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "views_open",
 			namespace: "views.open",
 			method: "list",
@@ -5378,13 +5378,13 @@ export class ViewsOpenResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/views.open"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ViewsPublishResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5396,8 +5396,8 @@ export class ViewsPublishResource extends RpcTarget {
 	 *
 	 * `GET /views.publish` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/views.publish"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/views.publish"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "views_publish",
 			namespace: "views.publish",
 			method: "list",
@@ -5410,13 +5410,13 @@ export class ViewsPublishResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/views.publish"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ViewsPushResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5428,8 +5428,8 @@ export class ViewsPushResource extends RpcTarget {
 	 *
 	 * `GET /views.push` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/views.push"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/views.push"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "views_push",
 			namespace: "views.push",
 			method: "list",
@@ -5442,13 +5442,13 @@ export class ViewsPushResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/views.push"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ViewsUpdateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5460,8 +5460,8 @@ export class ViewsUpdateResource extends RpcTarget {
 	 *
 	 * `GET /views.update` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/views.update"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/views.update"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "views_update",
 			namespace: "views.update",
 			method: "list",
@@ -5474,13 +5474,13 @@ export class ViewsUpdateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/views.update"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class WorkflowsStepCompletedResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5492,8 +5492,8 @@ export class WorkflowsStepCompletedResource extends RpcTarget {
 	 *
 	 * `GET /workflows.stepCompleted` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/workflows.stepCompleted"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/workflows.stepCompleted"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "workflows_stepCompleted",
 			namespace: "workflows.stepCompleted",
 			method: "list",
@@ -5506,13 +5506,13 @@ export class WorkflowsStepCompletedResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/workflows.stepCompleted"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class WorkflowsStepFailedResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5524,8 +5524,8 @@ export class WorkflowsStepFailedResource extends RpcTarget {
 	 *
 	 * `GET /workflows.stepFailed` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/workflows.stepFailed"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/workflows.stepFailed"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "workflows_stepFailed",
 			namespace: "workflows.stepFailed",
 			method: "list",
@@ -5538,13 +5538,13 @@ export class WorkflowsStepFailedResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/workflows.stepFailed"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class WorkflowsUpdateStepResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5556,8 +5556,8 @@ export class WorkflowsUpdateStepResource extends RpcTarget {
 	 *
 	 * `GET /workflows.updateStep` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/workflows.updateStep"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/workflows.updateStep"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "workflows_updateStep",
 			namespace: "workflows.updateStep",
 			method: "list",
@@ -5570,711 +5570,716 @@ export class WorkflowsUpdateStepResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/workflows.updateStep"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 interface Env {
 	SLACK_API_KEY?: string;
+	SLACK_USER_ID?: string;
 }
 
 export class SlackCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
 	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
+	protected providerCredentials(): import("./runtime.ts").Credentials {
+		return { apiKey: this.env.SLACK_API_KEY, username: this.env.SLACK_USER_ID };
+	}
+
 	get adminAppsApprove(): AdminAppsApproveResource {
-		return new AdminAppsApproveResource(this.env.SLACK_API_KEY, this.overrides["admin.apps.approve"] || {}, this.runtimeConfig);
+		return new AdminAppsApproveResource(this.providerCredentials(), this.overrides["admin.apps.approve"] || {}, this.runtimeConfig);
 	}
 
 	get adminAppsApprovedList(): AdminAppsApprovedListResource {
-		return new AdminAppsApprovedListResource(this.env.SLACK_API_KEY, this.overrides["admin.apps.approved.list"] || {}, this.runtimeConfig);
+		return new AdminAppsApprovedListResource(this.providerCredentials(), this.overrides["admin.apps.approved.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminAppsRequestsList(): AdminAppsRequestsListResource {
-		return new AdminAppsRequestsListResource(this.env.SLACK_API_KEY, this.overrides["admin.apps.requests.list"] || {}, this.runtimeConfig);
+		return new AdminAppsRequestsListResource(this.providerCredentials(), this.overrides["admin.apps.requests.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminAppsRestrict(): AdminAppsRestrictResource {
-		return new AdminAppsRestrictResource(this.env.SLACK_API_KEY, this.overrides["admin.apps.restrict"] || {}, this.runtimeConfig);
+		return new AdminAppsRestrictResource(this.providerCredentials(), this.overrides["admin.apps.restrict"] || {}, this.runtimeConfig);
 	}
 
 	get adminAppsRestrictedList(): AdminAppsRestrictedListResource {
-		return new AdminAppsRestrictedListResource(this.env.SLACK_API_KEY, this.overrides["admin.apps.restricted.list"] || {}, this.runtimeConfig);
+		return new AdminAppsRestrictedListResource(this.providerCredentials(), this.overrides["admin.apps.restricted.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsArchive(): AdminConversationsArchiveResource {
-		return new AdminConversationsArchiveResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.archive"] || {}, this.runtimeConfig);
+		return new AdminConversationsArchiveResource(this.providerCredentials(), this.overrides["admin.conversations.archive"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsConvertToPrivate(): AdminConversationsConvertToPrivateResource {
-		return new AdminConversationsConvertToPrivateResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.convertToPrivate"] || {}, this.runtimeConfig);
+		return new AdminConversationsConvertToPrivateResource(this.providerCredentials(), this.overrides["admin.conversations.convertToPrivate"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsCreate(): AdminConversationsCreateResource {
-		return new AdminConversationsCreateResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.create"] || {}, this.runtimeConfig);
+		return new AdminConversationsCreateResource(this.providerCredentials(), this.overrides["admin.conversations.create"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsDelete(): AdminConversationsDeleteResource {
-		return new AdminConversationsDeleteResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.delete"] || {}, this.runtimeConfig);
+		return new AdminConversationsDeleteResource(this.providerCredentials(), this.overrides["admin.conversations.delete"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsDisconnectShared(): AdminConversationsDisconnectSharedResource {
-		return new AdminConversationsDisconnectSharedResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.disconnectShared"] || {}, this.runtimeConfig);
+		return new AdminConversationsDisconnectSharedResource(this.providerCredentials(), this.overrides["admin.conversations.disconnectShared"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsEkmListOriginalConnectedChannelInfo(): AdminConversationsEkmListOriginalConnectedChannelInfoResource {
-		return new AdminConversationsEkmListOriginalConnectedChannelInfoResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.ekm.listOriginalConnectedChannelInfo"] || {}, this.runtimeConfig);
+		return new AdminConversationsEkmListOriginalConnectedChannelInfoResource(this.providerCredentials(), this.overrides["admin.conversations.ekm.listOriginalConnectedChannelInfo"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsGetConversationPrefs(): AdminConversationsGetConversationPrefsResource {
-		return new AdminConversationsGetConversationPrefsResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.getConversationPrefs"] || {}, this.runtimeConfig);
+		return new AdminConversationsGetConversationPrefsResource(this.providerCredentials(), this.overrides["admin.conversations.getConversationPrefs"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsGetTeams(): AdminConversationsGetTeamsResource {
-		return new AdminConversationsGetTeamsResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.getTeams"] || {}, this.runtimeConfig);
+		return new AdminConversationsGetTeamsResource(this.providerCredentials(), this.overrides["admin.conversations.getTeams"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsInvite(): AdminConversationsInviteResource {
-		return new AdminConversationsInviteResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.invite"] || {}, this.runtimeConfig);
+		return new AdminConversationsInviteResource(this.providerCredentials(), this.overrides["admin.conversations.invite"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsRename(): AdminConversationsRenameResource {
-		return new AdminConversationsRenameResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.rename"] || {}, this.runtimeConfig);
+		return new AdminConversationsRenameResource(this.providerCredentials(), this.overrides["admin.conversations.rename"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsRestrictAccessAddGroup(): AdminConversationsRestrictAccessAddGroupResource {
-		return new AdminConversationsRestrictAccessAddGroupResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.restrictAccess.addGroup"] || {}, this.runtimeConfig);
+		return new AdminConversationsRestrictAccessAddGroupResource(this.providerCredentials(), this.overrides["admin.conversations.restrictAccess.addGroup"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsRestrictAccessListGroups(): AdminConversationsRestrictAccessListGroupsResource {
-		return new AdminConversationsRestrictAccessListGroupsResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.restrictAccess.listGroups"] || {}, this.runtimeConfig);
+		return new AdminConversationsRestrictAccessListGroupsResource(this.providerCredentials(), this.overrides["admin.conversations.restrictAccess.listGroups"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsRestrictAccessRemoveGroup(): AdminConversationsRestrictAccessRemoveGroupResource {
-		return new AdminConversationsRestrictAccessRemoveGroupResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.restrictAccess.removeGroup"] || {}, this.runtimeConfig);
+		return new AdminConversationsRestrictAccessRemoveGroupResource(this.providerCredentials(), this.overrides["admin.conversations.restrictAccess.removeGroup"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsSearch(): AdminConversationsSearchResource {
-		return new AdminConversationsSearchResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.search"] || {}, this.runtimeConfig);
+		return new AdminConversationsSearchResource(this.providerCredentials(), this.overrides["admin.conversations.search"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsSetConversationPrefs(): AdminConversationsSetConversationPrefsResource {
-		return new AdminConversationsSetConversationPrefsResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.setConversationPrefs"] || {}, this.runtimeConfig);
+		return new AdminConversationsSetConversationPrefsResource(this.providerCredentials(), this.overrides["admin.conversations.setConversationPrefs"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsSetTeams(): AdminConversationsSetTeamsResource {
-		return new AdminConversationsSetTeamsResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.setTeams"] || {}, this.runtimeConfig);
+		return new AdminConversationsSetTeamsResource(this.providerCredentials(), this.overrides["admin.conversations.setTeams"] || {}, this.runtimeConfig);
 	}
 
 	get adminConversationsUnarchive(): AdminConversationsUnarchiveResource {
-		return new AdminConversationsUnarchiveResource(this.env.SLACK_API_KEY, this.overrides["admin.conversations.unarchive"] || {}, this.runtimeConfig);
+		return new AdminConversationsUnarchiveResource(this.providerCredentials(), this.overrides["admin.conversations.unarchive"] || {}, this.runtimeConfig);
 	}
 
 	get adminEmojiAdd(): AdminEmojiAddResource {
-		return new AdminEmojiAddResource(this.env.SLACK_API_KEY, this.overrides["admin.emoji.add"] || {}, this.runtimeConfig);
+		return new AdminEmojiAddResource(this.providerCredentials(), this.overrides["admin.emoji.add"] || {}, this.runtimeConfig);
 	}
 
 	get adminEmojiAddAlias(): AdminEmojiAddAliasResource {
-		return new AdminEmojiAddAliasResource(this.env.SLACK_API_KEY, this.overrides["admin.emoji.addAlias"] || {}, this.runtimeConfig);
+		return new AdminEmojiAddAliasResource(this.providerCredentials(), this.overrides["admin.emoji.addAlias"] || {}, this.runtimeConfig);
 	}
 
 	get adminEmojiList(): AdminEmojiListResource {
-		return new AdminEmojiListResource(this.env.SLACK_API_KEY, this.overrides["admin.emoji.list"] || {}, this.runtimeConfig);
+		return new AdminEmojiListResource(this.providerCredentials(), this.overrides["admin.emoji.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminEmojiRemove(): AdminEmojiRemoveResource {
-		return new AdminEmojiRemoveResource(this.env.SLACK_API_KEY, this.overrides["admin.emoji.remove"] || {}, this.runtimeConfig);
+		return new AdminEmojiRemoveResource(this.providerCredentials(), this.overrides["admin.emoji.remove"] || {}, this.runtimeConfig);
 	}
 
 	get adminEmojiRename(): AdminEmojiRenameResource {
-		return new AdminEmojiRenameResource(this.env.SLACK_API_KEY, this.overrides["admin.emoji.rename"] || {}, this.runtimeConfig);
+		return new AdminEmojiRenameResource(this.providerCredentials(), this.overrides["admin.emoji.rename"] || {}, this.runtimeConfig);
 	}
 
 	get adminInviteRequestsApprove(): AdminInviteRequestsApproveResource {
-		return new AdminInviteRequestsApproveResource(this.env.SLACK_API_KEY, this.overrides["admin.inviteRequests.approve"] || {}, this.runtimeConfig);
+		return new AdminInviteRequestsApproveResource(this.providerCredentials(), this.overrides["admin.inviteRequests.approve"] || {}, this.runtimeConfig);
 	}
 
 	get adminInviteRequestsApprovedList(): AdminInviteRequestsApprovedListResource {
-		return new AdminInviteRequestsApprovedListResource(this.env.SLACK_API_KEY, this.overrides["admin.inviteRequests.approved.list"] || {}, this.runtimeConfig);
+		return new AdminInviteRequestsApprovedListResource(this.providerCredentials(), this.overrides["admin.inviteRequests.approved.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminInviteRequestsDeniedList(): AdminInviteRequestsDeniedListResource {
-		return new AdminInviteRequestsDeniedListResource(this.env.SLACK_API_KEY, this.overrides["admin.inviteRequests.denied.list"] || {}, this.runtimeConfig);
+		return new AdminInviteRequestsDeniedListResource(this.providerCredentials(), this.overrides["admin.inviteRequests.denied.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminInviteRequestsDeny(): AdminInviteRequestsDenyResource {
-		return new AdminInviteRequestsDenyResource(this.env.SLACK_API_KEY, this.overrides["admin.inviteRequests.deny"] || {}, this.runtimeConfig);
+		return new AdminInviteRequestsDenyResource(this.providerCredentials(), this.overrides["admin.inviteRequests.deny"] || {}, this.runtimeConfig);
 	}
 
 	get adminInviteRequestsList(): AdminInviteRequestsListResource {
-		return new AdminInviteRequestsListResource(this.env.SLACK_API_KEY, this.overrides["admin.inviteRequests.list"] || {}, this.runtimeConfig);
+		return new AdminInviteRequestsListResource(this.providerCredentials(), this.overrides["admin.inviteRequests.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsAdminsList(): AdminTeamsAdminsListResource {
-		return new AdminTeamsAdminsListResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.admins.list"] || {}, this.runtimeConfig);
+		return new AdminTeamsAdminsListResource(this.providerCredentials(), this.overrides["admin.teams.admins.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsCreate(): AdminTeamsCreateResource {
-		return new AdminTeamsCreateResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.create"] || {}, this.runtimeConfig);
+		return new AdminTeamsCreateResource(this.providerCredentials(), this.overrides["admin.teams.create"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsList(): AdminTeamsListResource {
-		return new AdminTeamsListResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.list"] || {}, this.runtimeConfig);
+		return new AdminTeamsListResource(this.providerCredentials(), this.overrides["admin.teams.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsOwnersList(): AdminTeamsOwnersListResource {
-		return new AdminTeamsOwnersListResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.owners.list"] || {}, this.runtimeConfig);
+		return new AdminTeamsOwnersListResource(this.providerCredentials(), this.overrides["admin.teams.owners.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsSettingsInfo(): AdminTeamsSettingsInfoResource {
-		return new AdminTeamsSettingsInfoResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.settings.info"] || {}, this.runtimeConfig);
+		return new AdminTeamsSettingsInfoResource(this.providerCredentials(), this.overrides["admin.teams.settings.info"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsSettingsSetDefaultChannels(): AdminTeamsSettingsSetDefaultChannelsResource {
-		return new AdminTeamsSettingsSetDefaultChannelsResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.settings.setDefaultChannels"] || {}, this.runtimeConfig);
+		return new AdminTeamsSettingsSetDefaultChannelsResource(this.providerCredentials(), this.overrides["admin.teams.settings.setDefaultChannels"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsSettingsSetDescription(): AdminTeamsSettingsSetDescriptionResource {
-		return new AdminTeamsSettingsSetDescriptionResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.settings.setDescription"] || {}, this.runtimeConfig);
+		return new AdminTeamsSettingsSetDescriptionResource(this.providerCredentials(), this.overrides["admin.teams.settings.setDescription"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsSettingsSetDiscoverability(): AdminTeamsSettingsSetDiscoverabilityResource {
-		return new AdminTeamsSettingsSetDiscoverabilityResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.settings.setDiscoverability"] || {}, this.runtimeConfig);
+		return new AdminTeamsSettingsSetDiscoverabilityResource(this.providerCredentials(), this.overrides["admin.teams.settings.setDiscoverability"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsSettingsSetIcon(): AdminTeamsSettingsSetIconResource {
-		return new AdminTeamsSettingsSetIconResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.settings.setIcon"] || {}, this.runtimeConfig);
+		return new AdminTeamsSettingsSetIconResource(this.providerCredentials(), this.overrides["admin.teams.settings.setIcon"] || {}, this.runtimeConfig);
 	}
 
 	get adminTeamsSettingsSetName(): AdminTeamsSettingsSetNameResource {
-		return new AdminTeamsSettingsSetNameResource(this.env.SLACK_API_KEY, this.overrides["admin.teams.settings.setName"] || {}, this.runtimeConfig);
+		return new AdminTeamsSettingsSetNameResource(this.providerCredentials(), this.overrides["admin.teams.settings.setName"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsergroupsAddChannels(): AdminUsergroupsAddChannelsResource {
-		return new AdminUsergroupsAddChannelsResource(this.env.SLACK_API_KEY, this.overrides["admin.usergroups.addChannels"] || {}, this.runtimeConfig);
+		return new AdminUsergroupsAddChannelsResource(this.providerCredentials(), this.overrides["admin.usergroups.addChannels"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsergroupsAddTeams(): AdminUsergroupsAddTeamsResource {
-		return new AdminUsergroupsAddTeamsResource(this.env.SLACK_API_KEY, this.overrides["admin.usergroups.addTeams"] || {}, this.runtimeConfig);
+		return new AdminUsergroupsAddTeamsResource(this.providerCredentials(), this.overrides["admin.usergroups.addTeams"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsergroupsListChannels(): AdminUsergroupsListChannelsResource {
-		return new AdminUsergroupsListChannelsResource(this.env.SLACK_API_KEY, this.overrides["admin.usergroups.listChannels"] || {}, this.runtimeConfig);
+		return new AdminUsergroupsListChannelsResource(this.providerCredentials(), this.overrides["admin.usergroups.listChannels"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsergroupsRemoveChannels(): AdminUsergroupsRemoveChannelsResource {
-		return new AdminUsergroupsRemoveChannelsResource(this.env.SLACK_API_KEY, this.overrides["admin.usergroups.removeChannels"] || {}, this.runtimeConfig);
+		return new AdminUsergroupsRemoveChannelsResource(this.providerCredentials(), this.overrides["admin.usergroups.removeChannels"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersAssign(): AdminUsersAssignResource {
-		return new AdminUsersAssignResource(this.env.SLACK_API_KEY, this.overrides["admin.users.assign"] || {}, this.runtimeConfig);
+		return new AdminUsersAssignResource(this.providerCredentials(), this.overrides["admin.users.assign"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersInvite(): AdminUsersInviteResource {
-		return new AdminUsersInviteResource(this.env.SLACK_API_KEY, this.overrides["admin.users.invite"] || {}, this.runtimeConfig);
+		return new AdminUsersInviteResource(this.providerCredentials(), this.overrides["admin.users.invite"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersList(): AdminUsersListResource {
-		return new AdminUsersListResource(this.env.SLACK_API_KEY, this.overrides["admin.users.list"] || {}, this.runtimeConfig);
+		return new AdminUsersListResource(this.providerCredentials(), this.overrides["admin.users.list"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersRemove(): AdminUsersRemoveResource {
-		return new AdminUsersRemoveResource(this.env.SLACK_API_KEY, this.overrides["admin.users.remove"] || {}, this.runtimeConfig);
+		return new AdminUsersRemoveResource(this.providerCredentials(), this.overrides["admin.users.remove"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersSessionInvalidate(): AdminUsersSessionInvalidateResource {
-		return new AdminUsersSessionInvalidateResource(this.env.SLACK_API_KEY, this.overrides["admin.users.session.invalidate"] || {}, this.runtimeConfig);
+		return new AdminUsersSessionInvalidateResource(this.providerCredentials(), this.overrides["admin.users.session.invalidate"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersSessionReset(): AdminUsersSessionResetResource {
-		return new AdminUsersSessionResetResource(this.env.SLACK_API_KEY, this.overrides["admin.users.session.reset"] || {}, this.runtimeConfig);
+		return new AdminUsersSessionResetResource(this.providerCredentials(), this.overrides["admin.users.session.reset"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersSetAdmin(): AdminUsersSetAdminResource {
-		return new AdminUsersSetAdminResource(this.env.SLACK_API_KEY, this.overrides["admin.users.setAdmin"] || {}, this.runtimeConfig);
+		return new AdminUsersSetAdminResource(this.providerCredentials(), this.overrides["admin.users.setAdmin"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersSetExpiration(): AdminUsersSetExpirationResource {
-		return new AdminUsersSetExpirationResource(this.env.SLACK_API_KEY, this.overrides["admin.users.setExpiration"] || {}, this.runtimeConfig);
+		return new AdminUsersSetExpirationResource(this.providerCredentials(), this.overrides["admin.users.setExpiration"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersSetOwner(): AdminUsersSetOwnerResource {
-		return new AdminUsersSetOwnerResource(this.env.SLACK_API_KEY, this.overrides["admin.users.setOwner"] || {}, this.runtimeConfig);
+		return new AdminUsersSetOwnerResource(this.providerCredentials(), this.overrides["admin.users.setOwner"] || {}, this.runtimeConfig);
 	}
 
 	get adminUsersSetRegular(): AdminUsersSetRegularResource {
-		return new AdminUsersSetRegularResource(this.env.SLACK_API_KEY, this.overrides["admin.users.setRegular"] || {}, this.runtimeConfig);
+		return new AdminUsersSetRegularResource(this.providerCredentials(), this.overrides["admin.users.setRegular"] || {}, this.runtimeConfig);
 	}
 
 	get apiTest(): ApiTestResource {
-		return new ApiTestResource(this.env.SLACK_API_KEY, this.overrides["api.test"] || {}, this.runtimeConfig);
+		return new ApiTestResource(this.providerCredentials(), this.overrides["api.test"] || {}, this.runtimeConfig);
 	}
 
 	get appsEventAuthorizationsList(): AppsEventAuthorizationsListResource {
-		return new AppsEventAuthorizationsListResource(this.env.SLACK_API_KEY, this.overrides["apps.event.authorizations.list"] || {}, this.runtimeConfig);
+		return new AppsEventAuthorizationsListResource(this.providerCredentials(), this.overrides["apps.event.authorizations.list"] || {}, this.runtimeConfig);
 	}
 
 	get appsPermissionsInfo(): AppsPermissionsInfoResource {
-		return new AppsPermissionsInfoResource(this.env.SLACK_API_KEY, this.overrides["apps.permissions.info"] || {}, this.runtimeConfig);
+		return new AppsPermissionsInfoResource(this.providerCredentials(), this.overrides["apps.permissions.info"] || {}, this.runtimeConfig);
 	}
 
 	get appsPermissionsRequest(): AppsPermissionsRequestResource {
-		return new AppsPermissionsRequestResource(this.env.SLACK_API_KEY, this.overrides["apps.permissions.request"] || {}, this.runtimeConfig);
+		return new AppsPermissionsRequestResource(this.providerCredentials(), this.overrides["apps.permissions.request"] || {}, this.runtimeConfig);
 	}
 
 	get appsPermissionsResourcesList(): AppsPermissionsResourcesListResource {
-		return new AppsPermissionsResourcesListResource(this.env.SLACK_API_KEY, this.overrides["apps.permissions.resources.list"] || {}, this.runtimeConfig);
+		return new AppsPermissionsResourcesListResource(this.providerCredentials(), this.overrides["apps.permissions.resources.list"] || {}, this.runtimeConfig);
 	}
 
 	get appsPermissionsScopesList(): AppsPermissionsScopesListResource {
-		return new AppsPermissionsScopesListResource(this.env.SLACK_API_KEY, this.overrides["apps.permissions.scopes.list"] || {}, this.runtimeConfig);
+		return new AppsPermissionsScopesListResource(this.providerCredentials(), this.overrides["apps.permissions.scopes.list"] || {}, this.runtimeConfig);
 	}
 
 	get appsPermissionsUsersList(): AppsPermissionsUsersListResource {
-		return new AppsPermissionsUsersListResource(this.env.SLACK_API_KEY, this.overrides["apps.permissions.users.list"] || {}, this.runtimeConfig);
+		return new AppsPermissionsUsersListResource(this.providerCredentials(), this.overrides["apps.permissions.users.list"] || {}, this.runtimeConfig);
 	}
 
 	get appsPermissionsUsersRequest(): AppsPermissionsUsersRequestResource {
-		return new AppsPermissionsUsersRequestResource(this.env.SLACK_API_KEY, this.overrides["apps.permissions.users.request"] || {}, this.runtimeConfig);
+		return new AppsPermissionsUsersRequestResource(this.providerCredentials(), this.overrides["apps.permissions.users.request"] || {}, this.runtimeConfig);
 	}
 
 	get appsUninstall(): AppsUninstallResource {
-		return new AppsUninstallResource(this.env.SLACK_API_KEY, this.overrides["apps.uninstall"] || {}, this.runtimeConfig);
+		return new AppsUninstallResource(this.providerCredentials(), this.overrides["apps.uninstall"] || {}, this.runtimeConfig);
 	}
 
 	get authRevoke(): AuthRevokeResource {
-		return new AuthRevokeResource(this.env.SLACK_API_KEY, this.overrides["auth.revoke"] || {}, this.runtimeConfig);
+		return new AuthRevokeResource(this.providerCredentials(), this.overrides["auth.revoke"] || {}, this.runtimeConfig);
 	}
 
 	get authTest(): AuthTestResource {
-		return new AuthTestResource(this.env.SLACK_API_KEY, this.overrides["auth.test"] || {}, this.runtimeConfig);
+		return new AuthTestResource(this.providerCredentials(), this.overrides["auth.test"] || {}, this.runtimeConfig);
 	}
 
 	get botsInfo(): BotsInfoResource {
-		return new BotsInfoResource(this.env.SLACK_API_KEY, this.overrides["bots.info"] || {}, this.runtimeConfig);
+		return new BotsInfoResource(this.providerCredentials(), this.overrides["bots.info"] || {}, this.runtimeConfig);
 	}
 
 	get callsAdd(): CallsAddResource {
-		return new CallsAddResource(this.env.SLACK_API_KEY, this.overrides["calls.add"] || {}, this.runtimeConfig);
+		return new CallsAddResource(this.providerCredentials(), this.overrides["calls.add"] || {}, this.runtimeConfig);
 	}
 
 	get callsEnd(): CallsEndResource {
-		return new CallsEndResource(this.env.SLACK_API_KEY, this.overrides["calls.end"] || {}, this.runtimeConfig);
+		return new CallsEndResource(this.providerCredentials(), this.overrides["calls.end"] || {}, this.runtimeConfig);
 	}
 
 	get callsInfo(): CallsInfoResource {
-		return new CallsInfoResource(this.env.SLACK_API_KEY, this.overrides["calls.info"] || {}, this.runtimeConfig);
+		return new CallsInfoResource(this.providerCredentials(), this.overrides["calls.info"] || {}, this.runtimeConfig);
 	}
 
 	get callsParticipantsAdd(): CallsParticipantsAddResource {
-		return new CallsParticipantsAddResource(this.env.SLACK_API_KEY, this.overrides["calls.participants.add"] || {}, this.runtimeConfig);
+		return new CallsParticipantsAddResource(this.providerCredentials(), this.overrides["calls.participants.add"] || {}, this.runtimeConfig);
 	}
 
 	get callsParticipantsRemove(): CallsParticipantsRemoveResource {
-		return new CallsParticipantsRemoveResource(this.env.SLACK_API_KEY, this.overrides["calls.participants.remove"] || {}, this.runtimeConfig);
+		return new CallsParticipantsRemoveResource(this.providerCredentials(), this.overrides["calls.participants.remove"] || {}, this.runtimeConfig);
 	}
 
 	get callsUpdate(): CallsUpdateResource {
-		return new CallsUpdateResource(this.env.SLACK_API_KEY, this.overrides["calls.update"] || {}, this.runtimeConfig);
+		return new CallsUpdateResource(this.providerCredentials(), this.overrides["calls.update"] || {}, this.runtimeConfig);
 	}
 
 	get chatDelete(): ChatDeleteResource {
-		return new ChatDeleteResource(this.env.SLACK_API_KEY, this.overrides["chat.delete"] || {}, this.runtimeConfig);
+		return new ChatDeleteResource(this.providerCredentials(), this.overrides["chat.delete"] || {}, this.runtimeConfig);
 	}
 
 	get chatDeleteScheduledMessage(): ChatDeleteScheduledMessageResource {
-		return new ChatDeleteScheduledMessageResource(this.env.SLACK_API_KEY, this.overrides["chat.deleteScheduledMessage"] || {}, this.runtimeConfig);
+		return new ChatDeleteScheduledMessageResource(this.providerCredentials(), this.overrides["chat.deleteScheduledMessage"] || {}, this.runtimeConfig);
 	}
 
 	get chatGetPermalink(): ChatGetPermalinkResource {
-		return new ChatGetPermalinkResource(this.env.SLACK_API_KEY, this.overrides["chat.getPermalink"] || {}, this.runtimeConfig);
+		return new ChatGetPermalinkResource(this.providerCredentials(), this.overrides["chat.getPermalink"] || {}, this.runtimeConfig);
 	}
 
 	get chatMeMessage(): ChatMeMessageResource {
-		return new ChatMeMessageResource(this.env.SLACK_API_KEY, this.overrides["chat.meMessage"] || {}, this.runtimeConfig);
+		return new ChatMeMessageResource(this.providerCredentials(), this.overrides["chat.meMessage"] || {}, this.runtimeConfig);
 	}
 
 	get chatPostEphemeral(): ChatPostEphemeralResource {
-		return new ChatPostEphemeralResource(this.env.SLACK_API_KEY, this.overrides["chat.postEphemeral"] || {}, this.runtimeConfig);
+		return new ChatPostEphemeralResource(this.providerCredentials(), this.overrides["chat.postEphemeral"] || {}, this.runtimeConfig);
 	}
 
 	get chatPostMessage(): ChatPostMessageResource {
-		return new ChatPostMessageResource(this.env.SLACK_API_KEY, this.overrides["chat.postMessage"] || {}, this.runtimeConfig);
+		return new ChatPostMessageResource(this.providerCredentials(), this.overrides["chat.postMessage"] || {}, this.runtimeConfig);
 	}
 
 	get chatScheduleMessage(): ChatScheduleMessageResource {
-		return new ChatScheduleMessageResource(this.env.SLACK_API_KEY, this.overrides["chat.scheduleMessage"] || {}, this.runtimeConfig);
+		return new ChatScheduleMessageResource(this.providerCredentials(), this.overrides["chat.scheduleMessage"] || {}, this.runtimeConfig);
 	}
 
 	get chatScheduledMessagesList(): ChatScheduledMessagesListResource {
-		return new ChatScheduledMessagesListResource(this.env.SLACK_API_KEY, this.overrides["chat.scheduledMessages.list"] || {}, this.runtimeConfig);
+		return new ChatScheduledMessagesListResource(this.providerCredentials(), this.overrides["chat.scheduledMessages.list"] || {}, this.runtimeConfig);
 	}
 
 	get chatUnfurl(): ChatUnfurlResource {
-		return new ChatUnfurlResource(this.env.SLACK_API_KEY, this.overrides["chat.unfurl"] || {}, this.runtimeConfig);
+		return new ChatUnfurlResource(this.providerCredentials(), this.overrides["chat.unfurl"] || {}, this.runtimeConfig);
 	}
 
 	get chatUpdate(): ChatUpdateResource {
-		return new ChatUpdateResource(this.env.SLACK_API_KEY, this.overrides["chat.update"] || {}, this.runtimeConfig);
+		return new ChatUpdateResource(this.providerCredentials(), this.overrides["chat.update"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsArchive(): ConversationsArchiveResource {
-		return new ConversationsArchiveResource(this.env.SLACK_API_KEY, this.overrides["conversations.archive"] || {}, this.runtimeConfig);
+		return new ConversationsArchiveResource(this.providerCredentials(), this.overrides["conversations.archive"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsClose(): ConversationsCloseResource {
-		return new ConversationsCloseResource(this.env.SLACK_API_KEY, this.overrides["conversations.close"] || {}, this.runtimeConfig);
+		return new ConversationsCloseResource(this.providerCredentials(), this.overrides["conversations.close"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsCreate(): ConversationsCreateResource {
-		return new ConversationsCreateResource(this.env.SLACK_API_KEY, this.overrides["conversations.create"] || {}, this.runtimeConfig);
+		return new ConversationsCreateResource(this.providerCredentials(), this.overrides["conversations.create"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsHistory(): ConversationsHistoryResource {
-		return new ConversationsHistoryResource(this.env.SLACK_API_KEY, this.overrides["conversations.history"] || {}, this.runtimeConfig);
+		return new ConversationsHistoryResource(this.providerCredentials(), this.overrides["conversations.history"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsInfo(): ConversationsInfoResource {
-		return new ConversationsInfoResource(this.env.SLACK_API_KEY, this.overrides["conversations.info"] || {}, this.runtimeConfig);
+		return new ConversationsInfoResource(this.providerCredentials(), this.overrides["conversations.info"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsInvite(): ConversationsInviteResource {
-		return new ConversationsInviteResource(this.env.SLACK_API_KEY, this.overrides["conversations.invite"] || {}, this.runtimeConfig);
+		return new ConversationsInviteResource(this.providerCredentials(), this.overrides["conversations.invite"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsJoin(): ConversationsJoinResource {
-		return new ConversationsJoinResource(this.env.SLACK_API_KEY, this.overrides["conversations.join"] || {}, this.runtimeConfig);
+		return new ConversationsJoinResource(this.providerCredentials(), this.overrides["conversations.join"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsKick(): ConversationsKickResource {
-		return new ConversationsKickResource(this.env.SLACK_API_KEY, this.overrides["conversations.kick"] || {}, this.runtimeConfig);
+		return new ConversationsKickResource(this.providerCredentials(), this.overrides["conversations.kick"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsLeave(): ConversationsLeaveResource {
-		return new ConversationsLeaveResource(this.env.SLACK_API_KEY, this.overrides["conversations.leave"] || {}, this.runtimeConfig);
+		return new ConversationsLeaveResource(this.providerCredentials(), this.overrides["conversations.leave"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsList(): ConversationsListResource {
-		return new ConversationsListResource(this.env.SLACK_API_KEY, this.overrides["conversations.list"] || {}, this.runtimeConfig);
+		return new ConversationsListResource(this.providerCredentials(), this.overrides["conversations.list"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsMark(): ConversationsMarkResource {
-		return new ConversationsMarkResource(this.env.SLACK_API_KEY, this.overrides["conversations.mark"] || {}, this.runtimeConfig);
+		return new ConversationsMarkResource(this.providerCredentials(), this.overrides["conversations.mark"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsMembers(): ConversationsMembersResource {
-		return new ConversationsMembersResource(this.env.SLACK_API_KEY, this.overrides["conversations.members"] || {}, this.runtimeConfig);
+		return new ConversationsMembersResource(this.providerCredentials(), this.overrides["conversations.members"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsOpen(): ConversationsOpenResource {
-		return new ConversationsOpenResource(this.env.SLACK_API_KEY, this.overrides["conversations.open"] || {}, this.runtimeConfig);
+		return new ConversationsOpenResource(this.providerCredentials(), this.overrides["conversations.open"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsRename(): ConversationsRenameResource {
-		return new ConversationsRenameResource(this.env.SLACK_API_KEY, this.overrides["conversations.rename"] || {}, this.runtimeConfig);
+		return new ConversationsRenameResource(this.providerCredentials(), this.overrides["conversations.rename"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsReplies(): ConversationsRepliesResource {
-		return new ConversationsRepliesResource(this.env.SLACK_API_KEY, this.overrides["conversations.replies"] || {}, this.runtimeConfig);
+		return new ConversationsRepliesResource(this.providerCredentials(), this.overrides["conversations.replies"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsSetPurpose(): ConversationsSetPurposeResource {
-		return new ConversationsSetPurposeResource(this.env.SLACK_API_KEY, this.overrides["conversations.setPurpose"] || {}, this.runtimeConfig);
+		return new ConversationsSetPurposeResource(this.providerCredentials(), this.overrides["conversations.setPurpose"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsSetTopic(): ConversationsSetTopicResource {
-		return new ConversationsSetTopicResource(this.env.SLACK_API_KEY, this.overrides["conversations.setTopic"] || {}, this.runtimeConfig);
+		return new ConversationsSetTopicResource(this.providerCredentials(), this.overrides["conversations.setTopic"] || {}, this.runtimeConfig);
 	}
 
 	get conversationsUnarchive(): ConversationsUnarchiveResource {
-		return new ConversationsUnarchiveResource(this.env.SLACK_API_KEY, this.overrides["conversations.unarchive"] || {}, this.runtimeConfig);
+		return new ConversationsUnarchiveResource(this.providerCredentials(), this.overrides["conversations.unarchive"] || {}, this.runtimeConfig);
 	}
 
 	get dialogOpen(): DialogOpenResource {
-		return new DialogOpenResource(this.env.SLACK_API_KEY, this.overrides["dialog.open"] || {}, this.runtimeConfig);
+		return new DialogOpenResource(this.providerCredentials(), this.overrides["dialog.open"] || {}, this.runtimeConfig);
 	}
 
 	get dndEndDnd(): DndEndDndResource {
-		return new DndEndDndResource(this.env.SLACK_API_KEY, this.overrides["dnd.endDnd"] || {}, this.runtimeConfig);
+		return new DndEndDndResource(this.providerCredentials(), this.overrides["dnd.endDnd"] || {}, this.runtimeConfig);
 	}
 
 	get dndEndSnooze(): DndEndSnoozeResource {
-		return new DndEndSnoozeResource(this.env.SLACK_API_KEY, this.overrides["dnd.endSnooze"] || {}, this.runtimeConfig);
+		return new DndEndSnoozeResource(this.providerCredentials(), this.overrides["dnd.endSnooze"] || {}, this.runtimeConfig);
 	}
 
 	get dndInfo(): DndInfoResource {
-		return new DndInfoResource(this.env.SLACK_API_KEY, this.overrides["dnd.info"] || {}, this.runtimeConfig);
+		return new DndInfoResource(this.providerCredentials(), this.overrides["dnd.info"] || {}, this.runtimeConfig);
 	}
 
 	get dndSetSnooze(): DndSetSnoozeResource {
-		return new DndSetSnoozeResource(this.env.SLACK_API_KEY, this.overrides["dnd.setSnooze"] || {}, this.runtimeConfig);
+		return new DndSetSnoozeResource(this.providerCredentials(), this.overrides["dnd.setSnooze"] || {}, this.runtimeConfig);
 	}
 
 	get dndTeamInfo(): DndTeamInfoResource {
-		return new DndTeamInfoResource(this.env.SLACK_API_KEY, this.overrides["dnd.teamInfo"] || {}, this.runtimeConfig);
+		return new DndTeamInfoResource(this.providerCredentials(), this.overrides["dnd.teamInfo"] || {}, this.runtimeConfig);
 	}
 
 	get emojiList(): EmojiListResource {
-		return new EmojiListResource(this.env.SLACK_API_KEY, this.overrides["emoji.list"] || {}, this.runtimeConfig);
+		return new EmojiListResource(this.providerCredentials(), this.overrides["emoji.list"] || {}, this.runtimeConfig);
 	}
 
 	get filesCommentsDelete(): FilesCommentsDeleteResource {
-		return new FilesCommentsDeleteResource(this.env.SLACK_API_KEY, this.overrides["files.comments.delete"] || {}, this.runtimeConfig);
+		return new FilesCommentsDeleteResource(this.providerCredentials(), this.overrides["files.comments.delete"] || {}, this.runtimeConfig);
 	}
 
 	get filesDelete(): FilesDeleteResource {
-		return new FilesDeleteResource(this.env.SLACK_API_KEY, this.overrides["files.delete"] || {}, this.runtimeConfig);
+		return new FilesDeleteResource(this.providerCredentials(), this.overrides["files.delete"] || {}, this.runtimeConfig);
 	}
 
 	get filesInfo(): FilesInfoResource {
-		return new FilesInfoResource(this.env.SLACK_API_KEY, this.overrides["files.info"] || {}, this.runtimeConfig);
+		return new FilesInfoResource(this.providerCredentials(), this.overrides["files.info"] || {}, this.runtimeConfig);
 	}
 
 	get filesList(): FilesListResource {
-		return new FilesListResource(this.env.SLACK_API_KEY, this.overrides["files.list"] || {}, this.runtimeConfig);
+		return new FilesListResource(this.providerCredentials(), this.overrides["files.list"] || {}, this.runtimeConfig);
 	}
 
 	get filesRemoteAdd(): FilesRemoteAddResource {
-		return new FilesRemoteAddResource(this.env.SLACK_API_KEY, this.overrides["files.remote.add"] || {}, this.runtimeConfig);
+		return new FilesRemoteAddResource(this.providerCredentials(), this.overrides["files.remote.add"] || {}, this.runtimeConfig);
 	}
 
 	get filesRemoteInfo(): FilesRemoteInfoResource {
-		return new FilesRemoteInfoResource(this.env.SLACK_API_KEY, this.overrides["files.remote.info"] || {}, this.runtimeConfig);
+		return new FilesRemoteInfoResource(this.providerCredentials(), this.overrides["files.remote.info"] || {}, this.runtimeConfig);
 	}
 
 	get filesRemoteList(): FilesRemoteListResource {
-		return new FilesRemoteListResource(this.env.SLACK_API_KEY, this.overrides["files.remote.list"] || {}, this.runtimeConfig);
+		return new FilesRemoteListResource(this.providerCredentials(), this.overrides["files.remote.list"] || {}, this.runtimeConfig);
 	}
 
 	get filesRemoteRemove(): FilesRemoteRemoveResource {
-		return new FilesRemoteRemoveResource(this.env.SLACK_API_KEY, this.overrides["files.remote.remove"] || {}, this.runtimeConfig);
+		return new FilesRemoteRemoveResource(this.providerCredentials(), this.overrides["files.remote.remove"] || {}, this.runtimeConfig);
 	}
 
 	get filesRemoteShare(): FilesRemoteShareResource {
-		return new FilesRemoteShareResource(this.env.SLACK_API_KEY, this.overrides["files.remote.share"] || {}, this.runtimeConfig);
+		return new FilesRemoteShareResource(this.providerCredentials(), this.overrides["files.remote.share"] || {}, this.runtimeConfig);
 	}
 
 	get filesRemoteUpdate(): FilesRemoteUpdateResource {
-		return new FilesRemoteUpdateResource(this.env.SLACK_API_KEY, this.overrides["files.remote.update"] || {}, this.runtimeConfig);
+		return new FilesRemoteUpdateResource(this.providerCredentials(), this.overrides["files.remote.update"] || {}, this.runtimeConfig);
 	}
 
 	get filesRevokePublicURL(): FilesRevokePublicURLResource {
-		return new FilesRevokePublicURLResource(this.env.SLACK_API_KEY, this.overrides["files.revokePublicURL"] || {}, this.runtimeConfig);
+		return new FilesRevokePublicURLResource(this.providerCredentials(), this.overrides["files.revokePublicURL"] || {}, this.runtimeConfig);
 	}
 
 	get filesSharedPublicURL(): FilesSharedPublicURLResource {
-		return new FilesSharedPublicURLResource(this.env.SLACK_API_KEY, this.overrides["files.sharedPublicURL"] || {}, this.runtimeConfig);
+		return new FilesSharedPublicURLResource(this.providerCredentials(), this.overrides["files.sharedPublicURL"] || {}, this.runtimeConfig);
 	}
 
 	get filesUpload(): FilesUploadResource {
-		return new FilesUploadResource(this.env.SLACK_API_KEY, this.overrides["files.upload"] || {}, this.runtimeConfig);
+		return new FilesUploadResource(this.providerCredentials(), this.overrides["files.upload"] || {}, this.runtimeConfig);
 	}
 
 	get migrationExchange(): MigrationExchangeResource {
-		return new MigrationExchangeResource(this.env.SLACK_API_KEY, this.overrides["migration.exchange"] || {}, this.runtimeConfig);
+		return new MigrationExchangeResource(this.providerCredentials(), this.overrides["migration.exchange"] || {}, this.runtimeConfig);
 	}
 
 	get oauthAccess(): OauthAccessResource {
-		return new OauthAccessResource(this.env.SLACK_API_KEY, this.overrides["oauth.access"] || {}, this.runtimeConfig);
+		return new OauthAccessResource(this.providerCredentials(), this.overrides["oauth.access"] || {}, this.runtimeConfig);
 	}
 
 	get oauthToken(): OauthTokenResource {
-		return new OauthTokenResource(this.env.SLACK_API_KEY, this.overrides["oauth.token"] || {}, this.runtimeConfig);
+		return new OauthTokenResource(this.providerCredentials(), this.overrides["oauth.token"] || {}, this.runtimeConfig);
 	}
 
 	get oauthV2Access(): OauthV2AccessResource {
-		return new OauthV2AccessResource(this.env.SLACK_API_KEY, this.overrides["oauth.v2.access"] || {}, this.runtimeConfig);
+		return new OauthV2AccessResource(this.providerCredentials(), this.overrides["oauth.v2.access"] || {}, this.runtimeConfig);
 	}
 
 	get pinsAdd(): PinsAddResource {
-		return new PinsAddResource(this.env.SLACK_API_KEY, this.overrides["pins.add"] || {}, this.runtimeConfig);
+		return new PinsAddResource(this.providerCredentials(), this.overrides["pins.add"] || {}, this.runtimeConfig);
 	}
 
 	get pinsList(): PinsListResource {
-		return new PinsListResource(this.env.SLACK_API_KEY, this.overrides["pins.list"] || {}, this.runtimeConfig);
+		return new PinsListResource(this.providerCredentials(), this.overrides["pins.list"] || {}, this.runtimeConfig);
 	}
 
 	get pinsRemove(): PinsRemoveResource {
-		return new PinsRemoveResource(this.env.SLACK_API_KEY, this.overrides["pins.remove"] || {}, this.runtimeConfig);
+		return new PinsRemoveResource(this.providerCredentials(), this.overrides["pins.remove"] || {}, this.runtimeConfig);
 	}
 
 	get reactionsAdd(): ReactionsAddResource {
-		return new ReactionsAddResource(this.env.SLACK_API_KEY, this.overrides["reactions.add"] || {}, this.runtimeConfig);
+		return new ReactionsAddResource(this.providerCredentials(), this.overrides["reactions.add"] || {}, this.runtimeConfig);
 	}
 
 	get reactionsGet(): ReactionsGetResource {
-		return new ReactionsGetResource(this.env.SLACK_API_KEY, this.overrides["reactions.get"] || {}, this.runtimeConfig);
+		return new ReactionsGetResource(this.providerCredentials(), this.overrides["reactions.get"] || {}, this.runtimeConfig);
 	}
 
 	get reactionsList(): ReactionsListResource {
-		return new ReactionsListResource(this.env.SLACK_API_KEY, this.overrides["reactions.list"] || {}, this.runtimeConfig);
+		return new ReactionsListResource(this.providerCredentials(), this.overrides["reactions.list"] || {}, this.runtimeConfig);
 	}
 
 	get reactionsRemove(): ReactionsRemoveResource {
-		return new ReactionsRemoveResource(this.env.SLACK_API_KEY, this.overrides["reactions.remove"] || {}, this.runtimeConfig);
+		return new ReactionsRemoveResource(this.providerCredentials(), this.overrides["reactions.remove"] || {}, this.runtimeConfig);
 	}
 
 	get remindersAdd(): RemindersAddResource {
-		return new RemindersAddResource(this.env.SLACK_API_KEY, this.overrides["reminders.add"] || {}, this.runtimeConfig);
+		return new RemindersAddResource(this.providerCredentials(), this.overrides["reminders.add"] || {}, this.runtimeConfig);
 	}
 
 	get remindersComplete(): RemindersCompleteResource {
-		return new RemindersCompleteResource(this.env.SLACK_API_KEY, this.overrides["reminders.complete"] || {}, this.runtimeConfig);
+		return new RemindersCompleteResource(this.providerCredentials(), this.overrides["reminders.complete"] || {}, this.runtimeConfig);
 	}
 
 	get remindersDelete(): RemindersDeleteResource {
-		return new RemindersDeleteResource(this.env.SLACK_API_KEY, this.overrides["reminders.delete"] || {}, this.runtimeConfig);
+		return new RemindersDeleteResource(this.providerCredentials(), this.overrides["reminders.delete"] || {}, this.runtimeConfig);
 	}
 
 	get remindersInfo(): RemindersInfoResource {
-		return new RemindersInfoResource(this.env.SLACK_API_KEY, this.overrides["reminders.info"] || {}, this.runtimeConfig);
+		return new RemindersInfoResource(this.providerCredentials(), this.overrides["reminders.info"] || {}, this.runtimeConfig);
 	}
 
 	get remindersList(): RemindersListResource {
-		return new RemindersListResource(this.env.SLACK_API_KEY, this.overrides["reminders.list"] || {}, this.runtimeConfig);
+		return new RemindersListResource(this.providerCredentials(), this.overrides["reminders.list"] || {}, this.runtimeConfig);
 	}
 
 	get rtmConnect(): RtmConnectResource {
-		return new RtmConnectResource(this.env.SLACK_API_KEY, this.overrides["rtm.connect"] || {}, this.runtimeConfig);
+		return new RtmConnectResource(this.providerCredentials(), this.overrides["rtm.connect"] || {}, this.runtimeConfig);
 	}
 
 	get searchMessages(): SearchMessagesResource {
-		return new SearchMessagesResource(this.env.SLACK_API_KEY, this.overrides["search.messages"] || {}, this.runtimeConfig);
+		return new SearchMessagesResource(this.providerCredentials(), this.overrides["search.messages"] || {}, this.runtimeConfig);
 	}
 
 	get starsAdd(): StarsAddResource {
-		return new StarsAddResource(this.env.SLACK_API_KEY, this.overrides["stars.add"] || {}, this.runtimeConfig);
+		return new StarsAddResource(this.providerCredentials(), this.overrides["stars.add"] || {}, this.runtimeConfig);
 	}
 
 	get starsList(): StarsListResource {
-		return new StarsListResource(this.env.SLACK_API_KEY, this.overrides["stars.list"] || {}, this.runtimeConfig);
+		return new StarsListResource(this.providerCredentials(), this.overrides["stars.list"] || {}, this.runtimeConfig);
 	}
 
 	get starsRemove(): StarsRemoveResource {
-		return new StarsRemoveResource(this.env.SLACK_API_KEY, this.overrides["stars.remove"] || {}, this.runtimeConfig);
+		return new StarsRemoveResource(this.providerCredentials(), this.overrides["stars.remove"] || {}, this.runtimeConfig);
 	}
 
 	get teamAccessLogs(): TeamAccessLogsResource {
-		return new TeamAccessLogsResource(this.env.SLACK_API_KEY, this.overrides["team.accessLogs"] || {}, this.runtimeConfig);
+		return new TeamAccessLogsResource(this.providerCredentials(), this.overrides["team.accessLogs"] || {}, this.runtimeConfig);
 	}
 
 	get teamBillableInfo(): TeamBillableInfoResource {
-		return new TeamBillableInfoResource(this.env.SLACK_API_KEY, this.overrides["team.billableInfo"] || {}, this.runtimeConfig);
+		return new TeamBillableInfoResource(this.providerCredentials(), this.overrides["team.billableInfo"] || {}, this.runtimeConfig);
 	}
 
 	get teamInfo(): TeamInfoResource {
-		return new TeamInfoResource(this.env.SLACK_API_KEY, this.overrides["team.info"] || {}, this.runtimeConfig);
+		return new TeamInfoResource(this.providerCredentials(), this.overrides["team.info"] || {}, this.runtimeConfig);
 	}
 
 	get teamIntegrationLogs(): TeamIntegrationLogsResource {
-		return new TeamIntegrationLogsResource(this.env.SLACK_API_KEY, this.overrides["team.integrationLogs"] || {}, this.runtimeConfig);
+		return new TeamIntegrationLogsResource(this.providerCredentials(), this.overrides["team.integrationLogs"] || {}, this.runtimeConfig);
 	}
 
 	get teamProfileGet(): TeamProfileGetResource {
-		return new TeamProfileGetResource(this.env.SLACK_API_KEY, this.overrides["team.profile.get"] || {}, this.runtimeConfig);
+		return new TeamProfileGetResource(this.providerCredentials(), this.overrides["team.profile.get"] || {}, this.runtimeConfig);
 	}
 
 	get usergroupsCreate(): UsergroupsCreateResource {
-		return new UsergroupsCreateResource(this.env.SLACK_API_KEY, this.overrides["usergroups.create"] || {}, this.runtimeConfig);
+		return new UsergroupsCreateResource(this.providerCredentials(), this.overrides["usergroups.create"] || {}, this.runtimeConfig);
 	}
 
 	get usergroupsDisable(): UsergroupsDisableResource {
-		return new UsergroupsDisableResource(this.env.SLACK_API_KEY, this.overrides["usergroups.disable"] || {}, this.runtimeConfig);
+		return new UsergroupsDisableResource(this.providerCredentials(), this.overrides["usergroups.disable"] || {}, this.runtimeConfig);
 	}
 
 	get usergroupsEnable(): UsergroupsEnableResource {
-		return new UsergroupsEnableResource(this.env.SLACK_API_KEY, this.overrides["usergroups.enable"] || {}, this.runtimeConfig);
+		return new UsergroupsEnableResource(this.providerCredentials(), this.overrides["usergroups.enable"] || {}, this.runtimeConfig);
 	}
 
 	get usergroupsList(): UsergroupsListResource {
-		return new UsergroupsListResource(this.env.SLACK_API_KEY, this.overrides["usergroups.list"] || {}, this.runtimeConfig);
+		return new UsergroupsListResource(this.providerCredentials(), this.overrides["usergroups.list"] || {}, this.runtimeConfig);
 	}
 
 	get usergroupsUpdate(): UsergroupsUpdateResource {
-		return new UsergroupsUpdateResource(this.env.SLACK_API_KEY, this.overrides["usergroups.update"] || {}, this.runtimeConfig);
+		return new UsergroupsUpdateResource(this.providerCredentials(), this.overrides["usergroups.update"] || {}, this.runtimeConfig);
 	}
 
 	get usergroupsUsersList(): UsergroupsUsersListResource {
-		return new UsergroupsUsersListResource(this.env.SLACK_API_KEY, this.overrides["usergroups.users.list"] || {}, this.runtimeConfig);
+		return new UsergroupsUsersListResource(this.providerCredentials(), this.overrides["usergroups.users.list"] || {}, this.runtimeConfig);
 	}
 
 	get usergroupsUsersUpdate(): UsergroupsUsersUpdateResource {
-		return new UsergroupsUsersUpdateResource(this.env.SLACK_API_KEY, this.overrides["usergroups.users.update"] || {}, this.runtimeConfig);
+		return new UsergroupsUsersUpdateResource(this.providerCredentials(), this.overrides["usergroups.users.update"] || {}, this.runtimeConfig);
 	}
 
 	get usersConversations(): UsersConversationsResource {
-		return new UsersConversationsResource(this.env.SLACK_API_KEY, this.overrides["users.conversations"] || {}, this.runtimeConfig);
+		return new UsersConversationsResource(this.providerCredentials(), this.overrides["users.conversations"] || {}, this.runtimeConfig);
 	}
 
 	get usersDeletePhoto(): UsersDeletePhotoResource {
-		return new UsersDeletePhotoResource(this.env.SLACK_API_KEY, this.overrides["users.deletePhoto"] || {}, this.runtimeConfig);
+		return new UsersDeletePhotoResource(this.providerCredentials(), this.overrides["users.deletePhoto"] || {}, this.runtimeConfig);
 	}
 
 	get usersGetPresence(): UsersGetPresenceResource {
-		return new UsersGetPresenceResource(this.env.SLACK_API_KEY, this.overrides["users.getPresence"] || {}, this.runtimeConfig);
+		return new UsersGetPresenceResource(this.providerCredentials(), this.overrides["users.getPresence"] || {}, this.runtimeConfig);
 	}
 
 	get usersIdentity(): UsersIdentityResource {
-		return new UsersIdentityResource(this.env.SLACK_API_KEY, this.overrides["users.identity"] || {}, this.runtimeConfig);
+		return new UsersIdentityResource(this.providerCredentials(), this.overrides["users.identity"] || {}, this.runtimeConfig);
 	}
 
 	get usersInfo(): UsersInfoResource {
-		return new UsersInfoResource(this.env.SLACK_API_KEY, this.overrides["users.info"] || {}, this.runtimeConfig);
+		return new UsersInfoResource(this.providerCredentials(), this.overrides["users.info"] || {}, this.runtimeConfig);
 	}
 
 	get usersList(): UsersListResource {
-		return new UsersListResource(this.env.SLACK_API_KEY, this.overrides["users.list"] || {}, this.runtimeConfig);
+		return new UsersListResource(this.providerCredentials(), this.overrides["users.list"] || {}, this.runtimeConfig);
 	}
 
 	get usersLookupByEmail(): UsersLookupByEmailResource {
-		return new UsersLookupByEmailResource(this.env.SLACK_API_KEY, this.overrides["users.lookupByEmail"] || {}, this.runtimeConfig);
+		return new UsersLookupByEmailResource(this.providerCredentials(), this.overrides["users.lookupByEmail"] || {}, this.runtimeConfig);
 	}
 
 	get usersProfileGet(): UsersProfileGetResource {
-		return new UsersProfileGetResource(this.env.SLACK_API_KEY, this.overrides["users.profile.get"] || {}, this.runtimeConfig);
+		return new UsersProfileGetResource(this.providerCredentials(), this.overrides["users.profile.get"] || {}, this.runtimeConfig);
 	}
 
 	get usersProfileSet(): UsersProfileSetResource {
-		return new UsersProfileSetResource(this.env.SLACK_API_KEY, this.overrides["users.profile.set"] || {}, this.runtimeConfig);
+		return new UsersProfileSetResource(this.providerCredentials(), this.overrides["users.profile.set"] || {}, this.runtimeConfig);
 	}
 
 	get usersSetActive(): UsersSetActiveResource {
-		return new UsersSetActiveResource(this.env.SLACK_API_KEY, this.overrides["users.setActive"] || {}, this.runtimeConfig);
+		return new UsersSetActiveResource(this.providerCredentials(), this.overrides["users.setActive"] || {}, this.runtimeConfig);
 	}
 
 	get usersSetPhoto(): UsersSetPhotoResource {
-		return new UsersSetPhotoResource(this.env.SLACK_API_KEY, this.overrides["users.setPhoto"] || {}, this.runtimeConfig);
+		return new UsersSetPhotoResource(this.providerCredentials(), this.overrides["users.setPhoto"] || {}, this.runtimeConfig);
 	}
 
 	get usersSetPresence(): UsersSetPresenceResource {
-		return new UsersSetPresenceResource(this.env.SLACK_API_KEY, this.overrides["users.setPresence"] || {}, this.runtimeConfig);
+		return new UsersSetPresenceResource(this.providerCredentials(), this.overrides["users.setPresence"] || {}, this.runtimeConfig);
 	}
 
 	get viewsOpen(): ViewsOpenResource {
-		return new ViewsOpenResource(this.env.SLACK_API_KEY, this.overrides["views.open"] || {}, this.runtimeConfig);
+		return new ViewsOpenResource(this.providerCredentials(), this.overrides["views.open"] || {}, this.runtimeConfig);
 	}
 
 	get viewsPublish(): ViewsPublishResource {
-		return new ViewsPublishResource(this.env.SLACK_API_KEY, this.overrides["views.publish"] || {}, this.runtimeConfig);
+		return new ViewsPublishResource(this.providerCredentials(), this.overrides["views.publish"] || {}, this.runtimeConfig);
 	}
 
 	get viewsPush(): ViewsPushResource {
-		return new ViewsPushResource(this.env.SLACK_API_KEY, this.overrides["views.push"] || {}, this.runtimeConfig);
+		return new ViewsPushResource(this.providerCredentials(), this.overrides["views.push"] || {}, this.runtimeConfig);
 	}
 
 	get viewsUpdate(): ViewsUpdateResource {
-		return new ViewsUpdateResource(this.env.SLACK_API_KEY, this.overrides["views.update"] || {}, this.runtimeConfig);
+		return new ViewsUpdateResource(this.providerCredentials(), this.overrides["views.update"] || {}, this.runtimeConfig);
 	}
 
 	get workflowsStepCompleted(): WorkflowsStepCompletedResource {
-		return new WorkflowsStepCompletedResource(this.env.SLACK_API_KEY, this.overrides["workflows.stepCompleted"] || {}, this.runtimeConfig);
+		return new WorkflowsStepCompletedResource(this.providerCredentials(), this.overrides["workflows.stepCompleted"] || {}, this.runtimeConfig);
 	}
 
 	get workflowsStepFailed(): WorkflowsStepFailedResource {
-		return new WorkflowsStepFailedResource(this.env.SLACK_API_KEY, this.overrides["workflows.stepFailed"] || {}, this.runtimeConfig);
+		return new WorkflowsStepFailedResource(this.providerCredentials(), this.overrides["workflows.stepFailed"] || {}, this.runtimeConfig);
 	}
 
 	get workflowsUpdateStep(): WorkflowsUpdateStepResource {
-		return new WorkflowsUpdateStepResource(this.env.SLACK_API_KEY, this.overrides["workflows.updateStep"] || {}, this.runtimeConfig);
+		return new WorkflowsUpdateStepResource(this.providerCredentials(), this.overrides["workflows.updateStep"] || {}, this.runtimeConfig);
 	}
 }

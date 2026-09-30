@@ -3,12 +3,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 
 export class AuthorizeResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -24,8 +24,8 @@ OAuth 2.0. To
 	 *
 	 * `GET /authorize` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/authorize"]["get"]["parameters"]["query"]>>): Promise<ProofResult<string>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_authorize",
 			namespace: "authorize",
 			method: "list",
@@ -38,13 +38,13 @@ OAuth 2.0. To
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<string>>;
 	}
 }
 
 export class Oauth2Resource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -60,8 +60,8 @@ request belongs
 	 *
 	 * `POST /oauth2/token` — risk: medium
 	 */
-	async createToken(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createToken(body?: NonNullable<paths["/oauth2/token"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/oauth2/token"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_oauth2_token",
 			namespace: "oauth2",
 			method: "createToken",
@@ -74,7 +74,7 @@ request belongs
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/oauth2/token"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -82,8 +82,8 @@ request belongs
 	 *
 	 * `POST /oauth2/token#refresh` — risk: medium
 	 */
-	async createTokenRefresh(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTokenRefresh(body?: NonNullable<paths["/oauth2/token#refresh"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/oauth2/token#refresh"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_oauth2_token#refresh",
 			namespace: "oauth2",
 			method: "createTokenRefresh",
@@ -96,7 +96,7 @@ request belongs
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/oauth2/token#refresh"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -105,8 +105,8 @@ that has been previously authenticated.
 	 *
 	 * `POST /oauth2/revoke` — risk: medium
 	 */
-	async createRevoke(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createRevoke(body?: NonNullable<paths["/oauth2/revoke"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_oauth2_revoke",
 			namespace: "oauth2",
 			method: "createRevoke",
@@ -119,13 +119,13 @@ that has been previously authenticated.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class FilesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -137,13 +137,13 @@ export class FilesResource extends RpcTarget {
 	 *
 	 * `GET /files/{file_id}` — risk: low
 	 */
-	async retrieve_0(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve_0(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id",
 			namespace: "files",
 			method: "retrieve_0",
 			http: "get",
-			path: `/files/${fileId}`,
+			path: `/files/${encodeURIComponent(fileId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve_0"],
@@ -151,7 +151,7 @@ export class FilesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -162,13 +162,13 @@ original folder has been deleted.
 	 *
 	 * `POST /files/{file_id}` — risk: medium
 	 */
-	async update(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(fileId: string, body?: NonNullable<paths["/files/{file_id}"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/files/{file_id}"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_id",
 			namespace: "files",
 			method: "update",
 			http: "post",
-			path: `/files/${fileId}`,
+			path: `/files/${encodeURIComponent(fileId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -176,7 +176,7 @@ original folder has been deleted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -185,13 +185,13 @@ create a shared link, or lock a file.
 	 *
 	 * `PUT /files/{file_id}` — risk: medium
 	 */
-	async put_0(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_0(fileId: string, body?: NonNullable<paths["/files/{file_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/files/{file_id}"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_id",
 			namespace: "files",
 			method: "put_0",
 			http: "put",
-			path: `/files/${fileId}`,
+			path: `/files/${encodeURIComponent(fileId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_0"],
@@ -199,7 +199,7 @@ create a shared link, or lock a file.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -211,13 +211,13 @@ be permanently deleted from Box or moved to the trash.
 	 *
 	 * `DELETE /files/{file_id}` — risk: medium
 	 */
-	async del(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(fileId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_files_id",
 			namespace: "files",
 			method: "del",
 			http: "delete",
-			path: `/files/${fileId}`,
+			path: `/files/${encodeURIComponent(fileId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -225,7 +225,7 @@ be permanently deleted from Box or moved to the trash.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -235,13 +235,13 @@ associated with ancestors of the file. Assumi
 	 *
 	 * `GET /files/{file_id}/app_item_associations` — risk: medium
 	 */
-	async listAppItemAssociations(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAppItemAssociations(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/app_item_associations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/app_item_associations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_app_item_associations",
 			namespace: "files",
 			method: "listAppItemAssociations",
 			http: "get",
-			path: `/files/${fileId}/app_item_associations`,
+			path: `/files/${encodeURIComponent(fileId)}/app_item_associations`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAppItemAssociations"],
@@ -249,7 +249,7 @@ associated with ancestors of the file. Assumi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/app_item_associations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -257,13 +257,13 @@ associated with ancestors of the file. Assumi
 	 *
 	 * `GET /files/{file_id}/content` — risk: medium
 	 */
-	async listContent(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listContent(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/content"]["get"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_content",
 			namespace: "files",
 			method: "listContent",
 			http: "get",
-			path: `/files/${fileId}/content`,
+			path: `/files/${encodeURIComponent(fileId)}/content`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listContent"],
@@ -271,7 +271,7 @@ associated with ancestors of the file. Assumi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array>>;
 	}
 
 	/**
@@ -283,13 +283,13 @@ The `attributes` part of the body must come **before** the
 	 *
 	 * `POST /files/{file_id}/content` — risk: medium
 	 */
-	async createContent_0(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createContent_0(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/content"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/content"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_id_content",
 			namespace: "files",
 			method: "createContent_0",
 			http: "post",
-			path: `/files/${fileId}/content`,
+			path: `/files/${encodeURIComponent(fileId)}/content`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createContent_0"],
@@ -297,7 +297,7 @@ The `attributes` part of the body must come **before** the
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/content"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -309,8 +309,8 @@ The `attributes` part of the body must come **before** the
 	 *
 	 * `POST /files/content` — risk: medium
 	 */
-	async createContent_1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createContent_1(options?: QueryCallOptions<NonNullable<paths["/files/content"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/content"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_content",
 			namespace: "files",
 			method: "createContent_1",
@@ -323,7 +323,7 @@ The `attributes` part of the body must come **before** the
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/content"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -331,8 +331,8 @@ The `attributes` part of the body must come **before** the
 	 *
 	 * `POST /files/upload_sessions` — risk: medium
 	 */
-	async createUploadSession_0(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createUploadSession_0(body?: NonNullable<paths["/files/upload_sessions"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/files/upload_sessions"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_upload_sessions",
 			namespace: "files",
 			method: "createUploadSession_0",
@@ -345,7 +345,7 @@ The `attributes` part of the body must come **before** the
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/upload_sessions"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -353,13 +353,13 @@ The `attributes` part of the body must come **before** the
 	 *
 	 * `POST /files/{file_id}/upload_sessions` — risk: medium
 	 */
-	async createUploadSession_1(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createUploadSession_1(fileId: string, body?: NonNullable<paths["/files/{file_id}/upload_sessions"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/upload_sessions"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_id_upload_sessions",
 			namespace: "files",
 			method: "createUploadSession_1",
 			http: "post",
-			path: `/files/${fileId}/upload_sessions`,
+			path: `/files/${encodeURIComponent(fileId)}/upload_sessions`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createUploadSession_1"],
@@ -367,7 +367,7 @@ The `attributes` part of the body must come **before** the
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/upload_sessions"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -377,13 +377,13 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 	 *
 	 * `GET /files/upload_sessions/{upload_session_id}` — risk: medium
 	 */
-	async retrieveUploadSession(uploadSessionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveUploadSession(uploadSessionId: string, options?: CallOptions): Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_upload_sessions_id",
 			namespace: "files",
 			method: "retrieveUploadSession",
 			http: "get",
-			path: `/files/upload_sessions/${uploadSessionId}`,
+			path: `/files/upload_sessions/${encodeURIComponent(uploadSessionId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveUploadSession"],
@@ -391,7 +391,7 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -402,13 +402,13 @@ and [`Get upload
 	 *
 	 * `PUT /files/upload_sessions/{upload_session_id}` — risk: medium
 	 */
-	async uploadSessions(uploadSessionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async uploadSessions(uploadSessionId: string, options?: CallOptions): Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_upload_sessions_id",
 			namespace: "files",
 			method: "uploadSessions",
 			http: "put",
-			path: `/files/upload_sessions/${uploadSessionId}`,
+			path: `/files/upload_sessions/${encodeURIComponent(uploadSessionId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["uploadSessions"],
@@ -416,7 +416,7 @@ and [`Get upload
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -428,13 +428,13 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 	 *
 	 * `DELETE /files/upload_sessions/{upload_session_id}` — risk: medium
 	 */
-	async deleteUploadSession(uploadSessionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteUploadSession(uploadSessionId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_files_upload_sessions_id",
 			namespace: "files",
 			method: "deleteUploadSession",
 			http: "delete",
-			path: `/files/upload_sessions/${uploadSessionId}`,
+			path: `/files/upload_sessions/${encodeURIComponent(uploadSessionId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUploadSession"],
@@ -442,7 +442,7 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -452,13 +452,13 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 	 *
 	 * `GET /files/upload_sessions/{upload_session_id}/parts` — risk: medium
 	 */
-	async parts(uploadSessionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async parts(uploadSessionId: string, options?: QueryCallOptions<NonNullable<paths["/files/upload_sessions/{upload_session_id}/parts"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}/parts"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_upload_sessions_id_parts",
 			namespace: "files",
 			method: "parts",
 			http: "get",
-			path: `/files/upload_sessions/${uploadSessionId}/parts`,
+			path: `/files/upload_sessions/${encodeURIComponent(uploadSessionId)}/parts`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["parts"],
@@ -466,7 +466,7 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}/parts"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -476,13 +476,13 @@ have already been uploaded (cache hits) and only upl
 	 *
 	 * `POST /files/upload_sessions/{upload_session_id}/plan` — risk: medium
 	 */
-	async plan(uploadSessionId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async plan(uploadSessionId: string, body?: NonNullable<paths["/files/upload_sessions/{upload_session_id}/plan"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}/plan"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_upload_sessions_id_plan",
 			namespace: "files",
 			method: "plan",
 			http: "post",
-			path: `/files/upload_sessions/${uploadSessionId}/plan`,
+			path: `/files/upload_sessions/${encodeURIComponent(uploadSessionId)}/plan`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["plan"],
@@ -490,7 +490,7 @@ have already been uploaded (cache hits) and only upl
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}/plan"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -500,13 +500,13 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 	 *
 	 * `POST /files/upload_sessions/{upload_session_id}/commit` — risk: medium
 	 */
-	async commit(uploadSessionId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async commit(uploadSessionId: string, body?: NonNullable<paths["/files/upload_sessions/{upload_session_id}/commit"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}/commit"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_upload_sessions_id_commit",
 			namespace: "files",
 			method: "commit",
 			http: "post",
-			path: `/files/upload_sessions/${uploadSessionId}/commit`,
+			path: `/files/upload_sessions/${encodeURIComponent(uploadSessionId)}/commit`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["commit"],
@@ -514,7 +514,7 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/upload_sessions/{upload_session_id}/commit"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -522,13 +522,13 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 	 *
 	 * `POST /files/{file_id}/copy` — risk: medium
 	 */
-	async createCopy(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createCopy(fileId: string, body?: NonNullable<paths["/files/{file_id}/copy"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/copy"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/copy"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_id_copy",
 			namespace: "files",
 			method: "createCopy",
 			http: "post",
-			path: `/files/${fileId}/copy`,
+			path: `/files/${encodeURIComponent(fileId)}/copy`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createCopy"],
@@ -536,7 +536,7 @@ The actual endpoint URL is returned by the [`Create upload session`](https://dev
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/copy"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -547,13 +547,13 @@ the `.png` format and sizes of `32x32`, `160x160`, and `320x32
 	 *
 	 * `GET /files/{file_id}/thumbnail.{extension}` — risk: medium
 	 */
-	async listThumbnailExtension(fileId: string, extension: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listThumbnailExtension(fileId: string, extension: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/thumbnail.{extension}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_thumbnail_id",
 			namespace: "files",
 			method: "listThumbnailExtension",
 			http: "get",
-			path: `/files/${fileId}/thumbnail.${extension}`,
+			path: `/files/${encodeURIComponent(fileId)}/thumbnail.${encodeURIComponent(extension)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listThumbnailExtension"],
@@ -561,7 +561,7 @@ the `.png` format and sizes of `32x32`, `160x160`, and `320x32
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array>>;
 	}
 
 	/**
@@ -571,13 +571,13 @@ or have been invited to the file.
 	 *
 	 * `GET /files/{file_id}/collaborations` — risk: medium
 	 */
-	async listCollaborations(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCollaborations(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/collaborations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/collaborations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_collaborations",
 			namespace: "files",
 			method: "listCollaborations",
 			http: "get",
-			path: `/files/${fileId}/collaborations`,
+			path: `/files/${encodeURIComponent(fileId)}/collaborations`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCollaborations"],
@@ -585,7 +585,7 @@ or have been invited to the file.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/collaborations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -593,13 +593,13 @@ or have been invited to the file.
 	 *
 	 * `GET /files/{file_id}/comments` — risk: medium
 	 */
-	async listComments(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listComments(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/comments"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/comments"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_comments",
 			namespace: "files",
 			method: "listComments",
 			http: "get",
-			path: `/files/${fileId}/comments`,
+			path: `/files/${encodeURIComponent(fileId)}/comments`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listComments"],
@@ -607,7 +607,7 @@ or have been invited to the file.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/comments"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -616,13 +616,13 @@ endpoint does not support pagination.
 	 *
 	 * `GET /files/{file_id}/tasks` — risk: medium
 	 */
-	async listTasks(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTasks(fileId: string, options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/tasks"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_tasks",
 			namespace: "files",
 			method: "listTasks",
 			http: "get",
-			path: `/files/${fileId}/tasks`,
+			path: `/files/${encodeURIComponent(fileId)}/tasks`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTasks"],
@@ -630,7 +630,7 @@ endpoint does not support pagination.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/tasks"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -642,13 +642,13 @@ its parent folders wa
 	 *
 	 * `GET /files/{file_id}/trash` — risk: medium
 	 */
-	async listTrash(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTrash(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/trash"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/trash"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_trash",
 			namespace: "files",
 			method: "listTrash",
 			http: "get",
-			path: `/files/${fileId}/trash`,
+			path: `/files/${encodeURIComponent(fileId)}/trash`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTrash"],
@@ -656,7 +656,7 @@ its parent folders wa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/trash"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -665,13 +665,13 @@ This action cannot be undone.
 	 *
 	 * `DELETE /files/{file_id}/trash` — risk: medium
 	 */
-	async trash(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async trash(fileId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_files_id_trash",
 			namespace: "files",
 			method: "trash",
 			http: "delete",
-			path: `/files/${fileId}/trash`,
+			path: `/files/${encodeURIComponent(fileId)}/trash`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["trash"],
@@ -679,7 +679,7 @@ This action cannot be undone.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -690,13 +690,13 @@ of the current version of a file, use the `GET /file/:id` API.
 	 *
 	 * `GET /files/{file_id}/versions` — risk: medium
 	 */
-	async listVersions(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listVersions(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/versions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/versions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_versions",
 			namespace: "files",
 			method: "listVersions",
 			http: "get",
-			path: `/files/${fileId}/versions`,
+			path: `/files/${encodeURIComponent(fileId)}/versions`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listVersions"],
@@ -704,7 +704,7 @@ of the current version of a file, use the `GET /file/:id` API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/versions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -714,13 +714,13 @@ Versions are only tracked for Box users with premium accounts.
 	 *
 	 * `GET /files/{file_id}/versions/{file_version_id}` — risk: medium
 	 */
-	async retrieveVersion(fileId: string, fileVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveVersion(fileId: string, fileVersionId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/versions/{file_version_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/versions/{file_version_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_versions_id",
 			namespace: "files",
 			method: "retrieveVersion",
 			http: "get",
-			path: `/files/${fileId}/versions/${fileVersionId}`,
+			path: `/files/${encodeURIComponent(fileId)}/versions/${encodeURIComponent(fileVersionId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveVersion"],
@@ -728,7 +728,7 @@ Versions are only tracked for Box users with premium accounts.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/versions/{file_version_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -739,13 +739,13 @@ PPTX or similar.
 	 *
 	 * `PUT /files/{file_id}/versions/{file_version_id}` — risk: medium
 	 */
-	async versions(fileId: string, fileVersionId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async versions(fileId: string, fileVersionId: string, body?: NonNullable<paths["/files/{file_id}/versions/{file_version_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/versions/{file_version_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_id_versions_id",
 			namespace: "files",
 			method: "versions",
 			http: "put",
-			path: `/files/${fileId}/versions/${fileVersionId}`,
+			path: `/files/${encodeURIComponent(fileId)}/versions/${encodeURIComponent(fileVersionId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["versions"],
@@ -753,7 +753,7 @@ PPTX or similar.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/versions/{file_version_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -763,13 +763,13 @@ Versions are only tracked for Box users with premium accounts.
 	 *
 	 * `DELETE /files/{file_id}/versions/{file_version_id}` — risk: medium
 	 */
-	async deleteVersion(fileId: string, fileVersionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteVersion(fileId: string, fileVersionId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_files_id_versions_id",
 			namespace: "files",
 			method: "deleteVersion",
 			http: "delete",
-			path: `/files/${fileId}/versions/${fileVersionId}`,
+			path: `/files/${encodeURIComponent(fileId)}/versions/${encodeURIComponent(fileVersionId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteVersion"],
@@ -777,7 +777,7 @@ Versions are only tracked for Box users with premium accounts.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -790,13 +790,13 @@ This creates a new copy of the old v
 	 *
 	 * `POST /files/{file_id}/versions/current` — risk: medium
 	 */
-	async current(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async current(fileId: string, body?: NonNullable<paths["/files/{file_id}/versions/current"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/versions/current"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/versions/current"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_id_versions_current",
 			namespace: "files",
 			method: "current",
 			http: "post",
-			path: `/files/${fileId}/versions/current`,
+			path: `/files/${encodeURIComponent(fileId)}/versions/current`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["current"],
@@ -804,7 +804,7 @@ This creates a new copy of the old v
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/versions/current"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -812,13 +812,13 @@ This creates a new copy of the old v
 	 *
 	 * `GET /files/{file_id}/metadata` — risk: medium
 	 */
-	async listMetadata(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMetadata(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/metadata"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/metadata"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_metadata",
 			namespace: "files",
 			method: "listMetadata",
 			http: "get",
-			path: `/files/${fileId}/metadata`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMetadata"],
@@ -826,7 +826,7 @@ This creates a new copy of the old v
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -839,13 +839,13 @@ URL explicitly, for example
 	 *
 	 * `GET /files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo` — risk: medium
 	 */
-	async securityClassification6VMVochwUWo_0(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async securityClassification6VMVochwUWo_0(fileId: string, options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_metadata_enterprise_securityClassification-6VMVochwUWo",
 			namespace: "files",
 			method: "securityClassification6VMVochwUWo_0",
 			http: "get",
-			path: `/files/${fileId}/metadata/enterprise/securityClassification-6VMVochwUWo`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/enterprise/securityClassification-6VMVochwUWo`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["securityClassification6VMVochwUWo_0"],
@@ -853,7 +853,7 @@ URL explicitly, for example
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -866,13 +866,13 @@ URL explicitly, for example
 	 *
 	 * `POST /files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo` — risk: medium
 	 */
-	async securityClassification6VMVochwUWo_1(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async securityClassification6VMVochwUWo_1(fileId: string, body?: NonNullable<paths["/files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_id_metadata_enterprise_securityClassification-6VMVochwUWo",
 			namespace: "files",
 			method: "securityClassification6VMVochwUWo_1",
 			http: "post",
-			path: `/files/${fileId}/metadata/enterprise/securityClassification-6VMVochwUWo`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/enterprise/securityClassification-6VMVochwUWo`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["securityClassification6VMVochwUWo_1"],
@@ -880,7 +880,7 @@ URL explicitly, for example
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -892,13 +892,13 @@ defined for t
 	 *
 	 * `PUT /files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo` — risk: medium
 	 */
-	async securityClassification6VMVochwUWo_2(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async securityClassification6VMVochwUWo_2(fileId: string, options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_id_metadata_enterprise_securityClassification-6VMVochwUWo",
 			namespace: "files",
 			method: "securityClassification6VMVochwUWo_2",
 			http: "put",
-			path: `/files/${fileId}/metadata/enterprise/securityClassification-6VMVochwUWo`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/enterprise/securityClassification-6VMVochwUWo`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["securityClassification6VMVochwUWo_2"],
@@ -906,7 +906,7 @@ defined for t
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -918,13 +918,13 @@ URL explicitly, for example
 	 *
 	 * `DELETE /files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo` — risk: medium
 	 */
-	async securityClassification6VMVochwUWo_3(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async securityClassification6VMVochwUWo_3(fileId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_files_id_metadata_enterprise_securityClassification-6VMVochwUWo",
 			namespace: "files",
 			method: "securityClassification6VMVochwUWo_3",
 			http: "delete",
-			path: `/files/${fileId}/metadata/enterprise/securityClassification-6VMVochwUWo`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/enterprise/securityClassification-6VMVochwUWo`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["securityClassification6VMVochwUWo_3"],
@@ -932,7 +932,7 @@ URL explicitly, for example
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -941,13 +941,13 @@ file.
 	 *
 	 * `GET /files/{file_id}/metadata/{scope}/{template_key}` — risk: medium
 	 */
-	async retrieveMetadata(fileId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMetadata(fileId: string, scope: string, templateKey: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}/metadata/{scope}/{template_key}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}/metadata/{scope}/{template_key}"]["get"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_metadata_id_id",
 			namespace: "files",
 			method: "retrieveMetadata",
 			http: "get",
-			path: `/files/${fileId}/metadata/${scope}/${templateKey}`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMetadata"],
@@ -955,7 +955,7 @@ file.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata/{scope}/{template_key}"]["get"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -967,13 +967,13 @@ a
 	 *
 	 * `POST /files/{file_id}/metadata/{scope}/{template_key}` — risk: medium
 	 */
-	async updateMetadata(fileId: string, scope: string, templateKey: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateMetadata(fileId: string, scope: string, templateKey: string, body?: NonNullable<paths["/files/{file_id}/metadata/{scope}/{template_key}"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/metadata/{scope}/{template_key}"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_id_metadata_id_id",
 			namespace: "files",
 			method: "updateMetadata",
 			http: "post",
-			path: `/files/${fileId}/metadata/${scope}/${templateKey}`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateMetadata"],
@@ -981,7 +981,7 @@ a
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata/{scope}/{template_key}"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -993,13 +993,13 @@ the metadat
 	 *
 	 * `PUT /files/{file_id}/metadata/{scope}/{template_key}` — risk: medium
 	 */
-	async metadata(fileId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async metadata(fileId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/metadata/{scope}/{template_key}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_id_metadata_id_id",
 			namespace: "files",
 			method: "metadata",
 			http: "put",
-			path: `/files/${fileId}/metadata/${scope}/${templateKey}`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["metadata"],
@@ -1007,7 +1007,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata/{scope}/{template_key}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1015,13 +1015,13 @@ the metadat
 	 *
 	 * `DELETE /files/{file_id}/metadata/{scope}/{template_key}` — risk: medium
 	 */
-	async deleteMetadata(fileId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMetadata(fileId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_files_id_metadata_id_id",
 			namespace: "files",
 			method: "deleteMetadata",
 			http: "delete",
-			path: `/files/${fileId}/metadata/${scope}/${templateKey}`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMetadata"],
@@ -1029,7 +1029,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1037,13 +1037,13 @@ the metadat
 	 *
 	 * `GET /files/{file_id}/metadata/global/boxSkillsCards` — risk: medium
 	 */
-	async boxSkillsCards_0(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async boxSkillsCards_0(fileId: string, options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/metadata/global/boxSkillsCards"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_metadata_global_boxSkillsCards",
 			namespace: "files",
 			method: "boxSkillsCards_0",
 			http: "get",
-			path: `/files/${fileId}/metadata/global/boxSkillsCards`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/global/boxSkillsCards`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["boxSkillsCards_0"],
@@ -1051,7 +1051,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata/global/boxSkillsCards"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1059,13 +1059,13 @@ the metadat
 	 *
 	 * `POST /files/{file_id}/metadata/global/boxSkillsCards` — risk: medium
 	 */
-	async boxSkillsCards_1(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async boxSkillsCards_1(fileId: string, body?: NonNullable<paths["/files/{file_id}/metadata/global/boxSkillsCards"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/metadata/global/boxSkillsCards"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_files_id_metadata_global_boxSkillsCards",
 			namespace: "files",
 			method: "boxSkillsCards_1",
 			http: "post",
-			path: `/files/${fileId}/metadata/global/boxSkillsCards`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/global/boxSkillsCards`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["boxSkillsCards_1"],
@@ -1073,7 +1073,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata/global/boxSkillsCards"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1081,13 +1081,13 @@ the metadat
 	 *
 	 * `PUT /files/{file_id}/metadata/global/boxSkillsCards` — risk: medium
 	 */
-	async boxSkillsCards_2(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async boxSkillsCards_2(fileId: string, options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/metadata/global/boxSkillsCards"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_id_metadata_global_boxSkillsCards",
 			namespace: "files",
 			method: "boxSkillsCards_2",
 			http: "put",
-			path: `/files/${fileId}/metadata/global/boxSkillsCards`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/global/boxSkillsCards`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["boxSkillsCards_2"],
@@ -1095,7 +1095,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/metadata/global/boxSkillsCards"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1103,13 +1103,13 @@ the metadat
 	 *
 	 * `DELETE /files/{file_id}/metadata/global/boxSkillsCards` — risk: medium
 	 */
-	async boxSkillsCards_3(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async boxSkillsCards_3(fileId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_files_id_metadata_global_boxSkillsCards",
 			namespace: "files",
 			method: "boxSkillsCards_3",
 			http: "delete",
-			path: `/files/${fileId}/metadata/global/boxSkillsCards`,
+			path: `/files/${encodeURIComponent(fileId)}/metadata/global/boxSkillsCards`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["boxSkillsCards_3"],
@@ -1117,7 +1117,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1125,13 +1125,13 @@ the metadat
 	 *
 	 * `GET /files/{file_id}/watermark` — risk: medium
 	 */
-	async listWatermark(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listWatermark(fileId: string, options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/watermark"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id_watermark",
 			namespace: "files",
 			method: "listWatermark",
 			http: "get",
-			path: `/files/${fileId}/watermark`,
+			path: `/files/${encodeURIComponent(fileId)}/watermark`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listWatermark"],
@@ -1139,7 +1139,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/watermark"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1147,13 +1147,13 @@ the metadat
 	 *
 	 * `PUT /files/{file_id}/watermark` — risk: medium
 	 */
-	async watermark_0(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async watermark_0(fileId: string, body?: NonNullable<paths["/files/{file_id}/watermark"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/files/{file_id}/watermark"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_id_watermark",
 			namespace: "files",
 			method: "watermark_0",
 			http: "put",
-			path: `/files/${fileId}/watermark`,
+			path: `/files/${encodeURIComponent(fileId)}/watermark`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["watermark_0"],
@@ -1161,7 +1161,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}/watermark"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1169,13 +1169,13 @@ the metadat
 	 *
 	 * `DELETE /files/{file_id}/watermark` — risk: medium
 	 */
-	async watermark_1(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async watermark_1(fileId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_files_id_watermark",
 			namespace: "files",
 			method: "watermark_1",
 			http: "delete",
-			path: `/files/${fileId}/watermark`,
+			path: `/files/${encodeURIComponent(fileId)}/watermark`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["watermark_1"],
@@ -1183,7 +1183,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1191,13 +1191,13 @@ the metadat
 	 *
 	 * `GET /files/{file_id}#get_shared_link` — risk: low
 	 */
-	async retrieve_1(fileId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve_1(fileId: string, options?: QueryCallOptions<NonNullable<paths["/files/{file_id}#get_shared_link"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}#get_shared_link"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_files_id#get_shared_link",
 			namespace: "files",
 			method: "retrieve_1",
 			http: "get",
-			path: `/files/${fileId}#get_shared_link`,
+			path: `/files/${encodeURIComponent(fileId)}#get_shared_link`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve_1"],
@@ -1205,7 +1205,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}#get_shared_link"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1213,13 +1213,13 @@ the metadat
 	 *
 	 * `PUT /files/{file_id}#add_shared_link` — risk: medium
 	 */
-	async put_1(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_1(fileId: string, body?: NonNullable<paths["/files/{file_id}#add_shared_link"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/files/{file_id}#add_shared_link"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}#add_shared_link"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_id#add_shared_link",
 			namespace: "files",
 			method: "put_1",
 			http: "put",
-			path: `/files/${fileId}#add_shared_link`,
+			path: `/files/${encodeURIComponent(fileId)}#add_shared_link`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_1"],
@@ -1227,7 +1227,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}#add_shared_link"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1235,13 +1235,13 @@ the metadat
 	 *
 	 * `PUT /files/{file_id}#update_shared_link` — risk: medium
 	 */
-	async put_2(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_2(fileId: string, body?: NonNullable<paths["/files/{file_id}#update_shared_link"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/files/{file_id}#update_shared_link"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}#update_shared_link"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_id#update_shared_link",
 			namespace: "files",
 			method: "put_2",
 			http: "put",
-			path: `/files/${fileId}#update_shared_link`,
+			path: `/files/${encodeURIComponent(fileId)}#update_shared_link`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_2"],
@@ -1249,7 +1249,7 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}#update_shared_link"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1257,13 +1257,13 @@ the metadat
 	 *
 	 * `PUT /files/{file_id}#remove_shared_link` — risk: medium
 	 */
-	async put_3(fileId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_3(fileId: string, body?: NonNullable<paths["/files/{file_id}#remove_shared_link"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/files/{file_id}#remove_shared_link"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/files/{file_id}#remove_shared_link"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_files_id#remove_shared_link",
 			namespace: "files",
 			method: "put_3",
 			http: "put",
-			path: `/files/${fileId}#remove_shared_link`,
+			path: `/files/${encodeURIComponent(fileId)}#remove_shared_link`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_3"],
@@ -1271,13 +1271,13 @@ the metadat
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/files/{file_id}#remove_shared_link"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FileRequestsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1289,13 +1289,13 @@ export class FileRequestsResource extends RpcTarget {
 	 *
 	 * `GET /file_requests/{file_request_id}` — risk: low
 	 */
-	async retrieve(fileRequestId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(fileRequestId: string, options?: CallOptions): Promise<ProofResult<paths["/file_requests/{file_request_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_file_requests_id",
 			namespace: "file_requests",
 			method: "retrieve",
 			http: "get",
-			path: `/file_requests/${fileRequestId}`,
+			path: `/file_requests/${encodeURIComponent(fileRequestId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -1303,7 +1303,7 @@ export class FileRequestsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/file_requests/{file_request_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1312,13 +1312,13 @@ deactivate a file request.
 	 *
 	 * `PUT /file_requests/{file_request_id}` — risk: medium
 	 */
-	async put(fileRequestId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(fileRequestId: string, body?: NonNullable<paths["/file_requests/{file_request_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/file_requests/{file_request_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_file_requests_id",
 			namespace: "file_requests",
 			method: "put",
 			http: "put",
-			path: `/file_requests/${fileRequestId}`,
+			path: `/file_requests/${encodeURIComponent(fileRequestId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -1326,7 +1326,7 @@ deactivate a file request.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/file_requests/{file_request_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1334,13 +1334,13 @@ deactivate a file request.
 	 *
 	 * `DELETE /file_requests/{file_request_id}` — risk: medium
 	 */
-	async del(fileRequestId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(fileRequestId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_file_requests_id",
 			namespace: "file_requests",
 			method: "del",
 			http: "delete",
-			path: `/file_requests/${fileRequestId}`,
+			path: `/file_requests/${encodeURIComponent(fileRequestId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -1348,7 +1348,7 @@ deactivate a file request.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1357,13 +1357,13 @@ and applies it to another folder.
 	 *
 	 * `POST /file_requests/{file_request_id}/copy` — risk: medium
 	 */
-	async createCopy(fileRequestId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createCopy(fileRequestId: string, body?: NonNullable<paths["/file_requests/{file_request_id}/copy"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/file_requests/{file_request_id}/copy"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_file_requests_id_copy",
 			namespace: "file_requests",
 			method: "createCopy",
 			http: "post",
-			path: `/file_requests/${fileRequestId}/copy`,
+			path: `/file_requests/${encodeURIComponent(fileRequestId)}/copy`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createCopy"],
@@ -1371,13 +1371,13 @@ and applies it to another folder.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/file_requests/{file_request_id}/copy"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FoldersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1395,13 +1395,13 @@ list of returned
 	 *
 	 * `GET /folders/{folder_id}` — risk: low
 	 */
-	async retrieve_0(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve_0(folderId: string, options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id",
 			namespace: "folders",
 			method: "retrieve_0",
 			http: "get",
-			path: `/folders/${folderId}`,
+			path: `/folders/${encodeURIComponent(folderId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve_0"],
@@ -1409,7 +1409,7 @@ list of returned
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1422,13 +1422,13 @@ During this operation, part of th
 	 *
 	 * `POST /folders/{folder_id}` — risk: medium
 	 */
-	async update(folderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(folderId: string, body?: NonNullable<paths["/folders/{folder_id}"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_folders_id",
 			namespace: "folders",
 			method: "update",
 			http: "post",
-			path: `/folders/${folderId}`,
+			path: `/folders/${encodeURIComponent(folderId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -1436,7 +1436,7 @@ During this operation, part of th
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1445,13 +1445,13 @@ create shared links, update collaborations, and more.
 	 *
 	 * `PUT /folders/{folder_id}` — risk: medium
 	 */
-	async put_0(folderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_0(folderId: string, body?: NonNullable<paths["/folders/{folder_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_folders_id",
 			namespace: "folders",
 			method: "put_0",
 			http: "put",
-			path: `/folders/${folderId}`,
+			path: `/folders/${encodeURIComponent(folderId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_0"],
@@ -1459,7 +1459,7 @@ create shared links, update collaborations, and more.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1468,13 +1468,13 @@ the trash.
 	 *
 	 * `DELETE /folders/{folder_id}` — risk: medium
 	 */
-	async del(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(folderId: string, options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_folders_id",
 			namespace: "folders",
 			method: "del",
 			http: "delete",
-			path: `/folders/${folderId}`,
+			path: `/folders/${encodeURIComponent(folderId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -1482,7 +1482,7 @@ the trash.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1492,13 +1492,13 @@ associated with ancestors of the folder. As
 	 *
 	 * `GET /folders/{folder_id}/app_item_associations` — risk: medium
 	 */
-	async listAppItemAssociations(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAppItemAssociations(folderId: string, options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}/app_item_associations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}/app_item_associations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id_app_item_associations",
 			namespace: "folders",
 			method: "listAppItemAssociations",
 			http: "get",
-			path: `/folders/${folderId}/app_item_associations`,
+			path: `/folders/${encodeURIComponent(folderId)}/app_item_associations`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAppItemAssociations"],
@@ -1506,7 +1506,7 @@ associated with ancestors of the folder. As
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/app_item_associations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1518,13 +1518,13 @@ use the [Get a folder](https://developer.b
 	 *
 	 * `GET /folders/{folder_id}/items` — risk: medium
 	 */
-	async listItems(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listItems(folderId: string, options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}/items"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}/items"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id_items",
 			namespace: "folders",
 			method: "listItems",
 			http: "get",
-			path: `/folders/${folderId}/items`,
+			path: `/folders/${encodeURIComponent(folderId)}/items`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listItems"],
@@ -1532,7 +1532,7 @@ use the [Get a folder](https://developer.b
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/items"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1540,8 +1540,8 @@ use the [Get a folder](https://developer.b
 	 *
 	 * `POST /folders` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/folders"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/folders"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_folders",
 			namespace: "folders",
 			method: "create",
@@ -1554,7 +1554,7 @@ use the [Get a folder](https://developer.b
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1564,13 +1564,13 @@ The original folder will not be changed.
 	 *
 	 * `POST /folders/{folder_id}/copy` — risk: medium
 	 */
-	async createCopy(folderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createCopy(folderId: string, body?: NonNullable<paths["/folders/{folder_id}/copy"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}/copy"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}/copy"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_folders_id_copy",
 			namespace: "folders",
 			method: "createCopy",
 			http: "post",
-			path: `/folders/${folderId}/copy`,
+			path: `/folders/${encodeURIComponent(folderId)}/copy`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createCopy"],
@@ -1578,7 +1578,7 @@ The original folder will not be changed.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/copy"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1588,13 +1588,13 @@ or have been invited to the folder.
 	 *
 	 * `GET /folders/{folder_id}/collaborations` — risk: medium
 	 */
-	async listCollaborations(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCollaborations(folderId: string, options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}/collaborations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}/collaborations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id_collaborations",
 			namespace: "folders",
 			method: "listCollaborations",
 			http: "get",
-			path: `/folders/${folderId}/collaborations`,
+			path: `/folders/${encodeURIComponent(folderId)}/collaborations`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCollaborations"],
@@ -1602,7 +1602,7 @@ or have been invited to the folder.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/collaborations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1614,13 +1614,13 @@ its parent folder
 	 *
 	 * `GET /folders/{folder_id}/trash` — risk: medium
 	 */
-	async listTrash(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTrash(folderId: string, options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}/trash"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}/trash"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id_trash",
 			namespace: "folders",
 			method: "listTrash",
 			http: "get",
-			path: `/folders/${folderId}/trash`,
+			path: `/folders/${encodeURIComponent(folderId)}/trash`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTrash"],
@@ -1628,7 +1628,7 @@ its parent folder
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/trash"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1637,13 +1637,13 @@ This action cannot be undone.
 	 *
 	 * `DELETE /folders/{folder_id}/trash` — risk: medium
 	 */
-	async trash(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async trash(folderId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_folders_id_trash",
 			namespace: "folders",
 			method: "trash",
 			http: "delete",
-			path: `/folders/${folderId}/trash`,
+			path: `/folders/${encodeURIComponent(folderId)}/trash`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["trash"],
@@ -1651,7 +1651,7 @@ This action cannot be undone.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1660,13 +1660,13 @@ folder with ID `0`.
 	 *
 	 * `GET /folders/{folder_id}/metadata` — risk: medium
 	 */
-	async listMetadata(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMetadata(folderId: string, options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}/metadata"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}/metadata"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id_metadata",
 			namespace: "folders",
 			method: "listMetadata",
 			http: "get",
-			path: `/folders/${folderId}/metadata`,
+			path: `/folders/${encodeURIComponent(folderId)}/metadata`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMetadata"],
@@ -1674,7 +1674,7 @@ folder with ID `0`.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/metadata"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1687,13 +1687,13 @@ URL explicitly, for example
 	 *
 	 * `GET /folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo` — risk: medium
 	 */
-	async securityClassification6VMVochwUWo_0(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async securityClassification6VMVochwUWo_0(folderId: string, options?: CallOptions): Promise<ProofResult<paths["/folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id_metadata_enterprise_securityClassification-6VMVochwUWo",
 			namespace: "folders",
 			method: "securityClassification6VMVochwUWo_0",
 			http: "get",
-			path: `/folders/${folderId}/metadata/enterprise/securityClassification-6VMVochwUWo`,
+			path: `/folders/${encodeURIComponent(folderId)}/metadata/enterprise/securityClassification-6VMVochwUWo`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["securityClassification6VMVochwUWo_0"],
@@ -1701,7 +1701,7 @@ URL explicitly, for example
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1714,13 +1714,13 @@ URL explicitly, for example
 	 *
 	 * `POST /folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo` — risk: medium
 	 */
-	async securityClassification6VMVochwUWo_1(folderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async securityClassification6VMVochwUWo_1(folderId: string, body?: NonNullable<paths["/folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_folders_id_metadata_enterprise_securityClassification-6VMVochwUWo",
 			namespace: "folders",
 			method: "securityClassification6VMVochwUWo_1",
 			http: "post",
-			path: `/folders/${folderId}/metadata/enterprise/securityClassification-6VMVochwUWo`,
+			path: `/folders/${encodeURIComponent(folderId)}/metadata/enterprise/securityClassification-6VMVochwUWo`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["securityClassification6VMVochwUWo_1"],
@@ -1728,7 +1728,7 @@ URL explicitly, for example
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1740,13 +1740,13 @@ defined f
 	 *
 	 * `PUT /folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo` — risk: medium
 	 */
-	async securityClassification6VMVochwUWo_2(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async securityClassification6VMVochwUWo_2(folderId: string, options?: CallOptions): Promise<ProofResult<paths["/folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_folders_id_metadata_enterprise_securityClassification-6VMVochwUWo",
 			namespace: "folders",
 			method: "securityClassification6VMVochwUWo_2",
 			http: "put",
-			path: `/folders/${folderId}/metadata/enterprise/securityClassification-6VMVochwUWo`,
+			path: `/folders/${encodeURIComponent(folderId)}/metadata/enterprise/securityClassification-6VMVochwUWo`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["securityClassification6VMVochwUWo_2"],
@@ -1754,7 +1754,7 @@ defined f
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1766,13 +1766,13 @@ URL explicitly, for example
 	 *
 	 * `DELETE /folders/{folder_id}/metadata/enterprise/securityClassification-6VMVochwUWo` — risk: medium
 	 */
-	async securityClassification6VMVochwUWo_3(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async securityClassification6VMVochwUWo_3(folderId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_folders_id_metadata_enterprise_securityClassification-6VMVochwUWo",
 			namespace: "folders",
 			method: "securityClassification6VMVochwUWo_3",
 			http: "delete",
-			path: `/folders/${folderId}/metadata/enterprise/securityClassification-6VMVochwUWo`,
+			path: `/folders/${encodeURIComponent(folderId)}/metadata/enterprise/securityClassification-6VMVochwUWo`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["securityClassification6VMVochwUWo_3"],
@@ -1780,7 +1780,7 @@ URL explicitly, for example
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1789,13 +1789,13 @@ folder. This can not be used on the root folder with ID `0`.
 	 *
 	 * `GET /folders/{folder_id}/metadata/{scope}/{template_key}` — risk: medium
 	 */
-	async retrieveMetadata(folderId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMetadata(folderId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<paths["/folders/{folder_id}/metadata/{scope}/{template_key}"]["get"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id_metadata_id_id",
 			namespace: "folders",
 			method: "retrieveMetadata",
 			http: "get",
-			path: `/folders/${folderId}/metadata/${scope}/${templateKey}`,
+			path: `/folders/${encodeURIComponent(folderId)}/metadata/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMetadata"],
@@ -1803,7 +1803,7 @@ folder. This can not be used on the root folder with ID `0`.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/metadata/{scope}/{template_key}"]["get"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1814,13 +1814,13 @@ will be accepted, except for the `global.properties` template which accepts
 	 *
 	 * `POST /folders/{folder_id}/metadata/{scope}/{template_key}` — risk: medium
 	 */
-	async updateMetadata(folderId: string, scope: string, templateKey: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateMetadata(folderId: string, scope: string, templateKey: string, body?: NonNullable<paths["/folders/{folder_id}/metadata/{scope}/{template_key}"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/folders/{folder_id}/metadata/{scope}/{template_key}"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_folders_id_metadata_id_id",
 			namespace: "folders",
 			method: "updateMetadata",
 			http: "post",
-			path: `/folders/${folderId}/metadata/${scope}/${templateKey}`,
+			path: `/folders/${encodeURIComponent(folderId)}/metadata/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateMetadata"],
@@ -1828,7 +1828,7 @@ will be accepted, except for the `global.properties` template which accepts
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/metadata/{scope}/{template_key}"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1840,13 +1840,13 @@ the met
 	 *
 	 * `PUT /folders/{folder_id}/metadata/{scope}/{template_key}` — risk: medium
 	 */
-	async metadata(folderId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async metadata(folderId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<paths["/folders/{folder_id}/metadata/{scope}/{template_key}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_folders_id_metadata_id_id",
 			namespace: "folders",
 			method: "metadata",
 			http: "put",
-			path: `/folders/${folderId}/metadata/${scope}/${templateKey}`,
+			path: `/folders/${encodeURIComponent(folderId)}/metadata/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["metadata"],
@@ -1854,7 +1854,7 @@ the met
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/metadata/{scope}/{template_key}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1862,13 +1862,13 @@ the met
 	 *
 	 * `DELETE /folders/{folder_id}/metadata/{scope}/{template_key}` — risk: medium
 	 */
-	async deleteMetadata(folderId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMetadata(folderId: string, scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_folders_id_metadata_id_id",
 			namespace: "folders",
 			method: "deleteMetadata",
 			http: "delete",
-			path: `/folders/${folderId}/metadata/${scope}/${templateKey}`,
+			path: `/folders/${encodeURIComponent(folderId)}/metadata/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMetadata"],
@@ -1876,7 +1876,7 @@ the met
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1889,8 +1889,8 @@ attribute
 	 *
 	 * `GET /folders/trash/items` — risk: medium
 	 */
-	async items(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async items(options?: QueryCallOptions<NonNullable<paths["/folders/trash/items"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/trash/items"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_trash_items",
 			namespace: "folders",
 			method: "items",
@@ -1903,7 +1903,7 @@ attribute
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/trash/items"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1911,13 +1911,13 @@ attribute
 	 *
 	 * `GET /folders/{folder_id}/watermark` — risk: medium
 	 */
-	async listWatermark(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listWatermark(folderId: string, options?: CallOptions): Promise<ProofResult<paths["/folders/{folder_id}/watermark"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id_watermark",
 			namespace: "folders",
 			method: "listWatermark",
 			http: "get",
-			path: `/folders/${folderId}/watermark`,
+			path: `/folders/${encodeURIComponent(folderId)}/watermark`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listWatermark"],
@@ -1925,7 +1925,7 @@ attribute
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/watermark"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1933,13 +1933,13 @@ attribute
 	 *
 	 * `PUT /folders/{folder_id}/watermark` — risk: medium
 	 */
-	async watermark_0(folderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async watermark_0(folderId: string, body?: NonNullable<paths["/folders/{folder_id}/watermark"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/folders/{folder_id}/watermark"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_folders_id_watermark",
 			namespace: "folders",
 			method: "watermark_0",
 			http: "put",
-			path: `/folders/${folderId}/watermark`,
+			path: `/folders/${encodeURIComponent(folderId)}/watermark`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["watermark_0"],
@@ -1947,7 +1947,7 @@ attribute
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}/watermark"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1955,13 +1955,13 @@ attribute
 	 *
 	 * `DELETE /folders/{folder_id}/watermark` — risk: medium
 	 */
-	async watermark_1(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async watermark_1(folderId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_folders_id_watermark",
 			namespace: "folders",
 			method: "watermark_1",
 			http: "delete",
-			path: `/folders/${folderId}/watermark`,
+			path: `/folders/${encodeURIComponent(folderId)}/watermark`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["watermark_1"],
@@ -1969,7 +1969,7 @@ attribute
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1977,13 +1977,13 @@ attribute
 	 *
 	 * `GET /folders/{folder_id}#get_shared_link` — risk: low
 	 */
-	async retrieve_1(folderId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve_1(folderId: string, options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}#get_shared_link"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}#get_shared_link"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folders_id#get_shared_link",
 			namespace: "folders",
 			method: "retrieve_1",
 			http: "get",
-			path: `/folders/${folderId}#get_shared_link`,
+			path: `/folders/${encodeURIComponent(folderId)}#get_shared_link`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve_1"],
@@ -1991,7 +1991,7 @@ attribute
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}#get_shared_link"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1999,13 +1999,13 @@ attribute
 	 *
 	 * `PUT /folders/{folder_id}#add_shared_link` — risk: medium
 	 */
-	async put_1(folderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_1(folderId: string, body?: NonNullable<paths["/folders/{folder_id}#add_shared_link"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}#add_shared_link"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}#add_shared_link"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_folders_id#add_shared_link",
 			namespace: "folders",
 			method: "put_1",
 			http: "put",
-			path: `/folders/${folderId}#add_shared_link`,
+			path: `/folders/${encodeURIComponent(folderId)}#add_shared_link`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_1"],
@@ -2013,7 +2013,7 @@ attribute
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}#add_shared_link"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2021,13 +2021,13 @@ attribute
 	 *
 	 * `PUT /folders/{folder_id}#update_shared_link` — risk: medium
 	 */
-	async put_2(folderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_2(folderId: string, body?: NonNullable<paths["/folders/{folder_id}#update_shared_link"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}#update_shared_link"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}#update_shared_link"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_folders_id#update_shared_link",
 			namespace: "folders",
 			method: "put_2",
 			http: "put",
-			path: `/folders/${folderId}#update_shared_link`,
+			path: `/folders/${encodeURIComponent(folderId)}#update_shared_link`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_2"],
@@ -2035,7 +2035,7 @@ attribute
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}#update_shared_link"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2043,13 +2043,13 @@ attribute
 	 *
 	 * `PUT /folders/{folder_id}#remove_shared_link` — risk: medium
 	 */
-	async put_3(folderId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_3(folderId: string, body?: NonNullable<paths["/folders/{folder_id}#remove_shared_link"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/folders/{folder_id}#remove_shared_link"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folders/{folder_id}#remove_shared_link"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_folders_id#remove_shared_link",
 			namespace: "folders",
 			method: "put_3",
 			http: "put",
-			path: `/folders/${folderId}#remove_shared_link`,
+			path: `/folders/${encodeURIComponent(folderId)}#remove_shared_link`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_3"],
@@ -2057,13 +2057,13 @@ attribute
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folders/{folder_id}#remove_shared_link"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FolderLocksResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2078,8 +2078,8 @@ use this endpoint.
 	 *
 	 * `GET /folder_locks` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/folder_locks"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/folder_locks"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_folder_locks",
 			namespace: "folder_locks",
 			method: "list",
@@ -2092,7 +2092,7 @@ use this endpoint.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folder_locks"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2104,8 +2104,8 @@ use this endpoint.
 	 *
 	 * `POST /folder_locks` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/folder_locks"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/folder_locks"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_folder_locks",
 			namespace: "folder_locks",
 			method: "create",
@@ -2118,7 +2118,7 @@ use this endpoint.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/folder_locks"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2129,13 +2129,13 @@ use this endpoint.
 	 *
 	 * `DELETE /folder_locks/{folder_lock_id}` — risk: medium
 	 */
-	async del(folderLockId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(folderLockId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_folder_locks_id",
 			namespace: "folder_locks",
 			method: "del",
 			http: "delete",
-			path: `/folder_locks/${folderLockId}`,
+			path: `/folder_locks/${encodeURIComponent(folderLockId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -2143,13 +2143,13 @@ use this endpoint.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class MetadataTemplatesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2162,8 +2162,8 @@ template.
 	 *
 	 * `GET /metadata_templates` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/metadata_templates"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/metadata_templates"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_templates",
 			namespace: "metadata_templates",
 			method: "list",
@@ -2176,7 +2176,7 @@ template.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2188,8 +2188,8 @@ URL explicitly, for ex
 	 *
 	 * `GET /metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema` — risk: medium
 	 */
-	async enterprisesecurityClassification6VMVochwUWoSchema(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async enterprisesecurityClassification6VMVochwUWoSchema(options?: CallOptions): Promise<ProofResult<paths["/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_templates_enterprise_securityClassification-6VMVochwUWo_schema",
 			namespace: "metadata_templates",
 			method: "enterprisesecurityClassification6VMVochwUWoSchema",
@@ -2202,7 +2202,7 @@ URL explicitly, for ex
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2215,8 +2215,8 @@ URL explicitly, for example
 	 *
 	 * `PUT /metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#add` — risk: medium
 	 */
-	async schemaAdd(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async schemaAdd(body?: NonNullable<paths["/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#add"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#add"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_metadata_templates_enterprise_securityClassification-6VMVochwUWo_schema#add",
 			namespace: "metadata_templates",
 			method: "schemaAdd",
@@ -2229,7 +2229,7 @@ URL explicitly, for example
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#add"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2242,8 +2242,8 @@ URL explicitly, for example
 	 *
 	 * `PUT /metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#update` — risk: medium
 	 */
-	async schemaUpdate(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async schemaUpdate(options?: CallOptions): Promise<ProofResult<paths["/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#update"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_metadata_templates_enterprise_securityClassification-6VMVochwUWo_schema#update",
 			namespace: "metadata_templates",
 			method: "schemaUpdate",
@@ -2256,7 +2256,7 @@ URL explicitly, for example
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#update"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2267,13 +2267,13 @@ an enterprise or globally, or list all templates ap
 	 *
 	 * `GET /metadata_templates/{scope}/{template_key}/schema` — risk: medium
 	 */
-	async listSchema(scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSchema(scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<paths["/metadata_templates/{scope}/{template_key}/schema"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_templates_id_id_schema",
 			namespace: "metadata_templates",
 			method: "listSchema",
 			http: "get",
-			path: `/metadata_templates/${scope}/${templateKey}/schema`,
+			path: `/metadata_templates/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}/schema`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSchema"],
@@ -2281,7 +2281,7 @@ an enterprise or globally, or list all templates ap
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/{scope}/{template_key}/schema"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2295,13 +2295,13 @@ application of the operations,
 	 *
 	 * `PUT /metadata_templates/{scope}/{template_key}/schema` — risk: medium
 	 */
-	async schema_1(scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async schema_1(scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<paths["/metadata_templates/{scope}/{template_key}/schema"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_metadata_templates_id_id_schema",
 			namespace: "metadata_templates",
 			method: "schema_1",
 			http: "put",
-			path: `/metadata_templates/${scope}/${templateKey}/schema`,
+			path: `/metadata_templates/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}/schema`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["schema_1"],
@@ -2309,7 +2309,7 @@ application of the operations,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/{scope}/{template_key}/schema"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2318,13 +2318,13 @@ This deletion is permanent and can not be reversed.
 	 *
 	 * `DELETE /metadata_templates/{scope}/{template_key}/schema` — risk: medium
 	 */
-	async schema_2(scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async schema_2(scope: string, templateKey: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_metadata_templates_id_id_schema",
 			namespace: "metadata_templates",
 			method: "schema_2",
 			http: "delete",
-			path: `/metadata_templates/${scope}/${templateKey}/schema`,
+			path: `/metadata_templates/${encodeURIComponent(scope)}/${encodeURIComponent(templateKey)}/schema`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["schema_2"],
@@ -2332,7 +2332,7 @@ This deletion is permanent and can not be reversed.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2340,13 +2340,13 @@ This deletion is permanent and can not be reversed.
 	 *
 	 * `GET /metadata_templates/{template_id}` — risk: low
 	 */
-	async retrieve(templateId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(templateId: string, options?: CallOptions): Promise<ProofResult<paths["/metadata_templates/{template_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_templates_id",
 			namespace: "metadata_templates",
 			method: "retrieve",
 			http: "get",
-			path: `/metadata_templates/${templateId}`,
+			path: `/metadata_templates/${encodeURIComponent(templateId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -2354,7 +2354,7 @@ This deletion is permanent and can not be reversed.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/{template_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2363,8 +2363,8 @@ enterprises using Box.
 	 *
 	 * `GET /metadata_templates/global` — risk: medium
 	 */
-	async listGlobal(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listGlobal(options?: QueryCallOptions<NonNullable<paths["/metadata_templates/global"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/metadata_templates/global"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_templates_global",
 			namespace: "metadata_templates",
 			method: "listGlobal",
@@ -2377,7 +2377,7 @@ enterprises using Box.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/global"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2386,8 +2386,8 @@ the user's enterprise.
 	 *
 	 * `GET /metadata_templates/enterprise` — risk: medium
 	 */
-	async listEnterprise(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEnterprise(options?: QueryCallOptions<NonNullable<paths["/metadata_templates/enterprise"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/metadata_templates/enterprise"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_templates_enterprise",
 			namespace: "metadata_templates",
 			method: "listEnterprise",
@@ -2400,7 +2400,7 @@ the user's enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/enterprise"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2409,8 +2409,8 @@ files and folders.
 	 *
 	 * `POST /metadata_templates/schema` — risk: medium
 	 */
-	async createSchema(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSchema(body?: NonNullable<paths["/metadata_templates/schema"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_templates/schema"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_templates_schema",
 			namespace: "metadata_templates",
 			method: "createSchema",
@@ -2423,7 +2423,7 @@ files and folders.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/schema"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2435,8 +2435,8 @@ If an enterprise already has a classification,
 	 *
 	 * `POST /metadata_templates/schema#classifications` — risk: medium
 	 */
-	async createSchemaClassification(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSchemaClassification(body?: NonNullable<paths["/metadata_templates/schema#classifications"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_templates/schema#classifications"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_templates_schema#classifications",
 			namespace: "metadata_templates",
 			method: "createSchemaClassification",
@@ -2449,7 +2449,7 @@ If an enterprise already has a classification,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/schema#classifications"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2459,13 +2459,13 @@ Results are sorted in lexicographic order unless a `query
 	 *
 	 * `GET /metadata_templates/{namespace}/{template_key}/fields/{field_key}/options` — risk: medium
 	 */
-	async options(namespace: string, templateKey: string, fieldKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async options(namespace: string, templateKey: string, fieldKey: string, options?: QueryCallOptions<NonNullable<paths["/metadata_templates/{namespace}/{template_key}/fields/{field_key}/options"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/metadata_templates/{namespace}/{template_key}/fields/{field_key}/options"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_templates_id_id_fields_id_options",
 			namespace: "metadata_templates",
 			method: "options",
 			http: "get",
-			path: `/metadata_templates/${namespace}/${templateKey}/fields/${fieldKey}/options`,
+			path: `/metadata_templates/${encodeURIComponent(namespace)}/${encodeURIComponent(templateKey)}/fields/${encodeURIComponent(fieldKey)}/options`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["options"],
@@ -2473,13 +2473,13 @@ Results are sorted in lexicographic order unless a `query
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_templates/{namespace}/{template_key}/fields/{field_key}/options"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class MetadataCascadePoliciesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2493,8 +2493,8 @@ folder with ID `0`.
 	 *
 	 * `GET /metadata_cascade_policies` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/metadata_cascade_policies"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/metadata_cascade_policies"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_cascade_policies",
 			namespace: "metadata_cascade_policies",
 			method: "list",
@@ -2507,7 +2507,7 @@ folder with ID `0`.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_cascade_policies"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2519,8 +2519,8 @@ In order for the policy to be applie
 	 *
 	 * `POST /metadata_cascade_policies` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/metadata_cascade_policies"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_cascade_policies"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_cascade_policies",
 			namespace: "metadata_cascade_policies",
 			method: "create",
@@ -2533,7 +2533,7 @@ In order for the policy to be applie
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_cascade_policies"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2541,13 +2541,13 @@ In order for the policy to be applie
 	 *
 	 * `GET /metadata_cascade_policies/{metadata_cascade_policy_id}` — risk: low
 	 */
-	async retrieve(metadataCascadePolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(metadataCascadePolicyId: string, options?: CallOptions): Promise<ProofResult<paths["/metadata_cascade_policies/{metadata_cascade_policy_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_cascade_policies_id",
 			namespace: "metadata_cascade_policies",
 			method: "retrieve",
 			http: "get",
-			path: `/metadata_cascade_policies/${metadataCascadePolicyId}`,
+			path: `/metadata_cascade_policies/${encodeURIComponent(metadataCascadePolicyId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -2555,7 +2555,7 @@ In order for the policy to be applie
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_cascade_policies/{metadata_cascade_policy_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2563,13 +2563,13 @@ In order for the policy to be applie
 	 *
 	 * `DELETE /metadata_cascade_policies/{metadata_cascade_policy_id}` — risk: medium
 	 */
-	async del(metadataCascadePolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(metadataCascadePolicyId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_metadata_cascade_policies_id",
 			namespace: "metadata_cascade_policies",
 			method: "del",
 			http: "delete",
-			path: `/metadata_cascade_policies/${metadataCascadePolicyId}`,
+			path: `/metadata_cascade_policies/${encodeURIComponent(metadataCascadePolicyId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -2577,7 +2577,7 @@ In order for the policy to be applie
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2587,13 +2587,13 @@ enforce the metadata to be cascaded down to
 	 *
 	 * `POST /metadata_cascade_policies/{metadata_cascade_policy_id}/apply` — risk: medium
 	 */
-	async createApply(metadataCascadePolicyId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createApply(metadataCascadePolicyId: string, body?: NonNullable<paths["/metadata_cascade_policies/{metadata_cascade_policy_id}/apply"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_cascade_policies_id_apply",
 			namespace: "metadata_cascade_policies",
 			method: "createApply",
 			http: "post",
-			path: `/metadata_cascade_policies/${metadataCascadePolicyId}/apply`,
+			path: `/metadata_cascade_policies/${encodeURIComponent(metadataCascadePolicyId)}/apply`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createApply"],
@@ -2601,13 +2601,13 @@ enforce the metadata to be cascaded down to
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class MetadataQueriesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2623,8 +2623,8 @@ which the query matches. To get addi
 	 *
 	 * `POST /metadata_queries/execute_read` — risk: medium
 	 */
-	async createExecuteRead(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createExecuteRead(body?: NonNullable<paths["/metadata_queries/execute_read"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_queries/execute_read"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_queries_execute_read",
 			namespace: "metadata_queries",
 			method: "createExecuteRead",
@@ -2637,13 +2637,13 @@ which the query matches. To get addi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_queries/execute_read"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CommentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2656,13 +2656,13 @@ as information on the user who created the comment.
 	 *
 	 * `GET /comments/{comment_id}` — risk: low
 	 */
-	async retrieve(commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(commentId: string, options?: QueryCallOptions<NonNullable<paths["/comments/{comment_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/comments/{comment_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_comments_id",
 			namespace: "comments",
 			method: "retrieve",
 			http: "get",
-			path: `/comments/${commentId}`,
+			path: `/comments/${encodeURIComponent(commentId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -2670,7 +2670,7 @@ as information on the user who created the comment.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/comments/{comment_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2678,13 +2678,13 @@ as information on the user who created the comment.
 	 *
 	 * `PUT /comments/{comment_id}` — risk: medium
 	 */
-	async put(commentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(commentId: string, body?: NonNullable<paths["/comments/{comment_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/comments/{comment_id}"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/comments/{comment_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_comments_id",
 			namespace: "comments",
 			method: "put",
 			http: "put",
-			path: `/comments/${commentId}`,
+			path: `/comments/${encodeURIComponent(commentId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -2692,7 +2692,7 @@ as information on the user who created the comment.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/comments/{comment_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2700,13 +2700,13 @@ as information on the user who created the comment.
 	 *
 	 * `DELETE /comments/{comment_id}` — risk: medium
 	 */
-	async del(commentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(commentId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_comments_id",
 			namespace: "comments",
 			method: "del",
 			http: "delete",
-			path: `/comments/${commentId}`,
+			path: `/comments/${encodeURIComponent(commentId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -2714,7 +2714,7 @@ as information on the user who created the comment.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2723,8 +2723,8 @@ as a reply to an other comment.
 	 *
 	 * `POST /comments` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/comments"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/comments"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/comments"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_comments",
 			namespace: "comments",
 			method: "create",
@@ -2737,13 +2737,13 @@ as a reply to an other comment.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/comments"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class CollaborationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2755,13 +2755,13 @@ export class CollaborationsResource extends RpcTarget {
 	 *
 	 * `GET /collaborations/{collaboration_id}` — risk: low
 	 */
-	async retrieve(collaborationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(collaborationId: string, options?: QueryCallOptions<NonNullable<paths["/collaborations/{collaboration_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/collaborations/{collaboration_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_collaborations_id",
 			namespace: "collaborations",
 			method: "retrieve",
 			http: "get",
-			path: `/collaborations/${collaborationId}`,
+			path: `/collaborations/${encodeURIComponent(collaborationId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -2769,7 +2769,7 @@ export class CollaborationsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaborations/{collaboration_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2779,13 +2779,13 @@ accept collaboration invites. In case of accepting collaboration invite, role is
 	 *
 	 * `PUT /collaborations/{collaboration_id}` — risk: medium
 	 */
-	async put(collaborationId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(collaborationId: string, body?: NonNullable<paths["/collaborations/{collaboration_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/collaborations/{collaboration_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_collaborations_id",
 			namespace: "collaborations",
 			method: "put",
 			http: "put",
-			path: `/collaborations/${collaborationId}`,
+			path: `/collaborations/${encodeURIComponent(collaborationId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -2793,7 +2793,7 @@ accept collaboration invites. In case of accepting collaboration invite, role is
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaborations/{collaboration_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2801,13 +2801,13 @@ accept collaboration invites. In case of accepting collaboration invite, role is
 	 *
 	 * `DELETE /collaborations/{collaboration_id}` — risk: medium
 	 */
-	async del(collaborationId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(collaborationId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_collaborations_id",
 			namespace: "collaborations",
 			method: "del",
 			http: "delete",
-			path: `/collaborations/${collaborationId}`,
+			path: `/collaborations/${encodeURIComponent(collaborationId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -2815,7 +2815,7 @@ accept collaboration invites. In case of accepting collaboration invite, role is
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2823,8 +2823,8 @@ accept collaboration invites. In case of accepting collaboration invite, role is
 	 *
 	 * `GET /collaborations` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/collaborations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/collaborations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_collaborations",
 			namespace: "collaborations",
 			method: "list",
@@ -2837,7 +2837,7 @@ accept collaboration invites. In case of accepting collaboration invite, role is
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaborations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2851,8 +2851,8 @@ If a collaboration is being created with a
 	 *
 	 * `POST /collaborations` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/collaborations"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/collaborations"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/collaborations"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_collaborations",
 			namespace: "collaborations",
 			method: "create",
@@ -2865,13 +2865,13 @@ If a collaboration is being created with a
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaborations"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class SearchResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2884,8 +2884,8 @@ users content or across the entire enterprise.
 	 *
 	 * `GET /search` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/search"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/search"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_search",
 			namespace: "search",
 			method: "list",
@@ -2898,13 +2898,13 @@ users content or across the entire enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/search"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TasksResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2917,8 +2917,8 @@ will need to be assigned separately.
 	 *
 	 * `POST /tasks` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/tasks"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/tasks"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_tasks",
 			namespace: "tasks",
 			method: "create",
@@ -2931,7 +2931,7 @@ will need to be assigned separately.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/tasks"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2939,13 +2939,13 @@ will need to be assigned separately.
 	 *
 	 * `GET /tasks/{task_id}` — risk: low
 	 */
-	async retrieve(taskId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(taskId: string, options?: CallOptions): Promise<ProofResult<paths["/tasks/{task_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_tasks_id",
 			namespace: "tasks",
 			method: "retrieve",
 			http: "get",
-			path: `/tasks/${taskId}`,
+			path: `/tasks/${encodeURIComponent(taskId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -2953,7 +2953,7 @@ will need to be assigned separately.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/tasks/{task_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2962,13 +2962,13 @@ update its completion state.
 	 *
 	 * `PUT /tasks/{task_id}` — risk: medium
 	 */
-	async put(taskId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(taskId: string, body?: NonNullable<paths["/tasks/{task_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/tasks/{task_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_tasks_id",
 			namespace: "tasks",
 			method: "put",
 			http: "put",
-			path: `/tasks/${taskId}`,
+			path: `/tasks/${encodeURIComponent(taskId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -2976,7 +2976,7 @@ update its completion state.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/tasks/{task_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2984,13 +2984,13 @@ update its completion state.
 	 *
 	 * `DELETE /tasks/{task_id}` — risk: medium
 	 */
-	async del(taskId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(taskId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_tasks_id",
 			namespace: "tasks",
 			method: "del",
 			http: "delete",
-			path: `/tasks/${taskId}`,
+			path: `/tasks/${encodeURIComponent(taskId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -2998,7 +2998,7 @@ update its completion state.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3006,13 +3006,13 @@ update its completion state.
 	 *
 	 * `GET /tasks/{task_id}/assignments` — risk: medium
 	 */
-	async listAssignments(taskId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAssignments(taskId: string, options?: CallOptions): Promise<ProofResult<paths["/tasks/{task_id}/assignments"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_tasks_id_assignments",
 			namespace: "tasks",
 			method: "listAssignments",
 			http: "get",
-			path: `/tasks/${taskId}/assignments`,
+			path: `/tasks/${encodeURIComponent(taskId)}/assignments`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAssignments"],
@@ -3020,13 +3020,13 @@ update its completion state.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/tasks/{task_id}/assignments"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TaskAssignmentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3041,8 +3041,8 @@ assignments.
 	 *
 	 * `POST /task_assignments` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/task_assignments"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/task_assignments"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_task_assignments",
 			namespace: "task_assignments",
 			method: "create",
@@ -3055,7 +3055,7 @@ assignments.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/task_assignments"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3063,13 +3063,13 @@ assignments.
 	 *
 	 * `GET /task_assignments/{task_assignment_id}` — risk: low
 	 */
-	async retrieve(taskAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(taskAssignmentId: string, options?: CallOptions): Promise<ProofResult<paths["/task_assignments/{task_assignment_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_task_assignments_id",
 			namespace: "task_assignments",
 			method: "retrieve",
 			http: "get",
-			path: `/task_assignments/${taskAssignmentId}`,
+			path: `/task_assignments/${encodeURIComponent(taskAssignmentId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -3077,7 +3077,7 @@ assignments.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/task_assignments/{task_assignment_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3086,13 +3086,13 @@ used to update the state of a task assigned to a user.
 	 *
 	 * `PUT /task_assignments/{task_assignment_id}` — risk: medium
 	 */
-	async put(taskAssignmentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(taskAssignmentId: string, body?: NonNullable<paths["/task_assignments/{task_assignment_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/task_assignments/{task_assignment_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_task_assignments_id",
 			namespace: "task_assignments",
 			method: "put",
 			http: "put",
-			path: `/task_assignments/${taskAssignmentId}`,
+			path: `/task_assignments/${encodeURIComponent(taskAssignmentId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -3100,7 +3100,7 @@ used to update the state of a task assigned to a user.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/task_assignments/{task_assignment_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3108,13 +3108,13 @@ used to update the state of a task assigned to a user.
 	 *
 	 * `DELETE /task_assignments/{task_assignment_id}` — risk: medium
 	 */
-	async del(taskAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(taskAssignmentId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_task_assignments_id",
 			namespace: "task_assignments",
 			method: "del",
 			http: "delete",
-			path: `/task_assignments/${taskAssignmentId}`,
+			path: `/task_assignments/${encodeURIComponent(taskAssignmentId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -3122,13 +3122,13 @@ used to update the state of a task assigned to a user.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class SharedItemsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3145,8 +3145,8 @@ This endpoint allows an applica
 	 *
 	 * `GET /shared_items` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/shared_items"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/shared_items"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shared_items",
 			namespace: "shared_items",
 			method: "list",
@@ -3159,13 +3159,13 @@ This endpoint allows an applica
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shared_items"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class SharedItemsFoldersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3182,8 +3182,8 @@ This endpoint allows an appl
 	 *
 	 * `GET /shared_items#folders` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/shared_items#folders"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/shared_items#folders"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shared_items#folders",
 			namespace: "shared_items#folders",
 			method: "list",
@@ -3196,13 +3196,13 @@ This endpoint allows an appl
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shared_items#folders"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class WebLinksResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3214,8 +3214,8 @@ export class WebLinksResource extends RpcTarget {
 	 *
 	 * `POST /web_links` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/web_links"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/web_links"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_web_links",
 			namespace: "web_links",
 			method: "create",
@@ -3228,7 +3228,7 @@ export class WebLinksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/web_links"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3236,13 +3236,13 @@ export class WebLinksResource extends RpcTarget {
 	 *
 	 * `GET /web_links/{web_link_id}` — risk: low
 	 */
-	async retrieve_0(webLinkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve_0(webLinkId: string, options?: CallOptions): Promise<ProofResult<paths["/web_links/{web_link_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_web_links_id",
 			namespace: "web_links",
 			method: "retrieve_0",
 			http: "get",
-			path: `/web_links/${webLinkId}`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve_0"],
@@ -3250,7 +3250,7 @@ export class WebLinksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/web_links/{web_link_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3261,13 +3261,13 @@ the original folder has been deleted.
 	 *
 	 * `POST /web_links/{web_link_id}` — risk: medium
 	 */
-	async update(webLinkId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(webLinkId: string, body?: NonNullable<paths["/web_links/{web_link_id}"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/web_links/{web_link_id}"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/web_links/{web_link_id}"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_web_links_id",
 			namespace: "web_links",
 			method: "update",
 			http: "post",
-			path: `/web_links/${webLinkId}`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -3275,7 +3275,7 @@ the original folder has been deleted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/web_links/{web_link_id}"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3283,13 +3283,13 @@ the original folder has been deleted.
 	 *
 	 * `PUT /web_links/{web_link_id}` — risk: medium
 	 */
-	async put_0(webLinkId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_0(webLinkId: string, body?: NonNullable<paths["/web_links/{web_link_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/web_links/{web_link_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_web_links_id",
 			namespace: "web_links",
 			method: "put_0",
 			http: "put",
-			path: `/web_links/${webLinkId}`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_0"],
@@ -3297,7 +3297,7 @@ the original folder has been deleted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/web_links/{web_link_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3305,13 +3305,13 @@ the original folder has been deleted.
 	 *
 	 * `DELETE /web_links/{web_link_id}` — risk: medium
 	 */
-	async del(webLinkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(webLinkId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_web_links_id",
 			namespace: "web_links",
 			method: "del",
 			http: "delete",
-			path: `/web_links/${webLinkId}`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -3319,7 +3319,7 @@ the original folder has been deleted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3327,13 +3327,13 @@ the original folder has been deleted.
 	 *
 	 * `GET /web_links/{web_link_id}/trash` — risk: medium
 	 */
-	async listTrash(webLinkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTrash(webLinkId: string, options?: QueryCallOptions<NonNullable<paths["/web_links/{web_link_id}/trash"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/web_links/{web_link_id}/trash"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_web_links_id_trash",
 			namespace: "web_links",
 			method: "listTrash",
 			http: "get",
-			path: `/web_links/${webLinkId}/trash`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}/trash`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTrash"],
@@ -3341,7 +3341,7 @@ the original folder has been deleted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/web_links/{web_link_id}/trash"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3350,13 +3350,13 @@ This action cannot be undone.
 	 *
 	 * `DELETE /web_links/{web_link_id}/trash` — risk: medium
 	 */
-	async trash(webLinkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async trash(webLinkId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_web_links_id_trash",
 			namespace: "web_links",
 			method: "trash",
 			http: "delete",
-			path: `/web_links/${webLinkId}/trash`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}/trash`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["trash"],
@@ -3364,7 +3364,7 @@ This action cannot be undone.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3372,13 +3372,13 @@ This action cannot be undone.
 	 *
 	 * `GET /web_links/{web_link_id}#get_shared_link` — risk: low
 	 */
-	async retrieve_1(webLinkId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve_1(webLinkId: string, options?: QueryCallOptions<NonNullable<paths["/web_links/{web_link_id}#get_shared_link"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/web_links/{web_link_id}#get_shared_link"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_web_links_id#get_shared_link",
 			namespace: "web_links",
 			method: "retrieve_1",
 			http: "get",
-			path: `/web_links/${webLinkId}#get_shared_link`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}#get_shared_link`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve_1"],
@@ -3386,7 +3386,7 @@ This action cannot be undone.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/web_links/{web_link_id}#get_shared_link"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3394,13 +3394,13 @@ This action cannot be undone.
 	 *
 	 * `PUT /web_links/{web_link_id}#add_shared_link` — risk: medium
 	 */
-	async put_1(webLinkId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_1(webLinkId: string, body?: NonNullable<paths["/web_links/{web_link_id}#add_shared_link"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/web_links/{web_link_id}#add_shared_link"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/web_links/{web_link_id}#add_shared_link"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_web_links_id#add_shared_link",
 			namespace: "web_links",
 			method: "put_1",
 			http: "put",
-			path: `/web_links/${webLinkId}#add_shared_link`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}#add_shared_link`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_1"],
@@ -3408,7 +3408,7 @@ This action cannot be undone.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/web_links/{web_link_id}#add_shared_link"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3416,13 +3416,13 @@ This action cannot be undone.
 	 *
 	 * `PUT /web_links/{web_link_id}#update_shared_link` — risk: medium
 	 */
-	async put_2(webLinkId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_2(webLinkId: string, body?: NonNullable<paths["/web_links/{web_link_id}#update_shared_link"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/web_links/{web_link_id}#update_shared_link"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/web_links/{web_link_id}#update_shared_link"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_web_links_id#update_shared_link",
 			namespace: "web_links",
 			method: "put_2",
 			http: "put",
-			path: `/web_links/${webLinkId}#update_shared_link`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}#update_shared_link`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_2"],
@@ -3430,7 +3430,7 @@ This action cannot be undone.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/web_links/{web_link_id}#update_shared_link"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3438,13 +3438,13 @@ This action cannot be undone.
 	 *
 	 * `PUT /web_links/{web_link_id}#remove_shared_link` — risk: medium
 	 */
-	async put_3(webLinkId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put_3(webLinkId: string, body?: NonNullable<paths["/web_links/{web_link_id}#remove_shared_link"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/web_links/{web_link_id}#remove_shared_link"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/web_links/{web_link_id}#remove_shared_link"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_web_links_id#remove_shared_link",
 			namespace: "web_links",
 			method: "put_3",
 			http: "put",
-			path: `/web_links/${webLinkId}#remove_shared_link`,
+			path: `/web_links/${encodeURIComponent(webLinkId)}#remove_shared_link`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put_3"],
@@ -3452,13 +3452,13 @@ This action cannot be undone.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/web_links/{web_link_id}#remove_shared_link"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class SharedItemsWebLinksResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3475,8 +3475,8 @@ This endpoint allows an
 	 *
 	 * `GET /shared_items#web_links` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/shared_items#web_links"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/shared_items#web_links"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shared_items#web_links",
 			namespace: "shared_items#web_links",
 			method: "list",
@@ -3489,13 +3489,13 @@ This endpoint allows an
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shared_items#web_links"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class SharedItemsAppItemsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3509,8 +3509,8 @@ The link can originate from the current enterprise or another.
 	 *
 	 * `GET /shared_items#app_items` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: CallOptions): Promise<ProofResult<paths["/shared_items#app_items"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shared_items#app_items",
 			namespace: "shared_items#app_items",
 			method: "list",
@@ -3523,13 +3523,13 @@ The link can originate from the current enterprise or another.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shared_items#app_items"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3545,8 +3545,8 @@ have the permission to look up users in the e
 	 *
 	 * `GET /users` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/users"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_users",
 			namespace: "users",
 			method: "list",
@@ -3559,7 +3559,7 @@ have the permission to look up users in the e
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3569,8 +3569,8 @@ admin permissions.
 	 *
 	 * `POST /users` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/users"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/users"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_users",
 			namespace: "users",
 			method: "create",
@@ -3583,7 +3583,7 @@ admin permissions.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3596,8 +3596,8 @@ In the case of a J
 	 *
 	 * `GET /users/me` — risk: medium
 	 */
-	async listMe(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMe(options?: QueryCallOptions<NonNullable<paths["/users/me"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/me"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_users_me",
 			namespace: "users",
 			method: "listMe",
@@ -3610,7 +3610,7 @@ In the case of a J
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/me"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3621,8 +3621,8 @@ Returns the status for the POST request.
 	 *
 	 * `POST /users/terminate_sessions` — risk: medium
 	 */
-	async createTerminateSession(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTerminateSession(body?: NonNullable<paths["/users/terminate_sessions"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/users/terminate_sessions"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_users_terminate_sessions",
 			namespace: "users",
 			method: "createTerminateSession",
@@ -3635,7 +3635,7 @@ Returns the status for the POST request.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/terminate_sessions"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3649,13 +3649,13 @@ This endpoint also returns a l
 	 *
 	 * `GET /users/{user_id}` — risk: low
 	 */
-	async retrieve(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(userId: string, options?: QueryCallOptions<NonNullable<paths["/users/{user_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/{user_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_users_id",
 			namespace: "users",
 			method: "retrieve",
 			http: "get",
-			path: `/users/${userId}`,
+			path: `/users/${encodeURIComponent(userId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -3663,7 +3663,7 @@ This endpoint also returns a l
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{user_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3673,13 +3673,13 @@ admin permissions.
 	 *
 	 * `PUT /users/{user_id}` — risk: medium
 	 */
-	async put(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(userId: string, body?: NonNullable<paths["/users/{user_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/users/{user_id}"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/{user_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_users_id",
 			namespace: "users",
 			method: "put",
 			http: "put",
-			path: `/users/${userId}`,
+			path: `/users/${encodeURIComponent(userId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -3687,7 +3687,7 @@ admin permissions.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{user_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3698,13 +3698,13 @@ the user and their files.
 	 *
 	 * `DELETE /users/{user_id}` — risk: medium
 	 */
-	async del(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(userId: string, options?: QueryCallOptions<NonNullable<paths["/users/{user_id}"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_users_id",
 			namespace: "users",
 			method: "del",
 			http: "delete",
-			path: `/users/${userId}`,
+			path: `/users/${encodeURIComponent(userId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -3712,7 +3712,7 @@ the user and their files.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3720,13 +3720,13 @@ the user and their files.
 	 *
 	 * `GET /users/{user_id}/avatar` — risk: medium
 	 */
-	async listAvatar(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAvatar(userId: string, options?: CallOptions): Promise<ProofResult<Uint8Array>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_users_id_avatar",
 			namespace: "users",
 			method: "listAvatar",
 			http: "get",
-			path: `/users/${userId}/avatar`,
+			path: `/users/${encodeURIComponent(userId)}/avatar`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAvatar"],
@@ -3734,7 +3734,7 @@ the user and their files.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array>>;
 	}
 
 	/**
@@ -3742,13 +3742,13 @@ the user and their files.
 	 *
 	 * `POST /users/{user_id}/avatar` — risk: medium
 	 */
-	async createAvatar(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createAvatar(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{user_id}/avatar"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_users_id_avatar",
 			namespace: "users",
 			method: "createAvatar",
 			http: "post",
-			path: `/users/${userId}/avatar`,
+			path: `/users/${encodeURIComponent(userId)}/avatar`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createAvatar"],
@@ -3756,7 +3756,7 @@ the user and their files.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{user_id}/avatar"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3765,13 +3765,13 @@ You cannot reverse this operation.
 	 *
 	 * `DELETE /users/{user_id}/avatar` — risk: medium
 	 */
-	async avatar(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async avatar(userId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_users_id_avatar",
 			namespace: "users",
 			method: "avatar",
 			http: "delete",
-			path: `/users/${userId}/avatar`,
+			path: `/users/${encodeURIComponent(userId)}/avatar`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["avatar"],
@@ -3779,7 +3779,7 @@ You cannot reverse this operation.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3792,13 +3792,13 @@ Folders can only be moved across users by users with
 	 *
 	 * `PUT /users/{user_id}/folders/0` — risk: medium
 	 */
-	async 0(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async 0(userId: string, body?: NonNullable<paths["/users/{user_id}/folders/0"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/users/{user_id}/folders/0"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/{user_id}/folders/0"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_users_id_folders_0",
 			namespace: "users",
 			method: "0",
 			http: "put",
-			path: `/users/${userId}/folders/0`,
+			path: `/users/${encodeURIComponent(userId)}/folders/0`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["0"],
@@ -3806,7 +3806,7 @@ Folders can only be moved across users by users with
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{user_id}/folders/0"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3815,13 +3815,13 @@ does not include the primary login for the user.
 	 *
 	 * `GET /users/{user_id}/email_aliases` — risk: medium
 	 */
-	async listEmailAliases(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEmailAliases(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{user_id}/email_aliases"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_users_id_email_aliases",
 			namespace: "users",
 			method: "listEmailAliases",
 			http: "get",
-			path: `/users/${userId}/email_aliases`,
+			path: `/users/${encodeURIComponent(userId)}/email_aliases`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listEmailAliases"],
@@ -3829,7 +3829,7 @@ does not include the primary login for the user.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{user_id}/email_aliases"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3837,13 +3837,13 @@ does not include the primary login for the user.
 	 *
 	 * `POST /users/{user_id}/email_aliases` — risk: medium
 	 */
-	async createEmailAlias(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createEmailAlias(userId: string, body?: NonNullable<paths["/users/{user_id}/email_aliases"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/users/{user_id}/email_aliases"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_users_id_email_aliases",
 			namespace: "users",
 			method: "createEmailAlias",
 			http: "post",
-			path: `/users/${userId}/email_aliases`,
+			path: `/users/${encodeURIComponent(userId)}/email_aliases`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createEmailAlias"],
@@ -3851,7 +3851,7 @@ does not include the primary login for the user.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{user_id}/email_aliases"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3859,13 +3859,13 @@ does not include the primary login for the user.
 	 *
 	 * `DELETE /users/{user_id}/email_aliases/{email_alias_id}` — risk: medium
 	 */
-	async deleteEmailAlias(userId: string, emailAliasId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteEmailAlias(userId: string, emailAliasId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_users_id_email_aliases_id",
 			namespace: "users",
 			method: "deleteEmailAlias",
 			http: "delete",
-			path: `/users/${userId}/email_aliases/${emailAliasId}`,
+			path: `/users/${encodeURIComponent(userId)}/email_aliases/${encodeURIComponent(emailAliasId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteEmailAlias"],
@@ -3873,7 +3873,7 @@ does not include the primary login for the user.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3883,13 +3883,13 @@ use this API.
 	 *
 	 * `GET /users/{user_id}/memberships` — risk: medium
 	 */
-	async listMemberships(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMemberships(userId: string, options?: QueryCallOptions<NonNullable<paths["/users/{user_id}/memberships"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/{user_id}/memberships"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_users_id_memberships",
 			namespace: "users",
 			method: "listMemberships",
 			http: "get",
-			path: `/users/${userId}/memberships`,
+			path: `/users/${encodeURIComponent(userId)}/memberships`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMemberships"],
@@ -3897,13 +3897,13 @@ use this API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{user_id}/memberships"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class InvitesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3919,8 +3919,8 @@ email and
 	 *
 	 * `POST /invites` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/invites"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/invites"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/invites"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_invites",
 			namespace: "invites",
 			method: "create",
@@ -3933,7 +3933,7 @@ email and
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/invites"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3941,13 +3941,13 @@ email and
 	 *
 	 * `GET /invites/{invite_id}` — risk: low
 	 */
-	async retrieve(inviteId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(inviteId: string, options?: QueryCallOptions<NonNullable<paths["/invites/{invite_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/invites/{invite_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_invites_id",
 			namespace: "invites",
 			method: "retrieve",
 			http: "get",
-			path: `/invites/${inviteId}`,
+			path: `/invites/${encodeURIComponent(inviteId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -3955,13 +3955,13 @@ email and
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/invites/{invite_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class GroupsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3974,8 +3974,8 @@ must have admin permissions to inspect enterprise's groups.
 	 *
 	 * `GET /groups` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/groups"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/groups"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_groups",
 			namespace: "groups",
 			method: "list",
@@ -3988,7 +3988,7 @@ must have admin permissions to inspect enterprise's groups.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3997,8 +3997,8 @@ permissions can create new groups.
 	 *
 	 * `POST /groups` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/groups"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/groups"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/groups"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_groups",
 			namespace: "groups",
 			method: "create",
@@ -4011,7 +4011,7 @@ permissions can create new groups.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4022,8 +4022,8 @@ Returns the status for the POST request.
 	 *
 	 * `POST /groups/terminate_sessions` — risk: medium
 	 */
-	async createTerminateSession(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTerminateSession(body?: NonNullable<paths["/groups/terminate_sessions"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/groups/terminate_sessions"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_groups_terminate_sessions",
 			namespace: "groups",
 			method: "createTerminateSession",
@@ -4036,7 +4036,7 @@ Returns the status for the POST request.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/terminate_sessions"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4046,13 +4046,13 @@ use this API.
 	 *
 	 * `GET /groups/{group_id}` — risk: low
 	 */
-	async retrieve(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(groupId: string, options?: QueryCallOptions<NonNullable<paths["/groups/{group_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/groups/{group_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_groups_id",
 			namespace: "groups",
 			method: "retrieve",
 			http: "get",
-			path: `/groups/${groupId}`,
+			path: `/groups/${encodeURIComponent(groupId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -4060,7 +4060,7 @@ use this API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{group_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4070,13 +4070,13 @@ use this API.
 	 *
 	 * `PUT /groups/{group_id}` — risk: medium
 	 */
-	async put(groupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(groupId: string, body?: NonNullable<paths["/groups/{group_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/groups/{group_id}"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/groups/{group_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_groups_id",
 			namespace: "groups",
 			method: "put",
 			http: "put",
-			path: `/groups/${groupId}`,
+			path: `/groups/${encodeURIComponent(groupId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -4084,7 +4084,7 @@ use this API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{group_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4093,13 +4093,13 @@ admin-level permissions will be able to use this API.
 	 *
 	 * `DELETE /groups/{group_id}` — risk: medium
 	 */
-	async del(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(groupId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_groups_id",
 			namespace: "groups",
 			method: "del",
 			http: "delete",
-			path: `/groups/${groupId}`,
+			path: `/groups/${encodeURIComponent(groupId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -4107,7 +4107,7 @@ admin-level permissions will be able to use this API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4117,13 +4117,13 @@ use this API.
 	 *
 	 * `GET /groups/{group_id}/memberships` — risk: medium
 	 */
-	async listMemberships(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMemberships(groupId: string, options?: QueryCallOptions<NonNullable<paths["/groups/{group_id}/memberships"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/groups/{group_id}/memberships"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_groups_id_memberships",
 			namespace: "groups",
 			method: "listMemberships",
 			http: "get",
-			path: `/groups/${groupId}/memberships`,
+			path: `/groups/${encodeURIComponent(groupId)}/memberships`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMemberships"],
@@ -4131,7 +4131,7 @@ use this API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{group_id}/memberships"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4143,13 +4143,13 @@ folders the group has access
 	 *
 	 * `GET /groups/{group_id}/collaborations` — risk: medium
 	 */
-	async listCollaborations(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCollaborations(groupId: string, options?: QueryCallOptions<NonNullable<paths["/groups/{group_id}/collaborations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/groups/{group_id}/collaborations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_groups_id_collaborations",
 			namespace: "groups",
 			method: "listCollaborations",
 			http: "get",
-			path: `/groups/${groupId}/collaborations`,
+			path: `/groups/${encodeURIComponent(groupId)}/collaborations`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCollaborations"],
@@ -4157,13 +4157,13 @@ folders the group has access
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{group_id}/collaborations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class GroupMembershipsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4176,8 +4176,8 @@ admin-level permissions will be able to use this API.
 	 *
 	 * `POST /group_memberships` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/group_memberships"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/group_memberships"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/group_memberships"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_group_memberships",
 			namespace: "group_memberships",
 			method: "create",
@@ -4190,7 +4190,7 @@ admin-level permissions will be able to use this API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/group_memberships"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4200,13 +4200,13 @@ use this API.
 	 *
 	 * `GET /group_memberships/{group_membership_id}` — risk: low
 	 */
-	async retrieve(groupMembershipId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(groupMembershipId: string, options?: QueryCallOptions<NonNullable<paths["/group_memberships/{group_membership_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/group_memberships/{group_membership_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_group_memberships_id",
 			namespace: "group_memberships",
 			method: "retrieve",
 			http: "get",
-			path: `/group_memberships/${groupMembershipId}`,
+			path: `/group_memberships/${encodeURIComponent(groupMembershipId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -4214,7 +4214,7 @@ use this API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/group_memberships/{group_membership_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4224,13 +4224,13 @@ use this API.
 	 *
 	 * `PUT /group_memberships/{group_membership_id}` — risk: medium
 	 */
-	async put(groupMembershipId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(groupMembershipId: string, body?: NonNullable<paths["/group_memberships/{group_membership_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/group_memberships/{group_membership_id}"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/group_memberships/{group_membership_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_group_memberships_id",
 			namespace: "group_memberships",
 			method: "put",
 			http: "put",
-			path: `/group_memberships/${groupMembershipId}`,
+			path: `/group_memberships/${encodeURIComponent(groupMembershipId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -4238,7 +4238,7 @@ use this API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/group_memberships/{group_membership_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4248,13 +4248,13 @@ use this API.
 	 *
 	 * `DELETE /group_memberships/{group_membership_id}` — risk: medium
 	 */
-	async del(groupMembershipId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(groupMembershipId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_group_memberships_id",
 			namespace: "group_memberships",
 			method: "del",
 			http: "delete",
-			path: `/group_memberships/${groupMembershipId}`,
+			path: `/group_memberships/${encodeURIComponent(groupMembershipId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -4262,13 +4262,13 @@ use this API.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class WebhooksResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4283,8 +4283,8 @@ owned by the authenticated user. This means that an admin can
 	 *
 	 * `GET /webhooks` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/webhooks"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/webhooks"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_webhooks",
 			namespace: "webhooks",
 			method: "list",
@@ -4297,7 +4297,7 @@ owned by the authenticated user. This means that an admin can
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4305,8 +4305,8 @@ owned by the authenticated user. This means that an admin can
 	 *
 	 * `POST /webhooks` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/webhooks"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/webhooks"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_webhooks",
 			namespace: "webhooks",
 			method: "create",
@@ -4319,7 +4319,7 @@ owned by the authenticated user. This means that an admin can
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4327,13 +4327,13 @@ owned by the authenticated user. This means that an admin can
 	 *
 	 * `GET /webhooks/{webhook_id}` — risk: low
 	 */
-	async retrieve(webhookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(webhookId: string, options?: CallOptions): Promise<ProofResult<paths["/webhooks/{webhook_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_webhooks_id",
 			namespace: "webhooks",
 			method: "retrieve",
 			http: "get",
-			path: `/webhooks/${webhookId}`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -4341,7 +4341,7 @@ owned by the authenticated user. This means that an admin can
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks/{webhook_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4349,13 +4349,13 @@ owned by the authenticated user. This means that an admin can
 	 *
 	 * `PUT /webhooks/{webhook_id}` — risk: medium
 	 */
-	async put(webhookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(webhookId: string, body?: NonNullable<paths["/webhooks/{webhook_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/webhooks/{webhook_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_webhooks_id",
 			namespace: "webhooks",
 			method: "put",
 			http: "put",
-			path: `/webhooks/${webhookId}`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -4363,7 +4363,7 @@ owned by the authenticated user. This means that an admin can
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks/{webhook_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4371,13 +4371,13 @@ owned by the authenticated user. This means that an admin can
 	 *
 	 * `DELETE /webhooks/{webhook_id}` — risk: medium
 	 */
-	async del(webhookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(webhookId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_webhooks_id",
 			namespace: "webhooks",
 			method: "del",
 			http: "delete",
-			path: `/webhooks/${webhookId}`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -4385,13 +4385,13 @@ owned by the authenticated user. This means that an admin can
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class SkillInvocationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4404,13 +4404,13 @@ metadata cards on a file.
 	 *
 	 * `PUT /skill_invocations/{skill_id}` — risk: medium
 	 */
-	async put(skillId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(skillId: string, body?: NonNullable<paths["/skill_invocations/{skill_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_skill_invocations_id",
 			namespace: "skill_invocations",
 			method: "put",
 			http: "put",
-			path: `/skill_invocations/${skillId}`,
+			path: `/skill_invocations/${encodeURIComponent(skillId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -4418,13 +4418,13 @@ metadata cards on a file.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class EventsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4440,8 +4440,8 @@ for the entire enterprise, set the `st
 	 *
 	 * `GET /events` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/events"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/events"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_events",
 			namespace: "events",
 			method: "list",
@@ -4454,13 +4454,13 @@ for the entire enterprise, set the `st
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/events"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CollectionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4475,8 +4475,8 @@ is supported.
 	 *
 	 * `GET /collections` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/collections"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/collections"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_collections",
 			namespace: "collections",
 			method: "list",
@@ -4489,7 +4489,7 @@ is supported.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collections"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4498,13 +4498,13 @@ this collection.
 	 *
 	 * `GET /collections/{collection_id}/items` — risk: medium
 	 */
-	async listItems(collectionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listItems(collectionId: string, options?: QueryCallOptions<NonNullable<paths["/collections/{collection_id}/items"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/collections/{collection_id}/items"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_collections_id_items",
 			namespace: "collections",
 			method: "listItems",
 			http: "get",
-			path: `/collections/${collectionId}/items`,
+			path: `/collections/${encodeURIComponent(collectionId)}/items`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listItems"],
@@ -4512,7 +4512,7 @@ this collection.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collections/{collection_id}/items"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4520,13 +4520,13 @@ this collection.
 	 *
 	 * `GET /collections/{collection_id}` — risk: low
 	 */
-	async retrieve(collectionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(collectionId: string, options?: CallOptions): Promise<ProofResult<paths["/collections/{collection_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_collections_id",
 			namespace: "collections",
 			method: "retrieve",
 			http: "get",
-			path: `/collections/${collectionId}`,
+			path: `/collections/${encodeURIComponent(collectionId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -4534,13 +4534,13 @@ this collection.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collections/{collection_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RecentItemsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4554,8 +4554,8 @@ by a user, either in the last 90 days or up to the last
 	 *
 	 * `GET /recent_items` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/recent_items"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/recent_items"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_recent_items",
 			namespace: "recent_items",
 			method: "list",
@@ -4568,13 +4568,13 @@ by a user, either in the last 90 days or up to the last
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/recent_items"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RetentionPoliciesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4586,8 +4586,8 @@ export class RetentionPoliciesResource extends RpcTarget {
 	 *
 	 * `GET /retention_policies` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/retention_policies"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/retention_policies"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_retention_policies",
 			namespace: "retention_policies",
 			method: "list",
@@ -4600,7 +4600,7 @@ export class RetentionPoliciesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/retention_policies"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4608,8 +4608,8 @@ export class RetentionPoliciesResource extends RpcTarget {
 	 *
 	 * `POST /retention_policies` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/retention_policies"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/retention_policies"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_retention_policies",
 			namespace: "retention_policies",
 			method: "create",
@@ -4622,7 +4622,7 @@ export class RetentionPoliciesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/retention_policies"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4630,13 +4630,13 @@ export class RetentionPoliciesResource extends RpcTarget {
 	 *
 	 * `GET /retention_policies/{retention_policy_id}` — risk: low
 	 */
-	async retrieve(retentionPolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(retentionPolicyId: string, options?: QueryCallOptions<NonNullable<paths["/retention_policies/{retention_policy_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/retention_policies/{retention_policy_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_retention_policies_id",
 			namespace: "retention_policies",
 			method: "retrieve",
 			http: "get",
-			path: `/retention_policies/${retentionPolicyId}`,
+			path: `/retention_policies/${encodeURIComponent(retentionPolicyId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -4644,7 +4644,7 @@ export class RetentionPoliciesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/retention_policies/{retention_policy_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4652,13 +4652,13 @@ export class RetentionPoliciesResource extends RpcTarget {
 	 *
 	 * `PUT /retention_policies/{retention_policy_id}` — risk: medium
 	 */
-	async put(retentionPolicyId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(retentionPolicyId: string, body?: NonNullable<paths["/retention_policies/{retention_policy_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/retention_policies/{retention_policy_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_retention_policies_id",
 			namespace: "retention_policies",
 			method: "put",
 			http: "put",
-			path: `/retention_policies/${retentionPolicyId}`,
+			path: `/retention_policies/${encodeURIComponent(retentionPolicyId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -4666,7 +4666,7 @@ export class RetentionPoliciesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/retention_policies/{retention_policy_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4674,13 +4674,13 @@ export class RetentionPoliciesResource extends RpcTarget {
 	 *
 	 * `DELETE /retention_policies/{retention_policy_id}` — risk: medium
 	 */
-	async del(retentionPolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(retentionPolicyId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_retention_policies_id",
 			namespace: "retention_policies",
 			method: "del",
 			http: "delete",
-			path: `/retention_policies/${retentionPolicyId}`,
+			path: `/retention_policies/${encodeURIComponent(retentionPolicyId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -4688,7 +4688,7 @@ export class RetentionPoliciesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4697,13 +4697,13 @@ retention policy.
 	 *
 	 * `GET /retention_policies/{retention_policy_id}/assignments` — risk: medium
 	 */
-	async listAssignments(retentionPolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAssignments(retentionPolicyId: string, options?: QueryCallOptions<NonNullable<paths["/retention_policies/{retention_policy_id}/assignments"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/retention_policies/{retention_policy_id}/assignments"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_retention_policies_id_assignments",
 			namespace: "retention_policies",
 			method: "listAssignments",
 			http: "get",
-			path: `/retention_policies/${retentionPolicyId}/assignments`,
+			path: `/retention_policies/${encodeURIComponent(retentionPolicyId)}/assignments`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAssignments"],
@@ -4711,13 +4711,13 @@ retention policy.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/retention_policies/{retention_policy_id}/assignments"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RetentionPolicyAssignmentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4729,8 +4729,8 @@ export class RetentionPolicyAssignmentsResource extends RpcTarget {
 	 *
 	 * `POST /retention_policy_assignments` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/retention_policy_assignments"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/retention_policy_assignments"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_retention_policy_assignments",
 			namespace: "retention_policy_assignments",
 			method: "create",
@@ -4743,7 +4743,7 @@ export class RetentionPolicyAssignmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/retention_policy_assignments"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4751,13 +4751,13 @@ export class RetentionPolicyAssignmentsResource extends RpcTarget {
 	 *
 	 * `GET /retention_policy_assignments/{retention_policy_assignment_id}` — risk: low
 	 */
-	async retrieve(retentionPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(retentionPolicyAssignmentId: string, options?: QueryCallOptions<NonNullable<paths["/retention_policy_assignments/{retention_policy_assignment_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/retention_policy_assignments/{retention_policy_assignment_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_retention_policy_assignments_id",
 			namespace: "retention_policy_assignments",
 			method: "retrieve",
 			http: "get",
-			path: `/retention_policy_assignments/${retentionPolicyAssignmentId}`,
+			path: `/retention_policy_assignments/${encodeURIComponent(retentionPolicyAssignmentId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -4765,7 +4765,7 @@ export class RetentionPolicyAssignmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/retention_policy_assignments/{retention_policy_assignment_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4774,13 +4774,13 @@ applied to content.
 	 *
 	 * `DELETE /retention_policy_assignments/{retention_policy_assignment_id}` — risk: medium
 	 */
-	async del(retentionPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(retentionPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_retention_policy_assignments_id",
 			namespace: "retention_policy_assignments",
 			method: "del",
 			http: "delete",
-			path: `/retention_policy_assignments/${retentionPolicyAssignmentId}`,
+			path: `/retention_policy_assignments/${encodeURIComponent(retentionPolicyAssignmentId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -4788,7 +4788,7 @@ applied to content.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4796,13 +4796,13 @@ applied to content.
 	 *
 	 * `GET /retention_policy_assignments/{retention_policy_assignment_id}/files_under_retention` — risk: medium
 	 */
-	async listFilesUnderRetention(retentionPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listFilesUnderRetention(retentionPolicyAssignmentId: string, options?: QueryCallOptions<NonNullable<paths["/retention_policy_assignments/{retention_policy_assignment_id}/files_under_retention"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/retention_policy_assignments/{retention_policy_assignment_id}/files_under_retention"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_retention_policy_assignments_id_files_under_retention",
 			namespace: "retention_policy_assignments",
 			method: "listFilesUnderRetention",
 			http: "get",
-			path: `/retention_policy_assignments/${retentionPolicyAssignmentId}/files_under_retention`,
+			path: `/retention_policy_assignments/${encodeURIComponent(retentionPolicyAssignmentId)}/files_under_retention`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listFilesUnderRetention"],
@@ -4810,7 +4810,7 @@ applied to content.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/retention_policy_assignments/{retention_policy_assignment_id}/files_under_retention"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4819,13 +4819,13 @@ assignment.
 	 *
 	 * `GET /retention_policy_assignments/{retention_policy_assignment_id}/file_versions_under_retention` — risk: medium
 	 */
-	async listFileVersionsUnderRetention(retentionPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listFileVersionsUnderRetention(retentionPolicyAssignmentId: string, options?: QueryCallOptions<NonNullable<paths["/retention_policy_assignments/{retention_policy_assignment_id}/file_versions_under_retention"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/retention_policy_assignments/{retention_policy_assignment_id}/file_versions_under_retention"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_retention_policy_assignments_id_file_versions_under_retention",
 			namespace: "retention_policy_assignments",
 			method: "listFileVersionsUnderRetention",
 			http: "get",
-			path: `/retention_policy_assignments/${retentionPolicyAssignmentId}/file_versions_under_retention`,
+			path: `/retention_policy_assignments/${encodeURIComponent(retentionPolicyAssignmentId)}/file_versions_under_retention`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listFileVersionsUnderRetention"],
@@ -4833,13 +4833,13 @@ assignment.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/retention_policy_assignments/{retention_policy_assignment_id}/file_versions_under_retention"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class LegalHoldPoliciesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4852,8 +4852,8 @@ an enterprise.
 	 *
 	 * `GET /legal_hold_policies` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/legal_hold_policies"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/legal_hold_policies"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_legal_hold_policies",
 			namespace: "legal_hold_policies",
 			method: "list",
@@ -4866,7 +4866,7 @@ an enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/legal_hold_policies"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4874,8 +4874,8 @@ an enterprise.
 	 *
 	 * `POST /legal_hold_policies` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/legal_hold_policies"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/legal_hold_policies"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_legal_hold_policies",
 			namespace: "legal_hold_policies",
 			method: "create",
@@ -4888,7 +4888,7 @@ an enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/legal_hold_policies"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4896,13 +4896,13 @@ an enterprise.
 	 *
 	 * `GET /legal_hold_policies/{legal_hold_policy_id}` — risk: low
 	 */
-	async retrieve(legalHoldPolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(legalHoldPolicyId: string, options?: CallOptions): Promise<ProofResult<paths["/legal_hold_policies/{legal_hold_policy_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_legal_hold_policies_id",
 			namespace: "legal_hold_policies",
 			method: "retrieve",
 			http: "get",
-			path: `/legal_hold_policies/${legalHoldPolicyId}`,
+			path: `/legal_hold_policies/${encodeURIComponent(legalHoldPolicyId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -4910,7 +4910,7 @@ an enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/legal_hold_policies/{legal_hold_policy_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4918,13 +4918,13 @@ an enterprise.
 	 *
 	 * `PUT /legal_hold_policies/{legal_hold_policy_id}` — risk: medium
 	 */
-	async put(legalHoldPolicyId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(legalHoldPolicyId: string, body?: NonNullable<paths["/legal_hold_policies/{legal_hold_policy_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/legal_hold_policies/{legal_hold_policy_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_legal_hold_policies_id",
 			namespace: "legal_hold_policies",
 			method: "put",
 			http: "put",
-			path: `/legal_hold_policies/${legalHoldPolicyId}`,
+			path: `/legal_hold_policies/${encodeURIComponent(legalHoldPolicyId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -4932,7 +4932,7 @@ an enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/legal_hold_policies/{legal_hold_policy_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4943,13 +4943,13 @@ fully deleted yet when the response returns.
 	 *
 	 * `DELETE /legal_hold_policies/{legal_hold_policy_id}` — risk: medium
 	 */
-	async del(legalHoldPolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(legalHoldPolicyId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_legal_hold_policies_id",
 			namespace: "legal_hold_policies",
 			method: "del",
 			http: "delete",
-			path: `/legal_hold_policies/${legalHoldPolicyId}`,
+			path: `/legal_hold_policies/${encodeURIComponent(legalHoldPolicyId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -4957,13 +4957,13 @@ fully deleted yet when the response returns.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class LegalHoldPolicyAssignmentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4975,8 +4975,8 @@ export class LegalHoldPolicyAssignmentsResource extends RpcTarget {
 	 *
 	 * `GET /legal_hold_policy_assignments` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/legal_hold_policy_assignments"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/legal_hold_policy_assignments"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_legal_hold_policy_assignments",
 			namespace: "legal_hold_policy_assignments",
 			method: "list",
@@ -4989,7 +4989,7 @@ export class LegalHoldPolicyAssignmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/legal_hold_policy_assignments"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4997,8 +4997,8 @@ export class LegalHoldPolicyAssignmentsResource extends RpcTarget {
 	 *
 	 * `POST /legal_hold_policy_assignments` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/legal_hold_policy_assignments"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/legal_hold_policy_assignments"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_legal_hold_policy_assignments",
 			namespace: "legal_hold_policy_assignments",
 			method: "create",
@@ -5011,7 +5011,7 @@ export class LegalHoldPolicyAssignmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/legal_hold_policy_assignments"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5019,13 +5019,13 @@ export class LegalHoldPolicyAssignmentsResource extends RpcTarget {
 	 *
 	 * `GET /legal_hold_policy_assignments/{legal_hold_policy_assignment_id}` — risk: low
 	 */
-	async retrieve(legalHoldPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(legalHoldPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<paths["/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_legal_hold_policy_assignments_id",
 			namespace: "legal_hold_policy_assignments",
 			method: "retrieve",
 			http: "get",
-			path: `/legal_hold_policy_assignments/${legalHoldPolicyAssignmentId}`,
+			path: `/legal_hold_policy_assignments/${encodeURIComponent(legalHoldPolicyAssignmentId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5033,7 +5033,7 @@ export class LegalHoldPolicyAssignmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5044,13 +5044,13 @@ fully removed yet when the response returns.
 	 *
 	 * `DELETE /legal_hold_policy_assignments/{legal_hold_policy_assignment_id}` — risk: medium
 	 */
-	async del(legalHoldPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(legalHoldPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_legal_hold_policy_assignments_id",
 			namespace: "legal_hold_policy_assignments",
 			method: "del",
 			http: "delete",
-			path: `/legal_hold_policy_assignments/${legalHoldPolicyAssignmentId}`,
+			path: `/legal_hold_policy_assignments/${encodeURIComponent(legalHoldPolicyAssignmentId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -5058,7 +5058,7 @@ fully removed yet when the response returns.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -5070,13 +5070,13 @@ cases, use the `GET  /legal_hold_policy_assignme
 	 *
 	 * `GET /legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/files_on_hold` — risk: medium
 	 */
-	async listFilesOnHold(legalHoldPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listFilesOnHold(legalHoldPolicyAssignmentId: string, options?: QueryCallOptions<NonNullable<paths["/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/files_on_hold"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/files_on_hold"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_legal_hold_policy_assignments_id_files_on_hold",
 			namespace: "legal_hold_policy_assignments",
 			method: "listFilesOnHold",
 			http: "get",
-			path: `/legal_hold_policy_assignments/${legalHoldPolicyAssignmentId}/files_on_hold`,
+			path: `/legal_hold_policy_assignments/${encodeURIComponent(legalHoldPolicyAssignmentId)}/files_on_hold`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listFilesOnHold"],
@@ -5084,7 +5084,7 @@ cases, use the `GET  /legal_hold_policy_assignme
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/files_on_hold"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5096,13 +5096,13 @@ cases, use the `GET  /legal_hold_policy_assignments/:id/fi
 	 *
 	 * `GET /legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/file_versions_on_hold` — risk: medium
 	 */
-	async listFileVersionsOnHold(legalHoldPolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listFileVersionsOnHold(legalHoldPolicyAssignmentId: string, options?: QueryCallOptions<NonNullable<paths["/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/file_versions_on_hold"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/file_versions_on_hold"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_legal_hold_policy_assignments_id_file_versions_on_hold",
 			namespace: "legal_hold_policy_assignments",
 			method: "listFileVersionsOnHold",
 			http: "get",
-			path: `/legal_hold_policy_assignments/${legalHoldPolicyAssignmentId}/file_versions_on_hold`,
+			path: `/legal_hold_policy_assignments/${encodeURIComponent(legalHoldPolicyAssignmentId)}/file_versions_on_hold`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listFileVersionsOnHold"],
@@ -5110,13 +5110,13 @@ cases, use the `GET  /legal_hold_policy_assignments/:id/fi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/file_versions_on_hold"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FileVersionRetentionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5133,8 +5133,8 @@ see [files under
 	 *
 	 * `GET /file_version_retentions` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/file_version_retentions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/file_version_retentions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_file_version_retentions",
 			namespace: "file_version_retentions",
 			method: "list",
@@ -5147,7 +5147,7 @@ see [files under
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/file_version_retentions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5160,13 +5160,13 @@ see [files under retention](h
 	 *
 	 * `GET /file_version_retentions/{file_version_retention_id}` — risk: low
 	 */
-	async retrieve(fileVersionRetentionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(fileVersionRetentionId: string, options?: CallOptions): Promise<ProofResult<paths["/file_version_retentions/{file_version_retention_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_file_version_retentions_id",
 			namespace: "file_version_retentions",
 			method: "retrieve",
 			http: "get",
-			path: `/file_version_retentions/${fileVersionRetentionId}`,
+			path: `/file_version_retentions/${encodeURIComponent(fileVersionRetentionId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5174,13 +5174,13 @@ see [files under retention](h
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/file_version_retentions/{file_version_retention_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FileVersionLegalHoldsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5193,13 +5193,13 @@ assigned to a file version.
 	 *
 	 * `GET /file_version_legal_holds/{file_version_legal_hold_id}` — risk: low
 	 */
-	async retrieve(fileVersionLegalHoldId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(fileVersionLegalHoldId: string, options?: CallOptions): Promise<ProofResult<paths["/file_version_legal_holds/{file_version_legal_hold_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_file_version_legal_holds_id",
 			namespace: "file_version_legal_holds",
 			method: "retrieve",
 			http: "get",
-			path: `/file_version_legal_holds/${fileVersionLegalHoldId}`,
+			path: `/file_version_legal_holds/${encodeURIComponent(fileVersionLegalHoldId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5207,7 +5207,7 @@ assigned to a file version.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/file_version_legal_holds/{file_version_legal_hold_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5221,8 +5221,8 @@ Instead, this API will o
 	 *
 	 * `GET /file_version_legal_holds` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/file_version_legal_holds"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/file_version_legal_holds"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_file_version_legal_holds",
 			namespace: "file_version_legal_holds",
 			method: "list",
@@ -5235,13 +5235,13 @@ Instead, this API will o
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/file_version_legal_holds"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ShieldInformationBarriersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5253,13 +5253,13 @@ export class ShieldInformationBarriersResource extends RpcTarget {
 	 *
 	 * `GET /shield_information_barriers/{shield_information_barrier_id}` — risk: low
 	 */
-	async retrieve(shieldInformationBarrierId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(shieldInformationBarrierId: string, options?: CallOptions): Promise<ProofResult<paths["/shield_information_barriers/{shield_information_barrier_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barriers_id",
 			namespace: "shield_information_barriers",
 			method: "retrieve",
 			http: "get",
-			path: `/shield_information_barriers/${shieldInformationBarrierId}`,
+			path: `/shield_information_barriers/${encodeURIComponent(shieldInformationBarrierId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5267,7 +5267,7 @@ export class ShieldInformationBarriersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barriers/{shield_information_barrier_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5275,8 +5275,8 @@ export class ShieldInformationBarriersResource extends RpcTarget {
 	 *
 	 * `POST /shield_information_barriers/change_status` — risk: medium
 	 */
-	async createChangeStatu(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createChangeStatu(body?: NonNullable<paths["/shield_information_barriers/change_status"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/shield_information_barriers/change_status"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_shield_information_barriers_change_status",
 			namespace: "shield_information_barriers",
 			method: "createChangeStatu",
@@ -5289,7 +5289,7 @@ export class ShieldInformationBarriersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barriers/change_status"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5298,8 +5298,8 @@ for the enterprise of JWT.
 	 *
 	 * `GET /shield_information_barriers` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/shield_information_barriers"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/shield_information_barriers"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barriers",
 			namespace: "shield_information_barriers",
 			method: "list",
@@ -5312,7 +5312,7 @@ for the enterprise of JWT.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barriers"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5322,8 +5322,8 @@ firm and prevents confidential information passing between them.
 	 *
 	 * `POST /shield_information_barriers` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/shield_information_barriers"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/shield_information_barriers"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_shield_information_barriers",
 			namespace: "shield_information_barriers",
 			method: "create",
@@ -5336,13 +5336,13 @@ firm and prevents confidential information passing between them.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barriers"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class ShieldInformationBarrierReportsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5354,8 +5354,8 @@ export class ShieldInformationBarrierReportsResource extends RpcTarget {
 	 *
 	 * `GET /shield_information_barrier_reports` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/shield_information_barrier_reports"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/shield_information_barrier_reports"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barrier_reports",
 			namespace: "shield_information_barrier_reports",
 			method: "list",
@@ -5368,7 +5368,7 @@ export class ShieldInformationBarrierReportsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_reports"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5376,8 +5376,8 @@ export class ShieldInformationBarrierReportsResource extends RpcTarget {
 	 *
 	 * `POST /shield_information_barrier_reports` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/shield_information_barrier_reports"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/shield_information_barrier_reports"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_shield_information_barrier_reports",
 			namespace: "shield_information_barrier_reports",
 			method: "create",
@@ -5390,7 +5390,7 @@ export class ShieldInformationBarrierReportsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_reports"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5398,13 +5398,13 @@ export class ShieldInformationBarrierReportsResource extends RpcTarget {
 	 *
 	 * `GET /shield_information_barrier_reports/{shield_information_barrier_report_id}` — risk: low
 	 */
-	async retrieve(shieldInformationBarrierReportId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(shieldInformationBarrierReportId: string, options?: CallOptions): Promise<ProofResult<paths["/shield_information_barrier_reports/{shield_information_barrier_report_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barrier_reports_id",
 			namespace: "shield_information_barrier_reports",
 			method: "retrieve",
 			http: "get",
-			path: `/shield_information_barrier_reports/${shieldInformationBarrierReportId}`,
+			path: `/shield_information_barrier_reports/${encodeURIComponent(shieldInformationBarrierReportId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5412,13 +5412,13 @@ export class ShieldInformationBarrierReportsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_reports/{shield_information_barrier_report_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ShieldInformationBarrierSegmentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5430,13 +5430,13 @@ export class ShieldInformationBarrierSegmentsResource extends RpcTarget {
 	 *
 	 * `GET /shield_information_barrier_segments/{shield_information_barrier_segment_id}` — risk: low
 	 */
-	async retrieve(shieldInformationBarrierSegmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(shieldInformationBarrierSegmentId: string, options?: CallOptions): Promise<ProofResult<paths["/shield_information_barrier_segments/{shield_information_barrier_segment_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barrier_segments_id",
 			namespace: "shield_information_barrier_segments",
 			method: "retrieve",
 			http: "get",
-			path: `/shield_information_barrier_segments/${shieldInformationBarrierSegmentId}`,
+			path: `/shield_information_barrier_segments/${encodeURIComponent(shieldInformationBarrierSegmentId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5444,7 +5444,7 @@ export class ShieldInformationBarrierSegmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segments/{shield_information_barrier_segment_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5452,13 +5452,13 @@ export class ShieldInformationBarrierSegmentsResource extends RpcTarget {
 	 *
 	 * `PUT /shield_information_barrier_segments/{shield_information_barrier_segment_id}` — risk: medium
 	 */
-	async put(shieldInformationBarrierSegmentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(shieldInformationBarrierSegmentId: string, body?: NonNullable<paths["/shield_information_barrier_segments/{shield_information_barrier_segment_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/shield_information_barrier_segments/{shield_information_barrier_segment_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_shield_information_barrier_segments_id",
 			namespace: "shield_information_barrier_segments",
 			method: "put",
 			http: "put",
-			path: `/shield_information_barrier_segments/${shieldInformationBarrierSegmentId}`,
+			path: `/shield_information_barrier_segments/${encodeURIComponent(shieldInformationBarrierSegmentId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -5466,7 +5466,7 @@ export class ShieldInformationBarrierSegmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segments/{shield_information_barrier_segment_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5475,13 +5475,13 @@ based on provided ID.
 	 *
 	 * `DELETE /shield_information_barrier_segments/{shield_information_barrier_segment_id}` — risk: medium
 	 */
-	async del(shieldInformationBarrierSegmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(shieldInformationBarrierSegmentId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_shield_information_barrier_segments_id",
 			namespace: "shield_information_barrier_segments",
 			method: "del",
 			http: "delete",
-			path: `/shield_information_barrier_segments/${shieldInformationBarrierSegmentId}`,
+			path: `/shield_information_barrier_segments/${encodeURIComponent(shieldInformationBarrierSegmentId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -5489,7 +5489,7 @@ based on provided ID.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -5498,8 +5498,8 @@ for the specified Information Barrier ID.
 	 *
 	 * `GET /shield_information_barrier_segments` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/shield_information_barrier_segments"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/shield_information_barrier_segments"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barrier_segments",
 			namespace: "shield_information_barrier_segments",
 			method: "list",
@@ -5512,7 +5512,7 @@ for the specified Information Barrier ID.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segments"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5520,8 +5520,8 @@ for the specified Information Barrier ID.
 	 *
 	 * `POST /shield_information_barrier_segments` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/shield_information_barrier_segments"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/shield_information_barrier_segments"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_shield_information_barrier_segments",
 			namespace: "shield_information_barrier_segments",
 			method: "create",
@@ -5534,13 +5534,13 @@ for the specified Information Barrier ID.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segments"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class ShieldInformationBarrierSegmentMembersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5553,13 +5553,13 @@ segment member by its ID.
 	 *
 	 * `GET /shield_information_barrier_segment_members/{shield_information_barrier_segment_member_id}` — risk: low
 	 */
-	async retrieve(shieldInformationBarrierSegmentMemberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(shieldInformationBarrierSegmentMemberId: string, options?: CallOptions): Promise<ProofResult<paths["/shield_information_barrier_segment_members/{shield_information_barrier_segment_member_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barrier_segment_members_id",
 			namespace: "shield_information_barrier_segment_members",
 			method: "retrieve",
 			http: "get",
-			path: `/shield_information_barrier_segment_members/${shieldInformationBarrierSegmentMemberId}`,
+			path: `/shield_information_barrier_segment_members/${encodeURIComponent(shieldInformationBarrierSegmentMemberId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5567,7 +5567,7 @@ segment member by its ID.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segment_members/{shield_information_barrier_segment_member_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5576,13 +5576,13 @@ segment member based on provided ID.
 	 *
 	 * `DELETE /shield_information_barrier_segment_members/{shield_information_barrier_segment_member_id}` — risk: medium
 	 */
-	async del(shieldInformationBarrierSegmentMemberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(shieldInformationBarrierSegmentMemberId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_shield_information_barrier_segment_members_id",
 			namespace: "shield_information_barrier_segment_members",
 			method: "del",
 			http: "delete",
-			path: `/shield_information_barrier_segment_members/${shieldInformationBarrierSegmentMemberId}`,
+			path: `/shield_information_barrier_segment_members/${encodeURIComponent(shieldInformationBarrierSegmentMemberId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -5590,7 +5590,7 @@ segment member based on provided ID.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -5599,8 +5599,8 @@ based on provided segment IDs.
 	 *
 	 * `GET /shield_information_barrier_segment_members` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/shield_information_barrier_segment_members"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/shield_information_barrier_segment_members"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barrier_segment_members",
 			namespace: "shield_information_barrier_segment_members",
 			method: "list",
@@ -5613,7 +5613,7 @@ based on provided segment IDs.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segment_members"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5621,8 +5621,8 @@ based on provided segment IDs.
 	 *
 	 * `POST /shield_information_barrier_segment_members` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/shield_information_barrier_segment_members"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/shield_information_barrier_segment_members"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_shield_information_barrier_segment_members",
 			namespace: "shield_information_barrier_segment_members",
 			method: "create",
@@ -5635,13 +5635,13 @@ based on provided segment IDs.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segment_members"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class ShieldInformationBarrierSegmentRestrictionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5654,13 +5654,13 @@ restriction based on provided ID.
 	 *
 	 * `GET /shield_information_barrier_segment_restrictions/{shield_information_barrier_segment_restriction_id}` — risk: low
 	 */
-	async retrieve(shieldInformationBarrierSegmentRestrictionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(shieldInformationBarrierSegmentRestrictionId: string, options?: CallOptions): Promise<ProofResult<paths["/shield_information_barrier_segment_restrictions/{shield_information_barrier_segment_restriction_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barrier_segment_restrictions_id",
 			namespace: "shield_information_barrier_segment_restrictions",
 			method: "retrieve",
 			http: "get",
-			path: `/shield_information_barrier_segment_restrictions/${shieldInformationBarrierSegmentRestrictionId}`,
+			path: `/shield_information_barrier_segment_restrictions/${encodeURIComponent(shieldInformationBarrierSegmentRestrictionId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5668,7 +5668,7 @@ restriction based on provided ID.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segment_restrictions/{shield_information_barrier_segment_restriction_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5677,13 +5677,13 @@ based on provided ID.
 	 *
 	 * `DELETE /shield_information_barrier_segment_restrictions/{shield_information_barrier_segment_restriction_id}` — risk: medium
 	 */
-	async del(shieldInformationBarrierSegmentRestrictionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(shieldInformationBarrierSegmentRestrictionId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_shield_information_barrier_segment_restrictions_id",
 			namespace: "shield_information_barrier_segment_restrictions",
 			method: "del",
 			http: "delete",
-			path: `/shield_information_barrier_segment_restrictions/${shieldInformationBarrierSegmentRestrictionId}`,
+			path: `/shield_information_barrier_segment_restrictions/${encodeURIComponent(shieldInformationBarrierSegmentRestrictionId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -5691,7 +5691,7 @@ based on provided ID.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -5700,8 +5700,8 @@ based on provided segment ID.
 	 *
 	 * `GET /shield_information_barrier_segment_restrictions` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/shield_information_barrier_segment_restrictions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/shield_information_barrier_segment_restrictions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_shield_information_barrier_segment_restrictions",
 			namespace: "shield_information_barrier_segment_restrictions",
 			method: "list",
@@ -5714,7 +5714,7 @@ based on provided segment ID.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segment_restrictions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5723,8 +5723,8 @@ segment restriction object.
 	 *
 	 * `POST /shield_information_barrier_segment_restrictions` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/shield_information_barrier_segment_restrictions"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/shield_information_barrier_segment_restrictions"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_shield_information_barrier_segment_restrictions",
 			namespace: "shield_information_barrier_segment_restrictions",
 			method: "create",
@@ -5737,13 +5737,13 @@ segment restriction object.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shield_information_barrier_segment_restrictions"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class DevicePinnersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5755,13 +5755,13 @@ export class DevicePinnersResource extends RpcTarget {
 	 *
 	 * `GET /device_pinners/{device_pinner_id}` — risk: low
 	 */
-	async retrieve(devicePinnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(devicePinnerId: string, options?: CallOptions): Promise<ProofResult<paths["/device_pinners/{device_pinner_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_device_pinners_id",
 			namespace: "device_pinners",
 			method: "retrieve",
 			http: "get",
-			path: `/device_pinners/${devicePinnerId}`,
+			path: `/device_pinners/${encodeURIComponent(devicePinnerId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5769,7 +5769,7 @@ export class DevicePinnersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/device_pinners/{device_pinner_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5777,13 +5777,13 @@ export class DevicePinnersResource extends RpcTarget {
 	 *
 	 * `DELETE /device_pinners/{device_pinner_id}` — risk: medium
 	 */
-	async del(devicePinnerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(devicePinnerId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_device_pinners_id",
 			namespace: "device_pinners",
 			method: "del",
 			http: "delete",
-			path: `/device_pinners/${devicePinnerId}`,
+			path: `/device_pinners/${encodeURIComponent(devicePinnerId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -5791,13 +5791,13 @@ export class DevicePinnersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class EnterprisesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5812,13 +5812,13 @@ needs the "manage enterprise" scope to make this call.
 	 *
 	 * `GET /enterprises/{enterprise_id}/device_pinners` — risk: medium
 	 */
-	async listDevicePinners(enterpriseId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listDevicePinners(enterpriseId: string, options?: QueryCallOptions<NonNullable<paths["/enterprises/{enterprise_id}/device_pinners"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/enterprises/{enterprise_id}/device_pinners"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_enterprises_id_device_pinners",
 			namespace: "enterprises",
 			method: "listDevicePinners",
 			http: "get",
-			path: `/enterprises/${enterpriseId}/device_pinners`,
+			path: `/enterprises/${encodeURIComponent(enterpriseId)}/device_pinners`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDevicePinners"],
@@ -5826,13 +5826,13 @@ needs the "manage enterprise" scope to make this call.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/enterprises/{enterprise_id}/device_pinners"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TermsOfServicesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5845,8 +5845,8 @@ for the enterprise.
 	 *
 	 * `GET /terms_of_services` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/terms_of_services"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/terms_of_services"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_terms_of_services",
 			namespace: "terms_of_services",
 			method: "list",
@@ -5859,7 +5859,7 @@ for the enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/terms_of_services"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5868,8 +5868,8 @@ and type of user.
 	 *
 	 * `POST /terms_of_services` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/terms_of_services"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/terms_of_services"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_terms_of_services",
 			namespace: "terms_of_services",
 			method: "create",
@@ -5882,7 +5882,7 @@ and type of user.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/terms_of_services"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5890,13 +5890,13 @@ and type of user.
 	 *
 	 * `GET /terms_of_services/{terms_of_service_id}` — risk: low
 	 */
-	async retrieve(termsOfServiceId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(termsOfServiceId: string, options?: CallOptions): Promise<ProofResult<paths["/terms_of_services/{terms_of_service_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_terms_of_services_id",
 			namespace: "terms_of_services",
 			method: "retrieve",
 			http: "get",
-			path: `/terms_of_services/${termsOfServiceId}`,
+			path: `/terms_of_services/${encodeURIComponent(termsOfServiceId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -5904,7 +5904,7 @@ and type of user.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/terms_of_services/{terms_of_service_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5912,13 +5912,13 @@ and type of user.
 	 *
 	 * `PUT /terms_of_services/{terms_of_service_id}` — risk: medium
 	 */
-	async put(termsOfServiceId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(termsOfServiceId: string, body?: NonNullable<paths["/terms_of_services/{terms_of_service_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/terms_of_services/{terms_of_service_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_terms_of_services_id",
 			namespace: "terms_of_services",
 			method: "put",
 			http: "put",
-			path: `/terms_of_services/${termsOfServiceId}`,
+			path: `/terms_of_services/${encodeURIComponent(termsOfServiceId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -5926,13 +5926,13 @@ and type of user.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/terms_of_services/{terms_of_service_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TermsOfServiceUserStatusesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -5946,8 +5946,8 @@ the terms and when.
 	 *
 	 * `GET /terms_of_service_user_statuses` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/terms_of_service_user_statuses"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/terms_of_service_user_statuses"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_terms_of_service_user_statuses",
 			namespace: "terms_of_service_user_statuses",
 			method: "list",
@@ -5960,7 +5960,7 @@ the terms and when.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/terms_of_service_user_statuses"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5968,8 +5968,8 @@ the terms and when.
 	 *
 	 * `POST /terms_of_service_user_statuses` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/terms_of_service_user_statuses"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/terms_of_service_user_statuses"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_terms_of_service_user_statuses",
 			namespace: "terms_of_service_user_statuses",
 			method: "create",
@@ -5982,7 +5982,7 @@ the terms and when.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/terms_of_service_user_statuses"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -5990,13 +5990,13 @@ the terms and when.
 	 *
 	 * `PUT /terms_of_service_user_statuses/{terms_of_service_user_status_id}` — risk: medium
 	 */
-	async put(termsOfServiceUserStatusId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(termsOfServiceUserStatusId: string, body?: NonNullable<paths["/terms_of_service_user_statuses/{terms_of_service_user_status_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/terms_of_service_user_statuses/{terms_of_service_user_status_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_terms_of_service_user_statuses_id",
 			namespace: "terms_of_service_user_statuses",
 			method: "put",
 			http: "put",
-			path: `/terms_of_service_user_statuses/${termsOfServiceUserStatusId}`,
+			path: `/terms_of_service_user_statuses/${encodeURIComponent(termsOfServiceUserStatusId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -6004,13 +6004,13 @@ the terms and when.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/terms_of_service_user_statuses/{terms_of_service_user_status_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CollaborationWhitelistEntriesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6023,8 +6023,8 @@ for within the current enterprise.
 	 *
 	 * `GET /collaboration_whitelist_entries` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/collaboration_whitelist_entries"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/collaboration_whitelist_entries"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_collaboration_whitelist_entries",
 			namespace: "collaboration_whitelist_entries",
 			method: "list",
@@ -6037,7 +6037,7 @@ for within the current enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaboration_whitelist_entries"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6046,8 +6046,8 @@ collaboration for.
 	 *
 	 * `POST /collaboration_whitelist_entries` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/collaboration_whitelist_entries"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/collaboration_whitelist_entries"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_collaboration_whitelist_entries",
 			namespace: "collaboration_whitelist_entries",
 			method: "create",
@@ -6060,7 +6060,7 @@ collaboration for.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaboration_whitelist_entries"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6069,13 +6069,13 @@ for within the current enterprise.
 	 *
 	 * `GET /collaboration_whitelist_entries/{collaboration_whitelist_entry_id}` — risk: low
 	 */
-	async retrieve(collaborationWhitelistEntryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(collaborationWhitelistEntryId: string, options?: CallOptions): Promise<ProofResult<paths["/collaboration_whitelist_entries/{collaboration_whitelist_entry_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_collaboration_whitelist_entries_id",
 			namespace: "collaboration_whitelist_entries",
 			method: "retrieve",
 			http: "get",
-			path: `/collaboration_whitelist_entries/${collaborationWhitelistEntryId}`,
+			path: `/collaboration_whitelist_entries/${encodeURIComponent(collaborationWhitelistEntryId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -6083,7 +6083,7 @@ for within the current enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaboration_whitelist_entries/{collaboration_whitelist_entry_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6092,13 +6092,13 @@ collaborations for within the current enterprise.
 	 *
 	 * `DELETE /collaboration_whitelist_entries/{collaboration_whitelist_entry_id}` — risk: medium
 	 */
-	async del(collaborationWhitelistEntryId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(collaborationWhitelistEntryId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_collaboration_whitelist_entries_id",
 			namespace: "collaboration_whitelist_entries",
 			method: "del",
 			http: "delete",
-			path: `/collaboration_whitelist_entries/${collaborationWhitelistEntryId}`,
+			path: `/collaboration_whitelist_entries/${encodeURIComponent(collaborationWhitelistEntryId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -6106,13 +6106,13 @@ collaborations for within the current enterprise.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class CollaborationWhitelistExemptTargetsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6125,8 +6125,8 @@ domain restrictions.
 	 *
 	 * `GET /collaboration_whitelist_exempt_targets` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/collaboration_whitelist_exempt_targets"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/collaboration_whitelist_exempt_targets"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_collaboration_whitelist_exempt_targets",
 			namespace: "collaboration_whitelist_exempt_targets",
 			method: "list",
@@ -6139,7 +6139,7 @@ domain restrictions.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaboration_whitelist_exempt_targets"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6148,8 +6148,8 @@ for collaborations.
 	 *
 	 * `POST /collaboration_whitelist_exempt_targets` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/collaboration_whitelist_exempt_targets"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/collaboration_whitelist_exempt_targets"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_collaboration_whitelist_exempt_targets",
 			namespace: "collaboration_whitelist_exempt_targets",
 			method: "create",
@@ -6162,7 +6162,7 @@ for collaborations.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaboration_whitelist_exempt_targets"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6171,13 +6171,13 @@ domain restrictions.
 	 *
 	 * `GET /collaboration_whitelist_exempt_targets/{collaboration_whitelist_exempt_target_id}` — risk: low
 	 */
-	async retrieve(collaborationWhitelistExemptTargetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(collaborationWhitelistExemptTargetId: string, options?: CallOptions): Promise<ProofResult<paths["/collaboration_whitelist_exempt_targets/{collaboration_whitelist_exempt_target_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_collaboration_whitelist_exempt_targets_id",
 			namespace: "collaboration_whitelist_exempt_targets",
 			method: "retrieve",
 			http: "get",
-			path: `/collaboration_whitelist_exempt_targets/${collaborationWhitelistExemptTargetId}`,
+			path: `/collaboration_whitelist_exempt_targets/${encodeURIComponent(collaborationWhitelistExemptTargetId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -6185,7 +6185,7 @@ domain restrictions.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/collaboration_whitelist_exempt_targets/{collaboration_whitelist_exempt_target_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6194,13 +6194,13 @@ of domains for collaborations.
 	 *
 	 * `DELETE /collaboration_whitelist_exempt_targets/{collaboration_whitelist_exempt_target_id}` — risk: medium
 	 */
-	async del(collaborationWhitelistExemptTargetId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(collaborationWhitelistExemptTargetId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_collaboration_whitelist_exempt_targets_id",
 			namespace: "collaboration_whitelist_exempt_targets",
 			method: "del",
 			http: "delete",
-			path: `/collaboration_whitelist_exempt_targets/${collaborationWhitelistExemptTargetId}`,
+			path: `/collaboration_whitelist_exempt_targets/${encodeURIComponent(collaborationWhitelistExemptTargetId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -6208,13 +6208,13 @@ of domains for collaborations.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class StoragePoliciesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6226,8 +6226,8 @@ export class StoragePoliciesResource extends RpcTarget {
 	 *
 	 * `GET /storage_policies` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/storage_policies"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/storage_policies"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_storage_policies",
 			namespace: "storage_policies",
 			method: "list",
@@ -6240,7 +6240,7 @@ export class StoragePoliciesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/storage_policies"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6248,13 +6248,13 @@ export class StoragePoliciesResource extends RpcTarget {
 	 *
 	 * `GET /storage_policies/{storage_policy_id}` — risk: low
 	 */
-	async retrieve(storagePolicyId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(storagePolicyId: string, options?: CallOptions): Promise<ProofResult<paths["/storage_policies/{storage_policy_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_storage_policies_id",
 			namespace: "storage_policies",
 			method: "retrieve",
 			http: "get",
-			path: `/storage_policies/${storagePolicyId}`,
+			path: `/storage_policies/${encodeURIComponent(storagePolicyId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -6262,13 +6262,13 @@ export class StoragePoliciesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/storage_policies/{storage_policy_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class StoragePolicyAssignmentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6280,8 +6280,8 @@ export class StoragePolicyAssignmentsResource extends RpcTarget {
 	 *
 	 * `GET /storage_policy_assignments` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/storage_policy_assignments"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/storage_policy_assignments"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_storage_policy_assignments",
 			namespace: "storage_policy_assignments",
 			method: "list",
@@ -6294,7 +6294,7 @@ export class StoragePolicyAssignmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/storage_policy_assignments"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6302,8 +6302,8 @@ export class StoragePolicyAssignmentsResource extends RpcTarget {
 	 *
 	 * `POST /storage_policy_assignments` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/storage_policy_assignments"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/storage_policy_assignments"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_storage_policy_assignments",
 			namespace: "storage_policy_assignments",
 			method: "create",
@@ -6316,7 +6316,7 @@ export class StoragePolicyAssignmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/storage_policy_assignments"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6324,13 +6324,13 @@ export class StoragePolicyAssignmentsResource extends RpcTarget {
 	 *
 	 * `GET /storage_policy_assignments/{storage_policy_assignment_id}` — risk: low
 	 */
-	async retrieve(storagePolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(storagePolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<paths["/storage_policy_assignments/{storage_policy_assignment_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_storage_policy_assignments_id",
 			namespace: "storage_policy_assignments",
 			method: "retrieve",
 			http: "get",
-			path: `/storage_policy_assignments/${storagePolicyAssignmentId}`,
+			path: `/storage_policy_assignments/${encodeURIComponent(storagePolicyAssignmentId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -6338,7 +6338,7 @@ export class StoragePolicyAssignmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/storage_policy_assignments/{storage_policy_assignment_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6346,13 +6346,13 @@ export class StoragePolicyAssignmentsResource extends RpcTarget {
 	 *
 	 * `PUT /storage_policy_assignments/{storage_policy_assignment_id}` — risk: medium
 	 */
-	async put(storagePolicyAssignmentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(storagePolicyAssignmentId: string, body?: NonNullable<paths["/storage_policy_assignments/{storage_policy_assignment_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/storage_policy_assignments/{storage_policy_assignment_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_storage_policy_assignments_id",
 			namespace: "storage_policy_assignments",
 			method: "put",
 			http: "put",
-			path: `/storage_policy_assignments/${storagePolicyAssignmentId}`,
+			path: `/storage_policy_assignments/${encodeURIComponent(storagePolicyAssignmentId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -6360,7 +6360,7 @@ export class StoragePolicyAssignmentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/storage_policy_assignments/{storage_policy_assignment_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6374,13 +6374,13 @@ There is a rate limit for calling this endpoint
 	 *
 	 * `DELETE /storage_policy_assignments/{storage_policy_assignment_id}` — risk: medium
 	 */
-	async del(storagePolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(storagePolicyAssignmentId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_storage_policy_assignments_id",
 			namespace: "storage_policy_assignments",
 			method: "del",
 			http: "delete",
-			path: `/storage_policy_assignments/${storagePolicyAssignmentId}`,
+			path: `/storage_policy_assignments/${encodeURIComponent(storagePolicyAssignmentId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -6388,13 +6388,13 @@ There is a rate limit for calling this endpoint
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class ZipDownloadsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6408,8 +6408,8 @@ the checks to ensure that the user has access to
 	 *
 	 * `POST /zip_downloads` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/zip_downloads"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/zip_downloads"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_zip_downloads",
 			namespace: "zip_downloads",
 			method: "create",
@@ -6422,7 +6422,7 @@ the checks to ensure that the user has access to
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/zip_downloads"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6434,13 +6434,13 @@ By def
 	 *
 	 * `GET /zip_downloads/{zip_download_id}/content` — risk: medium
 	 */
-	async listContent(zipDownloadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listContent(zipDownloadId: string, options?: CallOptions): Promise<ProofResult<Uint8Array>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_zip_downloads_id_content",
 			namespace: "zip_downloads",
 			method: "listContent",
 			http: "get",
-			path: `/zip_downloads/${zipDownloadId}/content`,
+			path: `/zip_downloads/${encodeURIComponent(zipDownloadId)}/content`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listContent"],
@@ -6448,7 +6448,7 @@ By def
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array>>;
 	}
 
 	/**
@@ -6460,13 +6460,13 @@ This endpoint can only be
 	 *
 	 * `GET /zip_downloads/{zip_download_id}/status` — risk: medium
 	 */
-	async listStatus(zipDownloadId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listStatus(zipDownloadId: string, options?: CallOptions): Promise<ProofResult<paths["/zip_downloads/{zip_download_id}/status"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_zip_downloads_id_status",
 			namespace: "zip_downloads",
 			method: "listStatus",
 			http: "get",
-			path: `/zip_downloads/${zipDownloadId}/status`,
+			path: `/zip_downloads/${encodeURIComponent(zipDownloadId)}/status`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listStatus"],
@@ -6474,13 +6474,13 @@ This endpoint can only be
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/zip_downloads/{zip_download_id}/status"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class SignRequestsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6492,13 +6492,13 @@ export class SignRequestsResource extends RpcTarget {
 	 *
 	 * `POST /sign_requests/{sign_request_id}/cancel` — risk: medium
 	 */
-	async cancel(signRequestId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async cancel(signRequestId: string, body?: NonNullable<paths["/sign_requests/{sign_request_id}/cancel"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/sign_requests/{sign_request_id}/cancel"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_sign_requests_id_cancel",
 			namespace: "sign_requests",
 			method: "cancel",
 			http: "post",
-			path: `/sign_requests/${signRequestId}/cancel`,
+			path: `/sign_requests/${encodeURIComponent(signRequestId)}/cancel`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["cancel"],
@@ -6506,7 +6506,7 @@ export class SignRequestsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/sign_requests/{sign_request_id}/cancel"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6514,13 +6514,13 @@ export class SignRequestsResource extends RpcTarget {
 	 *
 	 * `POST /sign_requests/{sign_request_id}/resend` — risk: medium
 	 */
-	async createResend(signRequestId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createResend(signRequestId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_sign_requests_id_resend",
 			namespace: "sign_requests",
 			method: "createResend",
 			http: "post",
-			path: `/sign_requests/${signRequestId}/resend`,
+			path: `/sign_requests/${encodeURIComponent(signRequestId)}/resend`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createResend"],
@@ -6528,7 +6528,7 @@ export class SignRequestsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -6536,13 +6536,13 @@ export class SignRequestsResource extends RpcTarget {
 	 *
 	 * `GET /sign_requests/{sign_request_id}` — risk: low
 	 */
-	async retrieve(signRequestId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(signRequestId: string, options?: CallOptions): Promise<ProofResult<paths["/sign_requests/{sign_request_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_sign_requests_id",
 			namespace: "sign_requests",
 			method: "retrieve",
 			http: "get",
-			path: `/sign_requests/${signRequestId}`,
+			path: `/sign_requests/${encodeURIComponent(signRequestId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -6550,7 +6550,7 @@ export class SignRequestsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/sign_requests/{sign_request_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6559,8 +6559,8 @@ export class SignRequestsResource extends RpcTarget {
 	 *
 	 * `GET /sign_requests` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/sign_requests"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/sign_requests"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_sign_requests",
 			namespace: "sign_requests",
 			method: "list",
@@ -6573,7 +6573,7 @@ export class SignRequestsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/sign_requests"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6582,8 +6582,8 @@ sending the signature request to signers.
 	 *
 	 * `POST /sign_requests` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/sign_requests"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/sign_requests"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_sign_requests",
 			namespace: "sign_requests",
 			method: "create",
@@ -6596,13 +6596,13 @@ sending the signature request to signers.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/sign_requests"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class WorkflowsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6617,8 +6617,8 @@ You application must be authorized to use the `Manage Box Relay` application
 	 *
 	 * `GET /workflows` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/workflows"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/workflows"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_workflows",
 			namespace: "workflows",
 			method: "list",
@@ -6631,7 +6631,7 @@ You application must be authorized to use the `Manage Box Relay` application
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/workflows"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6642,13 +6642,13 @@ scope within the developer console.
 	 *
 	 * `POST /workflows/{workflow_id}/start` — risk: medium
 	 */
-	async createStart(workflowId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createStart(workflowId: string, body?: NonNullable<paths["/workflows/{workflow_id}/start"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_workflows_id_start",
 			namespace: "workflows",
 			method: "createStart",
 			http: "post",
-			path: `/workflows/${workflowId}/start`,
+			path: `/workflows/${encodeURIComponent(workflowId)}/start`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createStart"],
@@ -6656,13 +6656,13 @@ scope within the developer console.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class SignTemplatesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6674,8 +6674,8 @@ export class SignTemplatesResource extends RpcTarget {
 	 *
 	 * `GET /sign_templates` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/sign_templates"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/sign_templates"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_sign_templates",
 			namespace: "sign_templates",
 			method: "list",
@@ -6688,7 +6688,7 @@ export class SignTemplatesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/sign_templates"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6696,13 +6696,13 @@ export class SignTemplatesResource extends RpcTarget {
 	 *
 	 * `GET /sign_templates/{template_id}` — risk: low
 	 */
-	async retrieve(templateId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(templateId: string, options?: CallOptions): Promise<ProofResult<paths["/sign_templates/{template_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_sign_templates_id",
 			namespace: "sign_templates",
 			method: "retrieve",
 			http: "get",
-			path: `/sign_templates/${templateId}`,
+			path: `/sign_templates/${encodeURIComponent(templateId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -6710,13 +6710,13 @@ export class SignTemplatesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/sign_templates/{template_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class IntegrationMappingsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6731,8 +6731,8 @@ use this endp
 	 *
 	 * `GET /integration_mappings/slack` — risk: medium
 	 */
-	async listSlack(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSlack(options?: QueryCallOptions<NonNullable<paths["/integration_mappings/slack"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/integration_mappings/slack"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_integration_mappings_slack",
 			namespace: "integration_mappings",
 			method: "listSlack",
@@ -6745,7 +6745,7 @@ use this endp
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/integration_mappings/slack"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6756,8 +6756,8 @@ You need Admin or Co-Admin
 	 *
 	 * `POST /integration_mappings/slack` — risk: medium
 	 */
-	async createSlack(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSlack(body?: NonNullable<paths["/integration_mappings/slack"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/integration_mappings/slack"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_integration_mappings_slack",
 			namespace: "integration_mappings",
 			method: "createSlack",
@@ -6770,7 +6770,7 @@ You need Admin or Co-Admin
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/integration_mappings/slack"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6781,13 +6781,13 @@ You need Admin or C
 	 *
 	 * `PUT /integration_mappings/slack/{integration_mapping_id}` — risk: medium
 	 */
-	async slack(integrationMappingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async slack(integrationMappingId: string, body?: NonNullable<paths["/integration_mappings/slack/{integration_mapping_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/integration_mappings/slack/{integration_mapping_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_integration_mappings_slack_id",
 			namespace: "integration_mappings",
 			method: "slack",
 			http: "put",
-			path: `/integration_mappings/slack/${integrationMappingId}`,
+			path: `/integration_mappings/slack/${encodeURIComponent(integrationMappingId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["slack"],
@@ -6795,7 +6795,7 @@ You need Admin or C
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/integration_mappings/slack/{integration_mapping_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6807,13 +6807,13 @@ use this endpoint.
 	 *
 	 * `DELETE /integration_mappings/slack/{integration_mapping_id}` — risk: medium
 	 */
-	async deleteSlack(integrationMappingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteSlack(integrationMappingId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_integration_mappings_slack_id",
 			namespace: "integration_mappings",
 			method: "deleteSlack",
 			http: "delete",
-			path: `/integration_mappings/slack/${integrationMappingId}`,
+			path: `/integration_mappings/slack/${encodeURIComponent(integrationMappingId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteSlack"],
@@ -6821,7 +6821,7 @@ use this endpoint.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -6831,8 +6831,8 @@ use this endpoint.
 	 *
 	 * `GET /integration_mappings/teams` — risk: medium
 	 */
-	async listTeams(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTeams(options?: QueryCallOptions<NonNullable<paths["/integration_mappings/teams"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/integration_mappings/teams"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_integration_mappings_teams",
 			namespace: "integration_mappings",
 			method: "listTeams",
@@ -6845,7 +6845,7 @@ use this endpoint.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/integration_mappings/teams"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6856,8 +6856,8 @@ use this
 	 *
 	 * `POST /integration_mappings/teams` — risk: medium
 	 */
-	async createTeam(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTeam(body?: NonNullable<paths["/integration_mappings/teams"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/integration_mappings/teams"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_integration_mappings_teams",
 			namespace: "integration_mappings",
 			method: "createTeam",
@@ -6870,7 +6870,7 @@ use this
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/integration_mappings/teams"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6881,13 +6881,13 @@ u
 	 *
 	 * `PUT /integration_mappings/teams/{integration_mapping_id}` — risk: medium
 	 */
-	async teams(integrationMappingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async teams(integrationMappingId: string, body?: NonNullable<paths["/integration_mappings/teams/{integration_mapping_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/integration_mappings/teams/{integration_mapping_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_integration_mappings_teams_id",
 			namespace: "integration_mappings",
 			method: "teams",
 			http: "put",
-			path: `/integration_mappings/teams/${integrationMappingId}`,
+			path: `/integration_mappings/teams/${encodeURIComponent(integrationMappingId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["teams"],
@@ -6895,7 +6895,7 @@ u
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/integration_mappings/teams/{integration_mapping_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6905,13 +6905,13 @@ use this endpoint.
 	 *
 	 * `DELETE /integration_mappings/teams/{integration_mapping_id}` — risk: medium
 	 */
-	async deleteTeam(integrationMappingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteTeam(integrationMappingId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_integration_mappings_teams_id",
 			namespace: "integration_mappings",
 			method: "deleteTeam",
 			http: "delete",
-			path: `/integration_mappings/teams/${integrationMappingId}`,
+			path: `/integration_mappings/teams/${encodeURIComponent(integrationMappingId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteTeam"],
@@ -6919,13 +6919,13 @@ use this endpoint.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class AiResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -6939,8 +6939,8 @@ You can ask a question about a single file, several files, or the e
 	 *
 	 * `POST /ai/ask` — risk: medium
 	 */
-	async createAsk(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createAsk(body?: NonNullable<paths["/ai/ask"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/ai/ask"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_ai_ask",
 			namespace: "ai",
 			method: "createAsk",
@@ -6953,7 +6953,7 @@ You can ask a question about a single file, several files, or the e
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/ai/ask"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6961,8 +6961,8 @@ You can ask a question about a single file, several files, or the e
 	 *
 	 * `POST /ai/text_gen` — risk: medium
 	 */
-	async createTextGen(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTextGen(body?: NonNullable<paths["/ai/text_gen"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/ai/text_gen"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_ai_text_gen",
 			namespace: "ai",
 			method: "createTextGen",
@@ -6975,7 +6975,7 @@ You can ask a question about a single file, several files, or the e
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/ai/text_gen"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -6985,8 +6985,8 @@ Metadata template setup
 	 *
 	 * `POST /ai/extract` — risk: medium
 	 */
-	async createExtract(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createExtract(body?: NonNullable<paths["/ai/extract"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/ai/extract"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_ai_extract",
 			namespace: "ai",
 			method: "createExtract",
@@ -6999,7 +6999,7 @@ Metadata template setup
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/ai/extract"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7009,8 +7009,8 @@ To define the extraction structure, provide either a metadata template or a l
 	 *
 	 * `POST /ai/extract_structured` — risk: medium
 	 */
-	async createExtractStructured(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createExtractStructured(body?: NonNullable<paths["/ai/extract_structured"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/ai/extract_structured"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_ai_extract_structured",
 			namespace: "ai",
 			method: "createExtractStructured",
@@ -7023,13 +7023,13 @@ To define the extraction structure, provide either a metadata template or a l
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/ai/extract_structured"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AiAgentDefaultResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -7041,8 +7041,8 @@ export class AiAgentDefaultResource extends RpcTarget {
 	 *
 	 * `GET /ai_agent_default` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/ai_agent_default"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/ai_agent_default"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_ai_agent_default",
 			namespace: "ai_agent_default",
 			method: "list",
@@ -7055,13 +7055,13 @@ export class AiAgentDefaultResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/ai_agent_default"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AiAgentsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -7073,8 +7073,8 @@ export class AiAgentsResource extends RpcTarget {
 	 *
 	 * `GET /ai_agents` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/ai_agents"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/ai_agents"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_ai_agents",
 			namespace: "ai_agents",
 			method: "list",
@@ -7087,7 +7087,7 @@ export class AiAgentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/ai_agents"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7095,8 +7095,8 @@ export class AiAgentsResource extends RpcTarget {
 	 *
 	 * `POST /ai_agents` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/ai_agents"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/ai_agents"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_ai_agents",
 			namespace: "ai_agents",
 			method: "create",
@@ -7109,7 +7109,7 @@ export class AiAgentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/ai_agents"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7117,13 +7117,13 @@ export class AiAgentsResource extends RpcTarget {
 	 *
 	 * `GET /ai_agents/{agent_id}` — risk: low
 	 */
-	async retrieve(agentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(agentId: string, options?: QueryCallOptions<NonNullable<paths["/ai_agents/{agent_id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/ai_agents/{agent_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_ai_agents_id",
 			namespace: "ai_agents",
 			method: "retrieve",
 			http: "get",
-			path: `/ai_agents/${agentId}`,
+			path: `/ai_agents/${encodeURIComponent(agentId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -7131,7 +7131,7 @@ export class AiAgentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/ai_agents/{agent_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7139,13 +7139,13 @@ export class AiAgentsResource extends RpcTarget {
 	 *
 	 * `PUT /ai_agents/{agent_id}` — risk: medium
 	 */
-	async put(agentId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(agentId: string, body?: NonNullable<paths["/ai_agents/{agent_id}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/ai_agents/{agent_id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "put_ai_agents_id",
 			namespace: "ai_agents",
 			method: "put",
 			http: "put",
-			path: `/ai_agents/${agentId}`,
+			path: `/ai_agents/${encodeURIComponent(agentId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["put"],
@@ -7153,7 +7153,7 @@ export class AiAgentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/ai_agents/{agent_id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7161,13 +7161,13 @@ export class AiAgentsResource extends RpcTarget {
 	 *
 	 * `DELETE /ai_agents/{agent_id}` — risk: medium
 	 */
-	async del(agentId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(agentId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_ai_agents_id",
 			namespace: "ai_agents",
 			method: "del",
 			http: "delete",
-			path: `/ai_agents/${agentId}`,
+			path: `/ai_agents/${encodeURIComponent(agentId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -7175,13 +7175,13 @@ export class AiAgentsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class MetadataTaxonomiesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -7194,8 +7194,8 @@ metadata templates.
 	 *
 	 * `POST /metadata_taxonomies` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/metadata_taxonomies"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_taxonomies",
 			namespace: "metadata_taxonomies",
 			method: "create",
@@ -7208,7 +7208,7 @@ metadata templates.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7216,13 +7216,13 @@ metadata templates.
 	 *
 	 * `GET /metadata_taxonomies/{namespace}` — risk: low
 	 */
-	async retrieve_0(namespace: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve_0(namespace: string, options?: QueryCallOptions<NonNullable<paths["/metadata_taxonomies/{namespace}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_taxonomies_id",
 			namespace: "metadata_taxonomies",
 			method: "retrieve_0",
 			http: "get",
-			path: `/metadata_taxonomies/${namespace}`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve_0"],
@@ -7230,7 +7230,7 @@ metadata templates.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7238,13 +7238,13 @@ metadata templates.
 	 *
 	 * `GET /metadata_taxonomies/{namespace}/{taxonomy_key}` — risk: low
 	 */
-	async retrieve_1(namespace: string, taxonomyKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve_1(namespace: string, taxonomyKey: string, options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_taxonomies_id_id",
 			namespace: "metadata_taxonomies",
 			method: "retrieve_1",
 			http: "get",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve_1"],
@@ -7252,7 +7252,7 @@ metadata templates.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7260,13 +7260,13 @@ metadata templates.
 	 *
 	 * `PATCH /metadata_taxonomies/{namespace}/{taxonomy_key}` — risk: medium
 	 */
-	async update(namespace: string, taxonomyKey: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(namespace: string, taxonomyKey: string, body?: NonNullable<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "patch_metadata_taxonomies_id_id",
 			namespace: "metadata_taxonomies",
 			method: "update",
 			http: "patch",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -7274,7 +7274,7 @@ metadata templates.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7283,13 +7283,13 @@ This deletion is permanent and cannot be reverted.
 	 *
 	 * `DELETE /metadata_taxonomies/{namespace}/{taxonomy_key}` — risk: medium
 	 */
-	async del(namespace: string, taxonomyKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(namespace: string, taxonomyKey: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_metadata_taxonomies_id_id",
 			namespace: "metadata_taxonomies",
 			method: "del",
 			http: "delete",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -7297,7 +7297,7 @@ This deletion is permanent and cannot be reverted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -7305,13 +7305,13 @@ This deletion is permanent and cannot be reverted.
 	 *
 	 * `POST /metadata_taxonomies/{namespace}/{taxonomy_key}/levels` — risk: medium
 	 */
-	async createLevel(namespace: string, taxonomyKey: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createLevel(namespace: string, taxonomyKey: string, body?: NonNullable<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_taxonomies_id_id_levels",
 			namespace: "metadata_taxonomies",
 			method: "createLevel",
 			http: "post",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}/levels`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}/levels`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createLevel"],
@@ -7319,7 +7319,7 @@ This deletion is permanent and cannot be reverted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7327,13 +7327,13 @@ This deletion is permanent and cannot be reverted.
 	 *
 	 * `PATCH /metadata_taxonomies/{namespace}/{taxonomy_key}/levels/{level_index}` — risk: medium
 	 */
-	async levels(namespace: string, taxonomyKey: string, levelIndex: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async levels(namespace: string, taxonomyKey: string, levelIndex: string, body?: NonNullable<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels/{level_index}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels/{level_index}"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "patch_metadata_taxonomies_id_id_levels_id",
 			namespace: "metadata_taxonomies",
 			method: "levels",
 			http: "patch",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}/levels/${levelIndex}`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}/levels/${encodeURIComponent(levelIndex)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["levels"],
@@ -7341,7 +7341,7 @@ This deletion is permanent and cannot be reverted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels/{level_index}"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7350,13 +7350,13 @@ If there are no levels defined yet, this will create the first level.
 	 *
 	 * `POST /metadata_taxonomies/{namespace}/{taxonomy_key}/levels:append` — risk: medium
 	 */
-	async createLevelsAppend(namespace: string, taxonomyKey: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createLevelsAppend(namespace: string, taxonomyKey: string, body?: NonNullable<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels:append"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels:append"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_taxonomies_id_id_levels:append",
 			namespace: "metadata_taxonomies",
 			method: "createLevelsAppend",
 			http: "post",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}/levels:append`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}/levels:append`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createLevelsAppend"],
@@ -7364,7 +7364,7 @@ If there are no levels defined yet, this will create the first level.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels:append"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7372,13 +7372,13 @@ If there are no levels defined yet, this will create the first level.
 	 *
 	 * `POST /metadata_taxonomies/{namespace}/{taxonomy_key}/levels:trim` — risk: medium
 	 */
-	async createLevelsTrim(namespace: string, taxonomyKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createLevelsTrim(namespace: string, taxonomyKey: string, options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels:trim"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_taxonomies_id_id_levels:trim",
 			namespace: "metadata_taxonomies",
 			method: "createLevelsTrim",
 			http: "post",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}/levels:trim`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}/levels:trim`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createLevelsTrim"],
@@ -7386,7 +7386,7 @@ If there are no levels defined yet, this will create the first level.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/levels:trim"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7396,13 +7396,13 @@ With a `query` parameter specified, result
 	 *
 	 * `GET /metadata_taxonomies/{namespace}/{taxonomy_key}/nodes` — risk: medium
 	 */
-	async listNodes(namespace: string, taxonomyKey: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listNodes(namespace: string, taxonomyKey: string, options?: QueryCallOptions<NonNullable<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_taxonomies_id_id_nodes",
 			namespace: "metadata_taxonomies",
 			method: "listNodes",
 			http: "get",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}/nodes`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}/nodes`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listNodes"],
@@ -7410,7 +7410,7 @@ With a `query` parameter specified, result
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7418,13 +7418,13 @@ With a `query` parameter specified, result
 	 *
 	 * `POST /metadata_taxonomies/{namespace}/{taxonomy_key}/nodes` — risk: medium
 	 */
-	async createNode(namespace: string, taxonomyKey: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createNode(namespace: string, taxonomyKey: string, body?: NonNullable<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "post_metadata_taxonomies_id_id_nodes",
 			namespace: "metadata_taxonomies",
 			method: "createNode",
 			http: "post",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}/nodes`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}/nodes`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createNode"],
@@ -7432,7 +7432,7 @@ With a `query` parameter specified, result
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7440,13 +7440,13 @@ With a `query` parameter specified, result
 	 *
 	 * `GET /metadata_taxonomies/{namespace}/{taxonomy_key}/nodes/{node_id}` — risk: medium
 	 */
-	async retrieveNode(namespace: string, taxonomyKey: string, nodeId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveNode(namespace: string, taxonomyKey: string, nodeId: string, options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes/{node_id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get_metadata_taxonomies_id_id_nodes_id",
 			namespace: "metadata_taxonomies",
 			method: "retrieveNode",
 			http: "get",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}/nodes/${nodeId}`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}/nodes/${encodeURIComponent(nodeId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveNode"],
@@ -7454,7 +7454,7 @@ With a `query` parameter specified, result
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes/{node_id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7462,13 +7462,13 @@ With a `query` parameter specified, result
 	 *
 	 * `PATCH /metadata_taxonomies/{namespace}/{taxonomy_key}/nodes/{node_id}` — risk: medium
 	 */
-	async nodes(namespace: string, taxonomyKey: string, nodeId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async nodes(namespace: string, taxonomyKey: string, nodeId: string, body?: NonNullable<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes/{node_id}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes/{node_id}"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "patch_metadata_taxonomies_id_id_nodes_id",
 			namespace: "metadata_taxonomies",
 			method: "nodes",
 			http: "patch",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}/nodes/${nodeId}`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}/nodes/${encodeURIComponent(nodeId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["nodes"],
@@ -7476,7 +7476,7 @@ With a `query` parameter specified, result
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metadata_taxonomies/{namespace}/{taxonomy_key}/nodes/{node_id}"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -7486,13 +7486,13 @@ Only metadata taxonomy nodes without any children can be deleted.
 	 *
 	 * `DELETE /metadata_taxonomies/{namespace}/{taxonomy_key}/nodes/{node_id}` — risk: medium
 	 */
-	async deleteNode(namespace: string, taxonomyKey: string, nodeId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteNode(namespace: string, taxonomyKey: string, nodeId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete_metadata_taxonomies_id_id_nodes_id",
 			namespace: "metadata_taxonomies",
 			method: "deleteNode",
 			http: "delete",
-			path: `/metadata_taxonomies/${namespace}/${taxonomyKey}/nodes/${nodeId}`,
+			path: `/metadata_taxonomies/${encodeURIComponent(namespace)}/${encodeURIComponent(taxonomyKey)}/nodes/${encodeURIComponent(nodeId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteNode"],
@@ -7500,239 +7500,244 @@ Only metadata taxonomy nodes without any children can be deleted.
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 interface Env {
 	BOX_API_KEY?: string;
+	BOX_USER_ID?: string;
 }
 
 export class BoxCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
 	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
+	protected providerCredentials(): import("./runtime.ts").Credentials {
+		return { apiKey: this.env.BOX_API_KEY, username: this.env.BOX_USER_ID };
+	}
+
 	get authorize(): AuthorizeResource {
-		return new AuthorizeResource(this.env.BOX_API_KEY, this.overrides["authorize"] || {}, this.runtimeConfig);
+		return new AuthorizeResource(this.providerCredentials(), this.overrides["authorize"] || {}, this.runtimeConfig);
 	}
 
 	get oauth2(): Oauth2Resource {
-		return new Oauth2Resource(this.env.BOX_API_KEY, this.overrides["oauth2"] || {}, this.runtimeConfig);
+		return new Oauth2Resource(this.providerCredentials(), this.overrides["oauth2"] || {}, this.runtimeConfig);
 	}
 
 	get files(): FilesResource {
-		return new FilesResource(this.env.BOX_API_KEY, this.overrides["files"] || {}, this.runtimeConfig);
+		return new FilesResource(this.providerCredentials(), this.overrides["files"] || {}, this.runtimeConfig);
 	}
 
 	get fileRequests(): FileRequestsResource {
-		return new FileRequestsResource(this.env.BOX_API_KEY, this.overrides["file_requests"] || {}, this.runtimeConfig);
+		return new FileRequestsResource(this.providerCredentials(), this.overrides["file_requests"] || {}, this.runtimeConfig);
 	}
 
 	get folders(): FoldersResource {
-		return new FoldersResource(this.env.BOX_API_KEY, this.overrides["folders"] || {}, this.runtimeConfig);
+		return new FoldersResource(this.providerCredentials(), this.overrides["folders"] || {}, this.runtimeConfig);
 	}
 
 	get folderLocks(): FolderLocksResource {
-		return new FolderLocksResource(this.env.BOX_API_KEY, this.overrides["folder_locks"] || {}, this.runtimeConfig);
+		return new FolderLocksResource(this.providerCredentials(), this.overrides["folder_locks"] || {}, this.runtimeConfig);
 	}
 
 	get metadataTemplates(): MetadataTemplatesResource {
-		return new MetadataTemplatesResource(this.env.BOX_API_KEY, this.overrides["metadata_templates"] || {}, this.runtimeConfig);
+		return new MetadataTemplatesResource(this.providerCredentials(), this.overrides["metadata_templates"] || {}, this.runtimeConfig);
 	}
 
 	get metadataCascadePolicies(): MetadataCascadePoliciesResource {
-		return new MetadataCascadePoliciesResource(this.env.BOX_API_KEY, this.overrides["metadata_cascade_policies"] || {}, this.runtimeConfig);
+		return new MetadataCascadePoliciesResource(this.providerCredentials(), this.overrides["metadata_cascade_policies"] || {}, this.runtimeConfig);
 	}
 
 	get metadataQueries(): MetadataQueriesResource {
-		return new MetadataQueriesResource(this.env.BOX_API_KEY, this.overrides["metadata_queries"] || {}, this.runtimeConfig);
+		return new MetadataQueriesResource(this.providerCredentials(), this.overrides["metadata_queries"] || {}, this.runtimeConfig);
 	}
 
 	get comments(): CommentsResource {
-		return new CommentsResource(this.env.BOX_API_KEY, this.overrides["comments"] || {}, this.runtimeConfig);
+		return new CommentsResource(this.providerCredentials(), this.overrides["comments"] || {}, this.runtimeConfig);
 	}
 
 	get collaborations(): CollaborationsResource {
-		return new CollaborationsResource(this.env.BOX_API_KEY, this.overrides["collaborations"] || {}, this.runtimeConfig);
+		return new CollaborationsResource(this.providerCredentials(), this.overrides["collaborations"] || {}, this.runtimeConfig);
 	}
 
 	get search(): SearchResource {
-		return new SearchResource(this.env.BOX_API_KEY, this.overrides["search"] || {}, this.runtimeConfig);
+		return new SearchResource(this.providerCredentials(), this.overrides["search"] || {}, this.runtimeConfig);
 	}
 
 	get tasks(): TasksResource {
-		return new TasksResource(this.env.BOX_API_KEY, this.overrides["tasks"] || {}, this.runtimeConfig);
+		return new TasksResource(this.providerCredentials(), this.overrides["tasks"] || {}, this.runtimeConfig);
 	}
 
 	get taskAssignments(): TaskAssignmentsResource {
-		return new TaskAssignmentsResource(this.env.BOX_API_KEY, this.overrides["task_assignments"] || {}, this.runtimeConfig);
+		return new TaskAssignmentsResource(this.providerCredentials(), this.overrides["task_assignments"] || {}, this.runtimeConfig);
 	}
 
 	get sharedItems(): SharedItemsResource {
-		return new SharedItemsResource(this.env.BOX_API_KEY, this.overrides["shared_items"] || {}, this.runtimeConfig);
+		return new SharedItemsResource(this.providerCredentials(), this.overrides["shared_items"] || {}, this.runtimeConfig);
 	}
 
 	get sharedItemsFolders(): SharedItemsFoldersResource {
-		return new SharedItemsFoldersResource(this.env.BOX_API_KEY, this.overrides["shared_items#folders"] || {}, this.runtimeConfig);
+		return new SharedItemsFoldersResource(this.providerCredentials(), this.overrides["shared_items#folders"] || {}, this.runtimeConfig);
 	}
 
 	get webLinks(): WebLinksResource {
-		return new WebLinksResource(this.env.BOX_API_KEY, this.overrides["web_links"] || {}, this.runtimeConfig);
+		return new WebLinksResource(this.providerCredentials(), this.overrides["web_links"] || {}, this.runtimeConfig);
 	}
 
 	get sharedItemsWebLinks(): SharedItemsWebLinksResource {
-		return new SharedItemsWebLinksResource(this.env.BOX_API_KEY, this.overrides["shared_items#web_links"] || {}, this.runtimeConfig);
+		return new SharedItemsWebLinksResource(this.providerCredentials(), this.overrides["shared_items#web_links"] || {}, this.runtimeConfig);
 	}
 
 	get sharedItemsAppItems(): SharedItemsAppItemsResource {
-		return new SharedItemsAppItemsResource(this.env.BOX_API_KEY, this.overrides["shared_items#app_items"] || {}, this.runtimeConfig);
+		return new SharedItemsAppItemsResource(this.providerCredentials(), this.overrides["shared_items#app_items"] || {}, this.runtimeConfig);
 	}
 
 	get users(): UsersResource {
-		return new UsersResource(this.env.BOX_API_KEY, this.overrides["users"] || {}, this.runtimeConfig);
+		return new UsersResource(this.providerCredentials(), this.overrides["users"] || {}, this.runtimeConfig);
 	}
 
 	get invites(): InvitesResource {
-		return new InvitesResource(this.env.BOX_API_KEY, this.overrides["invites"] || {}, this.runtimeConfig);
+		return new InvitesResource(this.providerCredentials(), this.overrides["invites"] || {}, this.runtimeConfig);
 	}
 
 	get groups(): GroupsResource {
-		return new GroupsResource(this.env.BOX_API_KEY, this.overrides["groups"] || {}, this.runtimeConfig);
+		return new GroupsResource(this.providerCredentials(), this.overrides["groups"] || {}, this.runtimeConfig);
 	}
 
 	get groupMemberships(): GroupMembershipsResource {
-		return new GroupMembershipsResource(this.env.BOX_API_KEY, this.overrides["group_memberships"] || {}, this.runtimeConfig);
+		return new GroupMembershipsResource(this.providerCredentials(), this.overrides["group_memberships"] || {}, this.runtimeConfig);
 	}
 
 	get webhooks(): WebhooksResource {
-		return new WebhooksResource(this.env.BOX_API_KEY, this.overrides["webhooks"] || {}, this.runtimeConfig);
+		return new WebhooksResource(this.providerCredentials(), this.overrides["webhooks"] || {}, this.runtimeConfig);
 	}
 
 	get skillInvocations(): SkillInvocationsResource {
-		return new SkillInvocationsResource(this.env.BOX_API_KEY, this.overrides["skill_invocations"] || {}, this.runtimeConfig);
+		return new SkillInvocationsResource(this.providerCredentials(), this.overrides["skill_invocations"] || {}, this.runtimeConfig);
 	}
 
 	get events(): EventsResource {
-		return new EventsResource(this.env.BOX_API_KEY, this.overrides["events"] || {}, this.runtimeConfig);
+		return new EventsResource(this.providerCredentials(), this.overrides["events"] || {}, this.runtimeConfig);
 	}
 
 	get collections(): CollectionsResource {
-		return new CollectionsResource(this.env.BOX_API_KEY, this.overrides["collections"] || {}, this.runtimeConfig);
+		return new CollectionsResource(this.providerCredentials(), this.overrides["collections"] || {}, this.runtimeConfig);
 	}
 
 	get recentItems(): RecentItemsResource {
-		return new RecentItemsResource(this.env.BOX_API_KEY, this.overrides["recent_items"] || {}, this.runtimeConfig);
+		return new RecentItemsResource(this.providerCredentials(), this.overrides["recent_items"] || {}, this.runtimeConfig);
 	}
 
 	get retentionPolicies(): RetentionPoliciesResource {
-		return new RetentionPoliciesResource(this.env.BOX_API_KEY, this.overrides["retention_policies"] || {}, this.runtimeConfig);
+		return new RetentionPoliciesResource(this.providerCredentials(), this.overrides["retention_policies"] || {}, this.runtimeConfig);
 	}
 
 	get retentionPolicyAssignments(): RetentionPolicyAssignmentsResource {
-		return new RetentionPolicyAssignmentsResource(this.env.BOX_API_KEY, this.overrides["retention_policy_assignments"] || {}, this.runtimeConfig);
+		return new RetentionPolicyAssignmentsResource(this.providerCredentials(), this.overrides["retention_policy_assignments"] || {}, this.runtimeConfig);
 	}
 
 	get legalHoldPolicies(): LegalHoldPoliciesResource {
-		return new LegalHoldPoliciesResource(this.env.BOX_API_KEY, this.overrides["legal_hold_policies"] || {}, this.runtimeConfig);
+		return new LegalHoldPoliciesResource(this.providerCredentials(), this.overrides["legal_hold_policies"] || {}, this.runtimeConfig);
 	}
 
 	get legalHoldPolicyAssignments(): LegalHoldPolicyAssignmentsResource {
-		return new LegalHoldPolicyAssignmentsResource(this.env.BOX_API_KEY, this.overrides["legal_hold_policy_assignments"] || {}, this.runtimeConfig);
+		return new LegalHoldPolicyAssignmentsResource(this.providerCredentials(), this.overrides["legal_hold_policy_assignments"] || {}, this.runtimeConfig);
 	}
 
 	get fileVersionRetentions(): FileVersionRetentionsResource {
-		return new FileVersionRetentionsResource(this.env.BOX_API_KEY, this.overrides["file_version_retentions"] || {}, this.runtimeConfig);
+		return new FileVersionRetentionsResource(this.providerCredentials(), this.overrides["file_version_retentions"] || {}, this.runtimeConfig);
 	}
 
 	get fileVersionLegalHolds(): FileVersionLegalHoldsResource {
-		return new FileVersionLegalHoldsResource(this.env.BOX_API_KEY, this.overrides["file_version_legal_holds"] || {}, this.runtimeConfig);
+		return new FileVersionLegalHoldsResource(this.providerCredentials(), this.overrides["file_version_legal_holds"] || {}, this.runtimeConfig);
 	}
 
 	get shieldInformationBarriers(): ShieldInformationBarriersResource {
-		return new ShieldInformationBarriersResource(this.env.BOX_API_KEY, this.overrides["shield_information_barriers"] || {}, this.runtimeConfig);
+		return new ShieldInformationBarriersResource(this.providerCredentials(), this.overrides["shield_information_barriers"] || {}, this.runtimeConfig);
 	}
 
 	get shieldInformationBarrierReports(): ShieldInformationBarrierReportsResource {
-		return new ShieldInformationBarrierReportsResource(this.env.BOX_API_KEY, this.overrides["shield_information_barrier_reports"] || {}, this.runtimeConfig);
+		return new ShieldInformationBarrierReportsResource(this.providerCredentials(), this.overrides["shield_information_barrier_reports"] || {}, this.runtimeConfig);
 	}
 
 	get shieldInformationBarrierSegments(): ShieldInformationBarrierSegmentsResource {
-		return new ShieldInformationBarrierSegmentsResource(this.env.BOX_API_KEY, this.overrides["shield_information_barrier_segments"] || {}, this.runtimeConfig);
+		return new ShieldInformationBarrierSegmentsResource(this.providerCredentials(), this.overrides["shield_information_barrier_segments"] || {}, this.runtimeConfig);
 	}
 
 	get shieldInformationBarrierSegmentMembers(): ShieldInformationBarrierSegmentMembersResource {
-		return new ShieldInformationBarrierSegmentMembersResource(this.env.BOX_API_KEY, this.overrides["shield_information_barrier_segment_members"] || {}, this.runtimeConfig);
+		return new ShieldInformationBarrierSegmentMembersResource(this.providerCredentials(), this.overrides["shield_information_barrier_segment_members"] || {}, this.runtimeConfig);
 	}
 
 	get shieldInformationBarrierSegmentRestrictions(): ShieldInformationBarrierSegmentRestrictionsResource {
-		return new ShieldInformationBarrierSegmentRestrictionsResource(this.env.BOX_API_KEY, this.overrides["shield_information_barrier_segment_restrictions"] || {}, this.runtimeConfig);
+		return new ShieldInformationBarrierSegmentRestrictionsResource(this.providerCredentials(), this.overrides["shield_information_barrier_segment_restrictions"] || {}, this.runtimeConfig);
 	}
 
 	get devicePinners(): DevicePinnersResource {
-		return new DevicePinnersResource(this.env.BOX_API_KEY, this.overrides["device_pinners"] || {}, this.runtimeConfig);
+		return new DevicePinnersResource(this.providerCredentials(), this.overrides["device_pinners"] || {}, this.runtimeConfig);
 	}
 
 	get enterprises(): EnterprisesResource {
-		return new EnterprisesResource(this.env.BOX_API_KEY, this.overrides["enterprises"] || {}, this.runtimeConfig);
+		return new EnterprisesResource(this.providerCredentials(), this.overrides["enterprises"] || {}, this.runtimeConfig);
 	}
 
 	get termsOfServices(): TermsOfServicesResource {
-		return new TermsOfServicesResource(this.env.BOX_API_KEY, this.overrides["terms_of_services"] || {}, this.runtimeConfig);
+		return new TermsOfServicesResource(this.providerCredentials(), this.overrides["terms_of_services"] || {}, this.runtimeConfig);
 	}
 
 	get termsOfServiceUserStatuses(): TermsOfServiceUserStatusesResource {
-		return new TermsOfServiceUserStatusesResource(this.env.BOX_API_KEY, this.overrides["terms_of_service_user_statuses"] || {}, this.runtimeConfig);
+		return new TermsOfServiceUserStatusesResource(this.providerCredentials(), this.overrides["terms_of_service_user_statuses"] || {}, this.runtimeConfig);
 	}
 
 	get collaborationWhitelistEntries(): CollaborationWhitelistEntriesResource {
-		return new CollaborationWhitelistEntriesResource(this.env.BOX_API_KEY, this.overrides["collaboration_whitelist_entries"] || {}, this.runtimeConfig);
+		return new CollaborationWhitelistEntriesResource(this.providerCredentials(), this.overrides["collaboration_whitelist_entries"] || {}, this.runtimeConfig);
 	}
 
 	get collaborationWhitelistExemptTargets(): CollaborationWhitelistExemptTargetsResource {
-		return new CollaborationWhitelistExemptTargetsResource(this.env.BOX_API_KEY, this.overrides["collaboration_whitelist_exempt_targets"] || {}, this.runtimeConfig);
+		return new CollaborationWhitelistExemptTargetsResource(this.providerCredentials(), this.overrides["collaboration_whitelist_exempt_targets"] || {}, this.runtimeConfig);
 	}
 
 	get storagePolicies(): StoragePoliciesResource {
-		return new StoragePoliciesResource(this.env.BOX_API_KEY, this.overrides["storage_policies"] || {}, this.runtimeConfig);
+		return new StoragePoliciesResource(this.providerCredentials(), this.overrides["storage_policies"] || {}, this.runtimeConfig);
 	}
 
 	get storagePolicyAssignments(): StoragePolicyAssignmentsResource {
-		return new StoragePolicyAssignmentsResource(this.env.BOX_API_KEY, this.overrides["storage_policy_assignments"] || {}, this.runtimeConfig);
+		return new StoragePolicyAssignmentsResource(this.providerCredentials(), this.overrides["storage_policy_assignments"] || {}, this.runtimeConfig);
 	}
 
 	get zipDownloads(): ZipDownloadsResource {
-		return new ZipDownloadsResource(this.env.BOX_API_KEY, this.overrides["zip_downloads"] || {}, this.runtimeConfig);
+		return new ZipDownloadsResource(this.providerCredentials(), this.overrides["zip_downloads"] || {}, this.runtimeConfig);
 	}
 
 	get signRequests(): SignRequestsResource {
-		return new SignRequestsResource(this.env.BOX_API_KEY, this.overrides["sign_requests"] || {}, this.runtimeConfig);
+		return new SignRequestsResource(this.providerCredentials(), this.overrides["sign_requests"] || {}, this.runtimeConfig);
 	}
 
 	get workflows(): WorkflowsResource {
-		return new WorkflowsResource(this.env.BOX_API_KEY, this.overrides["workflows"] || {}, this.runtimeConfig);
+		return new WorkflowsResource(this.providerCredentials(), this.overrides["workflows"] || {}, this.runtimeConfig);
 	}
 
 	get signTemplates(): SignTemplatesResource {
-		return new SignTemplatesResource(this.env.BOX_API_KEY, this.overrides["sign_templates"] || {}, this.runtimeConfig);
+		return new SignTemplatesResource(this.providerCredentials(), this.overrides["sign_templates"] || {}, this.runtimeConfig);
 	}
 
 	get integrationMappings(): IntegrationMappingsResource {
-		return new IntegrationMappingsResource(this.env.BOX_API_KEY, this.overrides["integration_mappings"] || {}, this.runtimeConfig);
+		return new IntegrationMappingsResource(this.providerCredentials(), this.overrides["integration_mappings"] || {}, this.runtimeConfig);
 	}
 
 	get ai(): AiResource {
-		return new AiResource(this.env.BOX_API_KEY, this.overrides["ai"] || {}, this.runtimeConfig);
+		return new AiResource(this.providerCredentials(), this.overrides["ai"] || {}, this.runtimeConfig);
 	}
 
 	get aiAgentDefault(): AiAgentDefaultResource {
-		return new AiAgentDefaultResource(this.env.BOX_API_KEY, this.overrides["ai_agent_default"] || {}, this.runtimeConfig);
+		return new AiAgentDefaultResource(this.providerCredentials(), this.overrides["ai_agent_default"] || {}, this.runtimeConfig);
 	}
 
 	get aiAgents(): AiAgentsResource {
-		return new AiAgentsResource(this.env.BOX_API_KEY, this.overrides["ai_agents"] || {}, this.runtimeConfig);
+		return new AiAgentsResource(this.providerCredentials(), this.overrides["ai_agents"] || {}, this.runtimeConfig);
 	}
 
 	get metadataTaxonomies(): MetadataTaxonomiesResource {
-		return new MetadataTaxonomiesResource(this.env.BOX_API_KEY, this.overrides["metadata_taxonomies"] || {}, this.runtimeConfig);
+		return new MetadataTaxonomiesResource(this.providerCredentials(), this.overrides["metadata_taxonomies"] || {}, this.runtimeConfig);
 	}
 }

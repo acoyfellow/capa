@@ -33,7 +33,7 @@ The reference stays short: capa uses Worker secrets by default. The planned mult
 | Capability | Required | Optional |
 |---|---|---|
 | blooio | `BLOOIO_API_KEY` | — |
-| htmlcsstoimage | `HTMLCSSTOIMAGE_API_KEY` (`user-id:api-key`) | — |
+| htmlcsstoimage | `HTMLCSSTOIMAGE_USER_ID`, `HTMLCSSTOIMAGE_API_KEY` | — |
 | box | `BOX_API_KEY` | — |
 | discord | `DISCORD_API_KEY` | — |
 | github | `GITHUB_API_KEY` | — |

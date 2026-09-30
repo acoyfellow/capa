@@ -3,12 +3,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 
 export class MeResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20,8 +20,8 @@ export class MeResource extends RpcTarget {
 	 *
 	 * `GET /me` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: CallOptions): Promise<ProofResult<paths["/me"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getMe",
 			namespace: "me",
 			method: "list",
@@ -34,7 +34,7 @@ export class MeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/me"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -42,8 +42,8 @@ export class MeResource extends RpcTarget {
 	 *
 	 * `GET /me/numbers` — risk: medium
 	 */
-	async listNumbers(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listNumbers(options?: CallOptions): Promise<ProofResult<paths["/me/numbers"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listNumbers",
 			namespace: "me",
 			method: "listNumbers",
@@ -56,7 +56,7 @@ export class MeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/me/numbers"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -66,13 +66,13 @@ Get the personal contact card (Name & Photo) for the specified phone number. Thi
 	 *
 	 * `GET /me/numbers/{number}/contact-card` — risk: medium
 	 */
-	async contactCard_0(number: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async contactCard_0(number: string, options?: CallOptions): Promise<ProofResult<paths["/me/numbers/{number}/contact-card"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getMyContactCard",
 			namespace: "me",
 			method: "contactCard_0",
 			http: "get",
-			path: `/me/numbers/${number}/contact-card`,
+			path: `/me/numbers/${encodeURIComponent(number)}/contact-card`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["contactCard_0"],
@@ -80,7 +80,7 @@ Get the personal contact card (Name & Photo) for the specified phone number. Thi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/me/numbers/{number}/contact-card"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -90,13 +90,13 @@ Get the personal contact card (Name & Photo) for the specified phone number. Thi
 	 *
 	 * `PUT /me/numbers/{number}/contact-card` — risk: medium
 	 */
-	async contactCard_1(number: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async contactCard_1(number: string, body?: NonNullable<paths["/me/numbers/{number}/contact-card"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/me/numbers/{number}/contact-card"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateMyContactCard",
 			namespace: "me",
 			method: "contactCard_1",
 			http: "put",
-			path: `/me/numbers/${number}/contact-card`,
+			path: `/me/numbers/${encodeURIComponent(number)}/contact-card`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["contactCard_1"],
@@ -104,7 +104,7 @@ Get the personal contact card (Name & Photo) for the specified phone number. Thi
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/me/numbers/{number}/contact-card"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -114,13 +114,13 @@ This does **not** instantly reconfigure forwarding — it opens a support reques
 	 *
 	 * `POST /me/numbers/{number}/call-forwarding` — risk: medium
 	 */
-	async callForwarding(number: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async callForwarding(number: string, body?: NonNullable<paths["/me/numbers/{number}/call-forwarding"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/me/numbers/{number}/call-forwarding"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "requestCallForwarding",
 			namespace: "me",
 			method: "callForwarding",
 			http: "post",
-			path: `/me/numbers/${number}/call-forwarding`,
+			path: `/me/numbers/${encodeURIComponent(number)}/call-forwarding`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["callForwarding"],
@@ -128,13 +128,13 @@ This does **not** instantly reconfigure forwarding — it opens a support reques
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/me/numbers/{number}/call-forwarding"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class ContactsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -146,8 +146,8 @@ export class ContactsResource extends RpcTarget {
 	 *
 	 * `GET /contacts` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/contacts"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/contacts"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listContacts",
 			namespace: "contacts",
 			method: "list",
@@ -160,7 +160,7 @@ export class ContactsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/contacts"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -168,8 +168,8 @@ export class ContactsResource extends RpcTarget {
 	 *
 	 * `POST /contacts` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/contacts"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/contacts"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createContact",
 			namespace: "contacts",
 			method: "create",
@@ -182,7 +182,7 @@ export class ContactsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/contacts"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -190,13 +190,13 @@ export class ContactsResource extends RpcTarget {
 	 *
 	 * `GET /contacts/{contactId}` — risk: low
 	 */
-	async retrieve(contactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(contactId: string, options?: CallOptions): Promise<ProofResult<paths["/contacts/{contactId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getContact",
 			namespace: "contacts",
 			method: "retrieve",
 			http: "get",
-			path: `/contacts/${contactId}`,
+			path: `/contacts/${encodeURIComponent(contactId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -204,7 +204,7 @@ export class ContactsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/contacts/{contactId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -212,13 +212,13 @@ export class ContactsResource extends RpcTarget {
 	 *
 	 * `PATCH /contacts/{contactId}` — risk: medium
 	 */
-	async patch(contactId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(contactId: string, body?: NonNullable<paths["/contacts/{contactId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/contacts/{contactId}"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateContact",
 			namespace: "contacts",
 			method: "patch",
 			http: "patch",
-			path: `/contacts/${contactId}`,
+			path: `/contacts/${encodeURIComponent(contactId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["patch"],
@@ -226,7 +226,7 @@ export class ContactsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/contacts/{contactId}"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -234,13 +234,13 @@ export class ContactsResource extends RpcTarget {
 	 *
 	 * `DELETE /contacts/{contactId}` — risk: medium
 	 */
-	async del(contactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(contactId: string, options?: CallOptions): Promise<ProofResult<paths["/contacts/{contactId}"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteContact",
 			namespace: "contacts",
 			method: "del",
 			http: "delete",
-			path: `/contacts/${contactId}`,
+			path: `/contacts/${encodeURIComponent(contactId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -248,7 +248,7 @@ export class ContactsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/contacts/{contactId}"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -256,13 +256,13 @@ export class ContactsResource extends RpcTarget {
 	 *
 	 * `GET /contacts/{contactId}/capabilities` — risk: medium
 	 */
-	async listCapabilities(contactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCapabilities(contactId: string, options?: CallOptions): Promise<ProofResult<paths["/contacts/{contactId}/capabilities"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getContactCapabilities",
 			namespace: "contacts",
 			method: "listCapabilities",
 			http: "get",
-			path: `/contacts/${contactId}/capabilities`,
+			path: `/contacts/${encodeURIComponent(contactId)}/capabilities`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCapabilities"],
@@ -270,7 +270,7 @@ export class ContactsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/contacts/{contactId}/capabilities"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -278,13 +278,13 @@ export class ContactsResource extends RpcTarget {
 	 *
 	 * `GET /contacts/{contactId}/tags` — risk: medium
 	 */
-	async listTags(contactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTags(contactId: string, options?: CallOptions): Promise<ProofResult<paths["/contacts/{contactId}/tags"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listContactTags",
 			namespace: "contacts",
 			method: "listTags",
 			http: "get",
-			path: `/contacts/${contactId}/tags`,
+			path: `/contacts/${encodeURIComponent(contactId)}/tags`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTags"],
@@ -292,7 +292,7 @@ export class ContactsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/contacts/{contactId}/tags"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -300,13 +300,13 @@ export class ContactsResource extends RpcTarget {
 	 *
 	 * `POST /contacts/{contactId}/tags` — risk: medium
 	 */
-	async createTag(contactId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTag(contactId: string, body?: NonNullable<paths["/contacts/{contactId}/tags"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/contacts/{contactId}/tags"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "addContactTags",
 			namespace: "contacts",
 			method: "createTag",
 			http: "post",
-			path: `/contacts/${contactId}/tags`,
+			path: `/contacts/${encodeURIComponent(contactId)}/tags`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createTag"],
@@ -314,7 +314,7 @@ export class ContactsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/contacts/{contactId}/tags"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -322,13 +322,13 @@ export class ContactsResource extends RpcTarget {
 	 *
 	 * `DELETE /contacts/{contactId}/tags/{tag}` — risk: medium
 	 */
-	async deleteTag(contactId: string, tag: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteTag(contactId: string, tag: string, options?: CallOptions): Promise<ProofResult<paths["/contacts/{contactId}/tags/{tag}"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "removeContactTag",
 			namespace: "contacts",
 			method: "deleteTag",
 			http: "delete",
-			path: `/contacts/${contactId}/tags/${tag}`,
+			path: `/contacts/${encodeURIComponent(contactId)}/tags/${encodeURIComponent(tag)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteTag"],
@@ -336,13 +336,13 @@ export class ContactsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/contacts/{contactId}/tags/{tag}"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class LocationResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -354,8 +354,8 @@ export class LocationResource extends RpcTarget {
 	 *
 	 * `GET /location/contacts` — risk: medium
 	 */
-	async listContacts(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listContacts(options?: CallOptions): Promise<ProofResult<paths["/location/contacts"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listLocationContacts",
 			namespace: "location",
 			method: "listContacts",
@@ -368,7 +368,7 @@ export class LocationResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/location/contacts"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -376,13 +376,13 @@ export class LocationResource extends RpcTarget {
 	 *
 	 * `GET /location/contacts/{handle}` — risk: medium
 	 */
-	async retrieveContact(handle: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveContact(handle: string, options?: CallOptions): Promise<ProofResult<paths["/location/contacts/{handle}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getLocationContact",
 			namespace: "location",
 			method: "retrieveContact",
 			http: "get",
-			path: `/location/contacts/${handle}`,
+			path: `/location/contacts/${encodeURIComponent(handle)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveContact"],
@@ -390,7 +390,7 @@ export class LocationResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/location/contacts/{handle}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -398,8 +398,8 @@ export class LocationResource extends RpcTarget {
 	 *
 	 * `POST /location/contacts/refresh` — risk: medium
 	 */
-	async refresh(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async refresh(options?: CallOptions): Promise<ProofResult<paths["/location/contacts/refresh"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "refreshLocationContacts",
 			namespace: "location",
 			method: "refresh",
@@ -412,13 +412,13 @@ export class LocationResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/location/contacts/refresh"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class FacetimeResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -432,8 +432,8 @@ Initiates a FaceTime call to the specified phone number or email address. Return
 	 *
 	 * `POST /facetime/calls` — risk: medium
 	 */
-	async createCall(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createCall(body?: NonNullable<paths["/facetime/calls"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.credentials, {
 			operationId: "callFaceTime",
 			namespace: "facetime",
 			method: "createCall",
@@ -446,13 +446,13 @@ Initiates a FaceTime call to the specified phone number or email address. Return
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<unknown>>;
 	}
 }
 
 export class GroupsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -464,8 +464,8 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /groups` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/groups"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/groups"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listGroups",
 			namespace: "groups",
 			method: "list",
@@ -478,18 +478,16 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
-	 * Create a new group. There are two modes:
-
-**1. Link to existing iMessage chat:** Provide `chat_guid` to join an existing group chat that was created outside the API. The `members` list records who is 
+	 * Create a new group. No iMessage conversation exists yet: the first message you send to the group opens it.
 	 *
 	 * `POST /groups` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/groups"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/groups"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createGroup",
 			namespace: "groups",
 			method: "create",
@@ -502,7 +500,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -510,13 +508,13 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /groups/{groupId}` — risk: low
 	 */
-	async retrieve(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(groupId: string, options?: CallOptions): Promise<ProofResult<paths["/groups/{groupId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getGroup",
 			namespace: "groups",
 			method: "retrieve",
 			http: "get",
-			path: `/groups/${groupId}`,
+			path: `/groups/${encodeURIComponent(groupId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -524,21 +522,21 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{groupId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
-	 * Update a group's name. If the group has a linked `chat_guid`, the display name will also be updated in the linked iMessage chat. Note: iMessage only allows one chat per unique participant set, so rena
+	 * Update a group's name. If the group already has an iMessage conversation, the conversation is renamed too.
 	 *
 	 * `PATCH /groups/{groupId}` — risk: medium
 	 */
-	async patch(groupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(groupId: string, body?: NonNullable<paths["/groups/{groupId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/groups/{groupId}"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateGroup",
 			namespace: "groups",
 			method: "patch",
 			http: "patch",
-			path: `/groups/${groupId}`,
+			path: `/groups/${encodeURIComponent(groupId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["patch"],
@@ -546,7 +544,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{groupId}"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -554,13 +552,13 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /groups/{groupId}` — risk: medium
 	 */
-	async del(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(groupId: string, options?: CallOptions): Promise<ProofResult<paths["/groups/{groupId}"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteGroup",
 			namespace: "groups",
 			method: "del",
 			http: "delete",
-			path: `/groups/${groupId}`,
+			path: `/groups/${encodeURIComponent(groupId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -568,7 +566,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{groupId}"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -576,13 +574,13 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /groups/{groupId}/members` — risk: medium
 	 */
-	async listMembers(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMembers(groupId: string, options?: CallOptions): Promise<ProofResult<paths["/groups/{groupId}/members"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listGroupMembers",
 			namespace: "groups",
 			method: "listMembers",
 			http: "get",
-			path: `/groups/${groupId}/members`,
+			path: `/groups/${encodeURIComponent(groupId)}/members`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMembers"],
@@ -590,7 +588,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{groupId}/members"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -600,13 +598,13 @@ Add an existing contact to a group. If the group is linked to an existing iMessa
 	 *
 	 * `POST /groups/{groupId}/members` — risk: medium
 	 */
-	async createMember(groupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createMember(groupId: string, body?: NonNullable<paths["/groups/{groupId}/members"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.credentials, {
 			operationId: "addGroupMember",
 			namespace: "groups",
 			method: "createMember",
 			http: "post",
-			path: `/groups/${groupId}/members`,
+			path: `/groups/${encodeURIComponent(groupId)}/members`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMember"],
@@ -614,7 +612,7 @@ Add an existing contact to a group. If the group is linked to an existing iMessa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<unknown>>;
 	}
 
 	/**
@@ -625,12 +623,12 @@ Remove a contact from a group. If the group is linked to an existing iMessage ch
 	 * `DELETE /groups/{groupId}/members/{contactId}` — risk: medium
 	 */
 	async deleteMember(groupId: string, contactId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+		return fetchProof(this.credentials, {
 			operationId: "removeGroupMember",
 			namespace: "groups",
 			method: "deleteMember",
 			http: "delete",
-			path: `/groups/${groupId}/members/${contactId}`,
+			path: `/groups/${encodeURIComponent(groupId)}/members/${encodeURIComponent(contactId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMember"],
@@ -638,23 +636,23 @@ Remove a contact from a group. If the group is linked to an existing iMessage ch
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<unknown>>;
 	}
 
 	/**
-	 * Set the group icon/photo. Requires the group to have a linked chat_guid. Uses multipart/form-data.
+	 * Set the group icon/photo. Requires the group to have an iMessage conversation, so send it a message first. Uses multipart/form-data.
 
-The uploaded image is stored in Blooio storage and synced to the linked iMessage chat before the req
+The uploaded image is stored in Blooio storage and synced to the g
 	 *
 	 * `POST /groups/{groupId}/icon` — risk: medium
 	 */
-	async createIcon(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createIcon(groupId: string, options?: CallOptions): Promise<ProofResult<paths["/groups/{groupId}/icon"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "setGroupIcon",
 			namespace: "groups",
 			method: "createIcon",
 			http: "post",
-			path: `/groups/${groupId}/icon`,
+			path: `/groups/${encodeURIComponent(groupId)}/icon`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createIcon"],
@@ -662,23 +660,23 @@ The uploaded image is stored in Blooio storage and synced to the linked iMessage
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{groupId}/icon"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
-	 * Remove the group icon/photo. Requires the group to have a linked chat_guid.
+	 * Remove the group icon/photo. Requires the group to have an iMessage conversation.
 
-The icon is removed from both Blooio storage and the linked iMessage chat before the request returns.
+The icon is removed from both Blooio storage and the group's iMessage conversation before the request returns.
 	 *
 	 * `DELETE /groups/{groupId}/icon` — risk: medium
 	 */
-	async icon(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async icon(groupId: string, options?: CallOptions): Promise<ProofResult<paths["/groups/{groupId}/icon"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "removeGroupIcon",
 			namespace: "groups",
 			method: "icon",
 			http: "delete",
-			path: `/groups/${groupId}/icon`,
+			path: `/groups/${encodeURIComponent(groupId)}/icon`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["icon"],
@@ -686,13 +684,13 @@ The icon is removed from both Blooio storage and the linked iMessage chat before
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{groupId}/icon"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class WebhooksResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -704,8 +702,8 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `GET /webhooks` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: CallOptions): Promise<ProofResult<paths["/webhooks"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listWebhooks",
 			namespace: "webhooks",
 			method: "list",
@@ -718,7 +716,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -726,8 +724,8 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `POST /webhooks` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/webhooks"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/webhooks"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "createWebhook",
 			namespace: "webhooks",
 			method: "create",
@@ -740,7 +738,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -748,13 +746,13 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `GET /webhooks/{webhookId}` — risk: low
 	 */
-	async retrieve(webhookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(webhookId: string, options?: CallOptions): Promise<ProofResult<paths["/webhooks/{webhookId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getWebhook",
 			namespace: "webhooks",
 			method: "retrieve",
 			http: "get",
-			path: `/webhooks/${webhookId}`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -762,7 +760,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks/{webhookId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -770,13 +768,13 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `PATCH /webhooks/{webhookId}` — risk: medium
 	 */
-	async patch(webhookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(webhookId: string, body?: NonNullable<paths["/webhooks/{webhookId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/webhooks/{webhookId}"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "updateWebhook",
 			namespace: "webhooks",
 			method: "patch",
 			http: "patch",
-			path: `/webhooks/${webhookId}`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["patch"],
@@ -784,7 +782,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks/{webhookId}"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -792,13 +790,13 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `DELETE /webhooks/{webhookId}` — risk: medium
 	 */
-	async del(webhookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(webhookId: string, options?: CallOptions): Promise<ProofResult<paths["/webhooks/{webhookId}"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "deleteWebhook",
 			namespace: "webhooks",
 			method: "del",
 			http: "delete",
-			path: `/webhooks/${webhookId}`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -806,7 +804,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks/{webhookId}"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -814,13 +812,13 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `POST /webhooks/{webhookId}/secret/rotate` — risk: medium
 	 */
-	async rotate(webhookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async rotate(webhookId: string, options?: CallOptions): Promise<ProofResult<paths["/webhooks/{webhookId}/secret/rotate"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "rotateWebhookSecret",
 			namespace: "webhooks",
 			method: "rotate",
 			http: "post",
-			path: `/webhooks/${webhookId}/secret/rotate`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}/secret/rotate`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["rotate"],
@@ -828,7 +826,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks/{webhookId}/secret/rotate"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -836,13 +834,13 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `GET /webhooks/{webhookId}/logs` — risk: medium
 	 */
-	async listLogs(webhookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listLogs(webhookId: string, options?: QueryCallOptions<NonNullable<paths["/webhooks/{webhookId}/logs"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/webhooks/{webhookId}/logs"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listWebhookLogs",
 			namespace: "webhooks",
 			method: "listLogs",
 			http: "get",
-			path: `/webhooks/${webhookId}/logs`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}/logs`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listLogs"],
@@ -850,7 +848,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks/{webhookId}/logs"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -858,13 +856,13 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `POST /webhooks/{webhookId}/logs/{eventId}/replay` — risk: medium
 	 */
-	async replay(webhookId: string, eventId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async replay(webhookId: string, eventId: string, options?: CallOptions): Promise<ProofResult<paths["/webhooks/{webhookId}/logs/{eventId}/replay"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "replayWebhookEvent",
 			namespace: "webhooks",
 			method: "replay",
 			http: "post",
-			path: `/webhooks/${webhookId}/logs/${eventId}/replay`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}/logs/${encodeURIComponent(eventId)}/replay`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["replay"],
@@ -872,13 +870,13 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks/{webhookId}/logs/{eventId}/replay"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -890,8 +888,8 @@ export class ChatsResource extends RpcTarget {
 	 *
 	 * `GET /chats` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/chats"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chats"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listChats",
 			namespace: "chats",
 			method: "list",
@@ -904,7 +902,7 @@ export class ChatsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -912,13 +910,13 @@ export class ChatsResource extends RpcTarget {
 	 *
 	 * `GET /chats/{chatId}` — risk: low
 	 */
-	async retrieve(chatId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(chatId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getChat",
 			namespace: "chats",
 			method: "retrieve",
 			http: "get",
-			path: `/chats/${chatId}`,
+			path: `/chats/${encodeURIComponent(chatId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -926,7 +924,7 @@ export class ChatsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -936,13 +934,13 @@ A conversation must already exist: this returns `404` for an address the organiz
 	 *
 	 * `GET /chats/{chatId}/messages` — risk: medium
 	 */
-	async listMessages(chatId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMessages(chatId: string, options?: QueryCallOptions<NonNullable<paths["/chats/{chatId}/messages"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chats/{chatId}/messages"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "listChatMessages",
 			namespace: "chats",
 			method: "listMessages",
 			http: "get",
-			path: `/chats/${chatId}/messages`,
+			path: `/chats/${encodeURIComponent(chatId)}/messages`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMessages"],
@@ -950,7 +948,7 @@ A conversation must already exist: this returns `404` for an address the organiz
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/messages"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -958,13 +956,13 @@ A conversation must already exist: this returns `404` for an address the organiz
 	 *
 	 * `POST /chats/{chatId}/messages` — risk: medium
 	 */
-	async createMessage(chatId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createMessage(chatId: string, body?: NonNullable<paths["/chats/{chatId}/messages"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/messages"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "sendMessage",
 			namespace: "chats",
 			method: "createMessage",
 			http: "post",
-			path: `/chats/${chatId}/messages`,
+			path: `/chats/${encodeURIComponent(chatId)}/messages`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMessage"],
@@ -972,7 +970,7 @@ A conversation must already exist: this returns `404` for an address the organiz
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/messages"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -980,13 +978,13 @@ A conversation must already exist: this returns `404` for an address the organiz
 	 *
 	 * `GET /chats/{chatId}/messages/{messageId}` — risk: medium
 	 */
-	async retrieveMessage(chatId: string, messageId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMessage(chatId: string, messageId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/messages/{messageId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getMessage",
 			namespace: "chats",
 			method: "retrieveMessage",
 			http: "get",
-			path: `/chats/${chatId}/messages/${messageId}`,
+			path: `/chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMessage"],
@@ -994,7 +992,7 @@ A conversation must already exist: this returns `404` for an address the organiz
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/messages/{messageId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1002,13 +1000,13 @@ A conversation must already exist: this returns `404` for an address the organiz
 	 *
 	 * `GET /chats/{chatId}/messages/{messageId}/status` — risk: medium
 	 */
-	async status(chatId: string, messageId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async status(chatId: string, messageId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/messages/{messageId}/status"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getMessageStatus",
 			namespace: "chats",
 			method: "status",
 			http: "get",
-			path: `/chats/${chatId}/messages/${messageId}/status`,
+			path: `/chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}/status`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["status"],
@@ -1016,7 +1014,7 @@ A conversation must already exist: this returns `404` for an address the organiz
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/messages/{messageId}/status"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1026,13 +1024,13 @@ The messageId can be an explicit messa
 	 *
 	 * `POST /chats/{chatId}/messages/{messageId}/reactions` — risk: medium
 	 */
-	async reactions(chatId: string, messageId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async reactions(chatId: string, messageId: string, body?: NonNullable<paths["/chats/{chatId}/messages/{messageId}/reactions"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/messages/{messageId}/reactions"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "addReaction",
 			namespace: "chats",
 			method: "reactions",
 			http: "post",
-			path: `/chats/${chatId}/messages/${messageId}/reactions`,
+			path: `/chats/${encodeURIComponent(chatId)}/messages/${encodeURIComponent(messageId)}/reactions`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["reactions"],
@@ -1040,7 +1038,7 @@ The messageId can be an explicit messa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/messages/{messageId}/reactions"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1048,13 +1046,13 @@ The messageId can be an explicit messa
 	 *
 	 * `POST /chats/{chatId}/polls` — risk: medium
 	 */
-	async createPoll(chatId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createPoll(chatId: string, body?: NonNullable<paths["/chats/{chatId}/polls"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/polls"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "sendPoll",
 			namespace: "chats",
 			method: "createPoll",
 			http: "post",
-			path: `/chats/${chatId}/polls`,
+			path: `/chats/${encodeURIComponent(chatId)}/polls`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createPoll"],
@@ -1062,7 +1060,7 @@ The messageId can be an explicit messa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/polls"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1070,13 +1068,13 @@ The messageId can be an explicit messa
 	 *
 	 * `GET /chats/{chatId}/polls/{pollId}` — risk: medium
 	 */
-	async retrievePoll(chatId: string, pollId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrievePoll(chatId: string, pollId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/polls/{pollId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getPollResults",
 			namespace: "chats",
 			method: "retrievePoll",
 			http: "get",
-			path: `/chats/${chatId}/polls/${pollId}`,
+			path: `/chats/${encodeURIComponent(chatId)}/polls/${encodeURIComponent(pollId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePoll"],
@@ -1084,7 +1082,7 @@ The messageId can be an explicit messa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/polls/{pollId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1092,13 +1090,13 @@ The messageId can be an explicit messa
 	 *
 	 * `POST /chats/{chatId}/typing` — risk: medium
 	 */
-	async createTyping(chatId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTyping(chatId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/typing"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "startTyping",
 			namespace: "chats",
 			method: "createTyping",
 			http: "post",
-			path: `/chats/${chatId}/typing`,
+			path: `/chats/${encodeURIComponent(chatId)}/typing`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createTyping"],
@@ -1106,7 +1104,7 @@ The messageId can be an explicit messa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/typing"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1116,13 +1114,13 @@ The messageId can be an explicit messa
 	 *
 	 * `DELETE /chats/{chatId}/typing` — risk: medium
 	 */
-	async typing(chatId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async typing(chatId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/typing"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "stopTyping",
 			namespace: "chats",
 			method: "typing",
 			http: "delete",
-			path: `/chats/${chatId}/typing`,
+			path: `/chats/${encodeURIComponent(chatId)}/typing`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["typing"],
@@ -1130,7 +1128,7 @@ The messageId can be an explicit messa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/typing"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1138,13 +1136,13 @@ The messageId can be an explicit messa
 	 *
 	 * `POST /chats/{chatId}/read` — risk: medium
 	 */
-	async createRead(chatId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createRead(chatId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/read"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "markChatRead",
 			namespace: "chats",
 			method: "createRead",
 			http: "post",
-			path: `/chats/${chatId}/read`,
+			path: `/chats/${encodeURIComponent(chatId)}/read`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createRead"],
@@ -1152,7 +1150,7 @@ The messageId can be an explicit messa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/read"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1160,13 +1158,13 @@ The messageId can be an explicit messa
 	 *
 	 * `POST /chats/{chatId}/contact-card` — risk: medium
 	 */
-	async createContactCard(chatId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createContactCard(chatId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/contact-card"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "shareContactCard",
 			namespace: "chats",
 			method: "createContactCard",
 			http: "post",
-			path: `/chats/${chatId}/contact-card`,
+			path: `/chats/${encodeURIComponent(chatId)}/contact-card`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createContactCard"],
@@ -1174,7 +1172,7 @@ The messageId can be an explicit messa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/contact-card"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1182,13 +1180,13 @@ The messageId can be an explicit messa
 	 *
 	 * `GET /chats/{chatId}/background` — risk: medium
 	 */
-	async listBackground(chatId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listBackground(chatId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/background"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getChatBackground",
 			namespace: "chats",
 			method: "listBackground",
 			http: "get",
-			path: `/chats/${chatId}/background`,
+			path: `/chats/${encodeURIComponent(chatId)}/background`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listBackground"],
@@ -1196,7 +1194,7 @@ The messageId can be an explicit messa
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/background"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1206,13 +1204,13 @@ The request body must be `multipart/form-data` with a single `background` field 
 	 *
 	 * `PUT /chats/{chatId}/background` — risk: medium
 	 */
-	async background_0(chatId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async background_0(chatId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/background"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "setChatBackground",
 			namespace: "chats",
 			method: "background_0",
 			http: "put",
-			path: `/chats/${chatId}/background`,
+			path: `/chats/${encodeURIComponent(chatId)}/background`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["background_0"],
@@ -1220,7 +1218,7 @@ The request body must be `multipart/form-data` with a single `background` field 
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/background"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1228,13 +1226,13 @@ The request body must be `multipart/form-data` with a single `background` field 
 	 *
 	 * `DELETE /chats/{chatId}/background` — risk: medium
 	 */
-	async background_1(chatId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async background_1(chatId: string, options?: CallOptions): Promise<ProofResult<paths["/chats/{chatId}/background"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "removeChatBackground",
 			namespace: "chats",
 			method: "background_1",
 			http: "delete",
-			path: `/chats/${chatId}/background`,
+			path: `/chats/${encodeURIComponent(chatId)}/background`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["background_1"],
@@ -1242,13 +1240,13 @@ The request body must be `multipart/form-data` with a single `background` field 
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chats/{chatId}/background"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class PhoneNumbersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1260,8 +1258,8 @@ export class PhoneNumbersResource extends RpcTarget {
 	 *
 	 * `GET /phone-numbers/lookup` — risk: medium
 	 */
-	async listLookup(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listLookup(options?: QueryCallOptions<NonNullable<paths["/phone-numbers/lookup"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/phone-numbers/lookup"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "lookupPhoneNumber",
 			namespace: "phone-numbers",
 			method: "listLookup",
@@ -1274,7 +1272,7 @@ export class PhoneNumbersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/phone-numbers/lookup"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1284,8 +1282,8 @@ export class PhoneNumbersResource extends RpcTarget {
 	 *
 	 * `POST /phone-numbers/lookup` — risk: medium
 	 */
-	async createLookup(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createLookup(body?: NonNullable<paths["/phone-numbers/lookup"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/phone-numbers/lookup"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "lookupPhoneNumberPost",
 			namespace: "phone-numbers",
 			method: "createLookup",
@@ -1298,7 +1296,7 @@ export class PhoneNumbersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/phone-numbers/lookup"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1308,8 +1306,8 @@ export class PhoneNumbersResource extends RpcTarget {
 	 *
 	 * `POST /phone-numbers/batch` — risk: medium
 	 */
-	async createBatch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createBatch(body?: NonNullable<paths["/phone-numbers/batch"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/phone-numbers/batch"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "batchLookupPhoneNumbers",
 			namespace: "phone-numbers",
 			method: "createBatch",
@@ -1322,13 +1320,13 @@ export class PhoneNumbersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/phone-numbers/batch"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AnalyticsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1340,8 +1338,8 @@ export class AnalyticsResource extends RpcTarget {
 	 *
 	 * `GET /analytics/risk-tolerance` — risk: medium
 	 */
-	async listRiskTolerance(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listRiskTolerance(options?: CallOptions): Promise<ProofResult<paths["/analytics/risk-tolerance"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getRiskTolerance",
 			namespace: "analytics",
 			method: "listRiskTolerance",
@@ -1354,7 +1352,7 @@ export class AnalyticsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/analytics/risk-tolerance"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1362,8 +1360,8 @@ export class AnalyticsResource extends RpcTarget {
 	 *
 	 * `GET /analytics/risk-tolerance/summary` — risk: medium
 	 */
-	async summary(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async summary(options?: CallOptions): Promise<ProofResult<paths["/analytics/risk-tolerance/summary"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getRiskSummary",
 			namespace: "analytics",
 			method: "summary",
@@ -1376,7 +1374,7 @@ export class AnalyticsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/analytics/risk-tolerance/summary"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1384,13 +1382,13 @@ export class AnalyticsResource extends RpcTarget {
 	 *
 	 * `GET /analytics/risk-tolerance/{number}` — risk: medium
 	 */
-	async retrieveRiskTolerance(number: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveRiskTolerance(number: string, options?: CallOptions): Promise<ProofResult<paths["/analytics/risk-tolerance/{number}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "getNumberRiskTolerance",
 			namespace: "analytics",
 			method: "retrieveRiskTolerance",
 			http: "get",
-			path: `/analytics/risk-tolerance/${number}`,
+			path: `/analytics/risk-tolerance/${encodeURIComponent(number)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveRiskTolerance"],
@@ -1398,51 +1396,56 @@ export class AnalyticsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/analytics/risk-tolerance/{number}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 interface Env {
 	BLOOIO_API_KEY?: string;
+	BLOOIO_USER_ID?: string;
 }
 
 export class BlooioCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
 	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
+	protected providerCredentials(): import("./runtime.ts").Credentials {
+		return { apiKey: this.env.BLOOIO_API_KEY, username: this.env.BLOOIO_USER_ID };
+	}
+
 	get me(): MeResource {
-		return new MeResource(this.env.BLOOIO_API_KEY, this.overrides["me"] || {}, this.runtimeConfig);
+		return new MeResource(this.providerCredentials(), this.overrides["me"] || {}, this.runtimeConfig);
 	}
 
 	get contacts(): ContactsResource {
-		return new ContactsResource(this.env.BLOOIO_API_KEY, this.overrides["contacts"] || {}, this.runtimeConfig);
+		return new ContactsResource(this.providerCredentials(), this.overrides["contacts"] || {}, this.runtimeConfig);
 	}
 
 	get location(): LocationResource {
-		return new LocationResource(this.env.BLOOIO_API_KEY, this.overrides["location"] || {}, this.runtimeConfig);
+		return new LocationResource(this.providerCredentials(), this.overrides["location"] || {}, this.runtimeConfig);
 	}
 
 	get facetime(): FacetimeResource {
-		return new FacetimeResource(this.env.BLOOIO_API_KEY, this.overrides["facetime"] || {}, this.runtimeConfig);
+		return new FacetimeResource(this.providerCredentials(), this.overrides["facetime"] || {}, this.runtimeConfig);
 	}
 
 	get groups(): GroupsResource {
-		return new GroupsResource(this.env.BLOOIO_API_KEY, this.overrides["groups"] || {}, this.runtimeConfig);
+		return new GroupsResource(this.providerCredentials(), this.overrides["groups"] || {}, this.runtimeConfig);
 	}
 
 	get webhooks(): WebhooksResource {
-		return new WebhooksResource(this.env.BLOOIO_API_KEY, this.overrides["webhooks"] || {}, this.runtimeConfig);
+		return new WebhooksResource(this.providerCredentials(), this.overrides["webhooks"] || {}, this.runtimeConfig);
 	}
 
 	get chats(): ChatsResource {
-		return new ChatsResource(this.env.BLOOIO_API_KEY, this.overrides["chats"] || {}, this.runtimeConfig);
+		return new ChatsResource(this.providerCredentials(), this.overrides["chats"] || {}, this.runtimeConfig);
 	}
 
 	get phoneNumbers(): PhoneNumbersResource {
-		return new PhoneNumbersResource(this.env.BLOOIO_API_KEY, this.overrides["phone-numbers"] || {}, this.runtimeConfig);
+		return new PhoneNumbersResource(this.providerCredentials(), this.overrides["phone-numbers"] || {}, this.runtimeConfig);
 	}
 
 	get analytics(): AnalyticsResource {
-		return new AnalyticsResource(this.env.BLOOIO_API_KEY, this.overrides["analytics"] || {}, this.runtimeConfig);
+		return new AnalyticsResource(this.providerCredentials(), this.overrides["analytics"] || {}, this.runtimeConfig);
 	}
 }

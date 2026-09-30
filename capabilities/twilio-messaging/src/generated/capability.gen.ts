@@ -3,12 +3,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 
 export class ServicesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20,13 +20,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{ServiceSid}/AlphaSenders` — risk: medium
 	 */
-	async listAlphaSenders(ServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAlphaSenders(ServiceSid: string, options?: QueryCallOptions<NonNullable<paths["/v1/Services/{ServiceSid}/AlphaSenders"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/AlphaSenders"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAlphaSender",
 			namespace: "Services",
 			method: "listAlphaSenders",
 			http: "get",
-			path: `/v1/Services/${ServiceSid}/AlphaSenders`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/AlphaSenders`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAlphaSenders"],
@@ -34,7 +34,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/AlphaSenders"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -42,13 +42,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services/{ServiceSid}/AlphaSenders` — risk: medium
 	 */
-	async createAlphaSender(ServiceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createAlphaSender(ServiceSid: string, body?: NonNullable<paths["/v1/Services/{ServiceSid}/AlphaSenders"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/AlphaSenders"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateAlphaSender",
 			namespace: "Services",
 			method: "createAlphaSender",
 			http: "post",
-			path: `/v1/Services/${ServiceSid}/AlphaSenders`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/AlphaSenders`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createAlphaSender"],
@@ -56,7 +56,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/AlphaSenders"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -64,13 +64,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{ServiceSid}/AlphaSenders/{Sid}` — risk: medium
 	 */
-	async retrieveAlphaSender(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveAlphaSender(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/AlphaSenders/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchAlphaSender",
 			namespace: "Services",
 			method: "retrieveAlphaSender",
 			http: "get",
-			path: `/v1/Services/${ServiceSid}/AlphaSenders/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/AlphaSenders/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAlphaSender"],
@@ -78,7 +78,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/AlphaSenders/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -86,13 +86,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/Services/{ServiceSid}/AlphaSenders/{Sid}` — risk: medium
 	 */
-	async deleteAlphaSender(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteAlphaSender(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteAlphaSender",
 			namespace: "Services",
 			method: "deleteAlphaSender",
 			http: "delete",
-			path: `/v1/Services/${ServiceSid}/AlphaSenders/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/AlphaSenders/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteAlphaSender"],
@@ -100,7 +100,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -108,13 +108,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{MessagingServiceSid}/ChannelSenders` — risk: medium
 	 */
-	async listChannelSenders(MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listChannelSenders(MessagingServiceSid: string, options?: QueryCallOptions<NonNullable<paths["/v1/Services/{MessagingServiceSid}/ChannelSenders"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/ChannelSenders"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListChannelSender",
 			namespace: "Services",
 			method: "listChannelSenders",
 			http: "get",
-			path: `/v1/Services/${MessagingServiceSid}/ChannelSenders`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/ChannelSenders`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listChannelSenders"],
@@ -122,7 +122,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/ChannelSenders"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -130,13 +130,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services/{MessagingServiceSid}/ChannelSenders` — risk: medium
 	 */
-	async createChannelSender(MessagingServiceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createChannelSender(MessagingServiceSid: string, body?: NonNullable<paths["/v1/Services/{MessagingServiceSid}/ChannelSenders"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/ChannelSenders"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateChannelSender",
 			namespace: "Services",
 			method: "createChannelSender",
 			http: "post",
-			path: `/v1/Services/${MessagingServiceSid}/ChannelSenders`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/ChannelSenders`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createChannelSender"],
@@ -144,7 +144,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/ChannelSenders"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -152,13 +152,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{MessagingServiceSid}/ChannelSenders/{Sid}` — risk: medium
 	 */
-	async retrieveChannelSender(MessagingServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveChannelSender(MessagingServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/ChannelSenders/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchChannelSender",
 			namespace: "Services",
 			method: "retrieveChannelSender",
 			http: "get",
-			path: `/v1/Services/${MessagingServiceSid}/ChannelSenders/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/ChannelSenders/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveChannelSender"],
@@ -166,7 +166,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/ChannelSenders/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -174,13 +174,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/Services/{MessagingServiceSid}/ChannelSenders/{Sid}` — risk: medium
 	 */
-	async deleteChannelSender(MessagingServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteChannelSender(MessagingServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteChannelSender",
 			namespace: "Services",
 			method: "deleteChannelSender",
 			http: "delete",
-			path: `/v1/Services/${MessagingServiceSid}/ChannelSenders/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/ChannelSenders/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteChannelSender"],
@@ -188,7 +188,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -196,13 +196,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{ServiceSid}/DestinationAlphaSenders` — risk: medium
 	 */
-	async listDestinationAlphaSenders(ServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listDestinationAlphaSenders(ServiceSid: string, options?: QueryCallOptions<NonNullable<paths["/v1/Services/{ServiceSid}/DestinationAlphaSenders"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/DestinationAlphaSenders"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListDestinationAlphaSender",
 			namespace: "Services",
 			method: "listDestinationAlphaSenders",
 			http: "get",
-			path: `/v1/Services/${ServiceSid}/DestinationAlphaSenders`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/DestinationAlphaSenders`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listDestinationAlphaSenders"],
@@ -210,7 +210,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/DestinationAlphaSenders"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -218,13 +218,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services/{ServiceSid}/DestinationAlphaSenders` — risk: medium
 	 */
-	async createDestinationAlphaSender(ServiceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createDestinationAlphaSender(ServiceSid: string, body?: NonNullable<paths["/v1/Services/{ServiceSid}/DestinationAlphaSenders"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/DestinationAlphaSenders"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateDestinationAlphaSender",
 			namespace: "Services",
 			method: "createDestinationAlphaSender",
 			http: "post",
-			path: `/v1/Services/${ServiceSid}/DestinationAlphaSenders`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/DestinationAlphaSenders`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createDestinationAlphaSender"],
@@ -232,7 +232,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/DestinationAlphaSenders"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -240,13 +240,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{ServiceSid}/DestinationAlphaSenders/{Sid}` — risk: medium
 	 */
-	async retrieveDestinationAlphaSender(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveDestinationAlphaSender(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/DestinationAlphaSenders/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchDestinationAlphaSender",
 			namespace: "Services",
 			method: "retrieveDestinationAlphaSender",
 			http: "get",
-			path: `/v1/Services/${ServiceSid}/DestinationAlphaSenders/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/DestinationAlphaSenders/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDestinationAlphaSender"],
@@ -254,7 +254,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/DestinationAlphaSenders/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -262,13 +262,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/Services/{ServiceSid}/DestinationAlphaSenders/{Sid}` — risk: medium
 	 */
-	async deleteDestinationAlphaSender(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteDestinationAlphaSender(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteDestinationAlphaSender",
 			namespace: "Services",
 			method: "deleteDestinationAlphaSender",
 			http: "delete",
-			path: `/v1/Services/${ServiceSid}/DestinationAlphaSenders/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/DestinationAlphaSenders/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDestinationAlphaSender"],
@@ -276,7 +276,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -284,8 +284,8 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services/PreregisteredUsa2p` — risk: medium
 	 */
-	async createPreregisteredUsa2p(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createPreregisteredUsa2p(body?: NonNullable<paths["/v1/Services/PreregisteredUsa2p"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services/PreregisteredUsa2p"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateExternalCampaign",
 			namespace: "Services",
 			method: "createPreregisteredUsa2p",
@@ -298,7 +298,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/PreregisteredUsa2p"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -306,13 +306,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{ServiceSid}/PhoneNumbers` — risk: medium
 	 */
-	async listPhoneNumbers(ServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listPhoneNumbers(ServiceSid: string, options?: QueryCallOptions<NonNullable<paths["/v1/Services/{ServiceSid}/PhoneNumbers"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/PhoneNumbers"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListPhoneNumber",
 			namespace: "Services",
 			method: "listPhoneNumbers",
 			http: "get",
-			path: `/v1/Services/${ServiceSid}/PhoneNumbers`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/PhoneNumbers`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPhoneNumbers"],
@@ -320,7 +320,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/PhoneNumbers"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -328,13 +328,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services/{ServiceSid}/PhoneNumbers` — risk: medium
 	 */
-	async createPhoneNumber(ServiceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createPhoneNumber(ServiceSid: string, body?: NonNullable<paths["/v1/Services/{ServiceSid}/PhoneNumbers"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/PhoneNumbers"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreatePhoneNumber",
 			namespace: "Services",
 			method: "createPhoneNumber",
 			http: "post",
-			path: `/v1/Services/${ServiceSid}/PhoneNumbers`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/PhoneNumbers`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createPhoneNumber"],
@@ -342,7 +342,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/PhoneNumbers"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -350,13 +350,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{ServiceSid}/PhoneNumbers/{Sid}` — risk: medium
 	 */
-	async retrievePhoneNumber(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrievePhoneNumber(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/PhoneNumbers/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchPhoneNumber",
 			namespace: "Services",
 			method: "retrievePhoneNumber",
 			http: "get",
-			path: `/v1/Services/${ServiceSid}/PhoneNumbers/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/PhoneNumbers/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePhoneNumber"],
@@ -364,7 +364,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/PhoneNumbers/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -372,13 +372,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/Services/{ServiceSid}/PhoneNumbers/{Sid}` — risk: medium
 	 */
-	async deletePhoneNumber(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deletePhoneNumber(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeletePhoneNumber",
 			namespace: "Services",
 			method: "deletePhoneNumber",
 			http: "delete",
-			path: `/v1/Services/${ServiceSid}/PhoneNumbers/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/PhoneNumbers/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deletePhoneNumber"],
@@ -386,7 +386,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -394,8 +394,8 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/v1/Services"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/Services"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListService",
 			namespace: "Services",
 			method: "list",
@@ -408,7 +408,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -416,8 +416,8 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/v1/Services"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateService",
 			namespace: "Services",
 			method: "create",
@@ -430,7 +430,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -438,13 +438,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{Sid}` — risk: low
 	 */
-	async retrieve(Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchService",
 			namespace: "Services",
 			method: "retrieve",
 			http: "get",
-			path: `/v1/Services/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(Sid)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -452,7 +452,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -460,13 +460,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services/{Sid}` — risk: medium
 	 */
-	async update(Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(Sid: string, body?: NonNullable<paths["/v1/Services/{Sid}"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{Sid}"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateService",
 			namespace: "Services",
 			method: "update",
 			http: "post",
-			path: `/v1/Services/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -474,7 +474,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{Sid}"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -482,13 +482,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/Services/{Sid}` — risk: medium
 	 */
-	async del(Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteService",
 			namespace: "Services",
 			method: "del",
 			http: "delete",
-			path: `/v1/Services/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -496,7 +496,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -504,13 +504,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{ServiceSid}/ShortCodes` — risk: medium
 	 */
-	async listShortCodes(ServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listShortCodes(ServiceSid: string, options?: QueryCallOptions<NonNullable<paths["/v1/Services/{ServiceSid}/ShortCodes"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/ShortCodes"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListShortCode",
 			namespace: "Services",
 			method: "listShortCodes",
 			http: "get",
-			path: `/v1/Services/${ServiceSid}/ShortCodes`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/ShortCodes`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listShortCodes"],
@@ -518,7 +518,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/ShortCodes"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -526,13 +526,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services/{ServiceSid}/ShortCodes` — risk: medium
 	 */
-	async createShortCode(ServiceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createShortCode(ServiceSid: string, body?: NonNullable<paths["/v1/Services/{ServiceSid}/ShortCodes"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/ShortCodes"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateShortCode",
 			namespace: "Services",
 			method: "createShortCode",
 			http: "post",
-			path: `/v1/Services/${ServiceSid}/ShortCodes`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/ShortCodes`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createShortCode"],
@@ -540,7 +540,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/ShortCodes"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -548,13 +548,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{ServiceSid}/ShortCodes/{Sid}` — risk: medium
 	 */
-	async retrieveShortCode(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveShortCode(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{ServiceSid}/ShortCodes/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchShortCode",
 			namespace: "Services",
 			method: "retrieveShortCode",
 			http: "get",
-			path: `/v1/Services/${ServiceSid}/ShortCodes/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/ShortCodes/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveShortCode"],
@@ -562,7 +562,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{ServiceSid}/ShortCodes/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -570,13 +570,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/Services/{ServiceSid}/ShortCodes/{Sid}` — risk: medium
 	 */
-	async deleteShortCode(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteShortCode(ServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteShortCode",
 			namespace: "Services",
 			method: "deleteShortCode",
 			http: "delete",
-			path: `/v1/Services/${ServiceSid}/ShortCodes/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(ServiceSid)}/ShortCodes/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteShortCode"],
@@ -584,7 +584,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -592,13 +592,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{MessagingServiceSid}/Compliance/Usa2p` — risk: medium
 	 */
-	async Usa2p_0(MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Usa2p_0(MessagingServiceSid: string, options?: QueryCallOptions<NonNullable<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsAppToPerson",
 			namespace: "Services",
 			method: "Usa2p_0",
 			http: "get",
-			path: `/v1/Services/${MessagingServiceSid}/Compliance/Usa2p`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/Compliance/Usa2p`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Usa2p_0"],
@@ -606,7 +606,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -614,13 +614,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services/{MessagingServiceSid}/Compliance/Usa2p` — risk: medium
 	 */
-	async Usa2p_1(MessagingServiceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Usa2p_1(MessagingServiceSid: string, body?: NonNullable<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateUsAppToPerson",
 			namespace: "Services",
 			method: "Usa2p_1",
 			http: "post",
-			path: `/v1/Services/${MessagingServiceSid}/Compliance/Usa2p`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/Compliance/Usa2p`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["Usa2p_1"],
@@ -628,7 +628,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -636,13 +636,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{MessagingServiceSid}/Compliance/Usa2p/{Sid}` — risk: medium
 	 */
-	async retrieveUsa2p(MessagingServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveUsa2p(MessagingServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchUsAppToPerson",
 			namespace: "Services",
 			method: "retrieveUsa2p",
 			http: "get",
-			path: `/v1/Services/${MessagingServiceSid}/Compliance/Usa2p/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/Compliance/Usa2p/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveUsa2p"],
@@ -650,7 +650,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -658,13 +658,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `POST /v1/Services/{MessagingServiceSid}/Compliance/Usa2p/{Sid}` — risk: medium
 	 */
-	async updateUsa2p(MessagingServiceSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateUsa2p(MessagingServiceSid: string, Sid: string, body?: NonNullable<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p/{Sid}"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p/{Sid}"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateUsAppToPerson",
 			namespace: "Services",
 			method: "updateUsa2p",
 			http: "post",
-			path: `/v1/Services/${MessagingServiceSid}/Compliance/Usa2p/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/Compliance/Usa2p/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateUsa2p"],
@@ -672,7 +672,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p/{Sid}"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -680,13 +680,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/Services/{MessagingServiceSid}/Compliance/Usa2p/{Sid}` — risk: medium
 	 */
-	async deleteUsa2p(MessagingServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteUsa2p(MessagingServiceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteUsAppToPerson",
 			namespace: "Services",
 			method: "deleteUsa2p",
 			http: "delete",
-			path: `/v1/Services/${MessagingServiceSid}/Compliance/Usa2p/${Sid}`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/Compliance/Usa2p/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUsa2p"],
@@ -694,7 +694,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -702,13 +702,13 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/{MessagingServiceSid}/Compliance/Usa2p/Usecases` — risk: medium
 	 */
-	async Usecases(MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Usecases(MessagingServiceSid: string, options?: QueryCallOptions<NonNullable<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p/Usecases"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p/Usecases"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchUsAppToPersonUsecase",
 			namespace: "Services",
 			method: "Usecases",
 			http: "get",
-			path: `/v1/Services/${MessagingServiceSid}/Compliance/Usa2p/Usecases`,
+			path: `/v1/Services/${encodeURIComponent(MessagingServiceSid)}/Compliance/Usa2p/Usecases`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Usecases"],
@@ -716,7 +716,7 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/{MessagingServiceSid}/Compliance/Usa2p/Usecases"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -724,8 +724,8 @@ export class ServicesResource extends RpcTarget {
 	 *
 	 * `GET /v1/Services/Usecases` — risk: medium
 	 */
-	async listUsecases(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listUsecases(options?: CallOptions): Promise<ProofResult<paths["/v1/Services/Usecases"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchUsecase",
 			namespace: "Services",
 			method: "listUsecases",
@@ -738,13 +738,13 @@ export class ServicesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Services/Usecases"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class A2pResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -756,13 +756,13 @@ export class A2pResource extends RpcTarget {
 	 *
 	 * `POST /v1/a2p/BrandRegistrations/{BrandRegistrationSid}/SmsOtp` — risk: medium
 	 */
-	async SmsOtp(BrandRegistrationSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async SmsOtp(BrandRegistrationSid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{BrandRegistrationSid}/SmsOtp"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateBrandRegistrationOtp",
 			namespace: "a2p",
 			method: "SmsOtp",
 			http: "post",
-			path: `/v1/a2p/BrandRegistrations/${BrandRegistrationSid}/SmsOtp`,
+			path: `/v1/a2p/BrandRegistrations/${encodeURIComponent(BrandRegistrationSid)}/SmsOtp`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["SmsOtp"],
@@ -770,7 +770,7 @@ export class A2pResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{BrandRegistrationSid}/SmsOtp"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -778,13 +778,13 @@ export class A2pResource extends RpcTarget {
 	 *
 	 * `GET /v1/a2p/BrandRegistrations/{Sid}` — risk: medium
 	 */
-	async retrieveBrandRegistration(Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveBrandRegistration(Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchBrandRegistrations",
 			namespace: "a2p",
 			method: "retrieveBrandRegistration",
 			http: "get",
-			path: `/v1/a2p/BrandRegistrations/${Sid}`,
+			path: `/v1/a2p/BrandRegistrations/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveBrandRegistration"],
@@ -792,7 +792,7 @@ export class A2pResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -800,13 +800,13 @@ export class A2pResource extends RpcTarget {
 	 *
 	 * `POST /v1/a2p/BrandRegistrations/{Sid}` — risk: medium
 	 */
-	async updateBrandRegistration(Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateBrandRegistration(Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{Sid}"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateBrandRegistrations",
 			namespace: "a2p",
 			method: "updateBrandRegistration",
 			http: "post",
-			path: `/v1/a2p/BrandRegistrations/${Sid}`,
+			path: `/v1/a2p/BrandRegistrations/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["updateBrandRegistration"],
@@ -814,7 +814,7 @@ export class A2pResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{Sid}"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -822,8 +822,8 @@ export class A2pResource extends RpcTarget {
 	 *
 	 * `GET /v1/a2p/BrandRegistrations` — risk: medium
 	 */
-	async listBrandRegistrations(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listBrandRegistrations(options?: QueryCallOptions<NonNullable<paths["/v1/a2p/BrandRegistrations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/a2p/BrandRegistrations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListBrandRegistrations",
 			namespace: "a2p",
 			method: "listBrandRegistrations",
@@ -836,7 +836,7 @@ export class A2pResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/a2p/BrandRegistrations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -844,8 +844,8 @@ export class A2pResource extends RpcTarget {
 	 *
 	 * `POST /v1/a2p/BrandRegistrations` — risk: medium
 	 */
-	async createBrandRegistration(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createBrandRegistration(body?: NonNullable<paths["/v1/a2p/BrandRegistrations"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/a2p/BrandRegistrations"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateBrandRegistrations",
 			namespace: "a2p",
 			method: "createBrandRegistration",
@@ -858,7 +858,7 @@ export class A2pResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/a2p/BrandRegistrations"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -866,13 +866,13 @@ export class A2pResource extends RpcTarget {
 	 *
 	 * `GET /v1/a2p/BrandRegistrations/{BrandSid}/Vettings` — risk: medium
 	 */
-	async Vettings_0(BrandSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Vettings_0(BrandSid: string, options?: QueryCallOptions<NonNullable<paths["/v1/a2p/BrandRegistrations/{BrandSid}/Vettings"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{BrandSid}/Vettings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListBrandVetting",
 			namespace: "a2p",
 			method: "Vettings_0",
 			http: "get",
-			path: `/v1/a2p/BrandRegistrations/${BrandSid}/Vettings`,
+			path: `/v1/a2p/BrandRegistrations/${encodeURIComponent(BrandSid)}/Vettings`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Vettings_0"],
@@ -880,7 +880,7 @@ export class A2pResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{BrandSid}/Vettings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -888,13 +888,13 @@ export class A2pResource extends RpcTarget {
 	 *
 	 * `POST /v1/a2p/BrandRegistrations/{BrandSid}/Vettings` — risk: medium
 	 */
-	async Vettings_1(BrandSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Vettings_1(BrandSid: string, body?: NonNullable<paths["/v1/a2p/BrandRegistrations/{BrandSid}/Vettings"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{BrandSid}/Vettings"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateBrandVetting",
 			namespace: "a2p",
 			method: "Vettings_1",
 			http: "post",
-			path: `/v1/a2p/BrandRegistrations/${BrandSid}/Vettings`,
+			path: `/v1/a2p/BrandRegistrations/${encodeURIComponent(BrandSid)}/Vettings`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["Vettings_1"],
@@ -902,7 +902,7 @@ export class A2pResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{BrandSid}/Vettings"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -910,13 +910,13 @@ export class A2pResource extends RpcTarget {
 	 *
 	 * `GET /v1/a2p/BrandRegistrations/{BrandSid}/Vettings/{BrandVettingSid}` — risk: medium
 	 */
-	async retrieveVetting(BrandSid: string, BrandVettingSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveVetting(BrandSid: string, BrandVettingSid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{BrandSid}/Vettings/{BrandVettingSid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchBrandVetting",
 			namespace: "a2p",
 			method: "retrieveVetting",
 			http: "get",
-			path: `/v1/a2p/BrandRegistrations/${BrandSid}/Vettings/${BrandVettingSid}`,
+			path: `/v1/a2p/BrandRegistrations/${encodeURIComponent(BrandSid)}/Vettings/${encodeURIComponent(BrandVettingSid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveVetting"],
@@ -924,13 +924,13 @@ export class A2pResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/a2p/BrandRegistrations/{BrandSid}/Vettings/{BrandVettingSid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class DeactivationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -942,8 +942,8 @@ export class DeactivationsResource extends RpcTarget {
 	 *
 	 * `GET /v1/Deactivations` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/v1/Deactivations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<unknown>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchDeactivation",
 			namespace: "Deactivations",
 			method: "list",
@@ -956,13 +956,13 @@ export class DeactivationsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<unknown>>;
 	}
 }
 
 export class LinkShorteningResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -974,13 +974,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `GET /v1/LinkShortening/Domains/{DomainSid}/Certificate` — risk: medium
 	 */
-	async Certificate_0(DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Certificate_0(DomainSid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/Certificate"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchDomainCertV4",
 			namespace: "LinkShortening",
 			method: "Certificate_0",
 			http: "get",
-			path: `/v1/LinkShortening/Domains/${DomainSid}/Certificate`,
+			path: `/v1/LinkShortening/Domains/${encodeURIComponent(DomainSid)}/Certificate`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Certificate_0"],
@@ -988,7 +988,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/Certificate"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -996,13 +996,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `POST /v1/LinkShortening/Domains/{DomainSid}/Certificate` — risk: medium
 	 */
-	async Certificate_1(DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Certificate_1(DomainSid: string, body?: NonNullable<paths["/v1/LinkShortening/Domains/{DomainSid}/Certificate"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/Certificate"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateDomainCertV4",
 			namespace: "LinkShortening",
 			method: "Certificate_1",
 			http: "post",
-			path: `/v1/LinkShortening/Domains/${DomainSid}/Certificate`,
+			path: `/v1/LinkShortening/Domains/${encodeURIComponent(DomainSid)}/Certificate`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["Certificate_1"],
@@ -1010,7 +1010,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/Certificate"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1018,13 +1018,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/LinkShortening/Domains/{DomainSid}/Certificate` — risk: medium
 	 */
-	async Certificate_2(DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Certificate_2(DomainSid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteDomainCertV4",
 			namespace: "LinkShortening",
 			method: "Certificate_2",
 			http: "delete",
-			path: `/v1/LinkShortening/Domains/${DomainSid}/Certificate`,
+			path: `/v1/LinkShortening/Domains/${encodeURIComponent(DomainSid)}/Certificate`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Certificate_2"],
@@ -1032,7 +1032,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1040,13 +1040,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `GET /v1/LinkShortening/Domains/{DomainSid}/Config` — risk: medium
 	 */
-	async Config_0(DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Config_0(DomainSid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/Config"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchDomainConfig",
 			namespace: "LinkShortening",
 			method: "Config_0",
 			http: "get",
-			path: `/v1/LinkShortening/Domains/${DomainSid}/Config`,
+			path: `/v1/LinkShortening/Domains/${encodeURIComponent(DomainSid)}/Config`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Config_0"],
@@ -1054,7 +1054,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/Config"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1062,13 +1062,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `POST /v1/LinkShortening/Domains/{DomainSid}/Config` — risk: medium
 	 */
-	async Config_1(DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Config_1(DomainSid: string, body?: NonNullable<paths["/v1/LinkShortening/Domains/{DomainSid}/Config"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/Config"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateDomainConfig",
 			namespace: "LinkShortening",
 			method: "Config_1",
 			http: "post",
-			path: `/v1/LinkShortening/Domains/${DomainSid}/Config`,
+			path: `/v1/LinkShortening/Domains/${encodeURIComponent(DomainSid)}/Config`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["Config_1"],
@@ -1076,7 +1076,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/Config"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1084,13 +1084,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `GET /v1/LinkShortening/MessagingService/{MessagingServiceSid}/DomainConfig` — risk: medium
 	 */
-	async DomainConfig(MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async DomainConfig(MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/LinkShortening/MessagingService/{MessagingServiceSid}/DomainConfig"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchDomainConfigMessagingService",
 			namespace: "LinkShortening",
 			method: "DomainConfig",
 			http: "get",
-			path: `/v1/LinkShortening/MessagingService/${MessagingServiceSid}/DomainConfig`,
+			path: `/v1/LinkShortening/MessagingService/${encodeURIComponent(MessagingServiceSid)}/DomainConfig`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["DomainConfig"],
@@ -1098,7 +1098,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/LinkShortening/MessagingService/{MessagingServiceSid}/DomainConfig"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1106,13 +1106,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `GET /v1/LinkShortening/Domains/{DomainSid}/ValidateDns` — risk: medium
 	 */
-	async ValidateDns(DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async ValidateDns(DomainSid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/ValidateDns"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchDomainDnsValidation",
 			namespace: "LinkShortening",
 			method: "ValidateDns",
 			http: "get",
-			path: `/v1/LinkShortening/Domains/${DomainSid}/ValidateDns`,
+			path: `/v1/LinkShortening/Domains/${encodeURIComponent(DomainSid)}/ValidateDns`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["ValidateDns"],
@@ -1120,7 +1120,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/ValidateDns"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1128,13 +1128,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `POST /v1/LinkShortening/Domains/{DomainSid}/MessagingServices/{MessagingServiceSid}` — risk: medium
 	 */
-	async updateMessagingService(DomainSid: string, MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateMessagingService(DomainSid: string, MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/MessagingServices/{MessagingServiceSid}"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateLinkshorteningMessagingService",
 			namespace: "LinkShortening",
 			method: "updateMessagingService",
 			http: "post",
-			path: `/v1/LinkShortening/Domains/${DomainSid}/MessagingServices/${MessagingServiceSid}`,
+			path: `/v1/LinkShortening/Domains/${encodeURIComponent(DomainSid)}/MessagingServices/${encodeURIComponent(MessagingServiceSid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["updateMessagingService"],
@@ -1142,7 +1142,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/MessagingServices/{MessagingServiceSid}"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1150,13 +1150,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/LinkShortening/Domains/{DomainSid}/MessagingServices/{MessagingServiceSid}` — risk: medium
 	 */
-	async deleteMessagingService(DomainSid: string, MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMessagingService(DomainSid: string, MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteLinkshorteningMessagingService",
 			namespace: "LinkShortening",
 			method: "deleteMessagingService",
 			http: "delete",
-			path: `/v1/LinkShortening/Domains/${DomainSid}/MessagingServices/${MessagingServiceSid}`,
+			path: `/v1/LinkShortening/Domains/${encodeURIComponent(DomainSid)}/MessagingServices/${encodeURIComponent(MessagingServiceSid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMessagingService"],
@@ -1164,7 +1164,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1172,13 +1172,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `GET /v1/LinkShortening/MessagingServices/{MessagingServiceSid}/Domain` — risk: medium
 	 */
-	async Domain(MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async Domain(MessagingServiceSid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/LinkShortening/MessagingServices/{MessagingServiceSid}/Domain"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchLinkshorteningMessagingServiceDomainAssociation",
 			namespace: "LinkShortening",
 			method: "Domain",
 			http: "get",
-			path: `/v1/LinkShortening/MessagingServices/${MessagingServiceSid}/Domain`,
+			path: `/v1/LinkShortening/MessagingServices/${encodeURIComponent(MessagingServiceSid)}/Domain`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["Domain"],
@@ -1186,7 +1186,7 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/LinkShortening/MessagingServices/{MessagingServiceSid}/Domain"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1194,13 +1194,13 @@ export class LinkShorteningResource extends RpcTarget {
 	 *
 	 * `POST /v1/LinkShortening/Domains/{DomainSid}/RequestManagedCert` — risk: medium
 	 */
-	async RequestManagedCert(DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async RequestManagedCert(DomainSid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/RequestManagedCert"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateRequestManagedCert",
 			namespace: "LinkShortening",
 			method: "RequestManagedCert",
 			http: "post",
-			path: `/v1/LinkShortening/Domains/${DomainSid}/RequestManagedCert`,
+			path: `/v1/LinkShortening/Domains/${encodeURIComponent(DomainSid)}/RequestManagedCert`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["RequestManagedCert"],
@@ -1208,13 +1208,13 @@ export class LinkShorteningResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/LinkShortening/Domains/{DomainSid}/RequestManagedCert"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TollfreeResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1226,13 +1226,13 @@ export class TollfreeResource extends RpcTarget {
 	 *
 	 * `GET /v1/Tollfree/Verifications/{Sid}` — risk: medium
 	 */
-	async retrieveVerification(Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveVerification(Sid: string, options?: CallOptions): Promise<ProofResult<paths["/v1/Tollfree/Verifications/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchTollfreeVerification",
 			namespace: "Tollfree",
 			method: "retrieveVerification",
 			http: "get",
-			path: `/v1/Tollfree/Verifications/${Sid}`,
+			path: `/v1/Tollfree/Verifications/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveVerification"],
@@ -1240,7 +1240,7 @@ export class TollfreeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Tollfree/Verifications/{Sid}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1248,13 +1248,13 @@ export class TollfreeResource extends RpcTarget {
 	 *
 	 * `POST /v1/Tollfree/Verifications/{Sid}` — risk: medium
 	 */
-	async updateVerification(Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateVerification(Sid: string, body?: NonNullable<paths["/v1/Tollfree/Verifications/{Sid}"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Tollfree/Verifications/{Sid}"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateTollfreeVerification",
 			namespace: "Tollfree",
 			method: "updateVerification",
 			http: "post",
-			path: `/v1/Tollfree/Verifications/${Sid}`,
+			path: `/v1/Tollfree/Verifications/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateVerification"],
@@ -1262,7 +1262,7 @@ export class TollfreeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Tollfree/Verifications/{Sid}"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1270,13 +1270,13 @@ export class TollfreeResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/Tollfree/Verifications/{Sid}` — risk: medium
 	 */
-	async deleteVerification(Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteVerification(Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteTollfreeVerification",
 			namespace: "Tollfree",
 			method: "deleteVerification",
 			http: "delete",
-			path: `/v1/Tollfree/Verifications/${Sid}`,
+			path: `/v1/Tollfree/Verifications/${encodeURIComponent(Sid)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteVerification"],
@@ -1284,7 +1284,7 @@ export class TollfreeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1292,8 +1292,8 @@ export class TollfreeResource extends RpcTarget {
 	 *
 	 * `GET /v1/Tollfree/Verifications` — risk: medium
 	 */
-	async listVerifications(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listVerifications(options?: QueryCallOptions<NonNullable<paths["/v1/Tollfree/Verifications"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/Tollfree/Verifications"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListTollfreeVerification",
 			namespace: "Tollfree",
 			method: "listVerifications",
@@ -1306,7 +1306,7 @@ export class TollfreeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Tollfree/Verifications"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1314,8 +1314,8 @@ export class TollfreeResource extends RpcTarget {
 	 *
 	 * `POST /v1/Tollfree/Verifications` — risk: medium
 	 */
-	async createVerification(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createVerification(body?: NonNullable<paths["/v1/Tollfree/Verifications"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/v1/Tollfree/Verifications"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateTollfreeVerification",
 			namespace: "Tollfree",
 			method: "createVerification",
@@ -1328,35 +1328,40 @@ export class TollfreeResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/Tollfree/Verifications"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 interface Env {
 	TWILIO_MESSAGING_API_KEY?: string;
+	TWILIO_MESSAGING_USER_ID?: string;
 }
 
 export class TwilioMessagingCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
 	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
+	protected providerCredentials(): import("./runtime.ts").Credentials {
+		return { apiKey: this.env.TWILIO_MESSAGING_API_KEY, username: this.env.TWILIO_MESSAGING_USER_ID };
+	}
+
 	get Services(): ServicesResource {
-		return new ServicesResource(this.env.TWILIO_MESSAGING_API_KEY, this.overrides["Services"] || {}, this.runtimeConfig);
+		return new ServicesResource(this.providerCredentials(), this.overrides["Services"] || {}, this.runtimeConfig);
 	}
 
 	get a2p(): A2pResource {
-		return new A2pResource(this.env.TWILIO_MESSAGING_API_KEY, this.overrides["a2p"] || {}, this.runtimeConfig);
+		return new A2pResource(this.providerCredentials(), this.overrides["a2p"] || {}, this.runtimeConfig);
 	}
 
 	get Deactivations(): DeactivationsResource {
-		return new DeactivationsResource(this.env.TWILIO_MESSAGING_API_KEY, this.overrides["Deactivations"] || {}, this.runtimeConfig);
+		return new DeactivationsResource(this.providerCredentials(), this.overrides["Deactivations"] || {}, this.runtimeConfig);
 	}
 
 	get LinkShortening(): LinkShorteningResource {
-		return new LinkShorteningResource(this.env.TWILIO_MESSAGING_API_KEY, this.overrides["LinkShortening"] || {}, this.runtimeConfig);
+		return new LinkShorteningResource(this.providerCredentials(), this.overrides["LinkShortening"] || {}, this.runtimeConfig);
 	}
 
 	get Tollfree(): TollfreeResource {
-		return new TollfreeResource(this.env.TWILIO_MESSAGING_API_KEY, this.overrides["Tollfree"] || {}, this.runtimeConfig);
+		return new TollfreeResource(this.providerCredentials(), this.overrides["Tollfree"] || {}, this.runtimeConfig);
 	}
 }

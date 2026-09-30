@@ -510,11 +510,7 @@ export type paths = {
         put?: never;
         /**
          * Create a group
-         * @description Create a new group. There are two modes:
-         *
-         *     **1. Link to existing iMessage chat:** Provide `chat_guid` to join an existing group chat that was created outside the API. The `members` list records who is in the group but does NOT add them to the linked iMessage chat. Multiple groups can have the same participants if they have different `chat_guid`s.
-         *
-         *     **2. Create new group:** Omit `chat_guid` to create a new group. When you send the first message, a new iMessage chat will be created. Note: iMessage only allows one chat per unique participant set when created via API.
+         * @description Create a new group. No iMessage conversation exists yet: the first message you send to the group opens it.
          */
         post: operations["createGroup"];
         delete?: never;
@@ -546,7 +542,7 @@ export type paths = {
         head?: never;
         /**
          * Update a group
-         * @description Update a group's name. If the group has a linked `chat_guid`, the display name will also be updated in the linked iMessage chat. Note: iMessage only allows one chat per unique participant set, so renaming simply changes the display name on the existing chat thread.
+         * @description Update a group's name. If the group already has an iMessage conversation, the conversation is renamed too.
          */
         patch: operations["updateGroup"];
         trace?: never;
@@ -562,16 +558,16 @@ export type paths = {
         put?: never;
         /**
          * Set group icon
-         * @description Set the group icon/photo. Requires the group to have a linked chat_guid. Uses multipart/form-data.
+         * @description Set the group icon/photo. Requires the group to have an iMessage conversation, so send it a message first. Uses multipart/form-data.
          *
-         *     The uploaded image is stored in Blooio storage and synced to the linked iMessage chat before the request returns.
+         *     The uploaded image is stored in Blooio storage and synced to the group's iMessage conversation before the request returns.
          */
         post: operations["setGroupIcon"];
         /**
          * Remove group icon
-         * @description Remove the group icon/photo. Requires the group to have a linked chat_guid.
+         * @description Remove the group icon/photo. Requires the group to have an iMessage conversation.
          *
-         *     The icon is removed from both Blooio storage and the linked iMessage chat before the request returns.
+         *     The icon is removed from both Blooio storage and the group's iMessage conversation before the request returns.
          */
         delete: operations["removeGroupIcon"];
         options?: never;
@@ -1081,8 +1077,6 @@ export type components = {
              * @enum {string}
              */
             action?: "add_participant" | "remove_participant" | "leave";
-            /** @description The linked iMessage chat GUID */
-            chat_guid?: string;
             /** @description Error message if sync failed */
             error?: string | null;
             /** @description Whether the sync was successful */
@@ -1099,7 +1093,10 @@ export type components = {
             status?: number;
         };
         Group: {
-            /** @description BlueBubbles chat GUID if linked to a device group chat */
+            /**
+             * @deprecated
+             * @description Deprecated. An identifier for the group's iMessage conversation, kept for existing integrations. Null until the group has one. Use `group_id` to identify the group.
+             */
             chat_guid?: string | null;
             /** Format: int64 */
             created_at?: number;
@@ -1126,10 +1123,17 @@ export type components = {
         };
         /** @description Response for group icon operations */
         GroupIconResponse: {
-            /** @description The BlueBubbles chat GUID */
+            /**
+             * @deprecated
+             * @description Deprecated. An identifier for the group's iMessage conversation, kept for existing integrations. Use `group_id` to identify the group.
+             */
             chat_guid?: string;
             /** @description Linked chat sync status */
             device_sync?: {
+                /**
+                 * @deprecated
+                 * @description Deprecated. The same value as the top-level `chat_guid`.
+                 */
                 chat_guid?: string;
                 /** @description Status message about linked chat sync */
                 message?: string;
@@ -1494,7 +1498,7 @@ export type components = {
              * @description Which part of the parent to reply to. Defaults to 0 (covers the 99% case of replying to a single-part text message).
              * @default 0
              */
-            part_index: number;
+            part_index?: number;
         };
         RiskDailyData: {
             inbound_conversations?: components["schemas"]["RiskDailySeriesPoint"][];
@@ -1736,7 +1740,7 @@ export type components = {
              * @default plain
              * @enum {string}
              */
-            format: "plain" | "markdown";
+            format?: "plain" | "markdown";
             /** @description E.164 phone number to send from. For Twilio API keys, this is optional — if omitted, the first assigned Twilio number is auto-selected. For Blooio (iMessage) API keys, this selects a specific number from your pool. Must be a number assigned to your API key. */
             from_number?: string;
             /** @description Optional. Override the rich-link-preview image and/or title on URL messages. See the LinkPreview schema. When omitted, Blooio auto-generates the preview from the page's Open Graph tags. */
@@ -1765,7 +1769,7 @@ export type components = {
              * @description If true, the contact card (Name & Photo) will be shared with this message. The contact card is piggybacked onto the outgoing message. Defaults to false. ⚠️ Only available on **Dedicated Commercial** and **Dedicated Enterprise** plans — other plans receive a `403`.
              * @default false
              */
-            share_contact: boolean;
+            share_contact?: boolean;
             /** @description Message text. Can be a single string or array of strings (each becomes a separate message) */
             text?: string | string[];
             /** @description Whether to show typing indicator before sending. Defaults to org preference. */
@@ -1849,7 +1853,8 @@ export type components = {
                 url?: string;
             }[] | null;
             /**
-             * @description The device's own identifier for the group conversation this message arrived in (only on `message.received` when is_group=true). Two group chats can hold the same members and are then indistinguishable by `group_id` and `participants` alone; `chat_guid` is what tells them apart. Matches the `chat_guid` on GET /groups/{groupId}.
+             * @deprecated
+             * @description Deprecated, kept for existing integrations. An identifier for the iMessage conversation this message arrived in (only on `message.received` when is_group=true). Matches the `chat_guid` on GET /groups/{groupId}. Use `group_id` to identify the group.
              * @example iMessage;+;chat123456789
              */
             chat_guid?: string | null;
@@ -3340,12 +3345,7 @@ export interface operations {
             content: {
                 "application/json": {
                     /**
-                     * @description BlueBubbles chat GUID to link this group to an existing iMessage chat. Use this to join groups created elsewhere. You can get this from the BlueBubbles API or from inbound message webhooks.
-                     * @example iMessage;+;chat123456789
-                     */
-                    chat_guid?: string;
-                    /**
-                     * @description Phone numbers or emails of contacts in the group. When linking via chat_guid, this is for record-keeping only (members are not added to the linked iMessage chat).
+                     * @description Phone numbers or emails of contacts in the group.
                      * @example [
                      *       "+15551234567",
                      *       "+15559876543"
@@ -3377,7 +3377,7 @@ export interface operations {
             };
             400: components["responses"]["BadRequest"];
             401: components["responses"]["Unauthorized"];
-            /** @description Conflict. Either: (1) A group with this chat_guid already exists, or (2) A group with the same participants already exists on this allocation. */
+            /** @description Conflict. A group with the same participants already exists in another organization that shares this number. */
             409: {
                 headers: {
                     [name: string]: unknown;

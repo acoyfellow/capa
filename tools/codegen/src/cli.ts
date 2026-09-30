@@ -43,7 +43,7 @@ import { fileURLToPath } from "node:url";
 import openapiTS, { astToString } from "openapi-typescript";
 import swagger2openapi from "swagger2openapi";
 import yaml from "js-yaml";
-import { parseSpec } from "./parse-spec.ts";
+import { parseSpec, type MethodNaming } from "./parse-spec.ts";
 import { emit } from "./emit.ts";
 import { distilledPlan } from "./distilled-index.ts";
 
@@ -60,6 +60,7 @@ interface CliArgs {
 	baseUrl: string;
 	auth: AuthShape;
 	contentType: ContentType;
+	naming: MethodNaming;
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -80,7 +81,8 @@ function parseArgs(argv: string[]): CliArgs {
   --base-url <upstream-base-url> \\
   [--prefix /v1] \\
   [--auth bearer|private-token|basic] \\
-  [--content-type form|json]`);
+  [--content-type form|json] \\
+  [--naming path|operationId]`);
 		process.exit(1);
 	}
 	const auth = (args.auth || "bearer") as AuthShape;
@@ -93,7 +95,13 @@ function parseArgs(argv: string[]): CliArgs {
 		console.error(`✗ --content-type must be one of: form, json (got: ${contentType})`);
 		process.exit(1);
 	}
+	const naming = (args.naming || "path") as MethodNaming;
+	if (!["path", "operationId"].includes(naming)) {
+		console.error(`✗ --naming must be one of: path, operationId (got: ${naming})`);
+		process.exit(1);
+	}
 	return {
+		naming,
 		spec: args.spec,
 		out: args.out,
 		name: args.name,
@@ -188,13 +196,14 @@ async function main() {
 	const spec = await ensureOpenApi3(rawSpec);
 
 	console.log(`→ parsing ${spec.info?.title} v${spec.info?.version}`);
-	const codegen = parseSpec(spec, args.prefix);
+	const codegen = parseSpec(spec, args.prefix, args.naming, args.contentType === "json");
 	console.log(`  found ${codegen.operationCount} operations across ${Object.keys(codegen.namespaces).length} namespaces`);
 
 	console.log(`→ generating types via openapi-typescript`);
 	const ast = await openapiTS(spec, {
 		alphabetize: true,
 		exportType: true,
+		defaultNonNullable: false,
 	});
 	const schemaTs = astToString(ast);
 

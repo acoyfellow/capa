@@ -2333,19 +2333,19 @@ export type components = {
              * @default master
              * @enum {string}
              */
-            pay_mode: "master" | "sub";
+            pay_mode?: "master" | "sub";
             /** @description Virtual Room Connector, multiple value separated by comma */
             room_connectors?: string;
             /**
              * @description Enable Share Meeting Connector
              * @default false
              */
-            share_mc: boolean;
+            share_mc?: boolean;
             /**
              * @description Enable Share Virtual Room Connector
              * @default false
              */
-            share_rc: boolean;
+            share_rc?: boolean;
         };
         /** @description Account plan object */
         AccountPlan: {
@@ -2424,7 +2424,7 @@ export type components = {
              * @description Set the maximum number of participants this user can have in a single meeting
              * @default 100
              */
-            meeting_capacity: number;
+            meeting_capacity?: number;
         };
         /** @description Account Settings: In Meeting */
         AccountSettingsInMeeting: {
@@ -2486,7 +2486,7 @@ export type components = {
              * @description Listening ports range, separated by comma (ex 55,56). The ports range must be between 1 to 65535.
              * @default
              */
-            ports_range: string;
+            ports_range?: string;
             /** @description Display a thumbs up/down survey at the end of each meeting */
             post_meeting_feedback?: boolean;
             /** @description Allow meeting participants to send a private 1:1 message to another participants */
@@ -2570,7 +2570,7 @@ export type components = {
              * @default both
              * @enum {string}
              */
-            audio_type: "both" | "telephony" | "voip" | "thirdParty";
+            audio_type?: "both" | "telephony" | "voip" | "thirdParty";
             /** @description Only signed-in (Zoom users) users can join meetings */
             enforce_login?: boolean;
             /** @description Only signed-in users with a specified domains */
@@ -2785,7 +2785,7 @@ export type components = {
              * @default normal
              * @enum {string}
              */
-            type: "normal" | "shared" | "restricted";
+            type?: "normal" | "shared" | "restricted";
         };
         /**
          * IM Group List
@@ -2842,7 +2842,7 @@ export type components = {
              * @default 2
              * @enum {integer}
              */
-            type: 1 | 2 | 3 | 8;
+            type?: 1 | 2 | 3 | 8;
         };
         /**
          * Meeting instances
@@ -2991,28 +2991,28 @@ export type components = {
              * @default 2
              * @enum {integer}
              */
-            approval_type: 0 | 1 | 2;
+            approval_type?: 0 | 1 | 2;
             /**
              * @description Determine how participants can join the audio portion of the meeting
              * @default both
              * @enum {string}
              */
-            audio: "both" | "telephony" | "voip";
+            audio?: "both" | "telephony" | "voip";
             /**
              * @default none
              * @enum {string}
              */
-            auto_recording: "local" | "cloud" | "none";
+            auto_recording?: "local" | "cloud" | "none";
             /**
              * @description Close registration after event date
              * @default false
              */
-            close_registration: boolean;
+            close_registration?: boolean;
             /**
              * @description Host meeting in China
              * @default false
              */
-            cn_meeting: boolean;
+            cn_meeting?: boolean;
             /** @description Only signed-in users can join this meeting */
             enforce_login?: boolean;
             /** @description Only signed-in users with specified domains can join meetings */
@@ -3023,17 +3023,17 @@ export type components = {
              * @description Host meeting in India
              * @default false
              */
-            in_meeting: boolean;
+            in_meeting?: boolean;
             /**
              * @description Allow participants to join the meeting before the host starts the meeting. Only used for scheduled or recurring meetings.
              * @default false
              */
-            join_before_host: boolean;
+            join_before_host?: boolean;
             /**
              * @description Mute participants upon entry
              * @default false
              */
-            mute_upon_entry: boolean;
+            mute_upon_entry?: boolean;
             /** @description Start video when participants join meeting */
             participant_video?: boolean;
             /**
@@ -3041,22 +3041,22 @@ export type components = {
              * @default 1
              * @enum {integer}
              */
-            registration_type: 1 | 2 | 3;
+            registration_type?: 1 | 2 | 3;
             /**
              * @description Use Personal Meeting ID. Only used for scheduled meetings and recurring meetings with no fixed time.
              * @default false
              */
-            use_pmi: boolean;
+            use_pmi?: boolean;
             /**
              * @description Enable waiting room
              * @default false
              */
-            waiting_room: boolean;
+            waiting_room?: boolean;
             /**
              * @description Add watermark when viewing shared screen
              * @default false
              */
-            watermark: boolean;
+            watermark?: boolean;
         };
         /** @description Meeting object */
         MeetingUpdate: components["schemas"]["SessionUpdate"];
@@ -3110,12 +3110,12 @@ export type components = {
              * @description The page number of current results
              * @default 1
              */
-            page_number: number;
+            page_number?: number;
             /**
              * @description The number of records returned within a single API call
              * @default 30
              */
-            page_size: number;
+            page_size?: number;
             /** @description The number of all records available across pages */
             total_records?: number;
         };
@@ -3129,7 +3129,7 @@ export type components = {
              * @description The number of records returned within a single API call.
              * @default 30
              */
-            page_size: number;
+            page_size?: number;
             /** @description The number of all records available across pages */
             total_records?: number;
         };
@@ -3141,7 +3141,7 @@ export type components = {
              * @description The amount of records returns within a single API call.
              * @default 30
              */
-            page_size: number;
+            page_size?: number;
         };
         /** @description Pagination Object */
         PaginationToken4Qos: {
@@ -3156,7 +3156,7 @@ export type components = {
              * @description The number of items per page
              * @default 1
              */
-            page_size: number;
+            page_size?: number;
             /**
              * Format: int64
              * @description The number of all records available across pages
@@ -3445,7 +3445,7 @@ export type components = {
              * @description Select how many times the meeting will occur before it is canceled. (Cannot be used with "end_date_time".)
              * @default 1
              */
-            end_times: number;
+            end_times?: number;
             /** @description Day of the month for the meeting to be scheduled. The value range is from 1 to 31. */
             monthly_day?: number;
             /**
@@ -3574,7 +3574,7 @@ export type components = {
              * @default 2
              * @enum {integer}
              */
-            type: 1 | 2 | 3 | 8;
+            type?: 1 | 2 | 3 | 8;
         };
         /** @description Base object for sessions */
         SessionUpdate: {
@@ -3610,7 +3610,7 @@ export type components = {
              * @default 2
              * @enum {integer}
              */
-            type: 1 | 2 | 3 | 8;
+            type?: 1 | 2 | 3 | 8;
         };
         /** @description Base webinar object for sessions */
         SessionWebinar: {
@@ -3643,7 +3643,7 @@ export type components = {
              * @default 5
              * @enum {integer}
              */
-            type: 5 | 6 | 9;
+            type?: 5 | 6 | 9;
         };
         /** @description Base webinar object for sessions */
         SessionWebinarUpdate: {
@@ -3679,7 +3679,7 @@ export type components = {
              * @default 5
              * @enum {integer}
              */
-            type: 5 | 6 | 9;
+            type?: 5 | 6 | 9;
         };
         /**
          * Tracking Field
@@ -3823,17 +3823,17 @@ export type components = {
              * @description When an alternative host is set or removed from a meeting
              * @default false
              */
-            alternative_host_reminder: boolean;
+            alternative_host_reminder?: boolean;
             /**
              * @description When a meeting is cancelled
              * @default false
              */
-            cancel_meeting_reminder: boolean;
+            cancel_meeting_reminder?: boolean;
             /**
              * @description When attendees join meeting before host
              * @default false
              */
-            jbh_reminder: boolean;
+            jbh_reminder?: boolean;
         };
         /** User settings: Feature settings */
         UserSettingsFeature: {
@@ -3873,42 +3873,42 @@ export type components = {
              * @description Annotation
              * @default false
              */
-            annotation: boolean;
+            annotation?: boolean;
             /**
              * @description Allow host to put attendee on hold
              * @default false
              */
-            attendee_on_hold: boolean;
+            attendee_on_hold?: boolean;
             /**
              * @description Attention tracking
              * @default false
              */
-            attention_tracking: boolean;
+            attention_tracking?: boolean;
             /**
              * @description Auto saving chats
              * @default false
              */
-            auto_saving_chat: boolean;
+            auto_saving_chat?: boolean;
             /**
              * @description Breakout room
              * @default false
              */
-            breakout_room: boolean;
+            breakout_room?: boolean;
             /**
              * @description Chat
              * @default false
              */
-            chat: boolean;
+            chat?: boolean;
             /**
              * @description Closed caption
              * @default false
              */
-            closed_caption: boolean;
+            closed_caption?: boolean;
             /**
              * @description Co-host
              * @default false
              */
-            co_host: boolean;
+            co_host?: boolean;
             /** @description Custom live streaming */
             custom_live_streaming?: boolean;
             /** @description Custom service instructions */
@@ -3920,69 +3920,69 @@ export type components = {
              * @default a''
              * @enum {string}
              */
-            entry_exit_chime: "host" | "all" | "none";
+            entry_exit_chime?: "host" | "all" | "none";
             /**
              * @description Far end camera control
              * @default false
              */
-            far_end_camera_control: boolean;
+            far_end_camera_control?: boolean;
             /**
              * @description Feedback to Zoom
              * @default false
              */
-            feedback: boolean;
+            feedback?: boolean;
             /**
              * @description File transfer
              * @default false
              */
-            file_transfer: boolean;
+            file_transfer?: boolean;
             /**
              * @description Group HD video
              * @default false
              */
-            group_hd: boolean;
+            group_hd?: boolean;
             /**
              * @description Non-verbal feedback
              * @default false
              */
-            non_verbal_feedback: boolean;
+            non_verbal_feedback?: boolean;
             /**
              * @description Polling
              * @default false
              */
-            polling: boolean;
+            polling?: boolean;
             /**
              * @description Private chat
              * @default false
              */
-            private_chat: boolean;
+            private_chat?: boolean;
             /** @description Record and play their own voice */
             record_play_voice?: boolean;
             /**
              * @description Remote control
              * @default false
              */
-            remote_control: boolean;
+            remote_control?: boolean;
             /**
              * @description Remote support
              * @default false
              */
-            remote_support: boolean;
+            remote_support?: boolean;
             /**
              * @description Share dual camera (Deprecated)
              * @default false
              */
-            share_dual_camera: boolean;
+            share_dual_camera?: boolean;
             /**
              * @description Virtual background
              * @default false
              */
-            virtual_background: boolean;
+            virtual_background?: boolean;
             /**
              * @description Waiting room
              * @default false
              */
-            waiting_room: boolean;
+            waiting_room?: boolean;
             /** @description Workplace by facebook */
             workplace_by_facebook?: boolean;
         };
@@ -3992,52 +3992,52 @@ export type components = {
              * @description Auto delete cloud recordings
              * @default false
              */
-            auto_delete_cmr: boolean;
+            auto_delete_cmr?: boolean;
             /**
              * @description A specified number of days of auto delete cloud recordings
              * @default false
              */
-            auto_delete_cmr_days: number;
+            auto_delete_cmr_days?: number;
             /**
              * @description Automatic recording
              * @default local
              * @enum {string}
              */
-            auto_recording: "local" | "cloud" | "none";
+            auto_recording?: "local" | "cloud" | "none";
             /**
              * @description Cloud recording
              * @default false
              */
-            cloud_recording: boolean;
+            cloud_recording?: boolean;
             /** @description Local recording */
             local_recording?: boolean;
             /**
              * @description Record an audio only file
              * @default false
              */
-            record_audio_file: boolean;
+            record_audio_file?: boolean;
             /**
              * @description Record the gallery view
              * @default false
              */
-            record_gallery_view: boolean;
+            record_gallery_view?: boolean;
             /**
              * @description Record the active speaker view
              * @default false
              */
-            record_speaker_view: boolean;
+            record_speaker_view?: boolean;
             /** @description Audio transcript */
             recording_audio_transcript?: boolean;
             /**
              * @description Save chat text from the meeting
              * @default false
              */
-            save_chat_text: boolean;
+            save_chat_text?: boolean;
             /**
              * @description Show timestamp on video
              * @default false
              */
-            show_timestamp: boolean;
+            show_timestamp?: boolean;
         };
         /** User settings: Meeting settings */
         UserSettingsScheduleMeeting: {
@@ -4046,7 +4046,7 @@ export type components = {
              * @default voip
              * @enum {string}
              */
-            audio_type: "both" | "telephony" | "voip" | "thirdParty";
+            audio_type?: "both" | "telephony" | "voip" | "thirdParty";
             /** @description Require a password for Personal Meetings if attendees can join before host */
             force_pmi_jbh_password?: boolean;
             /** @description Host video */
@@ -4064,7 +4064,7 @@ export type components = {
              * @description 3rd party audio conference info
              * @default
              */
-            audio_conference_info: string;
+            audio_conference_info?: string;
             /** @description Show international numbers link on the invitation email */
             show_international_numbers_link?: boolean;
             /** @description 3rd party audio conference */
@@ -4109,7 +4109,7 @@ export type components = {
              * @description Use Personal Meeting ID for instant meetings.
              * @default false
              */
-            use_pmi: boolean;
+            use_pmi?: boolean;
             /** @description Personal meeting room name */
             vanity_name?: string;
         };
@@ -4200,7 +4200,7 @@ export type components = {
              * @default 5
              * @enum {integer}
              */
-            type: 5 | 6 | 9;
+            type?: 5 | 6 | 9;
         };
         /**
          * Webinar instances
@@ -4317,18 +4317,18 @@ export type components = {
              * @default 2
              * @enum {integer}
              */
-            approval_type: 0 | 1 | 2;
+            approval_type?: 0 | 1 | 2;
             /**
              * @description Determine how participants can join the audio portion of the meeting
              * @default both
              * @enum {string}
              */
-            audio: "both" | "telephony" | "voip";
+            audio?: "both" | "telephony" | "voip";
             /**
              * @default none
              * @enum {string}
              */
-            auto_recording: "local" | "cloud" | "none";
+            auto_recording?: "local" | "cloud" | "none";
             /** @description Close registration after event date */
             close_registration?: boolean;
             /** @description Only signed-in users can join this meeting */
@@ -4339,27 +4339,27 @@ export type components = {
              * @description Default to HD Video
              * @default false
              */
-            hd_video: boolean;
+            hd_video?: boolean;
             /** @description Start video when host joins webinar */
             host_video?: boolean;
             /**
              * @description Make the webinar on-demand
              * @default false
              */
-            on_demand: boolean;
+            on_demand?: boolean;
             /** @description Start video when panelists join webinar */
             panelists_video?: boolean;
             /**
              * @description Enable Practice Session
              * @default false
              */
-            practice_session: boolean;
+            practice_session?: boolean;
             /**
              * @description Registration type. Used for recurring webinar with fixed time only.
              * @default 1
              * @enum {integer}
              */
-            registration_type: 1 | 2 | 3;
+            registration_type?: 1 | 2 | 3;
             /** @description Show social share buttons on registration page */
             show_share_button?: boolean;
         };

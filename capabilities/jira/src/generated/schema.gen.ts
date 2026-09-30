@@ -1229,6 +1229,8 @@ export type paths = {
          * Update fields associated with field schemes
          * @description Update fields associated with field association schemes.
          *
+         *     **Request body limits:** a single request can update associations for at most **100 fields** (the top-level field ID keys of the request body), and each field association item may reference at most 50 field schemes. Exceeding a limit returns a 400 response with an error such as "The fieldIds must contain no more than 100 items."
+         *
          *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
         put: operations["updateFieldsAssociatedWithSchemes"];
@@ -1257,6 +1259,8 @@ export type paths = {
          * Update field parameters
          * @description Update field association item parameters in field association schemes.
          *
+         *     **Request body limits:** a single request can update parameters for at most **100 fields** (the top-level field ID keys of the request body). In addition, each field may include at most 50 update items, and each update item may reference at most 50 field schemes. Exceeding any of these limits returns a 400 response with an error such as "The fieldIds must contain no more than 100 items."
+         *
          *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
         put: operations["updateFieldAssociationSchemeItemParameters"];
@@ -1264,6 +1268,8 @@ export type paths = {
         /**
          * Remove field parameters
          * @description Remove field association parameters overrides for work types.
+         *
+         *     **Request body limits:** a single request can remove at most **100 parameters**. The number of removals is counted as the sum, across every removal entry, of the number of work types multiplied by the number of parameter names in that entry. Exceeding this limit returns a 400 response with the error "Request exceeds maximum number of parameters that can be removed 100".
          *
          *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
@@ -2420,7 +2426,15 @@ export type paths = {
          *     **[Permissions](#permissions) required:** *Administer Jira* [global permission](https://confluence.atlassian.com/x/x4dKLg).
          */
         get: operations["getContextDefaultValues"];
-        put?: never;
+        /**
+         * Set default values for a custom field by context and issue type
+         * @description Updates default values for individual issue types in custom field contexts.
+         *
+         *     Only tenants enrolled in the early access program (EAP) can access this resource. See the [EAP announcement](https://ecosystem.atlassian.net/browse/CHANGE-3082) for details.
+         *
+         *     Each entry targets either one issue type through \{@code issueTypeId\}, or the catch-all configuration through \{@code isAnyIssueType=true\}. A null value removes the default for that target. Entries not included in the request are left unchanged.
+         */
+        put: operations["setContextDefaultValues"];
         post?: never;
         delete?: never;
         options?: never;
@@ -14298,7 +14312,7 @@ export type components = {
              * @description Whether sprints are supported on the board
              * @default true
              */
-            supportsSprint: boolean;
+            supportsSprint?: boolean;
             swimlanes?: components["schemas"]["SwimlanesPayload"];
             workingDaysConfig?: components["schemas"]["WorkingDaysConfig"];
         };
@@ -14317,7 +14331,7 @@ export type components = {
              * @description The maximum number of items to return per page
              * @default 1000
              */
-            maxResults: number;
+            maxResults?: number;
             /** @description The cursor for pagination */
             nextPageToken?: string;
         };
@@ -14599,7 +14613,7 @@ export type components = {
              * @default false
              * @enum {boolean}
              */
-            showDaysInColumn: true | false;
+            showDaysInColumn?: true | false;
         };
         /** @description Card layout settings of the board */
         CardLayoutField: {
@@ -15529,7 +15543,7 @@ export type components = {
              * @description Whether to use the current date.
              * @default false
              */
-            useCurrent: boolean;
+            useCurrent?: boolean;
         };
         /** @description The default value for a date time custom field. */
         CustomFieldContextDefaultValueDateTime: {
@@ -15546,7 +15560,7 @@ export type components = {
              * @description Whether to use the current date.
              * @default false
              */
-            useCurrent: boolean;
+            useCurrent?: boolean;
         };
         /** @description Default value for a float (number) custom field. */
         CustomFieldContextDefaultValueFloat: {
@@ -15578,7 +15592,7 @@ export type components = {
              * @description Whether to use the current date.
              * @default false
              */
-            useCurrent: boolean;
+            useCurrent?: boolean;
         };
         /** @description The default value for a Forge group custom field. */
         CustomFieldContextDefaultValueForgeGroupField: {
@@ -15803,6 +15817,11 @@ export type components = {
             versionId: string;
             /** @description The order the pickable versions are displayed in. If not provided, the released-first order is used. Available version orders are `"releasedFirst"` and `"unreleasedFirst"`. */
             versionOrder?: string;
+        };
+        /** @description Default value updates grouped by context and issue type. */
+        CustomFieldContextDefaultValuesUpdate: {
+            /** @description The default values to update. */
+            defaultValues?: components["schemas"]["IssueTypeDefaultValueUpdate"][];
         };
         /** @description The default text for a text area custom field. */
         CustomFieldContextDefaultValueTextArea: {
@@ -16114,7 +16133,7 @@ export type components = {
              * @default false
              * @example false
              */
-            enableComponents: boolean;
+            enableComponents?: boolean;
             /**
              * @description Project keys must be unique and start with an uppercase letter followed by one or more uppercase alphanumeric characters. The maximum length is 10 characters.
              * @example PRJ
@@ -16942,7 +16961,7 @@ export type components = {
              * @description If `true`, will try to retain original non-null issue field values on move.
              * @default true
              */
-            retain: boolean | null;
+            retain?: boolean | null;
             /** @enum {string} */
             type?: "adf" | "raw";
             value?: Record<string, never>;
@@ -17850,7 +17869,7 @@ export type components = {
              *     If `true`, dispatches a bulk notification email to users about the updates.
              * @default true
              */
-            sendBulkNotification: boolean | null;
+            sendBulkNotification?: boolean | null;
         };
         IssueBulkEditField: {
             /** @description Description of the field. */
@@ -17886,7 +17905,7 @@ export type components = {
              *     If `true`, dispatches a bulk notification email to users about the updates.
              * @default true
              */
-            sendBulkNotification: boolean | null;
+            sendBulkNotification?: boolean | null;
         };
         /** @description Issue Bulk Move Payload */
         IssueBulkMovePayload: {
@@ -17896,7 +17915,7 @@ export type components = {
              *     If `true`, dispatches a bulk notification email to users about the updates.
              * @default true
              */
-            sendBulkNotification: boolean | null;
+            sendBulkNotification?: boolean | null;
             /**
              * @description An object representing the mapping of issues and data related to destination entities, like fields and statuses, that are required during a bulk move.
              *
@@ -17938,7 +17957,7 @@ export type components = {
              *     If `true`, dispatches a bulk notification email to users about the updates.
              * @default true
              */
-            sendBulkNotification: boolean | null;
+            sendBulkNotification?: boolean | null;
         };
         /** @description Issue Bulk Watch Or Unwatch Payload */
         IssueBulkWatchOrUnwatchPayload: {
@@ -18356,6 +18375,19 @@ export type components = {
             /** @description True when this default value applies to every issue type covered by the context (no specific issue type). Only present when true; omitted otherwise. */
             isAnyIssueType?: boolean | null;
             /** @description The ID of the issue type this default value applies to. Null when isAnyIssueType is true. */
+            issueTypeId?: string | null;
+            value?: components["schemas"]["CustomFieldContextDefaultValue"];
+        };
+        /** @description A default value update for one issue-type scope in a context. */
+        IssueTypeDefaultValueUpdate: {
+            /**
+             * Format: int64
+             * @description The ID of the context.
+             */
+            contextId: number;
+            /** @description True when this is the catch-all default for issue types without a specific default. */
+            isAnyIssueType?: boolean | null;
+            /** @description The ID of the issue type this default value applies to. */
             issueTypeId?: string | null;
             value?: components["schemas"]["CustomFieldContextDefaultValue"];
         };
@@ -18805,7 +18837,7 @@ export type components = {
              * @default strict
              * @enum {string}
              */
-            validation: "strict" | "warn" | "none";
+            validation?: "strict" | "warn" | "none";
         };
         JiraCascadingSelectField: {
             childOptionValue?: components["schemas"]["JiraSelectedOptionField"];
@@ -19729,13 +19761,13 @@ export type components = {
              * @description If `true`, will try to retain original non-null issue field values on move.
              * @default true
              */
-            retain: boolean | null;
+            retain?: boolean | null;
             /**
              * @description Will treat as `MandatoryFieldValue` if type is `raw` or `empty`
              * @default raw
              * @enum {string|null}
              */
-            type: "adf" | "raw" | null;
+            type?: "adf" | "raw" | null;
             /** @description Value for each field. Provide a `list of strings` for non-ADF fields. */
             value: string[];
         };
@@ -19745,7 +19777,7 @@ export type components = {
              * @description If `true`, will try to retain original non-null issue field values on move.
              * @default true
              */
-            retain: boolean | null;
+            retain?: boolean | null;
             /**
              * @description Will treat as `MandatoryFieldValueForADF` if type is `adf`
              * @default raw
@@ -22457,7 +22489,7 @@ export type components = {
              * @default FAIL
              * @enum {string}
              */
-            onConflict: "FAIL" | "USE" | "NEW";
+            onConflict?: "FAIL" | "USE" | "NEW";
             pcri?: components["schemas"]["ProjectCreateResourceIdentifier"];
         } | null;
         /** @description Details about permissions. */
@@ -23561,7 +23593,7 @@ export type components = {
              * @default USE
              * @enum {string}
              */
-            onConflict: "FAIL" | "USE" | "NEW";
+            onConflict?: "FAIL" | "USE" | "NEW";
             pcri?: components["schemas"]["ProjectCreateResourceIdentifier"];
             /**
              * @description The type of the role. Only used by project-scoped project
@@ -23584,7 +23616,7 @@ export type components = {
              * @description Whether the rule is disabled.
              * @default false
              */
-            disabled: boolean;
+            disabled?: boolean;
             /** @description A tag used to filter rules in [Get workflow transition rule configurations](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-workflow-transition-rules/#api-rest-api-3-workflow-rule-config-get). */
             tag?: string;
             /** @description Configuration of the rule, as it is stored by the Connect or the Forge app on the rule configuration page. */
@@ -23862,7 +23894,7 @@ export type components = {
              * @description The maximum number of items to return per page. To manage page size, API may return fewer items per page where a large number of fields are requested. The greatest number of items returned per page is achieved when requesting `id` or `key` only. It returns max 5000 issues.
              * @default 50
              */
-            maxResults: number;
+            maxResults?: number;
             /** @description The token for a page to fetch that is not the first page. The first page has a `nextPageToken` of `null`. Use the `nextPageToken` to fetch the next page of issues. */
             nextPageToken?: string;
             /** @description A list of up to 5 issue properties to include in the results. This parameter accepts a comma-separated list. */
@@ -23895,7 +23927,7 @@ export type components = {
              * @description Include collapsed fields for fields that have non-unique names.
              * @default false
              */
-            includeCollapsedFields: boolean;
+            includeCollapsedFields?: boolean;
             /** @description List of project IDs used to filter the visible field details returned. */
             projectIds?: number[];
         };
@@ -23942,7 +23974,7 @@ export type components = {
              * @description The maximum number of items to return per page.
              * @default 50
              */
-            maxResults: number;
+            maxResults?: number;
             /** @description A list of up to 5 issue properties to include in the results. This parameter accepts a comma-separated list. */
             properties?: string[];
             /**
@@ -26529,7 +26561,7 @@ export type components = {
              * @default NEW
              * @enum {string}
              */
-            onConflict: "FAIL" | "USE" | "NEW";
+            onConflict?: "FAIL" | "USE" | "NEW";
             pcri?: components["schemas"]["ProjectCreateResourceIdentifier"];
             startPointLayout?: components["schemas"]["WorkflowStatusLayoutPayload"];
             /** @description The statuses to be used in the workflow */
@@ -30396,7 +30428,7 @@ export interface operations {
                     "application/json": components["schemas"]["FieldSchemeToFieldsResponse"];
                 };
             };
-            /** @description Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or field IDs, returns failure details. */
+            /** @description Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or field IDs, returns failure details. Also returned if the request body exceeds its limits (for example, more than 100 fields), with an error such as "The fieldIds must contain no more than 100 items." */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -30606,7 +30638,7 @@ export interface operations {
                     "application/json": components["schemas"]["UpdateFieldSchemeParametersResponse"];
                 };
             };
-            /** @description Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or field IDs, returns failure details. */
+            /** @description Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or field IDs, returns failure details. Also returned if the request body exceeds its limits (for example, more than 100 fields), with an error such as "The fieldIds must contain no more than 100 items." */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -30705,7 +30737,7 @@ export interface operations {
                     "application/json": components["schemas"]["RemoveFieldParametersResult"];
                 };
             };
-            /** @description Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or project IDs, returns failure details. */
+            /** @description Returned if the request is invalid. If request is malformed, returns a collection of errors. If request is well-formed but contains invalid scheme or project IDs, returns failure details. Also returned if the request body exceeds its limit of 100 parameter removals, with the error "Request exceeds maximum number of parameters that can be removed 100". */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -34033,6 +34065,62 @@ export interface operations {
                     /** @example {"errorMessages":["The custom field was not found."],"errors":{}} */
                     "application/json": unknown;
                 };
+            };
+        };
+    };
+    setContextDefaultValues: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the custom field, for example \{@code customfield\_10000\}. */
+                fieldId: string;
+            };
+            cookie?: never;
+        };
+        /** @description The default values to update. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CustomFieldContextDefaultValuesUpdate"];
+            };
+        };
+        responses: {
+            /** @description Returned if all default values were updated successfully. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Returned if the request, issue type, or default value is invalid, or the field type is unsupported. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Returned if the authentication credentials are incorrect or missing. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Returned if the user cannot administer the custom field, or the feature is not enabled for the tenant. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Returned if the custom field or a context is not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

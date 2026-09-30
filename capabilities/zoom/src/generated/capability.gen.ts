@@ -3,12 +3,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 
 export class AccountsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20,8 +20,8 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /accounts` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: CallOptions): Promise<ProofResult<paths["/accounts"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "accounts",
 			namespace: "accounts",
 			method: "list",
@@ -34,7 +34,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/accounts"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -42,8 +42,8 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /accounts` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/accounts"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/accounts"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountCreate",
 			namespace: "accounts",
 			method: "create",
@@ -56,7 +56,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/accounts"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -64,13 +64,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /accounts/{accountId}` — risk: low
 	 */
-	async retrieve(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(accountId: string, options?: CallOptions): Promise<ProofResult<paths["/accounts/{accountId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "account",
 			namespace: "accounts",
 			method: "retrieve",
 			http: "get",
-			path: `/accounts/${accountId}`,
+			path: `/accounts/${encodeURIComponent(accountId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -78,7 +78,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/accounts/{accountId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -86,13 +86,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /accounts/{accountId}` — risk: medium
 	 */
-	async del(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(accountId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountDisassociate",
 			namespace: "accounts",
 			method: "del",
 			http: "delete",
-			path: `/accounts/${accountId}`,
+			path: `/accounts/${encodeURIComponent(accountId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -100,7 +100,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -108,13 +108,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `PATCH /accounts/{accountId}/options` — risk: medium
 	 */
-	async options(accountId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async options(accountId: string, body?: NonNullable<paths["/accounts/{accountId}/options"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountOptionsUpdate",
 			namespace: "accounts",
 			method: "options",
 			http: "patch",
-			path: `/accounts/${accountId}/options`,
+			path: `/accounts/${encodeURIComponent(accountId)}/options`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["options"],
@@ -122,7 +122,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -130,13 +130,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /accounts/{accountId}/settings` — risk: medium
 	 */
-	async listSettings(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSettings(accountId: string, options?: CallOptions): Promise<ProofResult<paths["/accounts/{accountId}/settings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountSettings",
 			namespace: "accounts",
 			method: "listSettings",
 			http: "get",
-			path: `/accounts/${accountId}/settings`,
+			path: `/accounts/${encodeURIComponent(accountId)}/settings`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSettings"],
@@ -144,7 +144,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/accounts/{accountId}/settings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -152,13 +152,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `PATCH /accounts/{accountId}/settings` — risk: medium
 	 */
-	async settings(accountId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async settings(accountId: string, body?: NonNullable<paths["/accounts/{accountId}/settings"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountSettingsUpdate",
 			namespace: "accounts",
 			method: "settings",
 			http: "patch",
-			path: `/accounts/${accountId}/settings`,
+			path: `/accounts/${encodeURIComponent(accountId)}/settings`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["settings"],
@@ -166,7 +166,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -174,13 +174,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /accounts/{accountId}/managed_domains` — risk: medium
 	 */
-	async listManagedDomains(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listManagedDomains(accountId: string, options?: CallOptions): Promise<ProofResult<paths["/accounts/{accountId}/managed_domains"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountManagedDomain",
 			namespace: "accounts",
 			method: "listManagedDomains",
 			http: "get",
-			path: `/accounts/${accountId}/managed_domains`,
+			path: `/accounts/${encodeURIComponent(accountId)}/managed_domains`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listManagedDomains"],
@@ -188,7 +188,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/accounts/{accountId}/managed_domains"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -196,13 +196,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /accounts/{accountId}/billing` — risk: medium
 	 */
-	async listBilling(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listBilling(accountId: string, options?: CallOptions): Promise<ProofResult<paths["/accounts/{accountId}/billing"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountBilling",
 			namespace: "accounts",
 			method: "listBilling",
 			http: "get",
-			path: `/accounts/${accountId}/billing`,
+			path: `/accounts/${encodeURIComponent(accountId)}/billing`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listBilling"],
@@ -210,7 +210,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/accounts/{accountId}/billing"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -218,13 +218,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `PATCH /accounts/{accountId}/billing` — risk: medium
 	 */
-	async billing(accountId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async billing(accountId: string, body?: NonNullable<paths["/accounts/{accountId}/billing"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountBillingUpdate",
 			namespace: "accounts",
 			method: "billing",
 			http: "patch",
-			path: `/accounts/${accountId}/billing`,
+			path: `/accounts/${encodeURIComponent(accountId)}/billing`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["billing"],
@@ -232,7 +232,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -240,13 +240,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /accounts/{accountId}/plans` — risk: medium
 	 */
-	async listPlans(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listPlans(accountId: string, options?: CallOptions): Promise<ProofResult<paths["/accounts/{accountId}/plans"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountPlans",
 			namespace: "accounts",
 			method: "listPlans",
 			http: "get",
-			path: `/accounts/${accountId}/plans`,
+			path: `/accounts/${encodeURIComponent(accountId)}/plans`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPlans"],
@@ -254,7 +254,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/accounts/{accountId}/plans"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -262,13 +262,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /accounts/{accountId}/plans` — risk: medium
 	 */
-	async createPlan(accountId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createPlan(accountId: string, body?: NonNullable<paths["/accounts/{accountId}/plans"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/accounts/{accountId}/plans"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountPlanCreate",
 			namespace: "accounts",
 			method: "createPlan",
 			http: "post",
-			path: `/accounts/${accountId}/plans`,
+			path: `/accounts/${encodeURIComponent(accountId)}/plans`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createPlan"],
@@ -276,7 +276,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/accounts/{accountId}/plans"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -284,13 +284,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `PUT /accounts/{accountId}/plans/base` — risk: medium
 	 */
-	async base(accountId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async base(accountId: string, body?: NonNullable<paths["/accounts/{accountId}/plans/base"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountPlanBaseUpdate",
 			namespace: "accounts",
 			method: "base",
 			http: "put",
-			path: `/accounts/${accountId}/plans/base`,
+			path: `/accounts/${encodeURIComponent(accountId)}/plans/base`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["base"],
@@ -298,7 +298,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -306,13 +306,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /accounts/{accountId}/plans/addons` — risk: medium
 	 */
-	async addons_0(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async addons_0(accountId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountPlanAddonCreate",
 			namespace: "accounts",
 			method: "addons_0",
 			http: "post",
-			path: `/accounts/${accountId}/plans/addons`,
+			path: `/accounts/${encodeURIComponent(accountId)}/plans/addons`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["addons_0"],
@@ -320,7 +320,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -328,13 +328,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `PUT /accounts/{accountId}/plans/addons` — risk: medium
 	 */
-	async addons_1(accountId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async addons_1(accountId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "accountPlanAddonUpdate",
 			namespace: "accounts",
 			method: "addons_1",
 			http: "put",
-			path: `/accounts/${accountId}/plans/addons`,
+			path: `/accounts/${encodeURIComponent(accountId)}/plans/addons`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["addons_1"],
@@ -342,13 +342,13 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class GroupsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -360,8 +360,8 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /groups` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: CallOptions): Promise<ProofResult<paths["/groups"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "groups",
 			namespace: "groups",
 			method: "list",
@@ -374,7 +374,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -382,8 +382,8 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /groups` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/groups"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/groups"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "groupCreate",
 			namespace: "groups",
 			method: "create",
@@ -396,7 +396,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -404,13 +404,13 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /groups/{groupId}` — risk: low
 	 */
-	async retrieve(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(groupId: string, options?: CallOptions): Promise<ProofResult<paths["/groups/{groupId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "group",
 			namespace: "groups",
 			method: "retrieve",
 			http: "get",
-			path: `/groups/${groupId}`,
+			path: `/groups/${encodeURIComponent(groupId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -418,7 +418,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{groupId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -426,13 +426,13 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `PATCH /groups/{groupId}` — risk: medium
 	 */
-	async patch(groupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(groupId: string, body?: NonNullable<paths["/groups/{groupId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "groupUpdate",
 			namespace: "groups",
 			method: "patch",
 			http: "patch",
-			path: `/groups/${groupId}`,
+			path: `/groups/${encodeURIComponent(groupId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["patch"],
@@ -440,7 +440,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -448,13 +448,13 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /groups/{groupId}` — risk: medium
 	 */
-	async del(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(groupId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "groupDelete",
 			namespace: "groups",
 			method: "del",
 			http: "delete",
-			path: `/groups/${groupId}`,
+			path: `/groups/${encodeURIComponent(groupId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -462,7 +462,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -470,13 +470,13 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `GET /groups/{groupId}/members` — risk: medium
 	 */
-	async listMembers(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMembers(groupId: string, options?: CallOptions): Promise<ProofResult<paths["/groups/{groupId}/members"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "groupMembers",
 			namespace: "groups",
 			method: "listMembers",
 			http: "get",
-			path: `/groups/${groupId}/members`,
+			path: `/groups/${encodeURIComponent(groupId)}/members`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMembers"],
@@ -484,7 +484,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{groupId}/members"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -492,13 +492,13 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `POST /groups/{groupId}/members` — risk: medium
 	 */
-	async createMember(groupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createMember(groupId: string, body?: NonNullable<paths["/groups/{groupId}/members"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/groups/{groupId}/members"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "groupMembersCreate",
 			namespace: "groups",
 			method: "createMember",
 			http: "post",
-			path: `/groups/${groupId}/members`,
+			path: `/groups/${encodeURIComponent(groupId)}/members`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMember"],
@@ -506,7 +506,7 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/groups/{groupId}/members"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -514,13 +514,13 @@ export class GroupsResource extends RpcTarget {
 	 *
 	 * `DELETE /groups/{groupId}/members/{memberId}` — risk: medium
 	 */
-	async deleteMember(groupId: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMember(groupId: string, memberId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "groupMembersDelete",
 			namespace: "groups",
 			method: "deleteMember",
 			http: "delete",
-			path: `/groups/${groupId}/members/${memberId}`,
+			path: `/groups/${encodeURIComponent(groupId)}/members/${encodeURIComponent(memberId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMember"],
@@ -528,13 +528,13 @@ export class GroupsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class H323Resource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -546,8 +546,8 @@ export class H323Resource extends RpcTarget {
 	 *
 	 * `GET /h323/devices` — risk: medium
 	 */
-	async listDevices(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listDevices(options?: CallOptions): Promise<ProofResult<paths["/h323/devices"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "deviceList",
 			namespace: "h323",
 			method: "listDevices",
@@ -560,7 +560,7 @@ export class H323Resource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/h323/devices"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -568,8 +568,8 @@ export class H323Resource extends RpcTarget {
 	 *
 	 * `POST /h323/devices` — risk: medium
 	 */
-	async createDevice(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createDevice(body?: NonNullable<paths["/h323/devices"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/h323/devices"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "deviceCreate",
 			namespace: "h323",
 			method: "createDevice",
@@ -582,7 +582,7 @@ export class H323Resource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/h323/devices"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -590,13 +590,13 @@ export class H323Resource extends RpcTarget {
 	 *
 	 * `PATCH /h323/devices/{deviceId}` — risk: medium
 	 */
-	async devices(deviceId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async devices(deviceId: string, body?: NonNullable<paths["/h323/devices/{deviceId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deviceUpdate",
 			namespace: "h323",
 			method: "devices",
 			http: "patch",
-			path: `/h323/devices/${deviceId}`,
+			path: `/h323/devices/${encodeURIComponent(deviceId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["devices"],
@@ -604,7 +604,7 @@ export class H323Resource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -612,13 +612,13 @@ export class H323Resource extends RpcTarget {
 	 *
 	 * `DELETE /h323/devices/{deviceId}` — risk: medium
 	 */
-	async deleteDevice(deviceId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteDevice(deviceId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "deviceDelete",
 			namespace: "h323",
 			method: "deleteDevice",
 			http: "delete",
-			path: `/h323/devices/${deviceId}`,
+			path: `/h323/devices/${encodeURIComponent(deviceId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDevice"],
@@ -626,13 +626,13 @@ export class H323Resource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class V2Resource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -644,8 +644,8 @@ export class V2Resource extends RpcTarget {
 	 *
 	 * `GET /v2/tracking_fields` — risk: medium
 	 */
-	async listTrackingFields(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTrackingFields(options?: CallOptions): Promise<ProofResult<paths["/v2/tracking_fields"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "trackingfieldList",
 			namespace: "v2",
 			method: "listTrackingFields",
@@ -658,7 +658,7 @@ export class V2Resource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v2/tracking_fields"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -666,8 +666,8 @@ export class V2Resource extends RpcTarget {
 	 *
 	 * `POST /v2/tracking_fields` — risk: medium
 	 */
-	async createTrackingField(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTrackingField(body?: NonNullable<paths["/v2/tracking_fields"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v2/tracking_fields"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "trackingfieldCreate",
 			namespace: "v2",
 			method: "createTrackingField",
@@ -680,7 +680,7 @@ export class V2Resource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v2/tracking_fields"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -688,13 +688,13 @@ export class V2Resource extends RpcTarget {
 	 *
 	 * `GET /v2/tracking_fields/{fieldId}` — risk: medium
 	 */
-	async retrieveTrackingField(fieldId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveTrackingField(fieldId: string, options?: CallOptions): Promise<ProofResult<paths["/v2/tracking_fields/{fieldId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "trackingfieldGet",
 			namespace: "v2",
 			method: "retrieveTrackingField",
 			http: "get",
-			path: `/v2/tracking_fields/${fieldId}`,
+			path: `/v2/tracking_fields/${encodeURIComponent(fieldId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTrackingField"],
@@ -702,7 +702,7 @@ export class V2Resource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v2/tracking_fields/{fieldId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -710,13 +710,13 @@ export class V2Resource extends RpcTarget {
 	 *
 	 * `PATCH /v2/tracking_fields/{fieldId}` — risk: medium
 	 */
-	async trackingFields(fieldId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async trackingFields(fieldId: string, body?: NonNullable<paths["/v2/tracking_fields/{fieldId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "trackingfieldUpdate",
 			namespace: "v2",
 			method: "trackingFields",
 			http: "patch",
-			path: `/v2/tracking_fields/${fieldId}`,
+			path: `/v2/tracking_fields/${encodeURIComponent(fieldId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["trackingFields"],
@@ -724,7 +724,7 @@ export class V2Resource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -732,13 +732,13 @@ export class V2Resource extends RpcTarget {
 	 *
 	 * `DELETE /v2/tracking_fields/{fieldId}` — risk: medium
 	 */
-	async deleteTrackingField(fieldId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteTrackingField(fieldId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "trackingfieldDelete",
 			namespace: "v2",
 			method: "deleteTrackingField",
 			http: "delete",
-			path: `/v2/tracking_fields/${fieldId}`,
+			path: `/v2/tracking_fields/${encodeURIComponent(fieldId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteTrackingField"],
@@ -746,13 +746,13 @@ export class V2Resource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class ImResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -764,8 +764,8 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `GET /im/groups` — risk: medium
 	 */
-	async listGroups(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listGroups(options?: CallOptions): Promise<ProofResult<paths["/im/groups"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "imGroups",
 			namespace: "im",
 			method: "listGroups",
@@ -778,7 +778,7 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/im/groups"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -786,8 +786,8 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `POST /im/groups` — risk: medium
 	 */
-	async createGroup(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createGroup(body?: NonNullable<paths["/im/groups"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/im/groups"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "imGroupCreate",
 			namespace: "im",
 			method: "createGroup",
@@ -800,7 +800,7 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/im/groups"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -808,13 +808,13 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `GET /im/groups/{groupId}` — risk: medium
 	 */
-	async retrieveGroup(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveGroup(groupId: string, options?: CallOptions): Promise<ProofResult<paths["/im/groups/{groupId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "imGroup",
 			namespace: "im",
 			method: "retrieveGroup",
 			http: "get",
-			path: `/im/groups/${groupId}`,
+			path: `/im/groups/${encodeURIComponent(groupId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveGroup"],
@@ -822,7 +822,7 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/im/groups/{groupId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -830,13 +830,13 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `PATCH /im/groups/{groupId}` — risk: medium
 	 */
-	async groups(groupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async groups(groupId: string, body?: NonNullable<paths["/im/groups/{groupId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "imGroupUpdate",
 			namespace: "im",
 			method: "groups",
 			http: "patch",
-			path: `/im/groups/${groupId}`,
+			path: `/im/groups/${encodeURIComponent(groupId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["groups"],
@@ -844,7 +844,7 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -852,13 +852,13 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `DELETE /im/groups/{groupId}` — risk: medium
 	 */
-	async deleteGroup(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteGroup(groupId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "imGroupDelete",
 			namespace: "im",
 			method: "deleteGroup",
 			http: "delete",
-			path: `/im/groups/${groupId}`,
+			path: `/im/groups/${encodeURIComponent(groupId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteGroup"],
@@ -866,7 +866,7 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -874,13 +874,13 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `GET /im/groups/{groupId}/members` — risk: medium
 	 */
-	async members_0(groupId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async members_0(groupId: string, options?: CallOptions): Promise<ProofResult<paths["/im/groups/{groupId}/members"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "imGroupMembers",
 			namespace: "im",
 			method: "members_0",
 			http: "get",
-			path: `/im/groups/${groupId}/members`,
+			path: `/im/groups/${encodeURIComponent(groupId)}/members`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["members_0"],
@@ -888,7 +888,7 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/im/groups/{groupId}/members"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -896,13 +896,13 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `POST /im/groups/{groupId}/members` — risk: medium
 	 */
-	async members_1(groupId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async members_1(groupId: string, body?: NonNullable<paths["/im/groups/{groupId}/members"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/im/groups/{groupId}/members"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "imGroupMembersCreate",
 			namespace: "im",
 			method: "members_1",
 			http: "post",
-			path: `/im/groups/${groupId}/members`,
+			path: `/im/groups/${encodeURIComponent(groupId)}/members`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["members_1"],
@@ -910,7 +910,7 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/im/groups/{groupId}/members"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -918,13 +918,13 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `DELETE /im/groups/{groupId}/members/{memberId}` — risk: medium
 	 */
-	async deleteMember(groupId: string, memberId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMember(groupId: string, memberId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "imGroupMembersDelete",
 			namespace: "im",
 			method: "deleteMember",
 			http: "delete",
-			path: `/im/groups/${groupId}/members/${memberId}`,
+			path: `/im/groups/${encodeURIComponent(groupId)}/members/${encodeURIComponent(memberId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMember"],
@@ -932,7 +932,7 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -940,8 +940,8 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `GET /im/chat/sessions` — risk: medium
 	 */
-	async sessions(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async sessions(options?: CallOptions): Promise<ProofResult<paths["/im/chat/sessions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "imChatSessions",
 			namespace: "im",
 			method: "sessions",
@@ -954,7 +954,7 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/im/chat/sessions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -962,13 +962,13 @@ export class ImResource extends RpcTarget {
 	 *
 	 * `GET /im/chat/sessions/{sessionId}` — risk: medium
 	 */
-	async retrieveSession(sessionId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveSession(sessionId: string, options?: CallOptions): Promise<ProofResult<paths["/im/chat/sessions/{sessionId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "imChatMessages",
 			namespace: "im",
 			method: "retrieveSession",
 			http: "get",
-			path: `/im/chat/sessions/${sessionId}`,
+			path: `/im/chat/sessions/${encodeURIComponent(sessionId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveSession"],
@@ -976,13 +976,13 @@ export class ImResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/im/chat/sessions/{sessionId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -994,13 +994,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/meetings` — risk: medium
 	 */
-	async listMeetings(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMeetings(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/meetings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetings",
 			namespace: "users",
 			method: "listMeetings",
 			http: "get",
-			path: `/users/${userId}/meetings`,
+			path: `/users/${encodeURIComponent(userId)}/meetings`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMeetings"],
@@ -1008,7 +1008,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/meetings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1016,13 +1016,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `POST /users/{userId}/meetings` — risk: medium
 	 */
-	async createMeeting(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createMeeting(userId: string, body?: NonNullable<paths["/users/{userId}/meetings"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/meetings"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingCreate",
 			namespace: "users",
 			method: "createMeeting",
 			http: "post",
-			path: `/users/${userId}/meetings`,
+			path: `/users/${encodeURIComponent(userId)}/meetings`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMeeting"],
@@ -1030,7 +1030,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/meetings"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1038,13 +1038,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/recordings` — risk: medium
 	 */
-	async listRecordings(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listRecordings(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/recordings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "recordingsList",
 			namespace: "users",
 			method: "listRecordings",
 			http: "get",
-			path: `/users/${userId}/recordings`,
+			path: `/users/${encodeURIComponent(userId)}/recordings`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRecordings"],
@@ -1052,7 +1052,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/recordings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1060,8 +1060,8 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/users"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "users",
 			namespace: "users",
 			method: "list",
@@ -1074,7 +1074,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1082,8 +1082,8 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `POST /users` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/users"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/users"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userCreate",
 			namespace: "users",
 			method: "create",
@@ -1096,7 +1096,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1104,13 +1104,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}` — risk: low
 	 */
-	async retrieve(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "user",
 			namespace: "users",
 			method: "retrieve",
 			http: "get",
-			path: `/users/${userId}`,
+			path: `/users/${encodeURIComponent(userId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -1118,7 +1118,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1126,13 +1126,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `PATCH /users/{userId}` — risk: medium
 	 */
-	async patch(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(userId: string, body?: NonNullable<paths["/users/{userId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userUpdate",
 			namespace: "users",
 			method: "patch",
 			http: "patch",
-			path: `/users/${userId}`,
+			path: `/users/${encodeURIComponent(userId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["patch"],
@@ -1140,7 +1140,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1148,13 +1148,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `DELETE /users/{userId}` — risk: medium
 	 */
-	async del(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(userId: string, options?: QueryCallOptions<NonNullable<paths["/users/{userId}"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userDelete",
 			namespace: "users",
 			method: "del",
 			http: "delete",
-			path: `/users/${userId}`,
+			path: `/users/${encodeURIComponent(userId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -1162,7 +1162,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1170,13 +1170,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/assistants` — risk: medium
 	 */
-	async listAssistants(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAssistants(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/assistants"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userAssistants",
 			namespace: "users",
 			method: "listAssistants",
 			http: "get",
-			path: `/users/${userId}/assistants`,
+			path: `/users/${encodeURIComponent(userId)}/assistants`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAssistants"],
@@ -1184,7 +1184,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/assistants"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1192,13 +1192,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `POST /users/{userId}/assistants` — risk: medium
 	 */
-	async createAssistant(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createAssistant(userId: string, body?: NonNullable<paths["/users/{userId}/assistants"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/assistants"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userAssistantCreate",
 			namespace: "users",
 			method: "createAssistant",
 			http: "post",
-			path: `/users/${userId}/assistants`,
+			path: `/users/${encodeURIComponent(userId)}/assistants`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createAssistant"],
@@ -1206,7 +1206,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/assistants"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1214,13 +1214,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `DELETE /users/{userId}/assistants` — risk: medium
 	 */
-	async assistants(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async assistants(userId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userAssistantsDelete",
 			namespace: "users",
 			method: "assistants",
 			http: "delete",
-			path: `/users/${userId}/assistants`,
+			path: `/users/${encodeURIComponent(userId)}/assistants`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["assistants"],
@@ -1228,7 +1228,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1236,13 +1236,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `DELETE /users/{userId}/assistants/{assistantId}` — risk: medium
 	 */
-	async deleteAssistant(userId: string, assistantId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteAssistant(userId: string, assistantId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userAssistantDelete",
 			namespace: "users",
 			method: "deleteAssistant",
 			http: "delete",
-			path: `/users/${userId}/assistants/${assistantId}`,
+			path: `/users/${encodeURIComponent(userId)}/assistants/${encodeURIComponent(assistantId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteAssistant"],
@@ -1250,7 +1250,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1258,13 +1258,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/schedulers` — risk: medium
 	 */
-	async listSchedulers(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSchedulers(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/schedulers"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userSchedulers",
 			namespace: "users",
 			method: "listSchedulers",
 			http: "get",
-			path: `/users/${userId}/schedulers`,
+			path: `/users/${encodeURIComponent(userId)}/schedulers`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSchedulers"],
@@ -1272,7 +1272,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/schedulers"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1280,13 +1280,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `DELETE /users/{userId}/schedulers` — risk: medium
 	 */
-	async schedulers(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async schedulers(userId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userSchedulersDelete",
 			namespace: "users",
 			method: "schedulers",
 			http: "delete",
-			path: `/users/${userId}/schedulers`,
+			path: `/users/${encodeURIComponent(userId)}/schedulers`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["schedulers"],
@@ -1294,7 +1294,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1302,13 +1302,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `DELETE /users/{userId}/schedulers/{schedulerId}` — risk: medium
 	 */
-	async deleteScheduler(userId: string, schedulerId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteScheduler(userId: string, schedulerId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userSchedulerDelete",
 			namespace: "users",
 			method: "deleteScheduler",
 			http: "delete",
-			path: `/users/${userId}/schedulers/${schedulerId}`,
+			path: `/users/${encodeURIComponent(userId)}/schedulers/${encodeURIComponent(schedulerId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteScheduler"],
@@ -1316,7 +1316,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1324,13 +1324,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `POST /users/{userId}/picture` — risk: medium
 	 */
-	async createPicture(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createPicture(userId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userPicture",
 			namespace: "users",
 			method: "createPicture",
 			http: "post",
-			path: `/users/${userId}/picture`,
+			path: `/users/${encodeURIComponent(userId)}/picture`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createPicture"],
@@ -1338,7 +1338,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1346,13 +1346,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/settings` — risk: medium
 	 */
-	async listSettings(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSettings(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/settings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userSettings",
 			namespace: "users",
 			method: "listSettings",
 			http: "get",
-			path: `/users/${userId}/settings`,
+			path: `/users/${encodeURIComponent(userId)}/settings`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSettings"],
@@ -1360,7 +1360,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/settings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1368,13 +1368,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `PATCH /users/{userId}/settings` — risk: medium
 	 */
-	async settings(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async settings(userId: string, body?: NonNullable<paths["/users/{userId}/settings"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userSettingsUpdate",
 			namespace: "users",
 			method: "settings",
 			http: "patch",
-			path: `/users/${userId}/settings`,
+			path: `/users/${encodeURIComponent(userId)}/settings`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["settings"],
@@ -1382,7 +1382,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1390,13 +1390,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `PUT /users/{userId}/status` — risk: medium
 	 */
-	async status(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async status(userId: string, body?: NonNullable<paths["/users/{userId}/status"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userStatus",
 			namespace: "users",
 			method: "status",
 			http: "put",
-			path: `/users/${userId}/status`,
+			path: `/users/${encodeURIComponent(userId)}/status`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["status"],
@@ -1404,7 +1404,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1412,13 +1412,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `PUT /users/{userId}/password` — risk: medium
 	 */
-	async password(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async password(userId: string, body?: NonNullable<paths["/users/{userId}/password"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userPassword",
 			namespace: "users",
 			method: "password",
 			http: "put",
-			path: `/users/${userId}/password`,
+			path: `/users/${encodeURIComponent(userId)}/password`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["password"],
@@ -1426,7 +1426,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1434,13 +1434,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/permissions` — risk: medium
 	 */
-	async listPermissions(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listPermissions(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/permissions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userPermission",
 			namespace: "users",
 			method: "listPermissions",
 			http: "get",
-			path: `/users/${userId}/permissions`,
+			path: `/users/${encodeURIComponent(userId)}/permissions`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPermissions"],
@@ -1448,7 +1448,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/permissions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1456,13 +1456,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/pac` — risk: medium
 	 */
-	async listPac(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listPac(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/pac"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userPACs",
 			namespace: "users",
 			method: "listPac",
 			http: "get",
-			path: `/users/${userId}/pac`,
+			path: `/users/${encodeURIComponent(userId)}/pac`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPac"],
@@ -1470,7 +1470,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/pac"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1478,13 +1478,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/tsp` — risk: medium
 	 */
-	async listTsp(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTsp(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/tsp"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userTSPs",
 			namespace: "users",
 			method: "listTsp",
 			http: "get",
-			path: `/users/${userId}/tsp`,
+			path: `/users/${encodeURIComponent(userId)}/tsp`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTsp"],
@@ -1492,7 +1492,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/tsp"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1500,13 +1500,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `POST /users/{userId}/tsp` — risk: medium
 	 */
-	async createTsp(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTsp(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/tsp"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userTSPCreate",
 			namespace: "users",
 			method: "createTsp",
 			http: "post",
-			path: `/users/${userId}/tsp`,
+			path: `/users/${encodeURIComponent(userId)}/tsp`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["createTsp"],
@@ -1514,7 +1514,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/tsp"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1522,13 +1522,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/tsp/{tspId}` — risk: medium
 	 */
-	async retrieveTsp(userId: string, tspId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveTsp(userId: string, tspId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/tsp/{tspId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userTSP",
 			namespace: "users",
 			method: "retrieveTsp",
 			http: "get",
-			path: `/users/${userId}/tsp/${tspId}`,
+			path: `/users/${encodeURIComponent(userId)}/tsp/${encodeURIComponent(tspId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTsp"],
@@ -1536,7 +1536,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/tsp/{tspId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1544,13 +1544,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `PATCH /users/{userId}/tsp/{tspId}` — risk: medium
 	 */
-	async tsp(userId: string, tspId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async tsp(userId: string, tspId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userTSPUpdate",
 			namespace: "users",
 			method: "tsp",
 			http: "patch",
-			path: `/users/${userId}/tsp/${tspId}`,
+			path: `/users/${encodeURIComponent(userId)}/tsp/${encodeURIComponent(tspId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["tsp"],
@@ -1558,7 +1558,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1566,13 +1566,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `DELETE /users/{userId}/tsp/{tspId}` — risk: medium
 	 */
-	async deleteTsp(userId: string, tspId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteTsp(userId: string, tspId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userTSPDelete",
 			namespace: "users",
 			method: "deleteTsp",
 			http: "delete",
-			path: `/users/${userId}/tsp/${tspId}`,
+			path: `/users/${encodeURIComponent(userId)}/tsp/${encodeURIComponent(tspId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteTsp"],
@@ -1580,7 +1580,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1588,13 +1588,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/token` — risk: medium
 	 */
-	async listToken(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listToken(userId: string, options?: QueryCallOptions<NonNullable<paths["/users/{userId}/token"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/{userId}/token"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userToken",
 			namespace: "users",
 			method: "listToken",
 			http: "get",
-			path: `/users/${userId}/token`,
+			path: `/users/${encodeURIComponent(userId)}/token`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listToken"],
@@ -1602,7 +1602,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/token"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1610,13 +1610,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `DELETE /users/{userId}/token` — risk: medium
 	 */
-	async token(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async token(userId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userSSOTokenDelete",
 			namespace: "users",
 			method: "token",
 			http: "delete",
-			path: `/users/${userId}/token`,
+			path: `/users/${encodeURIComponent(userId)}/token`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["token"],
@@ -1624,7 +1624,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1632,13 +1632,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `PUT /users/{userId}/email` — risk: medium
 	 */
-	async email(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async email(userId: string, body?: NonNullable<paths["/users/{userId}/email"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "userEmailUpdate",
 			namespace: "users",
 			method: "email",
 			http: "put",
-			path: `/users/${userId}/email`,
+			path: `/users/${encodeURIComponent(userId)}/email`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["email"],
@@ -1646,7 +1646,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1654,8 +1654,8 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/zpk` — risk: medium
 	 */
-	async listZpk(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listZpk(options?: QueryCallOptions<NonNullable<paths["/users/zpk"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/zpk"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userZPK",
 			namespace: "users",
 			method: "listZpk",
@@ -1668,7 +1668,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/zpk"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1676,8 +1676,8 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/email` — risk: medium
 	 */
-	async listEmail(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEmail(options?: QueryCallOptions<NonNullable<paths["/users/email"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/email"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userEmail",
 			namespace: "users",
 			method: "listEmail",
@@ -1690,7 +1690,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/email"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1698,8 +1698,8 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/vanity_name` — risk: medium
 	 */
-	async listVanityName(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listVanityName(options?: QueryCallOptions<NonNullable<paths["/users/vanity_name"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/vanity_name"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "userVanityName",
 			namespace: "users",
 			method: "listVanityName",
@@ -1712,7 +1712,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/vanity_name"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1720,13 +1720,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `GET /users/{userId}/webinars` — risk: medium
 	 */
-	async listWebinars(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listWebinars(userId: string, options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/webinars"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinars",
 			namespace: "users",
 			method: "listWebinars",
 			http: "get",
-			path: `/users/${userId}/webinars`,
+			path: `/users/${encodeURIComponent(userId)}/webinars`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listWebinars"],
@@ -1734,7 +1734,7 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/webinars"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1742,13 +1742,13 @@ export class UsersResource extends RpcTarget {
 	 *
 	 * `POST /users/{userId}/webinars` — risk: medium
 	 */
-	async createWebinar(userId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createWebinar(userId: string, body?: NonNullable<paths["/users/{userId}/webinars"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/users/{userId}/webinars"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarCreate",
 			namespace: "users",
 			method: "createWebinar",
 			http: "post",
-			path: `/users/${userId}/webinars`,
+			path: `/users/${encodeURIComponent(userId)}/webinars`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createWebinar"],
@@ -1756,13 +1756,13 @@ export class UsersResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/{userId}/webinars"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class MeetingsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1774,13 +1774,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `GET /meetings/{meetingId}` — risk: low
 	 */
-	async retrieve(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/meetings/{meetingId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "meeting",
 			namespace: "meetings",
 			method: "retrieve",
 			http: "get",
-			path: `/meetings/${meetingId}`,
+			path: `/meetings/${encodeURIComponent(meetingId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -1788,7 +1788,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/meetings/{meetingId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1796,13 +1796,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `PATCH /meetings/{meetingId}` — risk: medium
 	 */
-	async patch(meetingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(meetingId: string, body?: NonNullable<paths["/meetings/{meetingId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingUpdate",
 			namespace: "meetings",
 			method: "patch",
 			http: "patch",
-			path: `/meetings/${meetingId}`,
+			path: `/meetings/${encodeURIComponent(meetingId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["patch"],
@@ -1810,7 +1810,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1818,13 +1818,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `DELETE /meetings/{meetingId}` — risk: medium
 	 */
-	async del(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(meetingId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingDelete",
 			namespace: "meetings",
 			method: "del",
 			http: "delete",
-			path: `/meetings/${meetingId}`,
+			path: `/meetings/${encodeURIComponent(meetingId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -1832,7 +1832,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1840,13 +1840,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `PUT /meetings/{meetingId}/status` — risk: medium
 	 */
-	async status_0(meetingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async status_0(meetingId: string, body?: NonNullable<paths["/meetings/{meetingId}/status"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingStatus",
 			namespace: "meetings",
 			method: "status_0",
 			http: "put",
-			path: `/meetings/${meetingId}/status`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/status`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["status_0"],
@@ -1854,7 +1854,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1862,13 +1862,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `GET /meetings/{meetingId}/invitation` — risk: medium
 	 */
-	async listInvitation(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listInvitation(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/meetings/{meetingId}/invitation"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingInvitation",
 			namespace: "meetings",
 			method: "listInvitation",
 			http: "get",
-			path: `/meetings/${meetingId}/invitation`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/invitation`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listInvitation"],
@@ -1876,7 +1876,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/meetings/{meetingId}/invitation"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1884,13 +1884,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `GET /meetings/{meetingId}/registrants` — risk: medium
 	 */
-	async listRegistrants(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listRegistrants(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/meetings/{meetingId}/registrants"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingRegistrants",
 			namespace: "meetings",
 			method: "listRegistrants",
 			http: "get",
-			path: `/meetings/${meetingId}/registrants`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/registrants`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRegistrants"],
@@ -1898,7 +1898,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/meetings/{meetingId}/registrants"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1906,13 +1906,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `POST /meetings/{meetingId}/registrants` — risk: medium
 	 */
-	async createRegistrant(meetingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createRegistrant(meetingId: string, body?: NonNullable<paths["/meetings/{meetingId}/registrants"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/meetings/{meetingId}/registrants"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/meetings/{meetingId}/registrants"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingRegistrantCreate",
 			namespace: "meetings",
 			method: "createRegistrant",
 			http: "post",
-			path: `/meetings/${meetingId}/registrants`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/registrants`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createRegistrant"],
@@ -1920,7 +1920,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/meetings/{meetingId}/registrants"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1928,13 +1928,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `PUT /meetings/{meetingId}/registrants/status` — risk: medium
 	 */
-	async registrantsStatus(meetingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async registrantsStatus(meetingId: string, body?: NonNullable<paths["/meetings/{meetingId}/registrants/status"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingRegistrantStatus",
 			namespace: "meetings",
 			method: "registrantsStatus",
 			http: "put",
-			path: `/meetings/${meetingId}/registrants/status`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/registrants/status`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["registrantsStatus"],
@@ -1942,7 +1942,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1950,13 +1950,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `PATCH /meetings/{meetingId}/livestream` — risk: medium
 	 */
-	async livestream(meetingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async livestream(meetingId: string, body?: NonNullable<paths["/meetings/{meetingId}/livestream"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingLiveStreamUpdate",
 			namespace: "meetings",
 			method: "livestream",
 			http: "patch",
-			path: `/meetings/${meetingId}/livestream`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/livestream`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["livestream"],
@@ -1964,7 +1964,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1972,13 +1972,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `PATCH /meetings/{meetingId}/livestream/status` — risk: medium
 	 */
-	async livestreamStatus(meetingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async livestreamStatus(meetingId: string, body?: NonNullable<paths["/meetings/{meetingId}/livestream/status"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingLiveStreamStatusUpdate",
 			namespace: "meetings",
 			method: "livestreamStatus",
 			http: "patch",
-			path: `/meetings/${meetingId}/livestream/status`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/livestream/status`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["livestreamStatus"],
@@ -1986,7 +1986,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1994,13 +1994,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `GET /meetings/{meetingId}/polls` — risk: medium
 	 */
-	async listPolls(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listPolls(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/meetings/{meetingId}/polls"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingPolls",
 			namespace: "meetings",
 			method: "listPolls",
 			http: "get",
-			path: `/meetings/${meetingId}/polls`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/polls`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPolls"],
@@ -2008,7 +2008,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/meetings/{meetingId}/polls"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2016,13 +2016,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `POST /meetings/{meetingId}/polls` — risk: medium
 	 */
-	async createPoll(meetingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createPoll(meetingId: string, body?: NonNullable<paths["/meetings/{meetingId}/polls"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/meetings/{meetingId}/polls"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingPollCreate",
 			namespace: "meetings",
 			method: "createPoll",
 			http: "post",
-			path: `/meetings/${meetingId}/polls`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/polls`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createPoll"],
@@ -2030,7 +2030,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/meetings/{meetingId}/polls"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2038,13 +2038,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `GET /meetings/{meetingId}/polls/{pollId}` — risk: medium
 	 */
-	async retrievePoll(meetingId: string, pollId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrievePoll(meetingId: string, pollId: string, options?: CallOptions): Promise<ProofResult<paths["/meetings/{meetingId}/polls/{pollId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingPollGet",
 			namespace: "meetings",
 			method: "retrievePoll",
 			http: "get",
-			path: `/meetings/${meetingId}/polls/${pollId}`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/polls/${encodeURIComponent(pollId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePoll"],
@@ -2052,7 +2052,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/meetings/{meetingId}/polls/{pollId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2060,13 +2060,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `PUT /meetings/{meetingId}/polls/{pollId}` — risk: medium
 	 */
-	async polls(meetingId: string, pollId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async polls(meetingId: string, pollId: string, body?: NonNullable<paths["/meetings/{meetingId}/polls/{pollId}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingPollUpdate",
 			namespace: "meetings",
 			method: "polls",
 			http: "put",
-			path: `/meetings/${meetingId}/polls/${pollId}`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/polls/${encodeURIComponent(pollId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["polls"],
@@ -2074,7 +2074,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2082,13 +2082,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `DELETE /meetings/{meetingId}/polls/{pollId}` — risk: medium
 	 */
-	async deletePoll(meetingId: string, pollId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deletePoll(meetingId: string, pollId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "meetingPollDelete",
 			namespace: "meetings",
 			method: "deletePoll",
 			http: "delete",
-			path: `/meetings/${meetingId}/polls/${pollId}`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/polls/${encodeURIComponent(pollId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deletePoll"],
@@ -2096,7 +2096,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2104,13 +2104,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `GET /meetings/{meetingId}/recordings` — risk: medium
 	 */
-	async listRecordings(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listRecordings(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/meetings/{meetingId}/recordings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "recordingGet",
 			namespace: "meetings",
 			method: "listRecordings",
 			http: "get",
-			path: `/meetings/${meetingId}/recordings`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/recordings`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRecordings"],
@@ -2118,7 +2118,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/meetings/{meetingId}/recordings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2126,13 +2126,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `DELETE /meetings/{meetingId}/recordings` — risk: medium
 	 */
-	async recordings(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async recordings(meetingId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "recordingDelete",
 			namespace: "meetings",
 			method: "recordings",
 			http: "delete",
-			path: `/meetings/${meetingId}/recordings`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/recordings`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["recordings"],
@@ -2140,7 +2140,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2148,13 +2148,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `DELETE /meetings/{meetingId}/recordings/{recordingId}` — risk: medium
 	 */
-	async deleteRecording(meetingId: string, recordingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteRecording(meetingId: string, recordingId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "recordingDeleteOne",
 			namespace: "meetings",
 			method: "deleteRecording",
 			http: "delete",
-			path: `/meetings/${meetingId}/recordings/${recordingId}`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/recordings/${encodeURIComponent(recordingId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteRecording"],
@@ -2162,7 +2162,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2170,13 +2170,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `PUT /meetings/{meetingId}/recordings/status` — risk: medium
 	 */
-	async putRecordingsStatus(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async putRecordingsStatus(meetingId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "recordingStatusUpdate",
 			namespace: "meetings",
 			method: "putRecordingsStatus",
 			http: "put",
-			path: `/meetings/${meetingId}/recordings/status`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/recordings/status`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["putRecordingsStatus"],
@@ -2184,7 +2184,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2192,13 +2192,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `PUT /meetings/{meetingId}/recordings/{recordingId}/status` — risk: medium
 	 */
-	async putRecordingsStatus_0(meetingId: string, recordingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async putRecordingsStatus_0(meetingId: string, recordingId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "recordingStatusUpdateOne",
 			namespace: "meetings",
 			method: "putRecordingsStatus_0",
 			http: "put",
-			path: `/meetings/${meetingId}/recordings/${recordingId}/status`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/recordings/${encodeURIComponent(recordingId)}/status`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["putRecordingsStatus_0"],
@@ -2206,7 +2206,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2214,13 +2214,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `GET /meetings/{meetingId}/recordings/settings` — risk: medium
 	 */
-	async settings_0(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async settings_0(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/meetings/{meetingId}/recordings/settings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "recordingSettingUpdate",
 			namespace: "meetings",
 			method: "settings_0",
 			http: "get",
-			path: `/meetings/${meetingId}/recordings/settings`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/recordings/settings`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["settings_0"],
@@ -2228,7 +2228,7 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/meetings/{meetingId}/recordings/settings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2236,13 +2236,13 @@ export class MeetingsResource extends RpcTarget {
 	 *
 	 * `PATCH /meetings/{meetingId}/recordings/settings` — risk: medium
 	 */
-	async settings_1(meetingId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async settings_1(meetingId: string, body?: NonNullable<paths["/meetings/{meetingId}/recordings/settings"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "recordingSettingsUpdate",
 			namespace: "meetings",
 			method: "settings_1",
 			http: "patch",
-			path: `/meetings/${meetingId}/recordings/settings`,
+			path: `/meetings/${encodeURIComponent(meetingId)}/recordings/settings`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["settings_1"],
@@ -2250,13 +2250,13 @@ export class MeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class PastMeetingsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2268,13 +2268,13 @@ export class PastMeetingsResource extends RpcTarget {
 	 *
 	 * `GET /past_meetings/{meetingUUID}` — risk: low
 	 */
-	async retrieve(meetingUUID: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(meetingUUID: string, options?: CallOptions): Promise<ProofResult<paths["/past_meetings/{meetingUUID}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "pastMeetingDetails",
 			namespace: "past_meetings",
 			method: "retrieve",
 			http: "get",
-			path: `/past_meetings/${meetingUUID}`,
+			path: `/past_meetings/${encodeURIComponent(meetingUUID)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -2282,7 +2282,7 @@ export class PastMeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/past_meetings/{meetingUUID}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2290,13 +2290,13 @@ export class PastMeetingsResource extends RpcTarget {
 	 *
 	 * `GET /past_meetings/{meetingUUID}/participants` — risk: medium
 	 */
-	async listParticipants(meetingUUID: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listParticipants(meetingUUID: string, options?: CallOptions): Promise<ProofResult<paths["/past_meetings/{meetingUUID}/participants"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "pastMeetingParticipants",
 			namespace: "past_meetings",
 			method: "listParticipants",
 			http: "get",
-			path: `/past_meetings/${meetingUUID}/participants`,
+			path: `/past_meetings/${encodeURIComponent(meetingUUID)}/participants`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listParticipants"],
@@ -2304,7 +2304,7 @@ export class PastMeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/past_meetings/{meetingUUID}/participants"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2312,13 +2312,13 @@ export class PastMeetingsResource extends RpcTarget {
 	 *
 	 * `GET /past_meetings/{meetingId}/instances` — risk: medium
 	 */
-	async listInstances(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listInstances(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/past_meetings/{meetingId}/instances"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "pastMeetings",
 			namespace: "past_meetings",
 			method: "listInstances",
 			http: "get",
-			path: `/past_meetings/${meetingId}/instances`,
+			path: `/past_meetings/${encodeURIComponent(meetingId)}/instances`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listInstances"],
@@ -2326,13 +2326,13 @@ export class PastMeetingsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/past_meetings/{meetingId}/instances"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class MetricsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2344,8 +2344,8 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/meetings` — risk: medium
 	 */
-	async listMeetings(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMeetings(options?: CallOptions): Promise<ProofResult<paths["/metrics/meetings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardMeetings",
 			namespace: "metrics",
 			method: "listMeetings",
@@ -2358,7 +2358,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/meetings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2366,13 +2366,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/meetings/{meetingId}` — risk: medium
 	 */
-	async retrieveMeeting(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMeeting(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/meetings/{meetingId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardMeetingDetail",
 			namespace: "metrics",
 			method: "retrieveMeeting",
 			http: "get",
-			path: `/metrics/meetings/${meetingId}`,
+			path: `/metrics/meetings/${encodeURIComponent(meetingId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMeeting"],
@@ -2380,7 +2380,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/meetings/{meetingId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2388,13 +2388,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/meetings/{meetingId}/participants` — risk: medium
 	 */
-	async meetingsParticipants(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async meetingsParticipants(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/meetings/{meetingId}/participants"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardMeetingParticipants",
 			namespace: "metrics",
 			method: "meetingsParticipants",
 			http: "get",
-			path: `/metrics/meetings/${meetingId}/participants`,
+			path: `/metrics/meetings/${encodeURIComponent(meetingId)}/participants`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["meetingsParticipants"],
@@ -2402,7 +2402,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/meetings/{meetingId}/participants"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2410,13 +2410,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/meetings/{meetingId}/participants/{participantId}/qos` — risk: medium
 	 */
-	async getMeetingsparticipantsQos(meetingId: string, participantId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getMeetingsparticipantsQos(meetingId: string, participantId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/meetings/{meetingId}/participants/{participantId}/qos"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardMeetingParticipantQOS",
 			namespace: "metrics",
 			method: "getMeetingsparticipantsQos",
 			http: "get",
-			path: `/metrics/meetings/${meetingId}/participants/${participantId}/qos`,
+			path: `/metrics/meetings/${encodeURIComponent(meetingId)}/participants/${encodeURIComponent(participantId)}/qos`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getMeetingsparticipantsQos"],
@@ -2424,7 +2424,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/meetings/{meetingId}/participants/{participantId}/qos"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2432,13 +2432,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/meetings/{meetingId}/participants/qos` — risk: medium
 	 */
-	async getMeetingsparticipantsQos_0(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getMeetingsparticipantsQos_0(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/meetings/{meetingId}/participants/qos"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardMeetingParticipantsQOS",
 			namespace: "metrics",
 			method: "getMeetingsparticipantsQos_0",
 			http: "get",
-			path: `/metrics/meetings/${meetingId}/participants/qos`,
+			path: `/metrics/meetings/${encodeURIComponent(meetingId)}/participants/qos`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getMeetingsparticipantsQos_0"],
@@ -2446,7 +2446,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/meetings/{meetingId}/participants/qos"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2454,13 +2454,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/meetings/{meetingId}/participants/sharing` — risk: medium
 	 */
-	async meetingsparticipantsSharing(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async meetingsparticipantsSharing(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/meetings/{meetingId}/participants/sharing"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardMeetingParticipantShare",
 			namespace: "metrics",
 			method: "meetingsparticipantsSharing",
 			http: "get",
-			path: `/metrics/meetings/${meetingId}/participants/sharing`,
+			path: `/metrics/meetings/${encodeURIComponent(meetingId)}/participants/sharing`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["meetingsparticipantsSharing"],
@@ -2468,7 +2468,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/meetings/{meetingId}/participants/sharing"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2476,8 +2476,8 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/webinars` — risk: medium
 	 */
-	async listWebinars(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listWebinars(options?: CallOptions): Promise<ProofResult<paths["/metrics/webinars"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardWebinars",
 			namespace: "metrics",
 			method: "listWebinars",
@@ -2490,7 +2490,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/webinars"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2498,13 +2498,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/webinars/{webinarId}` — risk: medium
 	 */
-	async retrieveWebinar(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveWebinar(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/webinars/{webinarId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardWebinarDetail",
 			namespace: "metrics",
 			method: "retrieveWebinar",
 			http: "get",
-			path: `/metrics/webinars/${webinarId}`,
+			path: `/metrics/webinars/${encodeURIComponent(webinarId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveWebinar"],
@@ -2512,7 +2512,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/webinars/{webinarId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2520,13 +2520,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/webinars/{webinarId}/participants` — risk: medium
 	 */
-	async webinarsParticipants(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async webinarsParticipants(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/webinars/{webinarId}/participants"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardWebinarParticipants",
 			namespace: "metrics",
 			method: "webinarsParticipants",
 			http: "get",
-			path: `/metrics/webinars/${webinarId}/participants`,
+			path: `/metrics/webinars/${encodeURIComponent(webinarId)}/participants`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["webinarsParticipants"],
@@ -2534,7 +2534,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/webinars/{webinarId}/participants"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2542,13 +2542,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/webinars/{webinarId}/participants/{participantId}/qos` — risk: medium
 	 */
-	async getWebinarsparticipantsQos(webinarId: string, participantId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getWebinarsparticipantsQos(webinarId: string, participantId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/webinars/{webinarId}/participants/{participantId}/qos"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardWebinarParticipantQOS",
 			namespace: "metrics",
 			method: "getWebinarsparticipantsQos",
 			http: "get",
-			path: `/metrics/webinars/${webinarId}/participants/${participantId}/qos`,
+			path: `/metrics/webinars/${encodeURIComponent(webinarId)}/participants/${encodeURIComponent(participantId)}/qos`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getWebinarsparticipantsQos"],
@@ -2556,7 +2556,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/webinars/{webinarId}/participants/{participantId}/qos"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2564,13 +2564,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/webinars/{webinarId}/participants/qos` — risk: medium
 	 */
-	async getWebinarsparticipantsQos_0(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getWebinarsparticipantsQos_0(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/webinars/{webinarId}/participants/qos"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardWebinarParticipantsQOS",
 			namespace: "metrics",
 			method: "getWebinarsparticipantsQos_0",
 			http: "get",
-			path: `/metrics/webinars/${webinarId}/participants/qos`,
+			path: `/metrics/webinars/${encodeURIComponent(webinarId)}/participants/qos`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getWebinarsparticipantsQos_0"],
@@ -2578,7 +2578,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/webinars/{webinarId}/participants/qos"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2586,13 +2586,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/webinars/{webinarId}/participants/sharing` — risk: medium
 	 */
-	async webinarsparticipantsSharing(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async webinarsparticipantsSharing(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/webinars/{webinarId}/participants/sharing"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardWebinarParticipantShare",
 			namespace: "metrics",
 			method: "webinarsparticipantsSharing",
 			http: "get",
-			path: `/metrics/webinars/${webinarId}/participants/sharing`,
+			path: `/metrics/webinars/${encodeURIComponent(webinarId)}/participants/sharing`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["webinarsparticipantsSharing"],
@@ -2600,7 +2600,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/webinars/{webinarId}/participants/sharing"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2608,8 +2608,8 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/zoomrooms` — risk: medium
 	 */
-	async listZoomrooms(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listZoomrooms(options?: CallOptions): Promise<ProofResult<paths["/metrics/zoomrooms"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardZoomRooms",
 			namespace: "metrics",
 			method: "listZoomrooms",
@@ -2622,7 +2622,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/zoomrooms"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2630,13 +2630,13 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/zoomrooms/{zoomroomId}` — risk: medium
 	 */
-	async retrieveZoomroom(zoomroomId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveZoomroom(zoomroomId: string, options?: CallOptions): Promise<ProofResult<paths["/metrics/zoomrooms/{zoomroomId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardZoomRoom",
 			namespace: "metrics",
 			method: "retrieveZoomroom",
 			http: "get",
-			path: `/metrics/zoomrooms/${zoomroomId}`,
+			path: `/metrics/zoomrooms/${encodeURIComponent(zoomroomId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveZoomroom"],
@@ -2644,7 +2644,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/zoomrooms/{zoomroomId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2652,8 +2652,8 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/crc` — risk: medium
 	 */
-	async listCrc(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCrc(options?: CallOptions): Promise<ProofResult<paths["/metrics/crc"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardCRC",
 			namespace: "metrics",
 			method: "listCrc",
@@ -2666,7 +2666,7 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/crc"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2674,8 +2674,8 @@ export class MetricsResource extends RpcTarget {
 	 *
 	 * `GET /metrics/im` — risk: medium
 	 */
-	async listIm(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listIm(options?: CallOptions): Promise<ProofResult<paths["/metrics/im"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "dashboardIM",
 			namespace: "metrics",
 			method: "listIm",
@@ -2688,13 +2688,13 @@ export class MetricsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/metrics/im"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ReportResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2706,8 +2706,8 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/daily` — risk: medium
 	 */
-	async listDaily(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listDaily(options?: QueryCallOptions<NonNullable<paths["/report/daily"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/report/daily"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportDaily",
 			namespace: "report",
 			method: "listDaily",
@@ -2720,7 +2720,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/daily"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2728,8 +2728,8 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/users` — risk: medium
 	 */
-	async listUsers(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listUsers(options?: QueryCallOptions<NonNullable<paths["/report/users"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/report/users"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportUsers",
 			namespace: "report",
 			method: "listUsers",
@@ -2742,7 +2742,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/users"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2750,13 +2750,13 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/users/{userId}/meetings` — risk: medium
 	 */
-	async meetings(userId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async meetings(userId: string, options?: CallOptions): Promise<ProofResult<paths["/report/users/{userId}/meetings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportMeetings",
 			namespace: "report",
 			method: "meetings",
 			http: "get",
-			path: `/report/users/${userId}/meetings`,
+			path: `/report/users/${encodeURIComponent(userId)}/meetings`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["meetings"],
@@ -2764,7 +2764,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/users/{userId}/meetings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2772,13 +2772,13 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/meetings/{meetingId}` — risk: medium
 	 */
-	async retrieveMeeting(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMeeting(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/report/meetings/{meetingId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportMeetingDetails",
 			namespace: "report",
 			method: "retrieveMeeting",
 			http: "get",
-			path: `/report/meetings/${meetingId}`,
+			path: `/report/meetings/${encodeURIComponent(meetingId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMeeting"],
@@ -2786,7 +2786,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/meetings/{meetingId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2794,13 +2794,13 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/meetings/{meetingId}/participants` — risk: medium
 	 */
-	async meetingsParticipants(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async meetingsParticipants(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/report/meetings/{meetingId}/participants"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportMeetingParticipants",
 			namespace: "report",
 			method: "meetingsParticipants",
 			http: "get",
-			path: `/report/meetings/${meetingId}/participants`,
+			path: `/report/meetings/${encodeURIComponent(meetingId)}/participants`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["meetingsParticipants"],
@@ -2808,7 +2808,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/meetings/{meetingId}/participants"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2816,13 +2816,13 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/meetings/{meetingId}/polls` — risk: medium
 	 */
-	async meetingsPolls(meetingId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async meetingsPolls(meetingId: string, options?: CallOptions): Promise<ProofResult<paths["/report/meetings/{meetingId}/polls"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportMeetingPolls",
 			namespace: "report",
 			method: "meetingsPolls",
 			http: "get",
-			path: `/report/meetings/${meetingId}/polls`,
+			path: `/report/meetings/${encodeURIComponent(meetingId)}/polls`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["meetingsPolls"],
@@ -2830,7 +2830,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/meetings/{meetingId}/polls"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2838,13 +2838,13 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/webinars/{webinarId}` — risk: medium
 	 */
-	async retrieveWebinar(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveWebinar(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/report/webinars/{webinarId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportWebinarDetails",
 			namespace: "report",
 			method: "retrieveWebinar",
 			http: "get",
-			path: `/report/webinars/${webinarId}`,
+			path: `/report/webinars/${encodeURIComponent(webinarId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveWebinar"],
@@ -2852,7 +2852,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/webinars/{webinarId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2860,13 +2860,13 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/webinars/{webinarId}/participants` — risk: medium
 	 */
-	async webinarsParticipants(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async webinarsParticipants(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/report/webinars/{webinarId}/participants"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportWebinarParticipants",
 			namespace: "report",
 			method: "webinarsParticipants",
 			http: "get",
-			path: `/report/webinars/${webinarId}/participants`,
+			path: `/report/webinars/${encodeURIComponent(webinarId)}/participants`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["webinarsParticipants"],
@@ -2874,7 +2874,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/webinars/{webinarId}/participants"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2882,13 +2882,13 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/webinars/{webinarId}/polls` — risk: medium
 	 */
-	async webinarsPolls(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async webinarsPolls(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/report/webinars/{webinarId}/polls"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportWebinarPolls",
 			namespace: "report",
 			method: "webinarsPolls",
 			http: "get",
-			path: `/report/webinars/${webinarId}/polls`,
+			path: `/report/webinars/${encodeURIComponent(webinarId)}/polls`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["webinarsPolls"],
@@ -2896,7 +2896,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/webinars/{webinarId}/polls"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2904,13 +2904,13 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/webinars/{webinarId}/qa` — risk: medium
 	 */
-	async qa(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async qa(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/report/webinars/{webinarId}/qa"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportWebinarQA",
 			namespace: "report",
 			method: "qa",
 			http: "get",
-			path: `/report/webinars/${webinarId}/qa`,
+			path: `/report/webinars/${encodeURIComponent(webinarId)}/qa`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["qa"],
@@ -2918,7 +2918,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/webinars/{webinarId}/qa"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2926,8 +2926,8 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/telephone` — risk: medium
 	 */
-	async listTelephone(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTelephone(options?: QueryCallOptions<NonNullable<paths["/report/telephone"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/report/telephone"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportTelephone",
 			namespace: "report",
 			method: "listTelephone",
@@ -2940,7 +2940,7 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/telephone"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2948,8 +2948,8 @@ export class ReportResource extends RpcTarget {
 	 *
 	 * `GET /report/cloud_recording` — risk: medium
 	 */
-	async listCloudRecording(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCloudRecording(options?: CallOptions): Promise<ProofResult<paths["/report/cloud_recording"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "reportCloudRecording",
 			namespace: "report",
 			method: "listCloudRecording",
@@ -2962,13 +2962,13 @@ export class ReportResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/report/cloud_recording"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TspResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2980,8 +2980,8 @@ export class TspResource extends RpcTarget {
 	 *
 	 * `GET /tsp` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: CallOptions): Promise<ProofResult<paths["/tsp"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "tsp",
 			namespace: "tsp",
 			method: "list",
@@ -2994,7 +2994,7 @@ export class TspResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/tsp"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3002,8 +3002,8 @@ export class TspResource extends RpcTarget {
 	 *
 	 * `PATCH /tsp` — risk: medium
 	 */
-	async patch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(body?: NonNullable<paths["/tsp"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "tspUpdate",
 			namespace: "tsp",
 			method: "patch",
@@ -3016,13 +3016,13 @@ export class TspResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class WebinarsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3034,13 +3034,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `GET /webinars/{webinarId}` — risk: low
 	 */
-	async retrieve(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/webinars/{webinarId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinar",
 			namespace: "webinars",
 			method: "retrieve",
 			http: "get",
-			path: `/webinars/${webinarId}`,
+			path: `/webinars/${encodeURIComponent(webinarId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -3048,7 +3048,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webinars/{webinarId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3056,13 +3056,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `PATCH /webinars/{webinarId}` — risk: medium
 	 */
-	async patch(webinarId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(webinarId: string, body?: NonNullable<paths["/webinars/{webinarId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarUpdate",
 			namespace: "webinars",
 			method: "patch",
 			http: "patch",
-			path: `/webinars/${webinarId}`,
+			path: `/webinars/${encodeURIComponent(webinarId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["patch"],
@@ -3070,7 +3070,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3078,13 +3078,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `DELETE /webinars/{webinarId}` — risk: medium
 	 */
-	async del(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(webinarId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarDelete",
 			namespace: "webinars",
 			method: "del",
 			http: "delete",
-			path: `/webinars/${webinarId}`,
+			path: `/webinars/${encodeURIComponent(webinarId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -3092,7 +3092,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3100,13 +3100,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `PUT /webinars/{webinarId}/status` — risk: medium
 	 */
-	async status_0(webinarId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async status_0(webinarId: string, body?: NonNullable<paths["/webinars/{webinarId}/status"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarStatus",
 			namespace: "webinars",
 			method: "status_0",
 			http: "put",
-			path: `/webinars/${webinarId}/status`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/status`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["status_0"],
@@ -3114,7 +3114,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3122,13 +3122,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `GET /webinars/{webinarId}/panelists` — risk: medium
 	 */
-	async listPanelists(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listPanelists(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/webinars/{webinarId}/panelists"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarPanelists",
 			namespace: "webinars",
 			method: "listPanelists",
 			http: "get",
-			path: `/webinars/${webinarId}/panelists`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/panelists`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPanelists"],
@@ -3136,7 +3136,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webinars/{webinarId}/panelists"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3144,13 +3144,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `POST /webinars/{webinarId}/panelists` — risk: medium
 	 */
-	async createPanelist(webinarId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createPanelist(webinarId: string, body?: NonNullable<paths["/webinars/{webinarId}/panelists"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/webinars/{webinarId}/panelists"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarPanelistCreate",
 			namespace: "webinars",
 			method: "createPanelist",
 			http: "post",
-			path: `/webinars/${webinarId}/panelists`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/panelists`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createPanelist"],
@@ -3158,7 +3158,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webinars/{webinarId}/panelists"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3166,13 +3166,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `DELETE /webinars/{webinarId}/panelists` — risk: medium
 	 */
-	async panelists(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async panelists(webinarId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarPanelistsDelete",
 			namespace: "webinars",
 			method: "panelists",
 			http: "delete",
-			path: `/webinars/${webinarId}/panelists`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/panelists`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["panelists"],
@@ -3180,7 +3180,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3188,13 +3188,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `DELETE /webinars/{webinarId}/panelists/{panelistId}` — risk: medium
 	 */
-	async deletePanelist(webinarId: string, panelistId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deletePanelist(webinarId: string, panelistId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarPanelistDelete",
 			namespace: "webinars",
 			method: "deletePanelist",
 			http: "delete",
-			path: `/webinars/${webinarId}/panelists/${panelistId}`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/panelists/${encodeURIComponent(panelistId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deletePanelist"],
@@ -3202,7 +3202,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3210,13 +3210,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `GET /webinars/{webinarId}/registrants` — risk: medium
 	 */
-	async listRegistrants(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listRegistrants(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/webinars/{webinarId}/registrants"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarRegistrants",
 			namespace: "webinars",
 			method: "listRegistrants",
 			http: "get",
-			path: `/webinars/${webinarId}/registrants`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/registrants`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRegistrants"],
@@ -3224,7 +3224,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webinars/{webinarId}/registrants"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3232,13 +3232,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `POST /webinars/{webinarId}/registrants` — risk: medium
 	 */
-	async createRegistrant(webinarId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createRegistrant(webinarId: string, body?: NonNullable<paths["/webinars/{webinarId}/registrants"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/webinars/{webinarId}/registrants"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/webinars/{webinarId}/registrants"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarRegistrantCreate",
 			namespace: "webinars",
 			method: "createRegistrant",
 			http: "post",
-			path: `/webinars/${webinarId}/registrants`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/registrants`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createRegistrant"],
@@ -3246,7 +3246,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webinars/{webinarId}/registrants"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3254,13 +3254,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `PUT /webinars/{webinarId}/registrants/status` — risk: medium
 	 */
-	async registrantsStatus(webinarId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async registrantsStatus(webinarId: string, body?: NonNullable<paths["/webinars/{webinarId}/registrants/status"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarRegistrantStatus",
 			namespace: "webinars",
 			method: "registrantsStatus",
 			http: "put",
-			path: `/webinars/${webinarId}/registrants/status`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/registrants/status`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["registrantsStatus"],
@@ -3268,7 +3268,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3276,13 +3276,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `GET /webinars/{webinarId}/polls` — risk: medium
 	 */
-	async listPolls(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listPolls(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/webinars/{webinarId}/polls"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarPolls",
 			namespace: "webinars",
 			method: "listPolls",
 			http: "get",
-			path: `/webinars/${webinarId}/polls`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/polls`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listPolls"],
@@ -3290,7 +3290,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webinars/{webinarId}/polls"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3298,13 +3298,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `POST /webinars/{webinarId}/polls` — risk: medium
 	 */
-	async createPoll(webinarId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createPoll(webinarId: string, body?: NonNullable<paths["/webinars/{webinarId}/polls"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/webinars/{webinarId}/polls"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarPollCreate",
 			namespace: "webinars",
 			method: "createPoll",
 			http: "post",
-			path: `/webinars/${webinarId}/polls`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/polls`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createPoll"],
@@ -3312,7 +3312,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webinars/{webinarId}/polls"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3320,13 +3320,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `GET /webinars/{webinarId}/polls/{pollId}` — risk: medium
 	 */
-	async retrievePoll(webinarId: string, pollId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrievePoll(webinarId: string, pollId: string, options?: CallOptions): Promise<ProofResult<paths["/webinars/{webinarId}/polls/{pollId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarPollGet",
 			namespace: "webinars",
 			method: "retrievePoll",
 			http: "get",
-			path: `/webinars/${webinarId}/polls/${pollId}`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/polls/${encodeURIComponent(pollId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePoll"],
@@ -3334,7 +3334,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webinars/{webinarId}/polls/{pollId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3342,13 +3342,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `PUT /webinars/{webinarId}/polls/{pollId}` — risk: medium
 	 */
-	async polls(webinarId: string, pollId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async polls(webinarId: string, pollId: string, body?: NonNullable<paths["/webinars/{webinarId}/polls/{pollId}"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarPollUpdate",
 			namespace: "webinars",
 			method: "polls",
 			http: "put",
-			path: `/webinars/${webinarId}/polls/${pollId}`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/polls/${encodeURIComponent(pollId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["polls"],
@@ -3356,7 +3356,7 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3364,13 +3364,13 @@ export class WebinarsResource extends RpcTarget {
 	 *
 	 * `DELETE /webinars/{webinarId}/polls/{pollId}` — risk: medium
 	 */
-	async deletePoll(webinarId: string, pollId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deletePoll(webinarId: string, pollId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webinarPollDelete",
 			namespace: "webinars",
 			method: "deletePoll",
 			http: "delete",
-			path: `/webinars/${webinarId}/polls/${pollId}`,
+			path: `/webinars/${encodeURIComponent(webinarId)}/polls/${encodeURIComponent(pollId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deletePoll"],
@@ -3378,13 +3378,13 @@ export class WebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class PastWebinarsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3396,13 +3396,13 @@ export class PastWebinarsResource extends RpcTarget {
 	 *
 	 * `GET /past_webinars/{webinarId}/instances` — risk: medium
 	 */
-	async listInstances(webinarId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listInstances(webinarId: string, options?: CallOptions): Promise<ProofResult<paths["/past_webinars/{webinarId}/instances"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "pastWebinars",
 			namespace: "past_webinars",
 			method: "listInstances",
 			http: "get",
-			path: `/past_webinars/${webinarId}/instances`,
+			path: `/past_webinars/${encodeURIComponent(webinarId)}/instances`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listInstances"],
@@ -3410,13 +3410,13 @@ export class PastWebinarsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/past_webinars/{webinarId}/instances"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class WebhooksResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3428,8 +3428,8 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `PATCH /webhooks/options` — risk: medium
 	 */
-	async options(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async options(body?: NonNullable<paths["/webhooks/options"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webhookSwitch",
 			namespace: "webhooks",
 			method: "options",
@@ -3442,7 +3442,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3450,8 +3450,8 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `GET /webhooks` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: CallOptions): Promise<ProofResult<paths["/webhooks"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webhooks",
 			namespace: "webhooks",
 			method: "list",
@@ -3464,7 +3464,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3472,8 +3472,8 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `POST /webhooks` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/webhooks"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/webhooks"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webhookCreate",
 			namespace: "webhooks",
 			method: "create",
@@ -3486,7 +3486,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3494,13 +3494,13 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `GET /webhooks/{webhookId}` — risk: low
 	 */
-	async retrieve(webhookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(webhookId: string, options?: CallOptions): Promise<ProofResult<paths["/webhooks/{webhookId}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "webhook",
 			namespace: "webhooks",
 			method: "retrieve",
 			http: "get",
-			path: `/webhooks/${webhookId}`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -3508,7 +3508,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/webhooks/{webhookId}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3516,13 +3516,13 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `PATCH /webhooks/{webhookId}` — risk: medium
 	 */
-	async patch(webhookId: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(webhookId: string, body?: NonNullable<paths["/webhooks/{webhookId}"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webhookUpdate",
 			namespace: "webhooks",
 			method: "patch",
 			http: "patch",
-			path: `/webhooks/${webhookId}`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["patch"],
@@ -3530,7 +3530,7 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3538,13 +3538,13 @@ export class WebhooksResource extends RpcTarget {
 	 *
 	 * `DELETE /webhooks/{webhookId}` — risk: medium
 	 */
-	async del(webhookId: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(webhookId: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "webhookDelete",
 			namespace: "webhooks",
 			method: "del",
 			http: "delete",
-			path: `/webhooks/${webhookId}`,
+			path: `/webhooks/${encodeURIComponent(webhookId)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -3552,71 +3552,76 @@ export class WebhooksResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 interface Env {
 	ZOOM_API_KEY?: string;
+	ZOOM_USER_ID?: string;
 }
 
 export class ZoomCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
 	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
+	protected providerCredentials(): import("./runtime.ts").Credentials {
+		return { apiKey: this.env.ZOOM_API_KEY, username: this.env.ZOOM_USER_ID };
+	}
+
 	get accounts(): AccountsResource {
-		return new AccountsResource(this.env.ZOOM_API_KEY, this.overrides["accounts"] || {}, this.runtimeConfig);
+		return new AccountsResource(this.providerCredentials(), this.overrides["accounts"] || {}, this.runtimeConfig);
 	}
 
 	get groups(): GroupsResource {
-		return new GroupsResource(this.env.ZOOM_API_KEY, this.overrides["groups"] || {}, this.runtimeConfig);
+		return new GroupsResource(this.providerCredentials(), this.overrides["groups"] || {}, this.runtimeConfig);
 	}
 
 	get h323(): H323Resource {
-		return new H323Resource(this.env.ZOOM_API_KEY, this.overrides["h323"] || {}, this.runtimeConfig);
+		return new H323Resource(this.providerCredentials(), this.overrides["h323"] || {}, this.runtimeConfig);
 	}
 
 	get v2(): V2Resource {
-		return new V2Resource(this.env.ZOOM_API_KEY, this.overrides["v2"] || {}, this.runtimeConfig);
+		return new V2Resource(this.providerCredentials(), this.overrides["v2"] || {}, this.runtimeConfig);
 	}
 
 	get im(): ImResource {
-		return new ImResource(this.env.ZOOM_API_KEY, this.overrides["im"] || {}, this.runtimeConfig);
+		return new ImResource(this.providerCredentials(), this.overrides["im"] || {}, this.runtimeConfig);
 	}
 
 	get users(): UsersResource {
-		return new UsersResource(this.env.ZOOM_API_KEY, this.overrides["users"] || {}, this.runtimeConfig);
+		return new UsersResource(this.providerCredentials(), this.overrides["users"] || {}, this.runtimeConfig);
 	}
 
 	get meetings(): MeetingsResource {
-		return new MeetingsResource(this.env.ZOOM_API_KEY, this.overrides["meetings"] || {}, this.runtimeConfig);
+		return new MeetingsResource(this.providerCredentials(), this.overrides["meetings"] || {}, this.runtimeConfig);
 	}
 
 	get pastMeetings(): PastMeetingsResource {
-		return new PastMeetingsResource(this.env.ZOOM_API_KEY, this.overrides["past_meetings"] || {}, this.runtimeConfig);
+		return new PastMeetingsResource(this.providerCredentials(), this.overrides["past_meetings"] || {}, this.runtimeConfig);
 	}
 
 	get metrics(): MetricsResource {
-		return new MetricsResource(this.env.ZOOM_API_KEY, this.overrides["metrics"] || {}, this.runtimeConfig);
+		return new MetricsResource(this.providerCredentials(), this.overrides["metrics"] || {}, this.runtimeConfig);
 	}
 
 	get report(): ReportResource {
-		return new ReportResource(this.env.ZOOM_API_KEY, this.overrides["report"] || {}, this.runtimeConfig);
+		return new ReportResource(this.providerCredentials(), this.overrides["report"] || {}, this.runtimeConfig);
 	}
 
 	get tsp(): TspResource {
-		return new TspResource(this.env.ZOOM_API_KEY, this.overrides["tsp"] || {}, this.runtimeConfig);
+		return new TspResource(this.providerCredentials(), this.overrides["tsp"] || {}, this.runtimeConfig);
 	}
 
 	get webinars(): WebinarsResource {
-		return new WebinarsResource(this.env.ZOOM_API_KEY, this.overrides["webinars"] || {}, this.runtimeConfig);
+		return new WebinarsResource(this.providerCredentials(), this.overrides["webinars"] || {}, this.runtimeConfig);
 	}
 
 	get pastWebinars(): PastWebinarsResource {
-		return new PastWebinarsResource(this.env.ZOOM_API_KEY, this.overrides["past_webinars"] || {}, this.runtimeConfig);
+		return new PastWebinarsResource(this.providerCredentials(), this.overrides["past_webinars"] || {}, this.runtimeConfig);
 	}
 
 	get webhooks(): WebhooksResource {
-		return new WebhooksResource(this.env.ZOOM_API_KEY, this.overrides["webhooks"] || {}, this.runtimeConfig);
+		return new WebhooksResource(this.providerCredentials(), this.overrides["webhooks"] || {}, this.runtimeConfig);
 	}
 }

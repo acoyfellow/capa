@@ -508,7 +508,7 @@ export type paths = {
         put?: never;
         /**
          * Create an app install
-         * @description <p>Creates an app install. An account installs its own private app with its own key; public and testing installs are made from the Dashboard. An app developer or embedding platform acting on a connected account through <code>Stripe-Account</code> installs or reinstalls its app there. Creating an install for a private app that is already installed at the channel’s current version with nothing pending returns the existing install.</p>
+         * @description <p>Creates an app install. An account installs its own private app with its own key; public and testing installs are made from the Dashboard. An app developer or embedding platform acting on a connected account through <code>Stripe-Account</code> installs or reinstalls its app there. For a private app, creating an install installs the newest completed upload; when that version is already installed with nothing pending, the existing install is returned.</p>
          */
         post: operations["PostAppsInstalls"];
         delete?: never;
@@ -532,7 +532,7 @@ export type paths = {
         put?: never;
         /**
          * Update an app install
-         * @description <p>Reauthorizes an app install. The installer grants the permissions, content security policy entries, and endpoints that the latest published version of the app requests. An account reauthorizes its own installs on any channel with its own key; app developers and embedding platforms reauthorize installs on connected accounts through <code>Stripe-Account</code>. For private apps, install a new version from the Dashboard to grant its permissions.</p>
+         * @description <p>Reauthorizes an app install. The installer grants the permissions, content security policy entries, and endpoints that the version being installed requests. An account reauthorizes its own installs on any channel with its own key; app developers and embedding platforms reauthorize installs on connected accounts through <code>Stripe-Account</code>. For private apps, the version being installed is the newest completed upload.</p>
          */
         post: operations["PostAppsInstallsId"];
         delete?: never;
@@ -6082,7 +6082,7 @@ export type paths = {
         };
         /**
          * Retrieve a scheduled query run
-         * @description <p>Retrieves the details of an scheduled query run.</p>
+         * @description <p>Retrieves the details of a scheduled query run.</p>
          */
         get: operations["GetSigmaScheduledQueryRunsScheduledQueryRun"];
         put?: never;
@@ -6827,7 +6827,7 @@ export type paths = {
         put?: never;
         /**
          * Update settings
-         * @description <p>Updates Tax <code>Settings</code> parameters used in tax calculations. All parameters are editable but none can be removed once set.</p>
+         * @description <p>Updates Tax <code>Settings</code> parameters used in tax calculations. All parameters are editable but none can be removed once set. Check the returned Tax <code>Settings</code> object and validate that its status is <code>active</code>.</p>
          */
         post: operations["PostTaxSettings"];
         delete?: never;
@@ -9905,7 +9905,7 @@ export type components = {
         };
         /** APIErrors */
         api_errors: {
-            /** @description For card errors resulting from a card issuer decline, a short string indicating [how to proceed with an error](https://docs.stripe.com/declines#retrying-issuer-declines) if they provide one. */
+            /** @description For card errors resulting from a card issuer decline, a short string indicating [how to proceed with an error](https://docs.stripe.com/declines/card#retrying-issuer-declines) if they provide one. */
             advice_code?: string;
             /** @description For card errors, the ID of the failed charge. */
             charge?: string;
@@ -10058,7 +10058,7 @@ export type components = {
             account: string;
             /** @description The ID of the app installed. */
             app: string;
-            /** @description Whether the installer must authorize pending permissions, content security policy entries, or endpoints. For private apps, `approval_required` stays `false`. Install a new version from the Dashboard to grant its permissions. */
+            /** @description Whether the installer must authorize pending permissions, content security policy entries, or endpoints. For private apps, `approval_required` stays `false`; creating or reauthorizing the install through the API installs the newest completed upload and grants its permissions. */
             approval_required: boolean;
             /** @description The authorization code for an oauth app install. */
             auth_code: string | null;
@@ -12851,7 +12851,7 @@ export type components = {
             currency: string | null;
             /** @description Currency conversion details for [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing) sessions created before 2025-03-31. */
             currency_conversion: components["schemas"]["payment_pages_checkout_session_currency_conversion"] | null;
-            /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`. */
+            /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`. */
             custom_fields: components["schemas"]["payment_pages_checkout_session_custom_fields"][];
             custom_text: components["schemas"]["payment_pages_checkout_session_custom_text"];
             /**
@@ -22152,7 +22152,7 @@ export type components = {
              * @description Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
              */
             currency: string;
-            /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`. */
+            /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`. */
             custom_fields: components["schemas"]["payment_links_resource_custom_fields"][];
             custom_text: components["schemas"]["payment_links_resource_custom_text"];
             /**
@@ -30264,7 +30264,7 @@ export type components = {
              *
              *     A subscription that is currently in a trial period is `trialing` and moves to `active` when the trial period is over.
              *
-             *     A subscription can only enter a `paused` status [when a trial ends without a payment method](https://docs.stripe.com/billing/subscriptions/trials#create-free-trials-without-payment). A `paused` subscription doesn't generate invoices and can be resumed after your customer adds their payment method. The `paused` status is different from [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment), which still generates invoices and leaves the subscription's status unchanged.
+             *     A subscription can only enter a `paused` status [when a trial ends without a payment method](https://docs.stripe.com/billing/subscriptions/trials/free-trials#create-free-trials-without-payment). A `paused` subscription doesn't generate invoices and can be resumed after your customer adds their payment method. The `paused` status is different from [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment), which still generates invoices and leaves the subscription's status unchanged.
              *
              *     If subscription `collection_method=charge_automatically`, it becomes `past_due` when payment is required but cannot be paid (due to failed payment or awaiting additional user actions). Once Stripe has exhausted all payment retry attempts, the subscription will become `canceled` or `unpaid` (depending on your subscriptions settings).
              *
@@ -31007,7 +31007,7 @@ export type components = {
              * @description The reason that the subscription was paused.
              * @enum {string}
              */
-            type: "pause_requested" | "system" | "trial_end_without_payment_method";
+            type: "final_payment_failure" | "first_payment_failure" | "pause_requested" | "system" | "trial_end_without_payment_method";
         };
         /** SubscriptionsResourcePaymentMethodOptions */
         subscriptions_resource_payment_method_options: {
@@ -31081,7 +31081,7 @@ export type components = {
              * @description Unix timestamp representing the end of the trial period the customer will get before being charged for the first time, if the update is applied.
              */
             trial_end: number | null;
-            /** @description Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more. */
+            /** @description Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials/free-trials) to learn more. */
             trial_from_plan: boolean | null;
         };
         /**
@@ -32085,7 +32085,7 @@ export type components = {
              */
             object: "tax.settings";
             /**
-             * @description The status of the Tax `Settings`.
+             * @description Whether these settings have the information Stripe Tax needs to calculate tax. It doesn't reflect whether your integration is ready to collect tax.
              * @enum {string}
              */
             status: "active" | "pending";
@@ -43793,7 +43793,7 @@ export interface operations {
                      * @description Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). Required in `setup` mode when `payment_method_types` is not set.
                      */
                     currency?: string;
-                    /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`. */
+                    /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`. */
                     custom_fields?: {
                         /**
                          * custom_field_dropdown_param
@@ -43859,7 +43859,7 @@ export interface operations {
                     }[];
                     /**
                      * custom_text_param
-                     * @description Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `custom`.
+                     * @description Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `elements`.
                      */
                     custom_text?: {
                         /** @description Custom text that should be displayed after the payment confirmation button. */
@@ -44637,7 +44637,7 @@ export interface operations {
                             request_three_d_secure?: "any" | "automatic" | "challenge";
                             /**
                              * restrictions_param
-                             * @description Restrictions to apply to the card payment method. For example, you can block specific card brands. You can't set this parameter if `ui_mode` is `custom`.
+                             * @description Restrictions to apply to the card payment method. For example, you can block specific card brands. You can't set this parameter if `ui_mode` is `elements`.
                              */
                             restrictions?: {
                                 /** @description The card brands to block. If a customer enters or selects a card belonging to a blocked brand, they can't complete the payment. */
@@ -45517,7 +45517,7 @@ export interface operations {
                     };
                     /**
                      * permissions_param
-                     * @description This property is used to set up permissions for various actions (e.g., update) on the CheckoutSession object. Can only be set when creating `embedded` or `custom` sessions.
+                     * @description This property is used to set up permissions for various actions (for example, update) on the CheckoutSession object. Can only be set when creating `embedded_page` or `elements` sessions.
                      *
                      *     For specific permissions, please refer to their dedicated subsections, such as `permissions.update_shipping_details`.
                      */
@@ -45852,7 +45852,7 @@ export interface operations {
                         /** @description Enable tax ID collection during checkout. Defaults to `false`. */
                         enabled: boolean;
                         /**
-                         * @description Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `custom`.
+                         * @description Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `elements`.
                          * @enum {string}
                          */
                         required?: "if_supported" | "never";
@@ -45955,7 +45955,7 @@ export interface operations {
                 "application/x-www-form-urlencoded": {
                     /**
                      * collected_information_params
-                     * @description Information about the customer collected within the Checkout Session. Can only be set when updating `embedded` or `custom` sessions.
+                     * @description Information about the customer collected within the Checkout Session. Can only be set when updating `embedded_page` or `elements` sessions.
                      */
                     collected_information?: {
                         /**
@@ -66388,7 +66388,7 @@ export interface operations {
                      * @description Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies) and supported by each line item's price.
                      */
                     currency?: string;
-                    /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`. */
+                    /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`. */
                     custom_fields?: {
                         /**
                          * custom_field_dropdown_param
@@ -66454,7 +66454,7 @@ export interface operations {
                     }[];
                     /**
                      * custom_text_param
-                     * @description Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `custom`.
+                     * @description Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `elements`.
                      */
                     custom_text?: {
                         /** @description Custom text that should be displayed after the payment confirmation button. */
@@ -66867,7 +66867,7 @@ export interface operations {
                         /** @description Enable tax ID collection during checkout. Defaults to `false`. */
                         enabled: boolean;
                         /**
-                         * @description Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `custom`.
+                         * @description Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `elements`.
                          * @enum {string}
                          */
                         required?: "if_supported" | "never";
@@ -67057,7 +67057,7 @@ export interface operations {
                          */
                         terms_of_service?: "none" | "required";
                     };
-                    /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`. */
+                    /** @description Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`. */
                     custom_fields?: {
                         /**
                          * custom_field_dropdown_param
@@ -67123,7 +67123,7 @@ export interface operations {
                     }[] | "";
                     /**
                      * custom_text_param
-                     * @description Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `custom`.
+                     * @description Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `elements`.
                      */
                     custom_text?: {
                         /** @description Custom text that should be displayed after the payment confirmation button. */
@@ -67432,7 +67432,7 @@ export interface operations {
                         /** @description Enable tax ID collection during checkout. Defaults to `false`. */
                         enabled: boolean;
                         /**
-                         * @description Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `custom`.
+                         * @description Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `elements`.
                          * @enum {string}
                          */
                         required?: "if_supported" | "never";
@@ -71286,7 +71286,7 @@ export interface operations {
                     customer_details?: {
                         /** @description The customer who made the payment. */
                         customer?: string;
-                        /** @description The customer's phone number. */
+                        /** @description The customer's email address. */
                         email?: string;
                         /** @description The customer's name. */
                         name?: string;
@@ -71487,7 +71487,7 @@ export interface operations {
                     customer_details?: {
                         /** @description The customer who made the payment. */
                         customer?: string;
-                        /** @description The customer's phone number. */
+                        /** @description The customer's email address. */
                         email?: string;
                         /** @description The customer's name. */
                         name?: string;
@@ -72067,7 +72067,7 @@ export interface operations {
                     currency: string;
                     /** @description Specifies which fields in the response should be expanded. */
                     expand?: string[];
-                    /** @description An identifier randomly generated by Stripe. Used to identify this plan when subscribing a customer. You can optionally override this ID, but the ID must be unique across all plans in your Stripe account. You can, however, use the same plan ID in both live and test modes. */
+                    /** @description An identifier randomly generated by Stripe. Used to identify this plan when subscribing a customer. You can optionally override this ID, but the ID must be unique across all plans in your Stripe account. You can use the same plan ID in live mode and in your sandboxes. */
                     id?: string;
                     /**
                      * @description Specifies billing frequency. Either `day`, `week`, `month` or `year`.
@@ -81241,7 +81241,7 @@ export interface operations {
                                      */
                                     outstanding_usage_through?: {
                                         /**
-                                         * @description Determines whether to collect metered usage accrued up to the pause date.
+                                         * @description Determines whether to collect metered usage accrued up to the pause date. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
                                          * @enum {string}
                                          */
                                         type?: "none" | "pause_at";
@@ -81252,14 +81252,14 @@ export interface operations {
                                      */
                                     unused_time_from?: {
                                         /**
-                                         * @description Determines which point in the billing period unused time is credited from.
+                                         * @description Determines which point in the billing period unused time is credited from. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
                                          * @enum {string}
                                          */
                                         type?: "item_current_period_start" | "none" | "pause_at";
                                     };
                                 };
                                 /**
-                                 * @description Determines whether to generate an invoice for outstanding amounts when pausing.
+                                 * @description Determines whether to generate an invoice for outstanding amounts when pausing. When adding a pause schedule, defaults to `pending_invoice_item`. On updates, the existing value is preserved if not provided.
                                  * @enum {string}
                                  */
                                 invoicing_behavior?: "invoice" | "pending_invoice_item";
@@ -81310,17 +81310,17 @@ export interface operations {
                              */
                             settings?: {
                                 /**
-                                 * @description Controls the billing cycle anchor when the subscription resumes.
+                                 * @description Controls the billing cycle anchor when the subscription resumes. When adding a pause schedule, defaults to `resume_at`. On updates, the existing value is preserved if not provided.
                                  * @enum {string}
                                  */
                                 billing_cycle_anchor?: "resume_at" | "unchanged";
                                 /**
-                                 * @description Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. The default is `resume_on_payment_success`.
+                                 * @description Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. When adding a pause schedule, defaults to `resume_on_payment_success`. On updates, the existing value is preserved if not provided.
                                  * @enum {string}
                                  */
                                 payment_behavior?: "resume_on_payment_attempt" | "resume_on_payment_success";
                                 /**
-                                 * @description Determines how to handle prorations when the subscription resumes. The default is `create_prorations`.
+                                 * @description Determines how to handle prorations when the subscription resumes. When adding a pause schedule, defaults to `create_prorations`. On updates, the existing value is preserved if not provided.
                                  * @enum {string}
                                  */
                                 proration_behavior?: "always_invoice" | "create_prorations" | "none";
@@ -81842,7 +81842,7 @@ export interface operations {
                                      */
                                     outstanding_usage_through?: {
                                         /**
-                                         * @description Determines whether to collect metered usage accrued up to the pause date.
+                                         * @description Determines whether to collect metered usage accrued up to the pause date. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
                                          * @enum {string}
                                          */
                                         type?: "none" | "pause_at";
@@ -81853,14 +81853,14 @@ export interface operations {
                                      */
                                     unused_time_from?: {
                                         /**
-                                         * @description Determines which point in the billing period unused time is credited from.
+                                         * @description Determines which point in the billing period unused time is credited from. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
                                          * @enum {string}
                                          */
                                         type?: "item_current_period_start" | "none" | "pause_at";
                                     };
                                 };
                                 /**
-                                 * @description Determines whether to generate an invoice for outstanding amounts when pausing.
+                                 * @description Determines whether to generate an invoice for outstanding amounts when pausing. When adding a pause schedule, defaults to `pending_invoice_item`. On updates, the existing value is preserved if not provided.
                                  * @enum {string}
                                  */
                                 invoicing_behavior?: "invoice" | "pending_invoice_item";
@@ -81908,17 +81908,17 @@ export interface operations {
                              */
                             settings?: {
                                 /**
-                                 * @description Controls the billing cycle anchor when the subscription resumes.
+                                 * @description Controls the billing cycle anchor when the subscription resumes. When adding a pause schedule, defaults to `resume_at`. On updates, the existing value is preserved if not provided.
                                  * @enum {string}
                                  */
                                 billing_cycle_anchor?: "resume_at" | "unchanged";
                                 /**
-                                 * @description Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. The default is `resume_on_payment_success`.
+                                 * @description Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. When adding a pause schedule, defaults to `resume_on_payment_success`. On updates, the existing value is preserved if not provided.
                                  * @enum {string}
                                  */
                                 payment_behavior?: "resume_on_payment_attempt" | "resume_on_payment_success";
                                 /**
-                                 * @description Determines how to handle prorations when the subscription resumes. The default is `create_prorations`.
+                                 * @description Determines how to handle prorations when the subscription resumes. When adding a pause schedule, defaults to `create_prorations`. On updates, the existing value is preserved if not provided.
                                  * @enum {string}
                                  */
                                 proration_behavior?: "always_invoice" | "create_prorations" | "none";
@@ -83072,11 +83072,11 @@ export interface operations {
                         /** @description ID of an existing, connected Stripe account. */
                         destination: string;
                     };
-                    /** @description Unix timestamp representing the end of the trial period the customer will get before being charged for the first time. If set, trial_end will override the default trial period of the plan the customer is being subscribed to. The special value `now` can be provided to end the customer's trial immediately. Can be at most two years from `billing_cycle_anchor`. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more. */
+                    /** @description Unix timestamp representing the end of the trial period the customer will get before being charged for the first time. If set, trial_end will override the default trial period of the plan the customer is being subscribed to. The special value `now` can be provided to end the customer's trial immediately. Can be at most two years from `billing_cycle_anchor`. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials/free-trials) to learn more. */
                     trial_end?: "now" | number;
-                    /** @description Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more. */
+                    /** @description Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials/free-trials) to learn more. */
                     trial_from_plan?: boolean;
-                    /** @description Integer representing the number of trial period days before the customer is charged for the first time. This will always overwrite any trials that might apply via a subscribed plan. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more. */
+                    /** @description Integer representing the number of trial period days before the customer is charged for the first time. This will always overwrite any trials that might apply via a subscribed plan. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials/free-trials) to learn more. */
                     trial_period_days?: number;
                     /**
                      * trial_settings_config
@@ -83794,7 +83794,7 @@ export interface operations {
                     } | "";
                     /** @description Unix timestamp representing the end of the trial period the customer will get before being charged for the first time. This will always overwrite any trials that might apply via a subscribed plan. If set, `trial_end` will override the default trial period of the plan the customer is being subscribed to. The `billing_cycle_anchor` will be updated to the `trial_end` value. The special value `now` can be provided to end the customer's trial immediately. Can be at most two years from `billing_cycle_anchor`. */
                     trial_end?: "now" | number;
-                    /** @description Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more. */
+                    /** @description Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials/free-trials) to learn more. */
                     trial_from_plan?: boolean;
                     /**
                      * trial_settings_config
@@ -84217,6 +84217,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description Details about each object. */
                         data: components["schemas"]["tax_code"][];
                         /** @description True if this list has another page of items after this one that can be fetched. */
                         has_more: boolean;
@@ -87611,7 +87612,7 @@ export interface operations {
                     };
                     /** @description Configuration for cellular connectivity. */
                     cellular?: {
-                        /** @description Determines whether to allow the reader to connect to a cellular network. Defaults to false. */
+                        /** @description Determines whether to allow the reader to connect to a cellular network. */
                         enabled: boolean;
                     } | "";
                     /** @description Specifies which fields in the response should be expanded. */
@@ -87620,7 +87621,7 @@ export interface operations {
                     name?: string;
                     /** @description Configurations for collecting transactions offline. */
                     offline?: {
-                        /** @description Determines whether to allow transactions to be collected while reader is offline. Defaults to false. */
+                        /** @description Determines whether to allow transactions to be collected while reader is offline. */
                         enabled: boolean;
                     } | "";
                     /**
@@ -88078,7 +88079,7 @@ export interface operations {
                     } | "";
                     /** @description Configuration for cellular connectivity. */
                     cellular?: {
-                        /** @description Determines whether to allow the reader to connect to a cellular network. Defaults to false. */
+                        /** @description Determines whether to allow the reader to connect to a cellular network. */
                         enabled: boolean;
                     } | "";
                     /** @description Specifies which fields in the response should be expanded. */
@@ -88087,7 +88088,7 @@ export interface operations {
                     name?: string;
                     /** @description Configurations for collecting transactions offline. */
                     offline?: {
-                        /** @description Determines whether to allow transactions to be collected while reader is offline. Defaults to false. */
+                        /** @description Determines whether to allow transactions to be collected while reader is offline. */
                         enabled: boolean;
                     } | "";
                     /** @description Reboot time settings for readers. that support customized reboot time configuration. */
@@ -94491,7 +94492,7 @@ export interface operations {
                             network: "ach";
                         };
                     };
-                    /** @description The ID of a source to transfer funds from. For most users, this should be left unspecified which will use the bank account that was set up in the dashboard for the specified currency. In test mode, this can be a test bank token (see [Testing Top-ups](https://docs.stripe.com/connect/testing#testing-top-ups)). */
+                    /** @description The ID of a source to transfer funds from. For most users, this should be left unspecified which will use the bank account that was set up in the dashboard for the specified currency. While testing, this can be a test bank token (see [Testing Top-ups](https://docs.stripe.com/connect/testing#testing-top-ups)). */
                     source?: string;
                     /** @description Extra information about a top-up for the source's bank statement. Limited to 15 ASCII characters. */
                     statement_descriptor?: string;

@@ -76,7 +76,7 @@ async function analyzeChangedSpec(entry: CapabilityRegistryEntry, rawBody: strin
 	const manifestPath = resolve(repoRoot, entry.out, "src/generated/manifest.gen.ts");
 	const before = loadCommittedSurface(manifestPath);
 	const normalized = await normalizeSpec(rawBody);
-	const after = surfaceFromCodegen(parseSpec(normalized, entry.prefix));
+	const after = surfaceFromCodegen(parseSpec(normalized, entry.prefix, entry.naming, entry.contentType === "json"));
 	const schema = diffSpecSchemas(null, normalized);
 	return { surface: diffSurfaces(before, after), schemaHints: schema.hints, schemaSummary: summarizeHints(schema.hints) };
 }

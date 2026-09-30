@@ -171,7 +171,85 @@ function classifyRisk(namespace: string, method: string): Operation["risk"] {
 	return "medium";
 }
 
-export function parseSpec(spec: any, apiPrefix = "/v1"): CodegenResult {
+export type MethodNaming = "path" | "operationId";
+
+function operationIdTokens(operationId: string): string[] {
+	return operationId
+		.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+		.split(/[^a-zA-Z0-9]+/)
+		.filter(Boolean)
+		.map(token => token.toLowerCase());
+}
+
+function nounForms(namespace: string): string[][] {
+	const plural = operationIdTokens(namespace);
+	const last = plural[plural.length - 1] || "";
+	const singular = [...plural.slice(0, -1), singularize(last)];
+	const pluralized = [...plural.slice(0, -1), `${last}s`];
+	return [plural, singular, pluralized];
+}
+
+function withoutNamespace(tokens: string[], namespace: string): string[] {
+	for (const noun of nounForms(namespace)) {
+		for (let start = 0; start + noun.length <= tokens.length; start++) {
+			if (start === 0) continue;
+			if (!noun.every((token, offset) => tokens[start + offset] === token)) continue;
+			const remaining = [...tokens.slice(0, start), ...tokens.slice(start + noun.length)];
+			if (remaining.length > 0) return remaining;
+		}
+	}
+	return tokens;
+}
+
+const VERB_ALIASES: Record<string, string> = { get: "retrieve" };
+
+export function methodFromOperationId(operationId: string, namespace: string): string | undefined {
+	const tokens = withoutNamespace(operationIdTokens(operationId), namespace);
+	if (tokens.length === 0) return undefined;
+	tokens[0] = VERB_ALIASES[tokens[0]!] ?? tokens[0]!;
+	if (tokens.length === 1 && tokens[0] === "delete") return "del";
+	const name = tokens[0] + tokens.slice(1).map(capitalize).join("");
+	return /^[a-z][a-zA-Z0-9]*$/.test(name) ? name : undefined;
+}
+
+function applyOperationIdNames(namespaces: Record<string, Operation[]>): void {
+	for (const [namespace, ops] of Object.entries(namespaces)) {
+		const proposed = ops.map(op => methodFromOperationId(op.operationId, namespace));
+		const counts = new Map<string, number>();
+		for (const name of proposed) if (name) counts.set(name, (counts.get(name) || 0) + 1);
+		ops.forEach((op, index) => {
+			const name = proposed[index];
+			if (name && counts.get(name) === 1 && !ops.some((other, j) => j !== index && !proposed[j] && other.method === name)) {
+				op.method = name;
+				op.risk = classifyRisk(namespace, name);
+			}
+		});
+	}
+}
+
+const JSON_CONTENT = /json/i;
+
+function preferredContentType(content: Record<string, unknown> | undefined, preferJson: boolean): string | undefined {
+	const types = Object.keys(content || {});
+	if (types.length === 0) return undefined;
+	const json = types.find(type => JSON_CONTENT.test(type));
+	const form = types.find(type => type === "application/x-www-form-urlencoded");
+	return preferJson ? json ?? form : form ?? json;
+}
+
+function successResponse(responses: Record<string, any> | undefined): Operation["successResponse"] {
+	const status = Object.keys(responses || {}).filter(code => /^2\d\d$/.test(code)).sort()[0];
+	if (!status) return undefined;
+	const content = responses![status]?.content as Record<string, unknown> | undefined;
+	const types = Object.keys(content || {});
+	return { status, contentType: types.find(type => JSON_CONTENT.test(type)) ?? types[0] };
+}
+
+function hasQueryParameters(pathItem: any, op: any): boolean {
+	return [...(pathItem.parameters || []), ...(op.parameters || [])].some((param: any) => param?.in === "query");
+}
+
+export function parseSpec(spec: any, apiPrefix = "/v1", naming: MethodNaming = "path", preferJsonBody = true): CodegenResult {
 	const namespaces: Record<string, Operation[]> = {};
 	let count = 0;
 
@@ -200,6 +278,7 @@ export function parseSpec(spec: any, apiPrefix = "/v1"): CodegenResult {
 				requestBody?.content?.["application/x-www-form-urlencoded"] ||
 				requestBody?.content?.["application/json"],
 			);
+			const bodyContentType = hasBody ? preferredContentType(requestBody?.content, preferJsonBody) : undefined;
 
 			const operation: Operation = {
 				operationId,
@@ -209,6 +288,9 @@ export function parseSpec(spec: any, apiPrefix = "/v1"): CodegenResult {
 				path,
 				pathParams,
 				hasBody,
+				hasQuery: hasQueryParameters(pathItem, op),
+				bodyContentType,
+				successResponse: successResponse(op.responses),
 				bodyTypeRef: hasBody
 					? `paths["${path}"]["${http}"]["requestBody"]["content"]["application/x-www-form-urlencoded"]["schema"]`
 					: undefined,
@@ -272,6 +354,8 @@ export function parseSpec(spec: any, apiPrefix = "/v1"): CodegenResult {
 			}
 		}
 	}
+
+	if (naming === "operationId") applyOperationIdNames(namespaces);
 
 	// Second pass: any remaining collisions (same path different verb, or collection+item)
 	// get suffixed with HTTP verb; if still colliding, append an index.

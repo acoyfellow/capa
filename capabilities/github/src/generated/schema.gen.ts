@@ -8160,6 +8160,121 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/orgs/{org}/properties/installations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get registered app installations for external custom properties
+         * @description Gets the registered GitHub App installations used to read and write external custom properties for an organization.
+         *
+         *     A GitHub App installation token will only be able to see its own registration info, whereas an authenticated user will be able to see all registrations for the organization.
+         *
+         *     To use this endpoint, the authenticated caller must have the `organization_external_properties_for_repos:admin` permission.
+         */
+        get: operations["orgs/external-properties-for-repos-get-organization-app-installations"];
+        put?: never;
+        /**
+         * Register an app installation for external custom properties
+         * @description Registers a GitHub App installation so it can read and write external custom properties for an organization, and assigns it a display name.
+         *
+         *     An app installation can only be registered once, and its display name can't be changed afterward. Calling with an app installation that has already been registered returns a `422` response with an `already_exists` error code.
+         *
+         *     Uninstalling the GitHub App unregisters it, and removes the external custom properties it created.
+         *
+         *     To use this endpoint, the authenticated caller must have the `organization_external_properties_for_repos:admin` permission.
+         */
+        post: operations["orgs/external-properties-for-repos-register-organization-app-installation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/properties/installations/schema": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all external custom properties for a GitHub App installation in an organization
+         * @description Gets all external custom properties defined for the authenticated GitHub App installation on an organization.
+         *
+         *     To use this endpoint, the authenticated GitHub App must have the `organization_external_properties_for_repos:read` permission.
+         */
+        get: operations["orgs/external-properties-for-repos-get-organization-definitions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orgs/{org}/properties/installations/values": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Create or update external custom property values for organization repositories
+         * @description Create new or update existing external custom property values for repositories in a batch that belong to an organization.
+         *     Each target repository will have its external custom property values updated to match the values provided in the request.
+         *
+         *     A maximum of 30 repositories can be updated in a single request.
+         *
+         *     Using a value of `null` for an external custom property will remove or 'unset' the property value from the repository.
+         *
+         *     To use this endpoint, the authenticated GitHub App must have the `organization_external_properties_for_repos:write` permission.
+         */
+        patch: operations["orgs/external-properties-for-repos-create-or-update-organization-values"];
+        trace?: never;
+    };
+    "/orgs/{org}/properties/installations/values/{property_name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove all external custom property values for a property across all organization repositories
+         * @description Removes all external custom property values for a specified property name across all repositories that belong to an organization.
+         *
+         *     To use this endpoint, the authenticated GitHub App must have the `organization_external_properties_for_repos:write` permission.
+         */
+        delete: operations["orgs/external-properties-for-repos-delete-organization-values"];
+        options?: never;
+        head?: never;
+        /**
+         * Create or update external custom property values for a property across organization repositories
+         * @description Create new or update existing external custom property values for a single named property across repositories that belong to an organization.
+         *
+         *     Up to 100 repository values can be updated in a single request. Repositories not included in the request are left unchanged.
+         *
+         *     Using a value of `null` for a repository will remove or 'unset' the property value for that repository. A request that only contains `null` values for a property that does not yet exist is a no-op.
+         *
+         *     To use this endpoint, the authenticated GitHub App must have the `organization_external_properties_for_repos:write` permission.
+         */
+        patch: operations["orgs/external-properties-for-repos-create-or-update-values-for-organization-property"];
+        trace?: never;
+    };
     "/orgs/{org}/properties/schema": {
         parameters: {
             query?: never;
@@ -9499,6 +9614,34 @@ export type paths = {
          *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
          */
         post: operations["actions/re-run-job-for-workflow-run"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/repos/{owner}/{repo}/actions/jobs/{job_id}/steps/{step_number}/logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Download step logs for a workflow run job
+         * @description Gets a redirect URL to download a plain text file of logs for a specific step of a workflow job. This link expires after
+         *     1 minute. Look for `Location:` in the response header to find the URL for the download.
+         *
+         *     This endpoint is intended for selective retrieval of one step. To download complete job logs, use the
+         *     [job logs endpoint](https://docs.github.com/rest/actions/workflow-jobs#download-job-logs-for-a-workflow-run).
+         *
+         *     Anyone with read access to the repository can use this endpoint.
+         *
+         *     If the repository is private, OAuth tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
+         */
+        get: operations["actions/download-step-logs-for-workflow-run-job"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -20284,8 +20427,6 @@ export type paths = {
         /**
          * Add a repository to an app installation
          * @description Add a single repository to an installation. The authenticated user must have admin access to the repository.
-         *
-         *     This endpoint only works for PATs (classic) with the `repo` scope.
          */
         put: operations["apps/add-repo-to-installation-for-authenticated-user"];
         post?: never;
@@ -20293,7 +20434,7 @@ export type paths = {
          * Remove a repository from an app installation
          * @description Remove a single repository from an installation. The authenticated user must have admin access to the repository. The installation must have the `repository_selection` of `selected`.
          *
-         *     This endpoint only works for PATs (classic) with the `repo` scope.
+         *     To use a PAT (classic) with this endpoint, the `repo` scope is required
          */
         delete: operations["apps/remove-repo-from-installation-for-authenticated-user"];
         options?: never;
@@ -22557,7 +22698,7 @@ export type components = {
              * @default 10
              * @example 5
              */
-            maximum_runners: number;
+            maximum_runners?: number;
             /**
              * @description The name of the hosted runner.
              * @example my-github-hosted-runner
@@ -23458,6 +23599,11 @@ export type components = {
              */
             organization_events?: "read";
             /**
+             * @description The level of permission to grant the access token for managing external custom properties for repositories in an organization.
+             * @enum {string}
+             */
+            organization_external_properties_for_repos?: "read" | "write" | "admin";
+            /**
              * @description The level of permission to grant the access token to manage the post-receive hooks for an organization.
              * @enum {string}
              */
@@ -23800,7 +23946,7 @@ export type components = {
                      * @description The encoding used for `content`. Currently, `"utf-8"` and `"base64"` are supported.
                      * @default utf-8
                      */
-                    encoding: string;
+                    encoding?: string;
                     filename?: string;
                     language?: string;
                     raw_url?: string;
@@ -24225,7 +24371,7 @@ export type components = {
             /** @description Whether users can pull changes from upstream when the branch is locked. Set to `true` to allow fork syncing. Set to `false` to prevent fork syncing. */
             allow_fork_syncing?: {
                 /** @default false */
-                enabled: boolean;
+                enabled?: boolean;
             };
             block_creations?: {
                 enabled?: boolean;
@@ -24235,7 +24381,7 @@ export type components = {
             /** @description Whether to set the branch as read-only. If this is true, users will not be able to push to the branch. */
             lock_branch?: {
                 /** @default false */
-                enabled: boolean;
+                enabled?: boolean;
             };
             /** @example "branch/with/protection" */
             name?: string;
@@ -25781,7 +25927,7 @@ export type components = {
                      * @default ALWAYS
                      * @enum {string}
                      */
-                    mode: "ALWAYS" | "EXEMPT";
+                    mode?: "ALWAYS" | "EXEMPT";
                     /** @description The ID of the team or role selected as a bypass reviewer */
                     reviewer_id: number;
                     /**
@@ -28466,14 +28612,14 @@ export type components = {
              * @default
              * @example production
              */
-            environment: string;
+            environment?: string;
             /**
              * Format: uri
              * @description The URL for accessing your environment.
              * @default
              * @example https://staging.example.com/
              */
-            environment_url: string;
+            environment_url?: string;
             /**
              * Format: int64
              * @example 1
@@ -28485,7 +28631,7 @@ export type components = {
              * @default
              * @example https://example.com/deployment/42/output
              */
-            log_url: string;
+            log_url?: string;
             /** @example MDE2OkRlcGxveW1lbnRTdGF0dXMx */
             node_id: string;
             performed_via_github_app?: components["schemas"]["nullable-integration"];
@@ -29060,6 +29206,14 @@ export type components = {
             type: string | null;
         };
         /**
+         * External Property
+         * @description External custom property defined for a GitHub App installation
+         */
+        "external-property": {
+            /** @description The name of the external property */
+            property_name: string;
+        };
+        /**
          * Feed
          * @description Feed
          */
@@ -29278,7 +29432,7 @@ export type components = {
              * @description Whether anonymous git access is allowed.
              * @default true
              */
-            anonymous_access_enabled: boolean;
+            anonymous_access_enabled?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/{archive_format}{/ref} */
             archive_url: string;
             archived: boolean;
@@ -29745,7 +29899,7 @@ export type components = {
                      * @description The encoding used for `content`. Currently, `"utf-8"` and `"base64"` are supported.
                      * @default utf-8
                      */
-                    encoding: string;
+                    encoding?: string;
                     filename?: string;
                     language?: string;
                     raw_url?: string;
@@ -33451,7 +33605,7 @@ export type components = {
              * @default false
              * @example false
              */
-            allow_auto_merge: boolean;
+            allow_auto_merge?: boolean;
             /** @description Whether to allow forking this repo */
             allow_forking?: boolean;
             /**
@@ -33459,25 +33613,25 @@ export type components = {
              * @default true
              * @example true
              */
-            allow_merge_commit: boolean;
+            allow_merge_commit?: boolean;
             /**
              * @description Whether to allow rebase merges for pull requests.
              * @default true
              * @example true
              */
-            allow_rebase_merge: boolean;
+            allow_rebase_merge?: boolean;
             /**
              * @description Whether to allow squash merges for pull requests.
              * @default true
              * @example true
              */
-            allow_squash_merge: boolean;
+            allow_squash_merge?: boolean;
             /**
              * @description Whether or not a pull request head branch that is behind its base branch can always be updated even if it is not required to be up to date before merging.
              * @default false
              * @example false
              */
-            allow_update_branch: boolean;
+            allow_update_branch?: boolean;
             /** @description Whether anonymous git access is enabled for this repository */
             anonymous_access_enabled?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/{archive_format}{/ref} */
@@ -33530,7 +33684,7 @@ export type components = {
              * @default false
              * @example false
              */
-            delete_branch_on_merge: boolean;
+            delete_branch_on_merge?: boolean;
             /**
              * Format: uri
              * @example http://api.github.com/repos/octocat/Hello-World/deployments
@@ -33574,7 +33728,7 @@ export type components = {
              * @default false
              * @example true
              */
-            has_discussions: boolean;
+            has_discussions?: boolean;
             /**
              * @deprecated
              * @description Whether downloads are enabled.
@@ -33600,7 +33754,7 @@ export type components = {
              * @default true
              * @example true
              */
-            has_pull_requests: boolean;
+            has_pull_requests?: boolean;
             /**
              * @description Whether the wiki is enabled.
              * @default true
@@ -33633,7 +33787,7 @@ export type components = {
              * @default false
              * @example true
              */
-            is_template: boolean;
+            is_template?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/comments{/number} */
             issue_comment_url: string;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/events{/number} */
@@ -33800,12 +33954,12 @@ export type components = {
              * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
              * @default false
              */
-            use_squash_pr_title_as_default: boolean;
+            use_squash_pr_title_as_default?: boolean;
             /**
              * @description The repository visibility: public, private, or internal.
              * @default public
              */
-            visibility: string;
+            visibility?: string;
             watchers: number;
             /** @example 80 */
             watchers_count: number;
@@ -33813,7 +33967,7 @@ export type components = {
              * @description Whether to require contributors to sign off on web-based commits
              * @default false
              */
-            web_commit_signoff_required: boolean;
+            web_commit_signoff_required?: boolean;
         } | null;
         /**
          * Repository
@@ -33826,7 +33980,7 @@ export type components = {
              * @default false
              * @example false
              */
-            allow_auto_merge: boolean;
+            allow_auto_merge?: boolean;
             /** @description Whether to allow forking this repo */
             allow_forking?: boolean;
             /**
@@ -33834,25 +33988,25 @@ export type components = {
              * @default true
              * @example true
              */
-            allow_merge_commit: boolean;
+            allow_merge_commit?: boolean;
             /**
              * @description Whether to allow rebase merges for pull requests.
              * @default true
              * @example true
              */
-            allow_rebase_merge: boolean;
+            allow_rebase_merge?: boolean;
             /**
              * @description Whether to allow squash merges for pull requests.
              * @default true
              * @example true
              */
-            allow_squash_merge: boolean;
+            allow_squash_merge?: boolean;
             /**
              * @description Whether or not a pull request head branch that is behind its base branch can always be updated even if it is not required to be up to date before merging.
              * @default false
              * @example false
              */
-            allow_update_branch: boolean;
+            allow_update_branch?: boolean;
             /** @description Whether anonymous git access is enabled for this repository */
             anonymous_access_enabled?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/{archive_format}{/ref} */
@@ -33904,7 +34058,7 @@ export type components = {
              * @default false
              * @example false
              */
-            delete_branch_on_merge: boolean;
+            delete_branch_on_merge?: boolean;
             /**
              * Format: uri
              * @example http://api.github.com/repos/octocat/Hello-World/deployments
@@ -33948,7 +34102,7 @@ export type components = {
              * @default false
              * @example true
              */
-            has_discussions: boolean;
+            has_discussions?: boolean;
             /**
              * @description Whether downloads are enabled.
              * @default true
@@ -33973,7 +34127,7 @@ export type components = {
              * @default true
              * @example true
              */
-            has_pull_requests: boolean;
+            has_pull_requests?: boolean;
             /**
              * @description Whether the wiki is enabled.
              * @default true
@@ -34006,7 +34160,7 @@ export type components = {
              * @default false
              * @example true
              */
-            is_template: boolean;
+            is_template?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/comments{/number} */
             issue_comment_url: string;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/events{/number} */
@@ -34319,12 +34473,12 @@ export type components = {
              * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
              * @default false
              */
-            use_squash_pr_title_as_default: boolean;
+            use_squash_pr_title_as_default?: boolean;
             /**
              * @description The repository visibility: public, private, or internal.
              * @default public
              */
-            visibility: string;
+            visibility?: string;
             watchers: number;
             /** @example 80 */
             watchers_count: number;
@@ -34332,7 +34486,7 @@ export type components = {
              * @description Whether to require contributors to sign off on web-based commits
              * @default false
              */
-            web_commit_signoff_required: boolean;
+            web_commit_signoff_required?: boolean;
         } | null;
         /** Scoped Installation */
         "nullable-scoped-installation": {
@@ -35002,7 +35156,7 @@ export type components = {
              * @description Whether this private registry replaces the base registry (e.g., npmjs.org for npm, rubygems.org for rubygems). When `true`, Dependabot will only use this registry and will not fall back to the public registry. When `false` (default), Dependabot will use this registry for scoped packages but may fall back to the public registry for other packages.
              * @default false
              */
-            replaces_base: boolean;
+            replaces_base?: boolean;
             /** @description The AWS IAM role name. */
             role_name?: string;
             /** @description The GCP service account email to impersonate. If omitted, the federated token is used directly (direct WIF). */
@@ -35077,7 +35231,7 @@ export type components = {
              * @description Whether this private registry replaces the base registry (e.g., npmjs.org for npm, rubygems.org for rubygems). When `true`, Dependabot will only use this registry and will not fall back to the public registry. When `false` (default), Dependabot will use this registry for scoped packages but may fall back to the public registry for other packages.
              * @default false
              */
-            replaces_base: boolean;
+            replaces_base?: boolean;
             /** @description The AWS IAM role name. */
             role_name?: string;
             /** @description An array of repository IDs that can access the organization private registry when `visibility` is set to `selected`. */
@@ -35265,6 +35419,19 @@ export type components = {
              * @enum {string}
              */
             visibility: "all" | "private" | "selected";
+        };
+        /**
+         * Organization External Custom Property Installation
+         * @description A GitHub App installation that has been registered to read and write an organization's external custom properties, together with the display name assigned to it.
+         */
+        "organization-external-property-installation": {
+            /** @description The display name assigned to the app installation's external custom properties in the organization. */
+            display_name: string;
+            /** @description The GitHub App installation that was registered. */
+            installation: {
+                /** @description The unique identifier of the GitHub App installation. */
+                id: number;
+            };
         };
         /**
          * Organization Full
@@ -36490,7 +36657,7 @@ export type components = {
              * @description Whether to create a temporary private fork of the repository to collaborate on a fix.
              * @default false
              */
-            start_private_fork: boolean;
+            start_private_fork?: boolean;
             /** @description A short summary of the advisory. */
             summary: string;
             /** @description An array of products affected by the vulnerability detailed in a repository security advisory. */
@@ -36991,7 +37158,7 @@ export type components = {
             /** @description Whether users can pull changes from upstream when the branch is locked. Set to `true` to allow fork syncing. Set to `false` to prevent fork syncing. */
             allow_fork_syncing?: {
                 /** @default false */
-                enabled: boolean;
+                enabled?: boolean;
             };
             block_creations?: {
                 enabled: boolean;
@@ -37004,7 +37171,7 @@ export type components = {
             /** @description Whether to set the branch as read-only. If this is true, users will not be able to push to the branch. */
             lock_branch?: {
                 /** @default false */
-                enabled: boolean;
+                enabled?: boolean;
             };
             required_conversation_resolution?: {
                 enabled?: boolean;
@@ -37035,7 +37202,7 @@ export type components = {
                  * @description Whether the most recent push must be approved by someone other than the person who pushed it.
                  * @default false
                  */
-                require_last_push_approval: boolean;
+                require_last_push_approval?: boolean;
                 required_approving_review_count?: number;
                 /** Format: uri */
                 url: string;
@@ -37104,7 +37271,7 @@ export type components = {
              * @default false
              * @example true
              */
-            require_last_push_approval: boolean;
+            require_last_push_approval?: boolean;
             /** @example 2 */
             required_approving_review_count?: number;
             /**
@@ -37652,7 +37819,7 @@ export type components = {
              * @default RIGHT
              * @enum {string}
              */
-            side: "LEFT" | "RIGHT";
+            side?: "LEFT" | "RIGHT";
             /**
              * @description The first line of the range for a multi-line comment.
              * @example 2
@@ -37663,7 +37830,7 @@ export type components = {
              * @default RIGHT
              * @enum {string|null}
              */
-            start_side: "LEFT" | "RIGHT" | null;
+            start_side?: "LEFT" | "RIGHT" | null;
             /**
              * @description The level at which the comment is targeted, can be a diff line or a file.
              * @enum {string}
@@ -38024,14 +38191,14 @@ export type components = {
              * @description Whether to allow auto-merge for pull requests.
              * @default false
              */
-            allow_auto_merge: boolean;
+            allow_auto_merge?: boolean;
             /** @description Whether to allow updating the pull request's branch. */
             allow_update_branch?: boolean;
             /**
              * @description Whether to delete head branches when pull requests are merged.
              * @default false
              */
-            delete_branch_on_merge: boolean;
+            delete_branch_on_merge?: boolean;
             /**
              * @description The default value for a merge commit message.
              *     - `PR_TITLE` - default to the pull request's title.
@@ -38066,7 +38233,7 @@ export type components = {
              * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.**
              * @default false
              */
-            use_squash_pr_title_as_default: boolean;
+            use_squash_pr_title_as_default?: boolean;
         };
         /** PushEvent */
         "push-event": {
@@ -38477,7 +38644,7 @@ export type components = {
              * @default false
              * @example false
              */
-            allow_auto_merge: boolean;
+            allow_auto_merge?: boolean;
             /** @description Whether to allow forking this repo */
             allow_forking?: boolean;
             /**
@@ -38485,25 +38652,25 @@ export type components = {
              * @default true
              * @example true
              */
-            allow_merge_commit: boolean;
+            allow_merge_commit?: boolean;
             /**
              * @description Whether to allow rebase merges for pull requests.
              * @default true
              * @example true
              */
-            allow_rebase_merge: boolean;
+            allow_rebase_merge?: boolean;
             /**
              * @description Whether to allow squash merges for pull requests.
              * @default true
              * @example true
              */
-            allow_squash_merge: boolean;
+            allow_squash_merge?: boolean;
             /**
              * @description Whether or not a pull request head branch that is behind its base branch can always be updated even if it is not required to be up to date before merging.
              * @default false
              * @example false
              */
-            allow_update_branch: boolean;
+            allow_update_branch?: boolean;
             /** @description Whether anonymous git access is enabled for this repository */
             anonymous_access_enabled?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/{archive_format}{/ref} */
@@ -38556,7 +38723,7 @@ export type components = {
              * @default false
              * @example false
              */
-            delete_branch_on_merge: boolean;
+            delete_branch_on_merge?: boolean;
             /**
              * Format: uri
              * @example http://api.github.com/repos/octocat/Hello-World/deployments
@@ -38600,7 +38767,7 @@ export type components = {
              * @default false
              * @example true
              */
-            has_discussions: boolean;
+            has_discussions?: boolean;
             /**
              * @deprecated
              * @description Whether downloads are enabled.
@@ -38626,7 +38793,7 @@ export type components = {
              * @default true
              * @example true
              */
-            has_pull_requests: boolean;
+            has_pull_requests?: boolean;
             /**
              * @description Whether the wiki is enabled.
              * @default true
@@ -38659,7 +38826,7 @@ export type components = {
              * @default false
              * @example true
              */
-            is_template: boolean;
+            is_template?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/comments{/number} */
             issue_comment_url: string;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/events{/number} */
@@ -38826,12 +38993,12 @@ export type components = {
              * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
              * @default false
              */
-            use_squash_pr_title_as_default: boolean;
+            use_squash_pr_title_as_default?: boolean;
             /**
              * @description The repository visibility: public, private, or internal.
              * @default public
              */
-            visibility: string;
+            visibility?: string;
             watchers: number;
             /** @example 80 */
             watchers_count: number;
@@ -38839,7 +39006,7 @@ export type components = {
              * @description Whether to require contributors to sign off on web-based commits
              * @default false
              */
-            web_commit_signoff_required: boolean;
+            web_commit_signoff_required?: boolean;
         };
         /** @description A repository security advisory. */
         "repository-advisory": {
@@ -38966,7 +39133,7 @@ export type components = {
              * @description Whether to create a temporary private fork of the repository to collaborate on a fix.
              * @default false
              */
-            start_private_fork: boolean;
+            start_private_fork?: boolean;
             /** @description A short summary of the advisory. */
             summary: string;
             /** @description A product affected by the vulnerability detailed in a repository security advisory. */
@@ -39087,6 +39254,16 @@ export type components = {
             /** @example admin */
             role_name: string;
             user: components["schemas"]["nullable-collaborator"];
+        };
+        /**
+         * Repository External Custom Property Value Payload
+         * @description Repository name and associated external custom property value
+         */
+        "repository-external-property-payload": {
+            /** @description The name of the repository */
+            repository_name: string;
+            /** @description The value assigned to the repository. Set to `null` to unset the value for this repository. */
+            value: string | null;
         };
         /**
          * Repository hash algorithm
@@ -39731,7 +39908,7 @@ export type components = {
              * @default always
              * @enum {string}
              */
-            bypass_mode: "always" | "pull_request" | "exempt";
+            bypass_mode?: "always" | "pull_request" | "exempt";
         };
         /**
          * Repository ruleset conditions for ref names
@@ -39836,7 +40013,7 @@ export type components = {
              * @default false
              * @example false
              */
-            allow_auto_merge: boolean;
+            allow_auto_merge?: boolean;
             /** @description Whether to allow forking this repo */
             allow_forking?: boolean;
             /**
@@ -39844,25 +40021,25 @@ export type components = {
              * @default true
              * @example true
              */
-            allow_merge_commit: boolean;
+            allow_merge_commit?: boolean;
             /**
              * @description Whether to allow rebase merges for pull requests.
              * @default true
              * @example true
              */
-            allow_rebase_merge: boolean;
+            allow_rebase_merge?: boolean;
             /**
              * @description Whether to allow squash merges for pull requests.
              * @default true
              * @example true
              */
-            allow_squash_merge: boolean;
+            allow_squash_merge?: boolean;
             /**
              * @description Whether or not a pull request head branch that is behind its base branch can always be updated even if it is not required to be up to date before merging.
              * @default false
              * @example false
              */
-            allow_update_branch: boolean;
+            allow_update_branch?: boolean;
             /** @description Whether anonymous git access is enabled for this repository */
             anonymous_access_enabled?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/{archive_format}{/ref} */
@@ -39914,7 +40091,7 @@ export type components = {
              * @default false
              * @example false
              */
-            delete_branch_on_merge: boolean;
+            delete_branch_on_merge?: boolean;
             /**
              * Format: uri
              * @example http://api.github.com/repos/octocat/Hello-World/deployments
@@ -39958,7 +40135,7 @@ export type components = {
              * @default false
              * @example true
              */
-            has_discussions: boolean;
+            has_discussions?: boolean;
             /**
              * @description Whether downloads are enabled.
              * @default true
@@ -39983,7 +40160,7 @@ export type components = {
              * @default true
              * @example true
              */
-            has_pull_requests: boolean;
+            has_pull_requests?: boolean;
             /**
              * @description Whether the wiki is enabled.
              * @default true
@@ -40016,7 +40193,7 @@ export type components = {
              * @default false
              * @example true
              */
-            is_template: boolean;
+            is_template?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/comments{/number} */
             issue_comment_url: string;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/events{/number} */
@@ -40329,12 +40506,12 @@ export type components = {
              * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
              * @default false
              */
-            use_squash_pr_title_as_default: boolean;
+            use_squash_pr_title_as_default?: boolean;
             /**
              * @description The repository visibility: public, private, or internal.
              * @default public
              */
-            visibility: string;
+            visibility?: string;
             watchers: number;
             /** @example 80 */
             watchers_count: number;
@@ -40342,7 +40519,7 @@ export type components = {
              * @description Whether to require contributors to sign off on web-based commits
              * @default false
              */
-            web_commit_signoff_required: boolean;
+            web_commit_signoff_required?: boolean;
         };
         /**
          * Legacy Review Comment
@@ -40421,7 +40598,7 @@ export type components = {
              * @default RIGHT
              * @enum {string}
              */
-            side: "LEFT" | "RIGHT";
+            side?: "LEFT" | "RIGHT";
             /**
              * @description The first line of the range for a multi-line comment.
              * @example 2
@@ -40432,7 +40609,7 @@ export type components = {
              * @default RIGHT
              * @enum {string|null}
              */
-            start_side: "LEFT" | "RIGHT" | null;
+            start_side?: "LEFT" | "RIGHT" | null;
             /**
              * @description The level at which the comment is targeted, can be a diff line or a file.
              * @enum {string}
@@ -40843,7 +41020,7 @@ export type components = {
              * @description If `true`, the runner group will be restricted to running only the workflows specified in the `selected_workflows` array.
              * @default false
              */
-            restricted_to_workflows: boolean;
+            restricted_to_workflows?: boolean;
             runners_url: string;
             /** @description Link to the selected repositories resource for this runner group. Not present unless visibility was set to `selected` */
             selected_repositories_url?: string;
@@ -40854,7 +41031,7 @@ export type components = {
              * @description If `true`, the `restricted_to_workflows` and `selected_workflows` fields cannot be modified.
              * @default false
              */
-            workflow_restrictions_read_only: boolean;
+            workflow_restrictions_read_only?: boolean;
         };
         /**
          * Self hosted runner label
@@ -41188,7 +41365,7 @@ export type components = {
              *     Defaults to `\z|[^0-9A-Za-z]` when not specified.
              * @default \z|[^0-9A-Za-z]
              */
-            end_delimiter: string;
+            end_delimiter?: string;
             /** @description List of regexes that the secret must match. */
             must_match?: string[];
             /** @description List of regexes that the secret must not match. */
@@ -41202,7 +41379,7 @@ export type components = {
              *     Defaults to `\A|[^0-9A-Za-z]` when not specified.
              * @default \A|[^0-9A-Za-z]
              */
-            start_delimiter: string;
+            start_delimiter?: string;
         };
         /**
          * Secret Scanning Custom Pattern To Delete
@@ -41633,7 +41810,7 @@ export type components = {
                      * @default ALWAYS
                      * @enum {string}
                      */
-                    mode: "ALWAYS" | "EXEMPT";
+                    mode?: "ALWAYS" | "EXEMPT";
                     /** @description The ID of the team or role selected as a bypass reviewer */
                     reviewer_id: number;
                     /**
@@ -42792,31 +42969,31 @@ export type components = {
              * @default false
              * @example false
              */
-            allow_auto_merge: boolean;
+            allow_auto_merge?: boolean;
             /**
              * @description Whether to allow forking this repo
              * @default false
              * @example false
              */
-            allow_forking: boolean;
+            allow_forking?: boolean;
             /**
              * @description Whether to allow merge commits for pull requests.
              * @default true
              * @example true
              */
-            allow_merge_commit: boolean;
+            allow_merge_commit?: boolean;
             /**
              * @description Whether to allow rebase merges for pull requests.
              * @default true
              * @example true
              */
-            allow_rebase_merge: boolean;
+            allow_rebase_merge?: boolean;
             /**
              * @description Whether to allow squash merges for pull requests.
              * @default true
              * @example true
              */
-            allow_squash_merge: boolean;
+            allow_squash_merge?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/{archive_format}{/ref} */
             archive_url: string;
             /**
@@ -42862,7 +43039,7 @@ export type components = {
              * @default false
              * @example false
              */
-            delete_branch_on_merge: boolean;
+            delete_branch_on_merge?: boolean;
             /**
              * Format: uri
              * @example http://api.github.com/repos/octocat/Hello-World/deployments
@@ -42951,7 +43128,7 @@ export type components = {
              * @default false
              * @example true
              */
-            is_template: boolean;
+            is_template?: boolean;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/comments{/number} */
             issue_comment_url: string;
             /** @example http://api.github.com/repos/octocat/Hello-World/issues/events{/number} */
@@ -43076,7 +43253,7 @@ export type components = {
              * @description The repository visibility: public, private, or internal.
              * @default public
              */
-            visibility: string;
+            visibility?: string;
             watchers: number;
             /** @example 80 */
             watchers_count: number;
@@ -43085,7 +43262,7 @@ export type components = {
              * @default false
              * @example false
              */
-            web_commit_signoff_required: boolean;
+            web_commit_signoff_required?: boolean;
         };
         /**
          * A Role Assignment for a Team
@@ -48503,24 +48680,24 @@ export type components = {
                  * @description Whether to allow auto-merge for pull requests.
                  * @default false
                  */
-                allow_auto_merge: boolean;
+                allow_auto_merge?: boolean;
                 /** @description Whether to allow private forks */
                 allow_forking?: boolean;
                 /**
                  * @description Whether to allow merge commits for pull requests.
                  * @default true
                  */
-                allow_merge_commit: boolean;
+                allow_merge_commit?: boolean;
                 /**
                  * @description Whether to allow rebase merges for pull requests.
                  * @default true
                  */
-                allow_rebase_merge: boolean;
+                allow_rebase_merge?: boolean;
                 /**
                  * @description Whether to allow squash merges for pull requests.
                  * @default true
                  */
-                allow_squash_merge: boolean;
+                allow_squash_merge?: boolean;
                 allow_update_branch?: boolean;
                 /** Format: uri-template */
                 archive_url: string;
@@ -48556,7 +48733,7 @@ export type components = {
                  * @description Whether to delete head branches when pull requests are merged
                  * @default false
                  */
-                delete_branch_on_merge: boolean;
+                delete_branch_on_merge?: boolean;
                 /** Format: uri */
                 deployments_url: string;
                 description: string | null;
@@ -55579,24 +55756,24 @@ export type components = {
                      * @description Whether to allow auto-merge for pull requests.
                      * @default false
                      */
-                    allow_auto_merge: boolean;
+                    allow_auto_merge?: boolean;
                     /** @description Whether to allow private forks */
                     allow_forking?: boolean;
                     /**
                      * @description Whether to allow merge commits for pull requests.
                      * @default true
                      */
-                    allow_merge_commit: boolean;
+                    allow_merge_commit?: boolean;
                     /**
                      * @description Whether to allow rebase merges for pull requests.
                      * @default true
                      */
-                    allow_rebase_merge: boolean;
+                    allow_rebase_merge?: boolean;
                     /**
                      * @description Whether to allow squash merges for pull requests.
                      * @default true
                      */
-                    allow_squash_merge: boolean;
+                    allow_squash_merge?: boolean;
                     allow_update_branch?: boolean;
                     /** Format: uri-template */
                     archive_url: string;
@@ -55636,7 +55813,7 @@ export type components = {
                      * @description Whether to delete head branches when pull requests are merged
                      * @default false
                      */
-                    delete_branch_on_merge: boolean;
+                    delete_branch_on_merge?: boolean;
                     /** Format: uri */
                     deployments_url: string;
                     description: string | null;
@@ -55682,7 +55859,7 @@ export type components = {
                      * @description Whether pull requests are enabled.
                      * @default true
                      */
-                    has_pull_requests: boolean;
+                    has_pull_requests?: boolean;
                     /**
                      * @description Whether the wiki is enabled.
                      * @default true
@@ -57124,24 +57301,24 @@ export type components = {
                      * @description Whether to allow auto-merge for pull requests.
                      * @default false
                      */
-                    allow_auto_merge: boolean;
+                    allow_auto_merge?: boolean;
                     /** @description Whether to allow private forks */
                     allow_forking?: boolean;
                     /**
                      * @description Whether to allow merge commits for pull requests.
                      * @default true
                      */
-                    allow_merge_commit: boolean;
+                    allow_merge_commit?: boolean;
                     /**
                      * @description Whether to allow rebase merges for pull requests.
                      * @default true
                      */
-                    allow_rebase_merge: boolean;
+                    allow_rebase_merge?: boolean;
                     /**
                      * @description Whether to allow squash merges for pull requests.
                      * @default true
                      */
-                    allow_squash_merge: boolean;
+                    allow_squash_merge?: boolean;
                     allow_update_branch?: boolean;
                     /** Format: uri-template */
                     archive_url: string;
@@ -57181,7 +57358,7 @@ export type components = {
                      * @description Whether to delete head branches when pull requests are merged
                      * @default false
                      */
-                    delete_branch_on_merge: boolean;
+                    delete_branch_on_merge?: boolean;
                     /** Format: uri */
                     deployments_url: string;
                     description: string | null;
@@ -57230,7 +57407,7 @@ export type components = {
                      * @description Whether pull requests are enabled.
                      * @default true
                      */
-                    has_pull_requests: boolean;
+                    has_pull_requests?: boolean;
                     /**
                      * @description Whether the wiki is enabled.
                      * @default true
@@ -59889,24 +60066,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -59942,7 +60119,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -59991,7 +60168,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -60167,7 +60344,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -60245,24 +60422,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -60298,7 +60475,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -60347,7 +60524,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -60523,7 +60700,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -61117,24 +61294,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -61170,7 +61347,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -61219,7 +61396,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -61395,7 +61572,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -61473,24 +61650,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -61526,7 +61703,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -61575,7 +61752,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -61751,7 +61928,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -62346,24 +62523,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -62399,7 +62576,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -62448,7 +62625,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -62624,7 +62801,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -62702,24 +62879,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -62755,7 +62932,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -62804,7 +62981,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -62977,7 +63154,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -63609,24 +63786,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -63662,7 +63839,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -63711,7 +63888,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -63887,7 +64064,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -63965,24 +64142,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -64018,7 +64195,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -64067,7 +64244,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -64243,7 +64420,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -64870,24 +65047,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -64923,7 +65100,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -64972,7 +65149,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -65148,7 +65325,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -65226,24 +65403,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -65279,7 +65456,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -65328,7 +65505,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -65504,7 +65681,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -66099,24 +66276,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -66152,7 +66329,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -66201,7 +66378,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -66377,7 +66554,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -66455,24 +66632,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -66508,7 +66685,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -66557,7 +66734,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -66733,7 +66910,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -67334,24 +67511,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -67387,7 +67564,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -67436,7 +67613,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -67612,7 +67789,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -67690,24 +67867,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -67743,7 +67920,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -67792,7 +67969,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -67968,7 +68145,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -68755,24 +68932,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -68808,7 +68985,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -68857,7 +69034,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -69033,7 +69210,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -69104,24 +69281,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -69157,7 +69334,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -69185,7 +69362,7 @@ export type components = {
                          * @description Whether discussions are enabled.
                          * @default false
                          */
-                        has_discussions: boolean;
+                        has_discussions?: boolean;
                         /**
                          * @description Whether downloads are enabled.
                          * @default true
@@ -69206,7 +69383,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -69382,7 +69559,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -69922,24 +70099,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -69975,7 +70152,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -70024,7 +70201,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -70200,7 +70377,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -70271,24 +70448,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -70324,7 +70501,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -70373,7 +70550,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -70549,7 +70726,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -71091,24 +71268,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -71144,7 +71321,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -71193,7 +71370,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -71369,7 +71546,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -71440,24 +71617,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -71493,7 +71670,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -71542,7 +71719,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -71718,7 +71895,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -72258,24 +72435,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -72311,7 +72488,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -72360,7 +72537,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -72536,7 +72713,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -72607,24 +72784,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -72660,7 +72837,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -72709,7 +72886,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -72885,7 +73062,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -73508,24 +73685,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -73561,7 +73738,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -73801,24 +73978,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -73854,7 +74031,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -74567,24 +74744,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -74620,7 +74797,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -74669,7 +74846,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -74838,7 +75015,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -74916,24 +75093,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -74969,7 +75146,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -75018,7 +75195,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -75194,7 +75371,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -75826,24 +76003,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -75879,7 +76056,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -75928,7 +76105,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -76104,7 +76281,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -76182,24 +76359,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -76235,7 +76412,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -76284,7 +76461,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -76460,7 +76637,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -77111,24 +77288,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -77164,7 +77341,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -77213,7 +77390,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -77389,7 +77566,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -77467,24 +77644,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -77520,7 +77697,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -77569,7 +77746,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -77745,7 +77922,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -78377,24 +78554,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -78430,7 +78607,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -78479,7 +78656,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -78655,7 +78832,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -78733,24 +78910,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -78786,7 +78963,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -78835,7 +79012,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -79011,7 +79188,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -79658,24 +79835,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -79711,7 +79888,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -79760,7 +79937,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -79936,7 +80113,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -80007,24 +80184,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -80060,7 +80237,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -80109,7 +80286,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -80285,7 +80462,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -80826,24 +81003,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -80879,7 +81056,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -80928,7 +81105,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -81136,24 +81313,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -81189,7 +81366,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -81238,7 +81415,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -82063,24 +82240,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -82116,7 +82293,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -82165,7 +82342,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -82373,24 +82550,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -82426,7 +82603,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -82475,7 +82652,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -83302,24 +83479,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -83355,7 +83532,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -83404,7 +83581,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -83580,7 +83757,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -83658,24 +83835,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -83711,7 +83888,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -83760,7 +83937,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -83936,7 +84113,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -84533,24 +84710,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -84586,7 +84763,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -84635,7 +84812,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -84811,7 +84988,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -84889,24 +85066,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -84942,7 +85119,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -84991,7 +85168,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -85160,7 +85337,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -85755,24 +85932,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -85808,7 +85985,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -85857,7 +86034,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -86033,7 +86210,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -86111,24 +86288,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -86164,7 +86341,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -86213,7 +86390,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -86389,7 +86566,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -86984,24 +87161,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -87037,7 +87214,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -87086,7 +87263,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -87262,7 +87439,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -87340,24 +87517,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -87393,7 +87570,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -87442,7 +87619,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -87611,7 +87788,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -88205,24 +88382,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -88258,7 +88435,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -88307,7 +88484,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -88483,7 +88660,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -88561,24 +88738,24 @@ export type components = {
                          * @description Whether to allow auto-merge for pull requests.
                          * @default false
                          */
-                        allow_auto_merge: boolean;
+                        allow_auto_merge?: boolean;
                         /** @description Whether to allow private forks */
                         allow_forking?: boolean;
                         /**
                          * @description Whether to allow merge commits for pull requests.
                          * @default true
                          */
-                        allow_merge_commit: boolean;
+                        allow_merge_commit?: boolean;
                         /**
                          * @description Whether to allow rebase merges for pull requests.
                          * @default true
                          */
-                        allow_rebase_merge: boolean;
+                        allow_rebase_merge?: boolean;
                         /**
                          * @description Whether to allow squash merges for pull requests.
                          * @default true
                          */
-                        allow_squash_merge: boolean;
+                        allow_squash_merge?: boolean;
                         allow_update_branch?: boolean;
                         /** Format: uri-template */
                         archive_url: string;
@@ -88614,7 +88791,7 @@ export type components = {
                          * @description Whether to delete head branches when pull requests are merged
                          * @default false
                          */
-                        delete_branch_on_merge: boolean;
+                        delete_branch_on_merge?: boolean;
                         /** Format: uri */
                         deployments_url: string;
                         description: string | null;
@@ -88663,7 +88840,7 @@ export type components = {
                          * @description Whether pull requests are enabled.
                          * @default true
                          */
-                        has_pull_requests: boolean;
+                        has_pull_requests?: boolean;
                         /**
                          * @description Whether the wiki is enabled.
                          * @default true
@@ -88839,7 +89016,7 @@ export type components = {
                          * @description Whether a squash merge commit can use the pull request title as default. **This property is closing down. Please use `squash_merge_commit_title` instead.
                          * @default false
                          */
-                        use_squash_pr_title_as_default: boolean;
+                        use_squash_pr_title_as_default?: boolean;
                         /** @enum {string} */
                         visibility: "public" | "private" | "internal";
                         watchers: number;
@@ -89377,24 +89554,24 @@ export type components = {
                  * @description Whether to allow auto-merge for pull requests.
                  * @default false
                  */
-                allow_auto_merge: boolean;
+                allow_auto_merge?: boolean;
                 /** @description Whether to allow private forks */
                 allow_forking?: boolean;
                 /**
                  * @description Whether to allow merge commits for pull requests.
                  * @default true
                  */
-                allow_merge_commit: boolean;
+                allow_merge_commit?: boolean;
                 /**
                  * @description Whether to allow rebase merges for pull requests.
                  * @default true
                  */
-                allow_rebase_merge: boolean;
+                allow_rebase_merge?: boolean;
                 /**
                  * @description Whether to allow squash merges for pull requests.
                  * @default true
                  */
-                allow_squash_merge: boolean;
+                allow_squash_merge?: boolean;
                 allow_update_branch?: boolean;
                 /** Format: uri-template */
                 archive_url: string;
@@ -89434,7 +89611,7 @@ export type components = {
                  * @description Whether to delete head branches when pull requests are merged
                  * @default false
                  */
-                delete_branch_on_merge: boolean;
+                delete_branch_on_merge?: boolean;
                 /** Format: uri */
                 deployments_url: string;
                 description: string | null;
@@ -89483,7 +89660,7 @@ export type components = {
                  * @description Whether pull requests are enabled.
                  * @default true
                  */
-                has_pull_requests: boolean;
+                has_pull_requests?: boolean;
                 /**
                  * @description Whether the wiki is enabled.
                  * @default true
@@ -91311,24 +91488,24 @@ export type components = {
                  * @description Whether to allow auto-merge for pull requests.
                  * @default false
                  */
-                allow_auto_merge: boolean;
+                allow_auto_merge?: boolean;
                 /** @description Whether to allow private forks */
                 allow_forking?: boolean;
                 /**
                  * @description Whether to allow merge commits for pull requests.
                  * @default true
                  */
-                allow_merge_commit: boolean;
+                allow_merge_commit?: boolean;
                 /**
                  * @description Whether to allow rebase merges for pull requests.
                  * @default true
                  */
-                allow_rebase_merge: boolean;
+                allow_rebase_merge?: boolean;
                 /**
                  * @description Whether to allow squash merges for pull requests.
                  * @default true
                  */
-                allow_squash_merge: boolean;
+                allow_squash_merge?: boolean;
                 allow_update_branch?: boolean;
                 /** Format: uri-template */
                 archive_url: string;
@@ -91368,7 +91545,7 @@ export type components = {
                  * @description Whether to delete head branches when pull requests are merged
                  * @default false
                  */
-                delete_branch_on_merge: boolean;
+                delete_branch_on_merge?: boolean;
                 /** Format: uri */
                 deployments_url: string;
                 description: string | null;
@@ -91564,24 +91741,24 @@ export type components = {
                  * @description Whether to allow auto-merge for pull requests.
                  * @default false
                  */
-                allow_auto_merge: boolean;
+                allow_auto_merge?: boolean;
                 /** @description Whether to allow private forks */
                 allow_forking?: boolean;
                 /**
                  * @description Whether to allow merge commits for pull requests.
                  * @default true
                  */
-                allow_merge_commit: boolean;
+                allow_merge_commit?: boolean;
                 /**
                  * @description Whether to allow rebase merges for pull requests.
                  * @default true
                  */
-                allow_rebase_merge: boolean;
+                allow_rebase_merge?: boolean;
                 /**
                  * @description Whether to allow squash merges for pull requests.
                  * @default true
                  */
-                allow_squash_merge: boolean;
+                allow_squash_merge?: boolean;
                 allow_update_branch?: boolean;
                 /** Format: uri-template */
                 archive_url: string;
@@ -91621,7 +91798,7 @@ export type components = {
                  * @description Whether to delete head branches when pull requests are merged
                  * @default false
                  */
-                delete_branch_on_merge: boolean;
+                delete_branch_on_merge?: boolean;
                 /** Format: uri */
                 deployments_url: string;
                 description: string | null;
@@ -91817,24 +91994,24 @@ export type components = {
                  * @description Whether to allow auto-merge for pull requests.
                  * @default false
                  */
-                allow_auto_merge: boolean;
+                allow_auto_merge?: boolean;
                 /** @description Whether to allow private forks */
                 allow_forking?: boolean;
                 /**
                  * @description Whether to allow merge commits for pull requests.
                  * @default true
                  */
-                allow_merge_commit: boolean;
+                allow_merge_commit?: boolean;
                 /**
                  * @description Whether to allow rebase merges for pull requests.
                  * @default true
                  */
-                allow_rebase_merge: boolean;
+                allow_rebase_merge?: boolean;
                 /**
                  * @description Whether to allow squash merges for pull requests.
                  * @default true
                  */
-                allow_squash_merge: boolean;
+                allow_squash_merge?: boolean;
                 allow_update_branch?: boolean;
                 /** Format: uri-template */
                 archive_url: string;
@@ -91874,7 +92051,7 @@ export type components = {
                  * @description Whether to delete head branches when pull requests are merged
                  * @default false
                  */
-                delete_branch_on_merge: boolean;
+                delete_branch_on_merge?: boolean;
                 /** Format: uri */
                 deployments_url: string;
                 description: string | null;
@@ -92101,24 +92278,24 @@ export type components = {
                  * @description Whether to allow auto-merge for pull requests.
                  * @default false
                  */
-                allow_auto_merge: boolean;
+                allow_auto_merge?: boolean;
                 /** @description Whether to allow private forks */
                 allow_forking?: boolean;
                 /**
                  * @description Whether to allow merge commits for pull requests.
                  * @default true
                  */
-                allow_merge_commit: boolean;
+                allow_merge_commit?: boolean;
                 /**
                  * @description Whether to allow rebase merges for pull requests.
                  * @default true
                  */
-                allow_rebase_merge: boolean;
+                allow_rebase_merge?: boolean;
                 /**
                  * @description Whether to allow squash merges for pull requests.
                  * @default true
                  */
-                allow_squash_merge: boolean;
+                allow_squash_merge?: boolean;
                 allow_update_branch?: boolean;
                 /** Format: uri-template */
                 archive_url: string;
@@ -92158,7 +92335,7 @@ export type components = {
                  * @description Whether to delete head branches when pull requests are merged
                  * @default false
                  */
-                delete_branch_on_merge: boolean;
+                delete_branch_on_merge?: boolean;
                 /** Format: uri */
                 deployments_url: string;
                 description: string | null;
@@ -92354,24 +92531,24 @@ export type components = {
                  * @description Whether to allow auto-merge for pull requests.
                  * @default false
                  */
-                allow_auto_merge: boolean;
+                allow_auto_merge?: boolean;
                 /** @description Whether to allow private forks */
                 allow_forking?: boolean;
                 /**
                  * @description Whether to allow merge commits for pull requests.
                  * @default true
                  */
-                allow_merge_commit: boolean;
+                allow_merge_commit?: boolean;
                 /**
                  * @description Whether to allow rebase merges for pull requests.
                  * @default true
                  */
-                allow_rebase_merge: boolean;
+                allow_rebase_merge?: boolean;
                 /**
                  * @description Whether to allow squash merges for pull requests.
                  * @default true
                  */
-                allow_squash_merge: boolean;
+                allow_squash_merge?: boolean;
                 allow_update_branch?: boolean;
                 /** Format: uri-template */
                 archive_url: string;
@@ -92411,7 +92588,7 @@ export type components = {
                  * @description Whether to delete head branches when pull requests are merged
                  * @default false
                  */
-                delete_branch_on_merge: boolean;
+                delete_branch_on_merge?: boolean;
                 /** Format: uri */
                 deployments_url: string;
                 description: string | null;
@@ -96124,24 +96301,24 @@ export type components = {
                      * @description Whether to allow auto-merge for pull requests.
                      * @default false
                      */
-                    allow_auto_merge: boolean;
+                    allow_auto_merge?: boolean;
                     /** @description Whether to allow private forks */
                     allow_forking?: boolean;
                     /**
                      * @description Whether to allow merge commits for pull requests.
                      * @default true
                      */
-                    allow_merge_commit: boolean;
+                    allow_merge_commit?: boolean;
                     /**
                      * @description Whether to allow rebase merges for pull requests.
                      * @default true
                      */
-                    allow_rebase_merge: boolean;
+                    allow_rebase_merge?: boolean;
                     /**
                      * @description Whether to allow squash merges for pull requests.
                      * @default true
                      */
-                    allow_squash_merge: boolean;
+                    allow_squash_merge?: boolean;
                     allow_update_branch?: boolean;
                     /** Format: uri-template */
                     archive_url: string;
@@ -96177,7 +96354,7 @@ export type components = {
                      * @description Whether to delete head branches when pull requests are merged
                      * @default false
                      */
-                    delete_branch_on_merge: boolean;
+                    delete_branch_on_merge?: boolean;
                     /** Format: uri */
                     deployments_url: string;
                     description: string | null;
@@ -96226,7 +96403,7 @@ export type components = {
                      * @description Whether pull requests are enabled.
                      * @default true
                      */
-                    has_pull_requests: boolean;
+                    has_pull_requests?: boolean;
                     /**
                      * @description Whether the wiki is enabled.
                      * @default true
@@ -96402,7 +96579,7 @@ export type components = {
                      * @description Whether a squash merge commit can use the pull request title as default.
                      * @default false
                      */
-                    use_squash_pr_title_as_default: boolean;
+                    use_squash_pr_title_as_default?: boolean;
                     /** @enum {string} */
                     visibility: "public" | "private" | "internal";
                     watchers: number;
@@ -96480,24 +96657,24 @@ export type components = {
                      * @description Whether to allow auto-merge for pull requests.
                      * @default false
                      */
-                    allow_auto_merge: boolean;
+                    allow_auto_merge?: boolean;
                     /** @description Whether to allow private forks */
                     allow_forking?: boolean;
                     /**
                      * @description Whether to allow merge commits for pull requests.
                      * @default true
                      */
-                    allow_merge_commit: boolean;
+                    allow_merge_commit?: boolean;
                     /**
                      * @description Whether to allow rebase merges for pull requests.
                      * @default true
                      */
-                    allow_rebase_merge: boolean;
+                    allow_rebase_merge?: boolean;
                     /**
                      * @description Whether to allow squash merges for pull requests.
                      * @default true
                      */
-                    allow_squash_merge: boolean;
+                    allow_squash_merge?: boolean;
                     allow_update_branch?: boolean;
                     /** Format: uri-template */
                     archive_url: string;
@@ -96533,7 +96710,7 @@ export type components = {
                      * @description Whether to delete head branches when pull requests are merged
                      * @default false
                      */
-                    delete_branch_on_merge: boolean;
+                    delete_branch_on_merge?: boolean;
                     /** Format: uri */
                     deployments_url: string;
                     description: string | null;
@@ -96582,7 +96759,7 @@ export type components = {
                      * @description Whether pull requests are enabled.
                      * @default true
                      */
-                    has_pull_requests: boolean;
+                    has_pull_requests?: boolean;
                     /**
                      * @description Whether the wiki is enabled.
                      * @default true
@@ -96758,7 +96935,7 @@ export type components = {
                      * @description Whether a squash merge commit can use the pull request title as default.
                      * @default false
                      */
-                    use_squash_pr_title_as_default: boolean;
+                    use_squash_pr_title_as_default?: boolean;
                     /** @enum {string} */
                     visibility: "public" | "private" | "internal";
                     watchers: number;
@@ -99187,6 +99364,8 @@ export type components = {
         "exclude-pull-requests": boolean;
         /** @description The ID of the export operation, or `latest`. Currently only `latest` is currently supported. */
         "export-id": string;
+        /** @description The name of the external custom property */
+        "external-property-name": string;
         /** @description The unique identifier of the field. */
         "field-id": number;
         /** @description The unique identifier of the fine-grained personal access token. */
@@ -99445,6 +99624,8 @@ export type components = {
         "ssh-signing-key-id": number;
         /** @description Returns check runs with the specified `status`. */
         status: "queued" | "in_progress" | "completed";
+        /** @description The zero-based position number of the step in the job. */
+        "step-number": number;
         /** @description The SHA256 digest of the artifact, in the form `sha256:HEX_DIGEST`. */
         "subject-digest": string;
         /** @description The unique identifier of the team. */
@@ -116507,6 +116688,173 @@ export interface operations {
             404: components["responses"]["not_found"];
         };
     };
+    "orgs/external-properties-for-repos-get-organization-app-installations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["organization-external-property-installation"][];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "orgs/external-properties-for-repos-register-organization-app-installation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The display name for this app installation's external custom properties in the organization. This can't be changed after the app installation is registered. */
+                    display_name: string;
+                    /** @description The unique identifier of the GitHub App installation to register for managing external custom properties. When authenticating as a GitHub App installation, this defaults to the authenticated installation and can be omitted. It is required for all other callers (users and fine-grained personal access tokens). */
+                    installation_id?: number;
+                };
+            };
+        };
+        responses: {
+            /** @description Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["organization-external-property-installation"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "orgs/external-properties-for-repos-get-organization-definitions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["external-property"][];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "orgs/external-properties-for-repos-create-or-update-organization-values": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description List of external custom property names and associated values to apply to the repositories. */
+                    properties: components["schemas"]["custom-property-value"][];
+                    /** @description The names of repositories that the external custom property values will be applied to. */
+                    repository_names: string[];
+                };
+            };
+        };
+        responses: {
+            /** @description No Content when external custom property values are successfully created or updated */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "orgs/external-properties-for-repos-delete-organization-values": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+                /** @description The name of the external custom property */
+                property_name: components["parameters"]["external-property-name"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: components["responses"]["no_content"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
+    "orgs/external-properties-for-repos-create-or-update-values-for-organization-property": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The organization name. The name is not case sensitive. */
+                org: components["parameters"]["org"];
+                /** @description The name of the external custom property */
+                property_name: components["parameters"]["external-property-name"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The names of repositories and the values that the named external custom property will be set to. */
+                    repository_values: components["schemas"]["repository-external-property-payload"][];
+                };
+            };
+        };
+        responses: {
+            204: components["responses"]["no_content"];
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            422: components["responses"]["validation_failed"];
+        };
+    };
     "orgs/custom-properties-for-repos-get-organization-definitions": {
         parameters: {
             query?: never;
@@ -119568,6 +119916,35 @@ export interface operations {
                 };
             };
             403: components["responses"]["forbidden"];
+        };
+    };
+    "actions/download-step-logs-for-workflow-run-job": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The unique identifier of the job. */
+                job_id: components["parameters"]["job-id"];
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+                /** @description The zero-based position number of the step in the job. */
+                step_number: components["parameters"]["step-number"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response */
+            302: {
+                headers: {
+                    /** @example https://pipelines.actions.githubusercontent.com/ab1f3cCFPB34Nd6imvFxpGZH5hNlDp2wijMwl2gDoO0bcrrlJj/_apis/pipelines/1/jobs/19/steps/1/signedlogcontent?urlExpires=2020-01-22T22%3A44%3A54.1389777Z&urlSigningMethod=HMACV1&urlSignature=2TUDfIg4fm36OJmfPy6km5QD5DLCOkBVzvhWZM8B%2BUY%3D */
+                    Location?: string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     "actions/get-custom-oidc-sub-claim-for-repo": {

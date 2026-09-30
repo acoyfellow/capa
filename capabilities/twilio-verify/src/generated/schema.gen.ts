@@ -880,7 +880,7 @@ export type components = {
              * @description The length of the verification code to generate.
              * @default 0
              */
-            code_length: number;
+            code_length?: number;
             /** @description Whether to allow sending verifications with a custom code instead of a randomly generated one. */
             custom_code_enabled?: boolean | null;
             /**
@@ -952,7 +952,7 @@ export type components = {
              * @description How long, in seconds, the access token is valid. Max: 5 minutes
              * @default 0
              */
-            ttl: number;
+            ttl?: number;
             /**
              * Format: uri
              * @description The URL of this resource.
@@ -1066,7 +1066,7 @@ export type components = {
              * @description How long, in seconds, the notification is valid. Max: 5 minutes
              * @default 0
              */
-            ttl: number;
+            ttl?: number;
         };
         "verify.v2.service.entity.factor": {
             /** @description The unique SID identifier of the Account. */
@@ -1227,12 +1227,12 @@ export type components = {
              * @description Number of seconds that the rate limit will be enforced over.
              * @default 0
              */
-            interval: number;
+            interval?: number;
             /**
              * @description Maximum number of requests permitted in during the interval.
              * @default 0
              */
-            max: number;
+            max?: number;
             /** @description The Twilio-provided string that uniquely identifies the Rate Limit resource. */
             rate_limit_sid?: string | null;
             /** @description The SID of the [Service](https://www.twilio.com/docs/verify/api/service) the resource is associated with. */
@@ -1386,17 +1386,17 @@ export type components = {
              * @description Total of attempts made according to the provided filters
              * @default 0
              */
-            total_attempts: number;
+            total_attempts?: number;
             /**
              * @description Total of  attempts made that were confirmed by the end user, according to the provided filters.
              * @default 0
              */
-            total_converted: number;
+            total_converted?: number;
             /**
              * @description Total of attempts made that were not confirmed by the end user, according to the provided filters.
              * @default 0
              */
-            total_unconverted: number;
+            total_unconverted?: number;
             /** Format: uri */
             url?: string | null;
         };

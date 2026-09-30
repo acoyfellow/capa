@@ -3,12 +3,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 
 export class ChannelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -24,8 +24,8 @@ export class ChannelsResource extends RpcTarget {
 	 *
 	 * `POST /channels/commercial` — risk: medium
 	 */
-	async createCommercial(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createCommercial(body?: NonNullable<paths["/channels/commercial"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/channels/commercial"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "start-commercial",
 			namespace: "channels",
 			method: "createCommercial",
@@ -38,7 +38,7 @@ export class ChannelsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channels/commercial"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -46,8 +46,8 @@ export class ChannelsResource extends RpcTarget {
 	 *
 	 * `GET /channels/ads` — risk: medium
 	 */
-	async listAds(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAds(options?: QueryCallOptions<NonNullable<paths["/channels/ads"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channels/ads"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-ad-schedule",
 			namespace: "channels",
 			method: "listAds",
@@ -60,7 +60,7 @@ export class ChannelsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channels/ads"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -70,8 +70,8 @@ __Authorization:_
 	 *
 	 * `POST /channels/ads/schedule/snooze` — risk: medium
 	 */
-	async snooze(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async snooze(options?: QueryCallOptions<NonNullable<paths["/channels/ads/schedule/snooze"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channels/ads/schedule/snooze"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "snooze-next-ad",
 			namespace: "channels",
 			method: "snooze",
@@ -84,7 +84,7 @@ __Authorization:_
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channels/ads/schedule/snooze"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -96,8 +96,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /channels` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/channels"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channels"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-channel-information",
 			namespace: "channels",
 			method: "list",
@@ -110,7 +110,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channels"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -123,8 +123,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PATCH /channels` — risk: medium
 	 */
-	async patch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(body?: NonNullable<paths["/channels"]["patch"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/channels"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "modify-channel-information",
 			namespace: "channels",
 			method: "patch",
@@ -137,7 +137,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -149,8 +149,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /channels/editors` — risk: medium
 	 */
-	async listEditors(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEditors(options?: QueryCallOptions<NonNullable<paths["/channels/editors"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channels/editors"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-channel-editors",
 			namespace: "channels",
 			method: "listEditors",
@@ -163,7 +163,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channels/editors"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -175,8 +175,8 @@ Requires a [user access token](ht
 	 *
 	 * `GET /channels/followed` — risk: medium
 	 */
-	async listFollowed(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listFollowed(options?: QueryCallOptions<NonNullable<paths["/channels/followed"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channels/followed"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-followed-channels",
 			namespace: "channels",
 			method: "listFollowed",
@@ -189,7 +189,7 @@ Requires a [user access token](ht
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channels/followed"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -201,8 +201,8 @@ __Authorization:__
 	 *
 	 * `GET /channels/followers` — risk: medium
 	 */
-	async listFollowers(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listFollowers(options?: QueryCallOptions<NonNullable<paths["/channels/followers"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channels/followers"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-channel-followers",
 			namespace: "channels",
 			method: "listFollowers",
@@ -215,7 +215,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channels/followers"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -227,8 +227,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /channels/vips` — risk: medium
 	 */
-	async listVips(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listVips(options?: QueryCallOptions<NonNullable<paths["/channels/vips"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channels/vips"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-vips",
 			namespace: "channels",
 			method: "listVips",
@@ -241,7 +241,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channels/vips"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -255,8 +255,8 @@ Requires a [user access to
 	 *
 	 * `POST /channels/vips` — risk: medium
 	 */
-	async createVip(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createVip(options?: QueryCallOptions<NonNullable<paths["/channels/vips"]["post"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "add-channel-vip",
 			namespace: "channels",
 			method: "createVip",
@@ -269,7 +269,7 @@ Requires a [user access to
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -279,8 +279,8 @@ If the broadcaster is removing the user’s VIP status, the ID in the _broadcast
 	 *
 	 * `DELETE /channels/vips` — risk: medium
 	 */
-	async vips(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async vips(options?: QueryCallOptions<NonNullable<paths["/channels/vips"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "remove-channel-vip",
 			namespace: "channels",
 			method: "vips",
@@ -293,13 +293,13 @@ If the broadcaster is removing the user’s VIP status, the ID in the _broadcast
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class AnalyticsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -315,8 +315,8 @@ Req
 	 *
 	 * `GET /analytics/extensions` — risk: medium
 	 */
-	async listExtensions(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listExtensions(options?: QueryCallOptions<NonNullable<paths["/analytics/extensions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/analytics/extensions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-extension-analytics",
 			namespace: "analytics",
 			method: "listExtensions",
@@ -329,7 +329,7 @@ Req
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/analytics/extensions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -341,8 +341,8 @@ Requires
 	 *
 	 * `GET /analytics/games` — risk: medium
 	 */
-	async listGames(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listGames(options?: QueryCallOptions<NonNullable<paths["/analytics/games"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/analytics/games"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-game-analytics",
 			namespace: "analytics",
 			method: "listGames",
@@ -355,13 +355,13 @@ Requires
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/analytics/games"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class BitsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -377,8 +377,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /bits/leaderboard` — risk: medium
 	 */
-	async listLeaderboard(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listLeaderboard(options?: QueryCallOptions<NonNullable<paths["/bits/leaderboard"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/bits/leaderboard"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-bits-leaderboard",
 			namespace: "bits",
 			method: "listLeaderboard",
@@ -391,7 +391,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/bits/leaderboard"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -403,8 +403,8 @@ Requires an [ap
 	 *
 	 * `GET /bits/cheermotes` — risk: medium
 	 */
-	async listCheermotes(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCheermotes(options?: QueryCallOptions<NonNullable<paths["/bits/cheermotes"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/bits/cheermotes"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-cheermotes",
 			namespace: "bits",
 			method: "listCheermotes",
@@ -417,7 +417,7 @@ Requires an [ap
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/bits/cheermotes"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -429,8 +429,8 @@ __Auth
 	 *
 	 * `GET /bits/custom_power_ups` — risk: medium
 	 */
-	async listCustomPowerUps(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCustomPowerUps(options?: QueryCallOptions<NonNullable<paths["/bits/custom_power_ups"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/bits/custom_power_ups"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-custom-power-up",
 			namespace: "bits",
 			method: "listCustomPowerUps",
@@ -443,7 +443,7 @@ __Auth
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/bits/custom_power_ups"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -455,8 +455,8 @@ Requires an [app access token](https://dev.twitch.tv/
 	 *
 	 * `GET /bits/extensions` — risk: medium
 	 */
-	async listExtensions(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listExtensions(options?: QueryCallOptions<NonNullable<paths["/bits/extensions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/bits/extensions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-extension-bits-products",
 			namespace: "bits",
 			method: "listExtensions",
@@ -469,7 +469,7 @@ Requires an [app access token](https://dev.twitch.tv/
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/bits/extensions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -481,8 +481,8 @@ Requires an [app acces
 	 *
 	 * `PUT /bits/extensions` — risk: medium
 	 */
-	async extensions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async extensions(body?: NonNullable<paths["/bits/extensions"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/bits/extensions"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-extension-bits-product",
 			namespace: "bits",
 			method: "extensions",
@@ -495,13 +495,13 @@ Requires an [app acces
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/bits/extensions"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ExtensionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -517,8 +517,8 @@ Requires an [app access token](https://dev.tw
 	 *
 	 * `GET /extensions/transactions` — risk: medium
 	 */
-	async listTransactions(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTransactions(options?: QueryCallOptions<NonNullable<paths["/extensions/transactions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/extensions/transactions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-extension-transactions",
 			namespace: "extensions",
 			method: "listTransactions",
@@ -531,7 +531,7 @@ Requires an [app access token](https://dev.tw
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/extensions/transactions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -545,8 +545,8 @@ Requires a signed JSON Web
 	 *
 	 * `GET /extensions/configurations` — risk: medium
 	 */
-	async listConfigurations(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listConfigurations(options?: QueryCallOptions<NonNullable<paths["/extensions/configurations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/extensions/configurations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-extension-configuration-segment",
 			namespace: "extensions",
 			method: "listConfigurations",
@@ -559,7 +559,7 @@ Requires a signed JSON Web
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/extensions/configurations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -569,8 +569,8 @@ Requires a signed JSON Web
 	 *
 	 * `PUT /extensions/configurations` — risk: medium
 	 */
-	async configurations(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async configurations(body?: NonNullable<paths["/extensions/configurations"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "set-extension-configuration-segment",
 			namespace: "extensions",
 			method: "configurations",
@@ -583,7 +583,7 @@ Requires a signed JSON Web
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -591,8 +591,8 @@ Requires a signed JSON Web
 	 *
 	 * `PUT /extensions/required_configuration` — risk: medium
 	 */
-	async requiredConfiguration(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async requiredConfiguration(body?: NonNullable<paths["/extensions/required_configuration"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/extensions/required_configuration"]["put"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "set-extension-required-configuration",
 			namespace: "extensions",
 			method: "requiredConfiguration",
@@ -605,7 +605,7 @@ Requires a signed JSON Web
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -613,8 +613,8 @@ Requires a signed JSON Web
 	 *
 	 * `POST /extensions/pubsub` — risk: medium
 	 */
-	async createPubsub(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createPubsub(body?: NonNullable<paths["/extensions/pubsub"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "send-extension-pubsub-message",
 			namespace: "extensions",
 			method: "createPubsub",
@@ -627,7 +627,7 @@ Requires a signed JSON Web
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -637,8 +637,8 @@ It may take a few minutes for the list to include or remove broadcasters that ha
 	 *
 	 * `GET /extensions/live` — risk: medium
 	 */
-	async listLive(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listLive(options?: QueryCallOptions<NonNullable<paths["/extensions/live"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/extensions/live"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-extension-live-channels",
 			namespace: "extensions",
 			method: "listLive",
@@ -651,7 +651,7 @@ It may take a few minutes for the list to include or remove broadcasters that ha
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/extensions/live"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -663,8 +663,8 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 	 *
 	 * `GET /extensions/jwt/secrets` — risk: medium
 	 */
-	async secrets_0(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async secrets_0(options?: CallOptions): Promise<ProofResult<paths["/extensions/jwt/secrets"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-extension-secrets",
 			namespace: "extensions",
 			method: "secrets_0",
@@ -677,7 +677,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/extensions/jwt/secrets"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -686,8 +686,8 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 	 *
 	 * `POST /extensions/jwt/secrets` — risk: medium
 	 */
-	async secrets_1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async secrets_1(options?: QueryCallOptions<NonNullable<paths["/extensions/jwt/secrets"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/extensions/jwt/secrets"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-extension-secret",
 			namespace: "extensions",
 			method: "secrets_1",
@@ -700,7 +700,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/extensions/jwt/secrets"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -708,8 +708,8 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 	 *
 	 * `POST /extensions/chat` — risk: medium
 	 */
-	async createChat(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createChat(body?: NonNullable<paths["/extensions/chat"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/extensions/chat"]["post"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "send-extension-chat-message",
 			namespace: "extensions",
 			method: "createChat",
@@ -722,7 +722,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -734,8 +734,8 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 	 *
 	 * `GET /extensions` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/extensions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/extensions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-extensions",
 			namespace: "extensions",
 			method: "list",
@@ -748,7 +748,7 @@ Requires a signed JSON Web Token (JWT) created by an Extension Backend Service (
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/extensions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -760,8 +760,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /extensions/released` — risk: medium
 	 */
-	async listReleased(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listReleased(options?: QueryCallOptions<NonNullable<paths["/extensions/released"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/extensions/released"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-released-extensions",
 			namespace: "extensions",
 			method: "listReleased",
@@ -774,13 +774,13 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/extensions/released"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChannelPointsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -798,8 +798,8 @@ Req
 	 *
 	 * `GET /channel_points/custom_rewards` — risk: medium
 	 */
-	async listCustomRewards(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCustomRewards(options?: QueryCallOptions<NonNullable<paths["/channel_points/custom_rewards"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channel_points/custom_rewards"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-custom-reward",
 			namespace: "channel_points",
 			method: "listCustomRewards",
@@ -812,7 +812,7 @@ Req
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channel_points/custom_rewards"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -824,8 +824,8 @@ Requires a [user ac
 	 *
 	 * `POST /channel_points/custom_rewards` — risk: medium
 	 */
-	async createCustomReward(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createCustomReward(body?: NonNullable<paths["/channel_points/custom_rewards"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/channel_points/custom_rewards"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channel_points/custom_rewards"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-custom-rewards",
 			namespace: "channel_points",
 			method: "createCustomReward",
@@ -838,7 +838,7 @@ Requires a [user ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channel_points/custom_rewards"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -850,8 +850,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#use
 	 *
 	 * `PATCH /channel_points/custom_rewards` — risk: medium
 	 */
-	async customRewards_0(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async customRewards_0(body?: NonNullable<paths["/channel_points/custom_rewards"]["patch"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/channel_points/custom_rewards"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channel_points/custom_rewards"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-custom-reward",
 			namespace: "channel_points",
 			method: "customRewards_0",
@@ -864,7 +864,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#use
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channel_points/custom_rewards"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -874,8 +874,8 @@ The app used to create the reward is the only app that may delete it. If the rew
 	 *
 	 * `DELETE /channel_points/custom_rewards` — risk: medium
 	 */
-	async customRewards_1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async customRewards_1(options?: QueryCallOptions<NonNullable<paths["/channel_points/custom_rewards"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-custom-reward",
 			namespace: "channel_points",
 			method: "customRewards_1",
@@ -888,7 +888,7 @@ The app used to create the reward is the only app that may delete it. If the rew
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -900,8 +900,8 @@ Requires a [user access token](https://
 	 *
 	 * `GET /channel_points/custom_rewards/redemptions` — risk: medium
 	 */
-	async redemptions_0(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async redemptions_0(options?: QueryCallOptions<NonNullable<paths["/channel_points/custom_rewards/redemptions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channel_points/custom_rewards/redemptions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-custom-reward-redemption",
 			namespace: "channel_points",
 			method: "redemptions_0",
@@ -914,7 +914,7 @@ Requires a [user access token](https://
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channel_points/custom_rewards/redemptions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -926,8 +926,8 @@ Req
 	 *
 	 * `PATCH /channel_points/custom_rewards/redemptions` — risk: medium
 	 */
-	async redemptions_1(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async redemptions_1(body?: NonNullable<paths["/channel_points/custom_rewards/redemptions"]["patch"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/channel_points/custom_rewards/redemptions"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<paths["/channel_points/custom_rewards/redemptions"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-redemption-status",
 			namespace: "channel_points",
 			method: "redemptions_1",
@@ -940,13 +940,13 @@ Req
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/channel_points/custom_rewards/redemptions"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class CharityResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -960,8 +960,8 @@ To receive events when progress is made to
 	 *
 	 * `GET /charity/campaigns` — risk: medium
 	 */
-	async listCampaigns(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCampaigns(options?: QueryCallOptions<NonNullable<paths["/charity/campaigns"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/charity/campaigns"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-charity-campaign",
 			namespace: "charity",
 			method: "listCampaigns",
@@ -974,7 +974,7 @@ To receive events when progress is made to
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/charity/campaigns"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -984,8 +984,8 @@ To receive events as donations occur, subscribe to the [channel.charity\_campaig
 	 *
 	 * `GET /charity/donations` — risk: medium
 	 */
-	async listDonations(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listDonations(options?: QueryCallOptions<NonNullable<paths["/charity/donations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/charity/donations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-charity-campaign-donations",
 			namespace: "charity",
 			method: "listDonations",
@@ -998,13 +998,13 @@ To receive events as donations occur, subscribe to the [channel.charity\_campaig
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/charity/donations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ChatResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1020,8 +1020,8 @@ To determin
 	 *
 	 * `GET /chat/chatters` — risk: medium
 	 */
-	async listChatters(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listChatters(options?: QueryCallOptions<NonNullable<paths["/chat/chatters"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat/chatters"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-chatters",
 			namespace: "chat",
 			method: "listChatters",
@@ -1034,7 +1034,7 @@ To determin
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/chatters"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1042,8 +1042,8 @@ To determin
 	 *
 	 * `GET /chat/emotes` — risk: medium
 	 */
-	async listEmotes(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listEmotes(options?: QueryCallOptions<NonNullable<paths["/chat/emotes"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat/emotes"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-channel-emotes",
 			namespace: "chat",
 			method: "listEmotes",
@@ -1056,7 +1056,7 @@ To determin
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/emotes"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1066,8 +1066,8 @@ To determin
 	 *
 	 * `GET /chat/emotes/global` — risk: medium
 	 */
-	async emotesGlobal(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async emotesGlobal(options?: CallOptions): Promise<ProofResult<paths["/chat/emotes/global"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-global-emotes",
 			namespace: "chat",
 			method: "emotesGlobal",
@@ -1080,7 +1080,7 @@ To determin
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/emotes/global"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1090,8 +1090,8 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 	 *
 	 * `GET /chat/emotes/set` — risk: medium
 	 */
-	async set(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async set(options?: QueryCallOptions<NonNullable<paths["/chat/emotes/set"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat/emotes/set"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-emote-sets",
 			namespace: "chat",
 			method: "set",
@@ -1104,7 +1104,7 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/emotes/set"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1112,8 +1112,8 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 	 *
 	 * `GET /chat/badges` — risk: medium
 	 */
-	async listBadges(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listBadges(options?: QueryCallOptions<NonNullable<paths["/chat/badges"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat/badges"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-channel-chat-badges",
 			namespace: "chat",
 			method: "listBadges",
@@ -1126,7 +1126,7 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/badges"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1134,8 +1134,8 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 	 *
 	 * `GET /chat/badges/global` — risk: medium
 	 */
-	async badgesGlobal(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async badgesGlobal(options?: CallOptions): Promise<ProofResult<paths["/chat/badges/global"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-global-chat-badges",
 			namespace: "chat",
 			method: "badgesGlobal",
@@ -1148,7 +1148,7 @@ An emote set groups emotes that have a similar context. For example, Twitch plac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/badges/global"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1158,8 +1158,8 @@ For an overview of chat settings, see [Chat Commands for Broadcasters and Modera
 	 *
 	 * `GET /chat/settings` — risk: medium
 	 */
-	async listSettings(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSettings(options?: QueryCallOptions<NonNullable<paths["/chat/settings"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat/settings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-chat-settings",
 			namespace: "chat",
 			method: "listSettings",
@@ -1172,7 +1172,7 @@ For an overview of chat settings, see [Chat Commands for Broadcasters and Modera
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/settings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1186,8 +1186,8 @@ Requires one of the following:
 	 *
 	 * `PATCH /chat/settings` — risk: medium
 	 */
-	async settings(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async settings(body?: NonNullable<paths["/chat/settings"]["patch"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/chat/settings"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat/settings"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-chat-settings",
 			namespace: "chat",
 			method: "settings",
@@ -1200,7 +1200,7 @@ Requires one of the following:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/settings"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1213,8 +1213,8 @@ __Authorization:__
 	 *
 	 * `GET /chat/emotes/user` — risk: medium
 	 */
-	async user(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async user(options?: QueryCallOptions<NonNullable<paths["/chat/emotes/user"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat/emotes/user"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-user-emotes",
 			namespace: "chat",
 			method: "user",
@@ -1227,7 +1227,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/emotes/user"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1237,8 +1237,8 @@ __Authorization:__
 	 *
 	 * `POST /chat/announcements` — risk: medium
 	 */
-	async createAnnouncement(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createAnnouncement(body?: NonNullable<paths["/chat/announcements"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/chat/announcements"]["post"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "send-chat-announcement",
 			namespace: "chat",
 			method: "createAnnouncement",
@@ -1251,7 +1251,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1259,8 +1259,8 @@ __Authorization:__
 	 *
 	 * `POST /chat/shoutouts` — risk: medium
 	 */
-	async createShoutout(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createShoutout(options?: QueryCallOptions<NonNullable<paths["/chat/shoutouts"]["post"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "send-a-shoutout",
 			namespace: "chat",
 			method: "createShoutout",
@@ -1273,7 +1273,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1285,8 +1285,8 @@ __Authorization:__
 	 *
 	 * `POST /chat/messages` — risk: medium
 	 */
-	async createMessage(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createMessage(body?: NonNullable<paths["/chat/messages"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/chat/messages"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "send-chat-message",
 			namespace: "chat",
 			method: "createMessage",
@@ -1299,7 +1299,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/messages"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1311,8 +1311,8 @@ Requ
 	 *
 	 * `GET /chat/pins` — risk: medium
 	 */
-	async listPins(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listPins(options?: QueryCallOptions<NonNullable<paths["/chat/pins"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat/pins"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-pinned-chat-message",
 			namespace: "chat",
 			method: "listPins",
@@ -1325,7 +1325,7 @@ Requ
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/pins"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1333,8 +1333,8 @@ Requ
 	 *
 	 * `PUT /chat/pins` — risk: medium
 	 */
-	async pins_0(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async pins_0(options?: QueryCallOptions<NonNullable<paths["/chat/pins"]["put"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "pin-chat-message",
 			namespace: "chat",
 			method: "pins_0",
@@ -1347,7 +1347,7 @@ Requ
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1361,8 +1361,8 @@ Requires one of the following:
 	 *
 	 * `PATCH /chat/pins` — risk: medium
 	 */
-	async pins_1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async pins_1(options?: QueryCallOptions<NonNullable<paths["/chat/pins"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-pinned-chat-message",
 			namespace: "chat",
 			method: "pins_1",
@@ -1375,7 +1375,7 @@ Requires one of the following:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1389,8 +1389,8 @@ Requires one of the following:
 	 *
 	 * `DELETE /chat/pins` — risk: medium
 	 */
-	async pins_2(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async pins_2(options?: QueryCallOptions<NonNullable<paths["/chat/pins"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "unpin-chat-message",
 			namespace: "chat",
 			method: "pins_2",
@@ -1403,7 +1403,7 @@ Requires one of the following:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1415,8 +1415,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /chat/color` — risk: medium
 	 */
-	async listColor(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listColor(options?: QueryCallOptions<NonNullable<paths["/chat/color"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/chat/color"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-user-chat-color",
 			namespace: "chat",
 			method: "listColor",
@@ -1429,7 +1429,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/chat/color"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1441,8 +1441,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PUT /chat/color` — risk: medium
 	 */
-	async color(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async color(options?: QueryCallOptions<NonNullable<paths["/chat/color"]["put"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-user-chat-color",
 			namespace: "chat",
 			method: "color",
@@ -1455,13 +1455,13 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class SharedChatResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1477,8 +1477,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/cli/token-command/#app
 	 *
 	 * `GET /shared_chat/session` — risk: medium
 	 */
-	async listSession(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSession(options?: QueryCallOptions<NonNullable<paths["/shared_chat/session"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/shared_chat/session"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-shared-chat-session",
 			namespace: "shared_chat",
 			method: "listSession",
@@ -1491,13 +1491,13 @@ Requires an [app access token](https://dev.twitch.tv/docs/cli/token-command/#app
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/shared_chat/session"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ClipsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1511,8 +1511,8 @@ When using pagination for clips,
 	 *
 	 * `GET /clips` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/clips"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/clips"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-clips",
 			namespace: "clips",
 			method: "list",
@@ -1525,7 +1525,7 @@ When using pagination for clips,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/clips"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1535,8 +1535,8 @@ This API captures up to 90 seconds of the broadcaster’s stream. The 90 seconds
 	 *
 	 * `POST /clips` — risk: medium
 	 */
-	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(options?: QueryCallOptions<NonNullable<paths["/clips"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/clips"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-clip",
 			namespace: "clips",
 			method: "create",
@@ -1549,7 +1549,7 @@ This API captures up to 90 seconds of the broadcaster’s stream. The 90 seconds
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/clips"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1557,8 +1557,8 @@ This API captures up to 90 seconds of the broadcaster’s stream. The 90 seconds
 	 *
 	 * `GET /clips/downloads` — risk: medium
 	 */
-	async listDownloads(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listDownloads(options?: QueryCallOptions<NonNullable<paths["/clips/downloads"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/clips/downloads"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-clips-download",
 			namespace: "clips",
 			method: "listDownloads",
@@ -1571,13 +1571,13 @@ This API captures up to 90 seconds of the broadcaster’s stream. The 90 seconds
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/clips/downloads"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class VideosResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1589,8 +1589,8 @@ export class VideosResource extends RpcTarget {
 	 *
 	 * `POST /videos/clips` — risk: medium
 	 */
-	async createClip(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createClip(options?: QueryCallOptions<NonNullable<paths["/videos/clips"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/videos/clips"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-clip-from-vod",
 			namespace: "videos",
 			method: "createClip",
@@ -1603,7 +1603,7 @@ export class VideosResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/videos/clips"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1613,8 +1613,8 @@ You may apply several filters to get a subset of the videos. The filters are app
 	 *
 	 * `GET /videos` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/videos"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/videos"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-videos",
 			namespace: "videos",
 			method: "list",
@@ -1627,7 +1627,7 @@ You may apply several filters to get a subset of the videos. The filters are app
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/videos"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1639,8 +1639,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `DELETE /videos` — risk: medium
 	 */
-	async delete(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async delete(options?: QueryCallOptions<NonNullable<paths["/videos"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<paths["/videos"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-videos",
 			namespace: "videos",
 			method: "delete",
@@ -1653,13 +1653,13 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/videos"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class EventsubResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1675,8 +1675,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /eventsub/conduits` — risk: medium
 	 */
-	async listConduits(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listConduits(options?: CallOptions): Promise<ProofResult<paths["/eventsub/conduits"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-conduits",
 			namespace: "eventsub",
 			method: "listConduits",
@@ -1689,7 +1689,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/eventsub/conduits"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1701,8 +1701,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `POST /eventsub/conduits` — risk: medium
 	 */
-	async createConduit(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createConduit(body?: NonNullable<paths["/eventsub/conduits"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/eventsub/conduits"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-conduits",
 			namespace: "eventsub",
 			method: "createConduit",
@@ -1715,7 +1715,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/eventsub/conduits"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1723,8 +1723,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `PATCH /eventsub/conduits` — risk: medium
 	 */
-	async conduits_0(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async conduits_0(body?: NonNullable<paths["/eventsub/conduits"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/eventsub/conduits"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-conduits",
 			namespace: "eventsub",
 			method: "conduits_0",
@@ -1737,7 +1737,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/eventsub/conduits"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1745,8 +1745,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `DELETE /eventsub/conduits` — risk: medium
 	 */
-	async conduits_1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async conduits_1(options?: QueryCallOptions<NonNullable<paths["/eventsub/conduits"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-conduit",
 			namespace: "eventsub",
 			method: "conduits_1",
@@ -1759,7 +1759,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1771,8 +1771,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#
 	 *
 	 * `GET /eventsub/conduits/shards` — risk: medium
 	 */
-	async shards_0(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async shards_0(options?: QueryCallOptions<NonNullable<paths["/eventsub/conduits/shards"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/eventsub/conduits/shards"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-conduit-shards",
 			namespace: "eventsub",
 			method: "shards_0",
@@ -1785,7 +1785,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/eventsub/conduits/shards"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1795,8 +1795,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#
 	 *
 	 * `PATCH /eventsub/conduits/shards` — risk: medium
 	 */
-	async shards_1(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async shards_1(body?: NonNullable<paths["/eventsub/conduits/shards"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/eventsub/conduits/shards"]["patch"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-conduit-shards",
 			namespace: "eventsub",
 			method: "shards_1",
@@ -1809,7 +1809,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/eventsub/conduits/shards"]["patch"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1821,8 +1821,8 @@ If you use [Webhooks](https://dev.twitch.tv/docs/eventsub/handling-webhook-event
 	 *
 	 * `GET /eventsub/subscriptions` — risk: medium
 	 */
-	async listSubscriptions(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSubscriptions(options?: QueryCallOptions<NonNullable<paths["/eventsub/subscriptions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/eventsub/subscriptions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-eventsub-subscriptions",
 			namespace: "eventsub",
 			method: "listSubscriptions",
@@ -1835,7 +1835,7 @@ If you use [Webhooks](https://dev.twitch.tv/docs/eventsub/handling-webhook-event
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/eventsub/subscriptions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1847,8 +1847,8 @@ If you use [webhooks to receive events](https://dev.twitch.tv/docs/eventsub/hand
 	 *
 	 * `POST /eventsub/subscriptions` — risk: medium
 	 */
-	async createSubscription(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSubscription(body?: NonNullable<paths["/eventsub/subscriptions"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/eventsub/subscriptions"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-eventsub-subscription",
 			namespace: "eventsub",
 			method: "createSubscription",
@@ -1861,7 +1861,7 @@ If you use [webhooks to receive events](https://dev.twitch.tv/docs/eventsub/hand
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/eventsub/subscriptions"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1873,8 +1873,8 @@ If you use [webhooks to receive events](https://dev.twitch.tv/docs/eventsub/hand
 	 *
 	 * `DELETE /eventsub/subscriptions` — risk: medium
 	 */
-	async subscriptions(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async subscriptions(options?: QueryCallOptions<NonNullable<paths["/eventsub/subscriptions"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-eventsub-subscription",
 			namespace: "eventsub",
 			method: "subscriptions",
@@ -1887,13 +1887,13 @@ If you use [webhooks to receive events](https://dev.twitch.tv/docs/eventsub/hand
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class ContentClassificationLabelsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1909,8 +1909,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /content_classification_labels` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/content_classification_labels"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/content_classification_labels"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-content-classification-labels",
 			namespace: "content_classification_labels",
 			method: "list",
@@ -1923,13 +1923,13 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/content_classification_labels"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class EntitlementsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -1943,8 +1943,8 @@ export class EntitlementsResource extends RpcTarget {
 	 *
 	 * `GET /entitlements/drops` — risk: medium
 	 */
-	async listDrops(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listDrops(options?: QueryCallOptions<NonNullable<paths["/entitlements/drops"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/entitlements/drops"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-drops-entitlements",
 			namespace: "entitlements",
 			method: "listDrops",
@@ -1957,7 +1957,7 @@ export class EntitlementsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/entitlements/drops"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1970,8 +1970,8 @@ The following table identifies which entitlements are updated based on the type 
 	 *
 	 * `PATCH /entitlements/drops` — risk: medium
 	 */
-	async drops(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async drops(body?: NonNullable<paths["/entitlements/drops"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/entitlements/drops"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-drops-entitlements",
 			namespace: "entitlements",
 			method: "drops",
@@ -1984,13 +1984,13 @@ The following table identifies which entitlements are updated based on the type 
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/entitlements/drops"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class GamesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2006,8 +2006,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /games/top` — risk: medium
 	 */
-	async listTop(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTop(options?: QueryCallOptions<NonNullable<paths["/games/top"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/games/top"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-top-games",
 			namespace: "games",
 			method: "listTop",
@@ -2020,7 +2020,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/games/top"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2030,8 +2030,8 @@ You may get up to 100 categories or games by specifying their ID or name. You ma
 	 *
 	 * `GET /games` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/games"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/games"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-games",
 			namespace: "games",
 			method: "list",
@@ -2044,13 +2044,13 @@ You may get up to 100 categories or games by specifying their ID or name. You ma
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/games"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class GoalsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2064,8 +2064,8 @@ Instead of polling for the progress of a goal, consider [subscribing](https://de
 	 *
 	 * `GET /goals` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/goals"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/goals"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-creator-goals",
 			namespace: "goals",
 			method: "list",
@@ -2078,13 +2078,13 @@ Instead of polling for the progress of a goal, consider [subscribing](https://de
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/goals"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class GuestStarResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2100,8 +2100,8 @@ __Authorization:__
 	 *
 	 * `GET /guest_star/channel_settings` — risk: medium
 	 */
-	async listChannelSettings(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listChannelSettings(options?: QueryCallOptions<NonNullable<paths["/guest_star/channel_settings"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/guest_star/channel_settings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-channel-guest-star-settings",
 			namespace: "guest_star",
 			method: "listChannelSettings",
@@ -2114,7 +2114,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/guest_star/channel_settings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2126,8 +2126,8 @@ __Authorization:__
 	 *
 	 * `PUT /guest_star/channel_settings` — risk: medium
 	 */
-	async channelSettings(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async channelSettings(body?: NonNullable<paths["/guest_star/channel_settings"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/guest_star/channel_settings"]["put"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-channel-guest-star-settings",
 			namespace: "guest_star",
 			method: "channelSettings",
@@ -2140,7 +2140,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2152,8 +2152,8 @@ __Authorization:__
 	 *
 	 * `GET /guest_star/session` — risk: medium
 	 */
-	async listSession(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSession(options?: QueryCallOptions<NonNullable<paths["/guest_star/session"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/guest_star/session"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-guest-star-session",
 			namespace: "guest_star",
 			method: "listSession",
@@ -2166,7 +2166,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/guest_star/session"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2176,8 +2176,8 @@ __Authorization
 	 *
 	 * `POST /guest_star/session` — risk: medium
 	 */
-	async createSession(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSession(options?: QueryCallOptions<NonNullable<paths["/guest_star/session"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/guest_star/session"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-guest-star-session",
 			namespace: "guest_star",
 			method: "createSession",
@@ -2190,7 +2190,7 @@ __Authorization
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/guest_star/session"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2202,8 +2202,8 @@ __Authorization:__
 	 *
 	 * `DELETE /guest_star/session` — risk: medium
 	 */
-	async session(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async session(options?: QueryCallOptions<NonNullable<paths["/guest_star/session"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<paths["/guest_star/session"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "end-guest-star-session",
 			namespace: "guest_star",
 			method: "session",
@@ -2216,7 +2216,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/guest_star/session"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2228,8 +2228,8 @@ __Authorization:__
 	 *
 	 * `GET /guest_star/invites` — risk: medium
 	 */
-	async listInvites(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listInvites(options?: QueryCallOptions<NonNullable<paths["/guest_star/invites"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/guest_star/invites"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-guest-star-invites",
 			namespace: "guest_star",
 			method: "listInvites",
@@ -2242,7 +2242,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/guest_star/invites"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2254,8 +2254,8 @@ __Authorization:__
 	 *
 	 * `POST /guest_star/invites` — risk: medium
 	 */
-	async createInvite(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createInvite(options?: QueryCallOptions<NonNullable<paths["/guest_star/invites"]["post"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "send-guest-star-invite",
 			namespace: "guest_star",
 			method: "createInvite",
@@ -2268,7 +2268,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2280,8 +2280,8 @@ __Authorization:__
 	 *
 	 * `DELETE /guest_star/invites` — risk: medium
 	 */
-	async invites(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async invites(options?: QueryCallOptions<NonNullable<paths["/guest_star/invites"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-guest-star-invite",
 			namespace: "guest_star",
 			method: "invites",
@@ -2294,7 +2294,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2306,8 +2306,8 @@ __Authorization:__
 	 *
 	 * `POST /guest_star/slot` — risk: medium
 	 */
-	async createSlot(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSlot(options?: QueryCallOptions<NonNullable<paths["/guest_star/slot"]["post"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "assign-guest-star-slot",
 			namespace: "guest_star",
 			method: "createSlot",
@@ -2320,7 +2320,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2332,8 +2332,8 @@ __Authorization:__
 	 *
 	 * `PATCH /guest_star/slot` — risk: medium
 	 */
-	async slot_0(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async slot_0(options?: QueryCallOptions<NonNullable<paths["/guest_star/slot"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-guest-star-slot",
 			namespace: "guest_star",
 			method: "slot_0",
@@ -2346,7 +2346,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2354,8 +2354,8 @@ __Authorization:__
 	 *
 	 * `DELETE /guest_star/slot` — risk: medium
 	 */
-	async slot_1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async slot_1(options?: QueryCallOptions<NonNullable<paths["/guest_star/slot"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-guest-star-slot",
 			namespace: "guest_star",
 			method: "slot_1",
@@ -2368,7 +2368,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2376,8 +2376,8 @@ __Authorization:__
 	 *
 	 * `PATCH /guest_star/slot_settings` — risk: medium
 	 */
-	async slotSettings(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async slotSettings(options?: QueryCallOptions<NonNullable<paths["/guest_star/slot_settings"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-guest-star-slot-settings",
 			namespace: "guest_star",
 			method: "slotSettings",
@@ -2390,13 +2390,13 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class HypetrainResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2413,8 +2413,8 @@ __Authorization:__
 	 *
 	 * `GET /hypetrain/status` — risk: medium
 	 */
-	async listStatus(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listStatus(options?: QueryCallOptions<NonNullable<paths["/hypetrain/status"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/hypetrain/status"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-hype-train-status",
 			namespace: "hypetrain",
 			method: "listStatus",
@@ -2427,13 +2427,13 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/hypetrain/status"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class ModerationResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -2447,8 +2447,8 @@ AutoMod is a moderation tool that holds inappropriate or harassing chat messages
 	 *
 	 * `POST /moderation/enforcements/status` — risk: medium
 	 */
-	async status(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async status(body?: NonNullable<paths["/moderation/enforcements/status"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/moderation/enforcements/status"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/enforcements/status"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "check-automod-status",
 			namespace: "moderation",
 			method: "status",
@@ -2461,7 +2461,7 @@ AutoMod is a moderation tool that holds inappropriate or harassing chat messages
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/enforcements/status"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2473,8 +2473,8 @@ Requires o
 	 *
 	 * `POST /moderation/automod/message` — risk: medium
 	 */
-	async message(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async message(body?: NonNullable<paths["/moderation/automod/message"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "manage-held-automod-messages",
 			namespace: "moderation",
 			method: "message",
@@ -2487,7 +2487,7 @@ Requires o
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2499,8 +2499,8 @@ Requires o
 	 *
 	 * `GET /moderation/automod/settings` — risk: medium
 	 */
-	async settings_0(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async settings_0(options?: QueryCallOptions<NonNullable<paths["/moderation/automod/settings"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/automod/settings"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-automod-settings",
 			namespace: "moderation",
 			method: "settings_0",
@@ -2513,7 +2513,7 @@ Requires o
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/automod/settings"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2525,8 +2525,8 @@ Require
 	 *
 	 * `PUT /moderation/automod/settings` — risk: medium
 	 */
-	async settings_1(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async settings_1(body?: NonNullable<paths["/moderation/automod/settings"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/moderation/automod/settings"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/automod/settings"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-automod-settings",
 			namespace: "moderation",
 			method: "settings_1",
@@ -2539,7 +2539,7 @@ Require
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/automod/settings"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2553,8 +2553,8 @@ Requires one of the following:
 	 *
 	 * `GET /moderation/banned` — risk: medium
 	 */
-	async listBanned(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listBanned(options?: QueryCallOptions<NonNullable<paths["/moderation/banned"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/banned"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-banned-users",
 			namespace: "moderation",
 			method: "listBanned",
@@ -2567,7 +2567,7 @@ Requires one of the following:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/banned"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2577,8 +2577,8 @@ For information about banning or putting users in a timeout, see [Ban a User](ht
 	 *
 	 * `POST /moderation/bans` — risk: medium
 	 */
-	async createBan(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createBan(body?: NonNullable<paths["/moderation/bans"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/moderation/bans"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/bans"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ban-user",
 			namespace: "moderation",
 			method: "createBan",
@@ -2591,7 +2591,7 @@ For information about banning or putting users in a timeout, see [Ban a User](ht
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/bans"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2605,8 +2605,8 @@ Requires one of the following:
 	 *
 	 * `DELETE /moderation/bans` — risk: medium
 	 */
-	async bans(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async bans(options?: QueryCallOptions<NonNullable<paths["/moderation/bans"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "unban-user",
 			namespace: "moderation",
 			method: "bans",
@@ -2619,7 +2619,7 @@ Requires one of the following:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2631,8 +2631,8 @@ __Authorization:__
 	 *
 	 * `GET /moderation/unban_requests` — risk: medium
 	 */
-	async listUnbanRequests(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listUnbanRequests(options?: QueryCallOptions<NonNullable<paths["/moderation/unban_requests"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/unban_requests"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-unban-requests",
 			namespace: "moderation",
 			method: "listUnbanRequests",
@@ -2645,7 +2645,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/unban_requests"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2658,8 +2658,8 @@ __Authorization:__
 	 *
 	 * `PATCH /moderation/unban_requests` — risk: medium
 	 */
-	async unbanRequests(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async unbanRequests(options?: QueryCallOptions<NonNullable<paths["/moderation/unban_requests"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/unban_requests"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "resolve-unban-requests",
 			namespace: "moderation",
 			method: "unbanRequests",
@@ -2672,7 +2672,7 @@ __Authorization:__
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/unban_requests"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2684,8 +2684,8 @@ Requires
 	 *
 	 * `GET /moderation/blocked_terms` — risk: medium
 	 */
-	async listBlockedTerms(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listBlockedTerms(options?: QueryCallOptions<NonNullable<paths["/moderation/blocked_terms"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/blocked_terms"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-blocked-terms",
 			namespace: "moderation",
 			method: "listBlockedTerms",
@@ -2698,7 +2698,7 @@ Requires
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/blocked_terms"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2712,8 +2712,8 @@ Requires one of the following:
 	 *
 	 * `POST /moderation/blocked_terms` — risk: medium
 	 */
-	async createBlockedTerm(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createBlockedTerm(body?: NonNullable<paths["/moderation/blocked_terms"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/moderation/blocked_terms"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/blocked_terms"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "add-blocked-term",
 			namespace: "moderation",
 			method: "createBlockedTerm",
@@ -2726,7 +2726,7 @@ Requires one of the following:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/blocked_terms"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2740,8 +2740,8 @@ Requires one of the following:
 	 *
 	 * `DELETE /moderation/blocked_terms` — risk: medium
 	 */
-	async blockedTerms(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async blockedTerms(options?: QueryCallOptions<NonNullable<paths["/moderation/blocked_terms"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "remove-blocked-term",
 			namespace: "moderation",
 			method: "blockedTerms",
@@ -2754,7 +2754,7 @@ Requires one of the following:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2768,8 +2768,8 @@ Requires one of the following:
 	 *
 	 * `DELETE /moderation/chat` — risk: medium
 	 */
-	async chat(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async chat(options?: QueryCallOptions<NonNullable<paths["/moderation/chat"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-chat-messages",
 			namespace: "moderation",
 			method: "chat",
@@ -2782,7 +2782,7 @@ Requires one of the following:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2796,8 +2796,8 @@ Requires one of the following:
 	 *
 	 * `GET /moderation/channels` — risk: medium
 	 */
-	async listChannels(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listChannels(options?: QueryCallOptions<NonNullable<paths["/moderation/channels"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/channels"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-moderated-channels",
 			namespace: "moderation",
 			method: "listChannels",
@@ -2810,7 +2810,7 @@ Requires one of the following:
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/channels"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2822,8 +2822,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /moderation/moderators` — risk: medium
 	 */
-	async listModerators(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listModerators(options?: QueryCallOptions<NonNullable<paths["/moderation/moderators"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/moderators"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-moderators",
 			namespace: "moderation",
 			method: "listModerators",
@@ -2836,7 +2836,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/moderators"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2850,8 +2850,8 @@ Requires a [user access token](htt
 	 *
 	 * `POST /moderation/moderators` — risk: medium
 	 */
-	async createModerator(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createModerator(options?: QueryCallOptions<NonNullable<paths["/moderation/moderators"]["post"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "add-channel-moderator",
 			namespace: "moderation",
 			method: "createModerator",
@@ -2864,7 +2864,7 @@ Requires a [user access token](htt
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2878,8 +2878,8 @@ Requires a [user access to
 	 *
 	 * `DELETE /moderation/moderators` — risk: medium
 	 */
-	async moderators(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async moderators(options?: QueryCallOptions<NonNullable<paths["/moderation/moderators"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "remove-channel-moderator",
 			namespace: "moderation",
 			method: "moderators",
@@ -2892,7 +2892,7 @@ Requires a [user access to
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2902,8 +2902,8 @@ To receive notification when the broadcaster activates and deactivates Shield Mo
 	 *
 	 * `GET /moderation/shield_mode` — risk: medium
 	 */
-	async listShieldMode(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listShieldMode(options?: QueryCallOptions<NonNullable<paths["/moderation/shield_mode"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/shield_mode"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-shield-mode-status",
 			namespace: "moderation",
 			method: "listShieldMode",
@@ -2916,7 +2916,7 @@ To receive notification when the broadcaster activates and deactivates Shield Mo
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/shield_mode"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2926,8 +2926,8 @@ Twitch’s Shield Mode feature is like a panic button that broadcasters can push
 	 *
 	 * `PUT /moderation/shield_mode` — risk: medium
 	 */
-	async shieldMode(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async shieldMode(body?: NonNullable<paths["/moderation/shield_mode"]["put"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/moderation/shield_mode"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/shield_mode"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-shield-mode-status",
 			namespace: "moderation",
 			method: "shieldMode",
@@ -2940,7 +2940,7 @@ Twitch’s Shield Mode feature is like a panic button that broadcasters can push
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/shield_mode"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2948,8 +2948,8 @@ Twitch’s Shield Mode feature is like a panic button that broadcasters can push
 	 *
 	 * `POST /moderation/warnings` — risk: medium
 	 */
-	async createWarning(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createWarning(body?: NonNullable<paths["/moderation/warnings"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/moderation/warnings"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/warnings"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "warn-chat-user",
 			namespace: "moderation",
 			method: "createWarning",
@@ -2962,7 +2962,7 @@ Twitch’s Shield Mode feature is like a panic button that broadcasters can push
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/warnings"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2974,8 +2974,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `POST /moderation/suspicious_users` — risk: medium
 	 */
-	async createSuspiciousUser(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSuspiciousUser(body?: NonNullable<paths["/moderation/suspicious_users"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/moderation/suspicious_users"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/suspicious_users"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "add-suspicious-status-to-chat-user",
 			namespace: "moderation",
 			method: "createSuspiciousUser",
@@ -2988,7 +2988,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/suspicious_users"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3000,8 +3000,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `DELETE /moderation/suspicious_users` — risk: medium
 	 */
-	async suspiciousUsers(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async suspiciousUsers(options?: QueryCallOptions<NonNullable<paths["/moderation/suspicious_users"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<paths["/moderation/suspicious_users"]["delete"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "remove-suspicious-status-from-chat-user",
 			namespace: "moderation",
 			method: "suspiciousUsers",
@@ -3014,13 +3014,13 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/moderation/suspicious_users"]["delete"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class PollsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3038,8 +3038,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication
 	 *
 	 * `GET /polls` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/polls"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/polls"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-polls",
 			namespace: "polls",
 			method: "list",
@@ -3052,7 +3052,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/polls"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3066,8 +3066,8 @@ Requires a [user access token]
 	 *
 	 * `POST /polls` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/polls"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/polls"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-poll",
 			namespace: "polls",
 			method: "create",
@@ -3080,7 +3080,7 @@ Requires a [user access token]
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/polls"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3092,8 +3092,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PATCH /polls` — risk: medium
 	 */
-	async patch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(body?: NonNullable<paths["/polls"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/polls"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "end-poll",
 			namespace: "polls",
 			method: "patch",
@@ -3106,13 +3106,13 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/polls"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class PredictionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3128,8 +3128,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /predictions` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/predictions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/predictions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-predictions",
 			namespace: "predictions",
 			method: "list",
@@ -3142,7 +3142,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/predictions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3152,8 +3152,8 @@ With a Channel Points Prediction, the broadcaster poses a question and viewers t
 	 *
 	 * `POST /predictions` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/predictions"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/predictions"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-prediction",
 			namespace: "predictions",
 			method: "create",
@@ -3166,7 +3166,7 @@ With a Channel Points Prediction, the broadcaster poses a question and viewers t
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/predictions"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3178,8 +3178,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PATCH /predictions` — risk: medium
 	 */
-	async patch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async patch(body?: NonNullable<paths["/predictions"]["patch"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/predictions"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "end-prediction",
 			namespace: "predictions",
 			method: "patch",
@@ -3192,13 +3192,13 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/predictions"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class RaidsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3212,8 +3212,8 @@ When you call the API from a chat bot or extension, the Twitch UX pops up a wind
 	 *
 	 * `POST /raids` — risk: medium
 	 */
-	async create(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(options?: QueryCallOptions<NonNullable<paths["/raids"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/raids"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "start-a-raid",
 			namespace: "raids",
 			method: "create",
@@ -3226,7 +3226,7 @@ When you call the API from a chat bot or extension, the Twitch UX pops up a wind
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/raids"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3238,8 +3238,8 @@ You can cancel a raid at any point up until the broadcaster clicks **Raid Now** 
 	 *
 	 * `DELETE /raids` — risk: medium
 	 */
-	async delete(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async delete(options?: QueryCallOptions<NonNullable<paths["/raids"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "cancel-a-raid",
 			namespace: "raids",
 			method: "delete",
@@ -3252,13 +3252,13 @@ You can cancel a raid at any point up until the broadcaster clicks **Raid Now** 
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class ScheduleResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3272,8 +3272,8 @@ __Authoriza
 	 *
 	 * `GET /schedule` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/schedule"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/schedule"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-channel-stream-schedule",
 			namespace: "schedule",
 			method: "list",
@@ -3286,7 +3286,7 @@ __Authoriza
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/schedule"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3300,8 +3300,8 @@ __Response B
 	 *
 	 * `GET /schedule/icalendar` — risk: medium
 	 */
-	async listIcalendar(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listIcalendar(options?: QueryCallOptions<NonNullable<paths["/schedule/icalendar"]["get"]["parameters"]["query"]>>): Promise<ProofResult<string>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-channel-icalendar",
 			namespace: "schedule",
 			method: "listIcalendar",
@@ -3314,7 +3314,7 @@ __Response B
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<string>>;
 	}
 
 	/**
@@ -3326,8 +3326,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `PATCH /schedule/settings` — risk: medium
 	 */
-	async settings(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async settings(options?: QueryCallOptions<NonNullable<paths["/schedule/settings"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-channel-stream-schedule",
 			namespace: "schedule",
 			method: "settings",
@@ -3340,7 +3340,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3348,8 +3348,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `POST /schedule/segment` — risk: medium
 	 */
-	async createSegment(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSegment(body?: NonNullable<paths["/schedule/segment"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/schedule/segment"]["post"]["parameters"]["query"]>>): Promise<ProofResult<paths["/schedule/segment"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-channel-stream-schedule-segment",
 			namespace: "schedule",
 			method: "createSegment",
@@ -3362,7 +3362,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/schedule/segment"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3372,8 +3372,8 @@ For recurring segments, updating a segment’s title, category, duration, and ti
 	 *
 	 * `PATCH /schedule/segment` — risk: medium
 	 */
-	async segment_0(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async segment_0(body?: NonNullable<paths["/schedule/segment"]["patch"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/schedule/segment"]["patch"]["parameters"]["query"]>>): Promise<ProofResult<paths["/schedule/segment"]["patch"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-channel-stream-schedule-segment",
 			namespace: "schedule",
 			method: "segment_0",
@@ -3386,7 +3386,7 @@ For recurring segments, updating a segment’s title, category, duration, and ti
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/schedule/segment"]["patch"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3400,8 +3400,8 @@ Requir
 	 *
 	 * `DELETE /schedule/segment` — risk: medium
 	 */
-	async segment_1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async segment_1(options?: QueryCallOptions<NonNullable<paths["/schedule/segment"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-channel-stream-schedule-segment",
 			namespace: "schedule",
 			method: "segment_1",
@@ -3414,13 +3414,13 @@ Requir
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class SearchResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3434,8 +3434,8 @@ To match, the category’s name must contain all parts of the query string. For 
 	 *
 	 * `GET /search/categories` — risk: medium
 	 */
-	async listCategories(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCategories(options?: QueryCallOptions<NonNullable<paths["/search/categories"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/search/categories"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "search-categories",
 			namespace: "search",
 			method: "listCategories",
@@ -3448,7 +3448,7 @@ To match, the category’s name must contain all parts of the query string. For 
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/search/categories"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3458,8 +3458,8 @@ The fields that the API uses for comparison depends on the value that the _live\
 	 *
 	 * `GET /search/channels` — risk: medium
 	 */
-	async listChannels(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listChannels(options?: QueryCallOptions<NonNullable<paths["/search/channels"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/search/channels"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "search-channels",
 			namespace: "search",
 			method: "listChannels",
@@ -3472,13 +3472,13 @@ The fields that the API uses for comparison depends on the value that the _live\
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/search/channels"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class StreamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3494,8 +3494,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams/key` — risk: medium
 	 */
-	async listKey(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listKey(options?: QueryCallOptions<NonNullable<paths["/streams/key"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/streams/key"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-stream-key",
 			namespace: "streams",
 			method: "listKey",
@@ -3508,7 +3508,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/streams/key"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3516,8 +3516,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/streams"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/streams"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-streams",
 			namespace: "streams",
 			method: "list",
@@ -3530,7 +3530,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/streams"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3542,8 +3542,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams/followed` — risk: medium
 	 */
-	async listFollowed(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listFollowed(options?: QueryCallOptions<NonNullable<paths["/streams/followed"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/streams/followed"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-followed-streams",
 			namespace: "streams",
 			method: "listFollowed",
@@ -3556,7 +3556,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/streams/followed"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3564,8 +3564,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams/markers` — risk: medium
 	 */
-	async listMarkers(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMarkers(options?: QueryCallOptions<NonNullable<paths["/streams/markers"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/streams/markers"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-stream-markers",
 			namespace: "streams",
 			method: "listMarkers",
@@ -3578,7 +3578,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/streams/markers"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3586,8 +3586,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `POST /streams/markers` — risk: medium
 	 */
-	async createMarker(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createMarker(body?: NonNullable<paths["/streams/markers"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/streams/markers"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-stream-marker",
 			namespace: "streams",
 			method: "createMarker",
@@ -3600,7 +3600,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/streams/markers"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3608,8 +3608,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /streams/tags` — risk: medium
 	 */
-	async listTags(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTags(options?: QueryCallOptions<NonNullable<paths["/streams/tags"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/streams/tags"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-stream-tags",
 			namespace: "streams",
 			method: "listTags",
@@ -3622,13 +3622,13 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/streams/tags"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class SubscriptionsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3644,8 +3644,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /subscriptions` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/subscriptions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/subscriptions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-broadcaster-subscriptions",
 			namespace: "subscriptions",
 			method: "list",
@@ -3658,7 +3658,7 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/subscriptions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3670,8 +3670,8 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 	 *
 	 * `GET /subscriptions/user` — risk: high
 	 */
-	async listUser(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listUser(options?: QueryCallOptions<NonNullable<paths["/subscriptions/user"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/subscriptions/user"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "check-user-subscription",
 			namespace: "subscriptions",
 			method: "listUser",
@@ -3684,13 +3684,13 @@ Requires a [user access token](https://dev.twitch.tv/docs/authentication#user-ac
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/subscriptions/user"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TagsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3702,8 +3702,8 @@ export class TagsResource extends RpcTarget {
 	 *
 	 * `GET /tags/streams` — risk: medium
 	 */
-	async listStreams(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listStreams(options?: QueryCallOptions<NonNullable<paths["/tags/streams"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/tags/streams"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-all-stream-tags",
 			namespace: "tags",
 			method: "listStreams",
@@ -3716,13 +3716,13 @@ export class TagsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/tags/streams"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TeamsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3738,8 +3738,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /teams/channel` — risk: medium
 	 */
-	async listChannel(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listChannel(options?: QueryCallOptions<NonNullable<paths["/teams/channel"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/teams/channel"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-channel-teams",
 			namespace: "teams",
 			method: "listChannel",
@@ -3752,7 +3752,7 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/teams/channel"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3764,8 +3764,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authenticati
 	 *
 	 * `GET /teams` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/teams"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/teams"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-teams",
 			namespace: "teams",
 			method: "list",
@@ -3778,13 +3778,13 @@ Requires an [app access token](https://dev.twitch.tv/docs/authenticati
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/teams"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class UsersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -3798,8 +3798,8 @@ You may look up users using their user ID, login name, or both but the sum total
 	 *
 	 * `GET /users` — risk: low
 	 */
-	async list_0(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list_0(options?: QueryCallOptions<NonNullable<paths["/users"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-users",
 			namespace: "users",
 			method: "list_0",
@@ -3812,7 +3812,7 @@ You may look up users using their user ID, login name, or both but the sum total
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3822,8 +3822,8 @@ To include the user’s verified email address in the response, the us
 	 *
 	 * `PUT /users` — risk: medium
 	 */
-	async put(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async put(options?: QueryCallOptions<NonNullable<paths["/users"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-user",
 			namespace: "users",
 			method: "put",
@@ -3836,7 +3836,7 @@ To include the user’s verified email address in the response, the us
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3846,8 +3846,8 @@ __Author
 	 *
 	 * `GET /users/blocks` — risk: medium
 	 */
-	async listBlocks(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listBlocks(options?: QueryCallOptions<NonNullable<paths["/users/blocks"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/blocks"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-user-block-list",
 			namespace: "users",
 			method: "listBlocks",
@@ -3860,7 +3860,7 @@ __Author
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/blocks"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3870,8 +3870,8 @@ To learn more about blockin
 	 *
 	 * `PUT /users/blocks` — risk: medium
 	 */
-	async blocks_0(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async blocks_0(options?: QueryCallOptions<NonNullable<paths["/users/blocks"]["put"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "block-user",
 			namespace: "users",
 			method: "blocks_0",
@@ -3884,7 +3884,7 @@ To learn more about blockin
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3896,8 +3896,8 @@ Requires a [user access token](h
 	 *
 	 * `DELETE /users/blocks` — risk: medium
 	 */
-	async blocks_1(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async blocks_1(options?: QueryCallOptions<NonNullable<paths["/users/blocks"]["delete"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "unblock-user",
 			namespace: "users",
 			method: "blocks_1",
@@ -3910,7 +3910,7 @@ Requires a [user access token](h
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3922,8 +3922,8 @@ Requires a [user access to
 	 *
 	 * `GET /users/extensions/list` — risk: low
 	 */
-	async extensionsList(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async extensionsList(options?: CallOptions): Promise<ProofResult<paths["/users/extensions/list"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-user-extensions",
 			namespace: "users",
 			method: "extensionsList",
@@ -3936,7 +3936,7 @@ Requires a [user access to
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/extensions/list"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3946,8 +3946,8 @@ NOTE: To include extensions that you have under development, you must specify a 
 	 *
 	 * `GET /users/extensions` — risk: medium
 	 */
-	async listExtensions(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listExtensions(options?: QueryCallOptions<NonNullable<paths["/users/extensions"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/users/extensions"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-user-active-extensions",
 			namespace: "users",
 			method: "listExtensions",
@@ -3960,7 +3960,7 @@ NOTE: To include extensions that you have under development, you must specify a 
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/extensions"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3968,8 +3968,8 @@ NOTE: To include extensions that you have under development, you must specify a 
 	 *
 	 * `PUT /users/extensions` — risk: medium
 	 */
-	async extensions(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async extensions(body?: NonNullable<paths["/users/extensions"]["put"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/users/extensions"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-user-extensions",
 			namespace: "users",
 			method: "extensions",
@@ -3982,13 +3982,13 @@ NOTE: To include extensions that you have under development, you must specify a 
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/users/extensions"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class AuthorizationResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4004,8 +4004,8 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 	 *
 	 * `GET /authorization/users` — risk: medium
 	 */
-	async listUsers(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listUsers(options?: QueryCallOptions<NonNullable<paths["/authorization/users"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/authorization/users"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-authorization-by-user",
 			namespace: "authorization",
 			method: "listUsers",
@@ -4018,13 +4018,13 @@ Requires an [app access token](https://dev.twitch.tv/docs/authentication#app-acc
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/authorization/users"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class WhispersResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -4038,8 +4038,8 @@ NOTE: The user sending the whisper must have a verified phone number (see the **
 	 *
 	 * `POST /whispers` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/whispers"]["post"]["requestBody"]>["content"]["application/json"], options?: QueryCallOptions<NonNullable<paths["/whispers"]["post"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "send-whisper",
 			namespace: "whispers",
 			method: "create",
@@ -4052,135 +4052,140 @@ NOTE: The user sending the whisper must have a verified phone number (see the **
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 interface Env {
 	TWITCH_API_KEY?: string;
+	TWITCH_USER_ID?: string;
 }
 
 export class TwitchCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
 	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
+	protected providerCredentials(): import("./runtime.ts").Credentials {
+		return { apiKey: this.env.TWITCH_API_KEY, username: this.env.TWITCH_USER_ID };
+	}
+
 	get channels(): ChannelsResource {
-		return new ChannelsResource(this.env.TWITCH_API_KEY, this.overrides["channels"] || {}, this.runtimeConfig);
+		return new ChannelsResource(this.providerCredentials(), this.overrides["channels"] || {}, this.runtimeConfig);
 	}
 
 	get analytics(): AnalyticsResource {
-		return new AnalyticsResource(this.env.TWITCH_API_KEY, this.overrides["analytics"] || {}, this.runtimeConfig);
+		return new AnalyticsResource(this.providerCredentials(), this.overrides["analytics"] || {}, this.runtimeConfig);
 	}
 
 	get bits(): BitsResource {
-		return new BitsResource(this.env.TWITCH_API_KEY, this.overrides["bits"] || {}, this.runtimeConfig);
+		return new BitsResource(this.providerCredentials(), this.overrides["bits"] || {}, this.runtimeConfig);
 	}
 
 	get extensions(): ExtensionsResource {
-		return new ExtensionsResource(this.env.TWITCH_API_KEY, this.overrides["extensions"] || {}, this.runtimeConfig);
+		return new ExtensionsResource(this.providerCredentials(), this.overrides["extensions"] || {}, this.runtimeConfig);
 	}
 
 	get channelPoints(): ChannelPointsResource {
-		return new ChannelPointsResource(this.env.TWITCH_API_KEY, this.overrides["channel_points"] || {}, this.runtimeConfig);
+		return new ChannelPointsResource(this.providerCredentials(), this.overrides["channel_points"] || {}, this.runtimeConfig);
 	}
 
 	get charity(): CharityResource {
-		return new CharityResource(this.env.TWITCH_API_KEY, this.overrides["charity"] || {}, this.runtimeConfig);
+		return new CharityResource(this.providerCredentials(), this.overrides["charity"] || {}, this.runtimeConfig);
 	}
 
 	get chat(): ChatResource {
-		return new ChatResource(this.env.TWITCH_API_KEY, this.overrides["chat"] || {}, this.runtimeConfig);
+		return new ChatResource(this.providerCredentials(), this.overrides["chat"] || {}, this.runtimeConfig);
 	}
 
 	get sharedChat(): SharedChatResource {
-		return new SharedChatResource(this.env.TWITCH_API_KEY, this.overrides["shared_chat"] || {}, this.runtimeConfig);
+		return new SharedChatResource(this.providerCredentials(), this.overrides["shared_chat"] || {}, this.runtimeConfig);
 	}
 
 	get clips(): ClipsResource {
-		return new ClipsResource(this.env.TWITCH_API_KEY, this.overrides["clips"] || {}, this.runtimeConfig);
+		return new ClipsResource(this.providerCredentials(), this.overrides["clips"] || {}, this.runtimeConfig);
 	}
 
 	get videos(): VideosResource {
-		return new VideosResource(this.env.TWITCH_API_KEY, this.overrides["videos"] || {}, this.runtimeConfig);
+		return new VideosResource(this.providerCredentials(), this.overrides["videos"] || {}, this.runtimeConfig);
 	}
 
 	get eventsub(): EventsubResource {
-		return new EventsubResource(this.env.TWITCH_API_KEY, this.overrides["eventsub"] || {}, this.runtimeConfig);
+		return new EventsubResource(this.providerCredentials(), this.overrides["eventsub"] || {}, this.runtimeConfig);
 	}
 
 	get contentClassificationLabels(): ContentClassificationLabelsResource {
-		return new ContentClassificationLabelsResource(this.env.TWITCH_API_KEY, this.overrides["content_classification_labels"] || {}, this.runtimeConfig);
+		return new ContentClassificationLabelsResource(this.providerCredentials(), this.overrides["content_classification_labels"] || {}, this.runtimeConfig);
 	}
 
 	get entitlements(): EntitlementsResource {
-		return new EntitlementsResource(this.env.TWITCH_API_KEY, this.overrides["entitlements"] || {}, this.runtimeConfig);
+		return new EntitlementsResource(this.providerCredentials(), this.overrides["entitlements"] || {}, this.runtimeConfig);
 	}
 
 	get games(): GamesResource {
-		return new GamesResource(this.env.TWITCH_API_KEY, this.overrides["games"] || {}, this.runtimeConfig);
+		return new GamesResource(this.providerCredentials(), this.overrides["games"] || {}, this.runtimeConfig);
 	}
 
 	get goals(): GoalsResource {
-		return new GoalsResource(this.env.TWITCH_API_KEY, this.overrides["goals"] || {}, this.runtimeConfig);
+		return new GoalsResource(this.providerCredentials(), this.overrides["goals"] || {}, this.runtimeConfig);
 	}
 
 	get guestStar(): GuestStarResource {
-		return new GuestStarResource(this.env.TWITCH_API_KEY, this.overrides["guest_star"] || {}, this.runtimeConfig);
+		return new GuestStarResource(this.providerCredentials(), this.overrides["guest_star"] || {}, this.runtimeConfig);
 	}
 
 	get hypetrain(): HypetrainResource {
-		return new HypetrainResource(this.env.TWITCH_API_KEY, this.overrides["hypetrain"] || {}, this.runtimeConfig);
+		return new HypetrainResource(this.providerCredentials(), this.overrides["hypetrain"] || {}, this.runtimeConfig);
 	}
 
 	get moderation(): ModerationResource {
-		return new ModerationResource(this.env.TWITCH_API_KEY, this.overrides["moderation"] || {}, this.runtimeConfig);
+		return new ModerationResource(this.providerCredentials(), this.overrides["moderation"] || {}, this.runtimeConfig);
 	}
 
 	get polls(): PollsResource {
-		return new PollsResource(this.env.TWITCH_API_KEY, this.overrides["polls"] || {}, this.runtimeConfig);
+		return new PollsResource(this.providerCredentials(), this.overrides["polls"] || {}, this.runtimeConfig);
 	}
 
 	get predictions(): PredictionsResource {
-		return new PredictionsResource(this.env.TWITCH_API_KEY, this.overrides["predictions"] || {}, this.runtimeConfig);
+		return new PredictionsResource(this.providerCredentials(), this.overrides["predictions"] || {}, this.runtimeConfig);
 	}
 
 	get raids(): RaidsResource {
-		return new RaidsResource(this.env.TWITCH_API_KEY, this.overrides["raids"] || {}, this.runtimeConfig);
+		return new RaidsResource(this.providerCredentials(), this.overrides["raids"] || {}, this.runtimeConfig);
 	}
 
 	get schedule(): ScheduleResource {
-		return new ScheduleResource(this.env.TWITCH_API_KEY, this.overrides["schedule"] || {}, this.runtimeConfig);
+		return new ScheduleResource(this.providerCredentials(), this.overrides["schedule"] || {}, this.runtimeConfig);
 	}
 
 	get search(): SearchResource {
-		return new SearchResource(this.env.TWITCH_API_KEY, this.overrides["search"] || {}, this.runtimeConfig);
+		return new SearchResource(this.providerCredentials(), this.overrides["search"] || {}, this.runtimeConfig);
 	}
 
 	get streams(): StreamsResource {
-		return new StreamsResource(this.env.TWITCH_API_KEY, this.overrides["streams"] || {}, this.runtimeConfig);
+		return new StreamsResource(this.providerCredentials(), this.overrides["streams"] || {}, this.runtimeConfig);
 	}
 
 	get subscriptions(): SubscriptionsResource {
-		return new SubscriptionsResource(this.env.TWITCH_API_KEY, this.overrides["subscriptions"] || {}, this.runtimeConfig);
+		return new SubscriptionsResource(this.providerCredentials(), this.overrides["subscriptions"] || {}, this.runtimeConfig);
 	}
 
 	get tags(): TagsResource {
-		return new TagsResource(this.env.TWITCH_API_KEY, this.overrides["tags"] || {}, this.runtimeConfig);
+		return new TagsResource(this.providerCredentials(), this.overrides["tags"] || {}, this.runtimeConfig);
 	}
 
 	get teams(): TeamsResource {
-		return new TeamsResource(this.env.TWITCH_API_KEY, this.overrides["teams"] || {}, this.runtimeConfig);
+		return new TeamsResource(this.providerCredentials(), this.overrides["teams"] || {}, this.runtimeConfig);
 	}
 
 	get users(): UsersResource {
-		return new UsersResource(this.env.TWITCH_API_KEY, this.overrides["users"] || {}, this.runtimeConfig);
+		return new UsersResource(this.providerCredentials(), this.overrides["users"] || {}, this.runtimeConfig);
 	}
 
 	get authorization(): AuthorizationResource {
-		return new AuthorizationResource(this.env.TWITCH_API_KEY, this.overrides["authorization"] || {}, this.runtimeConfig);
+		return new AuthorizationResource(this.providerCredentials(), this.overrides["authorization"] || {}, this.runtimeConfig);
 	}
 
 	get whispers(): WhispersResource {
-		return new WhispersResource(this.env.TWITCH_API_KEY, this.overrides["whispers"] || {}, this.runtimeConfig);
+		return new WhispersResource(this.providerCredentials(), this.overrides["whispers"] || {}, this.runtimeConfig);
 	}
 }
