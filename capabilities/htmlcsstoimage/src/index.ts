@@ -9,6 +9,7 @@ export class HtmlcsstoimageCapability extends GeneratedHtmlcsstoimageCapability 
 }
 
 interface Env {
+	HTMLCSSTOIMAGE_USER_ID?: string;
 	HTMLCSSTOIMAGE_API_KEY: string;
 }
 

@@ -22,6 +22,7 @@ for (const check of capabilityRegistry) {
 			"--prefix", check.prefix,
 			"--auth", check.auth,
 			"--content-type", check.contentType,
+			"--naming", check.naming || "path",
 		],
 		{ cwd: repoRoot, stdio: "inherit" },
 	);

@@ -7339,7 +7339,7 @@ export type components = {
              * @default 100
              * @example 200
              */
-            limit: number;
+            limit?: number;
             /**
              * Format: int64
              * @description The marker for the start of the next page of results.
@@ -10808,7 +10808,7 @@ export type components = {
              * @default 100
              * @example 50
              */
-            limit: number;
+            limit?: number;
             /**
              * @description Marker to use for requesting the next page.
              * @example AAAAAmVYB1FWec8GH6yWu2nwmanfMh07IyYInaa7DZDYjgO1H4KoLW29vPlLY173OKsci6h6xGh61gG73gnaxoS+o0BbI1/h6le6cikjlupVhASwJ2Cj0tOD9wlnrUMHHw3/ISf+uuACzrOMhN6d5fYrbidPzS6MdhJOejuYlvsg4tcBYzjauP3+VU51p77HFAIuObnJT0ff
@@ -10889,7 +10889,7 @@ export type components = {
              * @default 100
              * @example 100
              */
-            limit: number;
+            limit?: number;
             /**
              * @description The marker for the start of the next page of results.
              * @example 0!-M7487OpVfBTNBV-XsQjU50gQFlbFFu5nArMWD7Ck61GH_Qo40M1S2xN5zWZPBzEjaQS1SOjJiQoo5BsXEl1bCVLRZ2pTqo4SKp9tyqzWQK2L51KR_nC1EgF5I_TJSFw7uO2Bx4HweGETOjh5_2oPSWw5iMkM-OvGApeR0lGFO48FDKoyzJyLgz5aogxoKd8VE09CesOOnTnmZvrW0puylDc-hFjY5YLmWFBKox3SOWiSDwKFkmZGNHyjEzza1nSwbZg6CYsAdGsDwGJhuCeTNsFzP5Mo5qx9wMloS0lSPuf2CcBInbIJzl2CKlXF3FvqhANttpm2nzdBTQRSoJyJnjVBpf4Q_HjV2eb4KIZBBlLy067UCVdv2AAWQFd5E2i6s1YiGRTtgMEZntOSUYD4IYLMWWm5Ra7ke_SP32SL3GSjbBQYIyCVQ..
@@ -12687,7 +12687,7 @@ export type components = {
              * @default true
              * @example true
              */
-            are_text_signatures_enabled: boolean;
+            are_text_signatures_enabled?: boolean;
             /**
              * @description Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.
              * @example 2
@@ -12860,7 +12860,7 @@ export type components = {
              * @example signer
              * @enum {string}
              */
-            role: "signer" | "approver" | "final_copy_reader";
+            role?: "signer" | "approver" | "final_copy_reader";
             /**
              * @description If set, signers who have the same value will be assigned to the same input and to the same signer group.
              *     A signer group is not a Box Group. It is an entity that belongs to a Sign Request and can only be
@@ -13935,7 +13935,7 @@ export type components = {
              * @example signer
              * @enum {string}
              */
-            role: "signer" | "approver" | "final_copy_reader";
+            role?: "signer" | "approver" | "final_copy_reader";
             /**
              * @description If provided, this value points signers that are assigned the same inputs and belongs to same signer group.
              *     A signer group is not a Box Group. It is an entity that belongs to the template itself and can only be used
@@ -16600,7 +16600,7 @@ export type components = {
              * @example succeeded
              * @enum {string}
              */
-            state: "in_progress" | "failed" | "succeeded";
+            state?: "in_progress" | "failed" | "succeeded";
             /**
              * @description The total number of files in the archive.
              * @example 20

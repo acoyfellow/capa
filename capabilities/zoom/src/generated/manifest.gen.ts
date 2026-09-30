@@ -3,7 +3,7 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 export const manifest = {
 	"accounts": {"namespace":"accounts","method":"list","http":"get","path":"/accounts","risk":"low"},

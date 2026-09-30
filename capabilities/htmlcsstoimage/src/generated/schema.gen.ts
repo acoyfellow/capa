@@ -612,12 +612,14 @@ export type components = {
              * @description Adds extra time in milliseconds before taking the screenshot so JavaScript can execute. Minimum: 0. Maximum: 10000.
              * @default 0
              */
-            ms_delay: null | number | string;
+            ms_delay?: null | number | string;
             pdf_options?: null | components["schemas"]["PDFOptions"];
             /** @description Specifies which configured organization proxy to use when rendering. */
             proxy_id?: null | string;
             /** @description Waits until the page signals that the screenshot is ready. The image fails if the readiness signal is never sent. */
             render_when_ready?: null | boolean;
+            /** @description Rules that override browser network requests. The block action blocks requests matching a URL wildcard pattern and/or resource types. When both matchers are supplied, both must match. A request is blocked if any block rule matches. Omitted, null, or an empty array adds no overrides. Requires a paid plan. Accepts a JSON array in JSON requests or a JSON-encoded array string in form requests. Maximum 100 rules and 512 characters per URL pattern. Each block rule requires a nonempty URL pattern or at least one resource type; supplied matchers cannot be empty. Not supported in query strings. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
             /** @description A CSS selector for an element in the HTML. We’ll crop the image to this specific element. */
             selector?: null | string;
             /** @description Specifies which configured organization storage destination receives the rendered image. */
@@ -670,14 +672,14 @@ export type components = {
              * @description Grant all current and future permissions. Only callers with this authority can enable it. Defaults to false.
              * @default false
              */
-            all_future_permissions: boolean;
+            all_future_permissions?: boolean;
             /** @description Optional description of the key's purpose, up to 2000 characters. Omitted, null, or blank clears the description. */
             description?: null | string;
             /**
              * @description Whether the key is disabled. Disabled keys cannot authenticate requests. Defaults to false.
              * @default false
              */
-            disabled: boolean;
+            disabled?: boolean;
             /** @description Display name for the key, up to 255 characters. Omitted, null, or blank names use Key created YYYY-MM-DD HH:mm:ss, based on the key's original creation time in UTC. */
             name?: null | string;
             /** @description Complete list of current permissions to grant, for example images:create or templates:read. Ignored when all_future_permissions is true; supply an empty array in that case. Otherwise, an empty array grants no product permissions. Permissions cannot exceed the caller's authority. */
@@ -704,7 +706,7 @@ export type components = {
              * @description Whether this configuration is disabled from serving Open Graph images. Defaults to false.
              * @default false
              */
-            disabled: boolean;
+            disabled?: boolean;
             /** @description Whether to extract image options from page metadata. When disabled, only the configured defaults are used. */
             extract_values?: boolean;
             /** @description Display name for the configuration, up to 255 characters. */
@@ -716,7 +718,7 @@ export type components = {
              * @description Interval in seconds before cached images are eligible for refresh. The minimum depends on your plan; the maximum is one year.
              * @default 86400
              */
-            refresh_interval_s: number | string;
+            refresh_interval_s?: number | string;
         };
         /**
          * Templated OG Config Request
@@ -735,7 +737,7 @@ export type components = {
              * @description Whether this configuration is disabled from serving Open Graph images. Defaults to false.
              * @default false
              */
-            disabled: boolean;
+            disabled?: boolean;
             /** @description HTTP headers to include on top-level page navigations to the requested URL's origin and any additional_header_origins. Supports up to 20 headers with names up to 512 ASCII characters and values up to 8192 UTF-8 bytes. */
             headers?: null | {
                 [key: string]: string;
@@ -749,7 +751,7 @@ export type components = {
              * @description Interval in seconds before cached images are eligible for refresh. The minimum depends on your plan; the maximum is one year.
              * @default 86400
              */
-            refresh_interval_s: number | string;
+            refresh_interval_s?: number | string;
             /** @description ID of the template used to render images. */
             template_id: string;
             /** @description Up to 32 mappings from page metadata to template fields. Each mapping supplies either a meta_key or a fallback. */
@@ -769,7 +771,7 @@ export type components = {
              * @description Whether the proxy is disabled. Defaults to false.
              * @default false
              */
-            disabled: boolean;
+            disabled?: boolean;
             /** @description Display name for the proxy, between 3 and 500 characters. Leading and trailing whitespace is removed; the resulting name must contain at least 3 characters. */
             name: string;
             /**
@@ -791,7 +793,7 @@ export type components = {
              * @description Whether this destination is disabled. Defaults to false. Enabling requires a successful connection test.
              * @default false
              */
-            disabled: boolean;
+            disabled?: boolean;
             /** @description Whether to disable HCTI storage for images saved to this destination. When true, rendered files have no public HCTI URL and are not cached by the HCTI CDN. Defaults to false. */
             hcti_storage_disabled?: boolean;
             /** @description Display name for the destination, between 3 and 255 characters. */
@@ -875,6 +877,8 @@ export type components = {
             proxy_id?: null | string;
             /** @description Whether capture waits for the page to call ScreenshotReady(). Rendering fails if the readiness signal is not received. */
             render_when_ready?: null | boolean;
+            /** @description Browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
             /**
              * Format: date-time
              * @description Recorded date and time the base image was saved to its configured storage destination, in UTC. Null until a save is recorded; does not describe saves of resized or reformatted variants.
@@ -1032,6 +1036,8 @@ export type components = {
             proxy_id?: null | string;
             /** @description Whether capture waits for the page to call ScreenshotReady(). Rendering fails if the readiness signal is not received. */
             render_when_ready?: null | boolean;
+            /** @description Browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
             /**
              * Format: date-time
              * @description Recorded date and time the base image was saved to its configured storage destination, in UTC. Null until a save is recorded; does not describe saves of resized or reformatted variants.
@@ -1127,12 +1133,14 @@ export type components = {
              * @description Adds extra time in milliseconds before taking the screenshot so JavaScript can execute. Minimum: 0. Maximum: 10000.
              * @default 0
              */
-            ms_delay: null | number | string;
+            ms_delay?: null | number | string;
             pdf_options?: null | components["schemas"]["PDFOptions"];
             /** @description Specifies which configured organization proxy to use when rendering. */
             proxy_id?: null | string;
             /** @description Waits until the page signals that the screenshot is ready. The image fails if the readiness signal is never sent. */
             render_when_ready?: null | boolean;
+            /** @description Rules that override browser network requests. The block action blocks requests matching a URL wildcard pattern and/or resource types. When both matchers are supplied, both must match. A request is blocked if any block rule matches. Omitted, null, or an empty array adds no overrides. Requires a paid plan. Accepts a JSON array in JSON requests or a JSON-encoded array string in form requests. Maximum 100 rules and 512 characters per URL pattern. Each block rule requires a nonempty URL pattern or at least one resource type; supplied matchers cannot be empty. Not supported in query strings. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
             /** @description A CSS selector for an element in the HTML. We’ll crop the image to this specific element. */
             selector?: null | string;
             /** @description Specifies which configured organization storage destination receives the rendered image. */
@@ -1223,12 +1231,14 @@ export type components = {
              * @description Adds extra time in milliseconds before taking the screenshot so JavaScript can execute. Minimum: 0. Maximum: 10000.
              * @default 0
              */
-            ms_delay: null | number | string;
+            ms_delay?: null | number | string;
             pdf_options?: null | components["schemas"]["PDFOptions"];
             /** @description Specifies which configured organization proxy to use when rendering. */
             proxy_id?: null | string;
             /** @description Waits until the page signals that the screenshot is ready. The image fails if the readiness signal is never sent. */
             render_when_ready?: null | boolean;
+            /** @description Rules that override browser network requests. The block action blocks requests matching a URL wildcard pattern and/or resource types. When both matchers are supplied, both must match. A request is blocked if any block rule matches. Omitted, null, or an empty array adds no overrides. Requires a paid plan. Accepts a JSON array in JSON requests or a JSON-encoded array string in form requests. Maximum 100 rules and 512 characters per URL pattern. Each block rule requires a nonempty URL pattern or at least one resource type; supplied matchers cannot be empty. Not supported in query strings. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
             /** @description A CSS selector for an element in the HTML. We’ll crop the image to this specific element. */
             selector?: null | string;
             /** @description Specifies which configured organization storage destination receives the rendered image. */
@@ -1323,6 +1333,8 @@ export type components = {
             render_count?: number | string;
             /** @description Whether capture waits for the template's JavaScript to call ScreenshotReady(). When enabled, rendering fails if the readiness signal is never sent. */
             render_when_ready?: null | boolean;
+            /** @description Stored browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. Null or an empty array adds no overrides. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
             /** @description CSS selector used to crop rendered images to an element. Preserve this setting when updating the template unless the intended crop changes. */
             selector?: null | string;
             /** @description Identifier of the configured destination for rendered files. The destination configuration specifies its provider, enabled state, and storage behavior. */
@@ -1428,6 +1440,8 @@ export type components = {
             render_count?: number | string;
             /** @description Whether capture waits for the template's JavaScript to call ScreenshotReady(). When enabled, rendering fails if the readiness signal is never sent. */
             render_when_ready?: null | boolean;
+            /** @description Stored browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. Null or an empty array adds no overrides. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
             /** @description CSS selector used to crop rendered images to an element. Preserve this setting when updating the template unless the intended crop changes. */
             selector?: null | string;
             /** @description Identifier of the configured destination for rendered files. The destination configuration specifies its provider, enabled state, and storage behavior. */
@@ -1576,10 +1590,12 @@ export type components = {
              * @description Adds extra time in milliseconds before taking the screenshot so JavaScript can execute. Minimum: 0. Maximum: 10000.
              * @default 0
              */
-            ms_delay: null | number | string;
+            ms_delay?: null | number | string;
             proxy_id?: null | string;
             /** @description Waits until the page signals that the screenshot is ready. The image fails if the readiness signal is never sent. */
             render_when_ready?: null | boolean;
+            /** @description Rules that override browser network requests. The block action blocks requests matching a URL wildcard pattern and/or resource types. When both matchers are supplied, both must match. A request is blocked if any block rule matches. Omitted, null, or an empty array adds no overrides. Requires a paid plan. Set default_options.request_overrides to a JSON array. Maximum 100 rules and 512 characters per URL pattern. Each block rule requires a nonempty URL pattern or at least one resource type; supplied matchers cannot be empty. Not supported in hcti: meta tags. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
             /** @description A CSS selector for an element in the HTML. We’ll crop the image to this specific element. */
             selector?: null | string;
             storage_destination_id?: null | string;
@@ -1700,6 +1716,18 @@ export type components = {
             /** @description Proxy username, up to 512 characters. May be empty. Whitespace is preserved. */
             username: string;
         };
+        /** @description A browser request override. The action discriminator selects the rule type; currently only block is supported. */
+        RequestOverride: components["schemas"]["RequestOverrideRequestOverrideBlock"];
+        RequestOverrideRequestOverrideBlock: {
+            /** @enum {string} */
+            action?: "block";
+            /** @description Resource types to match, supplied as an array of names, such as image, script, xhr, or fetch. Any listed type may match. When url is also supplied, it must match too. */
+            resource_types?: null | components["schemas"]["RequestOverrideResourceType"][];
+            /** @description URL wildcard pattern to match, using * for any sequence of characters. When resource_types is also supplied, both matchers must match. */
+            url?: null | string;
+        };
+        /** @enum {unknown} */
+        RequestOverrideResourceType: "beacon" | "document" | "stylesheet" | "image" | "image_set" | "media" | "font" | "script" | "text_track" | "xhr" | "fetch" | "event_source" | "manifest" | "ping" | "img" | "other";
         /** @description Summary of a created image returned by the image listing endpoint. Retrieve the image by ID for full metadata. */
         SimpleImage: {
             /**
@@ -2078,13 +2106,15 @@ export type components = {
              * @description Adds extra time in milliseconds before taking the screenshot so JavaScript can execute. Minimum: 0. Maximum: 10000.
              * @default 0
              */
-            ms_delay: null | number | string;
+            ms_delay?: null | number | string;
             /** @description The name of the template, used to identify it in your account. Maximum: 64 characters. */
             name?: null | string;
             /** @description Specifies which configured organization proxy to use when rendering. */
             proxy_id?: null | string;
             /** @description Waits until the page signals that the screenshot is ready. The image fails if the readiness signal is never sent. */
             render_when_ready?: null | boolean;
+            /** @description Rules that override browser network requests. The block action blocks requests matching a URL wildcard pattern and/or resource types. When both matchers are supplied, both must match. A request is blocked if any block rule matches. Omitted, null, or an empty array adds no overrides. Requires a paid plan. Accepts a JSON array in JSON requests or a JSON-encoded array string in form requests. Maximum 100 rules and 512 characters per URL pattern. Each block rule requires a nonempty URL pattern or at least one resource type; supplied matchers cannot be empty. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
             /** @description A CSS selector for an element in the HTML. We’ll crop the image to this specific element. */
             selector?: null | string;
             /** @description Specifies which configured organization storage destination receives the rendered image. */
@@ -2666,6 +2696,8 @@ export interface operations {
                     proxy_id?: null | string;
                     /** @description Waits until the page signals that the screenshot is ready. The image fails if the readiness signal is never sent. */
                     render_when_ready?: null | boolean;
+                    /** @description Rules that override browser network requests. The block action blocks requests matching a URL wildcard pattern and/or resource types. When both matchers are supplied, both must match. A request is blocked if any block rule matches. Omitted, null, or an empty array adds no overrides. Requires a paid plan. Accepts a JSON array in JSON requests or a JSON-encoded array string in form requests. Maximum 100 rules and 512 characters per URL pattern. Each block rule requires a nonempty URL pattern or at least one resource type; supplied matchers cannot be empty. Not supported in query strings. */
+                    request_overrides?: null | components["schemas"]["RequestOverride"][];
                     /** @description A CSS selector for an element in the HTML. We’ll crop the image to this specific element. */
                     selector?: null | string;
                     /** @description Specifies which configured organization storage destination receives the rendered image. */
@@ -2755,6 +2787,8 @@ export interface operations {
                     proxy_id?: null | string;
                     /** @description Waits until the page signals that the screenshot is ready. The image fails if the readiness signal is never sent. */
                     render_when_ready?: null | boolean;
+                    /** @description Rules that override browser network requests. The block action blocks requests matching a URL wildcard pattern and/or resource types. When both matchers are supplied, both must match. A request is blocked if any block rule matches. Omitted, null, or an empty array adds no overrides. Requires a paid plan. Accepts a JSON array in JSON requests or a JSON-encoded array string in form requests. Maximum 100 rules and 512 characters per URL pattern. Each block rule requires a nonempty URL pattern or at least one resource type; supplied matchers cannot be empty. Not supported in query strings. */
+                    request_overrides?: null | components["schemas"]["RequestOverride"][];
                     /** @description A CSS selector for an element in the HTML. We’ll crop the image to this specific element. */
                     selector?: null | string;
                     /** @description Specifies which configured organization storage destination receives the rendered image. */

@@ -52,11 +52,26 @@ export interface RuntimeConfig {
 }
 
 /** Optional credential override for one generated RPC call. */
+export type QueryValue = string | number | boolean | null | undefined | Array<string | number | boolean>;
+
+export interface CallAuth {
+	apiKey?: string;
+	username?: string;
+	password?: string;
+	headers?: Record<string, string>;
+}
+
 export interface CallOptions {
-	auth?: {
-		apiKey?: string;
-		headers?: Record<string, string>;
-	};
+	auth?: CallAuth;
+}
+
+export interface QueryCallOptions<Query = Record<string, QueryValue>> extends CallOptions {
+	query?: Query;
+}
+
+export interface Credentials {
+	apiKey?: string;
+	username?: string;
 }
 
 export interface FetchProofArgs {
@@ -74,7 +89,7 @@ export interface FetchProofArgs {
 	/** Optional prefix replacement (e.g. /rest/api/3 → /rest/api/2). */
 	prefixOverride?: string;
 	/** Optional per-call provider auth override for multi-tenant callers. */
-	options?: CallOptions;
+	options?: QueryCallOptions<object>;
 }
 
 function formEncode(body: Record<string, unknown>): string {
@@ -102,15 +117,56 @@ function formEncode(body: Record<string, unknown>): string {
 	return params.toString();
 }
 
-function authHeader(secret: string): { name: string; value: string } {
+function authHeader(secret: string, username?: string): { name: string; value: string } {
 	switch (AUTH_SHAPE) {
 		case "bearer":
 			return { name: "Authorization", value: `Bearer ${secret}` };
 		case "private-token":
 			return { name: "PRIVATE-TOKEN", value: secret };
 		case "basic":
-			return { name: "Authorization", value: `Basic ${btoa(secret)}` };
+			return { name: "Authorization", value: `Basic ${btoa(username ? `${username}:${secret}` : secret)}` };
 	}
+}
+
+export function resolveAuthHeader(credentials: Credentials | string | undefined, options?: CallOptions): { name: string; value: string } {
+	const stored: Credentials = typeof credentials === "string" ? { apiKey: credentials } : credentials || {};
+	const perCall = options?.auth;
+	const perCallSecret = perCall?.password ?? perCall?.apiKey;
+	const secret = perCallSecret ?? stored.apiKey;
+	const username = perCallSecret !== undefined ? perCall?.username : perCall?.username ?? stored.username;
+	if (!secret) throw new Error(`${CAPABILITY_NAME}: set the capability API key secret or pass options.auth.apiKey`);
+	return authHeader(secret, username);
+}
+
+export function withQuery(url: string, query: object | undefined): string {
+	if (!query) return url;
+	const params = new URLSearchParams();
+	for (const [name, value] of Object.entries(query)) {
+		if (value === undefined || value === null) continue;
+		if (Array.isArray(value)) for (const item of value) params.append(name, String(item));
+		else params.append(name, String(value));
+	}
+	const encoded = params.toString();
+	if (!encoded) return url;
+	return `${url}${url.includes("?") ? "&" : "?"}${encoded}`;
+}
+
+export async function readBody(res: Response): Promise<unknown> {
+	if (res.status === 204 || res.headers.get("content-length") === "0") return null;
+	const contentType = res.headers.get("content-type")?.toLowerCase() ?? "";
+	if (!isTextContentType(contentType)) return new Uint8Array(await res.arrayBuffer());
+	const text = await res.text();
+	if (contentType && !contentType.includes("json")) return text;
+	try {
+		return JSON.parse(text);
+	} catch {
+		return text;
+	}
+}
+
+function isTextContentType(contentType: string): boolean {
+	if (!contentType) return true;
+	return contentType.startsWith("text/") || ["json", "xml", "x-www-form-urlencoded", "javascript"].some(marker => contentType.includes(marker));
 }
 
 export interface ObservedExchange {
@@ -210,7 +266,7 @@ function proofEvidence(
 }
 
 export async function fetchProof(
-	apiKey: string | undefined,
+	credentials: Credentials | string | undefined,
 	args: FetchProofArgs,
 ): Promise<ProofResult<unknown>> {
 	const startedAt = new Date().toISOString();
@@ -220,11 +276,9 @@ export async function fetchProof(
 	if (args.prefixOverride && PREFIX) {
 		path = path.replace(PREFIX, args.prefixOverride);
 	}
-	const url = `${baseUrl}${path}`;
+	const url = withQuery(`${baseUrl}${path}`, args.options?.query);
 	const assertions: AssertResult[] = [];
-	const effectiveApiKey = args.options?.auth?.apiKey ?? apiKey;
-	if (!effectiveApiKey) throw new Error(`${CAPABILITY_NAME}: set the capability API key secret or pass options.auth.apiKey`);
-	const auth = authHeader(effectiveApiKey);
+	const auth = resolveAuthHeader(credentials, args.options);
 
 	const headers: Record<string, string> = {
 		...(args.extraHeaders || {}),
@@ -252,12 +306,7 @@ export async function fetchProof(
 	let body: unknown;
 	try {
 		res = await fetch(url, init);
-		const text = await res.text();
-		try {
-			body = JSON.parse(text);
-		} catch {
-			body = text;
-		}
+		body = await readBody(res);
 	} catch (e) {
 		// Network-level failure → record as a fail with a synthetic 0 status
 		assertions.push({

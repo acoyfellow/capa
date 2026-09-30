@@ -3,7 +3,7 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 export const manifest = {
 	"list-api-keys": {"namespace":"api-keys","method":"list","http":"get","path":"/v1/api-keys","risk":"low"},
@@ -12,14 +12,14 @@ export const manifest = {
 	"update-api-key": {"namespace":"api-keys","method":"update","http":"post","path":"/v1/api-keys/{id}","risk":"medium"},
 	"delete-api-key": {"namespace":"api-keys","method":"del","http":"delete","path":"/v1/api-keys/{id}","risk":"medium"},
 	"create-image": {"namespace":"image","method":"create","http":"post","path":"/v1/image","risk":"medium"},
-	"render-image": {"namespace":"image","method":"retrieve_0","http":"get","path":"/v1/image/{id}","risk":"low"},
+	"render-image": {"namespace":"image","method":"render","http":"get","path":"/v1/image/{id}","risk":"medium"},
 	"delete-image": {"namespace":"image","method":"del","http":"delete","path":"/v1/image/{id}","risk":"medium"},
-	"render-image-format": {"namespace":"image","method":"retrieve_1","http":"get","path":"/v1/image/{id}.{format}","risk":"low"},
+	"render-image-format": {"namespace":"image","method":"renderFormat","http":"get","path":"/v1/image/{id}.{format}","risk":"medium"},
 	"create-image-batch": {"namespace":"image","method":"createBatch","http":"post","path":"/v1/image/batch","risk":"medium"},
-	"delete-image-batch": {"namespace":"image","method":"batch","http":"delete","path":"/v1/image/batch","risk":"medium"},
-	"create-and-render": {"namespace":"image","method":"retrieveCreateAndRender","http":"get","path":"/v1/image/create-and-render/{api_id}/{token}/{format}","risk":"medium"},
+	"delete-image-batch": {"namespace":"image","method":"deleteBatch","http":"delete","path":"/v1/image/batch","risk":"medium"},
+	"create-and-render": {"namespace":"image","method":"createAndRender","http":"get","path":"/v1/image/create-and-render/{api_id}/{token}/{format}","risk":"medium"},
 	"list-images": {"namespace":"images","method":"list","http":"get","path":"/v1/images","risk":"low"},
-	"get-image-metadata": {"namespace":"images","method":"retrieve","http":"get","path":"/v1/images/{id}","risk":"low"},
+	"get-image-metadata": {"namespace":"images","method":"retrieveMetadata","http":"get","path":"/v1/images/{id}","risk":"medium"},
 	"list-og-configs": {"namespace":"og-configs","method":"list","http":"get","path":"/v1/og-configs","risk":"low"},
 	"create-og-config": {"namespace":"og-configs","method":"create","http":"post","path":"/v1/og-configs","risk":"medium"},
 	"get-og-config": {"namespace":"og-configs","method":"retrieve","http":"get","path":"/v1/og-configs/{id}","risk":"low"},
@@ -35,15 +35,15 @@ export const manifest = {
 	"get-storage-destination": {"namespace":"storage-destinations","method":"retrieve","http":"get","path":"/v1/storage-destinations/{id}","risk":"low"},
 	"update-storage-destination": {"namespace":"storage-destinations","method":"update","http":"post","path":"/v1/storage-destinations/{id}","risk":"medium"},
 	"delete-storage-destination": {"namespace":"storage-destinations","method":"del","http":"delete","path":"/v1/storage-destinations/{id}","risk":"medium"},
-	"get-aws-storage-external-id": {"namespace":"storage-destinations","method":"listAwsExternalId","http":"get","path":"/v1/storage-destinations/aws-external-id","risk":"medium"},
-	"store-image": {"namespace":"store","method":"put_0","http":"put","path":"/v1/store/{id}","risk":"medium"},
-	"store-image-format": {"namespace":"store","method":"put_1","http":"put","path":"/v1/store/{id}.{format}","risk":"medium"},
+	"get-aws-storage-external-id": {"namespace":"storage-destinations","method":"retrieveAwsStorageExternalId","http":"get","path":"/v1/storage-destinations/aws-external-id","risk":"medium"},
+	"store-image": {"namespace":"store","method":"storeImage","http":"put","path":"/v1/store/{id}","risk":"medium"},
+	"store-image-format": {"namespace":"store","method":"storeImageFormat","http":"put","path":"/v1/store/{id}.{format}","risk":"medium"},
 	"list-templates": {"namespace":"template","method":"list","http":"get","path":"/v1/template","risk":"low"},
 	"create-template": {"namespace":"template","method":"create","http":"post","path":"/v1/template","risk":"medium"},
-	"list-template-versions": {"namespace":"template","method":"retrieve","http":"get","path":"/v1/template/{id}","risk":"low"},
-	"create-template-version": {"namespace":"template","method":"update","http":"post","path":"/v1/template/{id}","risk":"medium"},
-	"remove-template": {"namespace":"template","method":"del","http":"delete","path":"/v1/template/{id}","risk":"medium"},
-	"get-usage": {"namespace":"usage","method":"list","http":"get","path":"/v1/usage","risk":"low"}
+	"list-template-versions": {"namespace":"template","method":"listVersions","http":"get","path":"/v1/template/{id}","risk":"medium"},
+	"create-template-version": {"namespace":"template","method":"createVersion","http":"post","path":"/v1/template/{id}","risk":"medium"},
+	"remove-template": {"namespace":"template","method":"remove","http":"delete","path":"/v1/template/{id}","risk":"medium"},
+	"get-usage": {"namespace":"usage","method":"retrieve","http":"get","path":"/v1/usage","risk":"low"}
 } as const;
 
 export type OperationId = keyof typeof manifest;

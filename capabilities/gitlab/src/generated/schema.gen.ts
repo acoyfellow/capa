@@ -28222,17 +28222,17 @@ export type components = {
              * @description Determines if cluster is active or not, defaults to true
              * @default true
              */
-            enabled: boolean;
+            enabled?: boolean;
             /**
              * @description The associated environment to the cluster
              * @default *
              */
-            environment_scope: string;
+            environment_scope?: string;
             /**
              * @description Determines if GitLab will manage namespaces and service accounts for this cluster, defaults to true
              * @default true
              */
-            managed: boolean;
+            managed?: boolean;
             /**
              * Format: int32
              * @description The ID of the management project
@@ -28244,7 +28244,7 @@ export type components = {
              * @description Deploy each environment to a separate Kubernetes namespace
              * @default true
              */
-            namespace_per_environment: boolean;
+            namespace_per_environment?: boolean;
             /** @description Platform Kubernetes data */
             platform_kubernetes_attributes: {
                 /** @description URL to access the Kubernetes API */
@@ -28254,7 +28254,7 @@ export type components = {
                  * @default rbac
                  * @enum {string}
                  */
-                authorization_type: "unknown_authorization" | "rbac" | "abac";
+                authorization_type?: "unknown_authorization" | "rbac" | "abac";
                 /** @description TLS certificate (needed if API is using a self-signed TLS certificate) */
                 ca_cert?: string;
                 /** @description Unique namespace related to Project */
@@ -28270,7 +28270,7 @@ export type components = {
              * @default main
              * @enum {string}
              */
-            database: "main" | "ci" | "sec" | "embedding" | "geo";
+            database?: "main" | "ci" | "sec" | "embedding" | "geo";
         };
         /** @description Create a new application */
         postApiV4Applications: {
@@ -28279,7 +28279,7 @@ export type components = {
              *                             and Single Page Apps are considered non-confidential. Defaults to true if not supplied
              * @default true
              */
-            confidential: boolean;
+            confidential?: boolean;
             /**
              * @description Name of the application.
              * @example MyApplication
@@ -28303,7 +28303,7 @@ export type components = {
              * @default banner
              * @enum {string}
              */
-            broadcast_type: "banner" | "notification";
+            broadcast_type?: "banner" | "notification";
             /** @description Background color (Deprecated. Use "theme" instead.) */
             color?: string;
             /** @description Is dismissable */
@@ -28313,7 +28313,7 @@ export type components = {
              * @description Ending time
              * @default {}
              */
-            ends_at: string;
+            ends_at?: string;
             /** @description Foreground color (Deprecated. Use "theme" instead.) */
             font?: string;
             /** @description Message to display */
@@ -28323,7 +28323,7 @@ export type components = {
              * @description Starting time
              * @default {}
              */
-            starts_at: string;
+            starts_at?: string;
             /** @description Target user roles */
             target_access_levels?: (10 | 15 | 20 | 30 | 40 | 50)[];
             /** @description Target path */
@@ -29413,7 +29413,7 @@ export type components = {
              * @description The organization id for the group
              * @default {}
              */
-            organization_id: number;
+            organization_id?: number;
             /**
              * Format: int32
              * @description The parent group id for creating nested group
@@ -29493,17 +29493,17 @@ export type components = {
              * @description Determines if cluster is active or not, defaults to true
              * @default true
              */
-            enabled: boolean;
+            enabled?: boolean;
             /**
              * @description The associated environment to the cluster
              * @default *
              */
-            environment_scope: string;
+            environment_scope?: string;
             /**
              * @description Determines if GitLab will manage namespaces and service accounts for this cluster, defaults to true
              * @default true
              */
-            managed: boolean;
+            managed?: boolean;
             /**
              * Format: int32
              * @description The ID of the management project
@@ -29515,7 +29515,7 @@ export type components = {
              * @description Deploy each environment to a separate Kubernetes namespace
              * @default true
              */
-            namespace_per_environment: boolean;
+            namespace_per_environment?: boolean;
             /** @description Platform Kubernetes data */
             platform_kubernetes_attributes: {
                 /** @description URL to access the Kubernetes API */
@@ -29525,7 +29525,7 @@ export type components = {
                  * @default rbac
                  * @enum {string}
                  */
-                authorization_type: "unknown_authorization" | "rbac" | "abac";
+                authorization_type?: "unknown_authorization" | "rbac" | "abac";
                 /** @description TLS certificate (needed if API is using a self-signed TLS certificate) */
                 ca_cert?: string;
                 /** @description Unique namespace related to Group */
@@ -29635,7 +29635,7 @@ export type components = {
              * @description Source that triggered the member creation process
              * @default invitations-api
              */
-            invite_source: string;
+            invite_source?: string;
             /**
              * Format: int32
              * @description The ID of a member role for the invited user
@@ -29660,7 +29660,7 @@ export type components = {
              * @description Source that triggered the member creation process
              * @default members-api
              */
-            invite_source: string;
+            invite_source?: string;
             /**
              * Format: int32
              * @description The user ID of the new member or multiple IDs separated by commas.
@@ -29768,7 +29768,7 @@ export type components = {
              * @default markdown
              * @enum {string}
              */
-            format: "markdown" | "rdoc" | "asciidoc" | "org";
+            format?: "markdown" | "rdoc" | "asciidoc" | "org";
             /** @description Object that contains YAML frontmatter */
             front_matter?: {
                 /** @description Frontmatter title of a wiki page */
@@ -29967,13 +29967,13 @@ export type components = {
              * @default zip
              * @enum {string}
              */
-            artifact_format: "raw" | "zip" | "gzip";
+            artifact_format?: "raw" | "zip" | "gzip";
             /**
              * @description The type of artifact
              * @default archive
              * @enum {string}
              */
-            artifact_type: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "sarif";
+            artifact_type?: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "sarif";
             /** @description Specify when artifact should expire */
             expire_in?: string;
             /**
@@ -29996,7 +29996,7 @@ export type components = {
              * @default archive
              * @enum {string}
              */
-            artifact_type: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "sarif";
+            artifact_type?: "archive" | "metadata" | "trace" | "junit" | "sast" | "dependency_scanning" | "container_scanning" | "dast" | "codequality" | "license_scanning" | "performance" | "metrics" | "metrics_referee" | "network_referee" | "lsif" | "dotenv" | "cobertura" | "terraform" | "accessibility" | "cluster_applications" | "secret_detection" | "requirements" | "coverage_fuzzing" | "browser_performance" | "load_performance" | "api_fuzzing" | "cluster_image_scanning" | "cyclonedx" | "requirements_v2" | "annotations" | "repository_xray" | "jacoco" | "sarif";
             /**
              * Format: int32
              * @description Size of artifact file
@@ -30073,7 +30073,7 @@ export type components = {
                  * @description Use path-style URLs instead of virtual-hosted-style URLs
                  * @default false
                  */
-                path_style: boolean;
+                path_style?: boolean;
                 /** @description AWS S3 object storage region */
                 region: string;
             };
@@ -30109,7 +30109,7 @@ export type components = {
                  * @description Use path-style URLs instead of virtual-hosted-style URLs
                  * @default true
                  */
-                path_style: boolean;
+                path_style?: boolean;
                 /** @description GCS bucket region */
                 region: string;
             };
@@ -30125,7 +30125,7 @@ export type components = {
                  * @description Use path-style URLs instead of virtual-hosted-style URLs
                  * @default true
                  */
-                path_style: boolean;
+                path_style?: boolean;
                 /** @description S3-compatible object storage region */
                 region: string;
             };
@@ -30142,7 +30142,7 @@ export type components = {
                  * @description Use path-style URLs instead of virtual-hosted-style URLs
                  * @default false
                  */
-                path_style: boolean;
+                path_style?: boolean;
                 /** @description AWS S3 object storage region */
                 region: string;
             };
@@ -30186,7 +30186,7 @@ export type components = {
                  * @description Use path-style URLs instead of virtual-hosted-style URLs
                  * @default true
                  */
-                path_style: boolean;
+                path_style?: boolean;
                 /** @description GCS bucket region */
                 region: string;
             };
@@ -30202,7 +30202,7 @@ export type components = {
                  * @description Use path-style URLs instead of virtual-hosted-style URLs
                  * @default true
                  */
-                path_style: boolean;
+                path_style?: boolean;
                 /** @description S3-compatible object storage region */
                 region: string;
             };
@@ -30617,7 +30617,7 @@ export type components = {
              * @description Run pipeline creation simulation, or only do static check. This is false by default
              * @default false
              */
-            dry_run: boolean;
+            dry_run?: boolean;
             /**
              * @description If the list of jobs that would exist in a static check or pipeline
              *             simulation should be included in the response. This is false by default
@@ -30646,17 +30646,17 @@ export type components = {
              * @description Determines if cluster is active or not, defaults to true
              * @default true
              */
-            enabled: boolean;
+            enabled?: boolean;
             /**
              * @description The associated environment to the cluster
              * @default *
              */
-            environment_scope: string;
+            environment_scope?: string;
             /**
              * @description Determines if GitLab will manage namespaces and service accounts for this cluster, defaults to true
              * @default true
              */
-            managed: boolean;
+            managed?: boolean;
             /**
              * Format: int32
              * @description The ID of the management project
@@ -30668,7 +30668,7 @@ export type components = {
              * @description Deploy each environment to a separate Kubernetes namespace
              * @default true
              */
-            namespace_per_environment: boolean;
+            namespace_per_environment?: boolean;
             /** @description Platform Kubernetes data */
             platform_kubernetes_attributes: {
                 /** @description URL to access the Kubernetes API */
@@ -30678,7 +30678,7 @@ export type components = {
                  * @default rbac
                  * @enum {string}
                  */
-                authorization_type: "unknown_authorization" | "rbac" | "abac";
+                authorization_type?: "unknown_authorization" | "rbac" | "abac";
                 /** @description TLS certificate (needed if API is using a self-signed TLS certificate) */
                 ca_cert?: string;
                 /** @description Unique namespace related to Project */
@@ -30830,7 +30830,7 @@ export type components = {
              * @description Force environment to stop without executing `on_stop` actions
              * @default false
              */
-            force: boolean;
+            force?: boolean;
         };
         /** @description Stop stale environments */
         postApiV4ProjectsIdEnvironmentsStopStale: {
@@ -30853,7 +30853,7 @@ export type components = {
                  * @default PUT
                  * @enum {string}
                  */
-                http_method: "PUT" | "POST";
+                http_method?: "PUT" | "POST";
                 /** @description The URL to upload the project */
                 url?: string;
             };
@@ -31046,7 +31046,7 @@ export type components = {
              * @default eager
              * @enum {string}
              */
-            task: "eager" | "prune";
+            task?: "eager" | "prune";
         };
         /** @description Import a project from a Git URL */
         postApiV4ProjectsIdImportGit: {
@@ -31081,7 +31081,7 @@ export type components = {
              * @description Source that triggered the member creation process
              * @default invitations-api
              */
-            invite_source: string;
+            invite_source?: string;
             /**
              * Format: int32
              * @description The ID of a member role for the invited user
@@ -31188,7 +31188,7 @@ export type components = {
              * @description Clone issue with notes
              * @default false
              */
-            with_notes: boolean;
+            with_notes?: boolean;
         };
         /** @description Create an issue link */
         postApiV4ProjectsIdIssuesIssueIidLinks: {
@@ -31310,7 +31310,7 @@ export type components = {
              * @description Source that triggered the member creation process
              * @default members-api
              */
-            invite_source: string;
+            invite_source?: string;
             /**
              * Format: int32
              * @description The user ID of the new member or multiple IDs separated by commas.
@@ -31510,7 +31510,7 @@ export type components = {
              * @description If true, the summary note is internal
              * @default false
              */
-            internal: boolean;
+            internal?: boolean;
             /** @description Summary note body to post on the merge request */
             note?: string;
             /**
@@ -31530,7 +31530,7 @@ export type components = {
              * @description Indicates if the merge request pipeline creation should be performed asynchronously. If set to `true`, the pipeline will be created outside of the API request and the endpoint will return an empty response with a `202` status code. When the response is `202`, the creation can still fail outside of this request.
              * @default false
              */
-            async: boolean;
+            async?: boolean;
         };
         /** @description Set the estimated time for a merge request */
         postApiV4ProjectsIdMergeRequestsMergeRequestIidTimeEstimate: {
@@ -31658,7 +31658,7 @@ export type components = {
              * @description Enables automatic generation of SSL certificates issued by Let's Encrypt for custom domains.
              * @default false
              */
-            auto_ssl_enabled: boolean;
+            auto_ssl_enabled?: boolean;
             /**
              * Format: binary
              * @description The certificate
@@ -31700,7 +31700,7 @@ export type components = {
                  * @default env_var
                  * @enum {string}
                  */
-                variable_type: "env_var" | "file";
+                variable_type?: "env_var" | "file";
             }[];
         };
         /** @description Create a pipeline schedule */
@@ -31710,7 +31710,7 @@ export type components = {
              * @default true
              * @example true
              */
-            active: boolean;
+            active?: boolean;
             /**
              * @description The cron
              * @example * * * * *
@@ -31721,7 +31721,7 @@ export type components = {
              * @default UTC
              * @example Asia/Tokyo
              */
-            cron_timezone: string;
+            cron_timezone?: string;
             /**
              * @description The description of pipeline schedule
              * @example Test schedule pipeline
@@ -31778,7 +31778,7 @@ export type components = {
              * @default env_var
              * @enum {string}
              */
-            variable_type: "env_var" | "file";
+            variable_type?: "env_var" | "file";
         };
         /** @description Protect repository branches */
         postApiV4ProjectsIdProtectedBranches: {
@@ -31786,7 +31786,7 @@ export type components = {
              * @description Allow force push for all users with push access.
              * @default false
              */
-            allow_force_push: boolean;
+            allow_force_push?: boolean;
             /** @description Array of users, groups, or access levels allowed to merge protected branches */
             allowed_to_merge?: {
                 /** @description Delete the object when true */
@@ -32049,7 +32049,7 @@ export type components = {
              * @default other
              * @enum {string}
              */
-            link_type: "other" | "runbook" | "image" | "package";
+            link_type?: "other" | "runbook" | "image" | "package";
             /** @description The name of the link. Link names must be unique in the release */
             name: string;
             /** @description The URL of the link. Link URLs must be unique in the release. */
@@ -32129,7 +32129,7 @@ export type components = {
              * @default CHANGELOG.md
              * @example CHANGELOG.md
              */
-            file: string;
+            file?: string;
             /**
              * @description The first commit in the range of commits to use for the changelog
              * @example ed899a2f4b50b4370feeea94676502b42383c746
@@ -32150,7 +32150,7 @@ export type components = {
              * @default Changelog
              * @example Changelog
              */
-            trailer: string;
+            trailer?: string;
             /**
              * @description The version of the release, using the semantic versioning format
              * @example 1.0.0
@@ -32176,7 +32176,7 @@ export type components = {
              * @description Does not commit any changes
              * @default false
              */
-            dry_run: boolean;
+            dry_run?: boolean;
             /**
              * @description A custom commit message to use for the picked commit
              * @example Initial commit
@@ -32219,7 +32219,7 @@ export type components = {
              * @description Does not commit any changes
              * @default false
              */
-            dry_run: boolean;
+            dry_run?: boolean;
         };
         /** @description Create a file in a repository */
         postApiV4ProjectsIdRepositoryFilesFilePath: {
@@ -32338,7 +32338,7 @@ export type components = {
              * @default default
              * @example coverage
              */
-            context: string;
+            context?: string;
             /**
              * Format: float
              * @description The total code coverage
@@ -32352,7 +32352,7 @@ export type components = {
              * @default default
              * @example coverage
              */
-            name: string;
+            name?: string;
             /**
              * Format: int32
              * @description An existing pipeline ID, when multiple pipelines on the same commit SHA have been triggered
@@ -32470,7 +32470,7 @@ export type components = {
              * @default markdown
              * @enum {string}
              */
-            format: "markdown" | "rdoc" | "asciidoc" | "org";
+            format?: "markdown" | "rdoc" | "asciidoc" | "org";
             /** @description Object that contains YAML frontmatter */
             front_matter?: {
                 /** @description Frontmatter title of a wiki page */
@@ -32894,7 +32894,7 @@ export type components = {
              * @default internal
              * @enum {string}
              */
-            visibility: "private" | "internal" | "public";
+            visibility?: "private" | "internal" | "public";
         };
         /** @description Create a project topic */
         postApiV4Topics: {
@@ -32912,7 +32912,7 @@ export type components = {
              * @description The organization id for the topic
              * @default {}
              */
-            organization_id: number;
+            organization_id?: number;
             /** @description Title */
             title: string;
         };
@@ -32982,7 +32982,7 @@ export type components = {
              * @default false
              * @example true
              */
-            send_to_snowplow: boolean;
+            send_to_snowplow?: boolean;
         };
         /** @description Track multiple internal GitLab events */
         postApiV4UsageDataTrackEvents: {
@@ -33023,7 +33023,7 @@ export type components = {
                  * @default false
                  * @example true
                  */
-                send_to_snowplow: boolean;
+                send_to_snowplow?: boolean;
             }[];
         };
         /** @description Create a runner owned by currently authenticated user */
@@ -33133,7 +33133,7 @@ export type components = {
              * @default main
              * @enum {string}
              */
-            database: "main" | "ci" | "sec" | "embedding" | "geo";
+            database?: "main" | "ci" | "sec" | "embedding" | "geo";
         };
         /** @description Resume a batched background migration */
         putApiV4AdminBatchedBackgroundMigrationsIdResume: {
@@ -33142,7 +33142,7 @@ export type components = {
              * @default main
              * @enum {string}
              */
-            database: "main" | "ci" | "sec" | "embedding" | "geo";
+            database?: "main" | "ci" | "sec" | "embedding" | "geo";
         };
         /** @description Restart a batched background operation */
         putApiV4AdminBatchedBackgroundOperationsIdRestart: {
@@ -33151,7 +33151,7 @@ export type components = {
              * @default main
              * @enum {string}
              */
-            database: "main" | "ci" | "sec" | "embedding" | "geo";
+            database?: "main" | "ci" | "sec" | "embedding" | "geo";
         };
         /** @description Stop a batched background operation */
         putApiV4AdminBatchedBackgroundOperationsIdStop: {
@@ -33160,7 +33160,7 @@ export type components = {
              * @default main
              * @enum {string}
              */
-            database: "main" | "ci" | "sec" | "embedding" | "geo";
+            database?: "main" | "ci" | "sec" | "embedding" | "geo";
         };
         /** @description Update an instance variable */
         putApiV4AdminCiVariablesKey: {
@@ -33201,7 +33201,7 @@ export type components = {
              * @description Deploy each environment to a separate Kubernetes namespace
              * @default true
              */
-            namespace_per_environment: boolean;
+            namespace_per_environment?: boolean;
             /** @description Platform Kubernetes data */
             platform_kubernetes_attributes?: {
                 /** @description URL to access the Kubernetes API */
@@ -33706,7 +33706,7 @@ export type components = {
              * @description A valid access level (defaults: `30`, the Developer role)
              * @default 30
              */
-            access_level: number;
+            access_level?: number;
         };
         /** @description Update a badge for a group */
         putApiV4GroupsIdBadgesBadgeId: {
@@ -33738,7 +33738,7 @@ export type components = {
              * @description Deploy each environment to a separate Kubernetes namespace
              * @default true
              */
-            namespace_per_environment: boolean;
+            namespace_per_environment?: boolean;
             /** @description Platform Kubernetes data */
             platform_kubernetes_attributes?: {
                 /** @description URL to access the Kubernetes API */
@@ -34985,7 +34985,7 @@ export type components = {
              * @default markdown
              * @enum {string}
              */
-            format: "markdown" | "rdoc" | "asciidoc" | "org";
+            format?: "markdown" | "rdoc" | "asciidoc" | "org";
             /** @description Object that contains YAML frontmatter */
             front_matter?: {
                 /** @description Frontmatter title of a wiki page */
@@ -35575,7 +35575,7 @@ export type components = {
              * @description A valid access level (defaults: `30`, the Developer role)
              * @default 30
              */
-            access_level: number;
+            access_level?: number;
         };
         /** @description Update a badge for a project */
         putApiV4ProjectsIdBadgesBadgeId: {
@@ -35607,7 +35607,7 @@ export type components = {
              * @description Deploy each environment to a separate Kubernetes namespace
              * @default true
              */
-            namespace_per_environment: boolean;
+            namespace_per_environment?: boolean;
             /** @description Platform Kubernetes data */
             platform_kubernetes_attributes?: {
                 /** @description URL to access the Kubernetes API */
@@ -37494,7 +37494,7 @@ export type components = {
                  * @description Whether to delete the input
                  * @default false
                  */
-                destroy: boolean;
+                destroy?: boolean;
                 /**
                  * @description The name of the input
                  * @example deploy_strategy
@@ -37524,7 +37524,7 @@ export type components = {
              * @default env_var
              * @enum {string}
              */
-            variable_type: "env_var" | "file";
+            variable_type?: "env_var" | "file";
         };
         /** @description Update pipeline metadata */
         putApiV4ProjectsIdPipelinesPipelineIdMetadata: {
@@ -37561,7 +37561,7 @@ export type components = {
              * @default other
              * @enum {string}
              */
-            link_type: "other" | "runbook" | "image" | "package";
+            link_type?: "other" | "runbook" | "image" | "package";
             /** @description The name of the link */
             name?: string;
             /** @description The URL of the link */
@@ -38805,7 +38805,7 @@ export type components = {
              * @default markdown
              * @enum {string}
              */
-            format: "markdown" | "rdoc" | "asciidoc" | "org";
+            format?: "markdown" | "rdoc" | "asciidoc" | "org";
             /** @description Object that contains YAML frontmatter */
             front_matter?: {
                 /** @description Frontmatter title of a wiki page */

@@ -3,7 +3,7 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 export const manifest = {
 	"getServiceAccountIssuerOpenIDConfiguration": {"namespace":".well-known","method":"listOpenidConfiguration","http":"get","path":"/.well-known/openid-configuration/","risk":"medium"},

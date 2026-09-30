@@ -5447,7 +5447,7 @@ export type components = {
              * @description Favorite the dashboard automatically for the request user
              * @default false
              */
-            is_favorited: boolean;
+            is_favorited?: boolean;
             /** @description The saved time range period for this dashboard. */
             period?: string | null;
             /** @description Permissions that restrict users from editing dashboards */
@@ -6170,12 +6170,12 @@ export type components = {
              * @description Whether to enroll new projects automatically, after they're created.
              * @default false
              */
-            enroll_new_projects: boolean;
+            enroll_new_projects?: boolean;
             /**
              * @description Whether the data forwarder is enabled.
              * @default true
              */
-            is_enabled: boolean;
+            is_enabled?: boolean;
             /** @description The ID of the organization related to the data forwarder. */
             organization_id: number;
             /** @description The IDs of the projects connected to the data forwarder. Missing project IDs will be unenrolled if previously enrolled. */
@@ -6522,7 +6522,7 @@ export type components = {
              * @default error-events
              * @enum {string}
              */
-            queryDataset: "discover" | "error-events" | "transaction-like";
+            queryDataset?: "discover" | "error-events" | "transaction-like";
             /** @description The saved time range period for this saved query. */
             range?: string | null;
             /** @description Time-bucket granularity in seconds for the saved query. */
@@ -6709,7 +6709,7 @@ export type components = {
         };
         DynamicSamplingBias: {
             /** @default false */
-            active: boolean;
+            active?: boolean;
             /**
              * @description * `boostEnvironments`
              *     * `boostKeyTransactions`
@@ -6898,7 +6898,7 @@ export type components = {
              * @description Override bash mode tools.
              * @default false
              */
-            enable_bash_mode: boolean;
+            enable_bash_mode?: boolean;
             /** @description Block index to insert at. When provided, truncates blocks after this point for retry-from-step. */
             insert_index?: number;
             /** @description Coding agent integration ID. Required for coding_agent_handoff step (unless provider is specified). */
@@ -6928,7 +6928,7 @@ export type components = {
              * @default root_cause
              * @enum {string}
              */
-            step: "root_cause" | "solution" | "code_changes" | "pr_iteration" | "open_pr" | "coding_agent_handoff";
+            step?: "root_cause" | "solution" | "code_changes" | "pr_iteration" | "open_pr" | "coding_agent_handoff";
             /**
              * @description Where the issue fix process should stop. If not provided, will run to root cause.
              *
@@ -7581,7 +7581,7 @@ export type components = {
              * @default date
              * @enum {string}
              */
-            querySort: "date" | "new" | "trends" | "freq" | "user" | "inbox" | "recommended";
+            querySort?: "date" | "new" | "trends" | "freq" | "user" | "inbox" | "recommended";
             /** @description Whether to star the issue view for the current user. */
             starred?: boolean;
             /** @description The time range for the view. */
@@ -10840,7 +10840,7 @@ export type components = {
              * @default active
              * @enum {string}
              */
-            status: "active" | "disabled";
+            status?: "active" | "disabled";
         };
         /** @description Django Rest Framework serializer for incoming NotificationAction API payloads */
         NotificationAction: {
@@ -10881,7 +10881,7 @@ export type components = {
              * @description How the notification target is addressed.
              * @default specific
              */
-            target_type: string;
+            target_type?: string;
             /** @description Type of the trigger that causes the notification. The only supported trigger right now is: `spike-protection`. */
             trigger_type: string;
         };
@@ -11056,6 +11056,14 @@ export type components = {
                 discoverSplitDecision?: unknown;
                 fields?: {
                     [key: string]: string;
+                };
+                /** @description Ingestion status for the data behind a response. */
+                ingestion?: {
+                    /** Format: double */
+                    completeThrough?: number;
+                    /** Format: double */
+                    delaySeconds?: number;
+                    status: string;
                 };
                 isMetricsData?: boolean;
                 isMetricsExtractedData?: boolean;
@@ -11644,7 +11652,7 @@ export type components = {
              * @default member
              * @enum {string}
              */
-            orgRole: "billing" | "member" | "manager" | "owner" | "admin";
+            orgRole?: "billing" | "member" | "manager" | "owner" | "admin";
             /** @description Reissue the invite token, invalidating any previously sent invite link. */
             regenerate?: boolean;
             /** @description Whether or not to re-invite a user who has already been invited to the organization. Defaults to True. */
@@ -11660,12 +11668,12 @@ export type components = {
              * @default member
              * @enum {string}
              */
-            role: "member" | "admin" | "manager" | "owner";
+            role?: "member" | "admin" | "manager" | "owner";
             /**
              * @description Whether or not to send an invite notification through email. Defaults to True.
              * @default true
              */
-            sendInvite: boolean;
+            sendInvite?: boolean;
             /**
              * @description The team and team-roles assigned to the member. Team roles can be either:
              *             - `contributor` - Can view and act on issues. Depending on organization settings, they can also add team members.
@@ -11712,7 +11720,7 @@ export type components = {
              * @default contributor
              * @enum {string}
              */
-            teamRole: "contributor" | "admin";
+            teamRole?: "contributor" | "admin";
         };
         OrganizationMemberTeamDetails: {
             isActive: boolean;
@@ -12748,7 +12756,7 @@ export type components = {
             /** @description Per-bias toggles adjusting which transactions dynamic sampling favors retaining. */
             dynamicSamplingBiases?: {
                 /** @default false */
-                active: boolean;
+                active?: boolean;
                 /**
                  * @description * `boostEnvironments`
                  *     * `boostKeyTransactions`
@@ -12885,6 +12893,7 @@ export type components = {
             codeMapping?: {
                 automaticallyGenerated: boolean;
                 defaultBranch: string | null;
+                hasCodeOwner: boolean;
                 id: string;
                 integrationId: string | null;
                 projectId: string;
@@ -12949,6 +12958,7 @@ export type components = {
             codeMapping?: {
                 automaticallyGenerated: boolean;
                 defaultBranch: string | null;
+                hasCodeOwner: boolean;
                 id: string;
                 integrationId: string | null;
                 projectId: string;
@@ -13295,7 +13305,7 @@ export type components = {
              * @default user
              * @enum {string}
              */
-            useCase: "user" | "profiling" | "tempest" | "demo";
+            useCase?: "user" | "profiling" | "tempest" | "demo";
         };
         ProjectOwnership: {
             autoAssignment: string;
@@ -13334,7 +13344,7 @@ export type components = {
              * @description Set to `True` to sync issue owners with CODEOWNERS updates in a release.
              * @default true
              */
-            codeownersAutoSync: boolean;
+            codeownersAutoSync?: boolean;
             /** @description A boolean determining who to assign ownership to when an ownership rule has no match. If set to `True`, all project members are made owners. Otherwise, no owners are set. */
             fallthrough?: boolean;
             /** @description Raw input for ownership configuration. See the [Ownership Rules Documentation](/product/issues/ownership-rules/) to learn more. */
@@ -13372,7 +13382,9 @@ export type components = {
             source: string;
         };
         ProjectRepoListResponse: {
+            externalId: string | null;
             id: string;
+            integrationId: string | null;
             mappingCount?: number;
             projectId: string;
             providerKey: string | null;
@@ -13745,6 +13757,7 @@ export type components = {
                     /** Format: double */
                     inputCost: number;
                     inputTokens: number;
+                    llmCalls: number;
                     model: string | null;
                     /** Format: double */
                     outputCost: number;
@@ -14025,12 +14038,12 @@ export type components = {
              * @description Marks whether or not the custom integration can be used in an alert rule.
              * @default false
              */
-            isAlertable: boolean;
+            isAlertable?: boolean;
             /**
              * @description Whether or not the integration is internal only. False means the integration is public.
              * @default false
              */
-            isInternal: boolean;
+            isInternal?: boolean;
             /** @description The name of the custom integration. */
             name: string;
             /** @description The custom integration's description. */
@@ -14050,7 +14063,7 @@ export type components = {
              * @description Whether or not an installation of the custom integration should be verified.
              * @default true
              */
-            verifyInstall: boolean;
+            verifyInstall?: boolean;
             /** @description Custom headers sent with every webhook request. Each entry is a single 'Header-Name: value' pair. */
             webhookHeaders?: string[];
             /**
@@ -15813,7 +15826,7 @@ export type components = {
              * @description Whether the alert is enabled or disabled
              * @default true
              */
-            enabled: boolean;
+            enabled?: boolean;
             /** @description The name of the environment for the alert to evaluate in */
             environment?: string | null;
             /** @description The ID of the existing alert */
@@ -16797,6 +16810,7 @@ export interface operations {
                                 /** Format: double */
                                 inputCost: number;
                                 inputTokens: number;
+                                llmCalls: number;
                                 model: string | null;
                                 /** Format: double */
                                 outputCost: number;
@@ -19891,6 +19905,14 @@ export interface operations {
                             fields?: {
                                 [key: string]: string;
                             };
+                            /** @description Ingestion status for the data behind a response. */
+                            ingestion?: {
+                                /** Format: double */
+                                completeThrough?: number;
+                                /** Format: double */
+                                delaySeconds?: number;
+                                status: string;
+                            };
                             isMetricsData?: boolean;
                             isMetricsExtractedData?: boolean;
                             routingHint?: string;
@@ -21225,6 +21247,8 @@ export interface operations {
     updateOrganizationIssues: {
         parameters: {
             query?: {
+                /** @description The end of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                end?: string;
                 /** @description The name of environments to filter by. */
                 environment?: string[];
                 /** @description The list of issue IDs to mutate. It is optional for status updates, in which an implicit `update all` is assumed. */
@@ -21243,6 +21267,19 @@ export interface operations {
                 query?: string;
                 /** @description The sort order of the view. Options include 'Last Seen' (`date`), 'First Seen' (`new`), 'Trends' (`trends`), 'Events' (`freq`), 'Users' (`user`), 'Date Added' (`inbox`), and 'Recommended' (`recommended`). */
                 sort?: "date" | "freq" | "inbox" | "new" | "recommended" | "trends" | "user";
+                /** @description The start of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                start?: string;
+                /**
+                 * @description The period of time for the query, will override the start & end parameters, a number followed by one of:
+                 *     - `d` for days
+                 *     - `h` for hours
+                 *     - `m` for minutes
+                 *     - `s` for seconds
+                 *     - `w` for weeks
+                 *
+                 *     For example, `24h`, to mean query data starting from 24 hours ago to now.
+                 */
+                statsPeriod?: string;
                 /** @description The ID of the view to use. If no query is present, the view's query and filters will be applied. */
                 viewId?: string;
             };
@@ -21432,6 +21469,8 @@ export interface operations {
     deleteOrganizationIssues: {
         parameters: {
             query?: {
+                /** @description The end of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                end?: string;
                 /** @description The name of environments to filter by. */
                 environment?: string[];
                 /** @description The list of issue IDs to be removed. If not provided, it will attempt to remove the first 1000 issues. */
@@ -21450,6 +21489,19 @@ export interface operations {
                 query?: string;
                 /** @description The sort order of the view. Options include 'Last Seen' (`date`), 'First Seen' (`new`), 'Trends' (`trends`), 'Events' (`freq`), 'Users' (`user`), 'Date Added' (`inbox`), and 'Recommended' (`recommended`). */
                 sort?: "date" | "freq" | "inbox" | "new" | "recommended" | "trends" | "user";
+                /** @description The start of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                start?: string;
+                /**
+                 * @description The period of time for the query, will override the start & end parameters, a number followed by one of:
+                 *     - `d` for days
+                 *     - `h` for hours
+                 *     - `m` for minutes
+                 *     - `s` for seconds
+                 *     - `w` for weeks
+                 *
+                 *     For example, `24h`, to mean query data starting from 24 hours ago to now.
+                 */
+                statsPeriod?: string;
                 /** @description The ID of the view to use. If no query is present, the view's query and filters will be applied. */
                 viewId?: string;
             };
@@ -36185,6 +36237,7 @@ export interface operations {
                         codeMapping?: {
                             automaticallyGenerated: boolean;
                             defaultBranch: string | null;
+                            hasCodeOwner: boolean;
                             id: string;
                             integrationId: string | null;
                             projectId: string;
@@ -36296,6 +36349,7 @@ export interface operations {
                         codeMapping?: {
                             automaticallyGenerated: boolean;
                             defaultBranch: string | null;
+                            hasCodeOwner: boolean;
                             id: string;
                             integrationId: string | null;
                             projectId: string;
@@ -36407,6 +36461,7 @@ export interface operations {
                         codeMapping?: {
                             automaticallyGenerated: boolean;
                             defaultBranch: string | null;
+                            hasCodeOwner: boolean;
                             id: string;
                             integrationId: string | null;
                             projectId: string;
@@ -36520,6 +36575,7 @@ export interface operations {
                         codeMapping?: {
                             automaticallyGenerated: boolean;
                             defaultBranch: string | null;
+                            hasCodeOwner: boolean;
                             id: string;
                             integrationId: string | null;
                             projectId: string;
@@ -42334,7 +42390,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        externalId: string | null;
                         id: string;
+                        integrationId: string | null;
                         mappingCount?: number;
                         projectId: string;
                         providerKey: string | null;

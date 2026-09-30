@@ -19,6 +19,9 @@ export interface Operation {
 	pathParams: string[];
 	/** has request body */
 	hasBody: boolean;
+	hasQuery: boolean;
+	bodyContentType?: string;
+	successResponse?: { status: string; contentType?: string };
 	/** typescript-typed name for the body, used in generated import */
 	bodyTypeRef?: string;
 	/** typescript-typed name for the response */

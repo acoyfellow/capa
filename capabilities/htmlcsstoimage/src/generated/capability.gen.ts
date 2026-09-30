@@ -3,12 +3,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 
 export class ApiKeysResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20,8 +20,8 @@ export class ApiKeysResource extends RpcTarget {
 	 *
 	 * `GET /v1/api-keys` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/v1/api-keys"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/api-keys"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "list-api-keys",
 			namespace: "api-keys",
 			method: "list",
@@ -34,7 +34,7 @@ export class ApiKeysResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/api-keys"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -44,8 +44,8 @@ export class ApiKeysResource extends RpcTarget {
 	 *
 	 * `POST /v1/api-keys` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/v1/api-keys"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/api-keys"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-api-key",
 			namespace: "api-keys",
 			method: "create",
@@ -58,7 +58,7 @@ export class ApiKeysResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/api-keys"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -68,13 +68,13 @@ export class ApiKeysResource extends RpcTarget {
 	 *
 	 * `GET /v1/api-keys/{id}` — risk: low
 	 */
-	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<paths["/v1/api-keys/{id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-api-key",
 			namespace: "api-keys",
 			method: "retrieve",
 			http: "get",
-			path: `/v1/api-keys/${id}`,
+			path: `/v1/api-keys/${encodeURIComponent(id)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -82,7 +82,7 @@ export class ApiKeysResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/api-keys/{id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -90,13 +90,13 @@ export class ApiKeysResource extends RpcTarget {
 	 *
 	 * `POST /v1/api-keys/{id}` — risk: medium
 	 */
-	async update(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(id: string, body?: NonNullable<paths["/v1/api-keys/{id}"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/api-keys/{id}"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-api-key",
 			namespace: "api-keys",
 			method: "update",
 			http: "post",
-			path: `/v1/api-keys/${id}`,
+			path: `/v1/api-keys/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -104,7 +104,7 @@ export class ApiKeysResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/api-keys/{id}"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -112,13 +112,13 @@ export class ApiKeysResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/api-keys/{id}` — risk: medium
 	 */
-	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-api-key",
 			namespace: "api-keys",
 			method: "del",
 			http: "delete",
-			path: `/v1/api-keys/${id}`,
+			path: `/v1/api-keys/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -126,13 +126,13 @@ export class ApiKeysResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class ImageResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -144,8 +144,8 @@ export class ImageResource extends RpcTarget {
 	 *
 	 * `POST /v1/image` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/v1/image"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/image"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-image",
 			namespace: "image",
 			method: "create",
@@ -158,29 +158,29 @@ export class ImageResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/image"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
 	 * Render an image
 	 *
-	 * `GET /v1/image/{id}` — risk: low
+	 * `GET /v1/image/{id}` — risk: medium
 	 */
-	async retrieve_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async render(id: string, options?: QueryCallOptions<NonNullable<paths["/v1/image/{id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "render-image",
 			namespace: "image",
-			method: "retrieve_0",
+			method: "render",
 			http: "get",
-			path: `/v1/image/${id}`,
-			risk: "low",
+			path: `/v1/image/${encodeURIComponent(id)}`,
+			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["retrieve_0"],
+			overrides: this.overrides["render"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -188,13 +188,13 @@ export class ImageResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/image/{id}` — risk: medium
 	 */
-	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-image",
 			namespace: "image",
 			method: "del",
 			http: "delete",
-			path: `/v1/image/${id}`,
+			path: `/v1/image/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -202,29 +202,29 @@ export class ImageResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
 	 * Render an image with a specific format
 	 *
-	 * `GET /v1/image/{id}.{format}` — risk: low
+	 * `GET /v1/image/{id}.{format}` — risk: medium
 	 */
-	async retrieve_1(id: string, format: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async renderFormat(id: string, format: string, options?: QueryCallOptions<NonNullable<paths["/v1/image/{id}.{format}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "render-image-format",
 			namespace: "image",
-			method: "retrieve_1",
+			method: "renderFormat",
 			http: "get",
-			path: `/v1/image/${id}.${format}`,
-			risk: "low",
+			path: `/v1/image/${encodeURIComponent(id)}.${encodeURIComponent(format)}`,
+			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["retrieve_1"],
+			overrides: this.overrides["renderFormat"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -232,8 +232,8 @@ export class ImageResource extends RpcTarget {
 	 *
 	 * `POST /v1/image/batch` — risk: medium
 	 */
-	async createBatch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createBatch(body?: NonNullable<paths["/v1/image/batch"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/image/batch"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-image-batch",
 			namespace: "image",
 			method: "createBatch",
@@ -246,7 +246,7 @@ export class ImageResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/image/batch"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -254,21 +254,21 @@ export class ImageResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/image/batch` — risk: medium
 	 */
-	async batch(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteBatch(body?: NonNullable<paths["/v1/image/batch"]["delete"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-image-batch",
 			namespace: "image",
-			method: "batch",
+			method: "deleteBatch",
 			http: "delete",
 			path: `/v1/image/batch`,
 			risk: "medium",
 			body,
-			overrides: this.overrides["batch"],
+			overrides: this.overrides["deleteBatch"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -276,27 +276,27 @@ export class ImageResource extends RpcTarget {
 	 *
 	 * `GET /v1/image/create-and-render/{api_id}/{token}/{format}` — risk: medium
 	 */
-	async retrieveCreateAndRender(apiId: string, token: string, format: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createAndRender(apiId: string, token: string, format: string, options?: QueryCallOptions<NonNullable<paths["/v1/image/create-and-render/{api_id}/{token}/{format}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<unknown>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-and-render",
 			namespace: "image",
-			method: "retrieveCreateAndRender",
+			method: "createAndRender",
 			http: "get",
-			path: `/v1/image/create-and-render/${apiId}/${token}/${format}`,
+			path: `/v1/image/create-and-render/${encodeURIComponent(apiId)}/${encodeURIComponent(token)}/${encodeURIComponent(format)}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["retrieveCreateAndRender"],
+			overrides: this.overrides["createAndRender"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<unknown>>;
 	}
 }
 
 export class ImagesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -308,8 +308,8 @@ export class ImagesResource extends RpcTarget {
 	 *
 	 * `GET /v1/images` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/v1/images"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/images"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "list-images",
 			namespace: "images",
 			method: "list",
@@ -322,35 +322,35 @@ export class ImagesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/images"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
 	 * Retrieve metadata about a specific image
 	 *
-	 * `GET /v1/images/{id}` — risk: low
+	 * `GET /v1/images/{id}` — risk: medium
 	 */
-	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMetadata(id: string, options?: CallOptions): Promise<ProofResult<paths["/v1/images/{id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-image-metadata",
 			namespace: "images",
-			method: "retrieve",
+			method: "retrieveMetadata",
 			http: "get",
-			path: `/v1/images/${id}`,
-			risk: "low",
+			path: `/v1/images/${encodeURIComponent(id)}`,
+			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["retrieve"],
+			overrides: this.overrides["retrieveMetadata"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/images/{id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class OgConfigsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -364,8 +364,8 @@ export class OgConfigsResource extends RpcTarget {
 	 *
 	 * `GET /v1/og-configs` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/v1/og-configs"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/og-configs"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "list-og-configs",
 			namespace: "og-configs",
 			method: "list",
@@ -378,7 +378,7 @@ export class OgConfigsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/og-configs"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -386,8 +386,8 @@ export class OgConfigsResource extends RpcTarget {
 	 *
 	 * `POST /v1/og-configs` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/v1/og-configs"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/og-configs"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-og-config",
 			namespace: "og-configs",
 			method: "create",
@@ -400,7 +400,7 @@ export class OgConfigsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/og-configs"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -408,13 +408,13 @@ export class OgConfigsResource extends RpcTarget {
 	 *
 	 * `GET /v1/og-configs/{id}` — risk: low
 	 */
-	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<paths["/v1/og-configs/{id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-og-config",
 			namespace: "og-configs",
 			method: "retrieve",
 			http: "get",
-			path: `/v1/og-configs/${id}`,
+			path: `/v1/og-configs/${encodeURIComponent(id)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -422,7 +422,7 @@ export class OgConfigsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/og-configs/{id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -430,13 +430,13 @@ export class OgConfigsResource extends RpcTarget {
 	 *
 	 * `POST /v1/og-configs/{id}` — risk: medium
 	 */
-	async update(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(id: string, body?: NonNullable<paths["/v1/og-configs/{id}"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/og-configs/{id}"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-og-config",
 			namespace: "og-configs",
 			method: "update",
 			http: "post",
-			path: `/v1/og-configs/${id}`,
+			path: `/v1/og-configs/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -444,7 +444,7 @@ export class OgConfigsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/og-configs/{id}"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -452,13 +452,13 @@ export class OgConfigsResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/og-configs/{id}` — risk: medium
 	 */
-	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-og-config",
 			namespace: "og-configs",
 			method: "del",
 			http: "delete",
-			path: `/v1/og-configs/${id}`,
+			path: `/v1/og-configs/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -466,13 +466,13 @@ export class OgConfigsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class ProxiesResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -484,8 +484,8 @@ export class ProxiesResource extends RpcTarget {
 	 *
 	 * `GET /v1/proxies` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/v1/proxies"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/proxies"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "list-proxies",
 			namespace: "proxies",
 			method: "list",
@@ -498,7 +498,7 @@ export class ProxiesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/proxies"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -506,8 +506,8 @@ export class ProxiesResource extends RpcTarget {
 	 *
 	 * `POST /v1/proxies` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/v1/proxies"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/proxies"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-proxy",
 			namespace: "proxies",
 			method: "create",
@@ -520,7 +520,7 @@ export class ProxiesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/proxies"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -528,13 +528,13 @@ export class ProxiesResource extends RpcTarget {
 	 *
 	 * `GET /v1/proxies/{id}` — risk: low
 	 */
-	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<paths["/v1/proxies/{id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-proxy",
 			namespace: "proxies",
 			method: "retrieve",
 			http: "get",
-			path: `/v1/proxies/${id}`,
+			path: `/v1/proxies/${encodeURIComponent(id)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -542,7 +542,7 @@ export class ProxiesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/proxies/{id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -550,13 +550,13 @@ export class ProxiesResource extends RpcTarget {
 	 *
 	 * `POST /v1/proxies/{id}` — risk: medium
 	 */
-	async update(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(id: string, body?: NonNullable<paths["/v1/proxies/{id}"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/proxies/{id}"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-proxy",
 			namespace: "proxies",
 			method: "update",
 			http: "post",
-			path: `/v1/proxies/${id}`,
+			path: `/v1/proxies/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -564,7 +564,7 @@ export class ProxiesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/proxies/{id}"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -572,13 +572,13 @@ export class ProxiesResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/proxies/{id}` — risk: medium
 	 */
-	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-proxy",
 			namespace: "proxies",
 			method: "del",
 			http: "delete",
-			path: `/v1/proxies/${id}`,
+			path: `/v1/proxies/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -586,13 +586,13 @@ export class ProxiesResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 export class StorageDestinationsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -604,8 +604,8 @@ export class StorageDestinationsResource extends RpcTarget {
 	 *
 	 * `GET /v1/storage-destinations` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/v1/storage-destinations"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/storage-destinations"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "list-storage-destinations",
 			namespace: "storage-destinations",
 			method: "list",
@@ -618,7 +618,7 @@ export class StorageDestinationsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/storage-destinations"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -626,8 +626,8 @@ export class StorageDestinationsResource extends RpcTarget {
 	 *
 	 * `POST /v1/storage-destinations` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/v1/storage-destinations"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/storage-destinations"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-storage-destination",
 			namespace: "storage-destinations",
 			method: "create",
@@ -640,7 +640,7 @@ export class StorageDestinationsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/storage-destinations"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -648,13 +648,13 @@ export class StorageDestinationsResource extends RpcTarget {
 	 *
 	 * `GET /v1/storage-destinations/{id}` — risk: low
 	 */
-	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<paths["/v1/storage-destinations/{id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-storage-destination",
 			namespace: "storage-destinations",
 			method: "retrieve",
 			http: "get",
-			path: `/v1/storage-destinations/${id}`,
+			path: `/v1/storage-destinations/${encodeURIComponent(id)}`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -662,7 +662,7 @@ export class StorageDestinationsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/storage-destinations/{id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -670,13 +670,13 @@ export class StorageDestinationsResource extends RpcTarget {
 	 *
 	 * `POST /v1/storage-destinations/{id}` — risk: medium
 	 */
-	async update(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(id: string, body?: NonNullable<paths["/v1/storage-destinations/{id}"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/storage-destinations/{id}"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "update-storage-destination",
 			namespace: "storage-destinations",
 			method: "update",
 			http: "post",
-			path: `/v1/storage-destinations/${id}`,
+			path: `/v1/storage-destinations/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -684,7 +684,7 @@ export class StorageDestinationsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/storage-destinations/{id}"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -692,13 +692,13 @@ export class StorageDestinationsResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/storage-destinations/{id}` — risk: medium
 	 */
-	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async del(id: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "delete-storage-destination",
 			namespace: "storage-destinations",
 			method: "del",
 			http: "delete",
-			path: `/v1/storage-destinations/${id}`,
+			path: `/v1/storage-destinations/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["del"],
@@ -706,7 +706,7 @@ export class StorageDestinationsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -714,27 +714,27 @@ export class StorageDestinationsResource extends RpcTarget {
 	 *
 	 * `GET /v1/storage-destinations/aws-external-id` — risk: medium
 	 */
-	async listAwsExternalId(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveAwsStorageExternalId(options?: CallOptions): Promise<ProofResult<paths["/v1/storage-destinations/aws-external-id"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-aws-storage-external-id",
 			namespace: "storage-destinations",
-			method: "listAwsExternalId",
+			method: "retrieveAwsStorageExternalId",
 			http: "get",
 			path: `/v1/storage-destinations/aws-external-id`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["listAwsExternalId"],
+			overrides: this.overrides["retrieveAwsStorageExternalId"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/storage-destinations/aws-external-id"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class StoreResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -746,21 +746,21 @@ export class StoreResource extends RpcTarget {
 	 *
 	 * `PUT /v1/store/{id}` — risk: medium
 	 */
-	async put_0(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async storeImage(id: string, options?: QueryCallOptions<NonNullable<paths["/v1/store/{id}"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/store/{id}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "store-image",
 			namespace: "store",
-			method: "put_0",
+			method: "storeImage",
 			http: "put",
-			path: `/v1/store/${id}`,
+			path: `/v1/store/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["put_0"],
+			overrides: this.overrides["storeImage"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/store/{id}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -768,27 +768,27 @@ export class StoreResource extends RpcTarget {
 	 *
 	 * `PUT /v1/store/{id}.{format}` — risk: medium
 	 */
-	async put_1(id: string, format: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async storeImageFormat(id: string, format: string, options?: QueryCallOptions<NonNullable<paths["/v1/store/{id}.{format}"]["put"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/store/{id}.{format}"]["put"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "store-image-format",
 			namespace: "store",
-			method: "put_1",
+			method: "storeImageFormat",
 			http: "put",
-			path: `/v1/store/${id}.${format}`,
+			path: `/v1/store/${encodeURIComponent(id)}.${encodeURIComponent(format)}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["put_1"],
+			overrides: this.overrides["storeImageFormat"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/store/{id}.{format}"]["put"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 export class TemplateResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -800,8 +800,8 @@ export class TemplateResource extends RpcTarget {
 	 *
 	 * `GET /v1/template` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/v1/template"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/template"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "list-templates",
 			namespace: "template",
 			method: "list",
@@ -814,7 +814,7 @@ export class TemplateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/template"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -822,8 +822,8 @@ export class TemplateResource extends RpcTarget {
 	 *
 	 * `POST /v1/template` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/v1/template"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/template"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-template",
 			namespace: "template",
 			method: "create",
@@ -836,29 +836,29 @@ export class TemplateResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/template"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
 	 * List template versions for a template
 	 *
-	 * `GET /v1/template/{id}` — risk: low
+	 * `GET /v1/template/{id}` — risk: medium
 	 */
-	async retrieve(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listVersions(id: string, options?: QueryCallOptions<NonNullable<paths["/v1/template/{id}"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/template/{id}"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "list-template-versions",
 			namespace: "template",
-			method: "retrieve",
+			method: "listVersions",
 			http: "get",
-			path: `/v1/template/${id}`,
-			risk: "low",
+			path: `/v1/template/${encodeURIComponent(id)}`,
+			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["retrieve"],
+			overrides: this.overrides["listVersions"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/template/{id}"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -866,21 +866,21 @@ export class TemplateResource extends RpcTarget {
 	 *
 	 * `POST /v1/template/{id}` — risk: medium
 	 */
-	async update(id: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createVersion(id: string, body?: NonNullable<paths["/v1/template/{id}"]["post"]["requestBody"]>["content"]["application/json"], options?: CallOptions): Promise<ProofResult<paths["/v1/template/{id}"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "create-template-version",
 			namespace: "template",
-			method: "update",
+			method: "createVersion",
 			http: "post",
-			path: `/v1/template/${id}`,
+			path: `/v1/template/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body,
-			overrides: this.overrides["update"],
+			overrides: this.overrides["createVersion"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/template/{id}"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -888,27 +888,27 @@ export class TemplateResource extends RpcTarget {
 	 *
 	 * `DELETE /v1/template/{id}` — risk: medium
 	 */
-	async del(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async remove(id: string, options?: CallOptions): Promise<ProofResult<unknown>> {
+		return fetchProof(this.credentials, {
 			operationId: "remove-template",
 			namespace: "template",
-			method: "del",
+			method: "remove",
 			http: "delete",
-			path: `/v1/template/${id}`,
+			path: `/v1/template/${encodeURIComponent(id)}`,
 			risk: "medium",
 			body: undefined,
-			overrides: this.overrides["del"],
+			overrides: this.overrides["remove"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<unknown>>;
 	}
 }
 
 export class UsageResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -920,65 +920,70 @@ export class UsageResource extends RpcTarget {
 	 *
 	 * `GET /v1/usage` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(options?: QueryCallOptions<NonNullable<paths["/v1/usage"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/v1/usage"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "get-usage",
 			namespace: "usage",
-			method: "list",
+			method: "retrieve",
 			http: "get",
 			path: `/v1/usage`,
 			risk: "low",
 			body: undefined,
-			overrides: this.overrides["list"],
+			overrides: this.overrides["retrieve"],
 			baseUrl: this.runtimeConfig?.baseUrl,
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/v1/usage"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 }
 
 interface Env {
 	HTMLCSSTOIMAGE_API_KEY?: string;
+	HTMLCSSTOIMAGE_USER_ID?: string;
 }
 
 export class HtmlcsstoimageCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
 	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
+	protected providerCredentials(): import("./runtime.ts").Credentials {
+		return { apiKey: this.env.HTMLCSSTOIMAGE_API_KEY, username: this.env.HTMLCSSTOIMAGE_USER_ID };
+	}
+
 	get apiKeys(): ApiKeysResource {
-		return new ApiKeysResource(this.env.HTMLCSSTOIMAGE_API_KEY, this.overrides["api-keys"] || {}, this.runtimeConfig);
+		return new ApiKeysResource(this.providerCredentials(), this.overrides["api-keys"] || {}, this.runtimeConfig);
 	}
 
 	get image(): ImageResource {
-		return new ImageResource(this.env.HTMLCSSTOIMAGE_API_KEY, this.overrides["image"] || {}, this.runtimeConfig);
+		return new ImageResource(this.providerCredentials(), this.overrides["image"] || {}, this.runtimeConfig);
 	}
 
 	get images(): ImagesResource {
-		return new ImagesResource(this.env.HTMLCSSTOIMAGE_API_KEY, this.overrides["images"] || {}, this.runtimeConfig);
+		return new ImagesResource(this.providerCredentials(), this.overrides["images"] || {}, this.runtimeConfig);
 	}
 
 	get ogConfigs(): OgConfigsResource {
-		return new OgConfigsResource(this.env.HTMLCSSTOIMAGE_API_KEY, this.overrides["og-configs"] || {}, this.runtimeConfig);
+		return new OgConfigsResource(this.providerCredentials(), this.overrides["og-configs"] || {}, this.runtimeConfig);
 	}
 
 	get proxies(): ProxiesResource {
-		return new ProxiesResource(this.env.HTMLCSSTOIMAGE_API_KEY, this.overrides["proxies"] || {}, this.runtimeConfig);
+		return new ProxiesResource(this.providerCredentials(), this.overrides["proxies"] || {}, this.runtimeConfig);
 	}
 
 	get storageDestinations(): StorageDestinationsResource {
-		return new StorageDestinationsResource(this.env.HTMLCSSTOIMAGE_API_KEY, this.overrides["storage-destinations"] || {}, this.runtimeConfig);
+		return new StorageDestinationsResource(this.providerCredentials(), this.overrides["storage-destinations"] || {}, this.runtimeConfig);
 	}
 
 	get store(): StoreResource {
-		return new StoreResource(this.env.HTMLCSSTOIMAGE_API_KEY, this.overrides["store"] || {}, this.runtimeConfig);
+		return new StoreResource(this.providerCredentials(), this.overrides["store"] || {}, this.runtimeConfig);
 	}
 
 	get template(): TemplateResource {
-		return new TemplateResource(this.env.HTMLCSSTOIMAGE_API_KEY, this.overrides["template"] || {}, this.runtimeConfig);
+		return new TemplateResource(this.providerCredentials(), this.overrides["template"] || {}, this.runtimeConfig);
 	}
 
 	get usage(): UsageResource {
-		return new UsageResource(this.env.HTMLCSSTOIMAGE_API_KEY, this.overrides["usage"] || {}, this.runtimeConfig);
+		return new UsageResource(this.providerCredentials(), this.overrides["usage"] || {}, this.runtimeConfig);
 	}
 }

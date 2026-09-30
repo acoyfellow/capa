@@ -3,12 +3,12 @@
 
 import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
 import type { paths } from "./schema.gen.ts";
-import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, fetchProof } from "./runtime.ts";
+import { Evidence, type EvidenceBundle, type ProofResult, type CallOptions, type QueryCallOptions, fetchProof } from "./runtime.ts";
 
 
 export class AccountsJsonResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -20,8 +20,8 @@ export class AccountsJsonResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts.json` — risk: low
 	 */
-	async list(options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async list(options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAccount",
 			namespace: "Accounts.json",
 			method: "list",
@@ -34,7 +34,7 @@ export class AccountsJsonResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -42,8 +42,8 @@ export class AccountsJsonResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts.json` — risk: medium
 	 */
-	async create(body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async create(body?: NonNullable<paths["/2010-04-01/Accounts.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateAccount",
 			namespace: "Accounts.json",
 			method: "create",
@@ -56,13 +56,13 @@ export class AccountsJsonResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 }
 
 export class AccountsResource extends RpcTarget {
 	constructor(
-		private apiKey: string | undefined,
+		private credentials: import("./runtime.ts").Credentials,
 		private overrides: Record<string, import("./runtime.ts").MethodOverride> = {},
 		private runtimeConfig?: import("./runtime.ts").RuntimeConfig,
 	) {
@@ -74,13 +74,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{Sid}.json` — risk: low
 	 */
-	async retrieve(Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieve(Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchAccount",
 			namespace: "Accounts",
 			method: "retrieve",
 			http: "get",
-			path: `/2010-04-01/Accounts/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(Sid)}.json`,
 			risk: "low",
 			body: undefined,
 			overrides: this.overrides["retrieve"],
@@ -88,7 +88,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -96,13 +96,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{Sid}.json` — risk: medium
 	 */
-	async update(Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async update(Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateAccount",
 			namespace: "Accounts",
 			method: "update",
 			http: "post",
-			path: `/2010-04-01/Accounts/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["update"],
@@ -110,7 +110,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -118,13 +118,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Addresses.json` — risk: medium
 	 */
-	async listAddressesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAddressesJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Addresses.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAddress",
 			namespace: "Accounts",
 			method: "listAddressesJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Addresses.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Addresses.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAddressesJson"],
@@ -132,7 +132,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -140,13 +140,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Addresses.json` — risk: medium
 	 */
-	async createAddressesJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createAddressesJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Addresses.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateAddress",
 			namespace: "Accounts",
 			method: "createAddressesJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Addresses.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Addresses.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createAddressesJson"],
@@ -154,7 +154,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -162,13 +162,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json` — risk: medium
 	 */
-	async retrieveAddress(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveAddress(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchAddress",
 			namespace: "Accounts",
 			method: "retrieveAddress",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Addresses/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Addresses/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAddress"],
@@ -176,7 +176,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -184,13 +184,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json` — risk: medium
 	 */
-	async updateAddress(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateAddress(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateAddress",
 			namespace: "Accounts",
 			method: "updateAddress",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Addresses/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Addresses/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateAddress"],
@@ -198,7 +198,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -206,13 +206,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Addresses/{Sid}.json` — risk: medium
 	 */
-	async deleteAddress(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteAddress(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteAddress",
 			namespace: "Accounts",
 			method: "deleteAddress",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Addresses/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Addresses/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteAddress"],
@@ -220,7 +220,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -228,13 +228,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Applications.json` — risk: medium
 	 */
-	async listApplicationsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listApplicationsJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Applications.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Applications.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListApplication",
 			namespace: "Accounts",
 			method: "listApplicationsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Applications.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Applications.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listApplicationsJson"],
@@ -242,7 +242,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Applications.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -250,13 +250,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Applications.json` — risk: medium
 	 */
-	async createApplicationsJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createApplicationsJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Applications.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Applications.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateApplication",
 			namespace: "Accounts",
 			method: "createApplicationsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Applications.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Applications.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createApplicationsJson"],
@@ -264,7 +264,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Applications.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -272,13 +272,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json` — risk: medium
 	 */
-	async retrieveApplication(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveApplication(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchApplication",
 			namespace: "Accounts",
 			method: "retrieveApplication",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Applications/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Applications/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveApplication"],
@@ -286,7 +286,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -294,13 +294,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json` — risk: medium
 	 */
-	async updateApplication(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateApplication(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateApplication",
 			namespace: "Accounts",
 			method: "updateApplication",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Applications/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Applications/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateApplication"],
@@ -308,7 +308,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -316,13 +316,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Applications/{Sid}.json` — risk: medium
 	 */
-	async deleteApplication(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteApplication(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteApplication",
 			namespace: "Accounts",
 			method: "deleteApplication",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Applications/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Applications/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteApplication"],
@@ -330,7 +330,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -338,13 +338,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AuthorizedConnectApps/{ConnectAppSid}.json` — risk: medium
 	 */
-	async retrieveAuthorizedConnectApp(AccountSid: string, ConnectAppSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveAuthorizedConnectApp(AccountSid: string, ConnectAppSid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AuthorizedConnectApps/{ConnectAppSid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchAuthorizedConnectApp",
 			namespace: "Accounts",
 			method: "retrieveAuthorizedConnectApp",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AuthorizedConnectApps/${ConnectAppSid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AuthorizedConnectApps/${encodeURIComponent(ConnectAppSid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAuthorizedConnectApp"],
@@ -352,7 +352,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AuthorizedConnectApps/{ConnectAppSid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -360,13 +360,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AuthorizedConnectApps.json` — risk: medium
 	 */
-	async listAuthorizedConnectAppsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAuthorizedConnectAppsJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/AuthorizedConnectApps.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AuthorizedConnectApps.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAuthorizedConnectApp",
 			namespace: "Accounts",
 			method: "listAuthorizedConnectAppsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AuthorizedConnectApps.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AuthorizedConnectApps.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAuthorizedConnectAppsJson"],
@@ -374,7 +374,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AuthorizedConnectApps.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -382,13 +382,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers.json` — risk: medium
 	 */
-	async listAvailablePhoneNumbersJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listAvailablePhoneNumbersJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAvailablePhoneNumberCountry",
 			namespace: "Accounts",
 			method: "listAvailablePhoneNumbersJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AvailablePhoneNumbers.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AvailablePhoneNumbers.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listAvailablePhoneNumbersJson"],
@@ -396,7 +396,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -404,13 +404,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}.json` — risk: medium
 	 */
-	async retrieveAvailablePhoneNumber(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveAvailablePhoneNumber(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchAvailablePhoneNumberCountry",
 			namespace: "Accounts",
 			method: "retrieveAvailablePhoneNumber",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AvailablePhoneNumbers/${CountryCode}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AvailablePhoneNumbers/${encodeURIComponent(CountryCode)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAvailablePhoneNumber"],
@@ -418,7 +418,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -426,13 +426,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Local.json` — risk: medium
 	 */
-	async availablePhoneNumbersLocalJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async availablePhoneNumbersLocalJson(AccountSid: string, CountryCode: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Local.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Local.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAvailablePhoneNumberLocal",
 			namespace: "Accounts",
 			method: "availablePhoneNumbersLocalJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AvailablePhoneNumbers/${CountryCode}/Local.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AvailablePhoneNumbers/${encodeURIComponent(CountryCode)}/Local.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["availablePhoneNumbersLocalJson"],
@@ -440,7 +440,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Local.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -448,13 +448,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/MachineToMachine.json` — risk: medium
 	 */
-	async MachineToMachineJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async MachineToMachineJson(AccountSid: string, CountryCode: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/MachineToMachine.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/MachineToMachine.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAvailablePhoneNumberMachineToMachine",
 			namespace: "Accounts",
 			method: "MachineToMachineJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AvailablePhoneNumbers/${CountryCode}/MachineToMachine.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AvailablePhoneNumbers/${encodeURIComponent(CountryCode)}/MachineToMachine.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["MachineToMachineJson"],
@@ -462,7 +462,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/MachineToMachine.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -470,13 +470,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Mobile.json` — risk: medium
 	 */
-	async availablePhoneNumbersMobileJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async availablePhoneNumbersMobileJson(AccountSid: string, CountryCode: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Mobile.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Mobile.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAvailablePhoneNumberMobile",
 			namespace: "Accounts",
 			method: "availablePhoneNumbersMobileJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AvailablePhoneNumbers/${CountryCode}/Mobile.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AvailablePhoneNumbers/${encodeURIComponent(CountryCode)}/Mobile.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["availablePhoneNumbersMobileJson"],
@@ -484,7 +484,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Mobile.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -492,13 +492,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json` — risk: medium
 	 */
-	async NationalJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async NationalJson(AccountSid: string, CountryCode: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAvailablePhoneNumberNational",
 			namespace: "Accounts",
 			method: "NationalJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AvailablePhoneNumbers/${CountryCode}/National.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AvailablePhoneNumbers/${encodeURIComponent(CountryCode)}/National.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["NationalJson"],
@@ -506,7 +506,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/National.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -514,13 +514,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json` — risk: medium
 	 */
-	async SharedCostJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async SharedCostJson(AccountSid: string, CountryCode: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAvailablePhoneNumberSharedCost",
 			namespace: "Accounts",
 			method: "SharedCostJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AvailablePhoneNumbers/${CountryCode}/SharedCost.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AvailablePhoneNumbers/${encodeURIComponent(CountryCode)}/SharedCost.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["SharedCostJson"],
@@ -528,7 +528,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/SharedCost.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -536,13 +536,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/TollFree.json` — risk: medium
 	 */
-	async availablePhoneNumbersTollFreeJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async availablePhoneNumbersTollFreeJson(AccountSid: string, CountryCode: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/TollFree.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/TollFree.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAvailablePhoneNumberTollFree",
 			namespace: "Accounts",
 			method: "availablePhoneNumbersTollFreeJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AvailablePhoneNumbers/${CountryCode}/TollFree.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AvailablePhoneNumbers/${encodeURIComponent(CountryCode)}/TollFree.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["availablePhoneNumbersTollFreeJson"],
@@ -550,7 +550,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/TollFree.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -558,13 +558,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json` — risk: medium
 	 */
-	async VoipJson(AccountSid: string, CountryCode: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async VoipJson(AccountSid: string, CountryCode: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListAvailablePhoneNumberVoip",
 			namespace: "Accounts",
 			method: "VoipJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/AvailablePhoneNumbers/${CountryCode}/Voip.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/AvailablePhoneNumbers/${encodeURIComponent(CountryCode)}/Voip.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["VoipJson"],
@@ -572,7 +572,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/AvailablePhoneNumbers/{CountryCode}/Voip.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -580,13 +580,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Balance.json` — risk: medium
 	 */
-	async listBalanceJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listBalanceJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Balance.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchBalance",
 			namespace: "Accounts",
 			method: "listBalanceJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Balance.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Balance.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listBalanceJson"],
@@ -594,7 +594,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Balance.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -602,13 +602,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls.json` — risk: medium
 	 */
-	async listCallsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listCallsJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListCall",
 			namespace: "Accounts",
 			method: "listCallsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listCallsJson"],
@@ -616,7 +616,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -624,13 +624,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls.json` — risk: medium
 	 */
-	async createCallsJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createCallsJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateCall",
 			namespace: "Accounts",
 			method: "createCallsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createCallsJson"],
@@ -638,7 +638,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -646,13 +646,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json` — risk: medium
 	 */
-	async retrieveCall(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveCall(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchCall",
 			namespace: "Accounts",
 			method: "retrieveCall",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCall"],
@@ -660,7 +660,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -668,13 +668,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json` — risk: medium
 	 */
-	async updateCall(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateCall(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateCall",
 			namespace: "Accounts",
 			method: "updateCall",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateCall"],
@@ -682,7 +682,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -690,13 +690,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Calls/{Sid}.json` — risk: medium
 	 */
-	async deleteCall(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteCall(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteCall",
 			namespace: "Accounts",
 			method: "deleteCall",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCall"],
@@ -704,7 +704,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -712,13 +712,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Events.json` — risk: medium
 	 */
-	async EventsJson(AccountSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async EventsJson(AccountSid: string, CallSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Events.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Events.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListCallEvent",
 			namespace: "Accounts",
 			method: "EventsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Events.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Events.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["EventsJson"],
@@ -726,7 +726,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Events.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -734,13 +734,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications/{Sid}.json` — risk: medium
 	 */
-	async callsNotificationsRetrieveNotification(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async callsNotificationsRetrieveNotification(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchCallNotification",
 			namespace: "Accounts",
 			method: "callsNotificationsRetrieveNotification",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Notifications/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Notifications/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["callsNotificationsRetrieveNotification"],
@@ -748,7 +748,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -756,13 +756,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json` — risk: medium
 	 */
-	async NotificationsJson(AccountSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async NotificationsJson(AccountSid: string, CallSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListCallNotification",
 			namespace: "Accounts",
 			method: "NotificationsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Notifications.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Notifications.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["NotificationsJson"],
@@ -770,7 +770,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Notifications.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -778,13 +778,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json` — risk: medium
 	 */
-	async getCallsRecordingsJson(AccountSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getCallsRecordingsJson(AccountSid: string, CallSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListCallRecording",
 			namespace: "Accounts",
 			method: "getCallsRecordingsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Recordings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Recordings.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getCallsRecordingsJson"],
@@ -792,7 +792,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -800,13 +800,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json` — risk: medium
 	 */
-	async postCallsRecordingsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async postCallsRecordingsJson(AccountSid: string, CallSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateCallRecording",
 			namespace: "Accounts",
 			method: "postCallsRecordingsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Recordings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Recordings.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["postCallsRecordingsJson"],
@@ -814,7 +814,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -822,13 +822,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async callsRecordingsRetrieveRecording(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async callsRecordingsRetrieveRecording(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchCallRecording",
 			namespace: "Accounts",
 			method: "callsRecordingsRetrieveRecording",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Recordings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Recordings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["callsRecordingsRetrieveRecording"],
@@ -836,7 +836,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -844,13 +844,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async callsRecordingsUpdateRecording(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async callsRecordingsUpdateRecording(AccountSid: string, CallSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateCallRecording",
 			namespace: "Accounts",
 			method: "callsRecordingsUpdateRecording",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Recordings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Recordings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["callsRecordingsUpdateRecording"],
@@ -858,7 +858,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -866,13 +866,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async callsRecordingsDeleteRecording(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async callsRecordingsDeleteRecording(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteCallRecording",
 			namespace: "Accounts",
 			method: "callsRecordingsDeleteRecording",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Recordings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Recordings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["callsRecordingsDeleteRecording"],
@@ -880,7 +880,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -888,13 +888,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{Sid}.json` — risk: medium
 	 */
-	async retrieveConference(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveConference(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchConference",
 			namespace: "Accounts",
 			method: "retrieveConference",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveConference"],
@@ -902,7 +902,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -910,13 +910,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Conferences/{Sid}.json` — risk: medium
 	 */
-	async updateConference(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateConference(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateConference",
 			namespace: "Accounts",
 			method: "updateConference",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateConference"],
@@ -924,7 +924,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -932,13 +932,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences.json` — risk: medium
 	 */
-	async listConferencesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listConferencesJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Conferences.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListConference",
 			namespace: "Accounts",
 			method: "listConferencesJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listConferencesJson"],
@@ -946,7 +946,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -954,13 +954,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings.json` — risk: medium
 	 */
-	async conferencesRecordingsJson(AccountSid: string, ConferenceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async conferencesRecordingsJson(AccountSid: string, ConferenceSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListConferenceRecording",
 			namespace: "Accounts",
 			method: "conferencesRecordingsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${ConferenceSid}/Recordings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(ConferenceSid)}/Recordings.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["conferencesRecordingsJson"],
@@ -968,7 +968,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -976,13 +976,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async conferencesRecordingsRetrieveRecording(AccountSid: string, ConferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async conferencesRecordingsRetrieveRecording(AccountSid: string, ConferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchConferenceRecording",
 			namespace: "Accounts",
 			method: "conferencesRecordingsRetrieveRecording",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${ConferenceSid}/Recordings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(ConferenceSid)}/Recordings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["conferencesRecordingsRetrieveRecording"],
@@ -990,7 +990,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -998,13 +998,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async conferencesRecordingsUpdateRecording(AccountSid: string, ConferenceSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async conferencesRecordingsUpdateRecording(AccountSid: string, ConferenceSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateConferenceRecording",
 			namespace: "Accounts",
 			method: "conferencesRecordingsUpdateRecording",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${ConferenceSid}/Recordings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(ConferenceSid)}/Recordings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["conferencesRecordingsUpdateRecording"],
@@ -1012,7 +1012,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1020,13 +1020,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async conferencesRecordingsDeleteRecording(AccountSid: string, ConferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async conferencesRecordingsDeleteRecording(AccountSid: string, ConferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteConferenceRecording",
 			namespace: "Accounts",
 			method: "conferencesRecordingsDeleteRecording",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${ConferenceSid}/Recordings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(ConferenceSid)}/Recordings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["conferencesRecordingsDeleteRecording"],
@@ -1034,7 +1034,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1042,13 +1042,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json` — risk: medium
 	 */
-	async retrieveConnectApp(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveConnectApp(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchConnectApp",
 			namespace: "Accounts",
 			method: "retrieveConnectApp",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/ConnectApps/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/ConnectApps/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveConnectApp"],
@@ -1056,7 +1056,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1064,13 +1064,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json` — risk: medium
 	 */
-	async updateConnectApp(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateConnectApp(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateConnectApp",
 			namespace: "Accounts",
 			method: "updateConnectApp",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/ConnectApps/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/ConnectApps/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateConnectApp"],
@@ -1078,7 +1078,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1086,13 +1086,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/ConnectApps/{Sid}.json` — risk: medium
 	 */
-	async deleteConnectApp(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteConnectApp(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteConnectApp",
 			namespace: "Accounts",
 			method: "deleteConnectApp",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/ConnectApps/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/ConnectApps/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteConnectApp"],
@@ -1100,7 +1100,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1108,13 +1108,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/ConnectApps.json` — risk: medium
 	 */
-	async listConnectAppsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listConnectAppsJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/ConnectApps.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/ConnectApps.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListConnectApp",
 			namespace: "Accounts",
 			method: "listConnectAppsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/ConnectApps.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/ConnectApps.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listConnectAppsJson"],
@@ -1122,7 +1122,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/ConnectApps.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1130,13 +1130,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Addresses/{AddressSid}/DependentPhoneNumbers.json` — risk: medium
 	 */
-	async DependentPhoneNumbersJson(AccountSid: string, AddressSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async DependentPhoneNumbersJson(AccountSid: string, AddressSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Addresses/{AddressSid}/DependentPhoneNumbers.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses/{AddressSid}/DependentPhoneNumbers.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListDependentPhoneNumber",
 			namespace: "Accounts",
 			method: "DependentPhoneNumbersJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Addresses/${AddressSid}/DependentPhoneNumbers.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Addresses/${encodeURIComponent(AddressSid)}/DependentPhoneNumbers.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["DependentPhoneNumbersJson"],
@@ -1144,7 +1144,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Addresses/{AddressSid}/DependentPhoneNumbers.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1152,13 +1152,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json` — risk: medium
 	 */
-	async retrieveIncomingPhoneNumber(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveIncomingPhoneNumber(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchIncomingPhoneNumber",
 			namespace: "Accounts",
 			method: "retrieveIncomingPhoneNumber",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveIncomingPhoneNumber"],
@@ -1166,7 +1166,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1174,13 +1174,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json` — risk: medium
 	 */
-	async updateIncomingPhoneNumber(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateIncomingPhoneNumber(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateIncomingPhoneNumber",
 			namespace: "Accounts",
 			method: "updateIncomingPhoneNumber",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateIncomingPhoneNumber"],
@@ -1188,7 +1188,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1196,13 +1196,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{Sid}.json` — risk: medium
 	 */
-	async deleteIncomingPhoneNumber(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteIncomingPhoneNumber(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteIncomingPhoneNumber",
 			namespace: "Accounts",
 			method: "deleteIncomingPhoneNumber",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteIncomingPhoneNumber"],
@@ -1210,7 +1210,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1218,13 +1218,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json` — risk: medium
 	 */
-	async listIncomingPhoneNumbersJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listIncomingPhoneNumbersJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListIncomingPhoneNumber",
 			namespace: "Accounts",
 			method: "listIncomingPhoneNumbersJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listIncomingPhoneNumbersJson"],
@@ -1232,7 +1232,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1240,13 +1240,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json` — risk: medium
 	 */
-	async createIncomingPhoneNumbersJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createIncomingPhoneNumbersJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateIncomingPhoneNumber",
 			namespace: "Accounts",
 			method: "createIncomingPhoneNumbersJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createIncomingPhoneNumbersJson"],
@@ -1254,7 +1254,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1262,13 +1262,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{Sid}.json` — risk: medium
 	 */
-	async retrieveAssignedAddOn(AccountSid: string, ResourceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveAssignedAddOn(AccountSid: string, ResourceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchIncomingPhoneNumberAssignedAddOn",
 			namespace: "Accounts",
 			method: "retrieveAssignedAddOn",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/${ResourceSid}/AssignedAddOns/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/${encodeURIComponent(ResourceSid)}/AssignedAddOns/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAssignedAddOn"],
@@ -1276,7 +1276,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1284,13 +1284,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{Sid}.json` — risk: medium
 	 */
-	async deleteAssignedAddOn(AccountSid: string, ResourceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteAssignedAddOn(AccountSid: string, ResourceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteIncomingPhoneNumberAssignedAddOn",
 			namespace: "Accounts",
 			method: "deleteAssignedAddOn",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/${ResourceSid}/AssignedAddOns/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/${encodeURIComponent(ResourceSid)}/AssignedAddOns/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteAssignedAddOn"],
@@ -1298,7 +1298,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1306,13 +1306,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json` — risk: medium
 	 */
-	async AssignedAddOnsJson_0(AccountSid: string, ResourceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async AssignedAddOnsJson_0(AccountSid: string, ResourceSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListIncomingPhoneNumberAssignedAddOn",
 			namespace: "Accounts",
 			method: "AssignedAddOnsJson_0",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/${ResourceSid}/AssignedAddOns.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/${encodeURIComponent(ResourceSid)}/AssignedAddOns.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["AssignedAddOnsJson_0"],
@@ -1320,7 +1320,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1328,13 +1328,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json` — risk: medium
 	 */
-	async AssignedAddOnsJson_1(AccountSid: string, ResourceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async AssignedAddOnsJson_1(AccountSid: string, ResourceSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateIncomingPhoneNumberAssignedAddOn",
 			namespace: "Accounts",
 			method: "AssignedAddOnsJson_1",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/${ResourceSid}/AssignedAddOns.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/${encodeURIComponent(ResourceSid)}/AssignedAddOns.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["AssignedAddOnsJson_1"],
@@ -1342,7 +1342,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1350,13 +1350,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions/{Sid}.json` — risk: medium
 	 */
-	async retrieveExtension(AccountSid: string, ResourceSid: string, AssignedAddOnSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveExtension(AccountSid: string, ResourceSid: string, AssignedAddOnSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchIncomingPhoneNumberAssignedAddOnExtension",
 			namespace: "Accounts",
 			method: "retrieveExtension",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/${ResourceSid}/AssignedAddOns/${AssignedAddOnSid}/Extensions/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/${encodeURIComponent(ResourceSid)}/AssignedAddOns/${encodeURIComponent(AssignedAddOnSid)}/Extensions/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveExtension"],
@@ -1364,7 +1364,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1372,13 +1372,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions.json` — risk: medium
 	 */
-	async ExtensionsJson(AccountSid: string, ResourceSid: string, AssignedAddOnSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async ExtensionsJson(AccountSid: string, ResourceSid: string, AssignedAddOnSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListIncomingPhoneNumberAssignedAddOnExtension",
 			namespace: "Accounts",
 			method: "ExtensionsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/${ResourceSid}/AssignedAddOns/${AssignedAddOnSid}/Extensions.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/${encodeURIComponent(ResourceSid)}/AssignedAddOns/${encodeURIComponent(AssignedAddOnSid)}/Extensions.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["ExtensionsJson"],
@@ -1386,7 +1386,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{ResourceSid}/AssignedAddOns/{AssignedAddOnSid}/Extensions.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1394,13 +1394,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json` — risk: medium
 	 */
-	async getIncomingPhoneNumbersLocalJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getIncomingPhoneNumbersLocalJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListIncomingPhoneNumberLocal",
 			namespace: "Accounts",
 			method: "getIncomingPhoneNumbersLocalJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/Local.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/Local.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getIncomingPhoneNumbersLocalJson"],
@@ -1408,7 +1408,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1416,13 +1416,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json` — risk: medium
 	 */
-	async postIncomingPhoneNumbersLocalJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async postIncomingPhoneNumbersLocalJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateIncomingPhoneNumberLocal",
 			namespace: "Accounts",
 			method: "postIncomingPhoneNumbersLocalJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/Local.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/Local.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["postIncomingPhoneNumbersLocalJson"],
@@ -1430,7 +1430,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Local.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1438,13 +1438,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json` — risk: medium
 	 */
-	async getIncomingPhoneNumbersMobileJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getIncomingPhoneNumbersMobileJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListIncomingPhoneNumberMobile",
 			namespace: "Accounts",
 			method: "getIncomingPhoneNumbersMobileJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/Mobile.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/Mobile.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getIncomingPhoneNumbersMobileJson"],
@@ -1452,7 +1452,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1460,13 +1460,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json` — risk: medium
 	 */
-	async postIncomingPhoneNumbersMobileJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async postIncomingPhoneNumbersMobileJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateIncomingPhoneNumberMobile",
 			namespace: "Accounts",
 			method: "postIncomingPhoneNumbersMobileJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/Mobile.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/Mobile.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["postIncomingPhoneNumbersMobileJson"],
@@ -1474,7 +1474,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/Mobile.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1482,13 +1482,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json` — risk: medium
 	 */
-	async getIncomingPhoneNumbersTollFreeJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getIncomingPhoneNumbersTollFreeJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListIncomingPhoneNumberTollFree",
 			namespace: "Accounts",
 			method: "getIncomingPhoneNumbersTollFreeJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/TollFree.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/TollFree.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getIncomingPhoneNumbersTollFreeJson"],
@@ -1496,7 +1496,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1504,13 +1504,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json` — risk: medium
 	 */
-	async postIncomingPhoneNumbersTollFreeJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async postIncomingPhoneNumbersTollFreeJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateIncomingPhoneNumberTollFree",
 			namespace: "Accounts",
 			method: "postIncomingPhoneNumbersTollFreeJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/IncomingPhoneNumbers/TollFree.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/IncomingPhoneNumbers/TollFree.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["postIncomingPhoneNumbersTollFreeJson"],
@@ -1518,7 +1518,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/TollFree.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1526,13 +1526,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json` — risk: medium
 	 */
-	async retrieveKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchKey",
 			namespace: "Accounts",
 			method: "retrieveKey",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Keys/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Keys/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveKey"],
@@ -1540,7 +1540,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1548,13 +1548,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json` — risk: medium
 	 */
-	async updateKey(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateKey(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateKey",
 			namespace: "Accounts",
 			method: "updateKey",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Keys/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Keys/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateKey"],
@@ -1562,7 +1562,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1570,13 +1570,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Keys/{Sid}.json` — risk: medium
 	 */
-	async deleteKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteKey",
 			namespace: "Accounts",
 			method: "deleteKey",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Keys/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Keys/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteKey"],
@@ -1584,7 +1584,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1592,13 +1592,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Keys.json` — risk: medium
 	 */
-	async listKeysJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listKeysJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Keys.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Keys.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListKey",
 			namespace: "Accounts",
 			method: "listKeysJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Keys.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Keys.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listKeysJson"],
@@ -1606,7 +1606,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Keys.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1614,13 +1614,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Keys.json` — risk: medium
 	 */
-	async createKeysJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createKeysJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Keys.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Keys.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateNewKey",
 			namespace: "Accounts",
 			method: "createKeysJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Keys.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Keys.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createKeysJson"],
@@ -1628,7 +1628,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Keys.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1636,13 +1636,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media/{Sid}.json` — risk: medium
 	 */
-	async retrieveMedia(AccountSid: string, MessageSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMedia(AccountSid: string, MessageSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchMedia",
 			namespace: "Accounts",
 			method: "retrieveMedia",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Messages/${MessageSid}/Media/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Messages/${encodeURIComponent(MessageSid)}/Media/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMedia"],
@@ -1650,7 +1650,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1658,13 +1658,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media/{Sid}.json` — risk: medium
 	 */
-	async deleteMedia(AccountSid: string, MessageSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMedia(AccountSid: string, MessageSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteMedia",
 			namespace: "Accounts",
 			method: "deleteMedia",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Messages/${MessageSid}/Media/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Messages/${encodeURIComponent(MessageSid)}/Media/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMedia"],
@@ -1672,7 +1672,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1680,13 +1680,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media.json` — risk: medium
 	 */
-	async MediaJson(AccountSid: string, MessageSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async MediaJson(AccountSid: string, MessageSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListMedia",
 			namespace: "Accounts",
 			method: "MediaJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Messages/${MessageSid}/Media.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Messages/${encodeURIComponent(MessageSid)}/Media.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["MediaJson"],
@@ -1694,7 +1694,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Media.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1702,13 +1702,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members/{CallSid}.json` — risk: medium
 	 */
-	async retrieveMember(AccountSid: string, QueueSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMember(AccountSid: string, QueueSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members/{CallSid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchMember",
 			namespace: "Accounts",
 			method: "retrieveMember",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Queues/${QueueSid}/Members/${CallSid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Queues/${encodeURIComponent(QueueSid)}/Members/${encodeURIComponent(CallSid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMember"],
@@ -1716,7 +1716,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members/{CallSid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1724,13 +1724,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members/{CallSid}.json` — risk: medium
 	 */
-	async updateMember(AccountSid: string, QueueSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateMember(AccountSid: string, QueueSid: string, CallSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members/{CallSid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members/{CallSid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateMember",
 			namespace: "Accounts",
 			method: "updateMember",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Queues/${QueueSid}/Members/${CallSid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Queues/${encodeURIComponent(QueueSid)}/Members/${encodeURIComponent(CallSid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateMember"],
@@ -1738,7 +1738,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members/{CallSid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1746,13 +1746,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members.json` — risk: medium
 	 */
-	async MembersJson(AccountSid: string, QueueSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async MembersJson(AccountSid: string, QueueSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListMember",
 			namespace: "Accounts",
 			method: "MembersJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Queues/${QueueSid}/Members.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Queues/${encodeURIComponent(QueueSid)}/Members.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["MembersJson"],
@@ -1760,7 +1760,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}/Members.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1768,13 +1768,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Messages.json` — risk: medium
 	 */
-	async listMessagesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listMessagesJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Messages.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListMessage",
 			namespace: "Accounts",
 			method: "listMessagesJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Messages.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Messages.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listMessagesJson"],
@@ -1782,7 +1782,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1790,13 +1790,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Messages.json` — risk: medium
 	 */
-	async createMessagesJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createMessagesJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Messages.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateMessage",
 			namespace: "Accounts",
 			method: "createMessagesJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Messages.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Messages.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createMessagesJson"],
@@ -1804,7 +1804,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1812,13 +1812,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json` — risk: medium
 	 */
-	async retrieveMessage(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveMessage(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchMessage",
 			namespace: "Accounts",
 			method: "retrieveMessage",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Messages/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Messages/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveMessage"],
@@ -1826,7 +1826,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1834,13 +1834,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json` — risk: medium
 	 */
-	async updateMessage(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateMessage(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateMessage",
 			namespace: "Accounts",
 			method: "updateMessage",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Messages/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Messages/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateMessage"],
@@ -1848,7 +1848,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1856,13 +1856,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Messages/{Sid}.json` — risk: medium
 	 */
-	async deleteMessage(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteMessage(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteMessage",
 			namespace: "Accounts",
 			method: "deleteMessage",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Messages/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Messages/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteMessage"],
@@ -1870,7 +1870,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -1878,13 +1878,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Feedback.json` — risk: medium
 	 */
-	async FeedbackJson(AccountSid: string, MessageSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async FeedbackJson(AccountSid: string, MessageSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Feedback.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Feedback.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateMessageFeedback",
 			namespace: "Accounts",
 			method: "FeedbackJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Messages/${MessageSid}/Feedback.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Messages/${encodeURIComponent(MessageSid)}/Feedback.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["FeedbackJson"],
@@ -1892,7 +1892,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}/Feedback.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1900,13 +1900,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SigningKeys.json` — risk: medium
 	 */
-	async listSigningKeysJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listSigningKeysJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSigningKey",
 			namespace: "Accounts",
 			method: "listSigningKeysJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SigningKeys.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SigningKeys.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listSigningKeysJson"],
@@ -1914,7 +1914,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1922,13 +1922,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SigningKeys.json` — risk: medium
 	 */
-	async createSigningKeysJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createSigningKeysJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateNewSigningKey",
 			namespace: "Accounts",
 			method: "createSigningKeysJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SigningKeys.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SigningKeys.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createSigningKeysJson"],
@@ -1936,7 +1936,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1944,13 +1944,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Notifications/{Sid}.json` — risk: medium
 	 */
-	async notificationsRetrieveNotification(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async notificationsRetrieveNotification(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Notifications/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchNotification",
 			namespace: "Accounts",
 			method: "notificationsRetrieveNotification",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Notifications/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Notifications/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["notificationsRetrieveNotification"],
@@ -1958,7 +1958,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Notifications/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1966,13 +1966,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Notifications.json` — risk: medium
 	 */
-	async listNotificationsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listNotificationsJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Notifications.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Notifications.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListNotification",
 			namespace: "Accounts",
 			method: "listNotificationsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Notifications.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Notifications.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listNotificationsJson"],
@@ -1980,7 +1980,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Notifications.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -1988,13 +1988,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json` — risk: medium
 	 */
-	async retrieveOutgoingCallerId(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveOutgoingCallerId(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchOutgoingCallerId",
 			namespace: "Accounts",
 			method: "retrieveOutgoingCallerId",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/OutgoingCallerIds/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/OutgoingCallerIds/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveOutgoingCallerId"],
@@ -2002,7 +2002,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2010,13 +2010,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json` — risk: medium
 	 */
-	async updateOutgoingCallerId(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateOutgoingCallerId(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateOutgoingCallerId",
 			namespace: "Accounts",
 			method: "updateOutgoingCallerId",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/OutgoingCallerIds/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/OutgoingCallerIds/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateOutgoingCallerId"],
@@ -2024,7 +2024,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2032,13 +2032,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds/{Sid}.json` — risk: medium
 	 */
-	async deleteOutgoingCallerId(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteOutgoingCallerId(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteOutgoingCallerId",
 			namespace: "Accounts",
 			method: "deleteOutgoingCallerId",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/OutgoingCallerIds/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/OutgoingCallerIds/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteOutgoingCallerId"],
@@ -2046,7 +2046,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2054,13 +2054,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json` — risk: medium
 	 */
-	async listOutgoingCallerIdsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listOutgoingCallerIdsJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListOutgoingCallerId",
 			namespace: "Accounts",
 			method: "listOutgoingCallerIdsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/OutgoingCallerIds.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/OutgoingCallerIds.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listOutgoingCallerIdsJson"],
@@ -2068,7 +2068,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2076,13 +2076,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json` — risk: medium
 	 */
-	async createOutgoingCallerIdsJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createOutgoingCallerIdsJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateValidationRequest",
 			namespace: "Accounts",
 			method: "createOutgoingCallerIdsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/OutgoingCallerIds.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/OutgoingCallerIds.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createOutgoingCallerIdsJson"],
@@ -2090,7 +2090,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/OutgoingCallerIds.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2098,13 +2098,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json` — risk: medium
 	 */
-	async retrieveParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchParticipant",
 			namespace: "Accounts",
 			method: "retrieveParticipant",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${ConferenceSid}/Participants/${CallSid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(ConferenceSid)}/Participants/${encodeURIComponent(CallSid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveParticipant"],
@@ -2112,7 +2112,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2120,13 +2120,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json` — risk: medium
 	 */
-	async updateParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateParticipant",
 			namespace: "Accounts",
 			method: "updateParticipant",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${ConferenceSid}/Participants/${CallSid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(ConferenceSid)}/Participants/${encodeURIComponent(CallSid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateParticipant"],
@@ -2134,7 +2134,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2142,13 +2142,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants/{CallSid}.json` — risk: medium
 	 */
-	async deleteParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteParticipant(AccountSid: string, ConferenceSid: string, CallSid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteParticipant",
 			namespace: "Accounts",
 			method: "deleteParticipant",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${ConferenceSid}/Participants/${CallSid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(ConferenceSid)}/Participants/${encodeURIComponent(CallSid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteParticipant"],
@@ -2156,7 +2156,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2164,13 +2164,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json` — risk: medium
 	 */
-	async ParticipantsJson_0(AccountSid: string, ConferenceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async ParticipantsJson_0(AccountSid: string, ConferenceSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListParticipant",
 			namespace: "Accounts",
 			method: "ParticipantsJson_0",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${ConferenceSid}/Participants.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(ConferenceSid)}/Participants.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["ParticipantsJson_0"],
@@ -2178,7 +2178,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2186,13 +2186,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json` — risk: medium
 	 */
-	async ParticipantsJson_1(AccountSid: string, ConferenceSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async ParticipantsJson_1(AccountSid: string, ConferenceSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateParticipant",
 			namespace: "Accounts",
 			method: "ParticipantsJson_1",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Conferences/${ConferenceSid}/Participants.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Conferences/${encodeURIComponent(ConferenceSid)}/Participants.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["ParticipantsJson_1"],
@@ -2200,7 +2200,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2208,13 +2208,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments.json` — risk: medium
 	 */
-	async PaymentsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async PaymentsJson(AccountSid: string, CallSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreatePayments",
 			namespace: "Accounts",
 			method: "PaymentsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Payments.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Payments.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["PaymentsJson"],
@@ -2222,7 +2222,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2230,13 +2230,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments/{Sid}.json` — risk: medium
 	 */
-	async updatePayment(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updatePayment(AccountSid: string, CallSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments/{Sid}.json"]["post"]["responses"][202]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdatePayments",
 			namespace: "Accounts",
 			method: "updatePayment",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Payments/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Payments/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updatePayment"],
@@ -2244,7 +2244,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Payments/{Sid}.json"]["post"]["responses"][202]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2252,13 +2252,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json` — risk: medium
 	 */
-	async retrieveQueue(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveQueue(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchQueue",
 			namespace: "Accounts",
 			method: "retrieveQueue",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Queues/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Queues/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveQueue"],
@@ -2266,7 +2266,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2274,13 +2274,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json` — risk: medium
 	 */
-	async updateQueue(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateQueue(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateQueue",
 			namespace: "Accounts",
 			method: "updateQueue",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Queues/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Queues/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateQueue"],
@@ -2288,7 +2288,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2296,13 +2296,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Queues/{Sid}.json` — risk: medium
 	 */
-	async deleteQueue(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteQueue(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteQueue",
 			namespace: "Accounts",
 			method: "deleteQueue",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Queues/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Queues/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteQueue"],
@@ -2310,7 +2310,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2318,13 +2318,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Queues.json` — risk: medium
 	 */
-	async listQueuesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listQueuesJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Queues.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListQueue",
 			namespace: "Accounts",
 			method: "listQueuesJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Queues.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Queues.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listQueuesJson"],
@@ -2332,7 +2332,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2340,13 +2340,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Queues.json` — risk: medium
 	 */
-	async createQueuesJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createQueuesJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Queues.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateQueue",
 			namespace: "Accounts",
 			method: "createQueuesJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Queues.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Queues.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createQueuesJson"],
@@ -2354,7 +2354,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Queues.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2362,13 +2362,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions.json` — risk: medium
 	 */
-	async callsTranscriptionsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async callsTranscriptionsJson(AccountSid: string, CallSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateRealtimeTranscription",
 			namespace: "Accounts",
 			method: "callsTranscriptionsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Transcriptions.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Transcriptions.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["callsTranscriptionsJson"],
@@ -2376,7 +2376,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2384,13 +2384,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async updateTranscription(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateTranscription(AccountSid: string, CallSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateRealtimeTranscription",
 			namespace: "Accounts",
 			method: "updateTranscription",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Transcriptions/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Transcriptions/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateTranscription"],
@@ -2398,7 +2398,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Transcriptions/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2406,13 +2406,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async recordingsRetrieveRecording(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async recordingsRetrieveRecording(AccountSid: string, Sid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{Sid}.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchRecording",
 			namespace: "Accounts",
 			method: "recordingsRetrieveRecording",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["recordingsRetrieveRecording"],
@@ -2420,7 +2420,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2428,13 +2428,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Recordings/{Sid}.json` — risk: medium
 	 */
-	async recordingsDeleteRecording(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async recordingsDeleteRecording(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteRecording",
 			namespace: "Accounts",
 			method: "recordingsDeleteRecording",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["recordingsDeleteRecording"],
@@ -2442,7 +2442,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2450,13 +2450,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings.json` — risk: medium
 	 */
-	async listRecordingsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listRecordingsJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Recordings.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListRecording",
 			namespace: "Accounts",
 			method: "listRecordingsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listRecordingsJson"],
@@ -2464,7 +2464,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2472,13 +2472,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{Sid}.json` — risk: medium
 	 */
-	async retrieveAddOnResult(AccountSid: string, ReferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveAddOnResult(AccountSid: string, ReferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchRecordingAddOnResult",
 			namespace: "Accounts",
 			method: "retrieveAddOnResult",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${ReferenceSid}/AddOnResults/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(ReferenceSid)}/AddOnResults/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveAddOnResult"],
@@ -2486,7 +2486,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2494,13 +2494,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{Sid}.json` — risk: medium
 	 */
-	async deleteAddOnResult(AccountSid: string, ReferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteAddOnResult(AccountSid: string, ReferenceSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteRecordingAddOnResult",
 			namespace: "Accounts",
 			method: "deleteAddOnResult",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${ReferenceSid}/AddOnResults/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(ReferenceSid)}/AddOnResults/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteAddOnResult"],
@@ -2508,7 +2508,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2516,13 +2516,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults.json` — risk: medium
 	 */
-	async AddOnResultsJson(AccountSid: string, ReferenceSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async AddOnResultsJson(AccountSid: string, ReferenceSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListRecordingAddOnResult",
 			namespace: "Accounts",
 			method: "AddOnResultsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${ReferenceSid}/AddOnResults.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(ReferenceSid)}/AddOnResults.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["AddOnResultsJson"],
@@ -2530,7 +2530,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2538,13 +2538,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json` — risk: medium
 	 */
-	async retrievePayload(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrievePayload(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchRecordingAddOnResultPayload",
 			namespace: "Accounts",
 			method: "retrievePayload",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${ReferenceSid}/AddOnResults/${AddOnResultSid}/Payloads/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(ReferenceSid)}/AddOnResults/${encodeURIComponent(AddOnResultSid)}/Payloads/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrievePayload"],
@@ -2552,7 +2552,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2560,13 +2560,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{Sid}.json` — risk: medium
 	 */
-	async deletePayload(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deletePayload(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteRecordingAddOnResultPayload",
 			namespace: "Accounts",
 			method: "deletePayload",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${ReferenceSid}/AddOnResults/${AddOnResultSid}/Payloads/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(ReferenceSid)}/AddOnResults/${encodeURIComponent(AddOnResultSid)}/Payloads/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deletePayload"],
@@ -2574,7 +2574,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2582,13 +2582,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads.json` — risk: medium
 	 */
-	async PayloadsJson(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async PayloadsJson(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListRecordingAddOnResultPayload",
 			namespace: "Accounts",
 			method: "PayloadsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${ReferenceSid}/AddOnResults/${AddOnResultSid}/Payloads.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(ReferenceSid)}/AddOnResults/${encodeURIComponent(AddOnResultSid)}/Payloads.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["PayloadsJson"],
@@ -2596,7 +2596,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2605,12 +2605,12 @@ export class AccountsResource extends RpcTarget {
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{ReferenceSid}/AddOnResults/{AddOnResultSid}/Payloads/{PayloadSid}/Data.json` — risk: medium
 	 */
 	async DataJson(AccountSid: string, ReferenceSid: string, AddOnResultSid: string, PayloadSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+		return fetchProof(this.credentials, {
 			operationId: "FetchRecordingAddOnResultPayloadData",
 			namespace: "Accounts",
 			method: "DataJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${ReferenceSid}/AddOnResults/${AddOnResultSid}/Payloads/${PayloadSid}/Data.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(ReferenceSid)}/AddOnResults/${encodeURIComponent(AddOnResultSid)}/Payloads/${encodeURIComponent(PayloadSid)}/Data.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["DataJson"],
@@ -2618,7 +2618,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<unknown>>;
 	}
 
 	/**
@@ -2626,13 +2626,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async recordingsTranscriptionsRetrieveTranscription(AccountSid: string, RecordingSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async recordingsTranscriptionsRetrieveTranscription(AccountSid: string, RecordingSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchRecordingTranscription",
 			namespace: "Accounts",
 			method: "recordingsTranscriptionsRetrieveTranscription",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${RecordingSid}/Transcriptions/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(RecordingSid)}/Transcriptions/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["recordingsTranscriptionsRetrieveTranscription"],
@@ -2640,7 +2640,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2648,13 +2648,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async recordingsTranscriptionsDeleteTranscription(AccountSid: string, RecordingSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async recordingsTranscriptionsDeleteTranscription(AccountSid: string, RecordingSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteRecordingTranscription",
 			namespace: "Accounts",
 			method: "recordingsTranscriptionsDeleteTranscription",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${RecordingSid}/Transcriptions/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(RecordingSid)}/Transcriptions/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["recordingsTranscriptionsDeleteTranscription"],
@@ -2662,7 +2662,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2670,13 +2670,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions.json` — risk: medium
 	 */
-	async recordingsTranscriptionsJson(AccountSid: string, RecordingSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async recordingsTranscriptionsJson(AccountSid: string, RecordingSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListRecordingTranscription",
 			namespace: "Accounts",
 			method: "recordingsTranscriptionsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Recordings/${RecordingSid}/Transcriptions.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Recordings/${encodeURIComponent(RecordingSid)}/Transcriptions.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["recordingsTranscriptionsJson"],
@@ -2684,7 +2684,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Recordings/{RecordingSid}/Transcriptions.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2692,13 +2692,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes/{Sid}.json` — risk: medium
 	 */
-	async retrieveShortCode(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveShortCode(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchShortCode",
 			namespace: "Accounts",
 			method: "retrieveShortCode",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SMS/ShortCodes/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SMS/ShortCodes/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveShortCode"],
@@ -2706,7 +2706,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2714,13 +2714,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes/{Sid}.json` — risk: medium
 	 */
-	async updateShortCode(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateShortCode(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateShortCode",
 			namespace: "Accounts",
 			method: "updateShortCode",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SMS/ShortCodes/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SMS/ShortCodes/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateShortCode"],
@@ -2728,7 +2728,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2736,13 +2736,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes.json` — risk: medium
 	 */
-	async ShortCodesJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async ShortCodesJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListShortCode",
 			namespace: "Accounts",
 			method: "ShortCodesJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SMS/ShortCodes.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SMS/ShortCodes.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["ShortCodesJson"],
@@ -2750,7 +2750,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SMS/ShortCodes.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2758,13 +2758,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json` — risk: medium
 	 */
-	async retrieveSigningKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveSigningKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSigningKey",
 			namespace: "Accounts",
 			method: "retrieveSigningKey",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SigningKeys/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SigningKeys/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveSigningKey"],
@@ -2772,7 +2772,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2780,13 +2780,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json` — risk: medium
 	 */
-	async updateSigningKey(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateSigningKey(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateSigningKey",
 			namespace: "Accounts",
 			method: "updateSigningKey",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SigningKeys/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SigningKeys/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateSigningKey"],
@@ -2794,7 +2794,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2802,13 +2802,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SigningKeys/{Sid}.json` — risk: medium
 	 */
-	async deleteSigningKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteSigningKey(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSigningKey",
 			namespace: "Accounts",
 			method: "deleteSigningKey",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SigningKeys/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SigningKeys/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteSigningKey"],
@@ -2816,7 +2816,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2824,13 +2824,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json` — risk: medium
 	 */
-	async getAuthCallsCredentialListMappingsJson(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getAuthCallsCredentialListMappingsJson(AccountSid: string, DomainSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipAuthCallsCredentialListMapping",
 			namespace: "Accounts",
 			method: "getAuthCallsCredentialListMappingsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Calls/CredentialListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Calls/CredentialListMappings.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getAuthCallsCredentialListMappingsJson"],
@@ -2838,7 +2838,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2846,13 +2846,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json` — risk: medium
 	 */
-	async postAuthCallsCredentialListMappingsJson(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async postAuthCallsCredentialListMappingsJson(AccountSid: string, DomainSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipAuthCallsCredentialListMapping",
 			namespace: "Accounts",
 			method: "postAuthCallsCredentialListMappingsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Calls/CredentialListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Calls/CredentialListMappings.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["postAuthCallsCredentialListMappingsJson"],
@@ -2860,7 +2860,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2868,13 +2868,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async authCallsCredentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async authCallsCredentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipAuthCallsCredentialListMapping",
 			namespace: "Accounts",
 			method: "authCallsCredentialListMappingsRetrieveCredentialListMapping",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Calls/CredentialListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Calls/CredentialListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["authCallsCredentialListMappingsRetrieveCredentialListMapping"],
@@ -2882,7 +2882,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2890,13 +2890,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async authCallsCredentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async authCallsCredentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipAuthCallsCredentialListMapping",
 			namespace: "Accounts",
 			method: "authCallsCredentialListMappingsDeleteCredentialListMapping",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Calls/CredentialListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Calls/CredentialListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["authCallsCredentialListMappingsDeleteCredentialListMapping"],
@@ -2904,7 +2904,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -2912,13 +2912,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json` — risk: medium
 	 */
-	async getAuthCallsIpAccessControlListMappingsJson(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getAuthCallsIpAccessControlListMappingsJson(AccountSid: string, DomainSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipAuthCallsIpAccessControlListMapping",
 			namespace: "Accounts",
 			method: "getAuthCallsIpAccessControlListMappingsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Calls/IpAccessControlListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Calls/IpAccessControlListMappings.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getAuthCallsIpAccessControlListMappingsJson"],
@@ -2926,7 +2926,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2934,13 +2934,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json` — risk: medium
 	 */
-	async postAuthCallsIpAccessControlListMappingsJson(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async postAuthCallsIpAccessControlListMappingsJson(AccountSid: string, DomainSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipAuthCallsIpAccessControlListMapping",
 			namespace: "Accounts",
 			method: "postAuthCallsIpAccessControlListMappingsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Calls/IpAccessControlListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Calls/IpAccessControlListMappings.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["postAuthCallsIpAccessControlListMappingsJson"],
@@ -2948,7 +2948,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2956,13 +2956,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings/{Sid}.json` — risk: medium
 	 */
-	async authCallsIpAccessControlListMappingsRetrieveIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async authCallsIpAccessControlListMappingsRetrieveIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipAuthCallsIpAccessControlListMapping",
 			namespace: "Accounts",
 			method: "authCallsIpAccessControlListMappingsRetrieveIpAccessControlListMapping",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Calls/IpAccessControlListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Calls/IpAccessControlListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["authCallsIpAccessControlListMappingsRetrieveIpAccessControlListMapping"],
@@ -2970,7 +2970,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -2978,13 +2978,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Calls/IpAccessControlListMappings/{Sid}.json` — risk: medium
 	 */
-	async authCallsIpAccessControlListMappingsDeleteIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async authCallsIpAccessControlListMappingsDeleteIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipAuthCallsIpAccessControlListMapping",
 			namespace: "Accounts",
 			method: "authCallsIpAccessControlListMappingsDeleteIpAccessControlListMapping",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Calls/IpAccessControlListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Calls/IpAccessControlListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["authCallsIpAccessControlListMappingsDeleteIpAccessControlListMapping"],
@@ -2992,7 +2992,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3000,13 +3000,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json` — risk: medium
 	 */
-	async getAuthRegistrationsCredentialListMappingsJson(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async getAuthRegistrationsCredentialListMappingsJson(AccountSid: string, DomainSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipAuthRegistrationsCredentialListMapping",
 			namespace: "Accounts",
 			method: "getAuthRegistrationsCredentialListMappingsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Registrations/CredentialListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Registrations/CredentialListMappings.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["getAuthRegistrationsCredentialListMappingsJson"],
@@ -3014,7 +3014,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3022,13 +3022,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json` — risk: medium
 	 */
-	async postAuthRegistrationsCredentialListMappingsJson(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async postAuthRegistrationsCredentialListMappingsJson(AccountSid: string, DomainSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipAuthRegistrationsCredentialListMapping",
 			namespace: "Accounts",
 			method: "postAuthRegistrationsCredentialListMappingsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Registrations/CredentialListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Registrations/CredentialListMappings.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["postAuthRegistrationsCredentialListMappingsJson"],
@@ -3036,7 +3036,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3044,13 +3044,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async authRegistrationsCredentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async authRegistrationsCredentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipAuthRegistrationsCredentialListMapping",
 			namespace: "Accounts",
 			method: "authRegistrationsCredentialListMappingsRetrieveCredentialListMapping",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Registrations/CredentialListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Registrations/CredentialListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["authRegistrationsCredentialListMappingsRetrieveCredentialListMapping"],
@@ -3058,7 +3058,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3066,13 +3066,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/Auth/Registrations/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async authRegistrationsCredentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async authRegistrationsCredentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipAuthRegistrationsCredentialListMapping",
 			namespace: "Accounts",
 			method: "authRegistrationsCredentialListMappingsDeleteCredentialListMapping",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/Auth/Registrations/CredentialListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/Auth/Registrations/CredentialListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["authRegistrationsCredentialListMappingsDeleteCredentialListMapping"],
@@ -3080,7 +3080,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3088,13 +3088,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json` — risk: medium
 	 */
-	async CredentialsJson_0(AccountSid: string, CredentialListSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async CredentialsJson_0(AccountSid: string, CredentialListSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipCredential",
 			namespace: "Accounts",
 			method: "CredentialsJson_0",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists/${CredentialListSid}/Credentials.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists/${encodeURIComponent(CredentialListSid)}/Credentials.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["CredentialsJson_0"],
@@ -3102,7 +3102,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3110,13 +3110,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json` — risk: medium
 	 */
-	async CredentialsJson_1(AccountSid: string, CredentialListSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async CredentialsJson_1(AccountSid: string, CredentialListSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipCredential",
 			namespace: "Accounts",
 			method: "CredentialsJson_1",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists/${CredentialListSid}/Credentials.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists/${encodeURIComponent(CredentialListSid)}/Credentials.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["CredentialsJson_1"],
@@ -3124,7 +3124,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3132,13 +3132,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json` — risk: medium
 	 */
-	async retrieveCredential(AccountSid: string, CredentialListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveCredential(AccountSid: string, CredentialListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipCredential",
 			namespace: "Accounts",
 			method: "retrieveCredential",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists/${CredentialListSid}/Credentials/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists/${encodeURIComponent(CredentialListSid)}/Credentials/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCredential"],
@@ -3146,7 +3146,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3154,13 +3154,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json` — risk: medium
 	 */
-	async updateCredential(AccountSid: string, CredentialListSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateCredential(AccountSid: string, CredentialListSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateSipCredential",
 			namespace: "Accounts",
 			method: "updateCredential",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists/${CredentialListSid}/Credentials/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists/${encodeURIComponent(CredentialListSid)}/Credentials/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateCredential"],
@@ -3168,7 +3168,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3176,13 +3176,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{CredentialListSid}/Credentials/{Sid}.json` — risk: medium
 	 */
-	async deleteCredential(AccountSid: string, CredentialListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteCredential(AccountSid: string, CredentialListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipCredential",
 			namespace: "Accounts",
 			method: "deleteCredential",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists/${CredentialListSid}/Credentials/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists/${encodeURIComponent(CredentialListSid)}/Credentials/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCredential"],
@@ -3190,7 +3190,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3198,13 +3198,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json` — risk: medium
 	 */
-	async CredentialListsJson_0(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async CredentialListsJson_0(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipCredentialList",
 			namespace: "Accounts",
 			method: "CredentialListsJson_0",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["CredentialListsJson_0"],
@@ -3212,7 +3212,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3220,13 +3220,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json` — risk: medium
 	 */
-	async CredentialListsJson_1(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async CredentialListsJson_1(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipCredentialList",
 			namespace: "Accounts",
 			method: "CredentialListsJson_1",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["CredentialListsJson_1"],
@@ -3234,7 +3234,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3242,13 +3242,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json` — risk: medium
 	 */
-	async retrieveCredentialList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveCredentialList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipCredentialList",
 			namespace: "Accounts",
 			method: "retrieveCredentialList",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveCredentialList"],
@@ -3256,7 +3256,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3264,13 +3264,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json` — risk: medium
 	 */
-	async updateCredentialList(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateCredentialList(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateSipCredentialList",
 			namespace: "Accounts",
 			method: "updateCredentialList",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateCredentialList"],
@@ -3278,7 +3278,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3286,13 +3286,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/CredentialLists/{Sid}.json` — risk: medium
 	 */
-	async deleteCredentialList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteCredentialList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipCredentialList",
 			namespace: "Accounts",
 			method: "deleteCredentialList",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/CredentialLists/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/CredentialLists/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteCredentialList"],
@@ -3300,7 +3300,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3308,13 +3308,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json` — risk: medium
 	 */
-	async CredentialListMappingsJson_4(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async CredentialListMappingsJson_4(AccountSid: string, DomainSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipCredentialListMapping",
 			namespace: "Accounts",
 			method: "CredentialListMappingsJson_4",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/CredentialListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/CredentialListMappings.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["CredentialListMappingsJson_4"],
@@ -3322,7 +3322,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3330,13 +3330,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json` — risk: medium
 	 */
-	async CredentialListMappingsJson_5(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async CredentialListMappingsJson_5(AccountSid: string, DomainSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipCredentialListMapping",
 			namespace: "Accounts",
 			method: "CredentialListMappingsJson_5",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/CredentialListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/CredentialListMappings.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["CredentialListMappingsJson_5"],
@@ -3344,7 +3344,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3352,13 +3352,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async credentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async credentialListMappingsRetrieveCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipCredentialListMapping",
 			namespace: "Accounts",
 			method: "credentialListMappingsRetrieveCredentialListMapping",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/CredentialListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/CredentialListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["credentialListMappingsRetrieveCredentialListMapping"],
@@ -3366,7 +3366,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3374,13 +3374,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/CredentialListMappings/{Sid}.json` — risk: medium
 	 */
-	async credentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async credentialListMappingsDeleteCredentialListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipCredentialListMapping",
 			namespace: "Accounts",
 			method: "credentialListMappingsDeleteCredentialListMapping",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/CredentialListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/CredentialListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["credentialListMappingsDeleteCredentialListMapping"],
@@ -3388,7 +3388,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3396,13 +3396,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains.json` — risk: medium
 	 */
-	async DomainsJson_0(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async DomainsJson_0(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipDomain",
 			namespace: "Accounts",
 			method: "DomainsJson_0",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["DomainsJson_0"],
@@ -3410,7 +3410,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3418,13 +3418,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains.json` — risk: medium
 	 */
-	async DomainsJson_1(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async DomainsJson_1(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipDomain",
 			namespace: "Accounts",
 			method: "DomainsJson_1",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["DomainsJson_1"],
@@ -3432,7 +3432,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3440,13 +3440,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json` — risk: medium
 	 */
-	async retrieveDomain(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveDomain(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipDomain",
 			namespace: "Accounts",
 			method: "retrieveDomain",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveDomain"],
@@ -3454,7 +3454,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3462,13 +3462,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json` — risk: medium
 	 */
-	async updateDomain(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateDomain(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateSipDomain",
 			namespace: "Accounts",
 			method: "updateDomain",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateDomain"],
@@ -3476,7 +3476,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3484,13 +3484,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{Sid}.json` — risk: medium
 	 */
-	async deleteDomain(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteDomain(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipDomain",
 			namespace: "Accounts",
 			method: "deleteDomain",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteDomain"],
@@ -3498,7 +3498,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3506,13 +3506,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json` — risk: medium
 	 */
-	async IpAccessControlListsJson_0(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async IpAccessControlListsJson_0(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipIpAccessControlList",
 			namespace: "Accounts",
 			method: "IpAccessControlListsJson_0",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["IpAccessControlListsJson_0"],
@@ -3520,7 +3520,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3528,13 +3528,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json` — risk: medium
 	 */
-	async IpAccessControlListsJson_1(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async IpAccessControlListsJson_1(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipIpAccessControlList",
 			namespace: "Accounts",
 			method: "IpAccessControlListsJson_1",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["IpAccessControlListsJson_1"],
@@ -3542,7 +3542,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3550,13 +3550,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json` — risk: medium
 	 */
-	async retrieveIpAccessControlList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveIpAccessControlList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipIpAccessControlList",
 			namespace: "Accounts",
 			method: "retrieveIpAccessControlList",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveIpAccessControlList"],
@@ -3564,7 +3564,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3572,13 +3572,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json` — risk: medium
 	 */
-	async updateIpAccessControlList(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateIpAccessControlList(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateSipIpAccessControlList",
 			namespace: "Accounts",
 			method: "updateIpAccessControlList",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateIpAccessControlList"],
@@ -3586,7 +3586,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3594,13 +3594,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{Sid}.json` — risk: medium
 	 */
-	async deleteIpAccessControlList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteIpAccessControlList(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipIpAccessControlList",
 			namespace: "Accounts",
 			method: "deleteIpAccessControlList",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteIpAccessControlList"],
@@ -3608,7 +3608,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3616,13 +3616,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings/{Sid}.json` — risk: medium
 	 */
-	async ipAccessControlListMappingsRetrieveIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async ipAccessControlListMappingsRetrieveIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipIpAccessControlListMapping",
 			namespace: "Accounts",
 			method: "ipAccessControlListMappingsRetrieveIpAccessControlListMapping",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/IpAccessControlListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/IpAccessControlListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["ipAccessControlListMappingsRetrieveIpAccessControlListMapping"],
@@ -3630,7 +3630,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3638,13 +3638,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings/{Sid}.json` — risk: medium
 	 */
-	async ipAccessControlListMappingsDeleteIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async ipAccessControlListMappingsDeleteIpAccessControlListMapping(AccountSid: string, DomainSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipIpAccessControlListMapping",
 			namespace: "Accounts",
 			method: "ipAccessControlListMappingsDeleteIpAccessControlListMapping",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/IpAccessControlListMappings/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/IpAccessControlListMappings/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["ipAccessControlListMappingsDeleteIpAccessControlListMapping"],
@@ -3652,7 +3652,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3660,13 +3660,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json` — risk: medium
 	 */
-	async IpAccessControlListMappingsJson_2(AccountSid: string, DomainSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async IpAccessControlListMappingsJson_2(AccountSid: string, DomainSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipIpAccessControlListMapping",
 			namespace: "Accounts",
 			method: "IpAccessControlListMappingsJson_2",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/IpAccessControlListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/IpAccessControlListMappings.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["IpAccessControlListMappingsJson_2"],
@@ -3674,7 +3674,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3682,13 +3682,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json` — risk: medium
 	 */
-	async IpAccessControlListMappingsJson_3(AccountSid: string, DomainSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async IpAccessControlListMappingsJson_3(AccountSid: string, DomainSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipIpAccessControlListMapping",
 			namespace: "Accounts",
 			method: "IpAccessControlListMappingsJson_3",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/Domains/${DomainSid}/IpAccessControlListMappings.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/Domains/${encodeURIComponent(DomainSid)}/IpAccessControlListMappings.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["IpAccessControlListMappingsJson_3"],
@@ -3696,7 +3696,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/Domains/{DomainSid}/IpAccessControlListMappings.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3704,13 +3704,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json` — risk: medium
 	 */
-	async IpAddressesJson_0(AccountSid: string, IpAccessControlListSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async IpAddressesJson_0(AccountSid: string, IpAccessControlListSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListSipIpAddress",
 			namespace: "Accounts",
 			method: "IpAddressesJson_0",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists/${IpAccessControlListSid}/IpAddresses.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists/${encodeURIComponent(IpAccessControlListSid)}/IpAddresses.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["IpAddressesJson_0"],
@@ -3718,7 +3718,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3726,13 +3726,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json` — risk: medium
 	 */
-	async IpAddressesJson_1(AccountSid: string, IpAccessControlListSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async IpAddressesJson_1(AccountSid: string, IpAccessControlListSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSipIpAddress",
 			namespace: "Accounts",
 			method: "IpAddressesJson_1",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists/${IpAccessControlListSid}/IpAddresses.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists/${encodeURIComponent(IpAccessControlListSid)}/IpAddresses.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["IpAddressesJson_1"],
@@ -3740,7 +3740,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3748,13 +3748,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json` — risk: medium
 	 */
-	async retrieveIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchSipIpAddress",
 			namespace: "Accounts",
 			method: "retrieveIpAddress",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists/${IpAccessControlListSid}/IpAddresses/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists/${encodeURIComponent(IpAccessControlListSid)}/IpAddresses/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveIpAddress"],
@@ -3762,7 +3762,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3770,13 +3770,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json` — risk: medium
 	 */
-	async updateIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateSipIpAddress",
 			namespace: "Accounts",
 			method: "updateIpAddress",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists/${IpAccessControlListSid}/IpAddresses/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists/${encodeURIComponent(IpAccessControlListSid)}/IpAddresses/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateIpAddress"],
@@ -3784,7 +3784,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3792,13 +3792,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/SIP/IpAccessControlLists/{IpAccessControlListSid}/IpAddresses/{Sid}.json` — risk: medium
 	 */
-	async deleteIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteIpAddress(AccountSid: string, IpAccessControlListSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteSipIpAddress",
 			namespace: "Accounts",
 			method: "deleteIpAddress",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/SIP/IpAccessControlLists/${IpAccessControlListSid}/IpAddresses/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/SIP/IpAccessControlLists/${encodeURIComponent(IpAccessControlListSid)}/IpAddresses/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteIpAddress"],
@@ -3806,7 +3806,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3814,13 +3814,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec.json` — risk: medium
 	 */
-	async SiprecJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async SiprecJson(AccountSid: string, CallSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateSiprec",
 			namespace: "Accounts",
 			method: "SiprecJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Siprec.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Siprec.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["SiprecJson"],
@@ -3828,7 +3828,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3836,13 +3836,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec/{Sid}.json` — risk: medium
 	 */
-	async updateSiprec(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateSiprec(AccountSid: string, CallSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateSiprec",
 			namespace: "Accounts",
 			method: "updateSiprec",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Siprec/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Siprec/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateSiprec"],
@@ -3850,7 +3850,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Siprec/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3858,13 +3858,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams.json` — risk: medium
 	 */
-	async StreamsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async StreamsJson(AccountSid: string, CallSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateStream",
 			namespace: "Accounts",
 			method: "StreamsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Streams.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Streams.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["StreamsJson"],
@@ -3872,7 +3872,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3880,13 +3880,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams/{Sid}.json` — risk: medium
 	 */
-	async updateStream(AccountSid: string, CallSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateStream(AccountSid: string, CallSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateStream",
 			namespace: "Accounts",
 			method: "updateStream",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/Streams/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/Streams/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateStream"],
@@ -3894,7 +3894,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/Streams/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3902,13 +3902,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Tokens.json` — risk: medium
 	 */
-	async createTokensJson(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async createTokensJson(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Tokens.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Tokens.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateToken",
 			namespace: "Accounts",
 			method: "createTokensJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Tokens.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Tokens.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["createTokensJson"],
@@ -3916,7 +3916,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Tokens.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3924,13 +3924,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async transcriptionsRetrieveTranscription(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async transcriptionsRetrieveTranscription(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Transcriptions/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchTranscription",
 			namespace: "Accounts",
 			method: "transcriptionsRetrieveTranscription",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Transcriptions/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Transcriptions/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["transcriptionsRetrieveTranscription"],
@@ -3938,7 +3938,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Transcriptions/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3946,13 +3946,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Transcriptions/{Sid}.json` — risk: medium
 	 */
-	async transcriptionsDeleteTranscription(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async transcriptionsDeleteTranscription(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteTranscription",
 			namespace: "Accounts",
 			method: "transcriptionsDeleteTranscription",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Transcriptions/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Transcriptions/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["transcriptionsDeleteTranscription"],
@@ -3960,7 +3960,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -3968,13 +3968,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Transcriptions.json` — risk: medium
 	 */
-	async listTranscriptionsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async listTranscriptionsJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Transcriptions.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Transcriptions.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListTranscription",
 			namespace: "Accounts",
 			method: "listTranscriptionsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Transcriptions.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Transcriptions.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["listTranscriptionsJson"],
@@ -3982,7 +3982,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Transcriptions.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -3990,13 +3990,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records.json` — risk: medium
 	 */
-	async RecordsJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async RecordsJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageRecord",
 			namespace: "Accounts",
 			method: "RecordsJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Records.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Records.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["RecordsJson"],
@@ -4004,7 +4004,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4012,13 +4012,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/AllTime.json` — risk: medium
 	 */
-	async AllTimeJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async AllTimeJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/AllTime.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/AllTime.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageRecordAllTime",
 			namespace: "Accounts",
 			method: "AllTimeJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Records/AllTime.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Records/AllTime.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["AllTimeJson"],
@@ -4026,7 +4026,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/AllTime.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4034,13 +4034,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Daily.json` — risk: medium
 	 */
-	async DailyJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async DailyJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Daily.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Daily.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageRecordDaily",
 			namespace: "Accounts",
 			method: "DailyJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Records/Daily.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Records/Daily.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["DailyJson"],
@@ -4048,7 +4048,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Daily.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4056,13 +4056,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/LastMonth.json` — risk: medium
 	 */
-	async LastMonthJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async LastMonthJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/LastMonth.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/LastMonth.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageRecordLastMonth",
 			namespace: "Accounts",
 			method: "LastMonthJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Records/LastMonth.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Records/LastMonth.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["LastMonthJson"],
@@ -4070,7 +4070,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/LastMonth.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4078,13 +4078,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json` — risk: medium
 	 */
-	async MonthlyJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async MonthlyJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageRecordMonthly",
 			namespace: "Accounts",
 			method: "MonthlyJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Records/Monthly.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Records/Monthly.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["MonthlyJson"],
@@ -4092,7 +4092,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Monthly.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4100,13 +4100,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/ThisMonth.json` — risk: medium
 	 */
-	async ThisMonthJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async ThisMonthJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/ThisMonth.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/ThisMonth.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageRecordThisMonth",
 			namespace: "Accounts",
 			method: "ThisMonthJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Records/ThisMonth.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Records/ThisMonth.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["ThisMonthJson"],
@@ -4114,7 +4114,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/ThisMonth.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4122,13 +4122,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Today.json` — risk: medium
 	 */
-	async TodayJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async TodayJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Today.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Today.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageRecordToday",
 			namespace: "Accounts",
 			method: "TodayJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Records/Today.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Records/Today.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["TodayJson"],
@@ -4136,7 +4136,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Today.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4144,13 +4144,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json` — risk: medium
 	 */
-	async YearlyJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async YearlyJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageRecordYearly",
 			namespace: "Accounts",
 			method: "YearlyJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Records/Yearly.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Records/Yearly.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["YearlyJson"],
@@ -4158,7 +4158,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yearly.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4166,13 +4166,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json` — risk: medium
 	 */
-	async YesterdayJson(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async YesterdayJson(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageRecordYesterday",
 			namespace: "Accounts",
 			method: "YesterdayJson",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Records/Yesterday.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Records/Yesterday.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["YesterdayJson"],
@@ -4180,7 +4180,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Records/Yesterday.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4188,13 +4188,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json` — risk: medium
 	 */
-	async retrieveTrigger(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async retrieveTrigger(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "FetchUsageTrigger",
 			namespace: "Accounts",
 			method: "retrieveTrigger",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Triggers/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Triggers/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["retrieveTrigger"],
@@ -4202,7 +4202,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4210,13 +4210,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json` — risk: medium
 	 */
-	async updateTrigger(AccountSid: string, Sid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async updateTrigger(AccountSid: string, Sid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "UpdateUsageTrigger",
 			namespace: "Accounts",
 			method: "updateTrigger",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Triggers/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Triggers/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["updateTrigger"],
@@ -4224,7 +4224,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json"]["post"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4232,13 +4232,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Usage/Triggers/{Sid}.json` — risk: medium
 	 */
-	async deleteTrigger(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteTrigger(AccountSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteUsageTrigger",
 			namespace: "Accounts",
 			method: "deleteTrigger",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Triggers/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Triggers/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteTrigger"],
@@ -4246,7 +4246,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 
 	/**
@@ -4254,13 +4254,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `GET /2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json` — risk: medium
 	 */
-	async TriggersJson_0(AccountSid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async TriggersJson_0(AccountSid: string, options?: QueryCallOptions<NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json"]["get"]["parameters"]["query"]>>): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json"]["get"]["responses"][200]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "ListUsageTrigger",
 			namespace: "Accounts",
 			method: "TriggersJson_0",
 			http: "get",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Triggers.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Triggers.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["TriggersJson_0"],
@@ -4268,7 +4268,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json"]["get"]["responses"][200]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4276,13 +4276,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json` — risk: medium
 	 */
-	async TriggersJson_1(AccountSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async TriggersJson_1(AccountSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateUsageTrigger",
 			namespace: "Accounts",
 			method: "TriggersJson_1",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Usage/Triggers.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Usage/Triggers.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["TriggersJson_1"],
@@ -4290,7 +4290,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Usage/Triggers.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4298,13 +4298,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessages.json` — risk: medium
 	 */
-	async UserDefinedMessagesJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async UserDefinedMessagesJson(AccountSid: string, CallSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessages.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessages.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateUserDefinedMessage",
 			namespace: "Accounts",
 			method: "UserDefinedMessagesJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/UserDefinedMessages.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/UserDefinedMessages.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["UserDefinedMessagesJson"],
@@ -4312,7 +4312,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessages.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4320,13 +4320,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `POST /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessageSubscriptions.json` — risk: medium
 	 */
-	async UserDefinedMessageSubscriptionsJson(AccountSid: string, CallSid: string, body?: unknown, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async UserDefinedMessageSubscriptionsJson(AccountSid: string, CallSid: string, body?: NonNullable<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessageSubscriptions.json"]["post"]["requestBody"]>["content"]["application/x-www-form-urlencoded"], options?: CallOptions): Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessageSubscriptions.json"]["post"]["responses"][201]["content"]["application/json"]>> {
+		return fetchProof(this.credentials, {
 			operationId: "CreateUserDefinedMessageSubscription",
 			namespace: "Accounts",
 			method: "UserDefinedMessageSubscriptionsJson",
 			http: "post",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/UserDefinedMessageSubscriptions.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/UserDefinedMessageSubscriptions.json`,
 			risk: "medium",
 			body,
 			overrides: this.overrides["UserDefinedMessageSubscriptionsJson"],
@@ -4334,7 +4334,7 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<paths["/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessageSubscriptions.json"]["post"]["responses"][201]["content"]["application/json"]>>;
 	}
 
 	/**
@@ -4342,13 +4342,13 @@ export class AccountsResource extends RpcTarget {
 	 *
 	 * `DELETE /2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}/UserDefinedMessageSubscriptions/{Sid}.json` — risk: medium
 	 */
-	async deleteUserDefinedMessageSubscription(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<unknown>> {
-		return fetchProof(this.apiKey, {
+	async deleteUserDefinedMessageSubscription(AccountSid: string, CallSid: string, Sid: string, options?: CallOptions): Promise<ProofResult<Uint8Array | string | null>> {
+		return fetchProof(this.credentials, {
 			operationId: "DeleteUserDefinedMessageSubscription",
 			namespace: "Accounts",
 			method: "deleteUserDefinedMessageSubscription",
 			http: "delete",
-			path: `/2010-04-01/Accounts/${AccountSid}/Calls/${CallSid}/UserDefinedMessageSubscriptions/${Sid}.json`,
+			path: `/2010-04-01/Accounts/${encodeURIComponent(AccountSid)}/Calls/${encodeURIComponent(CallSid)}/UserDefinedMessageSubscriptions/${encodeURIComponent(Sid)}.json`,
 			risk: "medium",
 			body: undefined,
 			overrides: this.overrides["deleteUserDefinedMessageSubscription"],
@@ -4356,23 +4356,28 @@ export class AccountsResource extends RpcTarget {
 			extraHeaders: this.runtimeConfig?.extraHeaders,
 			prefixOverride: this.runtimeConfig?.prefixOverride,
 			options,
-		});
+		}) as Promise<ProofResult<Uint8Array | string | null>>;
 	}
 }
 
 interface Env {
 	TWILIO_API_KEY?: string;
+	TWILIO_USER_ID?: string;
 }
 
 export class TwilioCapability extends WorkerEntrypoint<Env> {
 	protected overrides: Record<string, Record<string, import("./runtime.ts").MethodOverride>> = {};
 	protected runtimeConfig?: import("./runtime.ts").RuntimeConfig;
 
+	protected providerCredentials(): import("./runtime.ts").Credentials {
+		return { apiKey: this.env.TWILIO_API_KEY, username: this.env.TWILIO_USER_ID };
+	}
+
 	get AccountsJson(): AccountsJsonResource {
-		return new AccountsJsonResource(this.env.TWILIO_API_KEY, this.overrides["Accounts.json"] || {}, this.runtimeConfig);
+		return new AccountsJsonResource(this.providerCredentials(), this.overrides["Accounts.json"] || {}, this.runtimeConfig);
 	}
 
 	get Accounts(): AccountsResource {
-		return new AccountsResource(this.env.TWILIO_API_KEY, this.overrides["Accounts"] || {}, this.runtimeConfig);
+		return new AccountsResource(this.providerCredentials(), this.overrides["Accounts"] || {}, this.runtimeConfig);
 	}
 }

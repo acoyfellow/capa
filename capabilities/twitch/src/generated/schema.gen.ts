@@ -6526,7 +6526,7 @@ export type components = {
              * @default primary
              * @enum {string}
              */
-            color: "blue" | "green" | "orange" | "purple" | "primary";
+            color?: "blue" | "green" | "orange" | "purple" | "primary";
             /**
              * @description **NOTE:** This parameter can only be set when utilizing an App Access Token. It cannot be specified when a User Access Token is used, and will instead result in an HTTP 400 error.
              *

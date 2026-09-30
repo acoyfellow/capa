@@ -3367,7 +3367,7 @@ export type components = {
              * @description The number of channels in the final recording file.  Can be: `1`, or `2`. Separating a two leg call into two separate channels of the recording file is supported in [Dial](https://www.twilio.com/docs/voice/twiml/dial#attributes-record) and [Outbound Rest API](https://www.twilio.com/docs/voice/make-calls) record options.
              * @default 0
              */
-            channels: number;
+            channels?: number;
             /** @description The Conference SID that identifies the conference associated with the recording, if a conference recording. */
             conference_sid?: string | null;
             /**
@@ -3552,7 +3552,7 @@ export type components = {
              * @description The number of channels in the final recording file.  Can be: `1`, or `2`. Separating a two leg call into two separate channels of the recording file is supported in [Dial](https://www.twilio.com/docs/voice/twiml/dial#attributes-record) and [Outbound Rest API](https://www.twilio.com/docs/voice/make-calls) record options.
              * @default 0
              */
-            channels: number;
+            channels?: number;
             /** @description The Conference SID that identifies the conference associated with the recording. */
             conference_sid?: string | null;
             /**
@@ -4503,12 +4503,12 @@ export type components = {
              * @description The average wait time in seconds of the members in this queue. This is calculated at the time of the request.
              * @default 0
              */
-            average_wait_time: number;
+            average_wait_time?: number;
             /**
              * @description The number of calls currently in the queue.
              * @default 0
              */
-            current_size: number;
+            current_size?: number;
             /**
              * Format: date-time-rfc-2822
              * @description The date and time in GMT that this resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
@@ -4525,7 +4525,7 @@ export type components = {
              * @description The maximum number of calls that can be in the queue. The default is 1000 and the maximum is 5000.
              * @default 0
              */
-            max_size: number;
+            max_size?: number;
             /** @description The unique string that that we created to identify this Queue resource. */
             sid?: string | null;
             /** @description The URI of this resource, relative to `https://api.twilio.com`. */
@@ -4543,7 +4543,7 @@ export type components = {
              * @description This member's current position in the queue.
              * @default 0
              */
-            position: number;
+            position?: number;
             /** @description The SID of the Queue the member is in. */
             queue_sid?: string | null;
             /** @description The URI of the resource, relative to `https://api.twilio.com`. */
@@ -4552,7 +4552,7 @@ export type components = {
              * @description The number of seconds the member has been in the queue.
              * @default 0
              */
-            wait_time: number;
+            wait_time?: number;
         };
         "api.v2010.account.recording": {
             /** @description The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording resource. */
@@ -5025,7 +5025,7 @@ export type components = {
              * @description An integer representing the length of the CIDR prefix to use with this IP address when accepting traffic. By default the entire IP address is used.
              * @default 0
              */
-            cidr_prefix_length: number;
+            cidr_prefix_length?: number;
             /**
              * Format: date-time-rfc-2822
              * @description The date that this resource was created, given as GMT in [RFC 2822](https://www.php.net/manual/en/class.datetime.php#datetime.constants.rfc2822) format.

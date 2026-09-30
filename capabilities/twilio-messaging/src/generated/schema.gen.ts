@@ -897,7 +897,7 @@ export type components = {
              * @description How long, in seconds, messages sent from the Service are valid. Can be an integer from `1` to `36,000`. Default value is `36,000`.
              * @default 0
              */
-            validity_period: number;
+            validity_period?: number;
         };
         "messaging.v1.service.addons": {
             /** @description The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the add on resource. */
