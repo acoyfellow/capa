@@ -1,0 +1,3 @@
+node_modules
+.cloudflare
+src/index.gen.json

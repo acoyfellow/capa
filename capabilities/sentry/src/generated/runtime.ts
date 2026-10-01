@@ -283,6 +283,7 @@ export async function fetchProof(
 	const auth = resolveAuthHeader(credentials, args.options);
 
 	const headers: Record<string, string> = {
+		"User-Agent": `capa-${CAPABILITY_NAME}`,
 		...(args.extraHeaders || {}),
 		...(args.options?.auth?.headers || {}),
 		[auth.name]: auth.value,
