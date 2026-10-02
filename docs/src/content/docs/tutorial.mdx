@@ -1,0 +1,203 @@
+---
+title: Tutorial
+description: Deploy a capa capability and call it from a Worker through a service binding.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+This tutorial deploys the Stripe capability and calls it from a second Worker. The steps are the same for every capability. Change the name, the secret, and the binding.
+
+Each step shows the [`cf` CLI](https://blog.cloudflare.com/cloudflare-cf-cli-launch/) first. Wrangler still works. Select the **Wrangler** tab to see it.
+
+## Before you start
+
+You need a Cloudflare account and a Stripe test key (`sk_test_...`).
+
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
+```bash
+npm install -g cf
+cf auth login
+```
+
+`cf` needs Node.js 22 or later.
+
+</TabItem>
+<TabItem label="Wrangler">
+
+```bash
+npm install -g wrangler
+wrangler login
+```
+
+</TabItem>
+</Tabs>
+
+## 1. Deploy the capability
+
+Clone the repo and open the Stripe capability.
+
+```bash
+git clone https://github.com/acoyfellow/capa
+cd capa && bun install
+cd capabilities/stripe
+```
+
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
+Convert the Worker config to `cloudflare.config.ts`, then deploy.
+
+```bash
+cf migrate
+cf deploy
+```
+
+`cf migrate` reads `wrangler.jsonc` and writes `cloudflare.config.ts`:
+
+```ts title="cloudflare.config.ts"
+import { defineConfig } from "cf/config";
+
+export default defineConfig({
+  worker: {
+    name: "capa-stripe",
+    compatibilityDate: "2026-04-17",
+    compatibilityFlags: ["nodejs_compat"],
+    entrypoint: "src/index.ts",
+    workersDev: false,
+    observability: { enabled: true },
+  },
+});
+```
+
+</TabItem>
+<TabItem label="Wrangler">
+
+```bash
+wrangler deploy
+```
+
+</TabItem>
+</Tabs>
+
+You can also open the [Stripe capability](https://github.com/acoyfellow/capa/tree/main/capabilities/stripe) and select **Deploy to Cloudflare**.
+
+## 2. Set the API key
+
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
+```bash
+cf workers secrets update STRIPE_API_KEY --worker capa-stripe --type secret_text
+```
+
+`cf` asks for the value. To script it, pipe the key on stdin. Do not pass it with `--text`, because the key then goes into your shell history.
+
+</TabItem>
+<TabItem label="Wrangler">
+
+```bash
+wrangler secret put STRIPE_API_KEY
+```
+
+</TabItem>
+</Tabs>
+
+The key stays in the capability Worker. Your Worker never sees it.
+
+## 3. Add the binding
+
+In your own Worker, bind the capability as `STRIPE`.
+
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
+```ts title="cloudflare.config.ts"
+import { bindings, defineConfig } from "cf/config";
+
+export default defineConfig({
+  worker: {
+    name: "my-app",
+    compatibilityDate: "2026-09-01",
+    entrypoint: "src/index.ts",
+    env: {
+      STRIPE: bindings.worker({
+        worker: "capa-stripe",
+        exportName: "StripeCapability",
+      }),
+    },
+  },
+});
+```
+
+`cf` builds with Wrangler. Add it as a dev dependency: `npm install -D wrangler`.
+
+</TabItem>
+<TabItem label="Wrangler">
+
+```jsonc title="wrangler.jsonc"
+{
+  "services": [
+    { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
+  ]
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 4. Call the API
+
+```ts title="src/index.ts"
+export default {
+  async fetch(request, env) {
+    const { result, evidence } = await env.STRIPE.paymentIntents.create({
+      amount: 2500,
+      currency: "usd",
+    });
+
+    if (evidence.verdict === "fail") {
+      return Response.json({ error: "Stripe call failed", evidence }, { status: 502 });
+    }
+
+    return Response.json({ id: result.id, evidence });
+  },
+};
+```
+
+## 5. Deploy and test
+
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
+```bash
+cf deploy
+curl https://my-app.<your-subdomain>.workers.dev
+```
+
+</TabItem>
+<TabItem label="Wrangler">
+
+```bash
+wrangler deploy
+curl https://my-app.<your-subdomain>.workers.dev
+```
+
+</TabItem>
+</Tabs>
+
+The response contains the payment intent ID and the evidence record. `evidence.verdict` is `"pass"` when every check passed.
+
+## What happened
+
+1. Your Worker called `paymentIntents.create` over the service binding.
+2. `capa-stripe` sent `POST /v1/payment_intents` to Stripe with your key.
+3. It checked the HTTP status and any method-specific checks.
+4. It returned `{ result, evidence }` to your Worker.
+
+## Next steps
+
+- [Use capa from an agent](/agents/): connect Claude or Cursor to every capability through one MCP server.
+- [Runtime auth](/runtime-auth/): use one deployed capability for many tenants.
+- [How it works](/how-it-works/): the evidence record, overrides, and generated code.

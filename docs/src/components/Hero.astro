@@ -1,16 +1,35 @@
 ---
-import DefaultHero from '@astrojs/starlight/components/Hero.astro';
+import { LinkButton } from '@astrojs/starlight/components';
+
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, actions = [] } = data.hero || {};
 ---
 
-<DefaultHero />
+<section class="capa-hero">
+	<div class="capa-hero__copy">
+		<h1 id="_top" data-page-title set:html={title} />
+		{tagline && <p class="capa-hero__tagline" set:html={tagline} />}
+		{actions.length > 0 && (
+			<div class="capa-hero__actions">
+				{actions.map(({ attrs: { class: className, ...attrs } = {}, icon, link: href, text, variant }) => (
+					<LinkButton {href} {variant} icon={icon?.name} class:list={[className]} {...attrs}>
+						{text}
+						{icon?.html && <Fragment set:html={icon.html} />}
+					</LinkButton>
+				))}
+			</div>
+		)}
+	</div>
 
-<div class="capa-hero-snippet" aria-label="Cloudflare service binding example">
-	<p>Install the starter, then call the binding</p>
-	<pre><code><span class="prompt">$</span> npx @acoyfellow/capa add stripe
+	<figure class="capa-hero__code">
+		<figcaption>Call Stripe from any Worker</figcaption>
+		<pre><code><span class="tok-keyword">const</span> &#123; result, evidence &#125; =
+  <span class="tok-keyword">await</span> env.<span class="tok-binding">STRIPE</span>.paymentIntents.create(&#123;
+    amount: <span class="tok-number">2500</span>,
+    currency: <span class="tok-string">"usd"</span>,
+  &#125;);
 
-<span class="kw">const</span> &#123; result, evidence &#125; =
-  <span class="kw">await</span> env.<span class="binding">STRIPE</span>.paymentIntents.create(&#123;
-    amount: <span class="num">2500</span>,
-    currency: <span class="str">"usd"</span>,
-  &#125;);</code></pre>
-</div>
+console.log(result.id, evidence.act.status, evidence.verdict);
+<span class="tok-comment">pi_... 200 pass</span></code></pre>
+	</figure>
+</section>

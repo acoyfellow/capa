@@ -2,7 +2,7 @@ import { DurableObject, WorkerEntrypoint } from "cloudflare:workers";
 import OAuthProvider from "@cloudflare/workers-oauth-provider";
 import catalog from "./index.gen.json";
 import { type AuthEnv, type UserProps, handleAuthorize, handleCallback, requireSession } from "./auth";
-import { type ConnectEnv, type ConnectionSummary, beginGithubConnect, finishGithubConnect, handleConnectPost, renderConnectPage } from "./connect";
+import { type ConnectEnv, type ConnectionSummary, beginGithubConnect, finishGithubConnect, handleConnectPost, handleConsentPost, renderConnectPage, renderConsentPage } from "./connect";
 
 type Operation = {
 	operationId: string;
@@ -13,7 +13,7 @@ type Operation = {
 	risk: "low" | "medium" | "high";
 };
 
-type CatalogEntry = { name: string; title: string; auth: string; operations: Operation[] };
+type CatalogEntry = { name: string; title: string; auth: string; binding: string; worker: string; entrypoint: string; operations: Operation[] };
 
 type CapabilityService = Record<string, Record<string, (...args: unknown[]) => Promise<unknown>>>;
 
@@ -21,15 +21,14 @@ interface Env extends AuthEnv {
 	LOADER: WorkerLoader;
 	VAULT: DurableObjectNamespace<Vault>;
 	VAULT_KEY: SecretsStoreSecret;
-	GITHUB: Fetcher & CapabilityService;
 	GITHUB_CLIENT_ID: string;
 	GITHUB_CLIENT_SECRET: string;
 }
 
 type JsonRpcRequest = { jsonrpc: "2.0"; id?: string | number | null; method: string; params?: Record<string, unknown> };
 
-const CAPABILITY_BINDINGS = { github: "GITHUB" } as const;
-type BoundCapability = keyof typeof CAPABILITY_BINDINGS;
+const CAPABILITIES = catalog as CatalogEntry[];
+const BINDING_BY_CAPABILITY = new Map(CAPABILITIES.map((entry) => [entry.name, entry.binding]));
 
 const SAFE_HTTP_METHODS = new Set(["get", "head", "options"]);
 const SANDBOX_COMPATIBILITY_DATE = "2026-09-01";
@@ -65,7 +64,7 @@ const TOOLS = [
 ] as const;
 
 const operationIndex = new Map<string, Operation>();
-for (const entry of catalog as CatalogEntry[]) {
+for (const entry of CAPABILITIES) {
 	for (const operation of entry.operations) {
 		operationIndex.set(`${entry.name}.${operation.namespace}.${operation.method}`, operation);
 	}
@@ -74,14 +73,13 @@ for (const entry of catalog as CatalogEntry[]) {
 function searchCatalog(query: string, capability?: string) {
 	const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
 	const matches: Array<Record<string, unknown>> = [];
-	for (const entry of catalog as CatalogEntry[]) {
+	for (const entry of CAPABILITIES) {
 		if (capability && entry.name !== capability) continue;
 		for (const operation of entry.operations) {
 			const haystack = `${operation.operationId} ${operation.namespace} ${operation.method} ${operation.path}`.toLowerCase();
 			if (!terms.every((term) => haystack.includes(term))) continue;
 			matches.push({
 				call: `capa.${entry.name}.${operation.namespace}.${operation.method}(...)`,
-				bound: entry.name in CAPABILITY_BINDINGS,
 				http: operation.http.toUpperCase(),
 				path: operation.path,
 				risk: operation.risk,
@@ -154,7 +152,8 @@ export class CapaBridge extends WorkerEntrypoint<Env, BridgeProps> {
 		const key = `${capability}.${namespace}.${method}`;
 		const operation = operationIndex.get(key);
 		if (!operation) throw new Error(`Unknown operation ${key}. Use the search tool.`);
-		if (!(capability in CAPABILITY_BINDINGS)) throw new Error(`Capability ${capability} is not bound to this gateway.`);
+		const binding = BINDING_BY_CAPABILITY.get(capability);
+		if (!binding) throw new Error(`Capability ${capability} is not bound to this gateway.`);
 		const connection = await this.env.VAULT.getByName(this.ctx.props.user).open(capability);
 		if (!connection) throw new Error(`${capability} is not connected. Ask the user to connect it on the capa connections page.`);
 		const isWrite = !SAFE_HTTP_METHODS.has(operation.http.toLowerCase());
@@ -162,7 +161,7 @@ export class CapaBridge extends WorkerEntrypoint<Env, BridgeProps> {
 			throw new Error(`${key} is a ${operation.http.toUpperCase()} operation. The user has blocked writes for ${capability}. Ask the user to allow writes on the capa connections page.`);
 		}
 		const callArgs = withAuth(args, connection.apiKey);
-		const service = this.env[CAPABILITY_BINDINGS[capability as BoundCapability]];
+		const service = (this.env as unknown as Record<string, CapabilityService>)[binding];
 		const outcome = (await service[namespace][method](...callArgs)) as { result: unknown; evidence: { verdict: string; act: { status: number } } };
 		return { result: outcome.result, evidence: outcome.evidence };
 	}
@@ -269,7 +268,7 @@ async function handleMcp(request: Request, env: Env, ctx: ExecutionContext, user
 }
 
 const GATEWAY_ORIGIN = "https://capa-gateway.coy.workers.dev";
-const BOUND_CAPABILITIES = Object.keys(CAPABILITY_BINDINGS);
+const BOUND_CAPABILITIES = CAPABILITIES.map((entry) => entry.name);
 
 function connectEnv(env: Env): ConnectEnv {
 	return Object.assign(Object.create(env), {
@@ -314,14 +313,15 @@ const site: ExportedHandler<Env> = {
 		if (url.pathname === "/callback") return handleCallback(request, env);
 		if (url.pathname === "/logout") return signOut();
 		if (url.pathname === "/") return new Response("capa gateway. MCP endpoint: /mcp. Manage connections: /connect", { headers: { "content-type": "text/plain" } });
-		if (!url.pathname.startsWith("/connect")) return new Response("Not found", { status: 404 });
+		if (url.pathname !== "/consent" && !url.pathname.startsWith("/connect")) return new Response("Not found", { status: 404 });
 
 		const session = await requireSession(request, env);
 		if (session instanceof Response) return session;
+		if (url.pathname === "/consent") return request.method === "POST" ? handleConsentPost(request, env, session) : renderConsentPage(request, env, session);
 		const connect = connectEnv(env);
 		if (url.pathname === "/connect" && request.method === "GET") {
 			const grants = await env.OAUTH_PROVIDER.listUserGrants(session.user);
-			return renderConnectPage(connect, session, grants.items.map((g) => ({ id: g.id, clientId: g.clientId, createdAt: g.createdAt })));
+			return renderConnectPage(connect, session, grants.items.map((g) => ({ id: g.id, clientId: g.clientId, createdAt: g.createdAt })), url.origin);
 		}
 		if (url.pathname === "/connect/github") return beginGithubConnect(request, connect, session);
 		if (url.pathname === "/connect/github/callback") return finishGithubConnect(request, connect, session);

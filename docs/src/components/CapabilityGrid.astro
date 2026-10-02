@@ -2,96 +2,64 @@
 import { getCapabilities, getPlanned, getCatalogStats, formatNumber } from '../data/capabilities';
 
 interface Props {
-	/** When true, render a compact summary row above the table. Default false. */
 	stats?: boolean;
-	/** When true, render planned/roadmap placeholders below. Default false. */
 	planned?: boolean;
 }
 
 const { stats = false, planned = false } = Astro.props;
 const caps = getCapabilities();
 const plannedEntries = planned ? getPlanned() : [];
-const s = stats ? getCatalogStats() : null;
+const totals = stats ? getCatalogStats() : null;
 ---
 
-{s && (
-	<aside class="capa-catalog-stats not-content" aria-label="capa catalog totals">
-		<div>
-			<span class="capa-catalog-stats__num">{formatNumber(s.capabilityCount)}</span>
-			<span class="capa-catalog-stats__label">{s.capabilityCount === 1 ? 'capability' : 'capabilities'}</span>
+{totals && (
+	<dl class="capa-stats not-content" aria-label="Catalog totals">
+		<div class="capa-stat">
+			<dt class="capa-stat__label">Capabilities</dt>
+			<dd class="capa-stat__value">{formatNumber(totals.capabilityCount)}</dd>
 		</div>
-		<div>
-			<span class="capa-catalog-stats__num">{formatNumber(s.totalOperations)}</span>
-			<span class="capa-catalog-stats__label">operations</span>
+		<div class="capa-stat">
+			<dt class="capa-stat__label">Operations</dt>
+			<dd class="capa-stat__value">{formatNumber(totals.totalOperations)}</dd>
 		</div>
-		<div>
-			<span class="capa-catalog-stats__num">{formatNumber(s.totalNamespaces)}</span>
-			<span class="capa-catalog-stats__label">namespaces</span>
+		<div class="capa-stat">
+			<dt class="capa-stat__label">Namespaces</dt>
+			<dd class="capa-stat__value">{formatNumber(totals.totalNamespaces)}</dd>
 		</div>
-	</aside>
+	</dl>
 )}
 
 {caps.length === 0 ? (
-	<p class="capa-catalog-empty">
-		No capabilities found. Drop a <code>capa.manifest.json</code> into
-		<code>capabilities/&lt;name&gt;/</code> to surface one here.
+	<p class="capa-note">
+		No capabilities found. Add a <code>capa.manifest.json</code> to <code>capabilities/&lt;name&gt;/</code>.
 	</p>
 ) : (
-	<div class="capa-capability-table-wrap">
-		<table class="capa-capability-table">
-			<caption class="sr-only">Generated capa capabilities</caption>
-			<colgroup>
-				<col class="capa-col-name" />
-				<col class="capa-col-num" />
-				<col class="capa-col-num" />
-				<col class="capa-col-auth capa-wide-only" />
-				<col class="capa-col-body capa-wide-only" />
-				<col class="capa-col-entry capa-wide-only" />
-				<col class="capa-col-action" />
-			</colgroup>
-			<thead>
-				<tr>
-					<th scope="col">Capability</th>
-					<th scope="col">Ops</th>
-					<th scope="col">NS</th>
-					<th scope="col" class="capa-wide-only">Auth</th>
-					<th scope="col" class="capa-wide-only">Body</th>
-					<th scope="col" class="capa-wide-only">Entrypoint</th>
-					<th scope="col">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				{caps.map((entry) => (
-					<tr>
-						<th scope="row">
-							<a class="capa-capability-name" href={entry.repoUrl} rel="noreferrer noopener">{entry.name}</a>
-							{entry.tagline && <small>{entry.tagline}</small>}
-						</th>
-						<td class="capa-num">{formatNumber(entry.operations)}</td>
-						<td class="capa-num">{formatNumber(entry.namespaces)}</td>
-						<td class="capa-wide-only">{entry.authLabel}</td>
-						<td class="capa-wide-only">{entry.contentTypeLabel}</td>
-						<td class="capa-wide-only"><code>{entry.entrypoint}</code></td>
-						<td>
-							<span class="capa-row-actions">
-								<a class="capa-btn capa-btn--primary" href={entry.deployUrl} rel="noreferrer noopener">Deploy</a>
-								<a class="capa-spec-link" href={entry.source.spec} rel="noreferrer noopener" aria-label={`${entry.name} OpenAPI spec`} title="OpenAPI spec">
-									<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Zm0 2.5L17.5 9H14V5.5ZM8 13h8v1.75H8V13Zm0 4h8v1.75H8V17Zm0-8h3v1.75H8V9Z"/></svg>
-								</a>
-							</span>
-						</td>
-					</tr>
-				))}
-			</tbody>
-		</table>
-	</div>
+	<ul class="capa-catalog not-content" aria-label="Generated capa capabilities">
+		{caps.map((entry) => (
+			<li class="capa-catalog__row">
+				<div class="capa-catalog__main">
+					<a class="capa-catalog__name" href={entry.repoUrl} rel="noreferrer noopener">{entry.name}</a>
+					{entry.tagline && <p class="capa-catalog__tagline">{entry.tagline}</p>}
+				</div>
+				<dl class="capa-catalog__meta">
+					<div><dt>Operations</dt><dd class="capa-numeric">{formatNumber(entry.operations)}</dd></div>
+					<div><dt>Auth</dt><dd>{entry.authLabel}</dd></div>
+					<div><dt>Entrypoint</dt><dd><code>{entry.entrypoint}</code></dd></div>
+				</dl>
+				<div class="capa-catalog__actions">
+					<a class="capa-button" href={entry.deployUrl} rel="noreferrer noopener">Deploy</a>
+					<a class="capa-button" href={entry.source.spec} rel="noreferrer noopener">Spec</a>
+				</div>
+			</li>
+		))}
+	</ul>
 )}
 
 {plannedEntries.length > 0 && (
-	<section class="capa-catalog__planned" aria-label="Planned capabilities">
-		<h3>On the roadmap</h3>
+	<section aria-label="Planned capabilities">
+		<h3>Planned</h3>
 		<ul>
-			{plannedEntries.map((p) => <li><strong>{p.name}</strong> — {p.tagline}</li>)}
+			{plannedEntries.map((p) => <li><strong>{p.name}</strong>: {p.tagline}</li>)}
 		</ul>
 	</section>
 )}

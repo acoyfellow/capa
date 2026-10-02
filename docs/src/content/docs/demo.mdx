@@ -1,0 +1,16 @@
+---
+title: Demo script
+description: Four steps that show a Worker call and an agent call to capa.
+---
+
+**Before you start:** sign in to your gateway's `/connect` page, connect GitHub, and keep writes blocked. Connect your MCP client to `https://<your-gateway>/mcp`.
+
+1. **Show the home page.** Say: *"capa generates a Cloudflare service binding from a provider's OpenAPI spec. The catalog has 16 APIs."*
+
+2. **Show the Stripe code at the top of the home page.** Say: *"My Worker calls `env.STRIPE.paymentIntents.create`. The Stripe key is a secret on the capa Worker, so my Worker never reads it. The call returns the result and an evidence record with the request URL and the response status."*
+
+3. **Ask your agent:** `Use capa to get my GitHub login and the star count of acoyfellow/capa.` Show the answer and `"verdict": "pass"`. Say: *"The gateway calls the same capa Workers through service bindings. The agent's code ran in a Worker Loader sandbox with no network access. The GitHub token stays encrypted in my vault."*
+
+4. **Ask your agent:** `Star cloudflare/workers-sdk on GitHub.` The agent gets *"The user has blocked writes for github"*. Open `/connect`. Show the **Read only** badge on GitHub, then **Manage** and **Allow writes**, then **Revoke** under MCP clients. Say: *"Writes stay blocked until I allow them on this page. Revoke stops the agent's token on its next call."*
+
+If the agent says `github is not connected`, connect GitHub on `/connect` and ask again.

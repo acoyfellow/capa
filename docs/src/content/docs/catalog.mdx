@@ -1,51 +1,28 @@
 ---
-title: OpenAPI-generated Worker binding catalog
-description: "Browse capa bindings generated from OpenAPI specs: deployable Cloudflare Workers for Stripe, GitHub, Jira, Discord, and more."
+title: Catalog
+description: "Browse capa bindings generated from OpenAPI specs: deployable Cloudflare Workers for Stripe, GitHub, Jira, Discord, HTML/CSS to Image, and more."
 ---
 
 import CapabilityGrid from '../../components/CapabilityGrid.astro';
 
-Each capability is a deployable Worker wrapper around one API:
-
-- A generated `WorkerEntrypoint` with namespaced methods you can bind from another Worker.
-- A `capa.manifest.json` with the source spec, upstream URL, auth style, and operation count.
-- One upstream HTTP request per method call, with a structured receipt returned alongside the result.
-
-## Install direction
-
-The catalog is moving toward one boring, useful command:
-
-```bash
-npx @acoyfellow/capa add <capability>
-```
-
-It should drop a hello-world Worker scaffold with the service binding already filled in. No registry theater; just a fast path from “I want Stripe/GitHub/Twitch” to a runnable Worker. Projects.dev can provision provider services and credentials; capa's install path should make those APIs feel native inside Workers.
+Each capability is one Worker for one API. It exposes a typed method for every operation in the provider's OpenAPI spec. Deploy it, set its secret, and bind it from your Worker.
 
 <CapabilityGrid stats planned />
 
-## Adding a new capability
+## What every capability does the same way
 
-The catalog above is rendered from `capabilities/*/capa.manifest.json` at build time. You have two good options:
-
-- Generate a capability locally and use it only in your own account.
-- Send a capability to this repo if the API is broadly useful.
-
-For a repo contribution:
-
-1. Run the [codegen CLI](/reference#codegen-cli) against an OpenAPI/Swagger spec.
-2. Codegen writes `capa.manifest.json` alongside the generated source.
-3. Follow the [contribution guide](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md) and run `bun run check`.
-4. Open a PR. The catalog picks it up automatically on the next build.
-
-## Invariants every capability honours
-
-| Property | Value |
+| Property | Behavior |
 |---|---|
-| Public HTTP route | `fetch()` returns 404 |
-| Side effects per method | One upstream HTTP request |
+| Public HTTP route | `fetch()` returns 404. Reach it through a service binding. |
+| Upstream requests | One HTTP request per method call. |
 | Return shape | `{ result, evidence }` |
-| Returned receipt | Plain JSON, no streams or handles |
-| Auth | `wrangler secret put` |
-| Billing | Caller-pays |
+| Credentials | A Worker secret, or per-call auth for multi-tenant callers. |
+| Updates | A weekly job regenerates the binding when the spec changes. |
 
-See [Reference](/reference) for the full return shape, codegen flags, and per-capability secret names.
+## Add an API
+
+1. Run the [codegen CLI](/reference/#codegen-cli) against the provider's OpenAPI or Swagger spec.
+2. Deploy the generated capability to your account.
+3. To share it, follow the [contribution guide](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md), run `bun run check`, and open a pull request.
+
+The catalog reads each `capabilities/<name>/capa.manifest.json` at build time. A merged capability appears here on the next deploy.
