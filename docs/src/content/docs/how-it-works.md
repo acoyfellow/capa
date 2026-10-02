@@ -1,175 +1,110 @@
 ---
-title: How It Works
-description: The architecture and philosophy of capa.
+title: How it works
+description: How capa generates Worker bindings from OpenAPI specs, calls the upstream API, and returns an evidence record.
 ---
 
-## The loop
+## The call path
 
-<div class="capa-flow" aria-label="capa call flow">
-  <div class="flow-node">
-    <strong>Caller Worker</strong>
-    <code>env.&lt;NAME&gt;</code>
-    <code>.ns.method()</code>
-  </div>
-  <div class="flow-edge">
-    <span>JSRPC</span>
-    <b>→</b>
-    <small>result + receipt</small>
-  </div>
-  <div class="flow-node flow-node-wide">
-    <strong>capa capability</strong>
-    <code>WorkerEntrypoint</code>
-    <code>fetchProof()</code>
-    <code>act + assert</code>
-  </div>
-  <div class="flow-edge">
-    <span>HTTP</span>
-    <b>→</b>
-    <small>upstream response</small>
-  </div>
-  <div class="flow-node">
-    <strong>Upstream API</strong>
-    <code>Stripe</code>
-    <code>GitLab</code>
-    <code>Jira</code>
-  </div>
-</div>
-
-`fetchProof` makes the upstream HTTP call, runs the built-in checks plus any method-specific checks, and returns the API result when those checks pass. The JSON receipt keeps the detail if you want to log or inspect it.
-
-`RuntimeConfig` (base URL override, extra headers, prefix replacement) flows from the hand-written `index.ts` through the generated entrypoint to every method call.
-
-## Why JSRPC, not HTTP
-
-A capa capability is meant to sit behind your Worker, not act as another public proxy. That keeps credentials and API calls on the service-binding path.
-
-Each capability returns 404 on direct HTTP requests. Reach it through a declared service binding instead.
-
-## Why one Worker per capability
-
-One Worker per API keeps setup understandable: one upstream service, one secret set, one service binding. It also lets you deploy and update capabilities independently.
-
-## Static secret by default, runtime auth when needed
-
-The basic deployment keeps its upstream credential as a Worker secret:
-
-```bash
-wrangler secret put STRIPE_API_KEY
+```text
+Your Worker ──service binding──▶ capa capability ──HTTPS──▶ Provider API
+            ◀──{ result, evidence }──            ◀──response──
 ```
 
-Multi-tenant platforms need a second mode: one shared capability Worker, many tenant credentials selected per RPC call.
+1. Your Worker calls a typed method, for example `env.STRIPE.paymentIntents.create(body)`.
+2. The capability Worker adds the API key and sends one HTTP request to the provider.
+3. It checks the response and builds the evidence record.
+4. It returns `{ result, evidence }`. `result` is `null` when a check fails.
 
-```ts
-await env.STRIPE.paymentIntents.create(
-  { amount: 2500, currency: "usd" },
-  { auth: { apiKey: tenant.stripeKey } },
-);
-```
+## Why a service binding
 
-The implementation target is deliberately narrow: optional `auth.apiKey` plus capability-specific extra auth headers where a provider needs them. No per-call upstream URL changes, no tenant database inside capa, and no credential data in receipts. The full target contract is documented in [Runtime auth](/runtime-auth/).
+A capability returns 404 to direct HTTP requests. Only Workers with a declared service binding can call it. The provider key stays in the capability Worker, and your Worker never handles it.
 
-## Why no registry
+## One Worker per API
 
-For now, the repo is the catalog. The site reads the manifests already checked in here, and you can fork or deploy the capabilities you actually want.
+Each API gets its own Worker, secret, and binding. You deploy and update each one on its own.
 
-## Returned receipt
+## The evidence record
 
 ```ts
 {
-  capability:   "stripe";      // or "gitlab", "jira", ...
-  operationId:  "PostCharges"; // upstream operation identifier
-  namespace:    "charges";     // RPC namespace
-  method:       "create";      // RPC method name
-  http:         "post";        // underlying HTTP verb
-  path:         "/v1/charges"; // upstream path
-  risk:         "high";        // low | medium | high
-  startedAt:    "2026-04-25T12:00:00Z";
-  durationMs:   234;
+  capability: "stripe",
+  operationId: "PostPaymentIntents",
+  namespace: "paymentIntents",
+  method: "create",
+  http: "post",
+  path: "/v1/payment_intents",
+  risk: "high",
+  startedAt: "2026-09-30T12:00:00.000Z",
+  durationMs: 234,
   act: {
-    request: { method: "POST"; url: "https://api.stripe.com/v1/charges" };
-    status: 200;
-  };
+    request: { method: "POST", url: "https://api.stripe.com/v1/payment_intents" },
+    status: 200,
+  },
   assert: [
     { kind: "httpStatus", expected: "2xx", actual: 200, passed: true },
-    { kind: "field:id:matches", expected: "^ch_", actual: "ch_123", passed: true },
-    { kind: "field:status:==", expected: "succeeded", actual: "succeeded", passed: true },
-    { kind: "field:paid:==", expected: true, actual: true, passed: true },
-  ];
-  verdict: "pass";
+  ],
+  verdict: "pass",
 }
 ```
 
-Every call produces this record. Save it for debugging or reporting when it helps; otherwise treat it as useful extra context.
+- `act` records the real request URL and the real response status.
+- `assert` lists each check and its result.
+- `verdict` is `"pass"` only when every check passed.
+- Credentials never appear in the record.
 
-## How capabilities are built
+## Responses
 
-Capabilities are generated from upstream OpenAPI specs rather than written endpoint by endpoint.
+- JSON responses are parsed.
+- Text responses are returned as a string.
+- Binary responses, such as images and PDFs, are returned as a `Uint8Array`.
+
+## How a capability is generated
 
 ```text
- spec.openapi.json
-        │
-        ▼
-    capa-codegen ──▶ schema.gen.ts       (types from openapi-typescript)
-                 ──▶ capability.gen.ts   (RpcTarget classes per namespace)
-                 ──▶ manifest.gen.ts     (operationId → metadata)
-                 ──▶ runtime.ts          (HTTP call + checks)
-        │
-        ▼
-    src/index.ts (~30 LOC, applies per-method overrides)
-        │
-        ▼
-    deployed Worker
+OpenAPI spec
+  └─▶ capa codegen
+        ├─ schema.gen.ts       types from the spec
+        ├─ capability.gen.ts   one typed method per operation
+        ├─ manifest.gen.ts     operation metadata
+        └─ runtime.ts          request, checks, and evidence
+  └─▶ src/index.ts             about 30 lines you own
+  └─▶ deployed Worker
 ```
 
-The hand-written layer stays thin. Add per-method overrides only where you want stronger checks than “the upstream accepted the call.”
+Method arguments and return types come from the spec. Operations with query parameters accept a typed `options.query`.
 
-## Override examples
+## Keeping bindings current
 
-### Stripe
+A GitHub Actions job runs every Monday. It fetches each provider's spec and compares it to the last known version. When a spec changes, the job regenerates the bindings, runs typecheck and bundle checks, and opens a pull request with a report of added, removed, and changed operations.
+
+## Add your own checks
+
+The default check is the HTTP status. Add checks for a method in `src/overrides.ts`. The key is the namespace as it appears in the API path, for example `payment_intents`:
 
 ```ts
-charges: {
-  create: {
-    asserts: [
-      (body) => ({ kind: "id~^ch_", expected: "^ch_", actual: body.id, passed: /^ch_/.test(body.id) }),
-      (body) => ({ kind: "status==succeeded", expected: "succeeded", actual: body.status, passed: body.status === "succeeded" }),
-    ],
+export const overrides = {
+  payment_intents: {
+    create: {
+      asserts: [
+        (body) => ({
+          kind: "id:prefix",
+          expected: "pi_",
+          actual: body.id,
+          passed: body.id?.startsWith("pi_"),
+        }),
+      ],
+    },
   },
-}
+};
 ```
 
-### GitLab
+## Self-managed instances
+
+Some capabilities can point at a self-managed server. Set `runtimeConfig` in `src/index.ts`.
+
+GitLab behind Cloudflare Access:
 
 ```ts
-mergeRequests: {
-  createNote: {
-    asserts: [
-      (body) => ({ kind: "id:exists", expected: "non-null", actual: body.id, passed: body.id != null }),
-      (body) => ({ kind: "id:number", expected: "number", actual: typeof body.id, passed: typeof body.id === "number" }),
-    ],
-  },
-}
-```
-
-### Jira
-
-```ts
-issues: {
-  createIssue: {
-    asserts: [
-      (body) => ({ kind: "id:exists", expected: "non-null", actual: body.id, passed: body.id != null }),
-      (body) => ({ kind: "key:exists", expected: "non-null", actual: body.key, passed: body.key != null }),
-    ],
-  },
-}
-```
-
-## Self-managed routing
-
-### GitLab behind Cloudflare Access
-
-```ts
-// src/index.ts
 this.runtimeConfig = {
   baseUrl: env.GITLAB_BASE_URL_OVERRIDE,
   extraHeaders: {
@@ -179,12 +114,11 @@ this.runtimeConfig = {
 };
 ```
 
-### Jira Server / Data Center
+Jira Server or Data Center:
 
 ```ts
-// src/index.ts
 this.runtimeConfig = {
   baseUrl: env.JIRA_BASE_URL_OVERRIDE,
-  prefixOverride: "/rest/api/2", // replaces /rest/api/3
+  prefixOverride: "/rest/api/2",
 };
 ```

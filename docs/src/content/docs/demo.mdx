@@ -1,0 +1,68 @@
+---
+title: Demo script
+description: A three-minute walkthrough of capa, from an OpenAPI spec to an agent call with evidence.
+---
+
+Use this script to show capa in three minutes. Each step names what to show and what to say.
+
+## Before you start
+
+- Open three tabs: this site, the [catalog](/catalog/), and your gateway's `/connect` page.
+- Sign in to the Connect page. Connect GitHub. Keep writes blocked.
+- Connect an MCP client to `https://<your-gateway>/mcp`. Claude and Cursor both work.
+
+## 1. The problem (20 seconds)
+
+Show the home page.
+
+> Every third-party API needs a client, a key, and retry and error code. capa generates all of it from the provider's OpenAPI spec, as a Cloudflare service binding.
+
+## 2. The catalog (20 seconds)
+
+Show the [catalog](/catalog/).
+
+> Sixteen APIs, over six thousand operations, all generated. A weekly job checks each spec and opens a pull request when it changes.
+
+## 3. From a Worker (40 seconds)
+
+Show [step 3 of the tutorial](/tutorial/#3-add-the-binding) with the **cf** tab.
+
+> One binding in `cloudflare.config.ts`. Then `env.STRIPE.paymentIntents.create` is a typed method. The key stays in the capability Worker. Every call returns the result and an evidence record: what was sent, what came back, and which checks passed.
+
+## 4. From an agent (60 seconds)
+
+Ask your MCP client:
+
+```text
+Use capa to get my GitHub login and the star count of acoyfellow/capa.
+```
+
+The agent calls `search`, then `execute`. Show the result and the two evidence records with `"verdict": "pass"`.
+
+> The agent wrote code. The code ran in a Worker Loader sandbox with no network access. It reached GitHub only through the capa binding. The agent never saw my token. It lives encrypted in my vault.
+
+## 5. The human stays in control (40 seconds)
+
+Ask the agent:
+
+```text
+Star cloudflare/workers-sdk on GitHub.
+```
+
+The agent gets: `The user has blocked writes for github`.
+
+Open `/connect`. Show **Allow writes**, **Disconnect**, and **Revoke** for the MCP client.
+
+> Only I can allow writes. Revoke cuts the agent off at once. Disconnect revokes the token at GitHub.
+
+## Close
+
+> One OpenAPI spec becomes one binding. Your Worker calls it. Your agent calls it. Same code, same keys, same evidence.
+
+## If something fails
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `github is not connected` | No GitHub key in your vault | Connect GitHub on `/connect` |
+| The client asks you to sign in again | The MCP token expired after one hour | Sign in. The client refreshes the token. |
+| `401` from GitHub in the evidence | The GitHub token was revoked | Disconnect and connect GitHub again |

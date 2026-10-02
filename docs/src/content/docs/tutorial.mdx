@@ -1,28 +1,142 @@
 ---
 title: Tutorial
-description: Deploy a capability and call it from a caller Worker.
+description: Deploy a capa capability and call it from a Worker through a service binding.
 ---
 
-This tutorial uses `capa-stripe` as a concrete example. The steps are identical for every capability — swap the name, secret, and binding. A future `npx @acoyfellow/capa add stripe` command should scaffold this starter Worker automatically; the explicit steps below are the contract it will encode.
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-## 1. Deploy capa-stripe
+This tutorial deploys the Stripe capability and calls it from a second Worker. The steps are the same for every capability. Change the name, the secret, and the binding.
 
-Click the Deploy to Cloudflare button in the [stripe capability README](https://github.com/acoyfellow/capa/tree/main/capabilities/stripe). Cloudflare clones the repo and deploys `capa-stripe` to your account.
+Each step shows the [`cf` CLI](https://blog.cloudflare.com/cloudflare-cf-cli-launch/) first. Wrangler still works. Select the **Wrangler** tab to see it.
+
+## Before you start
+
+You need a Cloudflare account and a Stripe test key (`sk_test_...`).
+
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
+```bash
+npm install -g cf
+cf auth login
+```
+
+`cf` needs Node.js 22 or later.
+
+</TabItem>
+<TabItem label="Wrangler">
+
+```bash
+npm install -g wrangler
+wrangler login
+```
+
+</TabItem>
+</Tabs>
+
+## 1. Deploy the capability
+
+Clone the repo and open the Stripe capability.
+
+```bash
+git clone https://github.com/acoyfellow/capa
+cd capa && bun install
+cd capabilities/stripe
+```
+
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
+Convert the Worker config to `cloudflare.config.ts`, then deploy.
+
+```bash
+cf migrate
+cf deploy
+```
+
+`cf migrate` reads `wrangler.jsonc` and writes `cloudflare.config.ts`:
+
+```ts title="cloudflare.config.ts"
+import { defineConfig } from "cf/config";
+
+export default defineConfig({
+  worker: {
+    name: "capa-stripe",
+    compatibilityDate: "2026-04-17",
+    compatibilityFlags: ["nodejs_compat"],
+    entrypoint: "src/index.ts",
+    workersDev: false,
+    observability: { enabled: true },
+  },
+});
+```
+
+</TabItem>
+<TabItem label="Wrangler">
+
+```bash
+wrangler deploy
+```
+
+</TabItem>
+</Tabs>
+
+You can also open the [Stripe capability](https://github.com/acoyfellow/capa/tree/main/capabilities/stripe) and select **Deploy to Cloudflare**.
 
 ## 2. Set the API key
 
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
 ```bash
-cd capa/capabilities/stripe
+cf workers secrets update STRIPE_API_KEY --worker capa-stripe --type secret_text
+```
+
+`cf` asks for the value. To script it, pipe the key on stdin. Do not pass it with `--text`, because the key then goes into your shell history.
+
+</TabItem>
+<TabItem label="Wrangler">
+
+```bash
 wrangler secret put STRIPE_API_KEY
 ```
 
-Paste your Stripe test key (`sk_test_...`).
+</TabItem>
+</Tabs>
 
-## 3. Declare the binding
+The key stays in the capability Worker. Your Worker never sees it.
 
-In your caller Worker's `wrangler.jsonc`:
+## 3. Add the binding
 
-```jsonc
+In your own Worker, bind the capability as `STRIPE`.
+
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
+```ts title="cloudflare.config.ts"
+import { bindings, defineConfig } from "cf/config";
+
+export default defineConfig({
+  worker: {
+    name: "my-app",
+    compatibilityDate: "2026-09-01",
+    entrypoint: "src/index.ts",
+    env: {
+      STRIPE: bindings.worker({
+        worker: "capa-stripe",
+        exportName: "StripeCapability",
+      }),
+    },
+  },
+});
+```
+
+`cf` builds with Wrangler. Add it as a dev dependency: `npm install -D wrangler`.
+
+</TabItem>
+<TabItem label="Wrangler">
+
+```jsonc title="wrangler.jsonc"
 {
   "services": [
     { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
@@ -30,61 +144,60 @@ In your caller Worker's `wrangler.jsonc`:
 }
 ```
 
-## 4. Call the endpoint
+</TabItem>
+</Tabs>
 
-```ts
+## 4. Call the API
+
+```ts title="src/index.ts"
 export default {
   async fetch(request, env) {
-    const { result, evidence } = await env.STRIPE.charges.create({
-      amount: 1000,
+    const { result, evidence } = await env.STRIPE.paymentIntents.create({
+      amount: 2500,
       currency: "usd",
-      source: "tok_visa",
     });
 
     if (evidence.verdict === "fail") {
-      return Response.json(
-        { error: "verification failed", evidence },
-        { status: 502 }
-      );
+      return Response.json({ error: "Stripe call failed", evidence }, { status: 502 });
     }
 
-    return Response.json({ chargeId: result.id, evidence });
+    return Response.json({ id: result.id, evidence });
   },
 };
 ```
 
-## 5. Deploy
+## 5. Deploy and test
+
+<Tabs syncKey="cli">
+<TabItem label="cf">
+
+```bash
+cf deploy
+curl https://my-app.<your-subdomain>.workers.dev
+```
+
+</TabItem>
+<TabItem label="Wrangler">
 
 ```bash
 wrangler deploy
+curl https://my-app.<your-subdomain>.workers.dev
 ```
 
-`evidence.verdict` is `"pass"` when every assertion passed.
+</TabItem>
+</Tabs>
 
-## What just happened
+The response contains the payment intent ID and the evidence record. `evidence.verdict` is `"pass"` when every check passed.
 
-The `charges.create` call:
-1. Made an RPC to `capa-stripe`
-2. `capa-stripe` POSTed to Stripe's `/v1/charges`
-3. Checked HTTP status + per-method assertions (`id ~ ^ch_`, `status == succeeded`, `paid == true`)
-4. Returned `{ result, evidence }`
+## What happened
 
-You got the charge data and a full audit trail in one call.
+1. Your Worker called `paymentIntents.create` over the service binding.
+2. `capa-stripe` sent `POST /v1/payment_intents` to Stripe with your key.
+3. It checked the HTTP status and any method-specific checks.
+4. It returned `{ result, evidence }` to your Worker.
 
-## Multi-tenant direction
+## Next steps
 
-The explicit tutorial above uses a Worker secret, which stays the simplest setup. The target platform-builder shape uses one shared capability Worker with a tenant credential selected per call:
-
-```ts
-await env.STRIPE.paymentIntents.create(body, {
-  auth: { apiKey: tenant.stripeKey },
-});
-```
-
-That lets workflow products expose a Stripe node without deploying one capa Worker per customer. See [Runtime auth](/runtime-auth/) for the target API, plus providers that need a second auth header like Twitch.
-
-## Next
-
-- [How It Works](/how-it-works) — understand the loop
-- [Reference](/reference) — all capabilities and codegen flags
-- [Contributing](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md) — generate privately, or add a public capability to the repo
+- [Use capa from an agent](/agents/): connect Claude or Cursor to every capability through one MCP server.
+- [Runtime auth](/runtime-auth/): use one deployed capability for many tenants.
+- [How it works](/how-it-works/): the evidence record, overrides, and generated code.

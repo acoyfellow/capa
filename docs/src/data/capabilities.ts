@@ -64,11 +64,12 @@ export interface CapabilityDisplay {
 
 const DISPLAY: Record<string, CapabilityDisplay> = {
 	htmlcsstoimage: {
-		tagline: 'Render HTML/CSS or URLs to PNG, JPG, WebP, or PDF — images, templates, OG configs, and storage.',
-		requiredSecrets: ['HTMLCSSTOIMAGE_USER_ID', 'HTMLCSSTOIMAGE_API_KEY'],
+		tagline: 'Render HTML/CSS or URLs to PNG, JPG, WebP, or PDF: images, templates, OG configs, and storage.',
+		requiredSecrets: ['HTMLCSSTOIMAGE_API_KEY'],
+		optionalSecrets: ['HTMLCSSTOIMAGE_USER_ID'],
 	},
 	blooio: {
-		tagline: 'Send iMessage from anywhere — chats, messages, contacts, groups, FaceTime, and webhooks.',
+		tagline: 'Send iMessage from anywhere: chats, messages, contacts, groups, FaceTime, and webhooks.',
 		requiredSecrets: ['BLOOIO_API_KEY'],
 	},
 	box: {
@@ -84,14 +85,14 @@ const DISPLAY: Record<string, CapabilityDisplay> = {
 		requiredSecrets: ['GITHUB_API_KEY'],
 	},
 	gitlab: {
-		tagline: 'Projects, MRs, pipelines — across the entire GitLab API.',
+		tagline: 'Projects, MRs, pipelines: across the entire GitLab API.',
 		bundleGz: '54 KiB',
 		status: 'stable',
 		requiredSecrets: ['GITLAB_API_KEY'],
 		optionalSecrets: ['GITLAB_BASE_URL_OVERRIDE', 'CF_ACCESS_CLIENT_ID', 'CF_ACCESS_CLIENT_SECRET'],
 	},
 	jira: {
-		tagline: 'Issues, boards, sprints — JSRPC over Jira Cloud REST v3.',
+		tagline: 'Issues, boards, sprints: JSRPC over Jira Cloud REST v3.',
 		bundleGz: '48 KiB',
 		status: 'stable',
 		requiredSecrets: ['JIRA_API_KEY'],
@@ -139,8 +140,6 @@ const DISPLAY: Record<string, CapabilityDisplay> = {
 
 /** Capabilities that are planned but not yet shipped. Surfaces the roadmap on the catalog. */
 const PLANNED: Array<{ name: string; tagline: string; auth?: CapabilityAuth }> = [
-	// Drop entries here as they get scoped. Empty by default — the catalog
-	// gracefully handles the no-roadmap case.
 ];
 
 export interface CapabilityEntry extends CapabilityManifest, CapabilityDisplay {

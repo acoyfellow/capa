@@ -1,0 +1,148 @@
+---
+title: Use capa from an agent
+description: Connect Claude, Cursor, or any MCP client to every capa capability through one gateway.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Your Worker calls a capability through a service binding. An agent can call the same capability through **capa-gateway**, one MCP server for every capability.
+
+The agent never sees an API key. It writes a short piece of code, and the gateway runs that code in a sandbox that can reach only capa bindings.
+
+## How it works
+
+The gateway gives the agent two tools.
+
+| Tool | What it does |
+|---|---|
+| `search` | Finds operations across all capabilities. It returns the method to call, the HTTP verb, the path, and the risk. |
+| `execute` | Runs an async JavaScript function body in a sandbox. The code calls capabilities on the `capa` object. |
+
+An `execute` call looks like this:
+
+```js
+const me = await capa.github.user.list();
+const repo = await capa.github.repos.retrieve("acoyfellow", "capa");
+return { login: me.result.login, stars: repo.result.stargazers_count };
+```
+
+Every call returns `{ result, evidence }`, the same shape your Worker gets.
+
+## What keeps the keys safe
+
+| Part | Cloudflare product | What it does |
+|---|---|---|
+| Sandbox | Worker Loader | Runs the agent's code with `fetch()` and sockets turned off. The only way out is the `capa` object. |
+| Capabilities | Service bindings | The sandbox calls `capa-github` and other capability Workers. It never holds their keys. |
+| Vault | Durable Objects | One vault for each user. It holds that user's provider keys and write settings. |
+| Vault encryption key | Secrets Store | Encrypts every key in the vault. |
+| Sign-in | Cloudflare Access | Identifies the user. MCP clients sign in with OAuth 2.1. |
+
+The agent cannot turn on writes. Only the user can, on the Connect page.
+
+## Connect an MCP client
+
+Add the gateway URL to your client. The client opens a browser window, you sign in once, and the client gets its own token.
+
+<Tabs syncKey="mcp-client">
+<TabItem label="Claude">
+
+In Claude, open **Settings → Connectors → Add custom connector**. Enter:
+
+```text
+https://<your-gateway>/mcp
+```
+
+</TabItem>
+<TabItem label="Cursor">
+
+```json title=".cursor/mcp.json"
+{
+  "mcpServers": {
+    "capa": { "url": "https://<your-gateway>/mcp" }
+  }
+}
+```
+
+</TabItem>
+<TabItem label="Other clients">
+
+Clients that only speak stdio can use `mcp-remote`:
+
+```bash
+npx mcp-remote https://<your-gateway>/mcp
+```
+
+</TabItem>
+</Tabs>
+
+## Connect your providers
+
+Open `https://<your-gateway>/connect` and sign in. For each provider you can:
+
+- **Connect with OAuth** where the provider supports it (GitHub), or paste an API key.
+- **Allow or block writes.** Writes are blocked by default. A blocked agent gets a clear error that tells it to ask you.
+- **Disconnect.** The gateway deletes the key. For OAuth providers it also revokes the token at the provider.
+
+The same page lists every MCP client you signed in. Select **Revoke** to cut a client off. Its next call fails at once.
+
+## Deploy your own gateway
+
+The gateway lives in [`gateway/`](https://github.com/acoyfellow/capa/tree/main/gateway). It deploys with `cf` from one `cloudflare.config.ts` that declares every binding:
+
+```ts title="gateway/cloudflare.config.ts"
+import { bindings, defineConfig, exports } from "cf/config";
+import capabilities from "./capabilities.gen.json" with { type: "json" };
+
+const capabilityBindings = Object.fromEntries(
+  capabilities.map(({ binding, worker, entrypoint }) => [binding, bindings.worker({ worker, exportName: entrypoint })]),
+);
+
+export default defineConfig({
+  worker: {
+    name: "capa-gateway",
+    entrypoint: "src/index.ts",
+    env: {
+      LOADER: bindings.workerLoader(),
+      VAULT: bindings.durableObject({ worker: "capa-gateway", exportName: "Vault" }),
+      VAULT_KEY: bindings.secretsStoreSecret({ storeId: "<store-id>", secretName: "capa_gateway_vault_key" }),
+      OAUTH_KV: bindings.kv({ id: "<kv-namespace-id>" }),
+      ...capabilityBindings,
+      ACCESS_CLIENT_SECRET: bindings.secret(),
+      GITHUB_CLIENT_SECRET: bindings.secret(),
+      COOKIE_SECRET: bindings.secret(),
+    },
+    exports: {
+      Vault: exports.durableObject({ storage: "sqlite" }),
+      CapaBridge: exports.worker(),
+      McpApi: exports.worker(),
+    },
+  },
+});
+```
+
+`npm run index` writes `capabilities.gen.json` from the `capabilities/` folder. The gateway binds every capability on that list, and the gateway code reads the same list. To add a capability, regenerate the list and deploy.
+
+The full file also sets `compatibilityDate`, the Access issuer and client ID, and the GitHub client ID.
+
+1. Deploy every capability to the same account. The gateway binds them by Worker name. They need no API key secret, because each user's key comes from their vault.
+2. Create a Secrets Store secret for the vault key, and a KV namespace for OAuth state.
+3. Create a Cloudflare Access for SaaS application (OIDC). Set the redirect URL to `https://<your-gateway>/callback`.
+4. Optional: create a GitHub OAuth App. Set the callback to `https://<your-gateway>/connect/github/callback`.
+5. Put the three secrets in a JSON file, deploy, then delete the file:
+
+```bash
+cd gateway
+npm install
+npm run index
+cf deploy --secrets-file ./secrets.json
+```
+
+`bindings.secret()` makes each secret required. A new Worker must get them with `--secrets-file` on its first deploy.
+
+## Limits today
+
+- Every capability must be deployed in the same account as the gateway before the gateway deploys.
+- Only GitHub has a **Connect with OAuth** button. Other providers use a pasted API key.
+- Writes are allowed or blocked per provider. There is no approval for each call yet.
+- Access controls who can sign in. The sample policy allows a fixed list of emails.
