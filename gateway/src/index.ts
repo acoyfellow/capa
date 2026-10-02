@@ -2,7 +2,7 @@ import { DurableObject, WorkerEntrypoint } from "cloudflare:workers";
 import OAuthProvider from "@cloudflare/workers-oauth-provider";
 import catalog from "./index.gen.json";
 import { type AuthEnv, type UserProps, handleAuthorize, handleCallback, requireSession } from "./auth";
-import { type ConnectEnv, type ConnectionSummary, beginGithubConnect, finishGithubConnect, handleConnectPost, renderConnectPage } from "./connect";
+import { type ConnectEnv, type ConnectionSummary, beginGithubConnect, finishGithubConnect, handleConnectPost, handleConsentPost, renderConnectPage, renderConsentPage } from "./connect";
 
 type Operation = {
 	operationId: string;
@@ -313,14 +313,15 @@ const site: ExportedHandler<Env> = {
 		if (url.pathname === "/callback") return handleCallback(request, env);
 		if (url.pathname === "/logout") return signOut();
 		if (url.pathname === "/") return new Response("capa gateway. MCP endpoint: /mcp. Manage connections: /connect", { headers: { "content-type": "text/plain" } });
-		if (!url.pathname.startsWith("/connect")) return new Response("Not found", { status: 404 });
+		if (url.pathname !== "/consent" && !url.pathname.startsWith("/connect")) return new Response("Not found", { status: 404 });
 
 		const session = await requireSession(request, env);
 		if (session instanceof Response) return session;
+		if (url.pathname === "/consent") return request.method === "POST" ? handleConsentPost(request, env, session) : renderConsentPage(request, env, session);
 		const connect = connectEnv(env);
 		if (url.pathname === "/connect" && request.method === "GET") {
 			const grants = await env.OAUTH_PROVIDER.listUserGrants(session.user);
-			return renderConnectPage(connect, session, grants.items.map((g) => ({ id: g.id, clientId: g.clientId, createdAt: g.createdAt })));
+			return renderConnectPage(connect, session, grants.items.map((g) => ({ id: g.id, clientId: g.clientId, createdAt: g.createdAt })), url.origin);
 		}
 		if (url.pathname === "/connect/github") return beginGithubConnect(request, connect, session);
 		if (url.pathname === "/connect/github/callback") return finishGithubConnect(request, connect, session);

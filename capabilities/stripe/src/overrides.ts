@@ -64,7 +64,7 @@ export const overrides: Record<string, Record<string, MethodOverride>> = {
 			],
 		},
 	},
-	paymentIntents: {
+	payment_intents: {
 		create: {
 			asserts: [
 				matches("id", /^pi_/),

@@ -66,7 +66,7 @@ The evidence record says what capa sent, what came back, and which checks passed
 }
 ```
 
-## One binding, two ways to call it
+## Call it from a Worker or an agent
 
 <div class="capa-split not-content">
   <section>
@@ -82,7 +82,7 @@ The evidence record says what capa sent, what came back, and which checks passed
   </section>
   <section>
     <h3>From your agent</h3>
-    <p>Connect Claude or Cursor to capa-gateway. The agent writes code that runs in a sandbox. It never sees a key.</p>
+    <p>Connect Claude or Cursor to capa-gateway. The agent writes code that runs in a sandbox with no network access. The sandbox calls the capability through the gateway, which adds your key from your vault.</p>
     <span class="capa-split__caption">MCP tool: execute</span>
     <pre><code>const me = await capa.github.user.list();
 return me.result.login;</code></pre>

@@ -36,18 +36,18 @@ Every call returns `{ result, evidence }`, the same shape your Worker gets.
 | Capabilities | Service bindings | The sandbox calls `capa-github` and other capability Workers. It never holds their keys. |
 | Vault | Durable Objects | One vault for each user. It holds that user's provider keys and write settings. |
 | Vault encryption key | Secrets Store | Encrypts every key in the vault. |
-| Sign-in | Cloudflare Access | Identifies the user. MCP clients sign in with OAuth 2.1. |
+| Sign-in | Cloudflare Access | Identifies the user. MCP clients sign in with OAuth 2.1, and the user approves each new client by name. |
 
 The agent cannot turn on writes. Only the user can, on the Connect page.
 
 ## Connect an MCP client
 
-Add the gateway URL to your client. The client opens a browser window, you sign in once, and the client gets its own token.
+Add the gateway URL to your client. The client opens a browser window. Sign in, then select **Approve** on the page that names the client. The client gets its own token.
 
 <Tabs syncKey="mcp-client">
 <TabItem label="Claude">
 
-In Claude, open **Settings → Connectors → Add custom connector**. Enter:
+In Claude, open **Settings**, then **Connectors**, then **Add custom connector**. Enter:
 
 ```text
 https://<your-gateway>/mcp
@@ -80,11 +80,11 @@ npx mcp-remote https://<your-gateway>/mcp
 
 Open `https://<your-gateway>/connect` and sign in. For each provider you can:
 
-- **Connect with OAuth** where the provider supports it (GitHub), or paste an API key.
-- **Allow or block writes.** Writes are blocked by default. A blocked agent gets a clear error that tells it to ask you.
-- **Disconnect.** The gateway deletes the key. For OAuth providers it also revokes the token at the provider.
+- **Connect.** GitHub opens an OAuth sign-in. For other providers, paste an API key.
+- **Manage**, then **Allow writes** or **Block writes.** Writes are blocked by default, and the card shows **Read only**. A blocked agent gets a clear error that tells it to ask you.
+- **Manage**, then **Disconnect.** The gateway deletes the key. For OAuth providers it also revokes the token at the provider.
 
-The same page lists every MCP client you signed in. Select **Revoke** to cut a client off. Its next call fails at once.
+The same page lists every MCP client you signed in. Select **Revoke** to stop a client. Its next call returns `401`.
 
 ## Deploy your own gateway
 
@@ -143,6 +143,6 @@ cf deploy --secrets-file ./secrets.json
 ## Limits today
 
 - Every capability must be deployed in the same account as the gateway before the gateway deploys.
-- Only GitHub has a **Connect with OAuth** button. Other providers use a pasted API key.
+- Only GitHub connects with OAuth. Other providers use a pasted API key.
 - Writes are allowed or blocked per provider. There is no approval for each call yet.
 - Access controls who can sign in. The sample policy allows a fixed list of emails.
