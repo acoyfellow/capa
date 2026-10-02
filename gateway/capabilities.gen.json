@@ -1,0 +1,114 @@
+[
+	{
+		"name": "blooio",
+		"auth": "bearer",
+		"binding": "BLOOIO",
+		"worker": "capa-blooio",
+		"entrypoint": "BlooioCapability"
+	},
+	{
+		"name": "box",
+		"auth": "bearer",
+		"binding": "BOX",
+		"worker": "capa-box",
+		"entrypoint": "BoxCapability"
+	},
+	{
+		"name": "discord",
+		"auth": "bearer",
+		"binding": "DISCORD",
+		"worker": "capa-discord",
+		"entrypoint": "DiscordCapability"
+	},
+	{
+		"name": "github",
+		"auth": "bearer",
+		"binding": "GITHUB",
+		"worker": "capa-github",
+		"entrypoint": "GithubCapability"
+	},
+	{
+		"name": "gitlab",
+		"auth": "private-token",
+		"binding": "GITLAB",
+		"worker": "capa-gitlab",
+		"entrypoint": "GitlabCapability"
+	},
+	{
+		"name": "htmlcsstoimage",
+		"auth": "basic",
+		"binding": "HTMLCSSTOIMAGE",
+		"worker": "capa-htmlcsstoimage",
+		"entrypoint": "HtmlcsstoimageCapability"
+	},
+	{
+		"name": "jira",
+		"auth": "basic",
+		"binding": "JIRA",
+		"worker": "capa-jira",
+		"entrypoint": "JiraCapability"
+	},
+	{
+		"name": "kubernetes",
+		"auth": "bearer",
+		"binding": "KUBERNETES",
+		"worker": "capa-kubernetes",
+		"entrypoint": "KubernetesCapability"
+	},
+	{
+		"name": "sentry",
+		"auth": "bearer",
+		"binding": "SENTRY",
+		"worker": "capa-sentry",
+		"entrypoint": "SentryCapability"
+	},
+	{
+		"name": "slack",
+		"auth": "bearer",
+		"binding": "SLACK",
+		"worker": "capa-slack",
+		"entrypoint": "SlackCapability"
+	},
+	{
+		"name": "stripe",
+		"auth": "bearer",
+		"binding": "STRIPE",
+		"worker": "capa-stripe",
+		"entrypoint": "StripeCapability"
+	},
+	{
+		"name": "twilio",
+		"auth": "basic",
+		"binding": "TWILIO",
+		"worker": "capa-twilio",
+		"entrypoint": "TwilioCapability"
+	},
+	{
+		"name": "twilio-messaging",
+		"auth": "basic",
+		"binding": "TWILIO_MESSAGING",
+		"worker": "capa-twilio-messaging",
+		"entrypoint": "TwilioMessagingCapability"
+	},
+	{
+		"name": "twilio-verify",
+		"auth": "basic",
+		"binding": "TWILIO_VERIFY",
+		"worker": "capa-twilio-verify",
+		"entrypoint": "TwilioVerifyCapability"
+	},
+	{
+		"name": "twitch",
+		"auth": "bearer",
+		"binding": "TWITCH",
+		"worker": "capa-twitch",
+		"entrypoint": "TwitchCapability"
+	},
+	{
+		"name": "zoom",
+		"auth": "bearer",
+		"binding": "ZOOM",
+		"worker": "capa-zoom",
+		"entrypoint": "ZoomCapability"
+	}
+]
