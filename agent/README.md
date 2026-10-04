@@ -79,11 +79,38 @@ CAPA_AGENT_URL=https://capa-agent.<subdomain>.workers.dev bash scripts/gate.sh
 6. The GitHub token is in no response or transcript.
 7. MCP `tools/list` and RPC `tools()` return the same tools for the same agent.
 
-## Facets: not used
+## Sub-agents as facets
 
-A version of `capa_execute` ran the code as a Durable Object facet: `ctx.facets.get(name, () => ({ class: worker.getDurableObjectClass("ToolRun") }))`. It deployed. Grants, the network block and the facet's own storage counter worked. Two things went wrong:
+A parent agent can run sub-agents as Durable Object facets. Each sub-agent is a `SubAgent` class from this Worker, started with `ctx.exports.SubAgent({ props: { parent, subAgent } })` under `ctx.facets`. It has its own SQLite, its own Pi Durable conversation, and the same `capa_execute` tool.
 
-- A facet started under one name keeps the class and bridge props it started with. After the owner added a grant, calls to the same facet still failed with "no grant". Grants changed in the owner's route did not reach it.
-- The first version reused one facet name, so new code ran the class loaded for the old code.
+```
+/agents/boss/subs/reviewer/grants   PUT { "grants": [...] }
+/agents/boss/subs/reviewer/ask      POST { "prompt": "..." }
+/agents/boss/subs/reviewer/execute  POST { "code": "..." }
+/agents/boss/subs/reviewer          DELETE
+```
 
-A tool call does not need its own storage, so a plain Worker Loader entrypoint fits better. Facets would fit a long-running sub-agent with its own state.
+### Rules
+
+- **Only the owner creates sub-agents and sets their grants.** A sub-agent has no tool for this. The grants routes need the owner token.
+- **A sub-agent can never get more than its parent.** Setting a sub-agent grant that the parent lacks fails, for example `The parent may not write to github, so a sub-agent cannot.`
+- **Grants are read from the parent on every call.** The sub-agent's props hold only its name. When the owner changes or clears the parent's or the sub-agent's grants, the next call sees it, and the facet does not restart.
+- **A sub-agent of a sub-agent starts with no grants.** A facet can start its own facets, and the nested one is checked like any other: `Agent boss/s/nested has no grant for github`. There is no route for owners to grant nested sub-agents, so today they cannot call capa.
+- **Evidence goes to the parent,** so the owner reads one log for the whole tree.
+
+### What was tested on a live Worker
+
+| Question | Result |
+|---|---|
+| Does Pi Durable run inside a facet? | Yes, with `Harness.open` directly. `PiHarness` from `agents/harness/pi` fails: it sets alarms, and facets throw `Facets currently cannot set alarms.` |
+| Does a facet get the AI binding? | Yes. A sub-agent answered "47 stars" with `verdict: "pass"` evidence. |
+| Do timers survive in a facet? | No. Facets cannot set alarms. Pi Durable's in-memory timers work while the object is awake. Waking a sleeping sub-agent is the parent's job. |
+| Do sibling facets run at the same time? | Yes. Four facets that each waited 3 seconds took 3 seconds together. Two model runs at once took 5 seconds. |
+| Does a crash in one facet hurt others? | No. `while(true){}` in one sub-agent hit the CPU limit. Its sibling and the parent kept working, and the crashed one worked on its next call. |
+| Does a sub-agent remember after a redeploy? | Yes. After a redeploy it answered "47" when asked what number it gave last. The first call after the redeploy failed once with a Durable Object storage reset, then worked. |
+| Does `facets.clone()` copy a sub-agent? | No. It returns, but the copy's storage is empty, even after `abort()` on the source. The copy's grants are copied by the parent, not by `clone`. |
+| Are transcripts separate? | Yes. One sub-agent had 12 entries while its sibling had 0. |
+
+### When to use a facet sub-agent
+
+Use one for a long-running worker with its own memory and narrower grants, such as a reviewer that only reads pull requests. Use a separate Durable Object instead when the sub-agent must wake itself on a timer, or when you need to copy it.

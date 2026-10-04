@@ -51,3 +51,20 @@ export function parseGrants(value: unknown): Grant[] {
 		return { capability: grant.capability, methods: grant.methods, writes: grant.writes === true };
 	});
 }
+
+export function withinParent(parent: readonly Grant[], child: readonly Grant[]): { ok: true } | { ok: false; reason: string } {
+	for (const grant of child) {
+		const ceiling = parent.find((candidate) => candidate.capability === grant.capability);
+		if (!ceiling) return { ok: false, reason: `The parent has no grant for ${grant.capability}, so a sub-agent cannot get one.` };
+		if (grant.writes && !ceiling.writes) return { ok: false, reason: `The parent may not write to ${grant.capability}, so a sub-agent cannot.` };
+		if (ceiling.methods !== "*") {
+			const extra = grant.methods === "*" ? ["*"] : grant.methods.filter((method) => !(ceiling.methods as string[]).includes(method));
+			if (extra.length) return { ok: false, reason: `The parent cannot call ${extra.join(", ")} on ${grant.capability}.` };
+		}
+	}
+	return { ok: true };
+}
+
+export function effectiveGrants(parent: readonly Grant[], child: readonly Grant[]): Grant[] {
+	return child.filter((grant) => withinParent(parent, [grant]).ok);
+}

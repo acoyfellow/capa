@@ -7,9 +7,10 @@ import { Lifecycle } from "agents/lifecycle";
 import { createAI } from "agents/models/pi-ai";
 import { searchOperations } from "./catalog.ts";
 import { directWorkersAi } from "./direct-ai.ts";
-import { decide, parseGrants, type Grant } from "./grants.ts";
+import { decide, effectiveGrants, parseGrants, withinParent, type Grant } from "./grants.ts";
 import { runSandbox, type SandboxOutcome } from "./sandbox.ts";
-import type { AgentEnv, BridgeProps, Evidence } from "./types.ts";
+import type { AgentEnv, BridgeProps, Evidence, SubAgentIdentity } from "./types.ts";
+import type { SubAgent } from "./sub-agent.ts";
 
 
 const INSTRUCTIONS = `You are a capa agent. You reach APIs only through two tools.
@@ -56,6 +57,45 @@ export class CapaAgent extends DurableObject<AgentEnv> {
 
 	async grants(): Promise<Grant[]> {
 		return (await this.ctx.storage.get<Grant[]>("grants")) ?? [];
+	}
+
+	async setSubAgentGrants(subAgent: string, grants: unknown): Promise<Grant[]> {
+		const parsed = parseGrants(grants);
+		const check = withinParent(await this.grants(), parsed);
+		if (!check.ok) throw new Error(check.reason);
+		await this.ctx.storage.put(`sub-grants:${subAgent}`, parsed);
+		return parsed;
+	}
+
+	async grantsFor(subAgent: string): Promise<Grant[]> {
+		const child = (await this.ctx.storage.get<Grant[]>(`sub-grants:${subAgent}`)) ?? [];
+		return effectiveGrants(await this.grants(), child);
+	}
+
+	subAgent(subAgent: string): DurableObjectStub<SubAgent> {
+		const identity: SubAgentIdentity = { parent: this.name(), subAgent };
+		const loopback = (this.ctx.exports as unknown as { SubAgent: (options: { props: SubAgentIdentity }) => DurableObjectClass }).SubAgent;
+		return this.ctx.facets.get(`sub:${subAgent}`, () => ({ class: loopback({ props: identity }) })) as unknown as DurableObjectStub<SubAgent>;
+	}
+
+	async subAgentCall(subAgent: string, method: string, arg?: unknown): Promise<unknown> {
+		const stub = this.subAgent(subAgent) as unknown as Record<string, (value?: unknown) => Promise<unknown>>;
+		return stub[method](arg);
+	}
+
+	async parallel(subAgents: string[], ms: number) {
+		return Promise.all(subAgents.map((name) => this.subAgent(name).busyFor(ms)));
+	}
+
+	async cloneSubAgent(from: string, to: string): Promise<void> {
+		this.ctx.facets.abort(`sub:${from}`, new Error("cloning"));
+		this.ctx.facets.clone(`sub:${from}`, `sub:${to}`);
+		const grants = await this.ctx.storage.get<Grant[]>(`sub-grants:${from}`);
+		if (grants) await this.ctx.storage.put(`sub-grants:${to}`, grants);
+	}
+
+	deleteSubAgent(subAgent: string): void {
+		this.ctx.facets.delete(`sub:${subAgent}`);
 	}
 
 	async ask(prompt: string): Promise<{ status: string; text?: string; reason?: string }> {
