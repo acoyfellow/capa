@@ -92,13 +92,19 @@ You can also open the [Stripe capability](https://github.com/acoyfellow/capa/tre
 cf workers secrets update STRIPE_API_KEY --worker capa-stripe --type secret_text
 ```
 
-`cf` asks for the value. To script it, pipe the key on stdin. Do not pass it with `--text`, because the key then goes into your shell history.
+`cf` asks for the value. To script it, pipe the key on stdin from a file:
+
+```bash
+cf workers secrets update STRIPE_API_KEY --worker capa-stripe --type secret_text < stripe-key.txt
+```
+
+Do not pass it with `--text`, because the key then goes into your shell history.
 
 </TabItem>
 <TabItem label="Wrangler">
 
 ```bash
-wrangler secret put STRIPE_API_KEY
+wrangler secret put STRIPE_API_KEY --name capa-stripe < stripe-key.txt
 ```
 
 </TabItem>
@@ -165,6 +171,20 @@ export default {
   },
 };
 ```
+
+### Find a method
+
+Method names come from the OpenAPI spec, so guessing them does not work. Search the generated manifest for the API path you want:
+
+```bash
+grep '"path":"/user"' capabilities/github/src/generated/manifest.gen.ts
+```
+
+```text
+"users/get-authenticated": {"namespace":"user","method":"list","http":"get","path":"/user","risk":"low"},
+```
+
+Call it as `env.GITHUB.user.list()`. A namespace with `_` or `-` becomes camelCase on the binding, for example `payment_intents` becomes `paymentIntents`.
 
 ## 5. Deploy and test
 
