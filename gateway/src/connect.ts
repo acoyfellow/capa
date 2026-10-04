@@ -3,7 +3,7 @@ import { type AuthEnv, type ConsentView, type UserProps, consentView, decideCons
 export type ConnectionSummary = { capability: string; source: "oauth" | "key"; allowWrites: boolean; connectedAt: string };
 
 export interface VaultApi {
-	put(capability: string, apiKey: string, source: "oauth" | "key"): Promise<void>;
+	put(capability: string, apiKey: string, source: "oauth" | "key", username?: string): Promise<void>;
 	remove(capability: string): Promise<string | undefined>;
 	setWrites(capability: string, allowWrites: boolean): Promise<void>;
 	connections(): Promise<ConnectionSummary[]>;
@@ -15,6 +15,7 @@ export type ConnectEnv = AuthEnv & {
 	GITHUB_CLIENT_SECRET: string;
 	vaultFor(user: string): VaultApi;
 	boundCapabilities: readonly string[];
+	basicAuthCapabilities: readonly string[];
 };
 
 const GITHUB_SCOPE = "read:user";
@@ -95,6 +96,7 @@ form{margin:0}
 .empty strong{display:block;font-weight:600;margin-bottom:.25rem}
 .empty code{display:inline-block;margin-top:.75rem;padding:.3rem .6rem;border:1px solid #e4e7e1;border-radius:6px;background:#fff}
 code{font:500 .8125rem ui-monospace,SFMono-Regular,Menlo,monospace}
+.notice{border:1px solid #d55d18;background:#fff8e9;border-radius:8px;padding:.6rem .8rem;margin:0 0 1.25rem}
 .single{max-width:30rem;margin:15vh auto;padding:0 1.25rem}
 .single .actions{display:flex;gap:.5rem;margin-top:1.5rem}
 @media (max-width:48rem){.shell{grid-template-columns:1fr}.side{flex-direction:row;align-items:center;border-right:0;border-bottom:1px solid #e4e7e1;padding:.75rem 1rem}.nav{display:none}.who{margin:0 0 0 auto;flex-direction:row;gap:.75rem}main{padding:1.5rem 1rem}.bar{flex-wrap:wrap}.bar input{width:100%}}
@@ -128,14 +130,14 @@ function connectedCard(connection: ConnectionSummary): string {
 </div></details></li>`;
 }
 
-function availableCard(capability: string): string {
+function availableCard(capability: string, needsUsername: boolean): string {
 	const name = providerName(capability);
 	const header = (action: string) =>
 		`<div class="row"><span class="avatar">${escapeHtml(initials(name))}</span><span class="meta"><strong>${escapeHtml(name)}</strong><span class="muted">${capability === "github" ? "OAuth" : "API key"}</span></span>${action}</div>`;
 	const body =
 		capability === "github"
 			? header(`<a class="button primary" href="/connect/github">Connect</a>`)
-			: `${header("")}<details><summary>Connect</summary><form class="panel" method="post" action="/connect/key"><input type="hidden" name="capability" value="${capability}"><input type="password" name="apiKey" placeholder="Paste API key" aria-label="${escapeHtml(name)} API key" required autocomplete="off"><button class="primary">Save</button></form></details>`;
+			: `${header("")}<details><summary>Connect</summary><form class="panel" method="post" action="/connect/key"><input type="hidden" name="capability" value="${capability}">${needsUsername ? `<input type="text" name="username" placeholder="Username or account ID" aria-label="${escapeHtml(name)} username" required autocomplete="off">` : ""}<input type="password" name="apiKey" placeholder="Paste API key" aria-label="${escapeHtml(name)} API key" required autocomplete="off"><button class="primary">Save</button></form></details>`;
 	return `<li class="card" data-provider="${escapeHtml(`${capability} ${name.toLowerCase()}`)}">${body}</li>`;
 }
 
@@ -151,7 +153,11 @@ function clientRows(grants: Array<{ id: string; clientId: string; createdAt: num
 		.join("")}</ul>`;
 }
 
-export async function renderConnectPage(env: ConnectEnv, props: UserProps, grants: Array<{ id: string; clientId: string; createdAt: number }>, origin: string): Promise<Response> {
+const NOTICES: Record<string, string> = {
+	"github-revoke-failed": "capa deleted your GitHub token from the vault, but GitHub did not confirm that it revoked the token. Revoke it at github.com/settings/applications.",
+};
+
+export async function renderConnectPage(env: ConnectEnv, props: UserProps, grants: Array<{ id: string; clientId: string; createdAt: number }>, origin: string, notice?: string): Promise<Response> {
 	const connections = await env.vaultFor(props.user).connections();
 	const connected = new Set(connections.map((c) => c.capability));
 	const available = env.boundCapabilities.filter((capability) => !connected.has(capability));
@@ -161,11 +167,11 @@ export async function renderConnectPage(env: ConnectEnv, props: UserProps, grant
 	return page(
 		"capa connections",
 		`<div class="shell"><aside class="side"><div class="brand"><i></i>capa</div><nav class="nav"><a href="/connect" aria-current="page">Connections</a></nav><div class="who"><span>${escapeHtml(props.email)}</span><a href="/logout">Sign out</a></div></aside>
-<main><h1>Connections</h1><p class="lede">Connect your providers once. Your MCP clients call them through capa.</p>
+<main>${notice && NOTICES[notice] ? `<p class="notice" role="alert">${escapeHtml(NOTICES[notice])}</p>` : ""}<h1>Connections</h1><p class="lede">Connect your providers once. Your MCP clients call them through capa.</p>
 <p class="note">Keys are encrypted in your vault. Agents never receive them.</p>
 <h2>Connected <span class="count">${connections.length}</span></h2>${connectedSection}
 <div class="bar"><h2>Available providers <span class="count">${available.length}</span></h2><input id="filter" type="search" placeholder="Search providers" aria-label="Search providers"></div>
-<ul class="grid">${available.map(availableCard).join("")}</ul>
+<ul class="grid">${available.map((capability) => availableCard(capability, env.basicAuthCapabilities.includes(capability))).join("")}</ul>
 <h2>MCP clients <span class="count">${grants.length}</span></h2>${clientRows(grants, origin)}</main></div>`,
 	);
 }
@@ -174,8 +180,8 @@ async function formOf(request: Request): Promise<Record<string, string>> {
 	return Object.fromEntries([...(await request.formData()).entries()].map(([key, value]) => [key, String(value)]));
 }
 
-function back(): Response {
-	return new Response(null, { status: 303, headers: { location: "/connect" } });
+function back(notice?: string): Response {
+	return new Response(null, { status: 303, headers: { location: notice ? `/connect?notice=${notice}` : "/connect" } });
 }
 
 export async function handleConnectPost(request: Request, env: ConnectEnv, props: UserProps): Promise<Response> {
@@ -189,15 +195,17 @@ export async function handleConnectPost(request: Request, env: ConnectEnv, props
 	switch (path) {
 		case "/connect/key":
 			if (!form.apiKey) return new Response("Missing key", { status: 400 });
-			await vault.put(capability, form.apiKey, "key");
+			if (env.basicAuthCapabilities.includes(capability) && !form.username) return new Response("This provider needs a username or account ID", { status: 400 });
+			await vault.put(capability, form.apiKey, "key", form.username);
 			return back();
 		case "/connect/writes":
 			await vault.setWrites(capability, form.allowWrites === "true");
 			return back();
 		case "/connect/disconnect": {
 			const removed = await vault.remove(capability);
-			if (removed && capability === "github") await revokeGithubToken(env, removed);
-			return back();
+			if (!removed || capability !== "github") return back();
+			const revoked = await revokeGithubToken(env, removed);
+			return revoked ? back() : back("github-revoke-failed");
 		}
 		case "/connect/revoke-grant":
 			await vault.revokeGrant(form.grantId ?? "");
@@ -244,8 +252,8 @@ export async function finishGithubConnect(request: Request, env: ConnectEnv, pro
 	return back();
 }
 
-async function revokeGithubToken(env: ConnectEnv, accessToken: string): Promise<void> {
-	await fetch(`https://api.github.com/applications/${env.GITHUB_CLIENT_ID}/grant`, {
+async function revokeGithubToken(env: ConnectEnv, accessToken: string): Promise<boolean> {
+	const response = await fetch(`https://api.github.com/applications/${env.GITHUB_CLIENT_ID}/grant`, {
 		method: "DELETE",
 		headers: {
 			authorization: `Basic ${btoa(`${env.GITHUB_CLIENT_ID}:${env.GITHUB_CLIENT_SECRET}`)}`,
@@ -255,6 +263,7 @@ async function revokeGithubToken(env: ConnectEnv, accessToken: string): Promise<
 		},
 		body: JSON.stringify({ access_token: accessToken }),
 	});
+	return response.status === 204 || response.status === 404;
 }
 
 export async function renderConsentPage(request: Request, env: AuthEnv, props: UserProps): Promise<Response> {
