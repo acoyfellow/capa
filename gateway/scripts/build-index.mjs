@@ -22,15 +22,32 @@ function bindingName(name) {
 	return name.toUpperCase().replaceAll("-", "_");
 }
 
+const methodSignature = /\n\tasync ([A-Za-z0-9_$]+)\((.*)\): Promise</g;
+const getterPattern = /\tget ([A-Za-z0-9_$]+)\(\): ([A-Za-z0-9_]+) \{/g;
+const classPattern = /class ([A-Za-z0-9_]+) extends[\s\S]*?\n\}/g;
+
+function optionsPositions(source) {
+	const classByGetter = new Map([...source.matchAll(getterPattern)].map((m) => [m[1], m[2]]));
+	const positions = new Map();
+	for (const [block, className] of source.matchAll(classPattern)) {
+		for (const [, method, params] of block.matchAll(methodSignature)) {
+			positions.set(`${className}.${method}`, params.split(", ").filter(Boolean).findIndex((param) => param.startsWith("options?")));
+		}
+	}
+	return (namespace, method) => positions.get(`${classByGetter.get(namespace)}.${method}`) ?? -1;
+}
+
 const capabilities = readdirSync(capabilitiesDir)
 	.filter((name) => existsSync(join(capabilitiesDir, name, "capa.manifest.json")))
 	.sort()
 	.map((name) => {
 		const meta = JSON.parse(readFileSync(join(capabilitiesDir, name, "capa.manifest.json"), "utf8"));
 		const source = readFileSync(join(capabilitiesDir, name, "src/generated/manifest.gen.ts"), "utf8");
+		const optionsIndex = optionsPositions(readFileSync(join(capabilitiesDir, name, "src/generated/capability.gen.ts"), "utf8"));
 		const operations = [...source.matchAll(entryPattern)].map(([, operationId, json]) => {
 			const operation = JSON.parse(json);
-			return { operationId, ...operation, namespace: bindingProperty(operation.namespace) };
+			const namespace = bindingProperty(operation.namespace);
+			return { operationId, ...operation, namespace, optionsIndex: optionsIndex(namespace, operation.method) };
 		});
 		return {
 			name,

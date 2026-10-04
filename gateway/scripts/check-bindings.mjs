@@ -41,6 +41,7 @@ for (const entry of catalog) {
 	const hasMethod = bindingSurface(entry.name);
 	for (const operation of entry.operations) {
 		if (!hasMethod(operation.namespace, operation.method)) problems.push(`${entry.name}: gateway lists ${operation.namespace}.${operation.method}, but the binding has no such method`);
+		if (!(operation.optionsIndex >= 0)) problems.push(`${entry.name}: ${operation.namespace}.${operation.method} has no options argument, so the gateway cannot pass the key`);
 	}
 	const pairs = manifestPairs(entry.name);
 	for (const key of overrideKeys(entry.name)) {

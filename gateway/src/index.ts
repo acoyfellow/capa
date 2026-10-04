@@ -1,6 +1,7 @@
 import { DurableObject, WorkerEntrypoint } from "cloudflare:workers";
 import OAuthProvider from "@cloudflare/workers-oauth-provider";
 import catalog from "./index.gen.json";
+import { withAuth } from "./call-args.ts";
 import { type AuthEnv, type UserProps, handleAuthorize, handleCallback, requireSession } from "./auth";
 import { type ConnectEnv, type ConnectionSummary, beginGithubConnect, finishGithubConnect, handleConnectPost, handleConsentPost, renderConnectPage, renderConsentPage } from "./connect";
 
@@ -11,6 +12,7 @@ type Operation = {
 	http: string;
 	path: string;
 	risk: "low" | "medium" | "high";
+	optionsIndex: number;
 };
 
 type CatalogEntry = { name: string; title: string; auth: string; binding: string; worker: string; entrypoint: string; operations: Operation[] };
@@ -91,7 +93,7 @@ function searchCatalog(query: string, capability?: string) {
 	return matches;
 }
 
-type VaultRecord = { iv: Uint8Array; sealed: ArrayBuffer; source: "oauth" | "key"; allowWrites: boolean; connectedAt: string };
+type VaultRecord = { iv: Uint8Array; sealed: ArrayBuffer; source: "oauth" | "key"; allowWrites: boolean; connectedAt: string; username?: string };
 
 const CONNECTION_PREFIX = "connection:";
 const REVOKED_GRANT_PREFIX = "revoked-grant:";
@@ -106,18 +108,18 @@ export class Vault extends DurableObject<Env> {
 		return crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["encrypt", "decrypt"]);
 	}
 
-	async put(capability: string, apiKey: string, source: "oauth" | "key"): Promise<void> {
+	async put(capability: string, apiKey: string, source: "oauth" | "key", username?: string): Promise<void> {
 		const iv = crypto.getRandomValues(new Uint8Array(12));
 		const sealed = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, await this.cryptoKey(), new TextEncoder().encode(apiKey));
 		const previous = await this.ctx.storage.get<VaultRecord>(connectionKey(capability));
-		await this.ctx.storage.put(connectionKey(capability), { iv, sealed, source, allowWrites: previous?.allowWrites ?? false, connectedAt: new Date().toISOString() });
+		await this.ctx.storage.put(connectionKey(capability), { iv, sealed, source, allowWrites: previous?.allowWrites ?? false, connectedAt: new Date().toISOString(), username: username || undefined });
 	}
 
-	async open(capability: string): Promise<{ apiKey: string; allowWrites: boolean } | undefined> {
+	async open(capability: string): Promise<{ apiKey: string; username?: string; allowWrites: boolean } | undefined> {
 		const record = await this.ctx.storage.get<VaultRecord>(connectionKey(capability));
 		if (!record) return undefined;
 		const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: record.iv }, await this.cryptoKey(), record.sealed);
-		return { apiKey: new TextDecoder().decode(plain), allowWrites: record.allowWrites };
+		return { apiKey: new TextDecoder().decode(plain), username: record.username, allowWrites: record.allowWrites };
 	}
 
 	async remove(capability: string): Promise<string | undefined> {
@@ -160,18 +162,11 @@ export class CapaBridge extends WorkerEntrypoint<Env, BridgeProps> {
 		if (isWrite && !connection.allowWrites) {
 			throw new Error(`${key} is a ${operation.http.toUpperCase()} operation. The user has blocked writes for ${capability}. Ask the user to allow writes on the capa connections page.`);
 		}
-		const callArgs = withAuth(args, connection.apiKey);
+		const callArgs = withAuth(args, operation.optionsIndex, connection);
 		const service = (this.env as unknown as Record<string, CapabilityService>)[binding];
 		const outcome = (await service[namespace][method](...callArgs)) as { result: unknown; evidence: { verdict: string; act: { status: number } } };
 		return { result: outcome.result, evidence: outcome.evidence };
 	}
-}
-
-function withAuth(args: unknown[], apiKey: string): unknown[] {
-	const last = args.at(-1);
-	const hasOptions = typeof last === "object" && last !== null && !Array.isArray(last) && ("query" in last || "auth" in last);
-	if (hasOptions) return [...args.slice(0, -1), { ...(last as object), auth: { apiKey } }];
-	return [...args, { auth: { apiKey } }];
 }
 
 function sandboxModule(code: string): string {
@@ -238,7 +233,12 @@ function toolText(value: unknown, isError = false) {
 }
 
 async function handleMcp(request: Request, env: Env, ctx: ExecutionContext, user: string): Promise<Response> {
-	const message = (await request.json()) as JsonRpcRequest;
+	let message: JsonRpcRequest;
+	try {
+		message = (await request.json()) as JsonRpcRequest;
+	} catch {
+		return rpcError(null, -32700, "Parse error: the request body is not valid JSON");
+	}
 	if (message.id === undefined) return new Response(null, { status: 202 });
 
 	switch (message.method) {
@@ -274,6 +274,7 @@ function connectEnv(env: Env): ConnectEnv {
 	return Object.assign(Object.create(env), {
 		vaultFor: (user: string) => env.VAULT.getByName(user),
 		boundCapabilities: BOUND_CAPABILITIES,
+		basicAuthCapabilities: CAPABILITIES.filter((entry) => entry.auth === "basic").map((entry) => entry.name),
 	}) as ConnectEnv;
 }
 
@@ -321,7 +322,7 @@ const site: ExportedHandler<Env> = {
 		const connect = connectEnv(env);
 		if (url.pathname === "/connect" && request.method === "GET") {
 			const grants = await env.OAUTH_PROVIDER.listUserGrants(session.user);
-			return renderConnectPage(connect, session, grants.items.map((g) => ({ id: g.id, clientId: g.clientId, createdAt: g.createdAt })), url.origin);
+			return renderConnectPage(connect, session, grants.items.map((g) => ({ id: g.id, clientId: g.clientId, createdAt: g.createdAt })), url.origin, url.searchParams.get("notice") ?? undefined);
 		}
 		if (url.pathname === "/connect/github") return beginGithubConnect(request, connect, session);
 		if (url.pathname === "/connect/github/callback") return finishGithubConnect(request, connect, session);
