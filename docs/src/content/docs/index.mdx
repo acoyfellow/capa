@@ -1,126 +1,142 @@
 ---
-title: OpenAPI specs → Cloudflare Worker bindings
-description: capa turns OpenAPI specs into deployable Cloudflare Worker service bindings. Generate an API binding, deploy it, and call it from your Worker.
+title: OpenAPI specs to Cloudflare Worker bindings
+description: capa turns OpenAPI specs into deployable Cloudflare Worker service bindings. Deploy a binding, then call the API from your Worker with typed methods.
 template: splash
 hero:
-  title: Third-party APIs, ready to bind from your Worker
-  tagline: capa turns OpenAPI specs into Cloudflare service bindings. Call a normal-looking method and get the API response plus a small receipt of what happened.
+  title: Call third-party APIs from your Worker with typed bindings
+  tagline: capa turns an OpenAPI spec into a Cloudflare service binding. Call it from your Worker, or let your agent call it through one MCP server. Every call returns the response and an evidence record.
   actions:
-    - text: View Capabilities
-      link: /catalog/
-      icon: right-arrow
-      variant: primary
     - text: Read the tutorial
       link: /tutorial/
-      icon: open-book
+      variant: primary
+    - text: Browse the catalog
+      link: /catalog/
+      variant: secondary
     - text: GitHub
       link: https://github.com/acoyfellow/capa
       icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
 import CapabilityGrid from '../../components/CapabilityGrid.astro';
 
-Along with the upstream result, capa gives you a plain JSON receipt: what it called, what came back, and which checks passed. Keep it for logs, show it in a UI, or ignore it when you do not need it.
+## How it works
 
-## Multi-tenant capability Workers
+<ol class="capa-flow not-content">
+  <li>
+    <span class="capa-flow__step">1</span>
+    <h3>The provider publishes a spec</h3>
+    <code class="capa-flow__artifact">POST /v1/payment_intents</code>
+  </li>
+  <li>
+    <span class="capa-flow__step">2</span>
+    <h3>capa generates a typed method</h3>
+    <code class="capa-flow__artifact">paymentIntents.create(body)</code>
+  </li>
+  <li>
+    <span class="capa-flow__step">3</span>
+    <h3>You deploy it to your account</h3>
+    <code class="capa-flow__artifact">cf deploy</code>
+  </li>
+  <li>
+    <span class="capa-flow__step">4</span>
+    <h3>Your Worker or your agent calls it</h3>
+    <code class="capa-flow__artifact">env.STRIPE.paymentIntents.create(...)</code>
+  </li>
+</ol>
 
-The default install path is still one deployed capability with one Worker secret. The target runtime shape also needs to support workflow builders and SaaS products: deploy one `capa-stripe` Worker, then select a tenant credential per RPC call.
-
-```ts
-await env.STRIPE.paymentIntents.create(
-  { amount: 2500, currency: "usd" },
-  { auth: { apiKey: tenant.stripeKey } },
-);
-```
-
-Static secrets stay the simple default. Per-call auth is the opt-in multi-tenant path; provider credentials must stay out of returned receipts. See [Runtime auth](/runtime-auth/) for the full target contract, including providers that require extra auth headers.
-
-## Capabilities
-
-capa already ships 14 generated bindings. [View Capabilities](/catalog/) for GitHub, Kubernetes, GitLab, Jira, Stripe, Box, Discord, Sentry, Slack, Twilio, Twitch, Zoom, and the rest. Generate one locally for your own API, or [contribute a capability](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md) if it belongs in the shared repo.
-
-<CapabilityGrid stats />
-
-<p class="capa-catalog-footnote">
-	New capabilities ship by dropping a <code>capa.manifest.json</code> into <code>capabilities/&lt;name&gt;/</code>.
-	The catalog renders straight from those manifests at build time.
+<p class="capa-flow__loop not-content">
+  <span class="capa-flow__loop-mark" aria-hidden="true">↻</span>
+  <span>When the provider changes the spec, a weekly job regenerates the binding and opens a pull request.</span>
 </p>
 
-## Architecture
+## Every call returns evidence
 
-<div class="capa-flow" aria-label="capa call flow">
-  <div class="flow-node">
-    <strong>Caller Worker</strong>
-    <code>env.&lt;NAME&gt;</code>
-    <code>.ns.method()</code>
-  </div>
-  <div class="flow-edge">
-    <span>JSRPC</span>
-    <b>→</b>
-    <small>result + receipt</small>
-  </div>
-  <div class="flow-node flow-node-wide">
-    <strong>capa capability</strong>
-    <code>WorkerEntrypoint</code>
-    <code>fetchProof()</code>
-    <code>act + assert</code>
-  </div>
-  <div class="flow-edge">
-    <span>HTTP</span>
-    <b>→</b>
-    <small>upstream response</small>
-  </div>
-  <div class="flow-node">
-    <strong>Upstream API</strong>
-    <code>generated</code>
-    <code>per spec</code>
-  </div>
+The evidence record says what capa sent, what came back, and which checks passed. Log it, show it, or ignore it.
+
+```ts
+{
+  operationId: "PostPaymentIntents",
+  act: {
+    request: { method: "POST", url: "https://api.stripe.com/v1/payment_intents" },
+    status: 200,
+  },
+  assert: [{ kind: "httpStatus", expected: "2xx", actual: 200, passed: true }],
+  verdict: "pass",
+}
+```
+
+## Call it from a Worker or an agent
+
+<div class="capa-split not-content">
+  <section>
+    <h3>From your Worker</h3>
+    <p>Bind the capability and call typed methods. The API key stays in the capability Worker.</p>
+    <span class="capa-split__caption">src/index.ts</span>
+    <pre><code>const &#123; result, evidence &#125; =
+  await env.STRIPE.paymentIntents.create(&#123;
+    amount: 2500,
+    currency: "usd",
+  &#125;);</code></pre>
+    <a href="/tutorial/">Tutorial</a>
+  </section>
+  <section>
+    <h3>From your agent</h3>
+    <p>Connect Claude or Cursor to capa-gateway. The agent writes code that runs in a sandbox with no network access. The sandbox calls the capability through the gateway, which adds your key from your vault.</p>
+    <span class="capa-split__caption">MCP tool: execute</span>
+    <pre><code>const me = await capa.github.user.list();
+return me.result.login;</code></pre>
+    <a href="/agents/">Use capa from an agent</a>
+  </section>
 </div>
-
-`fetchProof` makes the upstream HTTP call, runs the built-in checks plus any API-specific checks, and returns the response when those checks pass.
 
 ## Quick start
 
-### 1. Deploy a capability
-
-Click a **Deploy** button under [View Capabilities](/catalog/). Cloudflare clones the repo and deploys the Worker.
-
-### 2. Set the API key
+Deploy a capability from the [catalog](/catalog/), set its key, then bind it from your Worker.
 
 ```bash
-cd capabilities/<name>
-wrangler secret put <SECRET_NAME>
+cd capabilities/stripe
+cf migrate && cf deploy
+cf workers secrets update STRIPE_API_KEY --worker capa-stripe --type secret_text
 ```
 
-### 3. Bind and call
-
-```jsonc
-// wrangler.jsonc
-{ "services": [
-  { "binding": "STRIPE", "service": "capa-stripe", "entrypoint": "StripeCapability" }
-]}
+```ts title="cloudflare.config.ts"
+env: {
+  STRIPE: bindings.worker({ worker: "capa-stripe", exportName: "StripeCapability" }),
+}
 ```
 
-```ts
-const { result, evidence } = await env.STRIPE.charges.create({
-  amount: 1000, currency: "usd", source: "tok_visa",
-});
-```
+Using Wrangler? The [tutorial](/tutorial/) shows both.
 
-<CardGrid>
-  <Card title="Tutorial" icon="open-book">
-    [Deploy and call a capability end-to-end](/tutorial)
-  </Card>
-  <Card title="How It Works" icon="information">
-    [The loop, JSRPC, and returned receipts](/how-it-works)
-  </Card>
-  <Card title="Reference" icon="document">
-    [Capabilities, codegen, overrides](/reference)
-  </Card>
-  <Card title="Contribute" icon="pencil">
-    [Add a useful public capability — or just generate one locally](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md)
-  </Card>
-</CardGrid>
+## Catalog
 
+<CapabilityGrid stats />
+
+To add an API, run the codegen against its spec. Keep the result in your account, or [open a pull request](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md) to add it here.
+
+<div class="capa-pattern-band not-content" aria-hidden="true"></div>
+
+## Next steps
+
+<ul class="capa-next">
+  <li>
+    <a href="/tutorial/">Tutorial</a>
+    <p>Deploy a capability and call it from a Worker.</p>
+  </li>
+  <li>
+    <a href="/agents/">Use from an agent</a>
+    <p>One MCP server for every capability.</p>
+  </li>
+  <li>
+    <a href="/how-it-works/">How it works</a>
+    <p>Service bindings, evidence, and generated code.</p>
+  </li>
+  <li>
+    <a href="/runtime-auth/">Runtime auth</a>
+    <p>Use one deployed Worker for many tenants.</p>
+  </li>
+  <li>
+    <a href="/reference/">Reference</a>
+    <p>Secrets, entrypoints, and codegen flags.</p>
+  </li>
+</ul>

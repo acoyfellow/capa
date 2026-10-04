@@ -3,8 +3,8 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"index": "node scripts/build-index.mjs",
-		"deploy": "node scripts/build-index.mjs && cf deploy"
+		"index": "node scripts/build-index.mjs && node scripts/check-bindings.mjs",
+		"deploy": "npm run index && cf deploy"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "5.20260930.2",

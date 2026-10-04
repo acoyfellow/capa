@@ -1,0 +1,120 @@
+---
+title: Reference
+description: Capabilities, secrets, the codegen CLI, and the evidence record.
+---
+
+import ReferenceTables from '../../components/ReferenceTables.astro';
+
+## Capabilities
+
+Each row comes from the capability's `capa.manifest.json`, so this table matches the code.
+
+<ReferenceTables table="capabilities" />
+
+## Secrets
+
+Set these on the capability Worker. Your own Worker needs none of them. When a capability runs behind [capa-gateway](/agents/), each user's key comes from their vault instead.
+
+<ReferenceTables table="secrets" />
+
+`JIRA_API_KEY` uses the format `email:token`. To pass a key for one call only, use `options.auth`. See [Runtime auth](/runtime-auth/).
+
+## Method shape
+
+Every method returns the same shape:
+
+```ts
+{ result: T | null; evidence: EvidenceBundle }
+```
+
+`result` is `null` when `evidence.verdict` is `"fail"`.
+
+Path parameters come first, then the request body, then options:
+
+```ts
+await env.STRIPE.paymentIntents.retrieve("pi_123", undefined, { auth: { apiKey } });
+await env.GITHUB.repos.retrieve("cloudflare", "workers-sdk");
+await env.HTMLCSSTOIMAGE.image.renderFormat(id, "png", { query: { width: 1200 } });
+```
+
+| Option | Type | What it does |
+|---|---|---|
+| `auth.apiKey` | `string` | Uses this key for one call instead of the Worker secret. |
+| `auth.username`, `auth.password` | `string` | Basic auth for one call. |
+| `auth.headers` | `Record<string, string>` | Extra headers for one call. |
+| `query` | object | Query string parameters. Arrays repeat the key. |
+
+## Evidence record
+
+```ts
+type EvidenceBundle = {
+  capability: string;
+  operationId: string;
+  namespace: string;
+  method: string;
+  http: string;
+  path: string;
+  risk: "low" | "medium" | "high";
+  startedAt: string;
+  durationMs: number;
+  act: { request: { method: string; url: string }; status: number };
+  assert: Array<{ kind: string; expected: unknown; actual: unknown; passed: boolean }>;
+  verdict: "pass" | "fail";
+};
+```
+
+| Field | Meaning |
+|---|---|
+| `operationId` | The operation ID from the OpenAPI spec. |
+| `path` | The request path with parameters filled in. |
+| `risk` | `low` for `list`, `retrieve`, and `search` methods. `high` for money-moving namespaces such as `charges` and `refunds`. `medium` for everything else. |
+| `act` | The method, the URL, and the HTTP status. Request headers and keys are not recorded. |
+| `assert` | Every check that ran. The HTTP status check always runs. Overrides add more. |
+| `verdict` | `"pass"` when every check passed. |
+
+## Codegen CLI
+
+```bash
+cd tools/codegen
+bun src/cli.ts \
+  --spec <url-or-path> \
+  --out ../../capabilities/<name> \
+  --name <name> \
+  --base-url <upstream-base-url>
+```
+
+| Flag | Required | Default | Values |
+|---|---|---|---|
+| `--spec` | Yes | | URL or path to an OpenAPI 3 or Swagger 2 spec |
+| `--out` | Yes | | Output directory |
+| `--name` | Yes | | Capability name, for example `stripe` |
+| `--base-url` | Yes | | Upstream base URL |
+| `--prefix` | No | `/v1` | Path prefix to strip when building method names |
+| `--auth` | No | `bearer` | `bearer`, `private-token`, `basic` |
+| `--content-type` | No | `form` | `form`, `json` |
+| `--naming` | No | `path` | `path`, `operationId` |
+
+`--naming operationId` names methods after the spec's operation IDs instead of the URL path. Use it when path names are unclear.
+
+### Example
+
+```bash
+bun src/cli.ts \
+  --spec https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.sdk.json \
+  --out ../../capabilities/stripe --name stripe \
+  --base-url https://api.stripe.com --prefix /v1 \
+  --auth bearer --content-type form
+```
+
+To add a capability to the catalog, see [CONTRIBUTING.md](https://github.com/acoyfellow/capa/blob/main/CONTRIBUTING.md).
+
+## Repo layout
+
+| Path | What it holds |
+|---|---|
+| `tools/codegen/` | The OpenAPI to capability generator |
+| `capabilities/<name>/src/generated/` | Generated code. Do not edit. |
+| `capabilities/<name>/src/overrides.ts` | Extra checks for single methods |
+| `capabilities/<name>/src/index.ts` | The Worker entry |
+| `gateway/` | The MCP gateway for agents |
+| `docs/` | This site |

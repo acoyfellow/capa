@@ -63,38 +63,18 @@ function isType(path: string, type: "number" | "string" | "boolean" | "object") 
 }
 
 export const overrides: Record<string, Record<string, MethodOverride>> = {
-	issues: {
-		// Creating an issue is the canonical high-stakes write
-		createIssue: {
+	issue: {
+		create: {
 			asserts: [
 				exists("id"),
 				exists("key"),
 				isType("id", "string"),
 			],
 		},
-		// Updating status, assignee, labels — assert key roundtrip
-		editIssue: {
-			asserts: [
-				exists("id"),
-				exists("key"),
-			],
-		},
-	},
-	issueComments: {
-		// Adding a comment is irreversible-ish (visible in audit trail)
-		addComment: {
+		createComment: {
 			asserts: [
 				exists("id"),
 				exists("body"),
-			],
-		},
-	},
-	issueTransitions: {
-		// Moving an issue to Done/In Progress — assert the transition happened
-		doTransition: {
-			asserts: [
-				exists("id"),
-				exists("transitions"),
 			],
 		},
 	},

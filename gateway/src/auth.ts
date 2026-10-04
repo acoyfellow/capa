@@ -14,6 +14,7 @@ export type UserProps = { user: string; email: string };
 const STATE_TTL_SECONDS = 600;
 const SESSION_COOKIE = "capa_session";
 const SESSION_TTL_SECONDS = 3600;
+const CONSENT_TTL_SECONDS = 600;
 
 type PendingLogin = { kind: "mcp"; authRequest: AuthRequest } | { kind: "session"; returnTo: string };
 
@@ -106,8 +107,43 @@ export async function handleAuthorize(request: Request, env: AuthEnv): Promise<R
 	const client = await env.OAUTH_PROVIDER.lookupClient(authRequest.clientId);
 	if (!client) return new Response("Unknown client", { status: 400 });
 	const session = await readSession(request, env);
-	if (session) return completeMcpAuthorization(env, authRequest, session);
+	if (session) return Response.redirect(await consentUrl(env, new URL(request.url).origin, authRequest, session), 302);
 	return beginLogin(env, new URL(request.url).origin, { kind: "mcp", authRequest });
+}
+
+type PendingConsent = { user: string; authRequest: AuthRequest };
+
+async function consentUrl(env: AuthEnv, origin: string, authRequest: AuthRequest, props: UserProps): Promise<string> {
+	const id = randomToken();
+	const pending: PendingConsent = { user: props.user, authRequest };
+	await env.OAUTH_KV.put(`consent:${id}`, JSON.stringify(pending), { expirationTtl: CONSENT_TTL_SECONDS });
+	return `${origin}/consent?id=${id}`;
+}
+
+async function readConsent(env: AuthEnv, id: string, props: UserProps): Promise<PendingConsent | undefined> {
+	const pending = await env.OAUTH_KV.get<PendingConsent>(`consent:${id}`, "json");
+	return pending?.user === props.user ? pending : undefined;
+}
+
+export type ConsentView = { id: string; clientName: string; redirectUri: string; email: string };
+
+export async function consentView(request: Request, env: AuthEnv, props: UserProps): Promise<ConsentView | undefined> {
+	const id = new URL(request.url).searchParams.get("id") ?? "";
+	const pending = await readConsent(env, id, props);
+	if (!pending) return undefined;
+	const client = await env.OAUTH_PROVIDER.lookupClient(pending.authRequest.clientId);
+	return { id, clientName: client?.clientName ?? pending.authRequest.clientId, redirectUri: pending.authRequest.redirectUri, email: props.email };
+}
+
+export async function decideConsent(env: AuthEnv, id: string, approved: boolean, props: UserProps): Promise<Response> {
+	const pending = await readConsent(env, id, props);
+	if (!pending) return new Response("This sign-in request expired. Start again from your MCP client.", { status: 400 });
+	await env.OAUTH_KV.delete(`consent:${id}`);
+	if (approved) return completeMcpAuthorization(env, pending.authRequest, props);
+	const denied = new URL(pending.authRequest.redirectUri);
+	denied.searchParams.set("error", "access_denied");
+	if (pending.authRequest.state) denied.searchParams.set("state", pending.authRequest.state);
+	return Response.redirect(denied.toString(), 302);
 }
 
 async function readSession(request: Request, env: AuthEnv): Promise<UserProps | undefined> {
@@ -165,7 +201,6 @@ export async function handleCallback(request: Request, env: AuthEnv): Promise<Re
 	const claims = await verifyIdToken(env, id_token, stored.nonce);
 	const props: UserProps = { user: claims.sub, email: claims.email ?? claims.sub };
 	const cookie = sessionCookie(await sign(env.COOKIE_SECRET, JSON.stringify({ ...props, exp: Date.now() + SESSION_TTL_SECONDS * 1000 })));
-	const location =
-		stored.pending.kind === "mcp" ? (await completeMcpAuthorization(env, stored.pending.authRequest, props)).headers.get("location")! : stored.pending.returnTo;
+	const location = stored.pending.kind === "mcp" ? await consentUrl(env, url.origin, stored.pending.authRequest, props) : stored.pending.returnTo;
 	return new Response(null, { status: 302, headers: { location, "set-cookie": cookie } });
 }

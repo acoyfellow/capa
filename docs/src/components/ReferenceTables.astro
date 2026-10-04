@@ -1,0 +1,58 @@
+---
+import { getCapabilities, formatNumber } from '../data/capabilities';
+
+interface Props {
+	table: 'capabilities' | 'secrets';
+}
+
+const { table } = Astro.props;
+const caps = getCapabilities();
+---
+
+{table === 'capabilities' && (
+	<table>
+		<thead>
+			<tr>
+				<th>Capability</th>
+				<th>Entrypoint</th>
+				<th class="capa-numeric">Operations</th>
+				<th class="capa-numeric">Namespaces</th>
+				<th>Auth</th>
+				<th>Body</th>
+			</tr>
+		</thead>
+		<tbody>
+			{caps.map((c) => (
+				<tr>
+					<td><a href={c.repoUrl}>{c.name}</a></td>
+					<td><code>{c.entrypoint}</code></td>
+					<td class="capa-numeric">{formatNumber(c.operations)}</td>
+					<td class="capa-numeric">{formatNumber(c.namespaces)}</td>
+					<td>{c.authLabel}</td>
+					<td>{c.contentTypeLabel}</td>
+				</tr>
+			))}
+		</tbody>
+	</table>
+)}
+
+{table === 'secrets' && (
+	<table>
+		<thead>
+			<tr>
+				<th>Capability</th>
+				<th>Required</th>
+				<th>Optional</th>
+			</tr>
+		</thead>
+		<tbody>
+			{caps.map((c) => (
+				<tr>
+					<td>{c.name}</td>
+					<td>{(c.requiredSecrets ?? []).map((s, i) => <>{i > 0 && ', '}<code>{s}</code></>)}</td>
+					<td>{(c.optionalSecrets ?? []).length ? (c.optionalSecrets ?? []).map((s, i) => <>{i > 0 && ', '}<code>{s}</code></>) : 'None'}</td>
+				</tr>
+			))}
+		</tbody>
+	</table>
+)}

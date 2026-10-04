@@ -1,0 +1,8 @@
+{
+	"name": "capa-eval-tools",
+	"private": true,
+	"devDependencies": {
+		"cf": "1.0.0-beta.7",
+		"wrangler": "4.145.0"
+	}
+}

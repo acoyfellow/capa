@@ -63,47 +63,32 @@ function isType(path: string, type: "number" | "string" | "boolean" | "object") 
 }
 
 export const overrides: Record<string, Record<string, MethodOverride>> = {
-	mergeRequests: {
-		// Posting a comment is the high-stakes write per JORDAN.md
-		createNote: {
-			asserts: [
-				exists("id"),
-				isType("id", "number"),
-				exists("body"),
-			],
-		},
-		// Updating an MR can change state (close, reopen, label) — assert id roundtrip
-		update: {
+	projects: {
+		mergeRequests_2: {
 			asserts: [
 				exists("id"),
 				exists("iid"),
 			],
 		},
-		// Approval is irreversible-ish; assert it actually happened
-		approve: {
+		mergeRequestsApprove: {
 			asserts: [
-				equals("state", "approved"),
+				exists("approved_by"),
 			],
 		},
-	},
-	issues: {
-		create: {
+		createIssue: {
 			asserts: [
 				exists("id"),
 				exists("iid"),
 				equals("state", "opened"),
 			],
 		},
-		update: {
+		issues: {
 			asserts: [
 				exists("id"),
 				exists("iid"),
 			],
 		},
-	},
-	pipelines: {
-		// Re-running pipelines costs CI minutes — verify it actually started
-		retry: {
+		pipelinesRetry: {
 			asserts: [
 				exists("id"),
 				exists("status"),
