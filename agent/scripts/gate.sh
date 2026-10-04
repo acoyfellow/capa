@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-AGENT_URL="${CAPA_AGENT_URL:?set CAPA_AGENT_URL, for example https://capa-agent.<subdomain>.workers.dev}"
+AGENT_URL="${CAPA_AGENT_URL:-https://capa-agent.coy.workers.dev}"
 OWNER_TOKEN_FILE="${CAPA_AGENT_OWNER_TOKEN_FILE:-$HOME/.config/capa/agent-owner-token}"
 GITHUB_TOKEN_FILE="${CAPA_AGENT_GITHUB_TOKEN_FILE:-$HOME/.config/capa/eval-github-token}"
 RUN="gate-$(date +%s)"

@@ -4,6 +4,7 @@ import type { AgentEnv } from "./types.ts";
 
 export { CapaAgent } from "./agent.ts";
 export { CapaBridge } from "./bridge.ts";
+export { SubAgent } from "./sub-agent.ts";
 
 const AGENT_NAME = /^[a-z0-9][a-z0-9-]{0,62}$/;
 
@@ -33,11 +34,35 @@ export class AgentRpc extends WorkerEntrypoint<AgentEnv> {
 	}
 }
 
+const SUB_ACTIONS = new Set(["ask", "execute", "note", "notes", "transcriptSize", "identity"]);
+
+async function handleSubAgent(request: Request, agent: DurableObjectStub<import("./agent.ts").CapaAgent>, subAgent: string | undefined, subAction: string | undefined): Promise<Response> {
+	if (!subAgent || !AGENT_NAME.test(subAgent)) return json({ error: "Use /agents/<name>/subs/<sub-agent>/<action>" }, 404);
+	const body = request.method === "GET" || request.method === "DELETE" ? {} : ((await request.json()) as Record<string, unknown>);
+	try {
+		if (request.method === "PUT" && subAction === "grants") return json(await agent.setSubAgentGrants(subAgent, body.grants));
+		if (request.method === "GET" && subAction === "grants") return json(await agent.grantsFor(subAgent));
+		if (request.method === "POST" && subAction === "clone") {
+			await agent.cloneSubAgent(subAgent, String(body.to));
+			return json({ cloned: `${subAgent} -> ${String(body.to)}` });
+		}
+		if (request.method === "DELETE" && !subAction) {
+			await agent.deleteSubAgent(subAgent);
+			return json({ deleted: subAgent });
+		}
+		if (request.method === "POST" && subAction === "parallel") return json(await agent.parallel([subAgent, ...((body.with as string[]) ?? [])], Number(body.ms ?? 2000)));
+		if (subAction && SUB_ACTIONS.has(subAction)) return json(await agent.subAgentCall(subAgent, subAction, body.value ?? body.prompt ?? body.code ?? body.ms));
+		return json({ error: `Unknown sub-agent action ${subAction}` }, 404);
+	} catch (error) {
+		return json({ error: String((error as Error).message ?? error) }, 400);
+	}
+}
+
 export default {
 	async fetch(request, env) {
 		const url = new URL(request.url);
 		if (url.pathname === "/") return new Response("capa agent. Routes: /agents/<name>[/grants|/mcp|/evidence|/execute|/transcript]", { headers: { "content-type": "text/plain" } });
-		const [, root, name, action = "ask"] = url.pathname.split("/");
+		const [, root, name, action = "ask", subAgent, subAction] = url.pathname.split("/");
 		if (root !== "agents" || !name || !AGENT_NAME.test(name)) return new Response("Not found", { status: 404 });
 		if (!(await isOwner(request, env))) return json({ error: "Owner token required" }, 401);
 
@@ -63,6 +88,11 @@ export default {
 				return json(await agent.evidence());
 			case "GET transcript":
 				return json(await agent.transcript());
+			case `PUT subs`:
+			case `POST subs`:
+			case `GET subs`:
+			case `DELETE subs`:
+				return handleSubAgent(request, agent, subAgent, subAction);
 			case "GET rpc-tools":
 				return json(await env.SELF_RPC.tools(name));
 			default:

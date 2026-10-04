@@ -4,6 +4,8 @@ export type Evidence = { verdict: string; operationId: string; act: { status: nu
 
 export type BridgeProps = { agent: string; grants: Grant[] };
 
+export type SubAgentIdentity = { parent: string; subAgent: string };
+
 export interface CapaAgentStub {
 	record(evidence: Evidence): Promise<void>;
 }

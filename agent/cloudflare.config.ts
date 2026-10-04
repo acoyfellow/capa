@@ -19,6 +19,7 @@ export default defineConfig({
 		},
 		exports: {
 			CapaAgent: exports.durableObject({ storage: "sqlite" }),
+			SubAgent: exports.durableObject({ storage: "sqlite" }),
 			CapaBridge: exports.worker(),
 			AgentRpc: exports.worker(),
 		},

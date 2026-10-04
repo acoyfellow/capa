@@ -46,7 +46,7 @@ export async function handleMcp(request: Request, agent: AgentApi): Promise<Resp
 
 	switch (message.method) {
 		case "initialize":
-			return result(message.id, { protocolVersion: "2025-06-18", capabilities: { tools: {} }, serverInfo: { name: "capa-agent", version: "0.1.0" } });
+			return result(message.id, { protocolVersion: "2025-06-18", capabilities: { tools: {} }, serverInfo: { name: "capa-agent", version: "0.1.1" } });
 		case "ping":
 			return result(message.id, {});
 		case "tools/list":
