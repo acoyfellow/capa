@@ -1,0 +1,22 @@
+{
+	"name": "@capa/agent",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"catalog": "node scripts/build-catalog.mjs",
+		"test": "node --test test/*.test.ts",
+		"typecheck": "tsc --noEmit -p tsconfig.json",
+		"deploy": "npm run catalog && npm test && cf deploy"
+	},
+	"dependencies": {
+		"@earendil-works/pi-ai": "1.0.2",
+		"@earendil-works/pi-durable": "1.0.2",
+		"agents": "0.26.0"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "5.20260930.2",
+		"cf": "1.0.0-beta.7",
+		"typescript": "5.9.3",
+		"wrangler": "4.145.0"
+	}
+}
