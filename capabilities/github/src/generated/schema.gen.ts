@@ -2933,14 +2933,18 @@ export type paths = {
         };
         /**
          * Get artifact and log retention settings for an organization
-         * @description Gets artifact and log retention settings for an organization.
+         * @description Gets retention settings for checks, workflow runs, commit statuses, artifacts, and logs for an organization.
+         *
+         *     Checks include check suites, check runs, and check annotations. These settings also apply to checks and commit statuses created by third-party integrations, and are not limited to data created by GitHub Actions.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `admin:org` scope or the "Actions policies" fine-grained permission to use this endpoint.
          */
         get: operations["actions/get-artifact-and-log-retention-settings-organization"];
         /**
          * Set artifact and log retention settings for an organization
-         * @description Sets artifact and log retention settings for an organization.
+         * @description Sets retention settings for checks, workflow runs, commit statuses, artifacts, and logs for an organization.
+         *
+         *     Checks include check suites, check runs, and check annotations. These settings also apply to checks and commit statuses created by third-party integrations, and are not limited to data created by GitHub Actions.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `admin:org` scope or the "Actions policies" fine-grained permission to use this endpoint.
          */
@@ -4758,10 +4762,7 @@ export type paths = {
         };
         /**
          * Get the AI Scan setting for an organization
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Gets the AI Scan setting stored on an organization.
+         * @description Gets the AI Scan setting stored on an organization.
          *
          *     The response reports the value stored on the organization. Organization respects enterprise policy.
          *
@@ -4777,10 +4778,7 @@ export type paths = {
         head?: never;
         /**
          * Update the AI Scan setting for an organization
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Updates the AI Scan setting stored on an organization.
+         * @description Updates the AI Scan setting stored on an organization.
          *
          *     The organization respects the enterprise policy, so enabling is rejected when the enterprise disallows AI Scan.
          *
@@ -8181,7 +8179,11 @@ export type paths = {
          * Register an app installation for external custom properties
          * @description Registers a GitHub App installation so it can read and write external custom properties for an organization, and assigns it a display name.
          *
-         *     An app installation can only be registered once, and its display name can't be changed afterward. Calling with an app installation that has already been registered returns a `422` response with an `already_exists` error code.
+         *     The display name must be 1 to 15 characters and contain only letters and numbers. Capitalization is preserved as entered.
+         *
+         *     An app installation can only be registered once, and its display name can't be changed afterward. Calling with an app installation that has already been registered returns a `422` response with an `already_exists` error code for `installation_id`. If the display name is already in use by another app installation in the organization, the response is `422` with an `already_exists` error code for `display_name`. An invalid display name also returns `422`.
+         *
+         *     The app installation being registered must have write or admin permission for organization external custom properties for repositories. If it doesn't, the response is `422`. This is the permission of the installation being registered, which isn't necessarily the caller.
          *
          *     Uninstalling the GitHub App unregisters it, and removes the external custom properties it created.
          *
@@ -9794,14 +9796,18 @@ export type paths = {
         };
         /**
          * Get artifact and log retention settings for a repository
-         * @description Gets artifact and log retention settings for a repository.
+         * @description Gets retention settings for checks, workflow runs, commit statuses, artifacts, and logs for a repository.
+         *
+         *     Checks include check suites, check runs, and check annotations. These settings also apply to checks and commit statuses created by third-party integrations, and are not limited to data created by GitHub Actions.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
          */
         get: operations["actions/get-artifact-and-log-retention-settings-repository"];
         /**
          * Set artifact and log retention settings for a repository
-         * @description Sets artifact and log retention settings for a repository.
+         * @description Sets retention settings for checks, workflow runs, commit statuses, artifacts, and logs for a repository.
+         *
+         *     Checks include check suites, check runs, and check annotations. These settings also apply to checks and commit statuses created by third-party integrations, and are not limited to data created by GitHub Actions.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
          */
@@ -12187,10 +12193,7 @@ export type paths = {
         };
         /**
          * Get AI Scan enablement for a repository
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Gets whether AI Scan is enabled for a repository.
+         * @description Gets whether AI Scan is enabled for a repository.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `security_events` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
          */
@@ -12202,10 +12205,7 @@ export type paths = {
         head?: never;
         /**
          * Update AI Scan enablement for a repository
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Updates whether AI Scan is enabled for a repository.
+         * @description Updates whether AI Scan is enabled for a repository.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
          */
@@ -17443,6 +17443,27 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers/rerequest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Rerequest reviewers for a pull request
+         * @description Rerequests reviews for a pull request from a given set of users and/or teams.
+         *     This endpoint triggers [notifications](https://docs.github.com/github/managing-subscriptions-and-notifications-on-github/about-notifications). Creating content too quickly using this endpoint may result in secondary rate limiting. For more information, see "[Rate limits for the API](https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits)" and "[Best practices for using the REST API](https://docs.github.com/rest/guides/best-practices-for-using-the-rest-api)."
+         */
+        post: operations["pulls/rerequest-reviewers"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/pulls/{pull_number}/reviews": {
         parameters: {
             query?: never;
@@ -22497,11 +22518,11 @@ export type webhooks = Record<string, never>;
 export type components = {
     schemas: {
         "actions-artifact-and-log-retention": {
-            /** @description The number of days to retain artifacts and logs */
+            /** @description The number of days to retain checks, workflow runs, commit statuses, artifacts, and logs */
             days: number;
         };
         "actions-artifact-and-log-retention-response": {
-            /** @description The number of days artifacts and logs are retained */
+            /** @description The number of days checks, workflow runs, commit statuses, artifacts, and logs are retained */
             days: number;
             /** @description The maximum number of days that can be configured */
             maximum_allowed_days: number;
@@ -37586,6 +37607,11 @@ export type components = {
          */
         "pull-request-merge-async-result": {
             details: {
+                /**
+                 * @description Whether the asynchronous merge request will attempt to bypass repository rules that the authenticated actor is permitted to bypass.
+                 * @default false
+                 */
+                bypass_rules?: boolean;
                 /** @description SHA that the pull request head must match for the enqueued merge to proceed. */
                 expected_head_sha: string;
                 /** @enum {string} */
@@ -116727,7 +116753,7 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description The display name for this app installation's external custom properties in the organization. This can't be changed after the app installation is registered. */
+                    /** @description The display name for this app installation's external custom properties in the organization. Must be 1 to 15 characters and contain only letters and numbers. Capitalization is preserved as entered. This can't be changed after the app installation is registered. */
                     display_name: string;
                     /** @description The unique identifier of the GitHub App installation to register for managing external custom properties. When authenticating as a GitHub App installation, this defaults to the authenticated installation and can be omitted. It is required for all other callers (users and fine-grained personal access tokens). */
                     installation_id?: number;
@@ -134876,6 +134902,11 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
+                    /**
+                     * @description Whether to bypass repository rules that the authenticated actor is permitted to bypass.
+                     * @default false
+                     */
+                    bypass_rules?: boolean;
                     /** @description Extra detail to append to automatic commit message. Only supported for direct merges. */
                     commit_message?: string;
                     /** @description Title for the automatic commit message. Only supported for direct merges. */
@@ -135076,6 +135107,50 @@ export interface operations {
                 };
             };
             422: components["responses"]["validation_failed"];
+        };
+    };
+    "pulls/rerequest-reviewers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The number that identifies the pull request. */
+                pull_number: components["parameters"]["pull-number"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description An array of user `login`s whose reviews will be rerequested. */
+                    reviewers?: string[];
+                    /** @description An array of team `slug`s whose reviews will be rerequested. */
+                    team_reviewers?: string[];
+                } | unknown | unknown;
+            };
+        };
+        responses: {
+            /** @description Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["pull-request-simple"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            /** @description Unprocessable Entity if user is not a collaborator */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     "pulls/list-reviews": {
@@ -135492,6 +135567,7 @@ export interface operations {
                     "application/json": components["schemas"]["pull-request-review-comment"];
                 };
             };
+            304: components["responses"]["not_modified"];
             404: components["responses"]["not_found"];
         };
     };
