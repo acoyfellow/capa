@@ -4,114 +4,114 @@
 		"stripe": {
 			"name": "stripe",
 			"spec": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.sdk.json",
-			"sha256": "2dd087bbc51e0599759908b3771a59a71aaa1d422c125eb3eda874a7075172f8",
+			"sha256": "622e04fb9ae98eb28b5a67c7c885af52a71ffa60e9230b2197f5b3e136651b1d",
 			"version": "2026-09-30.endive",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"gitlab": {
 			"name": "gitlab",
 			"spec": "https://docs.gitlab.com/api/openapi/openapi_v2.yaml",
 			"sha256": "bc293766bd7770c90f4e59b77695ec89f6427a43cb2e0dbc2c6757f06585c3ca",
 			"version": "v4",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"jira": {
 			"name": "jira",
 			"spec": "https://developer.atlassian.com/cloud/jira/platform/swagger-v3.v3.json",
-			"sha256": "6ecc461bb85e92a46331a4316b6c63c91c16ed6baf5f06b03ab616da3f1ab3d7",
-			"version": "1001.0.0-SNAPSHOT-44cdd07c042959317ed5591bf79dbcd9369f3610",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"sha256": "e2bedefa1603a38d31c7ca886b897091bc342e7ef18b498c305352b030e7606c",
+			"version": "1001.0.0-SNAPSHOT-d8285b35176e627de42fb7c0a2202b5467ce28e0",
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"github": {
 			"name": "github",
 			"spec": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
-			"sha256": "c3e138597750d638b718f0da91228416893eea56d497fda391ab10b2e84b08a1",
+			"sha256": "f3efa055b46b43f5f133ecf792a36a7f50cf8a4378cbd177390bc2bf8c6097cd",
 			"version": "1.1.4",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"discord": {
 			"name": "discord",
 			"spec": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
-			"sha256": "c7fcfce6c671c91491d62763b87cb373ac4aa9b649fba5d0e7fe86aedda9fbf3",
+			"sha256": "c946facea80a4d356a9e930062c4d05cb6e96ec2638e532493e557805bb6c408",
 			"version": "10",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"slack": {
 			"name": "slack",
 			"spec": "https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2_without_examples.json",
 			"sha256": "8b92da26a3c5b11d20042a9f36d81f1fa6fc9382c5ddc471babb68b91936bc3a",
 			"version": "1.7.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"twilio": {
 			"name": "twilio",
 			"spec": "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json",
 			"sha256": "78e76cc93c355a259e241866c241663eddb6ce0ed528f066c6cf0958648f5637",
 			"version": "1.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"twilio-messaging": {
 			"name": "twilio-messaging",
 			"spec": "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_messaging_v1.json",
 			"sha256": "28993c66048625cb9421c8534609d9b3573365d0e25a5170b5026806634b3f9a",
 			"version": "1.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"twilio-verify": {
 			"name": "twilio-verify",
 			"spec": "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_verify_v2.json",
 			"sha256": "10559c28858caa9b00620ebec400aded2aaebe4ff6e4215ec00396df0ffda52c",
 			"version": "1.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"box": {
 			"name": "box",
 			"spec": "https://raw.githubusercontent.com/box/box-openapi/main/openapi.json",
 			"sha256": "13cc601e01a7b82133975aaf7aeffb1850159a10ac6365fae00d5af94406d9d4",
 			"version": "2024.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"sentry": {
 			"name": "sentry",
 			"spec": "https://raw.githubusercontent.com/getsentry/sentry-api-schema/main/openapi-derefed.json",
-			"sha256": "1a986e23e59c44a5ee3631efb9c45c1dfab41d13166989f65f33df1220e5d199",
+			"sha256": "7688d900336172f1229e071f4938d0e551f53a3ba2c4a72fb95be2dba50992c9",
 			"version": "v0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"zoom": {
 			"name": "zoom",
 			"spec": "https://raw.githubusercontent.com/zoom/api/master/openapi.v2.json",
 			"sha256": "1b04394282bb3759744334835c5aa92fcafb57df71f27713f92e7f0532bd18b0",
 			"version": "2.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"kubernetes": {
 			"name": "kubernetes",
 			"spec": "https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json",
-			"sha256": "3f83d7ded523e86baa0d745cf0894d411483d4bc2e99d04c11ae3edbb45c66be",
+			"sha256": "4b7c11361d6b88bdc6e2d03b39394ac3064dffd4507a168f95090b9fe0ff184e",
 			"version": "unversioned",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"twitch": {
 			"name": "twitch",
 			"spec": "https://raw.githubusercontent.com/DmitryScaletta/twitch-api-swagger/main/openapi.json",
 			"sha256": "8220cef29980d08826569b080e3dfdfd00646ba9881a568b2e63a577dffa9836",
 			"version": "helix",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"blooio": {
 			"name": "blooio",
 			"spec": "https://backend.blooio.com/v2/api/openapi.json",
-			"sha256": "d6a7c454f861b762cb3ede6af3a137c61ce57d4d43a38c3ffa1ee6fe1c9251ae",
+			"sha256": "1df450d2d1cc63fe9aac0c036f5ebf2e541690fb0c5fba37367831799d9ad6e1",
 			"version": "2.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		},
 		"htmlcsstoimage": {
 			"name": "htmlcsstoimage",
 			"spec": "https://htmlcsstoimage.com/openapi/v1.json",
-			"sha256": "80e8caecb0efffe24fb4df0f9a7b02345d829259e0b5f857afcca1d492d6ba25",
+			"sha256": "9095bcb65ead3f886c1adb55c9f94dd9ae571b57bb4267f100b4b220326590d4",
 			"version": "1.0.0",
-			"checkedAt": "2026-09-28T14:17:40.000Z"
+			"checkedAt": "2026-10-05T09:45:40.256Z"
 		}
 	}
 }

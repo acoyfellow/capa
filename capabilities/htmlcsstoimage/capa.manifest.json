@@ -12,7 +12,7 @@
 	},
 	"auth": "basic",
 	"contentType": "json",
-	"operations": 38,
+	"operations": 39,
 	"namespaces": 9,
 	"publicHttpRoute": false,
 	"evidenceContract": "capa.evidence.v0"

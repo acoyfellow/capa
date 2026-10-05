@@ -88,7 +88,11 @@ such as membership access and teams.
 
 Return AI conversations ordered by latest span time.
 
-`query` uses Sentry search syntax against spans. A conversation matches wh
+`query` uses Sentry search syntax.
+
+**Span filters**
+
+- Description: `"pay
 	 *
 	 * `GET /api/0/organizations/{organization_id_or_slug}/agents/conversations/` — risk: medium
 	 */

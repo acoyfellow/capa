@@ -2097,7 +2097,7 @@ export type paths = {
          * Add issue types to context
          * @description Adds issue types to a custom field context, appending the issue types to the issue types list.
          *
-         *     A custom field context without any issue types applies to all issue types. Adding issue types to such a custom field context would result in it applying to only the listed issue types.
+         *     A custom field context without any issue types applies to all issue types. Adding issue types replaces the any-issue-type mapping unless \{@code isAnyIssueType\} is true. A supplied \{@code defaultValue\} applies to newly added mappings. If omitted, the default value of the first existing issue type mapping is copied. Existing mappings retain their defaults.
          *
          *     If any of the issue types exists in the custom field context, the operation fails and no issue types are added.
          *
@@ -13698,6 +13698,13 @@ export type components = {
             name: string;
         } & {
             [key: string]: unknown;
+        };
+        AddIssueTypesToContext: {
+            defaultValue?: components["schemas"]["CustomFieldContextDefaultValue"];
+            /** @description Whether to add or retain the any-issue-type mapping. At least one of this property or issueTypeIds is required. Defaults to false. */
+            isAnyIssueType?: boolean;
+            /** @description The issue type IDs to add. Optional when isAnyIssueType is true. */
+            issueTypeIds?: (string | null)[] | null;
         };
         /** @description Details of notifications which should be added to the notification scheme. */
         AddNotificationsDetails: {
@@ -33132,7 +33139,7 @@ export interface operations {
                  *       ]
                  *     }
                  */
-                "application/json": components["schemas"]["IssueTypeIds"];
+                "application/json": components["schemas"]["AddIssueTypesToContext"];
             };
         };
         responses: {

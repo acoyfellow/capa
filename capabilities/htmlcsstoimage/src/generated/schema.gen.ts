@@ -124,10 +124,33 @@ export type paths = {
         };
         get?: never;
         put?: never;
-        /** Create a batch of images */
+        /**
+         * Create a batch of images
+         * @description Create images from shared default_options and variations. Each variation overrides corresponding defaults. Results preserve variation order.
+         */
         post: operations["create-image-batch"];
         /** Delete a batch of images */
         delete: operations["delete-image-batch"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/image/batch/templated": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a batch of templated images
+         * @description Create images from one or more templates. Set template_id, optional template_version, and template_values in default_options or each variation. Supplying a template_id in a variation resets its inherited version. Object values merge recursively; variation arrays, scalars and explicit null replace defaults. Identical images reuse existing assets. Results preserve variation order.
+         */
+        post: operations["create-templated-image-batch"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -655,12 +678,20 @@ export type components = {
              */
             ids: string[];
         };
+        /** @description Creates a batch of images from HTML or URLs. Each variation overrides the corresponding default options. */
         BatchImageRequest: {
             default_options?: null | components["schemas"]["BaseImageRequest"];
-            variations?: components["schemas"]["ImageRequest"][];
+            /** @description One variation per image. Supply at least one variation, within your plan's batch limit. Each merged request must provide HTML or a URL. Results preserve this order. */
+            variations: components["schemas"]["ImageRequest"][];
         };
         BatchImageResult: {
             images: components["schemas"]["ImageResultWithId"][];
+        };
+        /** @description Creates a batch from one or more templates. Set template_id, template_version and template_values in shared default_options or individual variations. */
+        BatchTemplatedImageRequest: {
+            default_options?: null | components["schemas"]["ImageRequest_TemplatedBatchOptions"];
+            /** @description One variation per image. Supply at least one variation, within your plan's batch limit. Each variation must resolve to a template_id. Each merged template_values object must be nonempty and satisfy the template's required variables. Results preserve this order. */
+            variations: components["schemas"]["ImageRequest_TemplatedBatchOptions"][];
         };
         /** @enum {unknown} */
         CloudflareStorageJurisdiction: "eu" | "fedramp" | null;
@@ -1084,6 +1115,17 @@ export type components = {
             next_page_token: string;
         };
         ImageRequest: components["schemas"]["ImageRequestImageRequest_HtmlCss"] | components["schemas"]["ImageRequestImageRequest_Url"] | components["schemas"]["ImageRequestImageRequest_Templated"];
+        ImageRequest_TemplatedBatchOptions: {
+            format?: null | components["schemas"]["ImageFormat"];
+            /** @description Template ID to render for this variation. Omit to inherit default_options.template_id. Supplying a template_id resets the inherited template_version unless this variation also supplies a version. Each variation must resolve to a nonempty template ID owned by the authenticated organization. */
+            template_id?: null | string;
+            template_values?: null | components["schemas"]["JsonObject"];
+            /**
+             * Format: int64
+             * @description Template version to render. Inherit default_options.template_version when using the default template ID. When supplying a template_id in this variation, omit the version to use that template's latest version.
+             */
+            template_version?: null | number | string;
+        };
         /** HTML/CSS Image Request */
         ImageRequestImageRequest_HtmlCss: {
             color_scheme?: null | components["schemas"]["ColorSchemeType"];
@@ -3147,6 +3189,15 @@ export interface operations {
                     "application/json": components["schemas"]["ApiErrorResult"];
                 };
             };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
             /** @description Payment Required */
             402: {
                 headers: {
@@ -3158,6 +3209,15 @@ export interface operations {
             };
             /** @description Forbidden */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3198,6 +3258,84 @@ export interface operations {
             };
             /** @description Unauthorized */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "create-templated-image-batch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BatchTemplatedImageRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BatchImageResult"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Payment Required */
+            402: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };

@@ -4,7 +4,7 @@
 	"source": {
 		"spec": "https://developer.atlassian.com/cloud/jira/platform/swagger-v3.v3.json",
 		"title": "The Jira Cloud platform REST API",
-		"version": "1001.0.0-SNAPSHOT-dbfd2235e09199a2fb4752c2cbd5853d9102be9a"
+		"version": "1001.0.0-SNAPSHOT-d8285b35176e627de42fb7c0a2202b5467ce28e0"
 	},
 	"upstream": {
 		"baseUrl": "https://your-domain.atlassian.net",
