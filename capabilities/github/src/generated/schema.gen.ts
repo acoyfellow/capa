@@ -63,6 +63,356 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/agents/automations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List automations for user
+         * @description Returns automations whose `created_by` user is the authenticated caller, across
+         *     repositories the caller can read. This includes both user-owned and repository-owned
+         *     automations created by the caller but excludes repository-owned automations created by
+         *     someone else even if the caller has write access to the repository.
+         *
+         *     Use the repository-scoped list operation for those automations. The `owner_type` filter
+         *     only narrows this creator-scoped collection.
+         *
+         *     **Fine-grained access tokens for "List automations for user"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     The fine-grained token must have one of the following permission sets for each
+         *     repository accessed by this request:
+         *
+         *     * "Agent tasks" repository permissions (read)
+         *     * "Contents" repository permissions (read)
+         *
+         *     The required permission set depends on each repository's Automation permission
+         *     configuration.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        get: operations["agent-automations/list-automations"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/agents/automations/{automation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get an automation by ID
+         * @description Returns an automation by ID without requiring repository context when its `created_by`
+         *     user is the authenticated caller and the caller can read its repository. This includes
+         *     both user-owned and repository-owned automations created by the caller but excludes
+         *     repository-owned automations created by someone else even if the caller has write
+         *     access to the repository.
+         *
+         *     Use the repository-scoped get operation for those automations. The response includes
+         *     repository identity so clients can link back to the repository.
+         *
+         *     **Fine-grained access tokens for "Get an automation by ID"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     The fine-grained token must have one of the following permission sets for each
+         *     repository accessed by this request:
+         *
+         *     * "Agent tasks" repository permissions (read)
+         *     * "Contents" repository permissions (read)
+         *
+         *     The required permission set depends on each repository's Automation permission
+         *     configuration.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        get: operations["agent-automations/get-automation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/agents/automations/{automation_id}/tasks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List tasks for an automation
+         * @description Returns a list of tasks triggered by the specified automation.
+         *
+         *     User-owned automation history is available only to its creator, while repository-owned automation
+         *     history is available to anyone with read access to the repository. Deleted and unlisted tasks are excluded.
+         *     Tasks produced by private-session agents are excluded unless the caller created the task,
+         *     is a task collaborator, or the task is shared.
+         *
+         *     **Fine-grained access tokens for "List tasks for an automation"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     The fine-grained token must have one of the following permission sets for each
+         *     repository accessed by this request:
+         *
+         *     * "Agent tasks" repository permissions (read)
+         *     * "Contents" repository permissions (read)
+         *
+         *     The required permission set depends on each repository's Automation permission
+         *     configuration.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        get: operations["agent-automations/list-automation-tasks"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/agents/automations/available-tools": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List available automation tools
+         * @description Returns the tools available to the authenticated caller for use when creating or updating an automation.
+         *
+         *     **Fine-grained access tokens for "List available automation tools"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     This endpoint does not require repository permissions.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        get: operations["agent-automations/list-available-automation-tools"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/agents/automations/available-triggers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List available automation triggers
+         * @description Returns the triggers available to the authenticated caller, including machine-readable schemas for their configurable fields.
+         *
+         *     **Fine-grained access tokens for "List available automation triggers"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     This endpoint does not require repository permissions.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        get: operations["agent-automations/list-available-automation-triggers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/agents/repos/{owner}/{repo}/automations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List automations for a repository
+         * @description Returns a paginated list of the authenticated user's automations for a repository,
+         *     together with every repository-owned automation in it. `total_count` is the number of
+         *     caller-visible automations matching the supplied filters across all pages.
+         *     Repository-owned automations are visible to anyone with read access to the repository,
+         *     so the results are not limited to automations the caller created. Use the `owner_type`
+         *     field on each automation to tell the two apart.
+         *
+         *     **Fine-grained access tokens for "List automations for a repository"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     The fine-grained token must have one of the following permission sets for each
+         *     repository accessed by this request:
+         *
+         *     * "Agent tasks" repository permissions (read)
+         *     * "Contents" repository permissions (read)
+         *
+         *     The required permission set depends on each repository's Automation permission
+         *     configuration.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        get: operations["agent-automations/list-repo-automations"];
+        put?: never;
+        /**
+         * Create an automation for a repository
+         * @description Creates a new automation in a repository. User-owned automations remain private to
+         *     their creator. Repository-owned automations are visible to anyone with read access to
+         *     the repository and manageable by anyone with write access to the repository.
+         *
+         *     **Fine-grained access tokens for "Create an automation for a repository"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     The fine-grained token must have one of the following permission sets for each
+         *     repository accessed by this request:
+         *
+         *     * "Agent tasks" repository permissions (read and write)
+         *     * "Contents" repository permissions (read and write)
+         *
+         *     The required permission set depends on each repository's Automation permission
+         *     configuration.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        post: operations["agent-automations/create-repo-automation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/agents/repos/{owner}/{repo}/automations/{automation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get an automation for a repository
+         * @description Returns an automation by ID in a repository.
+         *
+         *     User-owned automations are visible only to their creator. Repository-owned
+         *     automations are visible to anyone with read access to the repository. The
+         *     `created_by` field identifies the creator and is distinct from the automation's
+         *     `owner_type`.
+         *
+         *     **Fine-grained access tokens for "Get an automation for a repository"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     The fine-grained token must have one of the following permission sets for each
+         *     repository accessed by this request:
+         *
+         *     * "Agent tasks" repository permissions (read)
+         *     * "Contents" repository permissions (read)
+         *
+         *     The required permission set depends on each repository's Automation permission
+         *     configuration.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        get: operations["agent-automations/get-repo-automation"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete an automation for a repository
+         * @description Deletes an automation in a repository.
+         *
+         *     **Fine-grained access tokens for "Delete an automation for a repository"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     The fine-grained token must have one of the following permission sets for each
+         *     repository accessed by this request:
+         *
+         *     * "Agent tasks" repository permissions (read and write)
+         *     * "Contents" repository permissions (read and write)
+         *
+         *     The required permission set depends on each repository's Automation permission
+         *     configuration.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        delete: operations["agent-automations/delete-repo-automation"];
+        options?: never;
+        head?: never;
+        /**
+         * Edit an automation for a repository
+         * @description Edits specified fields on an existing automation in a repository. Omitted fields
+         *     are left unchanged.
+         *     The automation's `owner_type` is immutable and cannot be changed by this operation.
+         *
+         *     **Fine-grained access tokens for "Edit an automation for a repository"**
+         *
+         *     This endpoint works with the following fine-grained token types:
+         *
+         *     * [GitHub App user access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app)
+         *     * [Fine-grained personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token)
+         *
+         *     The fine-grained token must have one of the following permission sets for each
+         *     repository accessed by this request:
+         *
+         *     * "Agent tasks" repository permissions (read and write)
+         *     * "Contents" repository permissions (read and write)
+         *
+         *     The required permission set depends on each repository's Automation permission
+         *     configuration.
+         *
+         *     GitHub App installation access tokens are not supported for this endpoint.
+         */
+        patch: operations["agent-automations/edit-repo-automation"];
+        trace?: never;
+    };
     "/agents/repos/{owner}/{repo}/tasks": {
         parameters: {
             query?: never;
@@ -833,6 +1183,9 @@ export type paths = {
          *     enterprise may not set a higher cache retention limit.
          *
          *     OAuth tokens and personal access tokens (classic) need the `admin:enterprise` scope to use this endpoint.
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         get: operations["actions/get-actions-cache-retention-limit-for-enterprise"];
         /**
@@ -841,6 +1194,9 @@ export type paths = {
          *     enterprise may not set a higher cache retention limit.
          *
          *     OAuth tokens and personal access tokens (classic) need the `admin:enterprise` scope to use this endpoint.
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         put: operations["actions/set-actions-cache-retention-limit-for-enterprise"];
         post?: never;
@@ -863,6 +1219,9 @@ export type paths = {
          *     enterprise may not set a higher cache storage limit.
          *
          *     OAuth tokens and personal access tokens (classic) need the `admin:enterprise` scope to use this endpoint.
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         get: operations["actions/get-actions-cache-storage-limit-for-enterprise"];
         /**
@@ -871,6 +1230,9 @@ export type paths = {
          *     enterprise may not set a higher cache storage limit.
          *
          *     OAuth tokens and personal access tokens (classic) need the `admin:enterprise` scope to use this endpoint.
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         put: operations["actions/set-actions-cache-storage-limit-for-enterprise"];
         post?: never;
@@ -892,6 +1254,9 @@ export type paths = {
          * @description Lists the repository custom properties that are included in the OIDC token for repository actions in an enterprise.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `admin:enterprise` scope to use this endpoint.
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         get: operations["oidc/list-oidc-custom-property-inclusions-for-enterprise"];
         put?: never;
@@ -900,6 +1265,9 @@ export type paths = {
          * @description Adds a repository custom property to be included in the OIDC token for repository actions in an enterprise.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `admin:enterprise` scope to use this endpoint.
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         post: operations["oidc/create-oidc-custom-property-inclusion-for-enterprise"];
         delete?: never;
@@ -923,6 +1291,9 @@ export type paths = {
          * @description Removes a repository custom property from being included in the OIDC token for repository actions in an enterprise.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `admin:enterprise` scope to use this endpoint.
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         delete: operations["oidc/delete-oidc-custom-property-inclusion-for-enterprise"];
         options?: never;
@@ -1368,6 +1739,9 @@ export type paths = {
          * @description Lists repositories that enterprise admins have allowed Dependabot to access when updating dependencies across organizations in the enterprise.
          *
          *     The authenticated user must be an enterprise owner to use this endpoint.
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         get: operations["dependabot/repository-access-for-enterprise"];
         put?: never;
@@ -1388,6 +1762,9 @@ export type paths = {
          *       "repository_ids_to_remove": [789]
          *     }
          *     ```
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         patch: operations["dependabot/update-repository-access-for-enterprise"];
         trace?: never;
@@ -1407,6 +1784,9 @@ export type paths = {
          *     - 'internal' - Dependabot will only have access to public and internal repositories, unless access is explicitly granted to private repositories.
          *
          *     The authenticated user must be an enterprise owner to use this endpoint.
+         *
+         *     > [!NOTE]
+         *     > The "Enterprise administration" fine-grained permission is not available to callers. To use this API, you must use an OAuth app token or a personal access token (classic).
          */
         put: operations["dependabot/set-repository-access-default-level-for-enterprise"];
         post?: never;
@@ -2933,14 +3313,18 @@ export type paths = {
         };
         /**
          * Get artifact and log retention settings for an organization
-         * @description Gets artifact and log retention settings for an organization.
+         * @description Gets retention settings for checks, workflow runs, commit statuses, artifacts, and logs for an organization.
+         *
+         *     Checks include check suites, check runs, and check annotations. These settings also apply to checks and commit statuses created by third-party integrations, and are not limited to data created by GitHub Actions.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `admin:org` scope or the "Actions policies" fine-grained permission to use this endpoint.
          */
         get: operations["actions/get-artifact-and-log-retention-settings-organization"];
         /**
          * Set artifact and log retention settings for an organization
-         * @description Sets artifact and log retention settings for an organization.
+         * @description Sets retention settings for checks, workflow runs, commit statuses, artifacts, and logs for an organization.
+         *
+         *     Checks include check suites, check runs, and check annotations. These settings also apply to checks and commit statuses created by third-party integrations, and are not limited to data created by GitHub Actions.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `admin:org` scope or the "Actions policies" fine-grained permission to use this endpoint.
          */
@@ -4758,10 +5142,7 @@ export type paths = {
         };
         /**
          * Get the AI Scan setting for an organization
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Gets the AI Scan setting stored on an organization.
+         * @description Gets the AI Scan setting stored on an organization.
          *
          *     The response reports the value stored on the organization. Organization respects enterprise policy.
          *
@@ -4777,10 +5158,7 @@ export type paths = {
         head?: never;
         /**
          * Update the AI Scan setting for an organization
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Updates the AI Scan setting stored on an organization.
+         * @description Updates the AI Scan setting stored on an organization.
          *
          *     The organization respects the enterprise policy, so enabling is rejected when the enterprise disallows AI Scan.
          *
@@ -7897,6 +8275,7 @@ export type paths = {
          * Create a private registry for an organization
          * @description Creates a private registry configuration with an encrypted value for an organization. Encrypt your secret using [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages). For more information, see "[Encrypting secrets for the REST API](https://docs.github.com/rest/guides/encrypting-secrets-for-the-rest-api)."
          *     For OIDC-based registries (`oidc_azure`, `oidc_aws`, `oidc_jfrog`, `oidc_cloudsmith`, or `oidc_gcp`), the `encrypted_value` and `key_id` fields should be omitted.
+         *     For anonymous registries (`anonymous`), the `username`, `encrypted_value`, and `key_id` fields must be omitted.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoint.
          */
@@ -7936,6 +8315,7 @@ export type paths = {
          * Update a private registry for an organization
          * @description Updates a private registry configuration with an encrypted value for an organization. Encrypt your secret using [LibSodium](https://libsodium.gitbook.io/doc/bindings_for_other_languages). For more information, see "[Encrypting secrets for the REST API](https://docs.github.com/rest/guides/encrypting-secrets-for-the-rest-api)."
          *     For OIDC-based registries (`oidc_azure`, `oidc_aws`, `oidc_jfrog`, `oidc_cloudsmith`, or `oidc_gcp`), the `encrypted_value` and `key_id` fields should be omitted.
+         *     For anonymous registries (`anonymous`), the `username`, `encrypted_value`, and `key_id` fields must be omitted, and `auth_type` cannot be changed to or from `anonymous`.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoint.
          */
@@ -8181,7 +8561,11 @@ export type paths = {
          * Register an app installation for external custom properties
          * @description Registers a GitHub App installation so it can read and write external custom properties for an organization, and assigns it a display name.
          *
-         *     An app installation can only be registered once, and its display name can't be changed afterward. Calling with an app installation that has already been registered returns a `422` response with an `already_exists` error code.
+         *     The display name must be 1 to 15 characters and contain only letters and numbers. Capitalization is preserved as entered.
+         *
+         *     An app installation can only be registered once, and its display name can't be changed afterward. Calling with an app installation that has already been registered returns a `422` response with an `already_exists` error code for `installation_id`. If the display name is already in use by another app installation in the organization, the response is `422` with an `already_exists` error code for `display_name`. An invalid display name also returns `422`.
+         *
+         *     The app installation being registered must have write or admin permission for organization external custom properties for repositories. If it doesn't, the response is `422`. This is the permission of the installation being registered, which isn't necessarily the caller.
          *
          *     Uninstalling the GitHub App unregisters it, and removes the external custom properties it created.
          *
@@ -9223,6 +9607,8 @@ export type paths = {
          * @description > [!NOTE]
          *     > Accessing this endpoint does not count against your REST API rate limit.
          *
+         *     Rate limit status reflects the applicable limits for the requester and resource category, not the hostname used for the request. Requests authenticated as a user share the user's rate limit across credentials. Requests without authentication use the requesting IP address. API requests routed through either an API hostname or a web hostname can count against the same applicable limit.
+         *
          *     Some categories of endpoints have custom rate limits that are separate from the rate limit governing the other REST API endpoints. For this reason, the API response categorizes your rate limit. Under `resources`, you'll see objects relating to different categories:
          *     * The `core` object provides your rate limit status for all non-search-related resources in the REST API.
          *     * The `search` object provides your rate limit status for the REST API for searching (excluding code searches). For more information, see "[Search](https://docs.github.com/rest/search/search)."
@@ -9794,14 +10180,18 @@ export type paths = {
         };
         /**
          * Get artifact and log retention settings for a repository
-         * @description Gets artifact and log retention settings for a repository.
+         * @description Gets retention settings for checks, workflow runs, commit statuses, artifacts, and logs for a repository.
+         *
+         *     Checks include check suites, check runs, and check annotations. These settings also apply to checks and commit statuses created by third-party integrations, and are not limited to data created by GitHub Actions.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
          */
         get: operations["actions/get-artifact-and-log-retention-settings-repository"];
         /**
          * Set artifact and log retention settings for a repository
-         * @description Sets artifact and log retention settings for a repository.
+         * @description Sets retention settings for checks, workflow runs, commit statuses, artifacts, and logs for a repository.
+         *
+         *     Checks include check suites, check runs, and check annotations. These settings also apply to checks and commit statuses created by third-party integrations, and are not limited to data created by GitHub Actions.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
          */
@@ -12187,10 +12577,7 @@ export type paths = {
         };
         /**
          * Get AI Scan enablement for a repository
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Gets whether AI Scan is enabled for a repository.
+         * @description Gets whether AI Scan is enabled for a repository.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `security_events` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
          */
@@ -12202,10 +12589,7 @@ export type paths = {
         head?: never;
         /**
          * Update AI Scan enablement for a repository
-         * @description > [!NOTE]
-         *     > This endpoint is in public preview and is subject to change.
-         *
-         *     Updates whether AI Scan is enabled for a repository.
+         * @description Updates whether AI Scan is enabled for a repository.
          *
          *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint with private or public repositories, or the `public_repo` scope to use this endpoint with only public repositories.
          */
@@ -15541,7 +15925,7 @@ export type paths = {
         };
         /**
          * List issue types for a repository
-         * @description Lists issue types available for a repository (inherited from its organization owner, with any per-repository overrides applied).
+         * @description Lists enabled issue types inherited from the repository owner.
          *     OAuth app tokens and personal access tokens (classic) need the `repo` scope to use this endpoint.
          *     Fine-grained access tokens require the "Metadata" repository permission (read).
          */
@@ -17443,6 +17827,27 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers/rerequest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Rerequest reviewers for a pull request
+         * @description Rerequests reviews for a pull request from a given set of users and/or teams.
+         *     This endpoint triggers [notifications](https://docs.github.com/github/managing-subscriptions-and-notifications-on-github/about-notifications). Creating content too quickly using this endpoint may result in secondary rate limiting. For more information, see "[Rate limits for the API](https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits)" and "[Best practices for using the REST API](https://docs.github.com/rest/guides/best-practices-for-using-the-rest-api)."
+         */
+        post: operations["pulls/rerequest-reviewers"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/repos/{owner}/{repo}/pulls/{pull_number}/reviews": {
         parameters: {
             query?: never;
@@ -18519,7 +18924,9 @@ export type paths = {
         put?: never;
         /**
          * Create a temporary private fork
-         * @description Create a temporary private fork to collaborate on fixing a security vulnerability in your repository.
+         * @description Create a temporary private fork to collaborate on fixing a security vulnerability in a repository.
+         *
+         *     Repository administrators, organization owners, and security managers can create a temporary private fork. The original reporter of a privately reported vulnerability can also create one while they remain a collaborator on the security advisory.
          *
          *     > [!NOTE]
          *     > Forking a repository happens asynchronously. You may have to wait up to 5 minutes before you can access the fork.
@@ -22497,11 +22904,11 @@ export type webhooks = Record<string, never>;
 export type components = {
     schemas: {
         "actions-artifact-and-log-retention": {
-            /** @description The number of days to retain artifacts and logs */
+            /** @description The number of days to retain checks, workflow runs, commit statuses, artifacts, and logs */
             days: number;
         };
         "actions-artifact-and-log-retention-response": {
-            /** @description The number of days artifacts and logs are retained */
+            /** @description The number of days checks, workflow runs, commit statuses, artifacts, and logs are retained */
             days: number;
             /** @description The maximum number of days that can be configured */
             maximum_allowed_days: number;
@@ -23573,6 +23980,11 @@ export type components = {
              * @enum {string}
              */
             organization_copilot_agent_settings?: "read" | "write";
+            /**
+             * @description The level of permission to grant the access token to make Copilot requests billed to the organization where the app is installed. This property is in public preview and is subject to change.
+             * @enum {string}
+             */
+            organization_copilot_requests?: "read";
             /**
              * @description The level of permission to grant the access token for managing access to GitHub Copilot for members of an organization with a Copilot Business subscription. This property is in public preview and is subject to change.
              * @enum {string}
@@ -27913,6 +28325,18 @@ export type components = {
                  * @enum {string|null}
                  */
                 readonly scope?: "development" | "runtime" | null;
+                /**
+                 * @description The dependency version or version constraint last recorded for the dependency associated with this alert.
+                 *     For dependencies detected from a lockfile, this can be the resolved version.
+                 *     For manifest-only dependencies, it can be the declared version constraint. Returns `null` when unavailable.
+                 *
+                 *     An empty string can indicate an unconstrained dependency. The stored value is limited to 64 bytes;
+                 *     longer requirements may have been truncated and may no longer form a complete, valid version constraint.
+                 *
+                 *     When multiple vulnerable versions of a dependency correspond to the same alert, this field contains one
+                 *     recorded version or constraint and may not represent all vulnerable versions.
+                 */
+                readonly version_requirement?: string | null;
             };
             dismissal_request?: components["schemas"]["dependabot-alert-dismissal-request-simple"];
             dismissed_at: components["schemas"]["alert-dismissed-at"];
@@ -28086,6 +28510,18 @@ export type components = {
                  * @enum {string|null}
                  */
                 readonly scope?: "development" | "runtime" | null;
+                /**
+                 * @description The dependency version or version constraint last recorded for the dependency associated with this alert.
+                 *     For dependencies detected from a lockfile, this can be the resolved version.
+                 *     For manifest-only dependencies, it can be the declared version constraint. Returns `null` when unavailable.
+                 *
+                 *     An empty string can indicate an unconstrained dependency. The stored value is limited to 64 bytes;
+                 *     longer requirements may have been truncated and may no longer form a complete, valid version constraint.
+                 *
+                 *     When multiple vulnerable versions of a dependency correspond to the same alert, this field contains one
+                 *     recorded version or constraint and may not represent all vulnerable versions.
+                 */
+                readonly version_requirement?: string | null;
             };
             dismissal_request?: components["schemas"]["dependabot-alert-dismissal-request-simple"];
             dismissed_at: components["schemas"]["alert-dismissed-at"];
@@ -28110,6 +28546,71 @@ export type components = {
             readonly state: "auto_dismissed" | "dismissed" | "fixed" | "open";
             updated_at: components["schemas"]["alert-updated-at"];
             url: components["schemas"]["alert-url"];
+        };
+        /**
+         * @description Identifiers for a withdrawn Dependabot alert, captured before deletion so that
+         *     consumers can reconcile external records. This is not a full alert representation.
+         */
+        "dependabot-alert-withdrawn-webhook": {
+            created_at: components["schemas"]["alert-created-at"];
+            /** @description Details for the vulnerable dependency. */
+            readonly dependency: {
+                /** @description The full path to the dependency manifest file, relative to the root of the repository. */
+                readonly manifest_path: string | null;
+                package: components["schemas"]["dependabot-alert-package"];
+                /**
+                 * @description The vulnerable dependency's relationship to your project.
+                 *
+                 *     > [!NOTE]
+                 *     > We are rolling out support for dependency relationship across ecosystems. This value will be "unknown" for all dependencies in unsupported ecosystems.
+                 * @enum {string|null}
+                 */
+                readonly relationship?: "unknown" | "direct" | "transitive" | "inconclusive" | null;
+                /**
+                 * @description The execution scope of the vulnerable dependency.
+                 * @enum {string|null}
+                 */
+                readonly scope: "development" | "runtime" | null;
+                /**
+                 * @description The dependency version or version constraint last recorded for the dependency associated with this alert.
+                 *     For dependencies detected from a lockfile, this can be the resolved version.
+                 *     For manifest-only dependencies, it can be the declared version constraint. Returns `null` when unavailable.
+                 *
+                 *     An empty string can indicate an unconstrained dependency. The stored value is limited to 64 bytes;
+                 *     longer requirements may have been truncated and may no longer form a complete, valid version constraint.
+                 *
+                 *     When multiple vulnerable versions of a dependency correspond to the same alert, this field contains one
+                 *     recorded version or constraint and may not represent all vulnerable versions.
+                 */
+                readonly version_requirement?: string | null;
+            };
+            html_url: components["schemas"]["alert-html-url"];
+            /**
+             * Format: int64
+             * @description The unique identifier of the withdrawn alert.
+             */
+            readonly id: number;
+            /** @description The GraphQL node ID of the withdrawn alert. */
+            readonly node_id: string;
+            number: components["schemas"]["alert-number"];
+            /** @description Identifiers of the advisory that produced the withdrawn alert. */
+            readonly security_advisory: {
+                /** @description The CVE identifier assigned to the advisory, if any. */
+                readonly cve_id: string | null;
+                /** @description The unique GitHub identifier assigned to the advisory. */
+                readonly ghsa_id: string;
+            };
+            /**
+             * @description The state of the Dependabot alert.
+             * @enum {string}
+             */
+            readonly state: "withdrawn";
+            url: components["schemas"]["alert-url"];
+            /**
+             * Format: date-time
+             * @description The time that the alert was withdrawn in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ`. This is not the advisory's withdrawal time.
+             */
+            readonly withdrawn_at: string;
         };
         /**
          * DependabotPublicKey
@@ -35125,7 +35626,7 @@ export type components = {
              * @description The authentication type for the private registry.
              * @enum {string}
              */
-            auth_type?: "token" | "username_password" | "oidc_azure" | "oidc_aws" | "oidc_jfrog" | "oidc_cloudsmith" | "oidc_gcp";
+            auth_type?: "token" | "username_password" | "oidc_azure" | "oidc_aws" | "oidc_jfrog" | "oidc_cloudsmith" | "oidc_gcp" | "anonymous";
             /** @description The AWS region. */
             aws_region?: string;
             /** @description The client ID of the Azure AD application. */
@@ -35200,7 +35701,7 @@ export type components = {
              * @description The authentication type for the private registry.
              * @enum {string}
              */
-            auth_type?: "token" | "username_password" | "oidc_azure" | "oidc_aws" | "oidc_jfrog" | "oidc_cloudsmith" | "oidc_gcp";
+            auth_type?: "token" | "username_password" | "oidc_azure" | "oidc_aws" | "oidc_jfrog" | "oidc_cloudsmith" | "oidc_gcp" | "anonymous";
             /** @description The AWS region. */
             aws_region?: string;
             /** @description The client ID of the Azure AD application. */
@@ -36654,7 +37155,7 @@ export type components = {
              */
             severity?: "critical" | "high" | "medium" | "low" | null;
             /**
-             * @description Whether to create a temporary private fork of the repository to collaborate on a fix.
+             * @description Whether to create a temporary private fork of the repository to collaborate on a fix. The fork is created only if you are permitted to create one; otherwise, this parameter is ignored and the report is still created.
              * @default false
              */
             start_private_fork?: boolean;
@@ -37586,6 +38087,11 @@ export type components = {
          */
         "pull-request-merge-async-result": {
             details: {
+                /**
+                 * @description Whether the asynchronous merge request will attempt to bypass repository rules that the authenticated actor is permitted to bypass.
+                 * @default false
+                 */
+                bypass_rules?: boolean;
                 /** @description SHA that the pull request head must match for the enqueued merge to proceed. */
                 expected_head_sha: string;
                 /** @enum {string} */
@@ -38252,7 +38758,10 @@ export type components = {
         };
         /**
          * Rate Limit Overview
-         * @description Rate Limit Overview
+         * @description Rate limit status for the applicable requester and resource category. Requests
+         *     authenticated as a user share the user's rate limit across credentials. Requests
+         *     without authentication use the requesting IP address. API requests routed through
+         *     either an API hostname or a web hostname can count against the same applicable limit.
          */
         "rate-limit-overview": {
             rate: components["schemas"]["rate-limit"];
@@ -39341,7 +39850,7 @@ export type components = {
         };
         /**
          * code_coverage
-         * @description Enforce minimum line coverage thresholds on pull requests. When configured, uploaded coverage data must meet the specified criteria before changes can be merged.
+         * @description Enforce minimum line coverage thresholds on pull requests. This rule evaluates uploaded coverage data but does not wait for coverage uploads. To ensure coverage is evaluated before merging, make each status check associated with a coverage upload a required status check.
          */
         "repository-rule-code-coverage": {
             parameters?: {
@@ -39451,7 +39960,7 @@ export type components = {
         };
         /**
          * copilot_code_review
-         * @description Request Copilot code review for new pull requests automatically if the author has access to Copilot code review and their premium requests quota has not reached the limit.
+         * @description Request Copilot code review for new pull requests automatically if the author has access to Copilot code review and AI credits.
          */
         "repository-rule-copilot-code-review": {
             parameters?: {
@@ -39483,7 +39992,7 @@ export type components = {
          * Repository Rule
          * @description A repository rule with ruleset details.
          */
-        "repository-rule-detailed": (components["schemas"]["repository-rule-creation"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-update"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-deletion"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-linear-history"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-merge-queue"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-deployments"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-signatures"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-pull-request"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-status-checks"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-non-fast-forward"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-message-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-author-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-committer-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-branch-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-tag-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-workflows"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-code-scanning"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-copilot-code-review"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-license-compliance-scanning"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-path-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-path-length"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-extension-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-size"] & components["schemas"]["repository-rule-ruleset-info"]);
+        "repository-rule-detailed": (components["schemas"]["repository-rule-creation"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-update"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-deletion"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-linear-history"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-merge-queue"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-deployments"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-signatures"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-pull-request"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-required-status-checks"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-non-fast-forward"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-message-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-commit-author-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-committer-email-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-branch-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-tag-name-pattern"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-workflows"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-code-scanning"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-code-quality"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-code-coverage"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-copilot-code-review"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-license-compliance-scanning"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-path-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-path-length"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-file-extension-restriction"] & components["schemas"]["repository-rule-ruleset-info"]) | (components["schemas"]["repository-rule-max-file-size"] & components["schemas"]["repository-rule-ruleset-info"]);
         /**
          * @description The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them. Admins can view insights on the Rule Insights page (`evaluate` is only available with GitHub Enterprise).
          * @enum {string}
@@ -39712,12 +40221,7 @@ export type components = {
                 required_approving_review_count: number;
                 /** @description All conversations on code must be resolved before a pull request can be merged. */
                 required_review_thread_resolution: boolean;
-                /**
-                 * @description > [!NOTE]
-                 *     > `required_reviewers` is in beta and subject to change.
-                 *
-                 *     A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review.
-                 */
+                /** @description A collection of reviewers and associated file patterns. Each reviewer has a list of file patterns which determine the files that reviewer is required to review. */
                 required_reviewers?: components["schemas"]["repository-rule-params-required-reviewer-configuration"][];
             };
             /** @enum {string} */
@@ -40817,6 +41321,8 @@ export type components = {
                  * @enum {string}
                  */
                 enforcement?: "active" | "evaluate" | "deleted ruleset";
+                /** @description Additional metadata about the rule evaluation. */
+                metadata?: (components["schemas"]["rule-suite-pull-request"] | components["schemas"]["rule-suite-required-status-checks"]) | null;
                 /**
                  * @description The result of the evaluation of the individual rule.
                  * @enum {string}
@@ -40845,6 +41351,32 @@ export type components = {
                 id?: number;
                 /** @description The number of the pull request. */
                 number?: number;
+                /** @description The proof of presence evaluation for the pull request. Null if proof of presence was not evaluated. */
+                proof_of_presence?: {
+                    /** @description The base commit SHA the proof of presence evaluation applies to. Empty if unavailable. */
+                    base_sha?: string;
+                    /** @description A code describing the reason for the proof of presence state. */
+                    code?: string;
+                    /** @description The head commit SHA the proof of presence evaluation applies to. Empty if unavailable. */
+                    head_sha?: string;
+                    /** @description The authentication level required by the rule. Empty if unavailable. */
+                    required_level?: string;
+                    /** @description The state of the proof of presence evaluation. */
+                    state?: string;
+                    /** @description The time proof of presence was verified, in ISO 8601 format. Empty if proof of presence has not been completed. */
+                    verified_at?: string;
+                    /** @description The authentication level that was verified. Empty if proof of presence has not been completed. */
+                    verified_level?: string;
+                    /** @description The user who provided proof of presence. Null if no proof of presence was recorded. */
+                    verifier?: {
+                        /** @description The unique identifier of the user. */
+                        id?: number;
+                        /** @description The handle for the GitHub user account. */
+                        login?: string;
+                        /** @description The type of the user. */
+                        type?: string;
+                    } | null;
+                } | null;
                 /** @description The reviews associated with the pull request. */
                 reviews?: {
                     /** @description The unique identifier of the review. */
@@ -40871,6 +41403,11 @@ export type components = {
                     type?: string;
                 };
             };
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            rule_type: "pull_request";
         };
         /**
          * Required status checks rule suite metadata
@@ -40897,6 +41434,11 @@ export type components = {
                 /** @description The type of the status check. */
                 type?: string;
             }[];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            rule_type: "required_status_checks";
         };
         /**
          * Rule Suites
@@ -46212,6 +46754,17 @@ export type components = {
             /** @enum {string} */
             action: "reopened";
             alert: components["schemas"]["dependabot-alert"];
+            enterprise?: components["schemas"]["enterprise-webhooks"];
+            installation?: components["schemas"]["simple-installation"];
+            organization?: components["schemas"]["organization-simple-webhooks"];
+            repository: components["schemas"]["repository-webhooks"];
+            sender: components["schemas"]["simple-user"];
+        };
+        /** Dependabot alert withdrawn event */
+        "webhook-dependabot-alert-withdrawn": {
+            /** @enum {string} */
+            action: "withdrawn";
+            alert: components["schemas"]["dependabot-alert-withdrawn-webhook"];
             enterprise?: components["schemas"]["enterprise-webhooks"];
             installation?: components["schemas"]["simple-installation"];
             organization?: components["schemas"]["organization-simple-webhooks"];
@@ -99387,6 +99940,11 @@ export type components = {
         "hook-id": number;
         /** @description Unique identifier of the GitHub-hosted runner. */
         "hosted-runner-id": number;
+        /**
+         * @description When set to `true`, the response will include additional metadata for pull request and required status check rule evaluation.
+         *     Results are capped at 50 entries.
+         */
+        "include-metadata": boolean;
         /** @description The unique identifier of the installation. */
         "installation-id": number;
         /** @description The unique identifier of the invitation. */
@@ -99828,6 +100386,3481 @@ export interface operations {
                 };
             };
             404: components["responses"]["not_found"];
+        };
+    };
+    "agent-automations/list-automations": {
+        parameters: {
+            query?: {
+                /** @description Filter automations by owner type. `user` returns automations owned by their creator, `repository` returns automations owned by the repository. Omit to return both. */
+                owner_type?: "user" | "repository";
+                /** @description The page number of the results to fetch. */
+                page?: number;
+                /** @description The number of results per page (max 100). */
+                per_page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Automations retrieved successfully */
+            200: {
+                headers: {
+                    /**
+                     * @description Pagination links
+                     * @example <https://api.github.com/agents/automations?page=2&per_page=1&owner_type=user>; rel="next", <https://api.github.com/agents/automations?page=1&per_page=1&owner_type=user>; rel="first"
+                     */
+                    Link?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * Format: date-time
+                         * @description When the automation was created.
+                         */
+                        created_at: string;
+                        /** @description A GitHub user */
+                        created_by: {
+                            /**
+                             * Format: int64
+                             * @description The unique identifier of the user
+                             */
+                            id?: number;
+                        };
+                        /** @description Whether the automation is currently enabled. */
+                        enabled?: boolean;
+                        /** @description The unique identifier of the automation. */
+                        id: string;
+                        /** @description The model to use for sessions triggered by this automation. Omit to use the platform default. */
+                        model?: string;
+                        /** @description The name of the automation. */
+                        name: string;
+                        /**
+                         * @description Who owns the automation. `user` keeps it private to its creator and its runs act as that user. `repository` makes it belong to the repository, visible to anyone with read access to the repository, and its runs act as the Copilot app rather than as a person.
+                         * @enum {string}
+                         */
+                        readonly owner_type?: "user" | "repository";
+                        /** @description The reasoning effort to use for sessions triggered by this automation. Omit or leave empty for no override. Currently supported values: `none`, `low`, `medium`, `high`, `xhigh`, `max` */
+                        reasoning_effort?: string;
+                        /** @description Repository identity for an automation in cross-repository list responses. */
+                        repository: {
+                            /**
+                             * Format: int64
+                             * @description The unique identifier of the repository.
+                             */
+                            id: number;
+                            /** @description The repository name. */
+                            name: string;
+                            /** @description The repository owner login. */
+                            owner: string;
+                        };
+                        /**
+                         * @description When true, event-triggered runs require the event actor to have repo write permission, even when the org's allow_read_access_triggers policy is enabled. Does not apply to interval-scheduled runs, which always run as the automation owner.
+                         * @default false
+                         */
+                        require_actor_write_permission?: boolean;
+                        /** @description Public trigger configuration keyed by stable public trigger identifier. Each trigger has a closed, trigger-specific configuration schema. */
+                        triggers?: {
+                            automation_completed?: {
+                                /** @description Upstream Automation IDs in the same repository. */
+                                automation_ids: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /** @description Top-level discussion comments and replies to match. Omit to match both. */
+                                comment_types?: ("comment" | "reply")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_opened?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_updated?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            interval?: {
+                                /** @description One or more schedules on which the Automation runs. */
+                                cadence: ("hourly" | "daily" | "weekly")[];
+                                /** @description UTC weekday anchor for weekly schedules, where `0` is Sunday and `6` is Saturday. Omitted weekly values default to Monday (`1`). */
+                                day_of_week?: number;
+                                /** @description UTC hour anchor (0 through 23) for daily and weekly schedules. Omitted daily and weekly values default to `0` (midnight UTC). */
+                                hour_utc?: number;
+                                /**
+                                 * @description UTC minute anchor for daily and weekly schedules. Omitted daily and weekly values default to `0`. Must be omitted whenever `cadence` includes `hourly`.
+                                 * @default 0
+                                 * @enum {integer}
+                                 */
+                                minute_utc?: 0 | 15 | 30 | 45;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_opened?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Pull request conversation and inline review comment types to match. */
+                                comment_types: ("timeline_comment" | "review_comment")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merge_conflict?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merged?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_opened?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_ready_for_review?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_requested?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_submitted?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Submitted review states to match. */
+                                states: ("approved" | "changes_requested" | "commented")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_synchronize?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            sub_issue_added?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            workflow_run?: {
+                                /** @description Workflow conclusions to match. The current trigger supports failure. */
+                                conclusions: "failure"[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Workflow names matched against the name in each workflow YAML file. */
+                                workflows: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                        };
+                        /**
+                         * Format: date-time
+                         * @description When the automation was last updated.
+                         */
+                        updated_at: string;
+                        /**
+                         * @description Controls which repository resources a run may modify. `trigger` limits writes to the resource that started the run, when one exists, and resources created during the run; `repository` allows writes to any resource in the repository. Supported values: `trigger`, `repository`.
+                         * @default trigger
+                         * @enum {string}
+                         */
+                        write_scope?: "trigger" | "repository";
+                    }[];
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "agent-automations/get-automation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The unique identifier of the automation. */
+                automation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Automation retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Custom agents (subagents) this automation is allowed to invoke. */
+                        allowed_custom_agents?: string[];
+                        /**
+                         * Format: date-time
+                         * @description When the automation was created.
+                         */
+                        created_at: string;
+                        /** @description A GitHub user */
+                        created_by: {
+                            /**
+                             * Format: int64
+                             * @description The unique identifier of the user
+                             */
+                            id?: number;
+                        };
+                        /** @description Whether the automation is currently enabled. */
+                        enabled?: boolean;
+                        /** @description The unique identifier of the automation. */
+                        id: string;
+                        /** @description The model to use for sessions triggered by this automation. Omit to use the platform default. */
+                        model?: string;
+                        /** @description The name of the automation. */
+                        name: string;
+                        /**
+                         * @description Who owns the automation. `user` keeps it private to its creator and its runs act as that user. `repository` makes it belong to the repository, visible to anyone with read access to the repository, and its runs act as the Copilot app rather than as a person.
+                         * @enum {string}
+                         */
+                        readonly owner_type?: "user" | "repository";
+                        /** @description The prompt template for the automation. */
+                        prompt: string;
+                        /** @description The reasoning effort to use for sessions triggered by this automation. Omit or leave empty for no override. Currently supported values: `none`, `low`, `medium`, `high`, `xhigh`, `max` */
+                        reasoning_effort?: string;
+                        /** @description Repository identity for an automation in cross-repository list responses. */
+                        repository: {
+                            /**
+                             * Format: int64
+                             * @description The unique identifier of the repository.
+                             */
+                            id: number;
+                            /** @description The repository name. */
+                            name: string;
+                            /** @description The repository owner login. */
+                            owner: string;
+                        };
+                        /**
+                         * @description When true, event-triggered runs require the event actor to have repo write permission, even when the org's allow_read_access_triggers policy is enabled. Does not apply to interval-scheduled runs, which always run as the automation owner.
+                         * @default false
+                         */
+                        require_actor_write_permission?: boolean;
+                        /** @description The tools available to the automation. */
+                        tools?: string[];
+                        /** @description Public trigger configuration keyed by stable public trigger identifier. Each trigger has a closed, trigger-specific configuration schema. */
+                        triggers?: {
+                            automation_completed?: {
+                                /** @description Upstream Automation IDs in the same repository. */
+                                automation_ids: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /** @description Top-level discussion comments and replies to match. Omit to match both. */
+                                comment_types?: ("comment" | "reply")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_opened?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_updated?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            interval?: {
+                                /** @description One or more schedules on which the Automation runs. */
+                                cadence: ("hourly" | "daily" | "weekly")[];
+                                /** @description UTC weekday anchor for weekly schedules, where `0` is Sunday and `6` is Saturday. Omitted weekly values default to Monday (`1`). */
+                                day_of_week?: number;
+                                /** @description UTC hour anchor (0 through 23) for daily and weekly schedules. Omitted daily and weekly values default to `0` (midnight UTC). */
+                                hour_utc?: number;
+                                /**
+                                 * @description UTC minute anchor for daily and weekly schedules. Omitted daily and weekly values default to `0`. Must be omitted whenever `cadence` includes `hourly`.
+                                 * @default 0
+                                 * @enum {integer}
+                                 */
+                                minute_utc?: 0 | 15 | 30 | 45;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_opened?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Pull request conversation and inline review comment types to match. */
+                                comment_types: ("timeline_comment" | "review_comment")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merge_conflict?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merged?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_opened?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_ready_for_review?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_requested?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_submitted?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Submitted review states to match. */
+                                states: ("approved" | "changes_requested" | "commented")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_synchronize?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            sub_issue_added?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            workflow_run?: {
+                                /** @description Workflow conclusions to match. The current trigger supports failure. */
+                                conclusions: "failure"[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Workflow names matched against the name in each workflow YAML file. */
+                                workflows: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                        };
+                        /**
+                         * Format: date-time
+                         * @description When the automation was last updated.
+                         */
+                        updated_at: string;
+                        /**
+                         * @description Controls which repository resources a run may modify. `trigger` limits writes to the resource that started the run, when one exists, and resources created during the run; `repository` allows writes to any resource in the repository. Supported values: `trigger`, `repository`.
+                         * @default trigger
+                         * @enum {string}
+                         */
+                        write_scope?: "trigger" | "repository";
+                    };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "agent-automations/list-automation-tasks": {
+        parameters: {
+            query?: {
+                /** @description The direction to sort results. Can be `asc` or `desc`. */
+                direction?: "asc" | "desc";
+                /** @description Filter by archived status. When `true`, returns only archived tasks. When `false` or omitted, returns only non-archived tasks. Defaults to `false`. */
+                is_archived?: boolean;
+                /** @description The page number of the results to fetch. */
+                page?: number;
+                /** @description The number of results per page (max 100). */
+                per_page?: number;
+                /** @description The field to sort results by. Can be `updated_at` or `created_at`. */
+                sort?: "updated_at" | "created_at";
+                /** @description Comma-separated list of task states to filter by. Can be any combination of: `queued`, `in_progress`, `completed`, `failed`, `idle`, `waiting_for_user`, `timed_out`, `cancelled`. */
+                state?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The unique identifier of the automation. */
+                automation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Tasks retrieved successfully */
+            200: {
+                headers: {
+                    /**
+                     * @description Pagination links for the automation's task history.
+                     * @example <https://api.github.com/agents/automations/a1b2c3d4-e5f6-7890-abcd-ef1234567890/tasks?page=2&per_page=1>; rel="next", <https://api.github.com/agents/automations/a1b2c3d4-e5f6-7890-abcd-ef1234567890/tasks?page=1&per_page=1>; rel="first"
+                     */
+                    Link?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Tasks created by the automation. */
+                        tasks: {
+                            /**
+                             * Format: date-time
+                             * @description Timestamp when the task was archived, null if not archived
+                             */
+                            archived_at?: string | null;
+                            /** @description Resources created by this task (PRs, branches, etc.) */
+                            artifacts?: {
+                                /** @description Resource data (shape depends on type) */
+                                data: {
+                                    /** @description GraphQL global ID */
+                                    global_id?: string;
+                                    /**
+                                     * Format: int64
+                                     * @description GitHub resource ID
+                                     */
+                                    id: number;
+                                } | {
+                                    /** @description Base branch name */
+                                    base_ref: string;
+                                    /** @description Head branch name */
+                                    head_ref: string;
+                                };
+                                /**
+                                 * @description Provider namespace
+                                 * @enum {string}
+                                 */
+                                provider: "github";
+                                /**
+                                 * @description Type of artifact. Available Values: `pull`, `branch`.
+                                 * @enum {string}
+                                 */
+                                type: "pull" | "branch";
+                            }[];
+                            /**
+                             * Format: date-time
+                             * @description Timestamp when the task was created
+                             */
+                            created_at: string;
+                            /** @description The entity who created this task */
+                            creator?: {
+                                /**
+                                 * Format: int64
+                                 * @description The unique identifier of the user
+                                 */
+                                id?: number;
+                            };
+                            /**
+                             * @description Type of the task creator
+                             * @enum {string}
+                             */
+                            creator_type?: "user" | "organization";
+                            /** @description Custom agent metadata associated with this task */
+                            custom_agent?: {
+                                /** @description The custom agent's filename without the extension - for example, `performance-optimizer` for a `.github/agents/performance-optimizer.agent.md` custom agent. */
+                                id?: string;
+                            };
+                            /** @description Web URL for this task */
+                            html_url?: string;
+                            /** @description Unique task identifier */
+                            id: string;
+                            /** @description Human-readable name derived from the task prompt */
+                            name?: string;
+                            /** @description The owner of the repository */
+                            owner?: {
+                                /**
+                                 * Format: int64
+                                 * @description The unique identifier of the user
+                                 */
+                                id?: number;
+                            };
+                            /** @description The repository this task belongs to */
+                            repository?: {
+                                /**
+                                 * Format: int64
+                                 * @description The unique identifier of the repository
+                                 */
+                                id?: number;
+                            };
+                            /**
+                             * Format: int32
+                             * @description Number of sessions in this task
+                             */
+                            session_count?: number;
+                            /**
+                             * @description Current state of the task, derived from its most recent session
+                             * @enum {string}
+                             */
+                            state: "queued" | "in_progress" | "completed" | "failed" | "idle" | "waiting_for_user" | "timed_out" | "cancelled";
+                            /**
+                             * Format: date-time
+                             * @description Timestamp of the most recent update
+                             */
+                            updated_at?: string;
+                            /** @description API URL for this task */
+                            url?: string;
+                            /**
+                             * @deprecated
+                             * @description User objects of collaborators on this task
+                             */
+                            user_collaborators?: {
+                                /**
+                                 * Format: int64
+                                 * @description The unique identifier of the user
+                                 */
+                                id?: number;
+                            }[];
+                        }[];
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Validation Failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "agent-automations/list-available-automation-tools": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Available automation tools retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description A presentation-category identifier controlled by CMC. */
+                        id: string;
+                        /** @description The human-readable group title. */
+                        title: string;
+                        /** @description The tools currently presented in this group. */
+                        tools: {
+                            /** @description A short description of what the tool does. */
+                            description: string;
+                            /** @description The exact tool identifier accepted by Automation create and edit requests. The catalog is authoritative and open-ended; clients must accept identifiers they have not seen before. */
+                            id: string;
+                            /**
+                             * @description The tool's behavior level. `read` tools only retrieve data. `write` tools can change data. This describes tool behavior, not a specific GitHub token permission.
+                             * @enum {string}
+                             */
+                            scope?: "read" | "write";
+                            /** @description The human-readable tool title. */
+                            title: string;
+                        }[];
+                    }[];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "agent-automations/list-available-automation-triggers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Available automation triggers retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description A short description of when the trigger fires. */
+                        description: string;
+                        /** @description The trigger-specific public configuration fields. */
+                        fields: {
+                            /** @description Markdown guidance for configuring the field. */
+                            description?: string;
+                            /** @description The stable field identifier used in configured triggers. */
+                            id: string;
+                            /** @description The human-readable field label. */
+                            label: string;
+                            /** @description Whether the field must be provided. */
+                            required: boolean;
+                            /** @description A restricted JSON Schema fragment describing the field value accepted by Automation create and update requests. */
+                            schema: {
+                                /** @description The allowed string values. */
+                                enum?: string[];
+                                /** @description The minimum accepted string length. */
+                                minLength?: number;
+                                /** @enum {string} */
+                                type: "string";
+                            } | {
+                                items: {
+                                    /** @description The allowed string item values. */
+                                    enum?: string[];
+                                    /** @description The minimum accepted string item length. */
+                                    minLength?: number;
+                                    /** @enum {string} */
+                                    type: "string";
+                                };
+                                /** @description The maximum accepted number of array items. */
+                                maxItems?: number;
+                                /** @description The minimum accepted number of array items. */
+                                minItems?: number;
+                                /** @enum {string} */
+                                type: "array";
+                                /** @description Whether duplicate array items are rejected. */
+                                uniqueItems?: boolean;
+                            } | {
+                                /** @description The allowed integer values. */
+                                enum?: number[];
+                                /** @description The maximum accepted integer value. */
+                                maximum?: number;
+                                /** @description The minimum accepted integer value. */
+                                minimum?: number;
+                                /** @enum {string} */
+                                type: "integer";
+                            };
+                        }[];
+                        /** @description The stable public trigger identifier. */
+                        id: string;
+                        /** @description Whether this trigger supports event-specific Run now simulation. Omit to indicate support. */
+                        supports_run_now?: boolean;
+                        /** @description The human-readable trigger title. */
+                        title: string;
+                    }[];
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "agent-automations/list-repo-automations": {
+        parameters: {
+            query?: {
+                /** @description Filter automations by owner type. `user` returns automations owned by their creator, `repository` returns automations owned by the repository. Omit to return both. */
+                owner_type?: "user" | "repository";
+                /** @description The page number of the results to fetch. */
+                page?: number;
+                /** @description The number of results per page (max 100). */
+                per_page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: string;
+                /** @description The name of the repository. The name is not case sensitive. */
+                repo: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Automations retrieved successfully */
+            200: {
+                headers: {
+                    /**
+                     * @description Pagination links
+                     * @example <https://api.github.com/agents/repos/octo-org/octo-repo/automations?page=2&per_page=2>; rel="next", <https://api.github.com/agents/repos/octo-org/octo-repo/automations?page=1&per_page=2>; rel="first"
+                     */
+                    Link?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description List of automations in the repository */
+                        automations: {
+                            /**
+                             * Format: date-time
+                             * @description When the automation was created.
+                             */
+                            created_at: string;
+                            /** @description A GitHub user */
+                            created_by: {
+                                /**
+                                 * Format: int64
+                                 * @description The unique identifier of the user
+                                 */
+                                id?: number;
+                            };
+                            /** @description Whether the automation is currently enabled. */
+                            enabled?: boolean;
+                            /** @description The unique identifier of the automation. */
+                            id: string;
+                            /** @description The model to use for sessions triggered by this automation. Omit to use the platform default. */
+                            model?: string;
+                            /** @description The name of the automation. */
+                            name: string;
+                            /**
+                             * @description Who owns the automation. `user` keeps it private to its creator and its runs act as that user. `repository` makes it belong to the repository, visible to anyone with read access to the repository, and its runs act as the Copilot app rather than as a person.
+                             * @enum {string}
+                             */
+                            readonly owner_type?: "user" | "repository";
+                            /** @description The reasoning effort to use for sessions triggered by this automation. Omit or leave empty for no override. Currently supported values: `none`, `low`, `medium`, `high`, `xhigh`, `max` */
+                            reasoning_effort?: string;
+                            /**
+                             * @description When true, event-triggered runs require the event actor to have repo write permission, even when the org's allow_read_access_triggers policy is enabled. Does not apply to interval-scheduled runs, which always run as the automation owner.
+                             * @default false
+                             */
+                            require_actor_write_permission?: boolean;
+                            /** @description Public trigger configuration keyed by stable public trigger identifier. Each trigger has a closed, trigger-specific configuration schema. */
+                            triggers?: {
+                                automation_completed?: {
+                                    /** @description Upstream Automation IDs in the same repository. */
+                                    automation_ids: string[];
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                discussion_comment?: {
+                                    /** @description A case-insensitive substring matched against the event body. */
+                                    body_substring?: string;
+                                    /** @description Discussion category names matched case-insensitively. */
+                                    categories?: string[];
+                                    /** @description Top-level discussion comments and replies to match. Omit to match both. */
+                                    comment_types?: ("comment" | "reply")[];
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                discussion_opened?: {
+                                    /** @description A case-insensitive substring matched against the event body. */
+                                    body_substring?: string;
+                                    /** @description Discussion category names matched case-insensitively. */
+                                    categories?: string[];
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                discussion_updated?: {
+                                    /** @description A case-insensitive substring matched against the event body. */
+                                    body_substring?: string;
+                                    /** @description Discussion category names matched case-insensitively. */
+                                    categories?: string[];
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                interval?: {
+                                    /** @description One or more schedules on which the Automation runs. */
+                                    cadence: ("hourly" | "daily" | "weekly")[];
+                                    /** @description UTC weekday anchor for weekly schedules, where `0` is Sunday and `6` is Saturday. Omitted weekly values default to Monday (`1`). */
+                                    day_of_week?: number;
+                                    /** @description UTC hour anchor (0 through 23) for daily and weekly schedules. Omitted daily and weekly values default to `0` (midnight UTC). */
+                                    hour_utc?: number;
+                                    /**
+                                     * @description UTC minute anchor for daily and weekly schedules. Omitted daily and weekly values default to `0`. Must be omitted whenever `cadence` includes `hourly`.
+                                     * @default 0
+                                     * @enum {integer}
+                                     */
+                                    minute_utc?: 0 | 15 | 30 | 45;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                issue_assigned?: {
+                                    /** @description Affected assignee logins matched case-insensitively. */
+                                    assignees?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                issue_comment?: {
+                                    /** @description A case-insensitive substring matched against the event body. */
+                                    body_substring?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                issue_labeled?: {
+                                    /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                    labels?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                issue_opened?: {
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_assigned?: {
+                                    /** @description Affected assignee logins matched case-insensitively. */
+                                    assignees?: string[];
+                                    /** @description Gitignore-style changed-file path globs. */
+                                    paths?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_comment?: {
+                                    /** @description A case-insensitive substring matched against the event body. */
+                                    body_substring?: string;
+                                    /** @description Pull request conversation and inline review comment types to match. */
+                                    comment_types: ("timeline_comment" | "review_comment")[];
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_labeled?: {
+                                    /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                    labels?: string[];
+                                    /** @description Gitignore-style changed-file path globs. */
+                                    paths?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_merge_conflict?: {
+                                    /** @description Gitignore-style changed-file path globs. */
+                                    paths?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_merged?: {
+                                    /** @description Gitignore-style changed-file path globs. */
+                                    paths?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_opened?: {
+                                    /** @description Gitignore-style changed-file path globs. */
+                                    paths?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_ready_for_review?: {
+                                    /** @description Gitignore-style changed-file path globs. */
+                                    paths?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_review_requested?: {
+                                    /** @description Gitignore-style changed-file path globs. */
+                                    paths?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_review_submitted?: {
+                                    /** @description Gitignore-style changed-file path globs. */
+                                    paths?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /** @description Submitted review states to match. */
+                                    states: ("approved" | "changes_requested" | "commented")[];
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                pull_request_synchronize?: {
+                                    /** @description Gitignore-style changed-file path globs. */
+                                    paths?: string[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                sub_issue_added?: {
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                                workflow_run?: {
+                                    /** @description Workflow conclusions to match. The current trigger supports failure. */
+                                    conclusions: "failure"[];
+                                    /** @description A GitHub issue or pull request search query. */
+                                    query?: string;
+                                    /** @description Workflow names matched against the name in each workflow YAML file. */
+                                    workflows: string[];
+                                    /**
+                                     * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                     * @enum {string}
+                                     */
+                                    write_scope?: "trigger" | "repository";
+                                };
+                            };
+                            /**
+                             * Format: date-time
+                             * @description When the automation was last updated.
+                             */
+                            updated_at: string;
+                            /**
+                             * @description Controls which repository resources a run may modify. `trigger` limits writes to the resource that started the run, when one exists, and resources created during the run; `repository` allows writes to any resource in the repository. Supported values: `trigger`, `repository`.
+                             * @default trigger
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        }[];
+                        /**
+                         * Format: int32
+                         * @description Total count of caller-visible automations matching the supplied filters (across all pages)
+                         */
+                        total_count: number;
+                    };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "agent-automations/create-repo-automation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: string;
+                /** @description The name of the repository. The name is not case sensitive. */
+                repo: string;
+            };
+            cookie?: never;
+        };
+        /** @description The automation configuration to create. */
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Custom agents (subagents) this automation is allowed to invoke. */
+                    allowed_custom_agents?: string[];
+                    /**
+                     * @description Whether the automation should be created enabled. Defaults to true when omitted.
+                     * @default true
+                     */
+                    enabled?: boolean;
+                    /** @description The model to use for sessions triggered by this automation. Omit to use the platform default. */
+                    model?: string;
+                    /** @description The name of the automation. */
+                    name: string;
+                    /**
+                     * @description Who owns the automation, fixed at creation. `user` keeps it private to its creator and its runs act as that user. `repository` makes it belong to the repository, visible to anyone with read access to the repository and maintainable by anyone with write access to the repository, and its runs act as the Copilot app rather than as a person. `repository` is rejected when repository ownership is not available for the repository. Supported values: `user`, `repository`. Defaults to `user`.
+                     * @default user
+                     * @enum {string}
+                     */
+                    owner_type?: "user" | "repository";
+                    /** @description The prompt template for the automation. */
+                    prompt: string;
+                    /** @description The reasoning effort to use for sessions triggered by this automation. Omit or leave empty for no override. Currently supported values: `none`, `low`, `medium`, `high`, `xhigh`, `max` */
+                    reasoning_effort?: string | ("none" | "low" | "medium" | "high" | "xhigh" | "max");
+                    /** @description When true, event-triggered runs require the event actor to have repo write permission, even when the org's allow_read_access_triggers policy is enabled. Does not apply to interval-scheduled runs, which always run as the automation owner. Defaults to false. */
+                    require_actor_write_permission?: boolean;
+                    /** @description The tools available to the automation. */
+                    tools?: string[];
+                    /** @description Public trigger configuration keyed by stable public trigger identifier. Each trigger has a closed, trigger-specific configuration schema. */
+                    triggers?: {
+                        automation_completed?: {
+                            /** @description Upstream Automation IDs in the same repository. */
+                            automation_ids: string[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        discussion_comment?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /** @description Discussion category names matched case-insensitively. */
+                            categories?: string[];
+                            /** @description Top-level discussion comments and replies to match. Omit to match both. */
+                            comment_types?: ("comment" | "reply")[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        discussion_opened?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /** @description Discussion category names matched case-insensitively. */
+                            categories?: string[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        discussion_updated?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /** @description Discussion category names matched case-insensitively. */
+                            categories?: string[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        interval?: {
+                            /** @description One or more schedules on which the Automation runs. */
+                            cadence: ("hourly" | "daily" | "weekly")[];
+                            /** @description UTC weekday anchor for weekly schedules, where `0` is Sunday and `6` is Saturday. Omitted weekly values default to Monday (`1`). */
+                            day_of_week?: number;
+                            /** @description UTC hour anchor (0 through 23) for daily and weekly schedules. Omitted daily and weekly values default to `0` (midnight UTC). */
+                            hour_utc?: number;
+                            /**
+                             * @description UTC minute anchor for daily and weekly schedules. Omitted daily and weekly values default to `0`. Must be omitted whenever `cadence` includes `hourly`.
+                             * @default 0
+                             * @enum {integer}
+                             */
+                            minute_utc?: 0 | 15 | 30 | 45;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        issue_assigned?: {
+                            /** @description Affected assignee logins matched case-insensitively. */
+                            assignees?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        issue_comment?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        issue_labeled?: {
+                            /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                            labels?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        issue_opened?: {
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_assigned?: {
+                            /** @description Affected assignee logins matched case-insensitively. */
+                            assignees?: string[];
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_comment?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /** @description Pull request conversation and inline review comment types to match. */
+                            comment_types: ("timeline_comment" | "review_comment")[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_labeled?: {
+                            /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                            labels?: string[];
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_merge_conflict?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_merged?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_opened?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_ready_for_review?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_review_requested?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_review_submitted?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /** @description Submitted review states to match. */
+                            states: ("approved" | "changes_requested" | "commented")[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_synchronize?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        sub_issue_added?: {
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        workflow_run?: {
+                            /** @description Workflow conclusions to match. The current trigger supports failure. */
+                            conclusions: "failure"[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /** @description Workflow names matched against the name in each workflow YAML file. */
+                            workflows: string[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                    };
+                    /**
+                     * @description Controls which repository resources a run may modify. `trigger` limits writes to the resource that started the run, when one exists, and resources created during the run; `repository` allows writes to any resource in the repository. Supported values: `trigger`, `repository`.
+                     * @default trigger
+                     * @enum {string}
+                     */
+                    write_scope?: "trigger" | "repository";
+                };
+            };
+        };
+        responses: {
+            /** @description Automation created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Custom agents (subagents) this automation is allowed to invoke. */
+                        allowed_custom_agents?: string[];
+                        /**
+                         * Format: date-time
+                         * @description When the automation was created.
+                         */
+                        created_at: string;
+                        /** @description A GitHub user */
+                        created_by: {
+                            /**
+                             * Format: int64
+                             * @description The unique identifier of the user
+                             */
+                            id?: number;
+                        };
+                        /** @description Whether the automation is currently enabled. */
+                        enabled?: boolean;
+                        /** @description The unique identifier of the automation. */
+                        id: string;
+                        /** @description The model to use for sessions triggered by this automation. Omit to use the platform default. */
+                        model?: string;
+                        /** @description The name of the automation. */
+                        name: string;
+                        /**
+                         * @description Who owns the automation. `user` keeps it private to its creator and its runs act as that user. `repository` makes it belong to the repository, visible to anyone with read access to the repository, and its runs act as the Copilot app rather than as a person.
+                         * @enum {string}
+                         */
+                        readonly owner_type?: "user" | "repository";
+                        /** @description The prompt template for the automation. */
+                        prompt: string;
+                        /** @description The reasoning effort to use for sessions triggered by this automation. Omit or leave empty for no override. Currently supported values: `none`, `low`, `medium`, `high`, `xhigh`, `max` */
+                        reasoning_effort?: string;
+                        /**
+                         * @description When true, event-triggered runs require the event actor to have repo write permission, even when the org's allow_read_access_triggers policy is enabled. Does not apply to interval-scheduled runs, which always run as the automation owner.
+                         * @default false
+                         */
+                        require_actor_write_permission?: boolean;
+                        /** @description The tools available to the automation. */
+                        tools?: string[];
+                        /** @description Public trigger configuration keyed by stable public trigger identifier. Each trigger has a closed, trigger-specific configuration schema. */
+                        triggers?: {
+                            automation_completed?: {
+                                /** @description Upstream Automation IDs in the same repository. */
+                                automation_ids: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /** @description Top-level discussion comments and replies to match. Omit to match both. */
+                                comment_types?: ("comment" | "reply")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_opened?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_updated?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            interval?: {
+                                /** @description One or more schedules on which the Automation runs. */
+                                cadence: ("hourly" | "daily" | "weekly")[];
+                                /** @description UTC weekday anchor for weekly schedules, where `0` is Sunday and `6` is Saturday. Omitted weekly values default to Monday (`1`). */
+                                day_of_week?: number;
+                                /** @description UTC hour anchor (0 through 23) for daily and weekly schedules. Omitted daily and weekly values default to `0` (midnight UTC). */
+                                hour_utc?: number;
+                                /**
+                                 * @description UTC minute anchor for daily and weekly schedules. Omitted daily and weekly values default to `0`. Must be omitted whenever `cadence` includes `hourly`.
+                                 * @default 0
+                                 * @enum {integer}
+                                 */
+                                minute_utc?: 0 | 15 | 30 | 45;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_opened?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Pull request conversation and inline review comment types to match. */
+                                comment_types: ("timeline_comment" | "review_comment")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merge_conflict?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merged?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_opened?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_ready_for_review?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_requested?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_submitted?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Submitted review states to match. */
+                                states: ("approved" | "changes_requested" | "commented")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_synchronize?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            sub_issue_added?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            workflow_run?: {
+                                /** @description Workflow conclusions to match. The current trigger supports failure. */
+                                conclusions: "failure"[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Workflow names matched against the name in each workflow YAML file. */
+                                workflows: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                        };
+                        /**
+                         * Format: date-time
+                         * @description When the automation was last updated.
+                         */
+                        updated_at: string;
+                        /**
+                         * @description Controls which repository resources a run may modify. `trigger` limits writes to the resource that started the run, when one exists, and resources created during the run; `repository` allows writes to any resource in the repository. Supported values: `trigger`, `repository`.
+                         * @default trigger
+                         * @enum {string}
+                         */
+                        write_scope?: "trigger" | "repository";
+                    };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Insufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Validation Failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "agent-automations/get-repo-automation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The unique identifier of the automation. */
+                automation_id: string;
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: string;
+                /** @description The name of the repository. The name is not case sensitive. */
+                repo: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Automation retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Custom agents (subagents) this automation is allowed to invoke. */
+                        allowed_custom_agents?: string[];
+                        /**
+                         * Format: date-time
+                         * @description When the automation was created.
+                         */
+                        created_at: string;
+                        /** @description A GitHub user */
+                        created_by: {
+                            /**
+                             * Format: int64
+                             * @description The unique identifier of the user
+                             */
+                            id?: number;
+                        };
+                        /** @description Whether the automation is currently enabled. */
+                        enabled?: boolean;
+                        /** @description The unique identifier of the automation. */
+                        id: string;
+                        /** @description The model to use for sessions triggered by this automation. Omit to use the platform default. */
+                        model?: string;
+                        /** @description The name of the automation. */
+                        name: string;
+                        /**
+                         * @description Who owns the automation. `user` keeps it private to its creator and its runs act as that user. `repository` makes it belong to the repository, visible to anyone with read access to the repository, and its runs act as the Copilot app rather than as a person.
+                         * @enum {string}
+                         */
+                        readonly owner_type?: "user" | "repository";
+                        /** @description The prompt template for the automation. */
+                        prompt: string;
+                        /** @description The reasoning effort to use for sessions triggered by this automation. Omit or leave empty for no override. Currently supported values: `none`, `low`, `medium`, `high`, `xhigh`, `max` */
+                        reasoning_effort?: string;
+                        /**
+                         * @description When true, event-triggered runs require the event actor to have repo write permission, even when the org's allow_read_access_triggers policy is enabled. Does not apply to interval-scheduled runs, which always run as the automation owner.
+                         * @default false
+                         */
+                        require_actor_write_permission?: boolean;
+                        /** @description The tools available to the automation. */
+                        tools?: string[];
+                        /** @description Public trigger configuration keyed by stable public trigger identifier. Each trigger has a closed, trigger-specific configuration schema. */
+                        triggers?: {
+                            automation_completed?: {
+                                /** @description Upstream Automation IDs in the same repository. */
+                                automation_ids: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /** @description Top-level discussion comments and replies to match. Omit to match both. */
+                                comment_types?: ("comment" | "reply")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_opened?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_updated?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            interval?: {
+                                /** @description One or more schedules on which the Automation runs. */
+                                cadence: ("hourly" | "daily" | "weekly")[];
+                                /** @description UTC weekday anchor for weekly schedules, where `0` is Sunday and `6` is Saturday. Omitted weekly values default to Monday (`1`). */
+                                day_of_week?: number;
+                                /** @description UTC hour anchor (0 through 23) for daily and weekly schedules. Omitted daily and weekly values default to `0` (midnight UTC). */
+                                hour_utc?: number;
+                                /**
+                                 * @description UTC minute anchor for daily and weekly schedules. Omitted daily and weekly values default to `0`. Must be omitted whenever `cadence` includes `hourly`.
+                                 * @default 0
+                                 * @enum {integer}
+                                 */
+                                minute_utc?: 0 | 15 | 30 | 45;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_opened?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Pull request conversation and inline review comment types to match. */
+                                comment_types: ("timeline_comment" | "review_comment")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merge_conflict?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merged?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_opened?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_ready_for_review?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_requested?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_submitted?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Submitted review states to match. */
+                                states: ("approved" | "changes_requested" | "commented")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_synchronize?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            sub_issue_added?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            workflow_run?: {
+                                /** @description Workflow conclusions to match. The current trigger supports failure. */
+                                conclusions: "failure"[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Workflow names matched against the name in each workflow YAML file. */
+                                workflows: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                        };
+                        /**
+                         * Format: date-time
+                         * @description When the automation was last updated.
+                         */
+                        updated_at: string;
+                        /**
+                         * @description Controls which repository resources a run may modify. `trigger` limits writes to the resource that started the run, when one exists, and resources created during the run; `repository` allows writes to any resource in the repository. Supported values: `trigger`, `repository`.
+                         * @default trigger
+                         * @enum {string}
+                         */
+                        write_scope?: "trigger" | "repository";
+                    };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "agent-automations/delete-repo-automation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The unique identifier of the automation. */
+                automation_id: string;
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: string;
+                /** @description The name of the repository. The name is not case sensitive. */
+                repo: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Automation deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "agent-automations/edit-repo-automation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The unique identifier of the automation. */
+                automation_id: string;
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: string;
+                /** @description The name of the repository. The name is not case sensitive. */
+                repo: string;
+            };
+            cookie?: never;
+        };
+        /** @description The automation fields to update. Omitted fields are left unchanged. */
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Custom agents (subagents) this automation is allowed to invoke. Send an empty array to clear all custom agents. */
+                    allowed_custom_agents?: string[];
+                    /** @description Set to true to enable, false to disable. Omit to leave unchanged. */
+                    enabled?: boolean;
+                    /** @description The model to use for sessions triggered by this automation. Omit to leave unchanged. Send an empty string to clear the model and revert to the platform default. */
+                    model?: string;
+                    /** @description The name of the automation. */
+                    name?: string;
+                    /** @description The prompt template for the automation. */
+                    prompt?: string;
+                    /** @description The reasoning effort to use for sessions triggered by this automation. Omit to leave unchanged. Send an empty string to clear the override. Currently supported values: `none`, `low`, `medium`, `high`, `xhigh`, `max` */
+                    reasoning_effort?: string | ("none" | "low" | "medium" | "high" | "xhigh" | "max");
+                    /** @description When true, event-triggered runs require the event actor to have repo write permission, even when the org's allow_read_access_triggers policy is enabled. Does not apply to interval-scheduled runs, which always run as the automation owner. Omit to leave unchanged. */
+                    require_actor_write_permission?: boolean;
+                    /** @description The tools available to the automation. Send an empty array to clear all tools. */
+                    tools?: string[];
+                    /** @description Public trigger configuration keyed by stable public trigger identifier. Each trigger has a closed, trigger-specific configuration schema. */
+                    triggers?: {
+                        automation_completed?: {
+                            /** @description Upstream Automation IDs in the same repository. */
+                            automation_ids: string[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        discussion_comment?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /** @description Discussion category names matched case-insensitively. */
+                            categories?: string[];
+                            /** @description Top-level discussion comments and replies to match. Omit to match both. */
+                            comment_types?: ("comment" | "reply")[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        discussion_opened?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /** @description Discussion category names matched case-insensitively. */
+                            categories?: string[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        discussion_updated?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /** @description Discussion category names matched case-insensitively. */
+                            categories?: string[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        interval?: {
+                            /** @description One or more schedules on which the Automation runs. */
+                            cadence: ("hourly" | "daily" | "weekly")[];
+                            /** @description UTC weekday anchor for weekly schedules, where `0` is Sunday and `6` is Saturday. Omitted weekly values default to Monday (`1`). */
+                            day_of_week?: number;
+                            /** @description UTC hour anchor (0 through 23) for daily and weekly schedules. Omitted daily and weekly values default to `0` (midnight UTC). */
+                            hour_utc?: number;
+                            /**
+                             * @description UTC minute anchor for daily and weekly schedules. Omitted daily and weekly values default to `0`. Must be omitted whenever `cadence` includes `hourly`.
+                             * @default 0
+                             * @enum {integer}
+                             */
+                            minute_utc?: 0 | 15 | 30 | 45;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        issue_assigned?: {
+                            /** @description Affected assignee logins matched case-insensitively. */
+                            assignees?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        issue_comment?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        issue_labeled?: {
+                            /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                            labels?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        issue_opened?: {
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_assigned?: {
+                            /** @description Affected assignee logins matched case-insensitively. */
+                            assignees?: string[];
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_comment?: {
+                            /** @description A case-insensitive substring matched against the event body. */
+                            body_substring?: string;
+                            /** @description Pull request conversation and inline review comment types to match. */
+                            comment_types: ("timeline_comment" | "review_comment")[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_labeled?: {
+                            /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                            labels?: string[];
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_merge_conflict?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_merged?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_opened?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_ready_for_review?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_review_requested?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_review_submitted?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /** @description Submitted review states to match. */
+                            states: ("approved" | "changes_requested" | "commented")[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        pull_request_synchronize?: {
+                            /** @description Gitignore-style changed-file path globs. */
+                            paths?: string[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        sub_issue_added?: {
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                        workflow_run?: {
+                            /** @description Workflow conclusions to match. The current trigger supports failure. */
+                            conclusions: "failure"[];
+                            /** @description A GitHub issue or pull request search query. */
+                            query?: string;
+                            /** @description Workflow names matched against the name in each workflow YAML file. */
+                            workflows: string[];
+                            /**
+                             * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                             * @enum {string}
+                             */
+                            write_scope?: "trigger" | "repository";
+                        };
+                    };
+                    /**
+                     * @description Controls which repository resources a run may modify. `trigger` limits writes to the resource that started the run, when one exists, and resources created during the run; `repository` allows writes to any resource in the repository. Supported values: `trigger`, `repository`. Omit to leave unchanged.
+                     * @enum {string}
+                     */
+                    write_scope?: "trigger" | "repository";
+                };
+            };
+        };
+        responses: {
+            /** @description Automation updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Custom agents (subagents) this automation is allowed to invoke. */
+                        allowed_custom_agents?: string[];
+                        /**
+                         * Format: date-time
+                         * @description When the automation was created.
+                         */
+                        created_at: string;
+                        /** @description A GitHub user */
+                        created_by: {
+                            /**
+                             * Format: int64
+                             * @description The unique identifier of the user
+                             */
+                            id?: number;
+                        };
+                        /** @description Whether the automation is currently enabled. */
+                        enabled?: boolean;
+                        /** @description The unique identifier of the automation. */
+                        id: string;
+                        /** @description The model to use for sessions triggered by this automation. Omit to use the platform default. */
+                        model?: string;
+                        /** @description The name of the automation. */
+                        name: string;
+                        /**
+                         * @description Who owns the automation. `user` keeps it private to its creator and its runs act as that user. `repository` makes it belong to the repository, visible to anyone with read access to the repository, and its runs act as the Copilot app rather than as a person.
+                         * @enum {string}
+                         */
+                        readonly owner_type?: "user" | "repository";
+                        /** @description The prompt template for the automation. */
+                        prompt: string;
+                        /** @description The reasoning effort to use for sessions triggered by this automation. Omit or leave empty for no override. Currently supported values: `none`, `low`, `medium`, `high`, `xhigh`, `max` */
+                        reasoning_effort?: string;
+                        /**
+                         * @description When true, event-triggered runs require the event actor to have repo write permission, even when the org's allow_read_access_triggers policy is enabled. Does not apply to interval-scheduled runs, which always run as the automation owner.
+                         * @default false
+                         */
+                        require_actor_write_permission?: boolean;
+                        /** @description The tools available to the automation. */
+                        tools?: string[];
+                        /** @description Public trigger configuration keyed by stable public trigger identifier. Each trigger has a closed, trigger-specific configuration schema. */
+                        triggers?: {
+                            automation_completed?: {
+                                /** @description Upstream Automation IDs in the same repository. */
+                                automation_ids: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /** @description Top-level discussion comments and replies to match. Omit to match both. */
+                                comment_types?: ("comment" | "reply")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_opened?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            discussion_updated?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Discussion category names matched case-insensitively. */
+                                categories?: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            interval?: {
+                                /** @description One or more schedules on which the Automation runs. */
+                                cadence: ("hourly" | "daily" | "weekly")[];
+                                /** @description UTC weekday anchor for weekly schedules, where `0` is Sunday and `6` is Saturday. Omitted weekly values default to Monday (`1`). */
+                                day_of_week?: number;
+                                /** @description UTC hour anchor (0 through 23) for daily and weekly schedules. Omitted daily and weekly values default to `0` (midnight UTC). */
+                                hour_utc?: number;
+                                /**
+                                 * @description UTC minute anchor for daily and weekly schedules. Omitted daily and weekly values default to `0`. Must be omitted whenever `cadence` includes `hourly`.
+                                 * @default 0
+                                 * @enum {integer}
+                                 */
+                                minute_utc?: 0 | 15 | 30 | 45;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            issue_opened?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_assigned?: {
+                                /** @description Affected assignee logins matched case-insensitively. */
+                                assignees?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_comment?: {
+                                /** @description A case-insensitive substring matched against the event body. */
+                                body_substring?: string;
+                                /** @description Pull request conversation and inline review comment types to match. */
+                                comment_types: ("timeline_comment" | "review_comment")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_labeled?: {
+                                /** @description Label names matched case-insensitively against the label added by the event. Omit or use an empty array to match every added label. */
+                                labels?: string[];
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merge_conflict?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_merged?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_opened?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_ready_for_review?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_requested?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_review_submitted?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Submitted review states to match. */
+                                states: ("approved" | "changes_requested" | "commented")[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            pull_request_synchronize?: {
+                                /** @description Gitignore-style changed-file path globs. */
+                                paths?: string[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            sub_issue_added?: {
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                            workflow_run?: {
+                                /** @description Workflow conclusions to match. The current trigger supports failure. */
+                                conclusions: "failure"[];
+                                /** @description A GitHub issue or pull request search query. */
+                                query?: string;
+                                /** @description Workflow names matched against the name in each workflow YAML file. */
+                                workflows: string[];
+                                /**
+                                 * @description Override the Automation `write_scope` for runs started by this trigger. If omitted, the automation's `write_scope` is used. Organization or repository policy may restrict the effective scope to `trigger`.
+                                 * @enum {string}
+                                 */
+                                write_scope?: "trigger" | "repository";
+                            };
+                        };
+                        /**
+                         * Format: date-time
+                         * @description When the automation was last updated.
+                         */
+                        updated_at: string;
+                        /**
+                         * @description Controls which repository resources a run may modify. `trigger` limits writes to the resource that started the run, when one exists, and resources created during the run; `repository` allows writes to any resource in the repository. Supported values: `trigger`, `repository`.
+                         * @default trigger
+                         * @enum {string}
+                         */
+                        write_scope?: "trigger" | "repository";
+                    };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Authentication required */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
+            /** @description Validation Failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description URL to relevant API documentation */
+                        documentation_url: string;
+                        /** @description List of validation errors (present only for 422 responses) */
+                        errors?: {
+                            /**
+                             * @description Machine-readable error code
+                             * @enum {string}
+                             */
+                            code: "missing" | "missing_field" | "invalid" | "already_exists" | "unprocessable" | "custom";
+                            /** @description Human-readable message (populated when code is "custom") */
+                            message?: string;
+                        }[];
+                        /** @description Summary message (e.g. "Validation Failed", "Not Found") */
+                        message: string;
+                    };
+                };
+            };
         };
     };
     "agent-tasks/list-tasks-for-repo": {
@@ -102416,9 +106449,27 @@ export interface operations {
                     "application/json": components["schemas"]["code-security-configuration"];
                 };
             };
-            400: components["responses"]["bad_request"];
+            /** @description Bad Request because security product settings conflict, are unsupported by your plan, or required products are not enabled in the configuration. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                    "application/scim+json": components["schemas"]["scim-error"];
+                };
+            };
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
+            /** @description Validation failed because of unavailable security products, invalid feature dependencies, or an invalid configuration. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error-simple"];
+                };
+            };
         };
     };
     "code-security/get-single-configuration-for-enterprise": {
@@ -102607,9 +106658,35 @@ export interface operations {
                 };
             };
             304: components["responses"]["not_modified"];
+            /** @description Bad Request because of a global configuration, incompatible parameters, or invalid enforcement changes. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
-            409: components["responses"]["conflict"];
+            /** @description Conflict because security configuration work is already in progress. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /** @description Validation failed because the configuration is invalid. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error-simple"];
+                };
+            };
         };
     };
     "code-security/attach-enterprise-configuration": {
@@ -102639,7 +106716,24 @@ export interface operations {
             202: components["responses"]["accepted"];
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
-            409: components["responses"]["conflict"];
+            /** @description Conflict because security configuration work is already in progress. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /** @description Validation failed because the request does not match the request schema. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error-simple"];
+                };
+            };
         };
     };
     "code-security/set-configuration-as-default-for-enterprise": {
@@ -102684,6 +106778,15 @@ export interface operations {
             };
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
+            /** @description Validation failed because a public default is not supported in the current environment. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error-simple"];
+                };
+            };
         };
     };
     "code-security/get-repositories-for-enterprise-configuration": {
@@ -102720,6 +106823,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["code-security-configuration-repositories"][];
+                };
+            };
+            /** @description Bad Request because of unsupported attachment statuses. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
                 };
             };
             403: components["responses"]["forbidden"];
@@ -110316,6 +114428,26 @@ export interface operations {
                     "application/json": components["schemas"]["code-security-configuration"];
                 };
             };
+            /** @description Bad Request because security product settings conflict, are unsupported by your plan, or required products are not enabled in the configuration. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /** @description Validation failed because of unavailable security products, invalid feature dependencies, or an invalid configuration. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error-simple"];
+                };
+            };
         };
     };
     "code-security/get-configuration": {
@@ -110536,6 +114668,35 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Bad Request because of a global configuration, incompatible parameters, or an attempt to update attributes of an enterprise-owned configuration. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /** @description Conflict because security configuration work is already in progress. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /** @description Validation failed because of invalid enforcement values, unavailable security products, an attempt to change enterprise-enforced enforcement, or an invalid configuration. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error-simple"];
+                };
+            };
         };
     };
     "code-security/attach-configuration": {
@@ -110565,7 +114726,35 @@ export interface operations {
         };
         responses: {
             202: components["responses"]["accepted"];
+            400: components["responses"]["bad_request"];
             403: components["responses"]["forbidden"];
+            404: components["responses"]["not_found"];
+            /**
+             * @description Conflict because security configuration work is already in progress for the
+             *     organization, security configuration changes are blocked for the organization,
+             *     or another organization in the same enterprise is applying security configurations.
+             */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
+            /**
+             * @description Validation failed because the body does not match the request schema, `scope`
+             *     is `selected` but `selected_repository_ids` is missing or empty, or a non-empty
+             *     `selected_repository_ids` array is provided for another scope.
+             */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error-simple"];
+                };
+            };
         };
     };
     "code-security/set-configuration-as-default": {
@@ -110610,6 +114799,15 @@ export interface operations {
             };
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
+            /** @description Validation failed because a public default is not supported in the current environment. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error-simple"];
+                };
+            };
         };
     };
     "code-security/get-repositories-for-configuration": {
@@ -110648,8 +114846,26 @@ export interface operations {
                     "application/json": components["schemas"]["code-security-configuration-repositories"][];
                 };
             };
+            /** @description Bad Request because of unsupported attachment statuses. */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["basic-error"];
+                };
+            };
             403: components["responses"]["forbidden"];
             404: components["responses"]["not_found"];
+            /** @description Validation failed because `removed` and `detached` are requested together. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["validation-error-simple"];
+                };
+            };
         };
     };
     "code-security/get-default-configurations": {
@@ -115853,10 +120069,10 @@ export interface operations {
                     /** @description The OIDC audience. Optional for `oidc_aws`, `oidc_jfrog`, and `oidc_gcp`, and required for `oidc_cloudsmith` auth types. */
                     audience?: string;
                     /**
-                     * @description The authentication type for the private registry. Defaults to `token` if not specified. Use `oidc_azure`, `oidc_aws`, `oidc_jfrog`, `oidc_cloudsmith`, or `oidc_gcp` for OIDC authentication.
+                     * @description The authentication type for the private registry. Defaults to `token` if not specified. Use `oidc_azure`, `oidc_aws`, `oidc_jfrog`, `oidc_cloudsmith`, or `oidc_gcp` for OIDC authentication. Use `anonymous` for registries that do not require authentication; `username`, `encrypted_value`, and `key_id` must be omitted.
                      * @enum {string}
                      */
-                    auth_type?: "token" | "username_password" | "oidc_azure" | "oidc_aws" | "oidc_jfrog" | "oidc_cloudsmith" | "oidc_gcp";
+                    auth_type?: "token" | "username_password" | "oidc_azure" | "oidc_aws" | "oidc_jfrog" | "oidc_cloudsmith" | "oidc_gcp" | "anonymous";
                     /** @description The AWS region. Required when `auth_type` is `oidc_aws`. */
                     aws_region?: string;
                     /** @description The client ID of the Azure AD application. Required when `auth_type` is `oidc_azure`. */
@@ -116002,7 +120218,7 @@ export interface operations {
                      * @description The authentication type for the private registry. This field cannot be changed after creation. If provided, it must match the existing `auth_type` of the configuration. To change the authentication type, delete and recreate the configuration.
                      * @enum {string}
                      */
-                    auth_type?: "token" | "username_password" | "oidc_azure" | "oidc_aws" | "oidc_jfrog" | "oidc_cloudsmith" | "oidc_gcp";
+                    auth_type?: "token" | "username_password" | "oidc_azure" | "oidc_aws" | "oidc_jfrog" | "oidc_cloudsmith" | "oidc_gcp" | "anonymous";
                     /** @description The AWS region. Required when `auth_type` is `oidc_aws`. */
                     aws_region?: string;
                     /** @description The client ID of the Azure AD application. Required when `auth_type` is `oidc_azure`. */
@@ -116727,7 +120943,7 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description The display name for this app installation's external custom properties in the organization. This can't be changed after the app installation is registered. */
+                    /** @description The display name for this app installation's external custom properties in the organization. Must be 1 to 15 characters and contain only letters and numbers. Capitalization is preserved as entered. This can't be changed after the app installation is registered. */
                     display_name: string;
                     /** @description The unique identifier of the GitHub App installation to register for managing external custom properties. When authenticating as a GitHub App installation, this defaults to the authenticated installation and can be omitted. It is required for all other callers (users and fine-grained personal access tokens). */
                     installation_id?: number;
@@ -117649,7 +121865,13 @@ export interface operations {
     };
     "repos/get-org-rule-suite": {
         parameters: {
-            query?: never;
+            query?: {
+                /**
+                 * @description When set to `true`, the response will include additional metadata for pull request and required status check rule evaluation.
+                 *     Results are capped at 50 entries.
+                 */
+                include_metadata?: components["parameters"]["include-metadata"];
+            };
             header?: never;
             path: {
                 /** @description The organization name. The name is not case sensitive. */
@@ -134876,6 +139098,11 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
+                    /**
+                     * @description Whether to bypass repository rules that the authenticated actor is permitted to bypass.
+                     * @default false
+                     */
+                    bypass_rules?: boolean;
                     /** @description Extra detail to append to automatic commit message. Only supported for direct merges. */
                     commit_message?: string;
                     /** @description Title for the automatic commit message. Only supported for direct merges. */
@@ -135076,6 +139303,50 @@ export interface operations {
                 };
             };
             422: components["responses"]["validation_failed"];
+        };
+    };
+    "pulls/rerequest-reviewers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The account owner of the repository. The name is not case sensitive. */
+                owner: components["parameters"]["owner"];
+                /** @description The number that identifies the pull request. */
+                pull_number: components["parameters"]["pull-number"];
+                /** @description The name of the repository without the `.git` extension. The name is not case sensitive. */
+                repo: components["parameters"]["repo"];
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description An array of user `login`s whose reviews will be rerequested. */
+                    reviewers?: string[];
+                    /** @description An array of team `slug`s whose reviews will be rerequested. */
+                    team_reviewers?: string[];
+                } | unknown | unknown;
+            };
+        };
+        responses: {
+            /** @description Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["pull-request-simple"];
+                };
+            };
+            403: components["responses"]["forbidden"];
+            /** @description Unprocessable Entity if user is not a collaborator */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     "pulls/list-reviews": {
@@ -135492,6 +139763,7 @@ export interface operations {
                     "application/json": components["schemas"]["pull-request-review-comment"];
                 };
             };
+            304: components["responses"]["not_modified"];
             404: components["responses"]["not_found"];
         };
     };
@@ -136670,7 +140942,13 @@ export interface operations {
     };
     "repos/get-repo-rule-suite": {
         parameters: {
-            query?: never;
+            query?: {
+                /**
+                 * @description When set to `true`, the response will include additional metadata for pull request and required status check rule evaluation.
+                 *     Results are capped at 50 entries.
+                 */
+                include_metadata?: components["parameters"]["include-metadata"];
+            };
             header?: never;
             path: {
                 /** @description The account owner of the repository. The name is not case sensitive. */

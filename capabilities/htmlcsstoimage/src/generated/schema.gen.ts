@@ -63,6 +63,26 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/v1/feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Submit feedback
+         * @description Send feedback to the HCTI team about HTML/CSS to Image, its API, or its MCP tools. Report bugs or unexpected rendering results, request features, describe confusing behavior or documentation, and suggest improvements. Include what you tried, what you expected, and what happened. Do not include API keys, credentials, or personal or confidential data. Authentication is optional; authenticated feedback is associated with your organization. Returns a confirmation message and feedback ID.
+         */
+        post: operations["submit-feedback"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/image": {
         parameters: {
             query?: never;
@@ -124,10 +144,33 @@ export type paths = {
         };
         get?: never;
         put?: never;
-        /** Create a batch of images */
+        /**
+         * Create a batch of images
+         * @description Create images from shared default_options and variations. Each variation overrides corresponding defaults. Results preserve variation order.
+         */
         post: operations["create-image-batch"];
         /** Delete a batch of images */
         delete: operations["delete-image-batch"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/image/batch/templated": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a batch of templated images
+         * @description Create images from one or more templates. Set template_id, optional template_version, and template_values in default_options or each variation. Supplying a template_id in a variation resets its inherited version. Object values merge recursively; variation arrays, scalars and explicit null replace defaults. Identical images reuse existing assets. Results preserve variation order.
+         */
+        post: operations["create-templated-image-batch"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -500,7 +543,7 @@ export type components = {
             id: string;
             /** @description Display name for the key. */
             name: string;
-            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
+            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "debugs:create" | "debugs:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
             /**
              * Format: date-time
              * @description When the key was last updated, in UTC.
@@ -528,7 +571,7 @@ export type components = {
             id: string;
             /** @description Display name for the key. */
             name: string;
-            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
+            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "debugs:create" | "debugs:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
             /**
              * Format: date-time
              * @description When the key was last updated, in UTC.
@@ -655,12 +698,20 @@ export type components = {
              */
             ids: string[];
         };
+        /** @description Creates a batch of images from HTML or URLs. Each variation overrides the corresponding default options. */
         BatchImageRequest: {
             default_options?: null | components["schemas"]["BaseImageRequest"];
-            variations?: components["schemas"]["ImageRequest"][];
+            /** @description One variation per image. Supply at least one variation, within your plan's batch limit. Each merged request must provide HTML or a URL. Results preserve this order. */
+            variations: components["schemas"]["ImageRequest"][];
         };
         BatchImageResult: {
             images: components["schemas"]["ImageResultWithId"][];
+        };
+        /** @description Creates a batch from one or more templates. Set template_id, template_version and template_values in shared default_options or individual variations. */
+        BatchTemplatedImageRequest: {
+            default_options?: null | components["schemas"]["ImageRequest_TemplatedBatchOptions"];
+            /** @description One variation per image. Supply at least one variation, within your plan's batch limit. Each variation must resolve to a template_id. Each merged template_values object must be nonempty and satisfy the template's required variables. Results preserve this order. */
+            variations: components["schemas"]["ImageRequest_TemplatedBatchOptions"][];
         };
         /** @enum {unknown} */
         CloudflareStorageJurisdiction: "eu" | "fedramp" | null;
@@ -683,7 +734,7 @@ export type components = {
             /** @description Display name for the key, up to 255 characters. Omitted, null, or blank names use Key created YYYY-MM-DD HH:mm:ss, based on the key's original creation time in UTC. */
             name?: null | string;
             /** @description Complete list of current permissions to grant, for example images:create or templates:read. Ignored when all_future_permissions is true; supply an empty array in that case. Otherwise, an empty array grants no product permissions. Permissions cannot exceed the caller's authority. */
-            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
+            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "debugs:create" | "debugs:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
         };
         /**
          * Create or Update OG Config Request
@@ -801,6 +852,22 @@ export type components = {
         };
         /** @enum {unknown} */
         DigitalOceanStorageRegion: "nyc3" | "ams3" | "sfo2" | "sfo3" | "sgp1" | "lon1" | "fra1" | "tor1" | "blr1" | "syd1" | "atl1" | "ric1" | "mkc1";
+        /** @description A bug report, feature request, or suggestion for improving HTML/CSS to Image, its API, or its MCP tools. */
+        FeedbackRequest: {
+            /** @description Optional public HTTP or HTTPS callback URL for a response. No SLA or guarantee is provided on callback responses. */
+            callback_url?: null | string;
+            /** @description Describe the bug, feature request, or suggestion in at least 20 characters after trimming whitespace. More detail helps us investigate and understand your feedback. For problems, include what you tried, what you expected, what happened, relevant steps to reproduce the issue, and any related request_ids, image_ids, or template_ids. */
+            message: string;
+            /** @description Optional short summary of the bug, feature request, or suggestion. */
+            subject?: null | string;
+        };
+        /** @description Confirmation that HCTI received your bug report, feature request, or suggestion. */
+        FeedbackResponse: {
+            /** @description ID for referencing the submitted feedback. */
+            id: string;
+            /** @description Confirmation message for the feedback submission. */
+            message: string;
+        };
         /** @enum {unknown} */
         HandlebarsHelperKind: "UNKNOWN" | "None" | "If" | "Unless" | "With" | "Each";
         /** @description Metadata shared by all images. The image_type discriminator identifies the response as html_css, url, or templated. */
@@ -1084,6 +1151,17 @@ export type components = {
             next_page_token: string;
         };
         ImageRequest: components["schemas"]["ImageRequestImageRequest_HtmlCss"] | components["schemas"]["ImageRequestImageRequest_Url"] | components["schemas"]["ImageRequestImageRequest_Templated"];
+        ImageRequest_TemplatedBatchOptions: {
+            format?: null | components["schemas"]["ImageFormat"];
+            /** @description Template ID to render for this variation. Omit to inherit default_options.template_id. Supplying a template_id resets the inherited template_version unless this variation also supplies a version. Each variation must resolve to a nonempty template ID owned by the authenticated organization. */
+            template_id?: null | string;
+            template_values?: null | components["schemas"]["JsonObject"];
+            /**
+             * Format: int64
+             * @description Template version to render. Inherit default_options.template_version when using the default template ID. When supplying a template_id in this variation, omit the version to use that template's latest version.
+             */
+            template_version?: null | number | string;
+        };
         /** HTML/CSS Image Request */
         ImageRequestImageRequest_HtmlCss: {
             color_scheme?: null | components["schemas"]["ColorSchemeType"];
@@ -2109,6 +2187,7 @@ export type components = {
             ms_delay?: null | number | string;
             /** @description The name of the template, used to identify it in your account. Maximum: 64 characters. */
             name?: null | string;
+            pdf_options?: null | components["schemas"]["PDFOptions"];
             /** @description Specifies which configured organization proxy to use when rendering. */
             proxy_id?: null | string;
             /** @description Waits until the page signals that the screenshot is ready. The image fails if the readiness signal is never sent. */
@@ -2206,7 +2285,7 @@ export interface operations {
                 /** @description pagination.next_page_start from the previous response. Omit for the first page. */
                 page_start?: string;
                 /** @description Return keys allowing every specified permission, including wildcard grants. Repeat this query parameter for multiple permissions; do not separate names with spaces or commas. */
-                with_permission?: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
+                with_permission?: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "debugs:create" | "debugs:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
             };
             header?: never;
             path?: never;
@@ -2616,6 +2695,57 @@ export interface operations {
                      * @example "api-key:write";q=20;w=60
                      */
                     "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "submit-feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeedbackRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeedbackResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
                     [name: string]: unknown;
                 };
                 content: {
@@ -3147,6 +3277,15 @@ export interface operations {
                     "application/json": components["schemas"]["ApiErrorResult"];
                 };
             };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
             /** @description Payment Required */
             402: {
                 headers: {
@@ -3158,6 +3297,15 @@ export interface operations {
             };
             /** @description Forbidden */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3198,6 +3346,84 @@ export interface operations {
             };
             /** @description Unauthorized */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "create-templated-image-batch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BatchTemplatedImageRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BatchImageResult"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Payment Required */
+            402: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };

@@ -60,9 +60,33 @@ export type paths = {
          *
          *     Return AI conversations ordered by latest span time.
          *
-         *     `query` uses Sentry search syntax against spans. A conversation matches when
-         *     any span matches. Summary values then include all conversation spans inside
-         *     selected project, environment, and time filters.
+         *     `query` uses Sentry search syntax.
+         *
+         *     **Span filters**
+         *
+         *     - Description: `"payment failed"`; status: `span.status:[error,internal_error]`.
+         *     - Operation: `gen_ai.operation.type:tool`; tool: `gen_ai.tool.name:get_weather`.
+         *     - Duration: `span.duration:>2s`; ID: `gen_ai.conversation.id:"session:123"`
+         *       or `conversation.conversationId:"session:123"`.
+         *
+         *     **Conversation filters**
+         *
+         *     - Calls: `conversation.llmCalls` or `conversation.messages`, and
+         *       `conversation.toolCalls`; failures: `conversation.errors` and
+         *       `conversation.toolErrors`.
+         *     - Usage: `conversation.inputTokens`, `conversation.outputTokens`,
+         *       `conversation.totalTokens`, and `conversation.totalCost`.
+         *     - Timespan: `conversation.timeSpan` measures elapsed time between first and last AI spans;
+         *       `conversation.generationDuration` sums LLM call durations. Both use milliseconds.
+         *
+         *     Use numeric comparisons such as `conversation.toolCalls:>2`. Queries return
+         *     conversations, not spans. Each `AND` condition may match a different span.
+         *     Returned totals include all AI spans in selected project, environment, and time
+         *     filters, not only matching spans.
+         *
+         *     Negation means no span matches, including when an attribute is absent. Payloads
+         *     are searchable only when recorded and not scrubbed. Payload failure text does
+         *     not mark a span as failed; set `span.status:error` for reliable failure search.
          */
         get: operations["listOrganizationAIConversations"];
         put?: never;
@@ -87,8 +111,11 @@ export type paths = {
          *     Return spans recorded for one AI conversation in start-time order.
          *
          *     Message, tool, and response attributes contain their recorded string values.
-         *     Without an explicit range, Sentry widens the search across available retention.
-         *     A missing conversation returns an empty `spans` list.
+         *     `stats.errors` counts spans whose status is not `ok`, `cancelled`, or `unknown`.
+         *     `stats.errorToolNames` lists tools used by those spans.
+         *     `stats.inputTokens` includes cache-read and cache-write tokens. Stats are returned
+         *     on the first page only. Without an explicit range, Sentry widens the search across
+         *     available retention. A missing conversation returns an empty `spans` list.
          */
         get: operations["retrieveOrganizationAIConversation"];
         put?: never;
@@ -322,6 +349,36 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/0/organizations/{organization_id_or_slug}/events-dropped/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Query Dropped and Accepted Events/Stats by Outcome and Reason
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Return the events Sentry received but dropped (rate limited, filtered,
+         *     invalid, abuse, client discarded, cardinality limited) bucketed over the
+         *     requested interval, alongside the accepted volume per bucket so a caller
+         *     can compute the dropped share.
+         *
+         *     Select the dropped-data type with ``dataset`` and the bucket size with
+         *     ``interval``. Optionally scope the dropped side to one classification with
+         *     ``outcome`` (top-level) and/or ``reason`` (sub-classification within an
+         *     outcome); the accepted volume is always returned in full.
+         */
+        get: operations["listOrganizationEventsDropped"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/0/organizations/{organization_id_or_slug}/events-timeseries/": {
         parameters: {
             query?: never;
@@ -419,6 +476,47 @@ export type paths = {
          * @description Delete the link between a user from an external provider and a Sentry user.
          */
         delete: operations["deleteOrganizationExternalUser"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/flags/logs/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List an Organization's Flag Logs
+         * @description Return a paginated list of feature flag changes (creations, updates and deletions)
+         *     recorded for an organization within the requested time range.
+         */
+        get: operations["listOrganizationFlagLogs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/flags/logs/{flag_log_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieve an Organization's Flag Log
+         * @description Return a single feature flag change recorded for an organization.
+         */
+        get: operations["retrieveOrganizationFlagLog"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -555,6 +653,50 @@ export type paths = {
          *     integration_id.
          */
         delete: operations["deleteOrganizationIntegration"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/channel-validate/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Validate a Messaging Channel for an Integration
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Validate whether a channel exists for the given integration.
+         */
+        get: operations["validateOrganizationIntegrationChannel"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/channels/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Messaging Channels for an Integration
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     List all messaging channels for an integration.
+         */
+        get: operations["listOrganizationIntegrationChannels"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -1923,6 +2065,90 @@ export type paths = {
         patch: operations["updateOrganizationScimV2Group"];
         trace?: never;
     };
+    "/api/0/organizations/{organization_id_or_slug}/scim/v2/ResourceTypes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List the SCIM Resource Types
+         * @description List the resource types available via SCIM: User (organization
+         *     members) and Group (teams). Pagination parameters are ignored per
+         *     RFC 7644 section 4; both resource types are always returned.
+         */
+        get: operations["listOrganizationScimV2ResourceTypes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/scim/v2/ResourceTypes/{resource_type_name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Query an Individual SCIM Resource Type
+         * @description Return a single SCIM resource type by name (`User` or `Group`).
+         */
+        get: operations["getOrganizationScimV2ResourceType"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/scim/v2/Schemas/{schema_uri}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Query an Individual SCIM Schema
+         * @description Return a single SCIM schema definition by its URI. Sentry supports the
+         *     core User and Group schemas.
+         */
+        get: operations["getOrganizationScimV2Schema"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/scim/v2/ServiceProviderConfig": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieve the SCIM Service Provider Configuration
+         * @description Return the SCIM Service Provider Configuration, which describes the
+         *     SCIM 2.0 protocol features Sentry supports (RFC 7643 section 5).
+         */
+        get: operations["getOrganizationScimV2ServiceProviderConfig"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/0/organizations/{organization_id_or_slug}/scim/v2/Users": {
         parameters: {
             query?: never;
@@ -1991,6 +2217,16 @@ export type paths = {
          * @description **Experimental:** This API is under active development and may change.
          *
          *     Retrieve prepared UI components for installed custom integrations, including issue-link forms.
+         *
+         *     API clients can use `filter=issue-link` to create or link an external issue through
+         *     an app such as Linear. The `uri` values in `schema` are paths on the app's own server.
+         *     Clients never call them directly; Sentry calls the app on their behalf:
+         *
+         *     - To load a select field's choices, pass the field's `uri` to
+         *       `GET /sentry-app-installations/{installationUuid}/external-requests/`.
+         *     - To create or link the issue, send the form values with the `uri` from
+         *       `schema.create` or `schema.link` to
+         *       `POST /sentry-app-installations/{installationUuid}/external-issue-actions/`.
          */
         get: operations["listOrganizationSentryAppComponents"];
         put?: never;
@@ -2107,6 +2343,37 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/0/organizations/{organization_id_or_slug}/starred-service-spans/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Star a Service Span
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Star a service span for the requesting user. Span queries expose this as the
+         *     `is_starred_transaction` field. Returns `403` if the user has already starred
+         *     the service span.
+         */
+        post: operations["starOrganizationServiceSpan"];
+        /**
+         * Unstar a Service Span
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Unstar a service span for the requesting user. Succeeds even if the
+         *     service span was not starred.
+         */
+        delete: operations["unstarOrganizationServiceSpan"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/0/organizations/{organization_id_or_slug}/stats_v2/": {
         parameters: {
             query?: never;
@@ -2204,6 +2471,9 @@ export type paths = {
          * List Trace Item Attributes
          * @description List the attribute keys available on a given trace item dataset (spans, logs,
          *     trace metrics, etc.), with optional substring and structured filtering.
+         *
+         *     Pass `expand=context` (experimental) to include each attribute's metadata:
+         *     a brief description, examples, and deprecation details.
          */
         get: operations["listOrganizationTraceItemAttributes"];
         put?: never;
@@ -3717,6 +3987,8 @@ export type paths = {
          *
          *     Invoke the installed app's issue-link callback and store the returned association.
          *     Submit the app-specific form fields alongside `groupId`, `action`, and `uri`.
+         *     The installation UUID, form fields, and `uri` come from the organization's
+         *     `issue-link` Sentry App components.
          *
          *     For `action=link`, the optional `expectedExternalIssueUrl` query parameter
          *     requires an exact canonical `webUrl` match. An existing matching link is
@@ -4137,7 +4409,7 @@ export type components = {
              *                     - `static`: Threshold based monitor
              *                     - `percent`: Change based monitor
              *                     - `dynamic`: Dynamic monitor
-             *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period at which to compare against in minutes.
+             *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period, in seconds, at which to compare against historical data.
              *                 For example, a value of 3600 compares the metric tracked against data 1 hour ago.
              *                     - `300`: 5 minutes
              *                     - `900`: 15 minutes
@@ -4149,20 +4421,20 @@ export type components = {
              *                 **Threshold**
              *                 ```json
              *                 {
-             *                     "detectionType": "static",
+             *                     "detectionType": "static"
              *                 }
              *                 ```
              *                 **Change**
              *                 ```json
              *                 {
              *                     "detectionType": "percent",
-             *                     "comparisonDelta": 3600,
+             *                     "comparisonDelta": 3600
              *                 }
              *                 ```
              *                 **Dynamic**
              *                 ```json
              *                 {
-             *                     "detectionType": "dynamic",
+             *                     "detectionType": "dynamic"
              *                 }
              *                 ```
              */
@@ -4170,7 +4442,12 @@ export type components = {
                 [key: string]: unknown;
             };
             /**
-             * @description The data sources for the monitor to use based on what you want to measure.
+             * @description The data sources for the metric monitor to use based on what you want to measure.
+             *
+             *                 `timeWindow` is measured in seconds. Cron Monitors use schedules instead of this field.
+             *                 Legacy metric alert rules expressed this value in minutes, so multiply a legacy value
+             *                 by 60 when migrating it to a monitor. For example, a legacy 5-minute window becomes
+             *                 `"timeWindow": 300`.
              *
              *                 **Number of Errors Metric Monitor**
              *                 - `eventTypes`: Any of `error` or `default`.
@@ -4183,9 +4460,9 @@ export type components = {
              *                             "eventTypes": ["default", "error"],
              *                             "query": "is:unresolved",
              *                             "queryType": 0,
-             *                             "timeWindow": 3600,
-             *                         },
-             *                     ],
+             *                             "timeWindow": 3600
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Users Experiencing Errors Metric Monitor**
@@ -4199,9 +4476,9 @@ export type components = {
              *                             "eventTypes": ["default", "error"],
              *                             "query": "is:unresolved",
              *                             "queryType": 0,
-             *                             "timeWindow": 3600,
-             *                         },
-             *                     ],
+             *                             "timeWindow": 3600
+             *                         }
+             *                     ]
              *                 ```
              *
              *
@@ -4212,13 +4489,13 @@ export type components = {
              *                             "aggregate":"count(span.duration)",
              *                             "dataset":"events_analytics_platform",
              *                             "environment":"prod",
-             *                             "eventTypes":["trace_item_span"]
+             *                             "eventTypes":["trace_item_span"],
              *                             "query":"",
              *                             "queryType":1,
              *                             "timeWindow":3600,
-             *                             "extrapolationMode":"unknown",
-             *                         },
-             *                     ],
+             *                             "extrapolationMode":"unknown"
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Duration Metric Monitor**
@@ -4228,13 +4505,13 @@ export type components = {
              *                             "aggregate":"p95(span.duration)",
              *                             "dataset":"events_analytics_platform",
              *                             "environment":"prod",
-             *                             "eventTypes":["trace_item_span"]
+             *                             "eventTypes":["trace_item_span"],
              *                             "query":"",
              *                             "queryType":1,
              *                             "timeWindow":3600,
-             *                             "extrapolationMode":"unknown",
-             *                         },
-             *                     ],
+             *                             "extrapolationMode":"unknown"
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Failure Rate Metric Monitor**
@@ -4244,17 +4521,17 @@ export type components = {
              *                             "aggregate":"failure_rate()",
              *                             "dataset":"events_analytics_platform",
              *                             "environment":"prod",
-             *                             "eventTypes":["trace_item_span"]
+             *                             "eventTypes":["trace_item_span"],
              *                             "query":"",
              *                             "queryType":1,
              *                             "timeWindow":3600,
-             *                             "extrapolationMode":"unknown",
-             *                         },
-             *                     ],
+             *                             "extrapolationMode":"unknown"
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Largest Contentful Paint Metric Monitor**
-             *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+             *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
              *                 - `aggregate`: Valid values are `avg(measurements.lcp)`, `p50(measurements.lcp)`, `p75(measurements.lcp)`, `p95(measurements.lcp)`, `p99(measurements.lcp)`, `p100(measurements.lcp)`, and `percentile(measurements.lcp,x)`, where `x` is your custom percentile.
              *
              *                 ```json
@@ -4263,17 +4540,17 @@ export type components = {
              *                             "aggregate":"p95(measurements.lcp)",
              *                             "dataset":"events_analytics_platform",
              *                             "environment":"prod",
-             *                             "eventTypes":["trace_item_span"]
-             *                             "query":"",
+             *                             "eventTypes":["trace_item_span"],
+             *                             "query":"is_transaction:true",
              *                             "queryType":1,
              *                             "timeWindow":3600,
-             *                             "extrapolationMode":"unknown",
-             *                         },
-             *                     ],
+             *                             "extrapolationMode":"unknown"
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Custom Metric Monitor**
-             *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+             *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
              *                 - `aggregate`: Valid values are:
              *                 `avg(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
              *                 `p50(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
@@ -4289,11 +4566,17 @@ export type components = {
              *                 ```json
              *                 [
              *                     {
-             *                         "aggregate": "p75(measurements.ttfb)"
+             *                         "aggregate": "p75(measurements.ttfb)",
              *                         "dataset": "events_analytics_platform",
+             *                         "environment": "prod",
              *                         "queryType": 1,
-             *                     },
-             *                 ],
+             *                         "eventTypes": ["trace_item_span"],
+             *                         "query": "is_transaction:true",
+             *                         "timeWindow": 3600,
+             *                         "extrapolationMode": "unknown"
+             *                     }
+             *                 ]
+             *                 ```
              */
             data_sources?: unknown[];
             /** @description A description of the monitor. Will be used in the resulting issue. */
@@ -4576,7 +4859,7 @@ export type components = {
             checkin_margin?: number | null;
             /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
             failure_issue_threshold?: number | null;
-            /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+            /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
             max_runtime?: number | null;
             /** @description How many successful check-ins in a row before resolving an issue. */
             recovery_threshold?: number | null;
@@ -5368,7 +5651,7 @@ export type components = {
             /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
             conditions: {
                 /**
-                 * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                 * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                  *
                  *     * `error_type`
                  *     * `error_message`
@@ -5376,9 +5659,10 @@ export type components = {
                  *     * `metric_name`
                  *     * `release`
                  *     * `ip_address`
+                 *     * `geo_country_code`
                  * @enum {string}
                  */
-                type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
+                type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
                 /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
                 value: string[];
             }[];
@@ -5410,7 +5694,7 @@ export type components = {
         };
         CustomInboundFilterCondition: {
             /**
-             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
              *
              *     * `error_type`
              *     * `error_message`
@@ -5418,9 +5702,10 @@ export type components = {
              *     * `metric_name`
              *     * `release`
              *     * `ip_address`
+             *     * `geo_country_code`
              * @enum {string}
              */
-            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
+            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
             /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
             value: string[];
         };
@@ -7063,6 +7348,24 @@ export type components = {
             /** @description Whether the source requires debug checksums. */
             requires_checksum?: boolean;
         };
+        GetFlagLogResponse: {
+            data: {
+                /** @enum {string} */
+                action: "created" | "deleted" | "updated";
+                /** Format: date-time */
+                createdAt: string;
+                createdBy: string | null;
+                /** @enum {string|null} */
+                createdByType: "email" | "id" | "name" | null;
+                flag: string;
+                id: number;
+                /** @enum {string|null} */
+                provider: "generic" | "flagpole" | "launchdarkly" | "unleash" | "statsig" | null;
+                tags: {
+                    [key: string]: unknown;
+                };
+            };
+        };
         GetReplay: {
             data: {
                 activity?: number | null;
@@ -7881,6 +8184,19 @@ export type components = {
             releaseNotes: string | null;
             state: string;
         };
+        IntegrationChannelsResponse: {
+            results: {
+                display: string;
+                id: string;
+                name: string;
+                type: string;
+            }[];
+            warning?: string;
+        };
+        IntegrationChannelValidationResponse: {
+            detail?: string;
+            valid: boolean;
+        };
         IntegrationIssueConfigResponse: {
             accountType: string | null;
             createIssueConfig?: {
@@ -8267,6 +8583,7 @@ export type components = {
          *     - `ssqp` - Microsoft SSQP
          *     - `unified` - Unified Symbol Server Layout
          *     - `debuginfod` - debuginfod
+         *     - `nxsymstore` - Nintendo NXSymStore
          *
          *     **`casing`** ***(string)*** - The layout of the folder structure. The options are:
          *     - `default` - Default (mixed case)
@@ -8302,9 +8619,10 @@ export type components = {
              *     * `unified`
              *     * `debuginfod`
              *     * `slashsymbols`
+             *     * `nxsymstore`
              * @enum {string}
              */
-            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
         };
         /**
          * @description Allows parameters to be defined in snake case, but passed as camel case.
@@ -8451,6 +8769,24 @@ export type components = {
             size: number;
             type: string;
         }[];
+        ListFlagLogsResponse: {
+            data: {
+                /** @enum {string} */
+                action: "created" | "deleted" | "updated";
+                /** Format: date-time */
+                createdAt: string;
+                createdBy: string | null;
+                /** @enum {string|null} */
+                createdByType: "email" | "id" | "name" | null;
+                flag: string;
+                id: number;
+                /** @enum {string|null} */
+                provider: "generic" | "flagpole" | "launchdarkly" | "unleash" | "statsig" | null;
+                tags: {
+                    [key: string]: unknown;
+                };
+            }[];
+        };
         ListMemberOnTeamResponse: {
             /** Format: date-time */
             dateCreated: string;
@@ -8554,6 +8890,8 @@ export type components = {
                 slug: string;
             }[];
             startTimestamp: number;
+            /** Format: double */
+            timeSpan: number;
             title: string | null;
             toolCalls: number;
             toolErrors: number;
@@ -9877,6 +10215,24 @@ export type components = {
             };
             /** @enum {string} */
             attributeType: "string" | "number" | "boolean" | "array";
+            /**
+             * @description Additional, mostly-static metadata about an attribute.
+             *
+             *     When ``expand=context`` is requested, context is attached to every attribute.
+             *     Metadata comes from the sentry conventions, Sentry's own column definitions,
+             *     or user-authored context (gated behind ``data-browsing-attribute-context``),
+             *     in that precedence order. Only the fields available are included, so an
+             *     attribute with no metadata gets an empty context.
+             */
+            context?: {
+                brief?: string;
+                details?: string[];
+                examples?: (string | number | boolean)[];
+                isConvention?: boolean;
+                isCustom?: boolean;
+                isDeprecated?: boolean;
+                replacementAttribute?: string;
+            };
             key: string;
             name: string;
             secondaryAliases?: string[];
@@ -9947,13 +10303,6 @@ export type components = {
             } | null;
         }[];
         Monitor: {
-            alertRule?: {
-                environment: string;
-                targets: {
-                    targetIdentifier: number;
-                    targetType: string;
-                }[];
-            };
             config: {
                 alert_rule_id: number | null;
                 checkin_margin: number | null;
@@ -10054,31 +10403,7 @@ export type components = {
             slug: string;
             status: string;
         };
-        MonitorAlertRuleTargetValidator: {
-            /** @description ID of target object */
-            target_identifier: number;
-            /** @description One of [Member, Team] */
-            target_type: string;
-        };
-        MonitorAlertRuleValidator: {
-            /** @description Name of the environment */
-            environment?: string | null;
-            /** @description Array of dictionaries with information of the user or team to be notified */
-            targets: {
-                /** @description ID of target object */
-                target_identifier: number;
-                /** @description One of [Member, Team] */
-                target_type: string;
-            }[];
-        };
         MonitorList: {
-            alertRule?: {
-                environment: string;
-                targets: {
-                    targetIdentifier: number;
-                    targetType: string;
-                }[];
-            };
             config: {
                 alert_rule_id: number | null;
                 checkin_margin: number | null;
@@ -10185,25 +10510,13 @@ export type components = {
          *     Errors are output in camel case.
          */
         MonitorValidator: {
-            /** @description Alert rule configuration created alongside the monitor. */
-            alert_rule?: {
-                /** @description Name of the environment */
-                environment?: string | null;
-                /** @description Array of dictionaries with information of the user or team to be notified */
-                targets: {
-                    /** @description ID of target object */
-                    target_identifier: number;
-                    /** @description One of [Member, Team] */
-                    target_type: string;
-                }[];
-            };
             /** @description The configuration for the monitor. */
             config: {
                 /** @description How long (in minutes) after the expected checkin time will we wait until we consider the checkin to have been missed. */
                 checkin_margin?: number | null;
                 /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
                 failure_issue_threshold?: number | null;
-                /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+                /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
                 max_runtime?: number | null;
                 /** @description How many successful check-ins in a row before resolving an issue. */
                 recovery_threshold?: number | null;
@@ -11036,6 +11349,41 @@ export type components = {
             id: string;
             name: string;
         }[];
+        OrganizationEventsDroppedResponse: {
+            acceptedEvents: {
+                category: string;
+                /** Format: double */
+                count: number;
+                /** Format: double */
+                end: number;
+                outcome: string;
+                reason: string;
+                /** Format: double */
+                start: number;
+                type: string;
+            }[];
+            droppedEvents: {
+                category: string;
+                /** Format: double */
+                count: number;
+                /** Format: double */
+                end: number;
+                outcome: string;
+                reason: string;
+                /** Format: double */
+                start: number;
+                type: string;
+            }[];
+            meta: {
+                dataset: string;
+                /** Format: double */
+                end: number;
+                /** Format: double */
+                interval: number;
+                /** Format: double */
+                start: number;
+            };
+        };
         OrganizationEventsResponseDict: {
             data: {
                 [key: string]: unknown;
@@ -11078,37 +11426,7 @@ export type components = {
         };
         OrganizationEventsTimeseriesResponse: {
             meta?: {
-                acceptedAnnotations?: {
-                    /** Format: double */
-                    byteSize?: number;
-                    category: string;
-                    /** Format: double */
-                    end: number;
-                    /** Format: double */
-                    eventCount: number;
-                    outcome: string;
-                    reason: string;
-                    /** Format: double */
-                    start: number;
-                    /** @enum {string} */
-                    type: "system";
-                }[];
                 dataset: string;
-                droppedAnnotations?: {
-                    /** Format: double */
-                    byteSize?: number;
-                    category: string;
-                    /** Format: double */
-                    end: number;
-                    /** Format: double */
-                    eventCount: number;
-                    outcome: string;
-                    reason: string;
-                    /** Format: double */
-                    start: number;
-                    /** @enum {string} */
-                    type: "system";
-                }[];
                 /** Format: double */
                 end: number;
                 /** @description Ingestion status for the data behind a response. */
@@ -13738,12 +14056,17 @@ export type components = {
                 [key: string]: unknown;
             }[];
             stats: {
+                cacheReadTokens: number;
+                cacheWriteTokens: number;
                 endTimestamp: number;
+                errors: number;
+                errorToolNames: string[];
                 /** Format: double */
                 generationDuration: number;
                 inputTokens: number;
                 llmCalls: number;
                 outputTokens: number;
+                reasoningTokens: number;
                 startTimestamp: number;
                 toolCalls: number;
                 toolErrors: number;
@@ -13767,9 +14090,27 @@ export type components = {
                     totalCost: number;
                     totalTokens: number;
                 }[];
-            };
+            } | null;
             title: string | null;
             webUrl: string;
+        };
+        SCIMListResourceTypesResponse: {
+            itemsPerPage: number;
+            Resources: {
+                description: string;
+                endpoint: string;
+                id: string;
+                meta: {
+                    location: string;
+                    resourceType: string;
+                };
+                name: string;
+                schema: string;
+                schemas: string[];
+            }[];
+            schemas: string[];
+            startIndex: number;
+            totalResults: number;
         };
         SCIMListResponseEnvelopeSCIMMemberIndexResponse: {
             itemsPerPage: number;
@@ -13862,6 +14203,67 @@ export type components = {
             /** @description SCIM schema URIs identifying the request format. Must be the PatchOp schema. */
             schemas?: string[];
         };
+        SCIMResourceTypeResponse: {
+            description: string;
+            endpoint: string;
+            id: string;
+            meta: {
+                location: string;
+                resourceType: string;
+            };
+            name: string;
+            schema: string;
+            schemas: string[];
+        };
+        SCIMSchemaResponse: {
+            attributes: {
+                [key: string]: unknown;
+            }[];
+            description: string;
+            id: string;
+            meta: {
+                location: string;
+                resourceType: string;
+            };
+            name: string;
+            schemas: string[];
+        };
+        SCIMServiceProviderConfigResponse: {
+            authenticationSchemes: {
+                description: string;
+                name: string;
+                primary: boolean;
+                specUri: string;
+                type: string;
+            }[];
+            bulk: {
+                maxOperations: number;
+                maxPayloadSize: number;
+                supported: boolean;
+            };
+            changePassword: {
+                supported: boolean;
+            };
+            documentationUri: string;
+            etag: {
+                supported: boolean;
+            };
+            filter: {
+                maxResults: number;
+                supported: boolean;
+            };
+            meta: {
+                location: string;
+                resourceType: string;
+            };
+            patch: {
+                supported: boolean;
+            };
+            schemas: string[];
+            sort: {
+                supported: boolean;
+            };
+        };
         SCIMTeamPatchOperation: {
             op: string;
             path?: string;
@@ -13953,6 +14355,7 @@ export type components = {
                 };
                 detail?: string;
             };
+            installationUuid: string;
             schema: {
                 [key: string]: unknown;
             };
@@ -14641,6 +15044,7 @@ export type components = {
              *     - `ssqp` - Microsoft SSQP
              *     - `unified` - Unified Symbol Server Layout
              *     - `debuginfod` - debuginfod
+             *     - `nxsymstore` - Nintendo NXSymStore
              *
              *     **`casing`** ***(string)*** - The layout of the folder structure. The options are:
              *     - `default` - Default (mixed case)
@@ -14676,9 +15080,10 @@ export type components = {
                  *     * `unified`
                  *     * `debuginfod`
                  *     * `slashsymbols`
+                 *     * `nxsymstore`
                  * @enum {string}
                  */
-                type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
             };
             /** @description The human-readable name of the source. */
             name: string;
@@ -14799,6 +15204,12 @@ export type components = {
             /** @enum {string} */
             sdk_debug_id_support: "not-supported" | "unofficial-sdk" | "needs-upgrade" | "full";
             sdk_version: string | null;
+        };
+        StarSegment: {
+            /** @description The ID of the project the service span belongs to. */
+            project_id: number;
+            /** @description The name of the service span to star or unstar. */
+            service_span: string;
         };
         StatusDetailsValidator: {
             /** @description Ignore the issue until it has occurred this many times in `ignoreWindow` minutes. */
@@ -15813,7 +16224,7 @@ export type components = {
              *
              *             ```json
              *                 {
-             *                     "frequency":3600
+             *                     "frequency": 60
              *                 }
              *             ```
              */
@@ -15850,6 +16261,7 @@ export type components = {
             /**
              * @description The conditions on which the alert will trigger. See available options below.
              *             ```json
+             *             {
              *                 "triggers": {
              *                     "organizationId": "1",
              *                     "logicType": "any-short",
@@ -15884,9 +16296,9 @@ export type components = {
              *                             ],
              *                             "conditionResult": true
              *                         }
-             *                     ],
-             *                     "actions": []
+             *                     ]
              *                 }
+             *             }
              *             ```
              */
             triggers?: {
@@ -16682,6 +17094,8 @@ export interface operations {
                             slug: string;
                         }[];
                         startTimestamp: number;
+                        /** Format: double */
+                        timeSpan: number;
                         title: string | null;
                         toolCalls: number;
                         toolErrors: number;
@@ -16791,12 +17205,17 @@ export interface operations {
                             [key: string]: unknown;
                         }[];
                         stats: {
+                            cacheReadTokens: number;
+                            cacheWriteTokens: number;
                             endTimestamp: number;
+                            errors: number;
+                            errorToolNames: string[];
                             /** Format: double */
                             generationDuration: number;
                             inputTokens: number;
                             llmCalls: number;
                             outputTokens: number;
+                            reasoningTokens: number;
                             startTimestamp: number;
                             toolCalls: number;
                             toolErrors: number;
@@ -16820,7 +17239,7 @@ export interface operations {
                                 totalCost: number;
                                 totalTokens: number;
                             }[];
-                        };
+                        } | null;
                         title: string | null;
                         webUrl: string;
                     };
@@ -18396,7 +18815,7 @@ export interface operations {
                      *                     - `static`: Threshold based monitor
                      *                     - `percent`: Change based monitor
                      *                     - `dynamic`: Dynamic monitor
-                     *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period at which to compare against in minutes.
+                     *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period, in seconds, at which to compare against historical data.
                      *                 For example, a value of 3600 compares the metric tracked against data 1 hour ago.
                      *                     - `300`: 5 minutes
                      *                     - `900`: 15 minutes
@@ -18408,20 +18827,20 @@ export interface operations {
                      *                 **Threshold**
                      *                 ```json
                      *                 {
-                     *                     "detectionType": "static",
+                     *                     "detectionType": "static"
                      *                 }
                      *                 ```
                      *                 **Change**
                      *                 ```json
                      *                 {
                      *                     "detectionType": "percent",
-                     *                     "comparisonDelta": 3600,
+                     *                     "comparisonDelta": 3600
                      *                 }
                      *                 ```
                      *                 **Dynamic**
                      *                 ```json
                      *                 {
-                     *                     "detectionType": "dynamic",
+                     *                     "detectionType": "dynamic"
                      *                 }
                      *                 ```
                      */
@@ -18429,7 +18848,12 @@ export interface operations {
                         [key: string]: unknown;
                     };
                     /**
-                     * @description The data sources for the monitor to use based on what you want to measure.
+                     * @description The data sources for the metric monitor to use based on what you want to measure.
+                     *
+                     *                 `timeWindow` is measured in seconds. Cron Monitors use schedules instead of this field.
+                     *                 Legacy metric alert rules expressed this value in minutes, so multiply a legacy value
+                     *                 by 60 when migrating it to a monitor. For example, a legacy 5-minute window becomes
+                     *                 `"timeWindow": 300`.
                      *
                      *                 **Number of Errors Metric Monitor**
                      *                 - `eventTypes`: Any of `error` or `default`.
@@ -18442,9 +18866,9 @@ export interface operations {
                      *                             "eventTypes": ["default", "error"],
                      *                             "query": "is:unresolved",
                      *                             "queryType": 0,
-                     *                             "timeWindow": 3600,
-                     *                         },
-                     *                     ],
+                     *                             "timeWindow": 3600
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Users Experiencing Errors Metric Monitor**
@@ -18458,9 +18882,9 @@ export interface operations {
                      *                             "eventTypes": ["default", "error"],
                      *                             "query": "is:unresolved",
                      *                             "queryType": 0,
-                     *                             "timeWindow": 3600,
-                     *                         },
-                     *                     ],
+                     *                             "timeWindow": 3600
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *
@@ -18471,13 +18895,13 @@ export interface operations {
                      *                             "aggregate":"count(span.duration)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Duration Metric Monitor**
@@ -18487,13 +18911,13 @@ export interface operations {
                      *                             "aggregate":"p95(span.duration)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Failure Rate Metric Monitor**
@@ -18503,17 +18927,17 @@ export interface operations {
                      *                             "aggregate":"failure_rate()",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Largest Contentful Paint Metric Monitor**
-                     *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+                     *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
                      *                 - `aggregate`: Valid values are `avg(measurements.lcp)`, `p50(measurements.lcp)`, `p75(measurements.lcp)`, `p95(measurements.lcp)`, `p99(measurements.lcp)`, `p100(measurements.lcp)`, and `percentile(measurements.lcp,x)`, where `x` is your custom percentile.
                      *
                      *                 ```json
@@ -18522,17 +18946,17 @@ export interface operations {
                      *                             "aggregate":"p95(measurements.lcp)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
-                     *                             "query":"",
+                     *                             "eventTypes":["trace_item_span"],
+                     *                             "query":"is_transaction:true",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Custom Metric Monitor**
-                     *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+                     *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
                      *                 - `aggregate`: Valid values are:
                      *                 `avg(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
                      *                 `p50(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
@@ -18548,11 +18972,17 @@ export interface operations {
                      *                 ```json
                      *                 [
                      *                     {
-                     *                         "aggregate": "p75(measurements.ttfb)"
+                     *                         "aggregate": "p75(measurements.ttfb)",
                      *                         "dataset": "events_analytics_platform",
+                     *                         "environment": "prod",
                      *                         "queryType": 1,
-                     *                     },
-                     *                 ],
+                     *                         "eventTypes": ["trace_item_span"],
+                     *                         "query": "is_transaction:true",
+                     *                         "timeWindow": 3600,
+                     *                         "extrapolationMode": "unknown"
+                     *                     }
+                     *                 ]
+                     *                 ```
                      */
                     data_sources?: unknown[];
                     /** @description A description of the monitor. Will be used in the resulting issue. */
@@ -19595,6 +20025,130 @@ export interface operations {
             };
         };
     };
+    listOrganizationEventsDropped: {
+        parameters: {
+            query: {
+                /**
+                 * @description Which dataset to query. The chosen dataset determines which fields are queryable.
+                 *     - `errors` - Error events.
+                 *     - `logs` - Structured log events.
+                 *     - `profile_functions` - Function-level Profiling data.
+                 *     - `spans` - Distributed tracing span events.
+                 *     - `tracemetrics` - Application Metrics.
+                 *     - `uptime_results` - Uptime monitoring check results.
+                 */
+                dataset: "errors" | "logs" | "profile_functions" | "spans" | "tracemetrics" | "uptime_results";
+                /** @description The end of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                end?: string;
+                /** @description The name of environments to filter by. */
+                environment?: string[];
+                /**
+                 * @description The size of the bucket for the timeseries to have, must be a value smaller than the window being
+                 *     queried. If the interval is invalid a default interval will be selected instead
+                 */
+                interval?: number;
+                /**
+                 * @description Narrow the dropped events (only) to a single top-level drop classification (e.g. `rate_limited`, `filtered`).
+                 *
+                 *     * `filtered`
+                 *     * `rate_limited`
+                 *     * `invalid`
+                 *     * `abuse`
+                 *     * `client_discard`
+                 *     * `cardinality_limited`
+                 */
+                outcome?: "filtered" | "rate_limited" | "invalid" | "abuse" | "client_discard" | "cardinality_limited";
+                /**
+                 * @description The IDs or slugs of projects to filter by. Project slugs are unique within each organization. Omit this parameter to include all accessible projects. `-1` is also accepted to include all accessible projects.
+                 *     For example, the following are valid parameters:
+                 *     - `/?project=1234&project=56789`
+                 *     - `/?project=android&project=javascript-react`
+                 *     - `/?project=-1`
+                 */
+                project?: (number | string)[];
+                /** @description Narrow the dropped events to a single reason, the sub-classification within an outcome (e.g. `spike_protection` within `rate_limited`). Should be combined with `outcome`. */
+                reason?: string;
+                /** @description The start of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                start?: string;
+                /**
+                 * @description The period of time for the query, will override the start & end parameters, a number followed by one of:
+                 *     - `d` for days
+                 *     - `h` for hours
+                 *     - `m` for minutes
+                 *     - `s` for seconds
+                 *     - `w` for weeks
+                 *
+                 *     For example, `24h`, to mean query data starting from 24 hours ago to now.
+                 */
+                statsPeriod?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        acceptedEvents: {
+                            category: string;
+                            /** Format: double */
+                            count: number;
+                            /** Format: double */
+                            end: number;
+                            outcome: string;
+                            reason: string;
+                            /** Format: double */
+                            start: number;
+                            type: string;
+                        }[];
+                        droppedEvents: {
+                            category: string;
+                            /** Format: double */
+                            count: number;
+                            /** Format: double */
+                            end: number;
+                            outcome: string;
+                            reason: string;
+                            /** Format: double */
+                            start: number;
+                            type: string;
+                        }[];
+                        meta: {
+                            dataset: string;
+                            /** Format: double */
+                            end: number;
+                            /** Format: double */
+                            interval: number;
+                            /** Format: double */
+                            start: number;
+                        };
+                    };
+                };
+            };
+            /** @description Invalid Query */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     listOrganizationEventsTimeseries: {
         parameters: {
             query: {
@@ -19645,9 +20199,16 @@ export interface operations {
                  */
                 project?: (number | string)[];
                 /**
-                 * @description Filters results by using [query syntax](/product/sentry-basics/search/).
+                 * @description Filters results by using [query syntax](/concepts/search/).
                  *
                  *     Example: `query=(transaction:foo AND release:abc) OR (transaction:[bar,baz] AND release:def)`
+                 *
+                 *     With the `logs` dataset, a string attribute can also be matched against a regular expression written as `key://pattern//`, and excluded with `!key://pattern//`.
+                 *     Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax), match anywhere in the value unless anchored with `^` or `$`, are case sensitive unless they start with `(?i)`, and are limited to 64 characters.
+                 *     To search for a literal value that starts with `//`, quote it: `key:"//value"`.
+                 *     See [regular expressions](/concepts/search/#regular-expressions-logs-only) for more details.
+                 *
+                 *     Example: `query=message://^Timeout after \d+ms//`
                  */
                 query?: string;
                 /** @description What to order the results of the query by. Must be something in the `field` list, excluding equations. */
@@ -19705,37 +20266,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         meta?: {
-                            acceptedAnnotations?: {
-                                /** Format: double */
-                                byteSize?: number;
-                                category: string;
-                                /** Format: double */
-                                end: number;
-                                /** Format: double */
-                                eventCount: number;
-                                outcome: string;
-                                reason: string;
-                                /** Format: double */
-                                start: number;
-                                /** @enum {string} */
-                                type: "system";
-                            }[];
                             dataset: string;
-                            droppedAnnotations?: {
-                                /** Format: double */
-                                byteSize?: number;
-                                category: string;
-                                /** Format: double */
-                                end: number;
-                                /** Format: double */
-                                eventCount: number;
-                                outcome: string;
-                                reason: string;
-                                /** Format: double */
-                                start: number;
-                                /** @enum {string} */
-                                type: "system";
-                            }[];
                             /** Format: double */
                             end: number;
                             /** @description Ingestion status for the data behind a response. */
@@ -19847,9 +20378,16 @@ export interface operations {
                  */
                 project?: (number | string)[];
                 /**
-                 * @description Filters results by using [query syntax](/product/sentry-basics/search/).
+                 * @description Filters results by using [query syntax](/concepts/search/).
                  *
                  *     Example: `query=(transaction:foo AND release:abc) OR (transaction:[bar,baz] AND release:def)`
+                 *
+                 *     With the `logs` dataset, a string attribute can also be matched against a regular expression written as `key://pattern//`, and excluded with `!key://pattern//`.
+                 *     Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax), match anywhere in the value unless anchored with `^` or `$`, are case sensitive unless they start with `(?i)`, and are limited to 64 characters.
+                 *     To search for a literal value that starts with `//`, quote it: `key:"//value"`.
+                 *     See [regular expressions](/concepts/search/#regular-expressions-logs-only) for more details.
+                 *
+                 *     Example: `query=message://^Timeout after \d+ms//`
                  */
                 query?: string;
                 /** @description Internal referrer identifier used for query tracing. Most clients can omit this. */
@@ -20140,6 +20678,166 @@ export interface operations {
             };
             /** @description Forbidden */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listOrganizationFlagLogs: {
+        parameters: {
+            query?: {
+                /** @description A pointer to the last object fetched and its sort order; used to retrieve the next or previous results. */
+                cursor?: string;
+                /** @description The end of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                end?: string;
+                /** @description The name of a feature flag to filter by. Repeat the parameter to match multiple flags. */
+                flag?: string[];
+                /** @description Limit the number of rows to return in the result. Default and maximum allowed is 100. */
+                per_page?: number;
+                /** @description The flag provider to filter by. Use `unknown` to match logs without a provider. Repeat the parameter to match multiple providers. */
+                provider?: ("flagpole" | "generic" | "launchdarkly" | "statsig" | "unknown" | "unleash")[];
+                /**
+                 * @description The field to sort results by.
+                 *
+                 *     Available fields are:
+                 *     - `action`
+                 *     - `createdAt`
+                 *     - `createdBy`
+                 *     - `createdByType`
+                 *     - `flag`
+                 *     - `provider`
+                 *
+                 *     Prefix with `-` to sort in descending order.
+                 */
+                sort?: string;
+                /** @description The start of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                start?: string;
+                /**
+                 * @description The period of time for the query, will override the start & end parameters, a number followed by one of:
+                 *     - `d` for days
+                 *     - `h` for hours
+                 *     - `m` for minutes
+                 *     - `s` for seconds
+                 *     - `w` for weeks
+                 *
+                 *     For example, `24h`, to mean query data starting from 24 hours ago to now.
+                 */
+                statsPeriod?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            /** @enum {string} */
+                            action: "created" | "deleted" | "updated";
+                            /** Format: date-time */
+                            createdAt: string;
+                            createdBy: string | null;
+                            /** @enum {string|null} */
+                            createdByType: "email" | "id" | "name" | null;
+                            flag: string;
+                            id: number;
+                            /** @enum {string|null} */
+                            provider: "generic" | "flagpole" | "launchdarkly" | "unleash" | "statsig" | null;
+                            tags: {
+                                [key: string]: unknown;
+                            };
+                        }[];
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    retrieveOrganizationFlagLog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the flag log entry you'd like to retrieve. */
+                flag_log_id: number;
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            /** @enum {string} */
+                            action: "created" | "deleted" | "updated";
+                            /** Format: date-time */
+                            createdAt: string;
+                            createdBy: string | null;
+                            /** @enum {string|null} */
+                            createdByType: "email" | "id" | "name" | null;
+                            flag: string;
+                            id: number;
+                            /** @enum {string|null} */
+                            provider: "generic" | "flagpole" | "launchdarkly" | "unleash" | "statsig" | null;
+                            tags: {
+                                [key: string]: unknown;
+                            };
+                        };
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -20884,6 +21582,109 @@ export interface operations {
         responses: {
             /** @description No Content */
             204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    validateOrganizationIntegrationChannel: {
+        parameters: {
+            query: {
+                channel: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID of the integration installed on the organization. */
+                integration_id: string;
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        detail?: string;
+                        valid: boolean;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listOrganizationIntegrationChannels: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the integration installed on the organization. */
+                integration_id: string;
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: {
+                            display: string;
+                            id: string;
+                            name: string;
+                            type: string;
+                        }[];
+                        warning?: string;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24398,13 +25199,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -24543,25 +25337,13 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description Alert rule configuration created alongside the monitor. */
-                    alert_rule?: {
-                        /** @description Name of the environment */
-                        environment?: string | null;
-                        /** @description Array of dictionaries with information of the user or team to be notified */
-                        targets: {
-                            /** @description ID of target object */
-                            target_identifier: number;
-                            /** @description One of [Member, Team] */
-                            target_type: string;
-                        }[];
-                    };
                     /** @description The configuration for the monitor. */
                     config: {
                         /** @description How long (in minutes) after the expected checkin time will we wait until we consider the checkin to have been missed. */
                         checkin_margin?: number | null;
                         /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
                         failure_issue_threshold?: number | null;
-                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
                         max_runtime?: number | null;
                         /** @description How many successful check-ins in a row before resolving an issue. */
                         recovery_threshold?: number | null;
@@ -25209,13 +25991,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -25371,13 +26146,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -25518,25 +26286,13 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description Alert rule configuration created alongside the monitor. */
-                    alert_rule?: {
-                        /** @description Name of the environment */
-                        environment?: string | null;
-                        /** @description Array of dictionaries with information of the user or team to be notified */
-                        targets: {
-                            /** @description ID of target object */
-                            target_identifier: number;
-                            /** @description One of [Member, Team] */
-                            target_type: string;
-                        }[];
-                    };
                     /** @description The configuration for the monitor. */
                     config: {
                         /** @description How long (in minutes) after the expected checkin time will we wait until we consider the checkin to have been missed. */
                         checkin_margin?: number | null;
                         /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
                         failure_issue_threshold?: number | null;
-                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
                         max_runtime?: number | null;
                         /** @description How many successful check-ins in a row before resolving an issue. */
                         recovery_threshold?: number | null;
@@ -26184,13 +26940,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -27983,7 +28732,7 @@ export interface operations {
                      *                     - `static`: Threshold based monitor
                      *                     - `percent`: Change based monitor
                      *                     - `dynamic`: Dynamic monitor
-                     *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period at which to compare against in minutes.
+                     *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period, in seconds, at which to compare against historical data.
                      *                 For example, a value of 3600 compares the metric tracked against data 1 hour ago.
                      *                     - `300`: 5 minutes
                      *                     - `900`: 15 minutes
@@ -27995,20 +28744,20 @@ export interface operations {
                      *                 **Threshold**
                      *                 ```json
                      *                 {
-                     *                     "detectionType": "static",
+                     *                     "detectionType": "static"
                      *                 }
                      *                 ```
                      *                 **Change**
                      *                 ```json
                      *                 {
                      *                     "detectionType": "percent",
-                     *                     "comparisonDelta": 3600,
+                     *                     "comparisonDelta": 3600
                      *                 }
                      *                 ```
                      *                 **Dynamic**
                      *                 ```json
                      *                 {
-                     *                     "detectionType": "dynamic",
+                     *                     "detectionType": "dynamic"
                      *                 }
                      *                 ```
                      */
@@ -28016,7 +28765,12 @@ export interface operations {
                         [key: string]: unknown;
                     };
                     /**
-                     * @description The data sources for the monitor to use based on what you want to measure.
+                     * @description The data sources for the metric monitor to use based on what you want to measure.
+                     *
+                     *                 `timeWindow` is measured in seconds. Cron Monitors use schedules instead of this field.
+                     *                 Legacy metric alert rules expressed this value in minutes, so multiply a legacy value
+                     *                 by 60 when migrating it to a monitor. For example, a legacy 5-minute window becomes
+                     *                 `"timeWindow": 300`.
                      *
                      *                 **Number of Errors Metric Monitor**
                      *                 - `eventTypes`: Any of `error` or `default`.
@@ -28029,9 +28783,9 @@ export interface operations {
                      *                             "eventTypes": ["default", "error"],
                      *                             "query": "is:unresolved",
                      *                             "queryType": 0,
-                     *                             "timeWindow": 3600,
-                     *                         },
-                     *                     ],
+                     *                             "timeWindow": 3600
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Users Experiencing Errors Metric Monitor**
@@ -28045,9 +28799,9 @@ export interface operations {
                      *                             "eventTypes": ["default", "error"],
                      *                             "query": "is:unresolved",
                      *                             "queryType": 0,
-                     *                             "timeWindow": 3600,
-                     *                         },
-                     *                     ],
+                     *                             "timeWindow": 3600
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *
@@ -28058,13 +28812,13 @@ export interface operations {
                      *                             "aggregate":"count(span.duration)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Duration Metric Monitor**
@@ -28074,13 +28828,13 @@ export interface operations {
                      *                             "aggregate":"p95(span.duration)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Failure Rate Metric Monitor**
@@ -28090,17 +28844,17 @@ export interface operations {
                      *                             "aggregate":"failure_rate()",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Largest Contentful Paint Metric Monitor**
-                     *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+                     *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
                      *                 - `aggregate`: Valid values are `avg(measurements.lcp)`, `p50(measurements.lcp)`, `p75(measurements.lcp)`, `p95(measurements.lcp)`, `p99(measurements.lcp)`, `p100(measurements.lcp)`, and `percentile(measurements.lcp,x)`, where `x` is your custom percentile.
                      *
                      *                 ```json
@@ -28109,17 +28863,17 @@ export interface operations {
                      *                             "aggregate":"p95(measurements.lcp)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
-                     *                             "query":"",
+                     *                             "eventTypes":["trace_item_span"],
+                     *                             "query":"is_transaction:true",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Custom Metric Monitor**
-                     *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+                     *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
                      *                 - `aggregate`: Valid values are:
                      *                 `avg(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
                      *                 `p50(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
@@ -28135,11 +28889,17 @@ export interface operations {
                      *                 ```json
                      *                 [
                      *                     {
-                     *                         "aggregate": "p75(measurements.ttfb)"
+                     *                         "aggregate": "p75(measurements.ttfb)",
                      *                         "dataset": "events_analytics_platform",
+                     *                         "environment": "prod",
                      *                         "queryType": 1,
-                     *                     },
-                     *                 ],
+                     *                         "eventTypes": ["trace_item_span"],
+                     *                         "query": "is_transaction:true",
+                     *                         "timeWindow": 3600,
+                     *                         "extrapolationMode": "unknown"
+                     *                     }
+                     *                 ]
+                     *                 ```
                      */
                     data_sources?: unknown[];
                     /** @description A description of the monitor. Will be used in the resulting issue. */
@@ -31118,6 +31878,257 @@ export interface operations {
             };
         };
     };
+    listOrganizationScimV2ResourceTypes: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        itemsPerPage: number;
+                        Resources: {
+                            description: string;
+                            endpoint: string;
+                            id: string;
+                            meta: {
+                                location: string;
+                                resourceType: string;
+                            };
+                            name: string;
+                            schema: string;
+                            schemas: string[];
+                        }[];
+                        schemas: string[];
+                        startIndex: number;
+                        totalResults: number;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getOrganizationScimV2ResourceType: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The SCIM resource type name: `User` or `Group`. */
+                resource_type_name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        description: string;
+                        endpoint: string;
+                        id: string;
+                        meta: {
+                            location: string;
+                            resourceType: string;
+                        };
+                        name: string;
+                        schema: string;
+                        schemas: string[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getOrganizationScimV2Schema: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The SCIM schema URI, e.g. `urn:ietf:params:scim:schemas:core:2.0:User`. */
+                schema_uri: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        attributes: {
+                            [key: string]: unknown;
+                        }[];
+                        description: string;
+                        id: string;
+                        meta: {
+                            location: string;
+                            resourceType: string;
+                        };
+                        name: string;
+                        schemas: string[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getOrganizationScimV2ServiceProviderConfig: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        authenticationSchemes: {
+                            description: string;
+                            name: string;
+                            primary: boolean;
+                            specUri: string;
+                            type: string;
+                        }[];
+                        bulk: {
+                            maxOperations: number;
+                            maxPayloadSize: number;
+                            supported: boolean;
+                        };
+                        changePassword: {
+                            supported: boolean;
+                        };
+                        documentationUri: string;
+                        etag: {
+                            supported: boolean;
+                        };
+                        filter: {
+                            maxResults: number;
+                            supported: boolean;
+                        };
+                        meta: {
+                            location: string;
+                            resourceType: string;
+                        };
+                        patch: {
+                            supported: boolean;
+                        };
+                        schemas: string[];
+                        sort: {
+                            supported: boolean;
+                        };
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     listOrganizationScimV2Users: {
         parameters: {
             query?: {
@@ -31484,6 +32495,7 @@ export interface operations {
                             };
                             detail?: string;
                         };
+                        installationUuid: string;
                         schema: {
                             [key: string]: unknown;
                         };
@@ -32059,6 +33071,118 @@ export interface operations {
             };
             /** @description Forbidden */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    starOrganizationServiceSpan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The ID of the project the service span belongs to. */
+                    project_id: number;
+                    /** @description The name of the service span to star or unstar. */
+                    service_span: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    unstarOrganizationServiceSpan: {
+        parameters: {
+            query: {
+                /** @description The ID of the project the service span belongs to. */
+                project_id: number;
+                /** @description The name of the service span to unstar. */
+                service_span: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -32722,6 +33846,12 @@ export interface operations {
                 /** @description The name of environments to filter by. */
                 environment?: string[];
                 /**
+                 * @description **Experimental:** This parameter is under active development and may change.
+                 *
+                 *     Optional fields to expand. Pass `context` to include attribute metadata (brief, examples, deprecation, etc.).
+                 */
+                expand?: "context"[];
+                /**
                  * @deprecated
                  * @description Deprecated alias of `dataset`. Use `dataset` instead.
                  */
@@ -32774,6 +33904,24 @@ export interface operations {
                         };
                         /** @enum {string} */
                         attributeType: "string" | "number" | "boolean" | "array";
+                        /**
+                         * @description Additional, mostly-static metadata about an attribute.
+                         *
+                         *     When ``expand=context`` is requested, context is attached to every attribute.
+                         *     Metadata comes from the sentry conventions, Sentry's own column definitions,
+                         *     or user-authored context (gated behind ``data-browsing-attribute-context``),
+                         *     in that precedence order. Only the fields available are included, so an
+                         *     attribute with no metadata gets an empty context.
+                         */
+                        context?: {
+                            brief?: string;
+                            details?: string[];
+                            examples?: (string | number | boolean)[];
+                            isConvention?: boolean;
+                            isCustom?: boolean;
+                            isDeprecated?: boolean;
+                            replacementAttribute?: string;
+                        };
                         key: string;
                         name: string;
                         secondaryAliases?: string[];
@@ -34361,7 +35509,7 @@ export interface operations {
                      *
                      *             ```json
                      *                 {
-                     *                     "frequency":3600
+                     *                     "frequency": 60
                      *                 }
                      *             ```
                      */
@@ -34398,6 +35546,7 @@ export interface operations {
                     /**
                      * @description The conditions on which the alert will trigger. See available options below.
                      *             ```json
+                     *             {
                      *                 "triggers": {
                      *                     "organizationId": "1",
                      *                     "logicType": "any-short",
@@ -34432,9 +35581,9 @@ export interface operations {
                      *                             ],
                      *                             "conditionResult": true
                      *                         }
-                     *                     ],
-                     *                     "actions": []
+                     *                     ]
                      *                 }
+                     *             }
                      *             ```
                      */
                     triggers?: {
@@ -35367,7 +36516,7 @@ export interface operations {
                      *
                      *             ```json
                      *                 {
-                     *                     "frequency":3600
+                     *                     "frequency": 60
                      *                 }
                      *             ```
                      */
@@ -35404,6 +36553,7 @@ export interface operations {
                     /**
                      * @description The conditions on which the alert will trigger. See available options below.
                      *             ```json
+                     *             {
                      *                 "triggers": {
                      *                     "organizationId": "1",
                      *                     "logicType": "any-short",
@@ -35438,9 +36588,9 @@ export interface operations {
                      *                             ],
                      *                             "conditionResult": true
                      *                         }
-                     *                     ],
-                     *                     "actions": []
+                     *                     ]
                      *                 }
+                     *             }
                      *             ```
                      */
                     triggers?: {
@@ -36733,7 +37883,7 @@ export interface operations {
                         /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
                         conditions: {
                             /**
-                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                              *
                              *     * `error_type`
                              *     * `error_message`
@@ -36741,9 +37891,10 @@ export interface operations {
                              *     * `metric_name`
                              *     * `release`
                              *     * `ip_address`
+                             *     * `geo_country_code`
                              * @enum {string}
                              */
-                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
+                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
                             /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
                             value: string[];
                         }[];
@@ -36818,7 +37969,7 @@ export interface operations {
                     /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
                     conditions: {
                         /**
-                         * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                         * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                          *
                          *     * `error_type`
                          *     * `error_message`
@@ -36826,9 +37977,10 @@ export interface operations {
                          *     * `metric_name`
                          *     * `release`
                          *     * `ip_address`
+                         *     * `geo_country_code`
                          * @enum {string}
                          */
-                        type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
+                        type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
                         /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
                         value: string[];
                     }[];
@@ -36872,7 +38024,7 @@ export interface operations {
                         /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
                         conditions: {
                             /**
-                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                              *
                              *     * `error_type`
                              *     * `error_message`
@@ -36880,9 +38032,10 @@ export interface operations {
                              *     * `metric_name`
                              *     * `release`
                              *     * `ip_address`
+                             *     * `geo_country_code`
                              * @enum {string}
                              */
-                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
+                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
                             /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
                             value: string[];
                         }[];
@@ -36964,7 +38117,7 @@ export interface operations {
                         /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
                         conditions: {
                             /**
-                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                              *
                              *     * `error_type`
                              *     * `error_message`
@@ -36972,9 +38125,10 @@ export interface operations {
                              *     * `metric_name`
                              *     * `release`
                              *     * `ip_address`
+                             *     * `geo_country_code`
                              * @enum {string}
                              */
-                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
+                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
                             /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
                             value: string[];
                         }[];
@@ -37051,7 +38205,7 @@ export interface operations {
                     /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
                     conditions: {
                         /**
-                         * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                         * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                          *
                          *     * `error_type`
                          *     * `error_message`
@@ -37059,9 +38213,10 @@ export interface operations {
                          *     * `metric_name`
                          *     * `release`
                          *     * `ip_address`
+                         *     * `geo_country_code`
                          * @enum {string}
                          */
-                        type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
+                        type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
                         /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
                         value: string[];
                     }[];
@@ -37105,7 +38260,7 @@ export interface operations {
                         /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
                         conditions: {
                             /**
-                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                              *
                              *     * `error_type`
                              *     * `error_message`
@@ -37113,9 +38268,10 @@ export interface operations {
                              *     * `metric_name`
                              *     * `release`
                              *     * `ip_address`
+                             *     * `geo_country_code`
                              * @enum {string}
                              */
-                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
+                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
                             /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
                             value: string[];
                         }[];
@@ -39508,13 +40664,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -39657,25 +40806,13 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description Alert rule configuration created alongside the monitor. */
-                    alert_rule?: {
-                        /** @description Name of the environment */
-                        environment?: string | null;
-                        /** @description Array of dictionaries with information of the user or team to be notified */
-                        targets: {
-                            /** @description ID of target object */
-                            target_identifier: number;
-                            /** @description One of [Member, Team] */
-                            target_type: string;
-                        }[];
-                    };
                     /** @description The configuration for the monitor. */
                     config: {
                         /** @description How long (in minutes) after the expected checkin time will we wait until we consider the checkin to have been missed. */
                         checkin_margin?: number | null;
                         /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
                         failure_issue_threshold?: number | null;
-                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
                         max_runtime?: number | null;
                         /** @description How many successful check-ins in a row before resolving an issue. */
                         recovery_threshold?: number | null;
@@ -40323,13 +41460,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -42098,6 +43228,13 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     getProjectReplayRecordingSegment: {
@@ -42544,7 +43681,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         password?: {
@@ -42571,7 +43708,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42598,7 +43735,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42629,7 +43766,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42752,6 +43889,7 @@ export interface operations {
                      *     - `ssqp` - Microsoft SSQP
                      *     - `unified` - Unified Symbol Server Layout
                      *     - `debuginfod` - debuginfod
+                     *     - `nxsymstore` - Nintendo NXSymStore
                      *
                      *     **`casing`** ***(string)*** - The layout of the folder structure. The options are:
                      *     - `default` - Default (mixed case)
@@ -42787,9 +43925,10 @@ export interface operations {
                          *     * `unified`
                          *     * `debuginfod`
                          *     * `slashsymbols`
+                         *     * `nxsymstore`
                          * @enum {string}
                          */
-                        type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                        type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                     };
                     /** @description The human-readable name of the source. */
                     name: string;
@@ -42866,7 +44005,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         password?: {
@@ -42893,7 +44032,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42920,7 +44059,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42951,7 +44090,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -43078,6 +44217,7 @@ export interface operations {
                      *     - `ssqp` - Microsoft SSQP
                      *     - `unified` - Unified Symbol Server Layout
                      *     - `debuginfod` - debuginfod
+                     *     - `nxsymstore` - Nintendo NXSymStore
                      *
                      *     **`casing`** ***(string)*** - The layout of the folder structure. The options are:
                      *     - `default` - Default (mixed case)
@@ -43113,9 +44253,10 @@ export interface operations {
                          *     * `unified`
                          *     * `debuginfod`
                          *     * `slashsymbols`
+                         *     * `nxsymstore`
                          * @enum {string}
                          */
-                        type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                        type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                     };
                     /** @description The human-readable name of the source. */
                     name: string;
@@ -43192,7 +44333,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         password?: {
@@ -43219,7 +44360,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -43246,7 +44387,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -43277,7 +44418,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];

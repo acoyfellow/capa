@@ -38,7 +38,7 @@ export class MeResource extends RpcTarget {
 	}
 
 	/**
-	 * List all phone numbers bound to this API key with their availability status. Use the returned phone numbers as the `:number` path parameter for other `/me/numbers/` endpoints.
+	 * List all phone numbers bound to this API key with their availability status. Banned and suspended numbers stay in the list. `status` is `banned`, `suspended`, or `active`; a ban takes precedence when 
 	 *
 	 * `GET /me/numbers` — risk: medium
 	 */
