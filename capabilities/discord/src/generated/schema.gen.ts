@@ -3498,6 +3498,7 @@ export type components = {
             bot?: components["schemas"]["UserResponse"];
             bot_public?: boolean;
             bot_require_code_grant?: boolean;
+            conjure_project_id?: components["schemas"]["SnowflakeType"];
             cover_image?: string;
             /** Format: uri */
             custom_install_url?: string;
@@ -3684,6 +3685,7 @@ export type components = {
         };
         BasicMessageResponse: {
             activity?: components["schemas"]["MessageActivityResponse"];
+            actor?: components["schemas"]["UserResponse"];
             application?: components["schemas"]["BasicApplicationResponseWithBot"];
             application_id?: components["schemas"]["SnowflakeType"];
             attachments: components["schemas"]["MessageAttachmentResponse"][];
@@ -5396,6 +5398,7 @@ export type components = {
             bot?: components["schemas"]["UserResponse"];
             bot_public?: boolean;
             bot_require_code_grant?: boolean;
+            conjure_project_id?: components["schemas"]["SnowflakeType"];
             cover_image?: string;
             /** Format: uri */
             custom_install_url?: string;
@@ -5609,7 +5612,7 @@ export type components = {
         MediaGalleryComponentForMessageRequest: {
             /** Format: int32 */
             id?: number | null;
-            items: components["schemas"]["MediaGalleryItemRequest"][];
+            items: components["schemas"]["MediaGalleryItemForMessageRequest"][];
             /**
              * Format: int32
              * @enum {integer}
@@ -5626,7 +5629,7 @@ export type components = {
              */
             type: 12;
         };
-        MediaGalleryItemRequest: {
+        MediaGalleryItemForMessageRequest: {
             description?: string | null;
             media: components["schemas"]["UnfurledMediaRequest"];
             spoiler?: boolean | null;
@@ -5957,6 +5960,7 @@ export type components = {
         MessageReferenceType: number & 0;
         MessageResponse: {
             activity?: components["schemas"]["MessageActivityResponse"];
+            actor?: components["schemas"]["UserResponse"];
             application?: components["schemas"]["BasicApplicationResponseWithBot"];
             application_id?: components["schemas"]["SnowflakeType"];
             attachments: components["schemas"]["MessageAttachmentResponse"][];
@@ -6386,6 +6390,7 @@ export type components = {
             bot?: components["schemas"]["UserResponse"];
             bot_public?: boolean;
             bot_require_code_grant?: boolean;
+            conjure_project_id?: components["schemas"]["SnowflakeType"];
             cover_image?: string;
             /** Format: uri */
             custom_install_url?: string;
@@ -6903,10 +6908,13 @@ export type components = {
         };
         SearchMessageResponse: {
             activity?: components["schemas"]["MessageActivityResponse"];
+            actor?: components["schemas"]["UserResponse"];
             application?: components["schemas"]["BasicApplicationResponseWithBot"];
             application_id?: components["schemas"]["SnowflakeType"];
             attachments: components["schemas"]["MessageAttachmentResponse"][];
             author: components["schemas"]["UserResponse"];
+            /** Format: int32 */
+            author_restriction_count?: number;
             call?: components["schemas"]["MessageCallResponse"];
             channel_id: components["schemas"]["SnowflakeType"];
             components: (components["schemas"]["ActionRowComponentResponse"] | components["schemas"]["ContainerComponentResponse"] | components["schemas"]["FileComponentResponse"] | components["schemas"]["MediaGalleryComponentResponse"] | components["schemas"]["SectionComponentResponse"] | components["schemas"]["SeparatorComponentResponse"] | components["schemas"]["TextDisplayComponentResponse"])[];
@@ -6916,6 +6924,7 @@ export type components = {
             embeds: components["schemas"]["MessageEmbedResponse"][];
             /** Format: int32 */
             flags: number;
+            forward_source_author_id?: components["schemas"]["SnowflakeType"];
             hit: boolean;
             id: components["schemas"]["SnowflakeType"];
             interaction?: components["schemas"]["MessageInteractionResponse"];
@@ -6940,6 +6949,8 @@ export type components = {
             restriction_count?: number;
             role_subscription_data?: components["schemas"]["MessageRoleSubscriptionDataResponse"];
             shared_client_theme?: components["schemas"]["CustomClientThemeResponse"];
+            /** Format: int32 */
+            source_author_restriction_count?: number;
             sticker_items?: components["schemas"]["MessageStickerItemResponse"][];
             stickers?: (components["schemas"]["GuildStickerResponse"] | components["schemas"]["StandardStickerResponse"])[];
             thread?: components["schemas"]["ThreadResponse"];

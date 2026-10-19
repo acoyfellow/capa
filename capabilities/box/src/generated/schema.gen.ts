@@ -1504,8 +1504,8 @@ export type paths = {
          *     This endpoint allows clients to optimize uploads by skipping parts that
          *     have already been uploaded (cache hits) and only uploading missing parts.
          *
-         *     The actual endpoint URL is returned by the [`Create upload session`](e://post-files-upload-sessions)
-         *     and [`Get upload session`](e://get-files-upload-sessions-id) endpoints.
+         *     The actual endpoint URL is returned by the [`Create upload session`](https://developer.box.com/reference/post-files-upload-sessions)
+         *     and [`Get upload session`](https://developer.box.com/reference/get-files-upload-sessions-id) endpoints.
          */
         post: operations["post_files_upload_sessions_id_plan"];
         delete?: never;
@@ -2649,7 +2649,11 @@ export type paths = {
         put?: never;
         /**
          * Query files/folders by metadata
-         * @description Create a search using SQL-like syntax to return items that match specific
+         * @description For new integrations, use the [v2026.0 Query API](https://developer.box.com/reference/v2026.0/query-resources).
+         *     This is the latest version of the Query API, with advanced capabilities including multi-template queries and
+         *     Query Insights, and is the API we will continue to enhance with new Query capabilities.
+         *
+         *     Create a search using SQL-like syntax to return items that match specific
          *     metadata.
          *
          *     By default, this endpoint returns only the most basic info about the items for
@@ -4312,6 +4316,12 @@ export type paths = {
          *     still owns any content.
          *     To proceed, move their owned content first, or use the `force` parameter to delete
          *     the user and their files.
+         *
+         *     If the enterprise has a retention policy, including a retired one, or a
+         *     legal hold that is not fully released, you can't delete a user who owns
+         *     content, even with `force`. Transfer the user's content first by using the
+         *     [Transfer owned folders](https://developer.box.com/reference/put-users-id-folders-0)
+         *     endpoint.
          */
         delete: operations["delete_users_id"];
         options?: never;
@@ -6558,7 +6568,7 @@ export type components = {
              * @example item_name_invalid
              * @enum {string}
              */
-            code?: "created" | "accepted" | "no_content" | "redirect" | "not_modified" | "bad_request" | "unauthorized" | "forbidden" | "not_found" | "method_not_allowed" | "conflict" | "precondition_failed" | "too_many_requests" | "internal_server_error" | "unavailable" | "item_name_invalid" | "insufficient_scope";
+            code?: "created" | "accepted" | "no_content" | "redirect" | "not_modified" | "bad_request" | "unauthorized" | "forbidden" | "not_found" | "method_not_allowed" | "conflict" | "precondition_failed" | "unprocessable_entity" | "too_many_requests" | "internal_server_error" | "unavailable" | "item_name_invalid" | "insufficient_scope";
             /**
              * @description A free-form object that contains additional context
              *     about the error. The possible fields are defined on
@@ -7659,6 +7669,57 @@ export type components = {
                  * @example true
                  */
                 is_password_enabled: boolean;
+                one_time_passcode: {
+                    /**
+                     * @description The list of email and domain entries that are permitted to access the
+                     *     shared link when `mode` is `allowlist`. Anonymous users whose
+                     *     email matches an entry can request and verify a one-time-passcode.
+                     *
+                     *     Because the entries carry recipient email addresses and the identity
+                     *     of the user who added them, this field is only returned to users
+                     *     with owner, co-owner, or editor access on the item. For viewer
+                     *     collaborators and below the field is omitted.
+                     *
+                     *     An allowlist contains at most 1000 entries, matching the limit
+                     *     enforced when setting the allowlist on a shared link.
+                     * @example [
+                     *       {
+                     *         "type": "email",
+                     *         "value": "alice@example.com",
+                     *         "created_at": "2026-05-19T12:00:00Z",
+                     *         "created_by": {
+                     *           "id": "11446498",
+                     *           "type": "user"
+                     *         }
+                     *       },
+                     *       {
+                     *         "type": "domain",
+                     *         "value": "example.com",
+                     *         "created_at": "2026-05-19T12:00:00Z",
+                     *         "created_by": {
+                     *           "id": "11446498",
+                     *           "type": "user"
+                     *         }
+                     *       }
+                     *     ]
+                     */
+                    allowlist?: components["schemas"]["SharedLinkOtpAllowlistEntry"][];
+                    /**
+                     * @description The current OTP enforcement mode for the shared link.
+                     *
+                     *     * `none` - OTP enforcement is turned off. The shared link is accessible
+                     *       without any one-time-passcode verification.
+                     *     * `open` - Any anonymous recipient can request a one-time-passcode to
+                     *       any email address and access the shared link after verifying it.
+                     *       Collaborators and registered Box users access the link without
+                     *       being prompted.
+                     *     * `allowlist` - Anonymous recipients can request a one-time-passcode
+                     *       only when they enter an email that matches an entry on the
+                     *       `allowlist`.
+                     * @example allowlist
+                     */
+                    mode: string;
+                } & unknown;
                 /**
                  * @description Defines if this link allows a user to preview, edit, and download an item.
                  *     These permissions refer to the shared link only and
@@ -8962,6 +9023,57 @@ export type components = {
                  * @example true
                  */
                 is_password_enabled: boolean;
+                one_time_passcode: {
+                    /**
+                     * @description The list of email and domain entries that are permitted to access the
+                     *     shared link when `mode` is `allowlist`. Anonymous users whose
+                     *     email matches an entry can request and verify a one-time-passcode.
+                     *
+                     *     Because the entries carry recipient email addresses and the identity
+                     *     of the user who added them, this field is only returned to users
+                     *     with owner, co-owner, or editor access on the item. For viewer
+                     *     collaborators and below the field is omitted.
+                     *
+                     *     An allowlist contains at most 1000 entries, matching the limit
+                     *     enforced when setting the allowlist on a shared link.
+                     * @example [
+                     *       {
+                     *         "type": "email",
+                     *         "value": "alice@example.com",
+                     *         "created_at": "2026-05-19T12:00:00Z",
+                     *         "created_by": {
+                     *           "id": "11446498",
+                     *           "type": "user"
+                     *         }
+                     *       },
+                     *       {
+                     *         "type": "domain",
+                     *         "value": "example.com",
+                     *         "created_at": "2026-05-19T12:00:00Z",
+                     *         "created_by": {
+                     *           "id": "11446498",
+                     *           "type": "user"
+                     *         }
+                     *       }
+                     *     ]
+                     */
+                    allowlist?: components["schemas"]["SharedLinkOtpAllowlistEntry"][];
+                    /**
+                     * @description The current OTP enforcement mode for the shared link.
+                     *
+                     *     * `none` - OTP enforcement is turned off. The shared link is accessible
+                     *       without any one-time-passcode verification.
+                     *     * `open` - Any anonymous recipient can request a one-time-passcode to
+                     *       any email address and access the shared link after verifying it.
+                     *       Collaborators and registered Box users access the link without
+                     *       being prompted.
+                     *     * `allowlist` - Anonymous recipients can request a one-time-passcode
+                     *       only when they enter an email that matches an entry on the
+                     *       `allowlist`.
+                     * @example allowlist
+                     */
+                    mode: string;
+                } & unknown;
                 /**
                  * @description Defines if this link allows a user to preview, edit, and download an item.
                  *     These permissions refer to the shared link only and
@@ -10116,7 +10228,7 @@ export type components = {
              * @example 2018-04-13T13:53:23-07:00
              */
             created_at?: string;
-            /** @description An list of entries in the metadata card. */
+            /** @description A list of entries in the metadata card. */
             entries: {
                 /**
                  * @description The text of the keyword.
@@ -12101,6 +12213,137 @@ export type components = {
              *     events for the status of the job
              */
             message?: string;
+        };
+        /**
+         * Shared link OTP allowlist entry
+         * @description An entry on the OTP allowlist for a shared link. The entry can match
+         *     either a specific email address or every email address that belongs to
+         *     a domain.
+         */
+        SharedLinkOtpAllowlistEntry: {
+            /**
+             * Format: date-time
+             * @description The date and time when the allowlist entry was added.
+             * @example 2026-05-19T12:00:00Z
+             */
+            created_at: string;
+            created_by: components["schemas"]["User--Base"] & unknown;
+            /**
+             * @description The kind of allowlist entry.
+             *
+             *     * `email` - The entry matches a single email address.
+             *     * `domain` - The entry matches every email address under the
+             *       given domain.
+             * @example email
+             * @enum {string}
+             */
+            type: "email" | "domain";
+            /**
+             * @description The value of the allowlist entry.
+             *
+             *     * For `email` entries, the full email address (must contain `@`).
+             *     * For `domain` entries, the bare domain (e.g. `example.com`).
+             * @example alice@example.com
+             */
+            value: string;
+        };
+        /**
+         * Shared link OTP allowlist entry (Write)
+         * @description An entry used to write the OTP allowlist for a shared link. The entry can
+         *     match either a specific email address or every email address that
+         *     belongs to a domain.
+         */
+        SharedLinkOtpAllowlistEntryWritable: {
+            /**
+             * @description The kind of allowlist entry.
+             *
+             *     * `email` - The entry matches a single email address.
+             *     * `domain` - The entry matches every email address under the
+             *       given domain.
+             * @example email
+             * @enum {string}
+             */
+            type: "email" | "domain";
+            /**
+             * @description The value of the allowlist entry.
+             *
+             *     * For `email` entries, the full email address (must contain `@`).
+             *     * For `domain` entries, the bare domain (e.g. `example.com`).
+             * @example alice@example.com
+             */
+            value: string;
+        };
+        /**
+         * Shared link OTP settings (Write)
+         * @description One-time-passcode (OTP) settings for a shared link. When OTP enforcement
+         *     is enabled, anonymous users must verify their identity via a
+         *     one-time-passcode emailed to them before the shared link will grant
+         *     access.
+         *
+         *     OTP can only be used with shared links that have an `access` level of
+         *     `open`. Password protection and OTP cannot be enabled at the same time.
+         */
+        SharedLinkOtpWritable: components["schemas"]["SharedLinkOtpWritableNone"] | components["schemas"]["SharedLinkOtpWritableOpen"] | components["schemas"]["SharedLinkOtpWritableAllowlist"];
+        /**
+         * OTP allowlist
+         * @description Anonymous recipients can request a one-time-passcode only when they
+         *     enter an email that matches an entry on the `allowlist`.
+         */
+        SharedLinkOtpWritableAllowlist: {
+            /**
+             * @description The list of email and domain entries that are permitted to access the
+             *     shared link when `mode` is `allowlist`. Anonymous users whose
+             *     email matches an entry can request and verify a one-time-passcode.
+             *
+             *     Providing this field replaces the entire existing allowlist; passing
+             *     an empty array clears all entries. Required when `mode` is `allowlist`.
+             * @example [
+             *       {
+             *         "type": "email",
+             *         "value": "user@example.com"
+             *       },
+             *       {
+             *         "type": "domain",
+             *         "value": "example.com"
+             *       }
+             *     ]
+             */
+            allowlist: components["schemas"]["SharedLinkOtpAllowlistEntryWritable"][];
+            /**
+             * @description Set to `allowlist` to restrict OTP requests to emails matching an
+             *     entry on the `allowlist`.
+             * @example allowlist
+             * @enum {string}
+             */
+            mode: "allowlist";
+        };
+        /**
+         * OTP turned off
+         * @description One-time-passcode (OTP) enforcement is turned off. The shared link is
+         *     accessible without any one-time-passcode verification.
+         */
+        SharedLinkOtpWritableNone: {
+            /**
+             * @description Set to `none` to disable OTP enforcement for the shared link.
+             * @example none
+             * @enum {string}
+             */
+            mode: "none";
+        };
+        /**
+         * OTP open
+         * @description Any anonymous recipient can request a one-time-passcode to any email
+         *     address and access the shared link after verifying it. Collaborators
+         *     and registered Box users access the link without being prompted.
+         */
+        SharedLinkOtpWritableOpen: {
+            /**
+             * @description Set to `open` to allow any anonymous recipient to request a
+             *     one-time-passcode to any email address.
+             * @example open
+             * @enum {string}
+             */
+            mode: "open";
         };
         /**
          * Shield information barrier
@@ -14338,7 +14581,7 @@ export type components = {
              */
             duration?: number;
             /**
-             * @description An list of entries for the card. This represents the individual entries of
+             * @description A list of entries for the card. This represents the individual entries of
              *     the transcription.
              */
             entries: {
@@ -15211,6 +15454,12 @@ export type components = {
              * @example 134b65991ed521fcfe4724b7d814ab8ded5185dc
              */
             sha1?: string;
+            /**
+             * @description The `SHA-512` hash of the chunk, as a hex string
+             *     of 128 lower case characters.
+             * @example ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383
+             */
+            sha512?: string;
         };
         /**
          * Upload part (Mini)
@@ -15253,8 +15502,9 @@ export type components = {
              */
             offset: number;
             /**
-             * @description The `SHA-512` hash of the chunk.
-             * @example 1f40fc92da241694750979ee6cf582f2d5d7c8b5d9c7f3b8a6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1
+             * @description The `SHA-512` hash of the chunk, as a hex string
+             *     of 128 lower case characters.
+             * @example ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383
              */
             sha512: string;
             /**
@@ -15284,8 +15534,9 @@ export type components = {
              */
             part_id: string;
             /**
-             * @description The `SHA-512` hash of the chunk.
-             * @example 1f40fc92da241694750979ee6cf582f2d5d7c8b5d9c7f3b8a6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1
+             * @description The `SHA-512` hash of the chunk, as a hex string
+             *     of 128 lower case characters.
+             * @example ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383
              */
             sha512: string;
             /**
@@ -15371,14 +15622,14 @@ export type components = {
              * @description The number of parts that have been uploaded and processed
              *     by the server. This starts at `0`.
              *
-             *     When committing a file files, inspecting this property can
+             *     When committing a file, inspecting this property can
              *     provide insight if all parts have been uploaded correctly.
              * @example 455
              */
             num_parts_processed?: number;
             /**
              * Format: int64
-             * @description The  size in bytes that must be used for all parts of of the
+             * @description The size in bytes that must be used for all parts of the
              *     upload.
              *
              *     Only the last part is allowed to be of a smaller size.
@@ -15456,12 +15707,12 @@ export type components = {
              *       {
              *         "offset": 0,
              *         "size": 8388608,
-             *         "sha512": "1f40fc92da241694750979ee6cf582f2..."
+             *         "sha512": "ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383"
              *       },
              *       {
              *         "offset": 8388608,
              *         "size": 8388608,
-             *         "sha512": "b109f3bbbc244eb82441917ed06d618b..."
+             *         "sha512": "588fde2156e1d8b23c9ca88ed3bed7bd1270e6ba0bb5b97b294ea1498952d7fd505e406097638514df92e9c5fecd0e73bd872499fcd7ea18eeb18567d0e09020"
              *       }
              *     ]
              */
@@ -15481,7 +15732,7 @@ export type components = {
              *       {
              *         "offset": 0,
              *         "size": 8388608,
-             *         "sha512": "1f40fc92da241694750979ee6cf582f2...",
+             *         "sha512": "ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383",
              *         "part_id": "BFDF5379"
              *       }
              *     ]
@@ -15494,7 +15745,7 @@ export type components = {
              *       {
              *         "offset": 8388608,
              *         "size": 8388608,
-             *         "sha512": "b109f3bbbc244eb82441917ed06d618b..."
+             *         "sha512": "588fde2156e1d8b23c9ca88ed3bed7bd1270e6ba0bb5b97b294ea1498952d7fd505e406097638514df92e9c5fecd0e73bd872499fcd7ea18eeb18567d0e09020"
              *       }
              *     ]
              */
@@ -16134,6 +16385,57 @@ export type components = {
                  * @example true
                  */
                 is_password_enabled: boolean;
+                one_time_passcode: {
+                    /**
+                     * @description The list of email and domain entries that are permitted to access the
+                     *     shared link when `mode` is `allowlist`. Anonymous users whose
+                     *     email matches an entry can request and verify a one-time-passcode.
+                     *
+                     *     Because the entries carry recipient email addresses and the identity
+                     *     of the user who added them, this field is only returned to users
+                     *     with owner, co-owner, or editor access on the item. For viewer
+                     *     collaborators and below the field is omitted.
+                     *
+                     *     An allowlist contains at most 1000 entries, matching the limit
+                     *     enforced when setting the allowlist on a shared link.
+                     * @example [
+                     *       {
+                     *         "type": "email",
+                     *         "value": "alice@example.com",
+                     *         "created_at": "2026-05-19T12:00:00Z",
+                     *         "created_by": {
+                     *           "id": "11446498",
+                     *           "type": "user"
+                     *         }
+                     *       },
+                     *       {
+                     *         "type": "domain",
+                     *         "value": "example.com",
+                     *         "created_at": "2026-05-19T12:00:00Z",
+                     *         "created_by": {
+                     *           "id": "11446498",
+                     *           "type": "user"
+                     *         }
+                     *       }
+                     *     ]
+                     */
+                    allowlist?: components["schemas"]["SharedLinkOtpAllowlistEntry"][];
+                    /**
+                     * @description The current OTP enforcement mode for the shared link.
+                     *
+                     *     * `none` - OTP enforcement is turned off. The shared link is accessible
+                     *       without any one-time-passcode verification.
+                     *     * `open` - Any anonymous recipient can request a one-time-passcode to
+                     *       any email address and access the shared link after verifying it.
+                     *       Collaborators and registered Box users access the link without
+                     *       being prompted.
+                     *     * `allowlist` - Anonymous recipients can request a one-time-passcode
+                     *       only when they enter an email that matches an entry on the
+                     *       `allowlist`.
+                     * @example allowlist
+                     */
+                    mode: string;
+                } & unknown;
                 /**
                  * @description Defines if this link allows a user to preview, edit, and download an item.
                  *     These permissions refer to the shared link only and
@@ -17024,6 +17326,15 @@ export interface operations {
                     "application/json": components["schemas"]["AiResponse"];
                 };
             };
+            /** @description The extraction request could not be processed. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClientError"];
+                };
+            };
             /** @description An unexpected server error. */
             500: {
                 headers: {
@@ -17064,6 +17375,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AiExtractStructuredResponse"];
+                };
+            };
+            /** @description The extraction request could not be processed. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClientError"];
                 };
             };
             /** @description An unexpected server error. */
@@ -19534,6 +19854,7 @@ export interface operations {
                          * @enum {string}
                          */
                         access?: "open" | "company" | "collaborators";
+                        one_time_passcode?: components["schemas"]["SharedLinkOtpWritable"] & unknown;
                         /**
                          * @description The password required to access the shared link. Set the
                          *     password to `null` to remove it.
@@ -22681,6 +23002,7 @@ export interface operations {
                          * @enum {string}
                          */
                         access?: "open" | "company" | "collaborators";
+                        one_time_passcode?: components["schemas"]["SharedLinkOtpWritable"] & unknown;
                         /**
                          * @description The password required to access the shared link. Set the
                          *     password to `null` to remove it.
@@ -23079,6 +23401,7 @@ export interface operations {
                          * @enum {string}
                          */
                         access?: "open" | "company" | "collaborators";
+                        one_time_passcode?: components["schemas"]["SharedLinkOtpWritable"] & unknown;
                         /**
                          * @description The password required to access the shared link. Set the
                          *     password to `null` to remove it.
@@ -23629,15 +23952,18 @@ export interface operations {
                 /**
                  * @description The [RFC3230][1] message digest of the chunk uploaded.
                  *
-                 *     Only SHA1 is supported. The SHA1 digest must be base64
+                 *     `SHA-1` and `SHA-512` ([RFC5843][2]) are supported. The digest must be base64
                  *     encoded. The format of this header is as
-                 *     `sha=BASE64_ENCODED_DIGEST`.
+                 *     `sha=BASE64_ENCODED_DIGEST` for `SHA-1`, or
+                 *     `sha-512=BASE64_ENCODED_DIGEST` for `SHA-512`.
                  *
-                 *     To get the value for the `SHA` digest, use the
+                 *     To get the value for the digest, use the
                  *     openSSL command to encode the file part:
-                 *     `openssl sha1 -binary <FILE_PART_NAME> | base64`.
+                 *     `openssl sha1 -binary <FILE_PART_NAME> | base64` for `SHA-1`, or
+                 *     `openssl sha512 -binary <FILE_PART_NAME> | base64` for `SHA-512`.
                  *
                  *     [1]: https://tools.ietf.org/html/rfc3230
+                 *     [2]: https://tools.ietf.org/html/rfc5843
                  * @example sha=fpRyg5eVQletdZqEKaFlqwBXJzM=
                  */
                 digest: string;
@@ -23657,7 +23983,12 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Chunk has been uploaded successfully. */
+            /**
+             * @description Chunk has been uploaded successfully.
+             *
+             *     The response always includes `sha512`. It also includes
+             *     `sha1` if the `Digest` header used `SHA-1`.
+             */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -23757,6 +24088,9 @@ export interface operations {
                  *     encoded. The format of this header is as
                  *     `sha=BASE64_ENCODED_DIGEST`.
                  *
+                 *     `SHA-512` is not supported for the whole-file digest, even if
+                 *     the parts were uploaded with `SHA-512` digests.
+                 *
                  *     [1]: https://tools.ietf.org/html/rfc3230
                  * @example sha=fpRyg5eVQletdZqEKaFlqwBXJzM=
                  */
@@ -23795,7 +24129,20 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** @description The list details for the uploaded parts. */
+                    /**
+                     * @description The list details for the uploaded parts.
+                     *
+                     *     Each entry can include `sha1` or `sha512`. Include `sha512`
+                     *     on every entry or on none of them. A request where only
+                     *     some entries include `sha512` is rejected.
+                     *
+                     *     Include parts that the server already has, returned as
+                     *     `hits` by the [`Plan upload session`](https://developer.box.com/reference/post-files-upload-sessions-id-plan)
+                     *     endpoint. Use the `part_id`, `offset`, and `size` from the
+                     *     plan response. If the other entries include `sha512`,
+                     *     include the `sha512` value from the plan response.
+                     *     Otherwise, leave the hash out of these entries.
+                     */
                     parts: components["schemas"]["UploadPart"][];
                 };
             };
@@ -23827,6 +24174,20 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /**
+             * @description Returns an error if the request body is not valid.
+             *
+             *     * `invalid_parts_field` - Only some entries in `parts` include
+             *       `sha512`. Include `sha512` on every entry or on none of them.
+             */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClientError"];
+                };
             };
             /**
              * @description Returns an error if there is already a file with the same name
@@ -23890,7 +24251,12 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Returns a list of parts that have been uploaded. */
+            /**
+             * @description Returns a list of parts that have been uploaded.
+             *
+             *     Each part includes the hash type used to upload it. Parts
+             *     uploaded with a `SHA-512` `Digest` header don't include `sha1`.
+             */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -24759,6 +25125,7 @@ export interface operations {
                          * @enum {string}
                          */
                         access?: "open" | "company" | "collaborators";
+                        one_time_passcode?: components["schemas"]["SharedLinkOtpWritable"] & unknown;
                         /**
                          * @description The password required to access the shared link. Set the
                          *     password to `null` to remove it.
@@ -27009,6 +27376,7 @@ export interface operations {
                          * @enum {string}
                          */
                         access?: "open" | "company" | "collaborators";
+                        one_time_passcode?: components["schemas"]["SharedLinkOtpWritable"] & unknown;
                         /**
                          * @description The password required to access the shared link. Set the
                          *     password to `null` to remove it.
@@ -27413,6 +27781,7 @@ export interface operations {
                          * @enum {string}
                          */
                         access?: "open" | "company" | "collaborators";
+                        one_time_passcode?: components["schemas"]["SharedLinkOtpWritable"] & unknown;
                         /**
                          * @description The password required to access the shared link. Set the
                          *     password to `null` to remove it.
@@ -38123,6 +38492,12 @@ export interface operations {
             query?: {
                 /**
                  * @description Specifies whether to delete the user even if they still own files.
+                 *
+                 *     If the user owns content and the enterprise has a retention policy,
+                 *     including a retired one, or a legal hold that is not fully released,
+                 *     setting `force` to `true` doesn't delete the user. The request returns
+                 *     a `403` error, and you must transfer the user's content before deleting
+                 *     the user.
                  * @example true
                  */
                 force?: boolean;
@@ -38151,6 +38526,26 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /**
+             * @description Returns an error if the user can't be deleted.
+             *
+             *     * `forbidden` with the message
+             *       `User cannot be deleted due to retention policies. Please transfer user content first`
+             *       when the user owns content and the enterprise has a retention policy,
+             *       including a retired one, or a legal hold that is not fully released. This applies
+             *       even if none of the policies apply to the user's content, and even
+             *       when `force` is set to `true`. Transfer the user's content by using the
+             *       [Transfer owned folders](https://developer.box.com/reference/put-users-id-folders-0)
+             *       endpoint, then try again.
+             */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClientError"];
+                };
             };
             /** @description An unexpected client error. */
             default: {
@@ -38955,6 +39350,7 @@ export interface operations {
                          * @enum {string}
                          */
                         access?: "open" | "company" | "collaborators";
+                        one_time_passcode?: components["schemas"]["SharedLinkOtpWritable"] & unknown;
                         /**
                          * @description The password required to access the shared link. Set the
                          *     password to `null` to remove it.
@@ -39313,6 +39709,7 @@ export interface operations {
                          * @enum {string}
                          */
                         access?: "open" | "company" | "collaborators";
+                        one_time_passcode?: components["schemas"]["SharedLinkOtpWritable"] & unknown;
                         /**
                          * @description The password required to access the shared link. Set the
                          *     password to `null` to remove it.
@@ -39692,6 +40089,7 @@ export interface operations {
                          * @enum {string}
                          */
                         access?: "open" | "company" | "collaborators";
+                        one_time_passcode?: components["schemas"]["SharedLinkOtpWritable"] & unknown;
                         /**
                          * @description The password required to access the shared link. Set the
                          *     password to `null` to remove it.
