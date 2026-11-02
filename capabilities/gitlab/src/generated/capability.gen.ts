@@ -15251,7 +15251,7 @@ export class ProjectsResource extends RpcTarget {
 	}
 
 	/**
-	 * Adds a webhook to a specified project.
+	 * Adds a webhook to a specified project. This endpoint has a rate limit of five requests per minute for each authenticated user for a given project. On GitLab Self-Managed and GitLab Dedicated, an admin
 	 *
 	 * `POST /api/v4/projects/{id}/hooks` — risk: medium
 	 */
@@ -22955,7 +22955,7 @@ export class HooksResource extends RpcTarget {
 	}
 
 	/**
-	 * Creates a system hook.
+	 * Creates a system hook. This endpoint has a rate limit of five requests per minute for each authenticated user. On GitLab Self-Managed and GitLab Dedicated, an administrator can change this limit in th
 	 *
 	 * `POST /api/v4/hooks` — risk: medium
 	 */

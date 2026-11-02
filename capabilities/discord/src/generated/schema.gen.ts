@@ -581,6 +581,46 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/channels/{channel_id}/permissions/member/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                channel_id: components["schemas"]["SnowflakeType"];
+                user_id: components["schemas"]["SnowflakeType"];
+            };
+            cookie?: never;
+        };
+        /** @description Returns the fully cascaded permissions for a member in this channel, applying their roles and the channel's permission overwrites. */
+        get: operations["get_channel_member_permissions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/channels/{channel_id}/permissions/role/{role_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                channel_id: components["schemas"]["SnowflakeType"];
+                role_id: components["schemas"]["SnowflakeType"];
+            };
+            cookie?: never;
+        };
+        /** @description Returns the permissions a role grants in this channel, applying the channel's permission overwrites on top of the role's guild-level permissions. */
+        get: operations["get_channel_role_permissions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/channels/{channel_id}/pins": {
         parameters: {
             query?: never;
@@ -1323,6 +1363,46 @@ export type paths = {
         };
         get: operations["get_guilds_onboarding"];
         put: operations["put_guilds_onboarding"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/guilds/{guild_id}/permissions/member/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                guild_id: components["schemas"]["SnowflakeType"];
+                user_id: components["schemas"]["SnowflakeType"];
+            };
+            cookie?: never;
+        };
+        /** @description Returns the fully cascaded guild-level permissions for a member, applying all of their roles including @everyone's */
+        get: operations["get_guild_member_permissions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/guilds/{guild_id}/permissions/role/{role_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                guild_id: components["schemas"]["SnowflakeType"];
+                role_id: components["schemas"]["SnowflakeType"];
+            };
+            cookie?: never;
+        };
+        /** @description Returns the permissions a role grants at the guild level, combining the role's own permissions with @everyone's. */
+        get: operations["get_guild_role_permissions"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
@@ -3498,6 +3578,7 @@ export type components = {
             bot?: components["schemas"]["UserResponse"];
             bot_public?: boolean;
             bot_require_code_grant?: boolean;
+            conjure_project_id?: components["schemas"]["SnowflakeType"];
             cover_image?: string;
             /** Format: uri */
             custom_install_url?: string;
@@ -3591,7 +3672,7 @@ export type components = {
             width?: number;
         };
         /** Format: int32 */
-        AuditLogActionTypes: number & (1 | 10 | 11 | 12 | 13 | 14 | 15 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 30 | 31 | 32 | 40 | 41 | 42 | 50 | 51 | 52 | 60 | 61 | 62 | 72 | 73 | 74 | 75 | 80 | 81 | 82 | 83 | 84 | 85 | 90 | 91 | 92 | 100 | 101 | 102 | 110 | 111 | 112 | 121 | 130 | 131 | 132 | 140 | 141 | 142 | 143 | 144 | 145 | 146 | 150 | 151 | 163 | 164 | 165 | 166 | 167 | 171 | 172 | 180 | 190 | 191 | 192 | 193 | 200 | 201 | 202 | 211);
+        AuditLogActionTypes: number & (1 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 30 | 31 | 32 | 33 | 40 | 41 | 42 | 50 | 51 | 52 | 60 | 61 | 62 | 72 | 73 | 74 | 75 | 80 | 81 | 82 | 83 | 84 | 85 | 90 | 91 | 92 | 100 | 101 | 102 | 110 | 111 | 112 | 121 | 130 | 131 | 132 | 140 | 141 | 142 | 143 | 144 | 145 | 146 | 150 | 151 | 163 | 164 | 165 | 166 | 167 | 171 | 172 | 180 | 190 | 191 | 192 | 193 | 200 | 201 | 202 | 211);
         AuditLogEntryResponse: {
             action_type: components["schemas"]["AuditLogActionTypes"];
             changes?: components["schemas"]["AuditLogObjectChangeResponse"][];
@@ -3684,6 +3765,7 @@ export type components = {
         };
         BasicMessageResponse: {
             activity?: components["schemas"]["MessageActivityResponse"];
+            actor?: components["schemas"]["UserResponse"];
             application?: components["schemas"]["BasicApplicationResponseWithBot"];
             application_id?: components["schemas"]["SnowflakeType"];
             attachments: components["schemas"]["MessageAttachmentResponse"][];
@@ -3991,7 +4073,7 @@ export type components = {
             id: string;
             type: components["schemas"]["IntegrationTypes"];
         };
-        ConnectedAccountProviders: string & ("battlenet" | "bluesky" | "bungie" | "ebay" | "epicgames" | "facebook" | "github" | "instagram" | "mastodon" | "leagueoflegends" | "paypal" | "playstation" | "reddit" | "riotgames" | "roblox" | "skype" | "spotify" | "steam" | "tiktok" | "twitch" | "twitter" | "xbox" | "youtube" | "domain");
+        ConnectedAccountProviders: string & ("battlenet" | "bluesky" | "bungie" | "ebay" | "epicgames" | "facebook" | "github" | "instagram" | "letterboxd" | "mastodon" | "leagueoflegends" | "paypal" | "playstation" | "reddit" | "riotgames" | "roblox" | "skype" | "spotify" | "steam" | "tiktok" | "twitch" | "twitter" | "xbox" | "youtube" | "domain");
         ConnectedAccountResponse: {
             friend_sync: boolean;
             id: string;
@@ -4030,6 +4112,10 @@ export type components = {
              * @enum {integer}
              */
             type: 17;
+        };
+        ContentScanMetadataResponse: {
+            /** Format: int32 */
+            flags: number;
         };
         CreatedThreadResponse: {
             applied_tags?: components["schemas"]["SnowflakeType"][];
@@ -5396,6 +5482,7 @@ export type components = {
             bot?: components["schemas"]["UserResponse"];
             bot_public?: boolean;
             bot_require_code_grant?: boolean;
+            conjure_project_id?: components["schemas"]["SnowflakeType"];
             cover_image?: string;
             /** Format: uri */
             custom_install_url?: string;
@@ -5609,7 +5696,7 @@ export type components = {
         MediaGalleryComponentForMessageRequest: {
             /** Format: int32 */
             id?: number | null;
-            items: components["schemas"]["MediaGalleryItemRequest"][];
+            items: components["schemas"]["MediaGalleryItemForMessageRequest"][];
             /**
              * Format: int32
              * @enum {integer}
@@ -5626,7 +5713,7 @@ export type components = {
              */
             type: 12;
         };
-        MediaGalleryItemRequest: {
+        MediaGalleryItemForMessageRequest: {
             description?: string | null;
             media: components["schemas"]["UnfurledMediaRequest"];
             spoiler?: boolean | null;
@@ -5836,6 +5923,13 @@ export type components = {
             flags?: number | null;
             sticker_ids?: components["schemas"]["SnowflakeType"][] | null;
         };
+        MessageEmbedAudioResponse: {
+            content_type?: string;
+            description?: string;
+            /** Format: uri */
+            proxy_url?: string;
+            url?: string;
+        };
         MessageEmbedAuthorResponse: {
             icon_url?: string;
             name: string;
@@ -5872,6 +5966,7 @@ export type components = {
             url?: string;
         };
         MessageEmbedResponse: {
+            audio?: components["schemas"]["MessageEmbedAudioResponse"];
             author?: components["schemas"]["MessageEmbedAuthorResponse"];
             /** Format: int32 */
             color?: number;
@@ -5957,6 +6052,7 @@ export type components = {
         MessageReferenceType: number & 0;
         MessageResponse: {
             activity?: components["schemas"]["MessageActivityResponse"];
+            actor?: components["schemas"]["UserResponse"];
             application?: components["schemas"]["BasicApplicationResponseWithBot"];
             application_id?: components["schemas"]["SnowflakeType"];
             attachments: components["schemas"]["MessageAttachmentResponse"][];
@@ -6252,6 +6348,10 @@ export type components = {
             /** @enum {string} */
             type: "guild_subscription";
         };
+        PermissionsResponse: {
+            /** @description The computed permissions, as a stringified bitfield */
+            permissions: string;
+        };
         PinnedMessageResponse: {
             message: components["schemas"]["MessageResponse"];
             /** Format: date-time */
@@ -6386,6 +6486,7 @@ export type components = {
             bot?: components["schemas"]["UserResponse"];
             bot_public?: boolean;
             bot_require_code_grant?: boolean;
+            conjure_project_id?: components["schemas"]["SnowflakeType"];
             cover_image?: string;
             /** Format: uri */
             custom_install_url?: string;
@@ -6674,6 +6775,7 @@ export type components = {
             title: string;
         };
         RichEmbed: {
+            audio?: null | components["schemas"]["RichEmbedAudio"];
             author?: null | components["schemas"]["RichEmbedAuthor"];
             color?: number | null;
             description?: string | null;
@@ -6689,6 +6791,11 @@ export type components = {
             /** Format: uri */
             url?: string | null;
             video?: null | components["schemas"]["RichEmbedVideo"];
+        };
+        RichEmbedAudio: {
+            description?: string | null;
+            /** Format: uri */
+            url?: string | null;
         };
         RichEmbedAuthor: {
             /** Format: uri */
@@ -6903,10 +7010,13 @@ export type components = {
         };
         SearchMessageResponse: {
             activity?: components["schemas"]["MessageActivityResponse"];
+            actor?: components["schemas"]["UserResponse"];
             application?: components["schemas"]["BasicApplicationResponseWithBot"];
             application_id?: components["schemas"]["SnowflakeType"];
             attachments: components["schemas"]["MessageAttachmentResponse"][];
             author: components["schemas"]["UserResponse"];
+            /** Format: int32 */
+            author_restriction_count?: number;
             call?: components["schemas"]["MessageCallResponse"];
             channel_id: components["schemas"]["SnowflakeType"];
             components: (components["schemas"]["ActionRowComponentResponse"] | components["schemas"]["ContainerComponentResponse"] | components["schemas"]["FileComponentResponse"] | components["schemas"]["MediaGalleryComponentResponse"] | components["schemas"]["SectionComponentResponse"] | components["schemas"]["SeparatorComponentResponse"] | components["schemas"]["TextDisplayComponentResponse"])[];
@@ -6916,6 +7026,7 @@ export type components = {
             embeds: components["schemas"]["MessageEmbedResponse"][];
             /** Format: int32 */
             flags: number;
+            forward_source_author_id?: components["schemas"]["SnowflakeType"];
             hit: boolean;
             id: components["schemas"]["SnowflakeType"];
             interaction?: components["schemas"]["MessageInteractionResponse"];
@@ -6940,6 +7051,8 @@ export type components = {
             restriction_count?: number;
             role_subscription_data?: components["schemas"]["MessageRoleSubscriptionDataResponse"];
             shared_client_theme?: components["schemas"]["CustomClientThemeResponse"];
+            /** Format: int32 */
+            source_author_restriction_count?: number;
             sticker_items?: components["schemas"]["MessageStickerItemResponse"][];
             stickers?: (components["schemas"]["GuildStickerResponse"] | components["schemas"]["StandardStickerResponse"])[];
             thread?: components["schemas"]["ThreadResponse"];
@@ -7531,11 +7644,17 @@ export type components = {
         };
         UnfurledMediaResponse: {
             attachment_id?: components["schemas"]["SnowflakeType"];
+            content_scan_metadata?: components["schemas"]["ContentScanMetadataResponse"];
             content_type?: string | null;
+            /** Format: int32 */
+            flags?: number;
             /** Format: int32 */
             height?: number | null;
             id: components["schemas"]["SnowflakeType"];
-            proxy_url: string;
+            placeholder?: string | null;
+            /** Format: int32 */
+            placeholder_version?: number | null;
+            proxy_url?: string;
             url: string;
             /** Format: int32 */
             width?: number | null;
@@ -10065,6 +10184,70 @@ export interface operations {
             429: components["responses"]["ClientRatelimitedResponse"];
         };
     };
+    get_channel_member_permissions: {
+        parameters: {
+            query?: {
+                implicit?: boolean;
+            };
+            header?: never;
+            path: {
+                channel_id: components["schemas"]["SnowflakeType"];
+                user_id: components["schemas"]["SnowflakeType"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            "4XX": components["responses"]["ClientErrorResponse"];
+            /** @description 200 response for get_channel_member_permissions */
+            200: {
+                headers: {
+                    "X-RateLimit-Bucket": components["headers"]["X-RateLimit-Bucket"];
+                    "X-RateLimit-Limit": components["headers"]["X-RateLimit-Limit"];
+                    "X-RateLimit-Remaining": components["headers"]["X-RateLimit-Remaining"];
+                    "X-RateLimit-Reset": components["headers"]["X-RateLimit-Reset"];
+                    "X-RateLimit-Reset-After": components["headers"]["X-RateLimit-Reset-After"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PermissionsResponse"];
+                };
+            };
+            429: components["responses"]["ClientRatelimitedResponse"];
+        };
+    };
+    get_channel_role_permissions: {
+        parameters: {
+            query?: {
+                implicit?: boolean;
+            };
+            header?: never;
+            path: {
+                channel_id: components["schemas"]["SnowflakeType"];
+                role_id: components["schemas"]["SnowflakeType"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            "4XX": components["responses"]["ClientErrorResponse"];
+            /** @description 200 response for get_channel_role_permissions */
+            200: {
+                headers: {
+                    "X-RateLimit-Bucket": components["headers"]["X-RateLimit-Bucket"];
+                    "X-RateLimit-Limit": components["headers"]["X-RateLimit-Limit"];
+                    "X-RateLimit-Remaining": components["headers"]["X-RateLimit-Remaining"];
+                    "X-RateLimit-Reset": components["headers"]["X-RateLimit-Reset"];
+                    "X-RateLimit-Reset-After": components["headers"]["X-RateLimit-Reset-After"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PermissionsResponse"];
+                };
+            };
+            429: components["responses"]["ClientRatelimitedResponse"];
+        };
+    };
     deprecated_list_pins: {
         parameters: {
             query?: never;
@@ -12160,6 +12343,66 @@ export interface operations {
             429: components["responses"]["ClientRatelimitedResponse"];
         };
     };
+    get_guild_member_permissions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                guild_id: components["schemas"]["SnowflakeType"];
+                user_id: components["schemas"]["SnowflakeType"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            "4XX": components["responses"]["ClientErrorResponse"];
+            /** @description 200 response for get_guild_member_permissions */
+            200: {
+                headers: {
+                    "X-RateLimit-Bucket": components["headers"]["X-RateLimit-Bucket"];
+                    "X-RateLimit-Limit": components["headers"]["X-RateLimit-Limit"];
+                    "X-RateLimit-Remaining": components["headers"]["X-RateLimit-Remaining"];
+                    "X-RateLimit-Reset": components["headers"]["X-RateLimit-Reset"];
+                    "X-RateLimit-Reset-After": components["headers"]["X-RateLimit-Reset-After"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PermissionsResponse"];
+                };
+            };
+            429: components["responses"]["ClientRatelimitedResponse"];
+        };
+    };
+    get_guild_role_permissions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                guild_id: components["schemas"]["SnowflakeType"];
+                role_id: components["schemas"]["SnowflakeType"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            "4XX": components["responses"]["ClientErrorResponse"];
+            /** @description 200 response for get_guild_role_permissions */
+            200: {
+                headers: {
+                    "X-RateLimit-Bucket": components["headers"]["X-RateLimit-Bucket"];
+                    "X-RateLimit-Limit": components["headers"]["X-RateLimit-Limit"];
+                    "X-RateLimit-Remaining": components["headers"]["X-RateLimit-Remaining"];
+                    "X-RateLimit-Reset": components["headers"]["X-RateLimit-Reset"];
+                    "X-RateLimit-Reset-After": components["headers"]["X-RateLimit-Reset-After"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PermissionsResponse"];
+                };
+            };
+            429: components["responses"]["ClientRatelimitedResponse"];
+        };
+    };
     get_guild_preview: {
         parameters: {
             query?: never;
@@ -14187,6 +14430,7 @@ export interface operations {
                     member_metadata?: {
                         [key: string]: string;
                     } | null;
+                    name?: string | null;
                     secret: string;
                 };
             };
@@ -14227,6 +14471,7 @@ export interface operations {
                     metadata?: {
                         [key: string]: string;
                     } | null;
+                    name?: string | null;
                     /** Format: uri */
                     override_event_webhooks_url?: string | null;
                 };
@@ -14326,6 +14571,7 @@ export interface operations {
                     metadata?: {
                         [key: string]: string;
                     } | null;
+                    name?: string | null;
                     /** Format: uri */
                     override_event_webhooks_url?: string | null;
                 };

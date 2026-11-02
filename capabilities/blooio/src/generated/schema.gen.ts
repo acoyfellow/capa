@@ -198,7 +198,7 @@ export type paths = {
          *
          *     **iMessage send-with-effect:** set the optional `effect` field to attach an Apple expressive send (slam, loud, gentle, invisible-ink) or screen effect (echo, spotlight, balloons, confetti, love, lasers, fireworks, celebration). Effects are an iMessage-only feature — when the recipient is on SMS/RCS the message is delivered without the animation. Effects are not supported in multipart (`parts`) mode.
          *
-         *     **Threaded replies (iMessage inline reply):** set the optional `reply_to` field to send the outgoing message as a reply to a specific earlier message. Two shapes are accepted: `{ "message_id": "msg_…" }` references a Blooio-minted message in the same chat (most common — the message_id returned by an earlier send or surfaced on a `message.received` webhook), or `{ "guid": "…", "part_index": 0 }` references the raw iMessage GUID for the rare case where the parent wasn't recorded by Blooio. The reply must target the same chat and the same from-number as the new send, and the parent must be no older than 30 days (the iMessage on-device retention horizon). Reply support is iMessage-only and is rejected on Twilio, dashboard-Twilio, and hybrid send paths; it's also rejected on multi-message fan-outs (`text` array or per-part URL-balloon batch). See the `400` responses for the full set of `reply_target_*` error codes.
+         *     **Threaded replies (iMessage inline reply):** set the optional `reply_to` field to send the outgoing message as a reply to a specific earlier message. Two shapes are accepted: `{ "message_id": "msg_…" }` references a Blooio-minted message in the same chat (most common — the message_id returned by an earlier send or surfaced on a `message.received` webhook), or `{ "guid": "…", "part_index": 0 }` references the raw iMessage GUID for the rare case where the parent wasn't recorded by Blooio. The reply must target the same chat and the same from-number as the new send, and the parent must be no older than 30 days (the iMessage on-device retention horizon). Reply support is iMessage-only and is rejected on Twilio and dashboard-Twilio send paths; it's also rejected on multi-message fan-outs (`text` array or per-part URL-balloon batch). See the `400` responses for the full set of `reply_target_*` error codes.
          */
         post: operations["sendMessage"];
         delete?: never;
@@ -712,7 +712,7 @@ export type paths = {
         };
         /**
          * List phone numbers
-         * @description List all phone numbers bound to this API key with their availability status. Use the returned phone numbers as the `:number` path parameter for other `/me/numbers/` endpoints.
+         * @description List all phone numbers bound to this API key with their availability status. Banned and suspended numbers stay in the list. `status` is `banned`, `suspended`, or `active`; a ban takes precedence when both apply. `is_active` is false when the line is banned, suspended, or the underlying account is blocked. Use the returned phone numbers as the `:number` path parameter for other `/me/numbers/` endpoints.
          */
         get: operations["listNumbers"];
         put?: never;
@@ -1184,6 +1184,9 @@ export type components = {
             auth_type?: "api_key" | "dashboard";
             /** @description List of devices associated with this API key (only for api_key auth) */
             devices?: {
+                /** @description True when the phone number is banned. Same meaning as `/me/numbers`. */
+                banned?: boolean;
+                /** @description False when the line is banned, suspended, or the underlying account is blocked. */
                 is_active?: boolean;
                 /** Format: int64 */
                 last_active?: number | null;
@@ -1194,6 +1197,13 @@ export type components = {
                  * @enum {string|null}
                  */
                 plan_kind?: "shared" | "dedicated" | "inbound" | "trial" | "2fa" | null;
+                /**
+                 * @description `banned` if the number is banned, otherwise `suspended` if it is suspended, otherwise `active`. Mirrors `/me/numbers`.
+                 * @enum {string}
+                 */
+                status?: "active" | "suspended" | "banned";
+                /** @description True when the phone number is suspended. Same meaning as `/me/numbers`. */
+                suspended?: boolean;
             }[];
             /** @description Integration details if the API key is associated with an integration (only for api_key auth) */
             integration_details?: Record<string, never> | null;
@@ -1763,7 +1773,7 @@ export type components = {
                 /** @description URL to an attachment for this part. Mutually exclusive with 'text'. */
                 url?: string;
             }[];
-            /** @description Optional. Send this message as an iMessage inline reply targeting a specific earlier message. iMessage-only — rejected on Twilio, hybrid, and multi-message fan-outs (`text` array or URL-balloon batch). */
+            /** @description Optional. Send this message as an iMessage inline reply targeting a specific earlier message. iMessage-only — rejected on Twilio and multi-message fan-outs (`text` array or URL-balloon batch). */
             reply_to?: components["schemas"]["ReplyToRequest"] | null;
             /**
              * @description If true, the contact card (Name & Photo) will be shared with this message. The contact card is piggybacked onto the outgoing message. Defaults to false. ⚠️ Only available on **Dedicated Commercial** and **Dedicated Enterprise** plans — other plans receive a `403`.
@@ -2485,7 +2495,7 @@ export interface operations {
              *     - `reply_target_chat_mismatch` — the parent message lives in a different chat than the new send.
              *     - `reply_target_device_mismatch` — the parent was sent or received on a different line (allocation). Switch the from-number to match.
              *     - `reply_target_expired` — the parent is older than the 30-day iMessage on-device retention window and may have been purged from the device.
-             *     - `reply_target_not_supported` — `reply_to` was used on a path that doesn't support inline replies (Twilio, hybrid, or multi-message fan-out).
+             *     - `reply_target_not_supported` — `reply_to` was used on a path that doesn't support inline replies (Twilio or multi-message fan-out).
              *     - Other validation failures (missing content, invalid recipient, etc.) — no `code` field.
              */
             400: {
@@ -2562,12 +2572,14 @@ export interface operations {
              *     - `new_conversation_limit_reached` — shared plan's daily new-conversation cap reached. Body includes `plan_id`, `cap`, `current`. Existing conversations continue to send.
              *     - `conversation_awaiting_reply` — messaging safety: up to 3 messages may be sent to a new recipient before they respond. Body includes `pre_reply_outbound_count` and `limit`.
              *     - `conversation_streak_limit` — messaging safety: consecutive-message cap since the recipient's last response was reached. Body includes `current_streak` and `limit`.
-             *     - `conversation_inactive_paused` — messaging safety: no response in 14+ days and the single re-engagement message was already sent.
+             *     - `conversation_inactive_paused` — messaging safety: no response in 14+ days and the single re-engagement message was already sent. Body includes `retry_after` (seconds), also sent as the `Retry-After` header: retry after the recipient replies. It is a polling interval, not a timer — the pause does not lift on its own.
              *
              *     Conversation-state limits lift as soon as the recipient responds, and an emoji reaction counts: a tapback clears the consecutive-message counter and keeps a thread from going inactive. Only writing back raises the cap and unlocks links, media, and attachments.
              */
             429: {
                 headers: {
+                    /** @description Sent with `conversation_inactive_paused`: seconds to wait before checking again. The pause lifts when the recipient replies, not when this elapses. */
+                    "Retry-After"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3828,6 +3840,9 @@ export interface operations {
                 content: {
                     "application/json": {
                         numbers?: {
+                            /** @description True when the phone number is banned (`phone_numbers.banned_at` is set). */
+                            banned?: boolean;
+                            /** @description False when the line is banned, suspended, or the underlying account is blocked. */
                             is_active?: boolean;
                             /** Format: date-time */
                             last_active?: string | null;
@@ -3838,6 +3853,13 @@ export interface operations {
                              * @enum {string|null}
                              */
                             plan_kind?: "shared" | "dedicated" | "inbound" | "trial" | "2fa" | null;
+                            /**
+                             * @description `banned` if the number is banned, otherwise `suspended` if it is suspended, otherwise `active`. An account block does not change this field; it only sets `is_active` to false.
+                             * @enum {string}
+                             */
+                            status?: "active" | "suspended" | "banned";
+                            /** @description True when the phone number is suspended. Independent of `status`: a line can be both banned and suspended, in which case `status` is `banned`. */
+                            suspended?: boolean;
                         }[];
                     };
                 };
