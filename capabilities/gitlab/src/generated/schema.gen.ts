@@ -4795,7 +4795,7 @@ export type paths = {
         put?: never;
         /**
          * Create a system hook
-         * @description Creates a system hook.
+         * @description Creates a system hook. This endpoint has a rate limit of five requests per minute for each authenticated user. On GitLab Self-Managed and GitLab Dedicated, an administrator can change this limit in the application settings.
          */
         post: operations["postApiV4Hooks"];
         delete?: never;
@@ -8015,7 +8015,7 @@ export type paths = {
         put?: never;
         /**
          * Add a webhook to a project
-         * @description Adds a webhook to a specified project.
+         * @description Adds a webhook to a specified project. This endpoint has a rate limit of five requests per minute for each authenticated user for a given project. On GitLab Self-Managed and GitLab Dedicated, an administrator can change this limit in the application settings.
          */
         post: operations["postApiV4ProjectsIdHooks"];
         delete?: never;
@@ -13325,26 +13325,6 @@ export type paths = {
          * @description This feature was introduced in GitLab 12.10
          */
         get: operations["getApiV4ProjectsIdPackagesPypiFilesSha256*fileIdentifier"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v4/projects/{id}/packages/pypi/forward/{package_name}/*upstream_path": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Download a forwarded (proxied) PyPI package file
-         * @description Enforces the Dependency Firewall then redirects to the upstream artifact.
-         */
-        get: operations["getApiV4ProjectsIdPackagesPypiForwardPackageName*upstreamPath"];
         put?: never;
         post?: never;
         delete?: never;
@@ -18969,6 +18949,8 @@ export type components = {
             /** @example no_checks */
             prompt_injection_protection_level: string;
             /** @example false */
+            require_sandbox: boolean;
+            /** @example false */
             web_search_enabled: boolean;
         };
         /** @description API_Entities_Appearance model */
@@ -21102,6 +21084,82 @@ export type components = {
             /** @example https://gitlab.example.com/janedoe/gitlab-foss/builds/91 */
             target_url: string;
         };
+        /** @description API_Entities_CommitWithLink model */
+        API_Entities_CommitWithLink: {
+            author: components["schemas"]["API_Entities_UserPath"];
+            /** @example john@example.com */
+            author_email: string;
+            /** @example https://www.gravatar.com/avatar/abc */
+            author_gravatar_url: string;
+            /** @example John Smith */
+            author_name: string;
+            /**
+             * Format: date-time
+             * @example 2012-05-28T04:42:42-07:00
+             */
+            authored_date: string;
+            /** @example /project/-/commit/abc */
+            commit_path: string;
+            /** @example https://gitlab.example.com/project/-/commit/abc */
+            commit_url: string;
+            /**
+             * Format: date-time
+             * @example 2012-05-28T04:42:42-07:00
+             */
+            committed_date: string;
+            /** @example jack@example.com */
+            committer_email: string;
+            /** @example Jack Smith */
+            committer_name: string;
+            /**
+             * Format: date-time
+             * @example 2017-07-26T11:08:53.000+02:00
+             */
+            created_at: string;
+            /** @example <p>description</p> */
+            description_html?: string;
+            /**
+             * @example {
+             *       "Signed-off-by": [
+             *         "John Doe <johndoe@gitlab.com>",
+             *         "Jane Doe <janedoe@gitlab.com>"
+             *       ]
+             *     }
+             */
+            extended_trailers: Record<string, never>;
+            /** @example 2695effb5807a22ff3d138d593fd856244e155e7 */
+            id: string;
+            /** @example Initial commit */
+            message: string;
+            /** @example 2695effb5807a22ff3d138d593fd856244e155e7 */
+            next_commit_id?: string;
+            /**
+             * @example [
+             *       "2a4b78934375d7f53875269ffd4f45fd83a84ebe"
+             *     ]
+             */
+            parent_ids: string[];
+            /** @example /project/pipelines/1 */
+            pipeline_status_path?: string;
+            /** @example 2695effb5807a22ff3d138d593fd856244e155e7 */
+            prev_commit_id?: string;
+            /** @example 2695effb */
+            short_id: string;
+            /** @example <p>signature</p> */
+            signature_html?: string;
+            /** @example Initial commit */
+            title: string;
+            /** @example <p>title</p> */
+            title_html?: string;
+            /**
+             * @example {
+             *       "Merged-By": "Jane Doe janedoe@gitlab.com"
+             *     }
+             */
+            trailers: Record<string, never>;
+            /** @example https://gitlab.example.com/janedoe/gitlab-foss/-/commit/ed899a2f4b50b4370feeea94676502b42383c746 */
+            web_url: string;
+        };
         /** @description API_Entities_Compare model */
         API_Entities_Compare: {
             commit: components["schemas"]["API_Entities_Commit"];
@@ -21242,7 +21300,7 @@ export type components = {
             expires_at: string;
             /** @example 4a:9d:64:15:ed:3a:e6:07:6e:89:36:b3:3b:03:05:d9 */
             fingerprint?: string;
-            /** @example SHA256:Jrs3LD1Ji30xNLtTVf9NDCj7kkBgPBb2pjvTZ3HfIgU */
+            /** @example Jrs3LD1Ji30xNLtTVf9NDCj7kkBgPBb2pjvTZ3HfIgU */
             fingerprint_sha256: string;
             /**
              * Format: int64
@@ -21278,7 +21336,7 @@ export type components = {
             expires_at: string;
             /** @example 4a:9d:64:15:ed:3a:e6:07:6e:89:36:b3:3b:03:05:d9 */
             fingerprint?: string;
-            /** @example SHA256:Jrs3LD1Ji30xNLtTVf9NDCj7kkBgPBb2pjvTZ3HfIgU */
+            /** @example Jrs3LD1Ji30xNLtTVf9NDCj7kkBgPBb2pjvTZ3HfIgU */
             fingerprint_sha256: string;
             /**
              * Format: int64
@@ -27644,6 +27702,33 @@ export type components = {
              */
             todos: number;
         };
+        API_Entities_UserPath: {
+            availability?: string;
+            /** @example /user/avatar/28/The-Big-Lebowski-400-400.png */
+            avatar_path?: string;
+            /** @example https://gravatar.com/avatar/1 */
+            avatar_url: string;
+            custom_attributes?: components["schemas"]["API_Entities_CustomAttribute"][];
+            /**
+             * Format: int64
+             * @example 1
+             */
+            id: number;
+            locked: boolean;
+            /** @example Administrator */
+            name: string;
+            path: string;
+            /** @example john@example.com */
+            public_email: string;
+            show_status: string;
+            /** @example active */
+            state: string;
+            status_tooltip_html?: string;
+            /** @example admin */
+            username: string;
+            /** @example https://gitlab.example.com/root */
+            web_url: string;
+        };
         /** @description API_Entities_UserPublic model */
         API_Entities_UserPublic: {
             /** @example /user/avatar/28/The-Big-Lebowski-400-400.png */
@@ -28009,7 +28094,7 @@ export type components = {
              * @description Package type protected by the rule. For example npm.
              * @enum {string}
              */
-            package_type?: "cargo" | "conan" | "generic" | "helm" | "maven" | "npm" | "nuget" | "pypi" | "terraform_module";
+            package_type?: "cargo" | "conan" | "generic" | "helm" | "maven" | "npm" | "nuget" | "pypi" | "rubygems" | "terraform_module";
         };
         /** @description Update Pages settings for a project */
         patchApiV4ProjectsIdPages: {
@@ -29297,6 +29382,8 @@ export type components = {
                  * @enum {string}
                  */
                 prompt_injection_protection_level?: "no_checks" | "log_only" | "interrupt";
+                /** @description Whether flows that run on GitLab Runner fail when the execution environment sandbox is unavailable */
+                require_sandbox?: boolean;
                 /** @description Allow web search in GitLab Duo Chat for this top-level group */
                 web_search_enabled?: boolean;
             };
@@ -31343,7 +31430,10 @@ export type components = {
             description?: string;
             /** @description Comma-separated label names for a merge request. Set to an empty string to unassign all labels. */
             labels?: string[];
-            /** @description Date after which the merge request can be merged. */
+            /**
+             * Format: date-time
+             * @description Date after which the merge request can be merged.
+             */
             merge_after?: string;
             /** @description The title of a project or ancestor-group milestone to assign the merge request to. Mutually exclusive with `milestone_id`. */
             milestone?: string;
@@ -31582,7 +31672,7 @@ export type components = {
              * @description Package type protected by the rule. For example npm.
              * @enum {string}
              */
-            package_type: "cargo" | "conan" | "generic" | "helm" | "maven" | "npm" | "nuget" | "pypi" | "terraform_module";
+            package_type: "cargo" | "conan" | "generic" | "helm" | "maven" | "npm" | "nuget" | "pypi" | "rubygems" | "terraform_module";
         };
         /** @description Upload a package */
         postApiV4ProjectsIdPackagesPypi: {
@@ -33069,7 +33159,7 @@ export type components = {
             tag_list?: string[];
             /**
              * Format: date-time
-             * @description The expiration time for the runner authentication token (ISO 8601 format). Must be between 5 minutes and 15 days in the future, and cannot exceed instance/group/project limits.
+             * @description The expiration time for the runner authentication token (ISO 8601 format). Must be between 5 minutes and 21 days in the future, and cannot exceed instance/group/project limits.
              */
             token_expires_at?: string;
             /**
@@ -33443,6 +33533,8 @@ export type components = {
                  * @enum {string}
                  */
                 prompt_injection_protection_level?: "no_checks" | "log_only" | "interrupt";
+                /** @description Whether flows that run on GitLab Runner fail when the execution environment sandbox is unavailable */
+                require_sandbox?: boolean;
                 /** @description Allow web search in GitLab Duo Chat for this top-level group */
                 web_search_enabled?: boolean;
             };
@@ -37129,7 +37221,10 @@ export type components = {
             discussion_locked?: boolean;
             /** @description Comma-separated label names for a merge request. Set to an empty string to unassign all labels. */
             labels?: string[];
-            /** @description Date after which the merge request can be merged. */
+            /**
+             * Format: date-time
+             * @description Date after which the merge request can be merged.
+             */
             merge_after?: string;
             /** @description The title of a project or ancestor-group milestone to assign the merge request to. Mutually exclusive with `milestone_id`. */
             milestone?: string;
@@ -51786,6 +51881,13 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Too many requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     getApiV4HooksHookId: {
@@ -61579,6 +61681,13 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Too many requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     getApiV4ProjectsIdHooksHookId: {
@@ -69079,7 +69188,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["API_Entities_Commit"][];
+                    "application/json": components["schemas"]["API_Entities_CommitWithLink"][];
                 };
             };
             /** @description Not found */
@@ -76846,56 +76955,6 @@ export interface operations {
         responses: {
             /** @description The PyPi package download endpoint */
             200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "getApiV4ProjectsIdPackagesPypiForwardPackageName*upstreamPath": {
-        parameters: {
-            query: {
-                /** @description The upstream artifact host and path, as emitted by the Simple index rewrite */
-                upstream_path: string;
-            };
-            header?: never;
-            path: {
-                /** @description The ID or URL-encoded path of the project */
-                id: string;
-                /**
-                 * @description The normalized PyPI package name
-                 * @example my.pypi.package
-                 */
-                package_name: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Download a forwarded (proxied) PyPI package file */
-            302: {
                 headers: {
                     [name: string]: unknown;
                 };

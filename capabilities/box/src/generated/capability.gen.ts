@@ -2615,11 +2615,8 @@ export class MetadataQueriesResource extends RpcTarget {
 	}
 
 	/**
-	 * Create a search using SQL-like syntax to return items that match specific
-metadata.
-
-By default, this endpoint returns only the most basic info about the items for
-which the query matches. To get addi
+	 * For new integrations, use the [v2026.0 Query API](https://developer.box.com/reference/v2026.0/query-resources).
+This is the latest version of the Query API, with advanced capabilities including multi-
 	 *
 	 * `POST /metadata_queries/execute_read` — risk: medium
 	 */
@@ -3695,6 +3692,8 @@ admin permissions.
 still owns any content. 
 To proceed, move their owned content first, or use the `force` parameter to delete
 the user and their files.
+
+If t
 	 *
 	 * `DELETE /users/{user_id}` — risk: medium
 	 */

@@ -10025,7 +10025,7 @@ export interface operations {
                 PageSize?: number;
                 /** @description The page token. This is provided by the API. */
                 PageToken?: string;
-                /** @description The status of the resources to read. Can be: `init`, `in-progress`, or `completed`. */
+                /** @description The status of the resources to read. Can be: `init`, `in-progress`, or `completed`. Starting from September 30th, 2026, the default is `in-progress`. To read completed conferences, set `Status` to `completed`. */
                 Status?: components["schemas"]["conference_enum_status"];
             };
             header?: never;

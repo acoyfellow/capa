@@ -4,114 +4,114 @@
 		"stripe": {
 			"name": "stripe",
 			"spec": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.sdk.json",
-			"sha256": "2dd087bbc51e0599759908b3771a59a71aaa1d422c125eb3eda874a7075172f8",
-			"version": "2026-09-30.endive",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"sha256": "73f00fefc04dcfcc19b7476f1afbd344d096f32f9d5dbbb8eb16cf28275a0da5",
+			"version": "2026-10-28.endive",
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"gitlab": {
 			"name": "gitlab",
 			"spec": "https://docs.gitlab.com/api/openapi/openapi_v2.yaml",
-			"sha256": "bc293766bd7770c90f4e59b77695ec89f6427a43cb2e0dbc2c6757f06585c3ca",
+			"sha256": "f8fdcc6c047db9f1e031a6676c09756688cfe1ddd62de25f31c89ba6d3738324",
 			"version": "v4",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"jira": {
 			"name": "jira",
 			"spec": "https://developer.atlassian.com/cloud/jira/platform/swagger-v3.v3.json",
-			"sha256": "6ecc461bb85e92a46331a4316b6c63c91c16ed6baf5f06b03ab616da3f1ab3d7",
-			"version": "1001.0.0-SNAPSHOT-44cdd07c042959317ed5591bf79dbcd9369f3610",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"sha256": "c209e606ce0077d253c8b38a84fdd1e7cea96e949275fe889de826af1751eea7",
+			"version": "1001.0.0-SNAPSHOT-25cde55b2229d7a79c3fdeb6b9d8abe3bc137957",
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"github": {
 			"name": "github",
 			"spec": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
-			"sha256": "c3e138597750d638b718f0da91228416893eea56d497fda391ab10b2e84b08a1",
+			"sha256": "72e362731e73c6adc9b12a4d18eb7dd8e095400ae55d47daab06c54714331b6d",
 			"version": "1.1.4",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"discord": {
 			"name": "discord",
 			"spec": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
-			"sha256": "c7fcfce6c671c91491d62763b87cb373ac4aa9b649fba5d0e7fe86aedda9fbf3",
+			"sha256": "281a2bff563d77a19e51fc3bf8bbe3ebcef28e3dc86684ae395b06ac51ba7484",
 			"version": "10",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"slack": {
 			"name": "slack",
 			"spec": "https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2_without_examples.json",
 			"sha256": "8b92da26a3c5b11d20042a9f36d81f1fa6fc9382c5ddc471babb68b91936bc3a",
 			"version": "1.7.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"twilio": {
 			"name": "twilio",
 			"spec": "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json",
-			"sha256": "78e76cc93c355a259e241866c241663eddb6ce0ed528f066c6cf0958648f5637",
+			"sha256": "bfdf249a129819af274d6bdc7672156ea3416ad48670a6f0544def6ef386ba87",
 			"version": "1.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"twilio-messaging": {
 			"name": "twilio-messaging",
 			"spec": "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_messaging_v1.json",
 			"sha256": "28993c66048625cb9421c8534609d9b3573365d0e25a5170b5026806634b3f9a",
 			"version": "1.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"twilio-verify": {
 			"name": "twilio-verify",
 			"spec": "https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_verify_v2.json",
-			"sha256": "10559c28858caa9b00620ebec400aded2aaebe4ff6e4215ec00396df0ffda52c",
+			"sha256": "bee888a5f4c53e422604cafbd610ffe23b46db5789dab9ef516980a188e480bb",
 			"version": "1.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"box": {
 			"name": "box",
 			"spec": "https://raw.githubusercontent.com/box/box-openapi/main/openapi.json",
-			"sha256": "13cc601e01a7b82133975aaf7aeffb1850159a10ac6365fae00d5af94406d9d4",
+			"sha256": "47cdf4bcbc7cdebcb042f155f13a8413bf913678489bd15b263b65f49e841ba1",
 			"version": "2024.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"sentry": {
 			"name": "sentry",
 			"spec": "https://raw.githubusercontent.com/getsentry/sentry-api-schema/main/openapi-derefed.json",
-			"sha256": "1a986e23e59c44a5ee3631efb9c45c1dfab41d13166989f65f33df1220e5d199",
+			"sha256": "4b436a2314f1a7462424cdeae416c3eefef7815f87835dee6e9b7a3c98c30fdf",
 			"version": "v0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"zoom": {
 			"name": "zoom",
 			"spec": "https://raw.githubusercontent.com/zoom/api/master/openapi.v2.json",
 			"sha256": "1b04394282bb3759744334835c5aa92fcafb57df71f27713f92e7f0532bd18b0",
 			"version": "2.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"kubernetes": {
 			"name": "kubernetes",
 			"spec": "https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json",
-			"sha256": "3f83d7ded523e86baa0d745cf0894d411483d4bc2e99d04c11ae3edbb45c66be",
+			"sha256": "5d099c5af1f8607df06d167e93228a69a81e74ca07bc4674087e2d8f5521f173",
 			"version": "unversioned",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"twitch": {
 			"name": "twitch",
 			"spec": "https://raw.githubusercontent.com/DmitryScaletta/twitch-api-swagger/main/openapi.json",
 			"sha256": "8220cef29980d08826569b080e3dfdfd00646ba9881a568b2e63a577dffa9836",
 			"version": "helix",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"blooio": {
 			"name": "blooio",
 			"spec": "https://backend.blooio.com/v2/api/openapi.json",
-			"sha256": "d6a7c454f861b762cb3ede6af3a137c61ce57d4d43a38c3ffa1ee6fe1c9251ae",
+			"sha256": "50bc0cee140b247f56918b2f7b2623567ff0d3a8edbe15e5fe4c3b076697b5a4",
 			"version": "2.0.0",
-			"checkedAt": "2026-09-28T15:22:39.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		},
 		"htmlcsstoimage": {
 			"name": "htmlcsstoimage",
 			"spec": "https://htmlcsstoimage.com/openapi/v1.json",
-			"sha256": "80e8caecb0efffe24fb4df0f9a7b02345d829259e0b5f857afcca1d492d6ba25",
+			"sha256": "146fbf859b2dbe58e91efc6531b9e7b450dd2bbb97060fa88a5aa12bf3b36420",
 			"version": "1.0.0",
-			"checkedAt": "2026-09-28T14:17:40.000Z"
+			"checkedAt": "2026-11-02T09:25:26.522Z"
 		}
 	}
 }

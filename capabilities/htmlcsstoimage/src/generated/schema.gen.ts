@@ -63,6 +63,26 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/v1/feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Submit feedback
+         * @description Send feedback to the HCTI team about HTML/CSS to Image, its API, or its MCP tools. Report bugs or unexpected rendering results, request features, describe confusing behavior or documentation, and suggest improvements. Include what you tried, what you expected, and what happened. Do not include API keys, credentials, or personal or confidential data. Authentication is optional; authenticated feedback is associated with your organization. Returns a confirmation message and feedback ID.
+         */
+        post: operations["submit-feedback"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/image": {
         parameters: {
             query?: never;
@@ -124,10 +144,33 @@ export type paths = {
         };
         get?: never;
         put?: never;
-        /** Create a batch of images */
+        /**
+         * Create a batch of images
+         * @description Create images from shared default_options and variations. Each variation overrides corresponding defaults. Results preserve variation order.
+         */
         post: operations["create-image-batch"];
         /** Delete a batch of images */
         delete: operations["delete-image-batch"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/image/batch/templated": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a batch of templated images
+         * @description Create images from one or more templates. Set template_id, optional template_version, and template_values in default_options or each variation. Supplying a template_id in a variation resets its inherited version. Object values merge recursively; variation arrays, scalars and explicit null replace defaults. Identical images reuse existing assets. Results preserve variation order.
+         */
+        post: operations["create-templated-image-batch"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -468,6 +511,112 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/v1/webhooks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List webhooks
+         * @description Returns webhooks in descending creation order, including disabled webhooks. Pass pagination.next_page_start as page_start to continue; null indicates the final page. Secret parameter values and signing secrets are never returned.
+         *
+         *     **Rate limit:** 100 requests per minute per organization, shared across all operations in the `webhook:read` group and all API keys belonging to that organization.
+         */
+        get: operations["list-webhooks"];
+        put?: never;
+        /**
+         * Create a webhook
+         * @description Creates a webhook that receives the selected organization events. Subscribing to an event requires read access to its resource, for example templates:read for template events. A signing secret is generated for every webhook; copy it from the dashboard to verify signed deliveries. Creating an enabled webhook queues a webhook_test delivery, identified by test_event_id in the response. Secret parameter values and the signing secret are never returned.
+         *
+         *     **Rate limit:** 20 requests per minute per organization, shared across all operations in the `webhook:write` group and all API keys belonging to that organization.
+         */
+        post: operations["create-webhook"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/webhooks/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a webhook
+         * @description Secret parameter values and the signing secret are never returned.
+         *
+         *     **Rate limit:** 100 requests per minute per organization, shared across all operations in the `webhook:read` group and all API keys belonging to that organization.
+         */
+        get: operations["get-webhook"];
+        put?: never;
+        /**
+         * Update a webhook
+         * @description Replaces the webhook's configuration. Omitted parameters are removed; resend secret values or keep them with retain_value: true. Changing the URL, parameters, or signing setting, or enabling the webhook, requires read access to every subscribed event. Disabling, renaming, or removing subscriptions only requires webhooks:create_update. Secrets cannot be kept when the URL changes. Changing the URL, parameters, or signing setting of an enabled webhook, or enabling it, queues a webhook_test delivery, identified by test_event_id in the response. Returns 409 when another request changed the webhook concurrently.
+         *
+         *     **Rate limit:** 20 requests per minute per organization, shared across all operations in the `webhook:write` group and all API keys belonging to that organization.
+         */
+        post: operations["update-webhook"];
+        /**
+         * Delete a webhook
+         * @description Deletes the webhook. Deliveries that have not been sent yet are not sent. Repeated deletion succeeds.
+         *
+         *     **Rate limit:** 20 requests per minute per organization, shared across all operations in the `webhook:write` group and all API keys belonging to that organization.
+         */
+        delete: operations["delete-webhook"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/webhooks/{id}/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send a test event
+         * @description Queues a webhook_test delivery to an enabled webhook, signed and with its parameters like any other delivery. Each webhook accepts one test every 30 seconds, including the test sent when it is created or its delivery settings change; sooner requests return 429. Disabled webhooks return 400. Returns the event ID; get the delivery's status from the webhook event endpoint.
+         *
+         *     **Rate limit:** 5 requests per minute per organization, shared across all operations in the `webhook:test` group and all API keys belonging to that organization.
+         */
+        post: operations["send-webhook-test-event"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/webhooks/events/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a webhook event
+         * @description Returns one event's payload and each destination's delivery status and attempts. data is null, and payload_withheld is true, when the key can't read the event's resource, for example templates:read for template events.
+         *
+         *     **Rate limit:** 100 requests per minute per organization, shared across all operations in the `webhook:read` group and all API keys belonging to that organization.
+         */
+        get: operations["get-webhook-event"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 };
 export type webhooks = Record<string, never>;
 export type components = {
@@ -500,12 +649,29 @@ export type components = {
             id: string;
             /** @description Display name for the key. */
             name: string;
-            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
+            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "debugs:create" | "debugs:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read" | "webhooks:create_update" | "webhooks:delete" | "webhooks:read")[];
             /**
              * Format: date-time
              * @description When the key was last updated, in UTC.
              */
             updated_at?: string;
+        };
+        /**
+         * Webhook API Key Properties
+         * @description Properties of an API key when it was created. The secret key is never included.
+         */
+        ApiKeyCreatedData: {
+            /** @description Whether the key automatically receives all current and future permissions. */
+            all_future_permissions?: boolean;
+            /** @description API ID used as the username when authenticating API requests. */
+            api_id: string;
+            /** @description Description of the key's purpose, if provided. */
+            description?: null | string;
+            /** @description Whether the key is enabled. */
+            enabled?: boolean;
+            /** @description Display name, if one was given. */
+            name?: null | string;
+            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "debugs:create" | "debugs:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read" | "webhooks:create_update" | "webhooks:delete" | "webhooks:read")[];
         };
         /** @description A newly created API key, including its secret. The secret is returned only when creating a key; store it securely. */
         ApiKeyWithSecret: {
@@ -528,7 +694,7 @@ export type components = {
             id: string;
             /** @description Display name for the key. */
             name: string;
-            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
+            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "debugs:create" | "debugs:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read" | "webhooks:create_update" | "webhooks:delete" | "webhooks:read")[];
             /**
              * Format: date-time
              * @description When the key was last updated, in UTC.
@@ -655,12 +821,89 @@ export type components = {
              */
             ids: string[];
         };
+        /** @description Creates a batch of images from HTML or URLs. Each variation overrides the corresponding default options. */
         BatchImageRequest: {
             default_options?: null | components["schemas"]["BaseImageRequest"];
-            variations?: components["schemas"]["ImageRequest"][];
+            /** @description One variation per image. Supply at least one variation, within your plan's batch limit. Each merged request must provide HTML or a URL. Results preserve this order. */
+            variations: components["schemas"]["ImageRequest"][];
         };
         BatchImageResult: {
             images: components["schemas"]["ImageResultWithId"][];
+        };
+        /** @description Creates a batch from one or more templates. Set template_id, template_version and template_values in shared default_options or individual variations. */
+        BatchTemplatedImageRequest: {
+            default_options?: null | components["schemas"]["ImageRequest_TemplatedBatchOptions"];
+            /** @description One variation per image. Supply at least one variation, within your plan's batch limit. Each variation must resolve to a template_id. Each merged template_values object must be nonempty and satisfy the template's required variables. Results preserve this order. */
+            variations: components["schemas"]["ImageRequest_TemplatedBatchOptions"][];
+        };
+        /**
+         * Call Source
+         * @description What made the call that caused an event. channel identifies the shape.
+         */
+        CallSourceMetadata: components["schemas"]["CallSourceMetadataCallSourceMetadata_Api"] | components["schemas"]["CallSourceMetadataCallSourceMetadata_Dashboard"] | components["schemas"]["CallSourceMetadataCallSourceMetadata_Mcp"] | components["schemas"]["CallSourceMetadataCallSourceMetadata_Anonymous"] | components["schemas"]["CallSourceMetadataCallSourceMetadata_System"];
+        /**
+         * Call Source: Anonymous
+         * @description An unauthenticated call, such as fetching an image by its signed URL.
+         */
+        CallSourceMetadataCallSourceMetadata_Anonymous: {
+            /** @enum {string} */
+            channel?: "anonymous";
+            /** @description IP address the call came from, if known. */
+            ip?: null | string;
+            /** @description User agent the call was made with, if sent. */
+            user_agent?: null | string;
+        };
+        /**
+         * Call Source: API
+         * @description A call authenticated with an API key.
+         */
+        CallSourceMetadataCallSourceMetadata_Api: {
+            /** @description API ID of the key that made the call, as used for Basic authentication. */
+            api_id?: null | string;
+            /** @enum {string} */
+            channel?: "api";
+            /** @description IP address the call came from, if known. */
+            ip?: null | string;
+            /** @description User agent the call was made with, if sent. */
+            user_agent?: null | string;
+        };
+        /**
+         * Call Source: Dashboard
+         * @description A call made by a signed-in user from the dashboard.
+         */
+        CallSourceMetadataCallSourceMetadata_Dashboard: {
+            /** @enum {string} */
+            channel?: "dashboard";
+            /** @description IP address the call came from, if known. */
+            ip?: null | string;
+            /** @description User agent the call was made with, if sent. */
+            user_agent?: null | string;
+            /** @description ID of the user who made the call. */
+            user_id: string;
+        };
+        /**
+         * Call Source: MCP
+         * @description A call made by an MCP client.
+         */
+        CallSourceMetadataCallSourceMetadata_Mcp: {
+            /** @enum {string} */
+            channel?: "mcp";
+            /** @description Name the MCP client registered with, if it gave one. */
+            client_name?: null | string;
+            /** @description IP address the call came from, if known. */
+            ip?: null | string;
+            /** @description MCP tool that made the call. */
+            tool_name?: null | string;
+            /** @description User agent the call was made with, if sent. */
+            user_agent?: null | string;
+        };
+        /**
+         * Call Source: System
+         * @description HCTI acting on its own, such as billing updates, scheduled work, and support actions. No caller details are included.
+         */
+        CallSourceMetadataCallSourceMetadata_System: {
+            /** @enum {string} */
+            channel?: "system";
         };
         /** @enum {unknown} */
         CloudflareStorageJurisdiction: "eu" | "fedramp" | null;
@@ -683,7 +926,7 @@ export type components = {
             /** @description Display name for the key, up to 255 characters. Omitted, null, or blank names use Key created YYYY-MM-DD HH:mm:ss, based on the key's original creation time in UTC. */
             name?: null | string;
             /** @description Complete list of current permissions to grant, for example images:create or templates:read. Ignored when all_future_permissions is true; supply an empty array in that case. Otherwise, an empty array grants no product permissions. Permissions cannot exceed the caller's authority. */
-            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
+            permissions: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "debugs:create" | "debugs:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read" | "webhooks:create_update" | "webhooks:delete" | "webhooks:read")[];
         };
         /**
          * Create or Update OG Config Request
@@ -799,10 +1042,47 @@ export type components = {
             /** @description Display name for the destination, between 3 and 255 characters. */
             name: string;
         };
+        /** @description Complete configuration for creating or updating a webhook. Updates replace the configuration: omitted parameters are removed, and secret values must be resent or kept with retain_value: true. Changing the URL, parameters, or signing setting of an enabled webhook, or enabling it, sends a webhook_test delivery. */
+        CreateOrUpdateWebhookRequest: {
+            /**
+             * @description Whether the webhook is disabled. Disabled webhooks receive no deliveries, and queued deliveries are not sent. Defaults to false.
+             * @default false
+             */
+            disabled?: boolean;
+            /** @description Complete list of event types to deliver. Subscribing to an event requires read access to its resource, for example templates:read for template events. webhook_test cannot be subscribed to. An empty array delivers only test events. */
+            events: components["schemas"]["WebhookEventType"][];
+            /** @description Display name for the webhook, up to 255 characters. Leading and trailing whitespace is removed. */
+            name: string;
+            /** @description Up to 20 headers and query parameters added to every delivery, in any order. Header names and values may total at most 8 KiB in UTF-8, and the URL with its encoded query parameters at most 8192 characters. Replaces the complete list; omitted, null, or [] removes them. */
+            parameters?: null | components["schemas"]["WebhookParameterRequest"][];
+            /**
+             * @description Whether to sign deliveries with this webhook's signing secret. The secret is generated when the webhook is created and can be copied from the dashboard. Defaults to false.
+             * @default false
+             */
+            signing_enabled?: boolean;
+            /** @description HTTPS endpoint that receives deliveries, up to 2048 characters, for example https://hooks.example.com/hcti. https:// is assumed when no scheme is given. Must use a DNS host name on the default HTTPS port, without credentials, a query string, or a fragment. Add query parameters through parameters. */
+            url: string;
+        };
         /** @enum {unknown} */
         DigitalOceanStorageRegion: "nyc3" | "ams3" | "sfo2" | "sfo3" | "sgp1" | "lon1" | "fra1" | "tor1" | "blr1" | "syd1" | "atl1" | "ric1" | "mkc1";
+        /** @description A bug report, feature request, or suggestion for improving HTML/CSS to Image, its API, or its MCP tools. */
+        FeedbackRequest: {
+            /** @description Optional public HTTP or HTTPS callback URL for a response. No SLA or guarantee is provided on callback responses. */
+            callback_url?: null | string;
+            /** @description Describe the bug, feature request, or suggestion in at least 20 characters after trimming whitespace. More detail helps us investigate and understand your feedback. For problems, include what you tried, what you expected, what happened, relevant steps to reproduce the issue, and any related request_ids, image_ids, or template_ids. */
+            message: string;
+            /** @description Optional short summary of the bug, feature request, or suggestion. */
+            subject?: null | string;
+        };
+        /** @description Confirmation that HCTI received your bug report, feature request, or suggestion. */
+        FeedbackResponse: {
+            /** @description ID for referencing the submitted feedback. */
+            id: string;
+            /** @description Confirmation message for the feedback submission. */
+            message: string;
+        };
         /** @enum {unknown} */
-        HandlebarsHelperKind: "UNKNOWN" | "None" | "If" | "Unless" | "With" | "Each";
+        HandlebarsHelperKind: "None" | "If" | "Unless" | "With" | "Each";
         /** @description Metadata shared by all images. The image_type discriminator identifies the response as html_css, url, or templated. */
         ImageBase: components["schemas"]["ImageBaseImage_HtmlCss"] | components["schemas"]["ImageBaseImage_Url"] | components["schemas"]["ImageBaseImage_Templated"];
         /**
@@ -888,9 +1168,9 @@ export type components = {
             selector?: null | string;
             /** @description Whether HCTI storage is disabled for this image, recorded from the storage destination when the image was created. When true, rendered files are saved to the configured storage destination without a public HCTI image URL or HCTI CDN caching. */
             storage_destination_hcti_storage_disabled?: null | boolean;
-            /** @description ID of the storage destination configured for this image, or null when none is configured. */
+            /** @description ID of the configured storage destination for rendered files, or null when none is configured. */
             storage_destination_id?: null | string;
-            /** @description Sets the IANA timezone used by Chrome while rendering. */
+            /** @description IANA timezone identifier exposed to the rendered page, such as America/New_York or UTC. */
             timezone?: null | string;
             /** @description Whether the default browser background is transparent. Backgrounds explicitly set by the page still apply. */
             transparent_background?: null | boolean;
@@ -1047,9 +1327,9 @@ export type components = {
             selector?: null | string;
             /** @description Whether HCTI storage is disabled for this image, recorded from the storage destination when the image was created. When true, rendered files are saved to the configured storage destination without a public HCTI image URL or HCTI CDN caching. */
             storage_destination_hcti_storage_disabled?: null | boolean;
-            /** @description ID of the storage destination configured for this image, or null when none is configured. */
+            /** @description ID of the configured storage destination for rendered files, or null when none is configured. */
             storage_destination_id?: null | string;
-            /** @description Sets the IANA timezone used by Chrome while rendering. */
+            /** @description IANA timezone identifier exposed to the rendered page, such as America/New_York or UTC. */
             timezone?: null | string;
             /** @description Whether the default browser background is transparent. Backgrounds explicitly set by the page still apply. */
             transparent_background?: null | boolean;
@@ -1084,6 +1364,17 @@ export type components = {
             next_page_token: string;
         };
         ImageRequest: components["schemas"]["ImageRequestImageRequest_HtmlCss"] | components["schemas"]["ImageRequestImageRequest_Url"] | components["schemas"]["ImageRequestImageRequest_Templated"];
+        ImageRequest_TemplatedBatchOptions: {
+            format?: null | components["schemas"]["ImageFormat"];
+            /** @description Template ID to render for this variation. Omit to inherit default_options.template_id. Supplying a template_id resets the inherited template_version unless this variation also supplies a version. Each variation must resolve to a nonempty template ID owned by the authenticated organization. */
+            template_id?: null | string;
+            template_values?: null | components["schemas"]["JsonObject"];
+            /**
+             * Format: int64
+             * @description Template version to render. Inherit default_options.template_version when using the default template ID. When supplying a template_id in this variation, omit the version to use that template's latest version.
+             */
+            template_version?: null | number | string;
+        };
         /** HTML/CSS Image Request */
         ImageRequestImageRequest_HtmlCss: {
             color_scheme?: null | components["schemas"]["ColorSchemeType"];
@@ -1270,6 +1561,17 @@ export type components = {
             id?: string;
             url?: string;
         };
+        /** @enum {unknown} */
+        ImageStoredLocation: "hcti_storage" | "customer_storage";
+        /** @description The storage destination object an image was saved to. */
+        ImageStoredLocationDetails: {
+            /** @description Bucket the image was written to. */
+            bucket: string;
+            /** @description Object key the image was written to, including any key prefix. */
+            path: string;
+            /** @description ID of the storage destination. */
+            storage_destination_id: string;
+        };
         /**
          * Base Image Template
          * @description A saved image template version. template_type identifies the html_css or blocks variant. Use id as the template identifier and version to render a specific saved version. Nullable rendering settings are stored overrides; null means the setting is unset.
@@ -1294,7 +1596,7 @@ export type components = {
             description?: null | string;
             /**
              * Format: double
-             * @description Stored screenshot pixel ratio. For example, 2 produces two output pixels per CSS pixel in each dimension. Null uses the rendering default.
+             * @description Screenshot pixel ratio. A value of 2 produces two output pixels per CSS pixel in each dimension.
              */
             device_scale?: null | number | string;
             /** @description Whether native emoji rendering is used instead of Twemoji. Null leaves the rendering default in effect. */
@@ -1303,47 +1605,47 @@ export type components = {
             id?: string;
             /**
              * Format: int32
-             * @description Stored maximum output height in pixels for jumbo rendering. Used with jumbo_max_width; jumbo rendering consumes additional image credits.
+             * @description Maximum output height in pixels for jumbo rendering. Used together with jumbo_max_width.
              */
             jumbo_max_height?: null | number | string;
             /**
              * Format: int32
-             * @description Stored maximum output width in pixels for jumbo rendering. Used with jumbo_max_height.
+             * @description Maximum output width in pixels for jumbo rendering. Used together with jumbo_max_height.
              */
             jumbo_max_width?: null | number | string;
             /**
              * Format: int32
-             * @description Stored loading-wait limit in milliseconds before capture.
+             * @description Maximum loading wait in milliseconds before capture when the page continues loading content.
              */
             max_wait_ms?: null | number | string;
             media_type?: null | components["schemas"]["MediaType"];
             /**
              * Format: int32
-             * @description Stored additional delay in milliseconds before capture, used to allow client-side content to finish updating.
+             * @description Additional delay in milliseconds before taking the screenshot.
              */
             ms_delay?: null | number | string;
             /** @description The name of the template, used to identify it in your account. */
             name?: null | string;
-            /** @description Identifier of the configured organization proxy used for rendering. Proxy connection details are available through the proxy configuration. */
+            /** @description ID of the proxy configured for browser requests, or null when no proxy is configured. */
             proxy_id?: null | string;
             /**
              * Format: int64
              * @description Number of image creations recorded for this template version. Organization-wide image-credit usage is reported separately.
              */
             render_count?: number | string;
-            /** @description Whether capture waits for the template's JavaScript to call ScreenshotReady(). When enabled, rendering fails if the readiness signal is never sent. */
+            /** @description Whether capture waits for the page to call ScreenshotReady(). Rendering fails if the readiness signal is not received. */
             render_when_ready?: null | boolean;
-            /** @description Stored browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. Null or an empty array adds no overrides. */
+            /** @description Browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. */
             request_overrides?: null | components["schemas"]["RequestOverride"][];
-            /** @description CSS selector used to crop rendered images to an element. Preserve this setting when updating the template unless the intended crop changes. */
+            /** @description CSS selector of the element to capture. When set, the image is cropped to the matching element. */
             selector?: null | string;
-            /** @description Identifier of the configured destination for rendered files. The destination configuration specifies its provider, enabled state, and storage behavior. */
+            /** @description ID of the configured storage destination for rendered files, or null when none is configured. */
             storage_destination_id?: null | string;
             /** @enum {string} */
             template_type?: "blocks";
-            /** @description Stored IANA timezone identifier exposed to the rendered page, such as America/New_York or UTC. */
+            /** @description IANA timezone identifier exposed to the rendered page, such as America/New_York or UTC. */
             timezone?: null | string;
-            /** @description Whether the browser's default background is transparent. Backgrounds explicitly painted by the template's HTML or CSS still apply. */
+            /** @description Whether the default browser background is transparent. Backgrounds explicitly set by the page still apply. */
             transparent_background?: null | boolean;
             /**
              * Format: date-time
@@ -1359,18 +1661,18 @@ export type components = {
             version?: number | string;
             /**
              * Format: int32
-             * @description Stored browser viewport height in CSS pixels. Used with viewport_width; setting both disables automatic cropping.
+             * @description Browser viewport height in CSS pixels.
              */
             viewport_height?: null | number | string;
-            /** @description Whether the emulated viewport uses landscape orientation. */
+            /** @description Whether the browser viewport emulates landscape orientation. */
             viewport_landscape?: null | boolean;
-            /** @description Whether mobile viewport emulation is enabled, including support for the page's meta viewport tag. */
+            /** @description Whether the browser viewport emulates a mobile device. */
             viewport_mobile?: null | boolean;
-            /** @description Whether touch support is exposed to the rendered page. */
+            /** @description Whether the browser emulates support for touch input. */
             viewport_touch?: null | boolean;
             /**
              * Format: int32
-             * @description Stored browser viewport width in CSS pixels. Used with viewport_height; output pixel dimensions also depend on device_scale.
+             * @description Browser viewport width in CSS pixels.
              */
             viewport_width?: null | number | string;
         };
@@ -1394,7 +1696,7 @@ export type components = {
             description?: null | string;
             /**
              * Format: double
-             * @description Stored screenshot pixel ratio. For example, 2 produces two output pixels per CSS pixel in each dimension. Null uses the rendering default.
+             * @description Screenshot pixel ratio. A value of 2 produces two output pixels per CSS pixel in each dimension.
              */
             device_scale?: null | number | string;
             /** @description Whether native emoji rendering is used instead of Twemoji. Null leaves the rendering default in effect. */
@@ -1410,47 +1712,47 @@ export type components = {
             id?: string;
             /**
              * Format: int32
-             * @description Stored maximum output height in pixels for jumbo rendering. Used with jumbo_max_width; jumbo rendering consumes additional image credits.
+             * @description Maximum output height in pixels for jumbo rendering. Used together with jumbo_max_width.
              */
             jumbo_max_height?: null | number | string;
             /**
              * Format: int32
-             * @description Stored maximum output width in pixels for jumbo rendering. Used with jumbo_max_height.
+             * @description Maximum output width in pixels for jumbo rendering. Used together with jumbo_max_height.
              */
             jumbo_max_width?: null | number | string;
             /**
              * Format: int32
-             * @description Stored loading-wait limit in milliseconds before capture.
+             * @description Maximum loading wait in milliseconds before capture when the page continues loading content.
              */
             max_wait_ms?: null | number | string;
             media_type?: null | components["schemas"]["MediaType"];
             /**
              * Format: int32
-             * @description Stored additional delay in milliseconds before capture, used to allow client-side content to finish updating.
+             * @description Additional delay in milliseconds before taking the screenshot.
              */
             ms_delay?: null | number | string;
             /** @description The name of the template, used to identify it in your account. */
             name?: null | string;
-            /** @description Identifier of the configured organization proxy used for rendering. Proxy connection details are available through the proxy configuration. */
+            /** @description ID of the proxy configured for browser requests, or null when no proxy is configured. */
             proxy_id?: null | string;
             /**
              * Format: int64
              * @description Number of image creations recorded for this template version. Organization-wide image-credit usage is reported separately.
              */
             render_count?: number | string;
-            /** @description Whether capture waits for the template's JavaScript to call ScreenshotReady(). When enabled, rendering fails if the readiness signal is never sent. */
+            /** @description Whether capture waits for the page to call ScreenshotReady(). Rendering fails if the readiness signal is not received. */
             render_when_ready?: null | boolean;
-            /** @description Stored browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. Null or an empty array adds no overrides. */
+            /** @description Browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. */
             request_overrides?: null | components["schemas"]["RequestOverride"][];
-            /** @description CSS selector used to crop rendered images to an element. Preserve this setting when updating the template unless the intended crop changes. */
+            /** @description CSS selector of the element to capture. When set, the image is cropped to the matching element. */
             selector?: null | string;
-            /** @description Identifier of the configured destination for rendered files. The destination configuration specifies its provider, enabled state, and storage behavior. */
+            /** @description ID of the configured storage destination for rendered files, or null when none is configured. */
             storage_destination_id?: null | string;
             /** @enum {string} */
             template_type?: "html_css";
-            /** @description Stored IANA timezone identifier exposed to the rendered page, such as America/New_York or UTC. */
+            /** @description IANA timezone identifier exposed to the rendered page, such as America/New_York or UTC. */
             timezone?: null | string;
-            /** @description Whether the browser's default background is transparent. Backgrounds explicitly painted by the template's HTML or CSS still apply. */
+            /** @description Whether the default browser background is transparent. Backgrounds explicitly set by the page still apply. */
             transparent_background?: null | boolean;
             /**
              * Format: date-time
@@ -1464,26 +1766,41 @@ export type components = {
             version?: number | string;
             /**
              * Format: int32
-             * @description Stored browser viewport height in CSS pixels. Used with viewport_width; setting both disables automatic cropping.
+             * @description Browser viewport height in CSS pixels.
              */
             viewport_height?: null | number | string;
-            /** @description Whether the emulated viewport uses landscape orientation. */
+            /** @description Whether the browser viewport emulates landscape orientation. */
             viewport_landscape?: null | boolean;
-            /** @description Whether mobile viewport emulation is enabled, including support for the page's meta viewport tag. */
+            /** @description Whether the browser viewport emulates a mobile device. */
             viewport_mobile?: null | boolean;
-            /** @description Whether touch support is exposed to the rendered page. */
+            /** @description Whether the browser emulates support for touch input. */
             viewport_touch?: null | boolean;
             /**
              * Format: int32
-             * @description Stored browser viewport width in CSS pixels. Used with viewport_height; output pixel dimensions also depend on device_scale.
+             * @description Browser viewport width in CSS pixels.
              */
             viewport_width?: null | number | string;
         };
         JsonNode: unknown;
         JsonObject: Record<string, never>;
+        /** Paginated List: Templates */
         ListOfTemplates: {
             data?: components["schemas"]["ImageTemplateBase"][];
             pagination?: components["schemas"]["PaginationInfoOflong"];
+        };
+        /** @description Text that may be truncated for size: the full text when it is short, otherwise its start and end with its full length. */
+        MaybeTruncatedString: {
+            /** @description The full text's last characters when truncated is true; null otherwise. */
+            ender?: null | string;
+            /**
+             * Format: int32
+             * @description Length of the full text in characters.
+             */
+            length?: number | string;
+            /** @description Whether the text was cut to keep the payload small. When true, value holds its start and ender its last characters; fetch the resource for the full text. */
+            truncated?: boolean;
+            /** @description The text, or its start when truncated is true. */
+            value: string;
         };
         /** @enum {unknown} */
         MediaType: "print" | "screen" | null;
@@ -1492,6 +1809,76 @@ export type components = {
          * @description An Open Graph image configuration.
          */
         OgConfig: components["schemas"]["OgConfigOgConfig_HtmlCss"] | components["schemas"]["OgConfigOgConfig_Templated"];
+        /**
+         * Webhook OG Config Properties
+         * @description Properties of an Open Graph image configuration when it was created. config_type identifies the html_css or templated variant.
+         */
+        OgConfigCreatedData: components["schemas"]["OgConfigCreatedDataOgConfigCreatedData_HtmlCss"] | components["schemas"]["OgConfigCreatedDataOgConfigCreatedData_Templated"];
+        /**
+         * Webhook OG Config Properties: HTML/CSS
+         * @description Properties of an html_css Open Graph configuration when it was created.
+         */
+        OgConfigCreatedDataOgConfigCreatedData_HtmlCss: {
+            /** @description Base URL of the pages this configuration generates images for. */
+            base_url: string;
+            /** @enum {string} */
+            config_type?: "html_css";
+            css?: null | components["schemas"]["MaybeTruncatedString"];
+            default_options?: null | components["schemas"]["OgDefaultImageOptions"];
+            /** @description Optional description. */
+            description?: null | string;
+            /** @description Whether the configuration is enabled to serve Open Graph images. */
+            enabled?: boolean;
+            /** @description Whether image options are extracted from page metadata. When disabled, only the configured defaults are used. */
+            extract_values?: boolean;
+            /** @description Optional display name. */
+            name?: null | string;
+            /** @description How images are sized for different social platforms. */
+            optimization_mode?: components["schemas"]["OgSocialSizeOptimizationMode"];
+            /**
+             * Format: uint32
+             * @description Seconds before a generated image is refreshed.
+             */
+            refresh_interval_s?: number | string;
+        };
+        /**
+         * Webhook OG Config Properties: Templated
+         * @description Properties of a templated Open Graph configuration when it was created.
+         */
+        OgConfigCreatedDataOgConfigCreatedData_Templated: {
+            /** @description Additional origins allowed to receive custom headers. */
+            additional_header_origins?: null | string[];
+            /** @description Base URL of the pages this configuration generates images for. */
+            base_url: string;
+            /** @enum {string} */
+            config_type?: "templated";
+            /** @description Optional description. */
+            description?: null | string;
+            /** @description Whether the configuration is enabled to serve Open Graph images. */
+            enabled?: boolean;
+            /** @description Custom HTTP headers sent on top-level page navigations to the source website's origin and any additional_header_origins. */
+            headers?: null | {
+                [key: string]: string;
+            };
+            /** @description Optional display name. */
+            name?: null | string;
+            /** @description How images are sized for different social platforms. */
+            optimization_mode?: components["schemas"]["OgSocialSizeOptimizationMode"];
+            /**
+             * Format: uint32
+             * @description Seconds before a generated image is refreshed.
+             */
+            refresh_interval_s?: number | string;
+            /** @description ID of the template used to render images. */
+            template_id: string;
+            /** @description Mappings from page metadata to template fields. */
+            template_values_mapping?: null | components["schemas"]["OgTemplateValueMapping"][];
+            /**
+             * Format: int64
+             * @description Template version used to render images. Null means the latest version is used.
+             */
+            template_version?: null | number | string;
+        };
         /**
          * HTML/CSS OG Config
          * @description An Open Graph configuration that renders page HTML/CSS.
@@ -1635,26 +2022,37 @@ export type components = {
             /** @description Template field path to populate, up to 128 characters. */
             template_key: string;
         };
+        /** Paginated List: API Keys */
         PaginatedListBaseOfApiKeyAndstring: {
             data?: components["schemas"]["ApiKey"][];
             pagination?: components["schemas"]["PaginationInfoOfstring"];
         };
+        /** Paginated List: OG Configs */
         PaginatedListBaseOfOgConfigAndstring: {
             data?: components["schemas"]["OgConfig"][];
             pagination?: components["schemas"]["PaginationInfoOfstring"];
         };
+        /** Paginated List: Proxies */
         PaginatedListBaseOfProxyAndstring: {
             data?: components["schemas"]["Proxy"][];
             pagination?: components["schemas"]["PaginationInfoOfstring"];
         };
+        /** Paginated List: Storage Destinations */
         PaginatedListBaseOfStorageDestinationAndstring: {
             data?: components["schemas"]["StorageDestination"][];
             pagination?: components["schemas"]["PaginationInfoOfstring"];
         };
+        /** Paginated List: Webhooks */
+        PaginatedListBaseOfWebhookAndstring: {
+            data?: components["schemas"]["Webhook"][];
+            pagination?: components["schemas"]["PaginationInfoOfstring"];
+        };
+        /** Pagination: Version */
         PaginationInfoOflong: {
             /** Format: int64 */
             next_page_start: null | number | string;
         };
+        /** Pagination: Cursor */
         PaginationInfoOfstring: {
             next_page_start: null | string;
         };
@@ -1715,6 +2113,29 @@ export type components = {
             retain_password?: null | boolean;
             /** @description Proxy username, up to 512 characters. May be empty. Whitespace is preserved. */
             username: string;
+        };
+        /**
+         * Webhook Proxy Properties
+         * @description Properties of a proxy when it was created. The password is never included.
+         */
+        ProxyCreatedData: {
+            /** @description Hosts that bypass the proxy. */
+            bypass_hosts: string[];
+            /** @description Whether the proxy is enabled. */
+            enabled?: boolean;
+            /** @description Display name for the proxy. */
+            name: string;
+            /** @description Whether a password is set. */
+            password_assigned?: boolean;
+            /**
+             * Format: uint16
+             * @description Proxy server port, or null to use the URL scheme's default.
+             */
+            port?: null | number | string;
+            /** @description Proxy server URL. */
+            url: string;
+            /** @description Proxy username, or null when authentication is not configured. */
+            username?: null | string;
         };
         /** @description A browser request override. The action discriminator selects the rule type; currently only block is supported. */
         RequestOverride: components["schemas"]["RequestOverrideRequestOverrideBlock"];
@@ -2038,6 +2459,22 @@ export type components = {
             /** @description Secret access key, required on create and when changing provider or access key ID. On update, omitted or null is allowed only with retain_secret_access_key: true and unchanged provider and access key ID. A supplied secret replaces it unless retain_secret_access_key is explicitly true. Up to 990 characters and 996 UTF-8 bytes. */
             secret_access_key?: null | string;
         };
+        /**
+         * Webhook Storage Destination Properties
+         * @description Properties of a storage destination when it was created. Secret access keys are never included.
+         */
+        StorageDestinationCreatedData: {
+            /** @description Provider-specific connection details, without the secret access key. */
+            connection_info: components["schemas"]["StorageDestinationConnectionInfo"];
+            /** @description Whether the destination is enabled. */
+            enabled?: boolean;
+            /** @description Whether rendered files saved here are excluded from HCTI storage and the HCTI CDN. */
+            hcti_storage_disabled?: boolean;
+            /** @description Display name for the destination. */
+            name: string;
+            /** @description Whether a secret access key is set. Amazon S3 destinations use a role instead and report false. */
+            secret_access_key_assigned?: boolean;
+        };
         StoreImageObjectResult: {
             bucket?: null | string;
             key?: null | string;
@@ -2062,6 +2499,173 @@ export type components = {
         StoreImageStatus: "stored" | "already_stored" | "failed" | "not_attempted";
         /** @enum {unknown} */
         StoreImageTarget: "hcti_storage" | "storage_destination";
+        /**
+         * Webhook Template Properties
+         * @description Properties of a template when it was created. template_type identifies the html_css or blocks variant. Nullable rendering settings are stored overrides; null means the setting is unset.
+         */
+        TemplateCreatedData: components["schemas"]["TemplateCreatedDataTemplateCreatedData_HtmlCss"] | components["schemas"]["TemplateCreatedDataTemplateCreatedData_Blocks"];
+        /**
+         * Webhook Template Properties: Blocks
+         * @description Properties of a blocks template when it was created.
+         */
+        TemplateCreatedDataTemplateCreatedData_Blocks: {
+            /** @description Number of blocks of each type in the saved design, keyed by block type name. */
+            block_counts?: {
+                [key: string]: number | string;
+            };
+            color_scheme?: null | components["schemas"]["ColorSchemeType"];
+            /** @description Optional notes about the template's purpose and intended use. */
+            description?: null | string;
+            /**
+             * Format: double
+             * @description Screenshot pixel ratio. A value of 2 produces two output pixels per CSS pixel in each dimension.
+             */
+            device_scale?: null | number | string;
+            /** @description Whether native emoji rendering is used instead of Twemoji. Null leaves the rendering default in effect. */
+            disable_twemoji?: null | boolean;
+            /**
+             * Format: int32
+             * @description Maximum output height in pixels for jumbo rendering. Used together with jumbo_max_width.
+             */
+            jumbo_max_height?: null | number | string;
+            /**
+             * Format: int32
+             * @description Maximum output width in pixels for jumbo rendering. Used together with jumbo_max_height.
+             */
+            jumbo_max_width?: null | number | string;
+            /**
+             * Format: int32
+             * @description Maximum loading wait in milliseconds before capture when the page continues loading content.
+             */
+            max_wait_ms?: null | number | string;
+            media_type?: null | components["schemas"]["MediaType"];
+            /**
+             * Format: int32
+             * @description Additional delay in milliseconds before taking the screenshot.
+             */
+            ms_delay?: null | number | string;
+            /** @description Optional display name for template discovery. Use id to identify the template in rendering and update requests. */
+            name?: null | string;
+            /** @description ID of the proxy configured for browser requests, or null when no proxy is configured. */
+            proxy_id?: null | string;
+            /** @description Whether capture waits for the page to call ScreenshotReady(). Rendering fails if the readiness signal is not received. */
+            render_when_ready?: null | boolean;
+            /** @description Browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
+            /** @description CSS selector of the element to capture. When set, the image is cropped to the matching element. */
+            selector?: null | string;
+            /** @description ID of the configured storage destination for rendered files, or null when none is configured. */
+            storage_destination_id?: null | string;
+            /** @enum {string} */
+            template_type?: "blocks";
+            /** @description IANA timezone identifier exposed to the rendered page, such as America/New_York or UTC. */
+            timezone?: null | string;
+            /** @description Whether the default browser background is transparent. Backgrounds explicitly set by the page still apply. */
+            transparent_background?: null | boolean;
+            /** @description Discovered template variables and their value requirements. */
+            variables?: components["schemas"]["TemplateVariable"][];
+            /**
+             * Format: int64
+             * @description Saved template version identifier. Specify it when rendering to select this exact version.
+             */
+            version?: number | string;
+            /**
+             * Format: int32
+             * @description Browser viewport height in CSS pixels.
+             */
+            viewport_height?: null | number | string;
+            /** @description Whether the browser viewport emulates landscape orientation. */
+            viewport_landscape?: null | boolean;
+            /** @description Whether the browser viewport emulates a mobile device. */
+            viewport_mobile?: null | boolean;
+            /** @description Whether the browser emulates support for touch input. */
+            viewport_touch?: null | boolean;
+            /**
+             * Format: int32
+             * @description Browser viewport width in CSS pixels.
+             */
+            viewport_width?: null | number | string;
+        };
+        /**
+         * Webhook Template Properties: HTML/CSS
+         * @description Properties of an html_css template when it was created. Large HTML and CSS are truncated; fetch the template for the full source.
+         */
+        TemplateCreatedDataTemplateCreatedData_HtmlCss: {
+            color_scheme?: null | components["schemas"]["ColorSchemeType"];
+            css?: null | components["schemas"]["MaybeTruncatedString"];
+            /** @description Optional notes about the template's purpose and intended use. */
+            description?: null | string;
+            /**
+             * Format: double
+             * @description Screenshot pixel ratio. A value of 2 produces two output pixels per CSS pixel in each dimension.
+             */
+            device_scale?: null | number | string;
+            /** @description Whether native emoji rendering is used instead of Twemoji. Null leaves the rendering default in effect. */
+            disable_twemoji?: null | boolean;
+            /** @description Google Font families loaded for this template, separated by |. */
+            google_fonts?: null | string;
+            html?: null | components["schemas"]["MaybeTruncatedString"];
+            /**
+             * Format: int32
+             * @description Maximum output height in pixels for jumbo rendering. Used together with jumbo_max_width.
+             */
+            jumbo_max_height?: null | number | string;
+            /**
+             * Format: int32
+             * @description Maximum output width in pixels for jumbo rendering. Used together with jumbo_max_height.
+             */
+            jumbo_max_width?: null | number | string;
+            /**
+             * Format: int32
+             * @description Maximum loading wait in milliseconds before capture when the page continues loading content.
+             */
+            max_wait_ms?: null | number | string;
+            media_type?: null | components["schemas"]["MediaType"];
+            /**
+             * Format: int32
+             * @description Additional delay in milliseconds before taking the screenshot.
+             */
+            ms_delay?: null | number | string;
+            /** @description Optional display name for template discovery. Use id to identify the template in rendering and update requests. */
+            name?: null | string;
+            /** @description ID of the proxy configured for browser requests, or null when no proxy is configured. */
+            proxy_id?: null | string;
+            /** @description Whether capture waits for the page to call ScreenshotReady(). Rendering fails if the readiness signal is not received. */
+            render_when_ready?: null | boolean;
+            /** @description Browser request overrides. Block rules match URL wildcard patterns and/or resource types; supplied matchers must all match. */
+            request_overrides?: null | components["schemas"]["RequestOverride"][];
+            /** @description CSS selector of the element to capture. When set, the image is cropped to the matching element. */
+            selector?: null | string;
+            /** @description ID of the configured storage destination for rendered files, or null when none is configured. */
+            storage_destination_id?: null | string;
+            /** @enum {string} */
+            template_type?: "html_css";
+            /** @description IANA timezone identifier exposed to the rendered page, such as America/New_York or UTC. */
+            timezone?: null | string;
+            /** @description Whether the default browser background is transparent. Backgrounds explicitly set by the page still apply. */
+            transparent_background?: null | boolean;
+            /**
+             * Format: int64
+             * @description Saved template version identifier. Specify it when rendering to select this exact version.
+             */
+            version?: number | string;
+            /**
+             * Format: int32
+             * @description Browser viewport height in CSS pixels.
+             */
+            viewport_height?: null | number | string;
+            /** @description Whether the browser viewport emulates landscape orientation. */
+            viewport_landscape?: null | boolean;
+            /** @description Whether the browser viewport emulates a mobile device. */
+            viewport_mobile?: null | boolean;
+            /** @description Whether the browser emulates support for touch input. */
+            viewport_touch?: null | boolean;
+            /**
+             * Format: int32
+             * @description Browser viewport width in CSS pixels.
+             */
+            viewport_width?: null | number | string;
+        };
         TemplateCreateResponse: {
             template_id?: string;
             /** Format: int64 */
@@ -2109,6 +2713,7 @@ export type components = {
             ms_delay?: null | number | string;
             /** @description The name of the template, used to identify it in your account. Maximum: 64 characters. */
             name?: null | string;
+            pdf_options?: null | components["schemas"]["PDFOptions"];
             /** @description Specifies which configured organization proxy to use when rendering. */
             proxy_id?: null | string;
             /** @description Waits until the page signals that the screenshot is ready. The image fails if the readiness signal is never sent. */
@@ -2141,7 +2746,7 @@ export type components = {
             viewport_width?: null | number | string;
         };
         /** @enum {unknown} */
-        TemplateValueKind: "UNKNOWN" | "String" | "Boolean" | "Integer" | "Float" | "Color" | "Size" | "Object" | "Collection";
+        TemplateValueKind: "String" | "Boolean" | "Integer" | "Float" | "Color" | "Size" | "Object" | "Collection";
         /** @description A variable discovered in a block template, with its key, requirement mode, inferred value kind, and any fallback or helper context. */
         TemplateVariable: {
             fallback_value?: null | components["schemas"]["JsonNode"];
@@ -2187,6 +2792,420 @@ export type components = {
         };
         /** @enum {unknown} */
         WasabiStorageRegion: "us-east-1" | "us-east-2" | "us-central-1" | "us-west-1" | "us-west-2" | "ca-central-1" | "eu-central-1" | "eu-central-2" | "eu-west-1" | "eu-west-2" | "eu-west-3" | "eu-south-1" | "ap-northeast-1" | "ap-northeast-2" | "ap-southeast-1" | "ap-southeast-2";
+        /** @description A webhook's endpoint, subscriptions, and delivery parameters. Secret parameter values and the signing secret are never returned. */
+        Webhook: {
+            /**
+             * Format: int32
+             * @description Version of the delivery settings (URL, parameters, and signing). It increases when any of them change, and each delivery attempt records the version it used.
+             */
+            config_version?: number | string;
+            /**
+             * Format: date-time
+             * @description UTC timestamp when the webhook was created.
+             */
+            created_at?: string;
+            /** @description Whether the webhook is enabled. Disabled webhooks receive no deliveries. */
+            enabled?: boolean;
+            /** @description Event types delivered to this webhook. */
+            events: components["schemas"]["WebhookEventType"][];
+            /** @description Webhook ID. */
+            id: string;
+            /** @description Display name for the webhook. */
+            name: string;
+            /** @description Headers and query parameters added to every delivery. Secret values are omitted. */
+            parameters: components["schemas"]["WebhookParameter"][];
+            /** @description Whether deliveries are signed with this webhook's signing secret. */
+            signing_enabled?: boolean;
+            /** @description Event ID of the webhook_test delivery this create or update queued, matching the event_id the endpoint receives. Null when no test was queued, and always null outside create and update responses. */
+            test_event_id?: null | string;
+            /**
+             * Format: date-time
+             * @description UTC timestamp when the webhook was last updated.
+             */
+            updated_at?: string;
+            /** @description HTTPS endpoint that receives deliveries, without query parameters. */
+            url: string;
+        };
+        /** @description A version of a webhook's delivery settings, as used by an attempt. Secret parameter values are never returned. */
+        WebhookAttemptConfig: {
+            /** @description Headers and query parameters sent with the attempt. Secret values are omitted. */
+            parameters: components["schemas"]["WebhookParameter"][];
+            /** @description Whether the attempt was signed with the webhook's signing secret. */
+            signing_enabled?: boolean;
+            /**
+             * Format: int32
+             * @description The webhook's config_version at the time of the attempt.
+             */
+            version: number | string;
+        };
+        /**
+         * Webhook Property Change
+         * @description One changed property. kind is value for ordinary properties, secret for credentials, whose values are never included, and content for content that changed but is too large or internal to include.
+         */
+        WebhookChange: components["schemas"]["WebhookChangeWebhookValueChange"] | components["schemas"]["WebhookChangeWebhookSecretChange"] | components["schemas"]["WebhookChangeWebhookContentChange"];
+        /**
+         * Webhook Property Change: Content
+         * @description Content that changed without its values, such as a block template's design. Get the entity for its current content.
+         */
+        WebhookChangeWebhookContentChange: {
+            /** @enum {string} */
+            kind?: "content";
+        };
+        /**
+         * Webhook Property Change: Secret Assignment
+         * @description A changed secret. Replacing a secret with a new value reports true for both.
+         */
+        WebhookChangeWebhookSecretChange: {
+            /** @enum {string} */
+            kind?: "secret";
+            /** @description Whether the secret is set after the change. */
+            new_assigned?: boolean;
+            /** @description Whether the secret was set before the change. */
+            previous_assigned?: boolean;
+        };
+        /**
+         * Webhook Property Change: Value
+         * @description A changed ordinary property: a scalar, an array reported as a whole, or a truncated text value for large text such as template HTML. A null value means the property was cleared or not previously set.
+         */
+        WebhookChangeWebhookValueChange: {
+            /** @enum {string} */
+            kind?: "value";
+            new_value?: null | components["schemas"]["JsonNode"];
+            previous_value?: null | components["schemas"]["JsonNode"];
+        };
+        /** @description One attempt to send an event to a webhook. Response bodies and headers are never kept. */
+        WebhookDeliveryAttempt: {
+            /**
+             * Format: int32
+             * @description Attempt number, starting at 1.
+             */
+            attempt: number | string;
+            /** Format: date-time */
+            completed_at: string;
+            config?: null | components["schemas"]["WebhookAttemptConfig"];
+            error?: null | components["schemas"]["WebhookDeliveryError"];
+            /**
+             * Format: int32
+             * @description Your endpoint's HTTP status, if it responded.
+             */
+            http_status?: null | number | string;
+            /** @description True when the attempt was a manual retry. */
+            manual_retry?: boolean;
+            /** Format: date-time */
+            started_at: string;
+            /** @description The URL sent to, without query parameters. */
+            url: string;
+        };
+        /** @enum {unknown} */
+        WebhookDeliveryError: "http_status" | "timeout" | "connection_failed" | "dns_failed" | "blocked_destination" | "tls_failed" | "redirect" | "response_too_large" | "internal_error" | "expired" | null;
+        /** @enum {unknown} */
+        WebhookDeliveryStatus: "pending" | "in_flight" | "retry_scheduled" | "succeeded" | "failed" | "invalidated" | "cancelled";
+        /** @description Identifies the resource an event is about. */
+        WebhookEntityReference: {
+            /** @description The resource's ID, as used elsewhere in the API. */
+            id: string;
+            /** @description The kind of resource. */
+            type: components["schemas"]["WebhookEntityType"];
+        };
+        /**
+         * @description The kind of resource a webhook event is about.
+         * @enum {unknown}
+         */
+        WebhookEntityType: "webhook" | "template" | "image" | "proxy" | "storage_destination" | "og_config" | "api_key" | "organization";
+        /**
+         * Webhook Event Data
+         * @description Event-specific details; the event's type determines which shape is used.
+         */
+        WebhookEventData: components["schemas"]["WebhookEventDataWebhookTestData"] | components["schemas"]["WebhookEventDataImageStoredData"] | components["schemas"]["WebhookEventDataImageDeletedData"] | components["schemas"]["WebhookEventDataWebhookEntityCreatedOfTemplateCreatedData"] | components["schemas"]["WebhookEventDataWebhookEntityCreatedOfProxyCreatedData"] | components["schemas"]["WebhookEventDataWebhookEntityCreatedOfStorageDestinationCreatedData"] | components["schemas"]["WebhookEventDataWebhookEntityCreatedOfOgConfigCreatedData"] | components["schemas"]["WebhookEventDataWebhookEntityCreatedOfApiKeyCreatedData"] | components["schemas"]["WebhookEventDataWebhookEntityUpdated"] | components["schemas"]["WebhookEventDataWebhookEntityDeleted"] | components["schemas"]["WebhookEventDataOrganizationPlanChangedData"] | components["schemas"]["WebhookEventDataOrganizationUsageResetData"] | components["schemas"]["WebhookEventDataOrganizationUsageAlertData"];
+        /**
+         * Webhook Event: Image Deleted
+         * @description Data for image_deleted: the images one delete request removed. A single delete lists one ID; a batch delete lists every image it deleted.
+         */
+        WebhookEventDataImageDeletedData: {
+            /** @description IDs of the deleted images. Images that were already deleted are not included. */
+            image_ids: string[];
+        };
+        /**
+         * Webhook Event: Image Stored
+         * @description Data for image_stored: a rendered image was saved to one location. A render saved to both HCTI storage and a storage destination sends one event for each.
+         */
+        WebhookEventDataImageStoredData: {
+            /**
+             * Format: int64
+             * @description Size of the stored base file in bytes. Null for older events without file metadata.
+             */
+            file_size_bytes?: null | number | string;
+            /**
+             * Format: int32
+             * @description Height of the stored base image in pixels, before any requested transformation. Null for PDFs or older events without dimensions.
+             */
+            height?: null | number | string;
+            /** @description ID of the image that was saved. */
+            image_id: string;
+            /** @description Where the image was saved. */
+            location: components["schemas"]["ImageStoredLocation"];
+            location_details?: null | components["schemas"]["ImageStoredLocationDetails"];
+            /**
+             * Format: int32
+             * @description Width of the stored base image in pixels, before any requested transformation. Null for PDFs or older events without dimensions.
+             */
+            width?: null | number | string;
+        };
+        /**
+         * Webhook Event: Organization Plan Changed
+         * @description Data for organization_plan_changed: the organization's effective plan changed.
+         */
+        WebhookEventDataOrganizationPlanChangedData: {
+            /**
+             * Format: date-time
+             * @description UTC timestamp when the change took effect.
+             */
+            changed_at?: string;
+            /**
+             * Format: int32
+             * @description Image credits per billing period included in the new plan, or null if it is unknown.
+             */
+            new_credits_allowed?: null | number | string;
+            /** @description Plan tier after the change: Free, Basic, Pro, Scale, or No Plan. Null if it is unknown. */
+            new_plan?: null | string;
+            /**
+             * Format: int32
+             * @description Image credits per billing period included in the previous plan, or null if it is unknown.
+             */
+            previous_credits_allowed?: null | number | string;
+            /** @description Plan tier before the change: Free, Basic, Pro, Scale, or No Plan. Null if it is unknown. */
+            previous_plan?: null | string;
+        };
+        /**
+         * Webhook Event: Organization Usage Alert
+         * @description Data for organization_usage_alert: the organization crossed a usage threshold in the current billing period. Sent once per threshold per period.
+         */
+        WebhookEventDataOrganizationUsageAlertData: {
+            /**
+             * Format: int32
+             * @description Image credits per billing period included in the plan.
+             */
+            credits_allowed?: number | string;
+            /**
+             * Format: uint64
+             * @description Image credits used in the current period when the alert was raised.
+             */
+            credits_used?: number | string;
+            /**
+             * Format: date-time
+             * @description UTC start of the billing period the alert is for.
+             */
+            period_start?: string;
+            /**
+             * Format: int32
+             * @description Threshold crossed, as a percentage of the plan's included image credits: 80 or 100.
+             */
+            threshold_percent?: number | string;
+        };
+        /**
+         * Webhook Event: Organization Usage Reset
+         * @description Data for organization_usage_reset: a new billing period started and the organization's image credit usage was reset.
+         */
+        WebhookEventDataOrganizationUsageResetData: {
+            /**
+             * Format: int32
+             * @description Image credits per billing period included in the plan, or null if it is unknown.
+             */
+            credits_allowed?: null | number | string;
+            /**
+             * Format: date-time
+             * @description UTC end of the new billing period, when usage resets next. Null if it is unknown.
+             */
+            period_end?: null | string;
+            /**
+             * Format: date-time
+             * @description UTC start of the new billing period, which is also when the previous one ended.
+             */
+            period_start?: string;
+            /** @description Plan tier in effect for the new period: Free, Basic, Pro, Scale, or No Plan. Null if it is unknown. */
+            plan?: null | string;
+            /**
+             * Format: uint64
+             * @description Image credits used in the period that ended, or null if usage could not be read before the reset.
+             */
+            previous_period_credits_used?: null | number | string;
+        };
+        /**
+         * Webhook Entity Created: API Key
+         * @description Data for *_created events.
+         */
+        WebhookEventDataWebhookEntityCreatedOfApiKeyCreatedData: {
+            /** @description The resource the event is about. */
+            entity: components["schemas"]["WebhookEntityReference"];
+            /** @description The resource's properties when it was created. Secret values are never included; secret fields report only whether they are set. */
+            properties: components["schemas"]["ApiKeyCreatedData"];
+        };
+        /**
+         * Webhook Entity Created: OG Config
+         * @description Data for *_created events.
+         */
+        WebhookEventDataWebhookEntityCreatedOfOgConfigCreatedData: {
+            /** @description The resource the event is about. */
+            entity: components["schemas"]["WebhookEntityReference"];
+            /** @description The resource's properties when it was created. Secret values are never included; secret fields report only whether they are set. */
+            properties: components["schemas"]["OgConfigCreatedData"];
+        };
+        /**
+         * Webhook Entity Created: Proxy
+         * @description Data for *_created events.
+         */
+        WebhookEventDataWebhookEntityCreatedOfProxyCreatedData: {
+            /** @description The resource the event is about. */
+            entity: components["schemas"]["WebhookEntityReference"];
+            /** @description The resource's properties when it was created. Secret values are never included; secret fields report only whether they are set. */
+            properties: components["schemas"]["ProxyCreatedData"];
+        };
+        /**
+         * Webhook Entity Created: Storage Destination
+         * @description Data for *_created events.
+         */
+        WebhookEventDataWebhookEntityCreatedOfStorageDestinationCreatedData: {
+            /** @description The resource the event is about. */
+            entity: components["schemas"]["WebhookEntityReference"];
+            /** @description The resource's properties when it was created. Secret values are never included; secret fields report only whether they are set. */
+            properties: components["schemas"]["StorageDestinationCreatedData"];
+        };
+        /**
+         * Webhook Entity Created: Template
+         * @description Data for *_created events.
+         */
+        WebhookEventDataWebhookEntityCreatedOfTemplateCreatedData: {
+            /** @description The resource the event is about. */
+            entity: components["schemas"]["WebhookEntityReference"];
+            /** @description The resource's properties when it was created. Secret values are never included; secret fields report only whether they are set. */
+            properties: components["schemas"]["TemplateCreatedData"];
+        };
+        /**
+         * Webhook Entity Deleted
+         * @description Data for *_deleted events.
+         */
+        WebhookEventDataWebhookEntityDeleted: {
+            /** @description The resource the event is about. */
+            entity: components["schemas"]["WebhookEntityReference"];
+        };
+        /**
+         * Webhook Entity Updated
+         * @description Data for *_updated events.
+         */
+        WebhookEventDataWebhookEntityUpdated: {
+            /** @description Changed properties, keyed by property path. Nested objects are flattened into dotted paths such as authentication.username. Each value is a scalar, a whole array, or, for large text such as template html, a truncated text value. Unchanged properties are omitted. */
+            changes: {
+                [key: string]: components["schemas"]["WebhookChange"];
+            };
+            /** @description The resource the event is about. */
+            entity: components["schemas"]["WebhookEntityReference"];
+        };
+        /**
+         * Webhook Event: Test
+         * @description Data for webhook_test: a synthetic event confirming the endpoint receives deliveries.
+         */
+        WebhookEventDataWebhookTestData: {
+            /**
+             * Format: int32
+             * @description Version of the delivery settings this test was sent with.
+             */
+            config_version: number | string;
+            /** @description ID of the webhook being tested. */
+            webhook_id: string;
+        };
+        /** @description One webhook an event was sent to, and how sending it there went. */
+        WebhookEventDestination: {
+            /** @description Send attempts, newest first. */
+            attempts: components["schemas"]["WebhookDeliveryAttempt"][];
+            /**
+             * Format: date-time
+             * @description When sending to this webhook reached a final status.
+             */
+            completed_at?: null | string;
+            invalidation_reason?: null | components["schemas"]["WebhookInvalidationReason"];
+            /**
+             * Format: date-time
+             * @description When the next attempt is scheduled, while status is retry_scheduled.
+             */
+            next_attempt_at?: null | string;
+            /** @description pending and in_flight are waiting on a send, retry_scheduled is waiting for its next attempt; the rest are final. */
+            status: components["schemas"]["WebhookDeliveryStatus"];
+            /** @description ID of the webhook the event was sent to. */
+            webhook_id: string;
+            /** @description The webhook's name. */
+            webhook_name: string;
+        };
+        /** @description A webhook event with what happened to each of its deliveries. Its fields match the delivered event; data is included only when requested. */
+        WebhookEventHistoryItem: {
+            data?: null | components["schemas"]["WebhookEventData"];
+            /** @description Each webhook the event was sent to, with its status and send attempts. */
+            destinations: components["schemas"]["WebhookEventDestination"][];
+            /** @description Unique ID of this event. It is the same for every webhook that receives the event, and on every retry. */
+            event_id: string;
+            /**
+             * Format: date-time
+             * @description UTC time the event happened.
+             */
+            occurred_at: string;
+            /** @description True when your key can't read this event type's resources, so data is left out. Its destinations are still listed. */
+            payload_withheld?: boolean;
+            /**
+             * Format: int32
+             * @description Version of this event type's data shape. Increases only for breaking changes.
+             */
+            schema_version: number | string;
+            /** @description What made the call that caused the event: an API key, a dashboard user, an MCP client, an unauthenticated request, or HCTI itself (system). */
+            source: components["schemas"]["CallSourceMetadata"];
+            /** @description The kind of event; determines the shape of data. */
+            type: components["schemas"]["WebhookEventType"];
+        };
+        /**
+         * @description An event type a webhook can receive. webhook_test deliveries are sent automatically and cannot be subscribed to.
+         * @enum {unknown}
+         */
+        WebhookEventType: "webhook_test" | "template_created" | "template_updated" | "template_deleted" | "image_deleted" | "image_stored" | "proxy_created" | "proxy_updated" | "proxy_deleted" | "storage_destination_created" | "storage_destination_updated" | "storage_destination_deleted" | "og_config_created" | "og_config_updated" | "og_config_deleted" | "api_key_created" | "api_key_updated" | "api_key_deleted" | "organization_plan_changed" | "organization_usage_reset" | "organization_usage_alert";
+        /** @enum {unknown} */
+        WebhookInvalidationReason: "webhook_deleted" | "webhook_disabled" | "event_not_selected" | null;
+        /** @description A header or query parameter added to every delivery. */
+        WebhookParameter: {
+            /** @description Header or query parameter name. */
+            key: string;
+            /** @description Where the parameter is sent. */
+            location: components["schemas"]["WebhookParameterLocation"];
+            /** @description Whether the value is secret. Secret values are stored encrypted and never returned. */
+            secret?: boolean;
+            /** @description The parameter value, or null for secret parameters. */
+            value?: null | string;
+        };
+        /**
+         * @description Where a webhook parameter is sent on each delivery.
+         * @enum {unknown}
+         */
+        WebhookParameterLocation: "header" | "query_parameter";
+        /** @description A header or query parameter added to every delivery. */
+        WebhookParameterRequest: {
+            /** @description Header or query parameter name, up to 512 UTF-8 bytes, unique within its location. Header names must be valid HTTP tokens. Transport headers such as Host, Content-Length, and Content-Type, and headers starting with X-HCTI- or Webhook-, are reserved. */
+            key: string;
+            /** @description Where the parameter is sent: header or query_parameter. */
+            location: components["schemas"]["WebhookParameterLocation"];
+            /**
+             * @description Keep the stored secret value on update instead of resending it. Requires secret: true, no value, and an existing secret with the same location and key. Secrets cannot be kept when the URL changes; resend them instead. Defaults to false.
+             * @default false
+             */
+            retain_value?: boolean;
+            /**
+             * @description Whether the value is secret. Secret values are stored encrypted, never returned by the API, and kept out of delivery history. Use this for credentials such as an Authorization header. Defaults to false.
+             * @default false
+             */
+            secret?: boolean;
+            /** @description Parameter value, up to 4 KiB in UTF-8. Required unless retain_value is true. An empty string is a valid value. */
+            value?: null | string;
+        };
+        /** @description A queued webhook_test delivery. */
+        WebhookTestEvent: {
+            /** @description ID of the queued webhook_test event. Get its delivery status with the webhook event endpoint. */
+            event_id: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -2206,7 +3225,7 @@ export interface operations {
                 /** @description pagination.next_page_start from the previous response. Omit for the first page. */
                 page_start?: string;
                 /** @description Return keys allowing every specified permission, including wildcard grants. Repeat this query parameter for multiple permissions; do not separate names with spaces or commas. */
-                with_permission?: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read")[];
+                with_permission?: ("api_keys:create_update" | "api_keys:delete" | "api_keys:read" | "debugs:create" | "debugs:read" | "images:create" | "images:delete" | "images:read" | "images:store" | "og_configs:create_update" | "og_configs:delete" | "og_configs:read" | "proxies:create_update" | "proxies:delete" | "proxies:read" | "storage_destinations:create_update" | "storage_destinations:delete" | "storage_destinations:read" | "templates:create_update" | "templates:delete" | "templates:read" | "usage:read" | "webhooks:create_update" | "webhooks:delete" | "webhooks:read")[];
             };
             header?: never;
             path?: never;
@@ -2616,6 +3635,57 @@ export interface operations {
                      * @example "api-key:write";q=20;w=60
                      */
                     "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "submit-feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeedbackRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeedbackResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
                     [name: string]: unknown;
                 };
                 content: {
@@ -3147,6 +4217,15 @@ export interface operations {
                     "application/json": components["schemas"]["ApiErrorResult"];
                 };
             };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
             /** @description Payment Required */
             402: {
                 headers: {
@@ -3158,6 +4237,15 @@ export interface operations {
             };
             /** @description Forbidden */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -3198,6 +4286,84 @@ export interface operations {
             };
             /** @description Unauthorized */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "create-templated-image-batch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BatchTemplatedImageRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BatchImageResult"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Payment Required */
+            402: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -5267,6 +6433,622 @@ export interface operations {
             /** @description Forbidden */
             403: {
                 headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "list-webhooks": {
+        parameters: {
+            query?: {
+                /** @description Maximum number of webhooks to return, from 1 to 100. Defaults to 10. */
+                count?: number | string;
+                /** @description pagination.next_page_start from the previous response. Omit for the first page. */
+                page_start?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:read";r=99
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:read";q=100;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedListBaseOfWebhookAndstring"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:read";r=0
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:read";q=100;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "create-webhook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOrUpdateWebhookRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:write";r=19
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:write";q=20;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Webhook"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:write";r=0
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:write";q=20;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "get-webhook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:read";r=99
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:read";q=100;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Webhook"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:read";r=0
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:read";q=100;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "update-webhook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOrUpdateWebhookRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:write";r=19
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:write";q=20;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Webhook"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:write";r=0
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:write";q=20;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "delete-webhook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:write";r=19
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:write";q=20;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:write";r=0
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:write";q=20;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "send-webhook-test-event": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:test";r=4
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:test";q=5;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WebhookTestEvent"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:test";r=0
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:test";q=5;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+        };
+    };
+    "get-webhook-event": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:read";r=99
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:read";q=100;w=60
+                     */
+                    "RateLimit-Policy"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WebhookEventHistoryItem"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResult"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    /**
+                     * @description The policy name and remaining requests (r) after this rate-limit check. Concurrent requests share this allowance; it does not guarantee subsequent requests will be accepted.
+                     * @example "webhook:read";r=0
+                     */
+                    RateLimit?: string;
+                    /**
+                     * @description The shared organization quota policy: policy name, request allowance (q), and sliding-window length in seconds (w).
+                     * @example "webhook:read";q=100;w=60
+                     */
+                    "RateLimit-Policy"?: string;
                     [name: string]: unknown;
                 };
                 content: {

@@ -4,7 +4,7 @@
 	"source": {
 		"spec": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.sdk.json",
 		"title": "Stripe API",
-		"version": "2026-09-30.endive"
+		"version": "2026-10-28.endive"
 	},
 	"upstream": {
 		"baseUrl": "https://api.stripe.com",

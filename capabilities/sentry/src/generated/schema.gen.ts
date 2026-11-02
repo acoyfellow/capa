@@ -60,9 +60,33 @@ export type paths = {
          *
          *     Return AI conversations ordered by latest span time.
          *
-         *     `query` uses Sentry search syntax against spans. A conversation matches when
-         *     any span matches. Summary values then include all conversation spans inside
-         *     selected project, environment, and time filters.
+         *     `query` uses Sentry search syntax.
+         *
+         *     **Span filters**
+         *
+         *     - Description: `"payment failed"`; status: `span.status:[error,internal_error]`.
+         *     - Operation: `gen_ai.operation.type:tool`; tool: `gen_ai.tool.name:get_weather`.
+         *     - Duration: `span.duration:>2s`; ID: `gen_ai.conversation.id:"session:123"`
+         *       or `conversation.conversationId:"session:123"`.
+         *
+         *     **Conversation filters**
+         *
+         *     - Calls: `conversation.llmCalls` or `conversation.messages`, and
+         *       `conversation.toolCalls`; failures: `conversation.errors` and
+         *       `conversation.toolErrors`.
+         *     - Usage: `conversation.inputTokens`, `conversation.outputTokens`,
+         *       `conversation.totalTokens`, and `conversation.totalCost`.
+         *     - Timespan: `conversation.timeSpan` measures elapsed time between first and last AI spans;
+         *       `conversation.generationDuration` sums LLM call durations. Both use milliseconds.
+         *
+         *     Use numeric comparisons such as `conversation.toolCalls:>2`. Queries return
+         *     conversations, not spans. Each `AND` condition may match a different span.
+         *     Returned totals include all AI spans in selected project, environment, and time
+         *     filters, not only matching spans.
+         *
+         *     Negation means no span matches, including when an attribute is absent. Payloads
+         *     are searchable only when recorded and not scrubbed. Payload failure text does
+         *     not mark a span as failed; set `span.status:error` for reliable failure search.
          */
         get: operations["listOrganizationAIConversations"];
         put?: never;
@@ -87,10 +111,168 @@ export type paths = {
          *     Return spans recorded for one AI conversation in start-time order.
          *
          *     Message, tool, and response attributes contain their recorded string values.
-         *     Without an explicit range, Sentry widens the search across available retention.
-         *     A missing conversation returns an empty `spans` list.
+         *     `stats.errors` counts spans whose status is not `ok`, `cancelled`, or `unknown`.
+         *     `stats.errorToolNames` lists tools used by those spans.
+         *     `stats.inputTokens` includes cache-read and cache-write tokens. In `stats.usageByModel`,
+         *     `inputCost` includes cache-read and cache-write costs, and `outputCost` includes
+         *     reasoning cost. These cost breakdowns are not added to `totalCost`.
+         *     Stats are returned on the first page only. Without an explicit range, Sentry widens
+         *     the search across available retention. A missing conversation returns an empty `spans` list.
          */
         get: operations["retrieveOrganizationAIConversation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/artifactbundle/assemble/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Assemble an Artifact Bundle
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Assemble previously uploaded chunks into an artifact bundle, such as source maps, and
+         *     store its debug IDs.
+         *
+         *     The response reports the bundle's `state`. If chunks are missing, upload them and send
+         *     the request again. Repeat the request to poll until the state is `ok` or `error`.
+         *     Resending an identical request is safe: a bundle that is already assembling or
+         *     assembled reports its state instead of starting a new job.
+         */
+        post: operations["assembleOrganizationArtifactBundle"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/chunk-upload/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieve Chunk Upload Options
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Return the URL and limits to use when uploading file chunks, such as the chunk size,
+         *     the number of chunks per request, and the supported compression.
+         */
+        get: operations["getOrganizationChunkUploadOptions"];
+        put?: never;
+        /**
+         * Upload File Chunks
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Upload file chunks so they can be assembled into debug information files or artifact
+         *     bundles. Send requests to the URL from the chunk upload options, which uses the
+         *     region-specific domain (for example `us.sentry.io` or `de.sentry.io`).
+         *
+         *     Chunks may be compressed with one of the codecs listed in the options. Select it with
+         *     the `Content-Encoding` request header. Resending a chunk is safe: chunks are stored
+         *     by checksum, so an identical upload changes nothing.
+         */
+        post: operations["uploadOrganizationChunks"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/code-mappings/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List an Organization's Code Mappings
+         * @description Return repository path mappings for projects the user can access.
+         */
+        get: operations["listOrganizationCodeMappings"];
+        put?: never;
+        /**
+         * Create an Organization Code Mapping
+         * @description Create a repository path mapping for a project and installed integration.
+         */
+        post: operations["createOrganizationCodeMapping"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/code-mappings/{config_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update an Organization Code Mapping
+         * @description Update the repository, project, or path settings for a code mapping.
+         */
+        put: operations["updateOrganizationCodeMapping"];
+        post?: never;
+        /**
+         * Delete an Organization Code Mapping
+         * @description Delete a repository project path config
+         *
+         *     :auth: required
+         */
+        delete: operations["deleteOrganizationCodeMapping"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/code-mappings/bulk/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create or Update Organization Code Mappings in Bulk
+         * @description Create or update multiple repository path mappings for a project. Mappings with matching project, stack root, and source root are updated.
+         */
+        post: operations["bulkUpsertOrganizationCodeMappings"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/codeowners-associations/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Code Owner Associations
+         * @description Return CODEOWNERS associations for projects the authenticated user is a member of. Specify `project` to filter the results.
+         */
+        get: operations["listOrganizationCodeownersAssociations"];
         put?: never;
         post?: never;
         delete?: never;
@@ -322,6 +504,36 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/0/organizations/{organization_id_or_slug}/events-dropped/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Query Dropped and Accepted Events/Stats by Outcome and Reason
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Return the events Sentry received but dropped (rate limited, filtered,
+         *     invalid, abuse, client discarded, cardinality limited) bucketed over the
+         *     requested interval, alongside the accepted volume per bucket so a caller
+         *     can compute the dropped share.
+         *
+         *     Select the dropped-data type with ``dataset`` and the bucket size with
+         *     ``interval``. Optionally scope the dropped side to one classification with
+         *     ``outcome`` (top-level) and/or ``reason`` (sub-classification within an
+         *     outcome); the accepted volume is always returned in full.
+         */
+        get: operations["listOrganizationEventsDropped"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/0/organizations/{organization_id_or_slug}/events-timeseries/": {
         parameters: {
             query?: never;
@@ -419,6 +631,47 @@ export type paths = {
          * @description Delete the link between a user from an external provider and a Sentry user.
          */
         delete: operations["deleteOrganizationExternalUser"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/flags/logs/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List an Organization's Flag Logs
+         * @description Return a paginated list of feature flag changes (creations, updates and deletions)
+         *     recorded for an organization within the requested time range.
+         */
+        get: operations["listOrganizationFlagLogs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/flags/logs/{flag_log_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieve an Organization's Flag Log
+         * @description Return a single feature flag change recorded for an organization.
+         */
+        get: operations["retrieveOrganizationFlagLog"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -555,6 +808,50 @@ export type paths = {
          *     integration_id.
          */
         delete: operations["deleteOrganizationIntegration"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/channel-validate/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Validate a Messaging Channel for an Integration
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Validate whether a channel exists for the given integration.
+         */
+        get: operations["validateOrganizationIntegrationChannel"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/channels/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Messaging Channels for an Integration
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     List all messaging channels for an integration.
+         */
+        get: operations["listOrganizationIntegrationChannels"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -1864,6 +2161,26 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/0/organizations/{organization_id_or_slug}/repos/settings/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update Settings for Organization Repositories
+         * @description Update code review settings for one or more repositories in the organization. Provide at least one of `enabledCodeReview` or `codeReviewTriggers`.
+         */
+        put: operations["updateOrganizationRepositorySettings"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups": {
         parameters: {
             query?: never;
@@ -1921,6 +2238,90 @@ export type paths = {
          * @description Update a team's attributes with a SCIM Group PATCH Request.
          */
         patch: operations["updateOrganizationScimV2Group"];
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/scim/v2/ResourceTypes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List the SCIM Resource Types
+         * @description List the resource types available via SCIM: User (organization
+         *     members) and Group (teams). Pagination parameters are ignored per
+         *     RFC 7644 section 4; both resource types are always returned.
+         */
+        get: operations["listOrganizationScimV2ResourceTypes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/scim/v2/ResourceTypes/{resource_type_name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Query an Individual SCIM Resource Type
+         * @description Return a single SCIM resource type by name (`User` or `Group`).
+         */
+        get: operations["getOrganizationScimV2ResourceType"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/scim/v2/Schemas/{schema_uri}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Query an Individual SCIM Schema
+         * @description Return a single SCIM schema definition by its URI. Sentry supports the
+         *     core User and Group schemas.
+         */
+        get: operations["getOrganizationScimV2Schema"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/organizations/{organization_id_or_slug}/scim/v2/ServiceProviderConfig": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieve the SCIM Service Provider Configuration
+         * @description Return the SCIM Service Provider Configuration, which describes the
+         *     SCIM 2.0 protocol features Sentry supports (RFC 7643 section 5).
+         */
+        get: operations["getOrganizationScimV2ServiceProviderConfig"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/0/organizations/{organization_id_or_slug}/scim/v2/Users": {
@@ -1991,6 +2392,16 @@ export type paths = {
          * @description **Experimental:** This API is under active development and may change.
          *
          *     Retrieve prepared UI components for installed custom integrations, including issue-link forms.
+         *
+         *     API clients can use `filter=issue-link` to create or link an external issue through
+         *     an app such as Linear. The `uri` values in `schema` are paths on the app's own server.
+         *     Clients never call them directly; Sentry calls the app on their behalf:
+         *
+         *     - To load a select field's choices, pass the field's `uri` to
+         *       `GET /sentry-app-installations/{installationUuid}/external-requests/`.
+         *     - To create or link the issue, send the form values with the `uri` from
+         *       `schema.create` or `schema.link` to
+         *       `POST /sentry-app-installations/{installationUuid}/external-issue-actions/`.
          */
         get: operations["listOrganizationSentryAppComponents"];
         put?: never;
@@ -2107,6 +2518,37 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/0/organizations/{organization_id_or_slug}/starred-service-spans/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Star a Service Span
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Star a service span for the requesting user. Span queries expose this as the
+         *     `is_starred_transaction` field. Returns `403` if the user has already starred
+         *     the service span.
+         */
+        post: operations["starOrganizationServiceSpan"];
+        /**
+         * Unstar a Service Span
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Unstar a service span for the requesting user. Succeeds even if the
+         *     service span was not starred.
+         */
+        delete: operations["unstarOrganizationServiceSpan"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/0/organizations/{organization_id_or_slug}/stats_v2/": {
         parameters: {
             query?: never;
@@ -2204,6 +2646,9 @@ export type paths = {
          * List Trace Item Attributes
          * @description List the attribute keys available on a given trace item dataset (spans, logs,
          *     trace metrics, etc.), with optional substring and structured filtering.
+         *
+         *     Pass `expand=context` (experimental) to include each attribute's metadata:
+         *     a brief description, examples, and deprecation details.
          */
         get: operations["listOrganizationTraceItemAttributes"];
         put?: never;
@@ -2418,6 +2863,26 @@ export type paths = {
          *     begun the state of a project changes and will be hidden from most public views.
          */
         delete: operations["deleteProject"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/code-mapping-prefixes/stack/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Stack Trace Directory Prefixes for Code Mapping Autocomplete
+         * @description Return ranked directory prefixes from stack traces and existing mappings to help configure a code mapping.
+         */
+        get: operations["listStackCodeMappingPrefixes"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -2676,6 +3141,33 @@ export type paths = {
         get: operations["getProjectEventSourceMapDebug"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/difs/assemble/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Assemble Debug Information Files
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Assemble previously uploaded chunks into debug information files.
+         *
+         *     The response reports each file's `state`, keyed by the same checksums. If chunks are
+         *     missing, upload them and send the request again. Repeat the request to poll until the
+         *     state is `ok` or `error`. Resending an identical request is safe: a file that is
+         *     already assembling or assembled reports its state instead of starting a new job.
+         */
+        post: operations["assembleProjectDebugFiles"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3324,6 +3816,33 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/completion/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieve a Project's Release Setup Progress
+         * @description Return the project's release-setup progress for these steps:
+         *
+         *     - `tag`: The project has an issue with a recorded first release.
+         *     - `repo`: The organization has at least one repository.
+         *     - `commit`: At least one of the project's 1,000 most recent releases (by release ID) has an associated commit.
+         *     - `deploy`: At least one of the project's releases has a deploy.
+         *
+         *     Results are cached for one hour when a step is complete and one minute otherwise.
+         */
+        get: operations["getProjectReleaseSetupCompletion"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/": {
         parameters: {
             query?: never;
@@ -3492,6 +4011,60 @@ export type paths = {
          *     returns 200 if the link already exists, 201 if created.
          */
         post: operations["linkProjectRepository"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/seer/repos/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Repositories Configured for Seer
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     List repositories connected to Seer for the project.
+         */
+        get: operations["listProjectSeerRepositories"];
+        /**
+         * Replace Repositories Configured for Seer
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Replace the project's active Seer repository configurations with the submitted repositories. An empty `repos` list removes all active Seer repository configurations. Inactive repository configurations are retained and become available again if the repositories are reactivated.
+         */
+        put: operations["replaceProjectSeerRepositories"];
+        /**
+         * Add Repositories to Seer for a Project
+         * @description **Experimental:** This API is under active development and may change.
+         *
+         *     Add the specified repositories to Seer without removing other repositories. At least one repository is required. Re-submitting a repository replaces its branchName, instructions, and branchOverrides; omitted values are cleared.
+         */
+        post: operations["addProjectSeerRepositories"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/stacktrace-link/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a Source Code Link for a Stack Trace Frame
+         * @description Resolve a stack trace filename to its linked source file using the project's code mappings and connected source code integrations.
+         */
+        get: operations["getProjectStacktraceLink"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -3717,6 +4290,8 @@ export type paths = {
          *
          *     Invoke the installed app's issue-link callback and store the returned association.
          *     Submit the app-specific form fields alongside `groupId`, `action`, and `uri`.
+         *     The installation UUID, form fields, and `uri` come from the organization's
+         *     `issue-link` Sentry App components.
          *
          *     For `action=link`, the optional `expectedExternalIssueUrl` query parameter
          *     requires an exact canonical `webUrl` match. An existing matching link is
@@ -3993,6 +4568,37 @@ export type components = {
              */
             logic_type: "any" | "any-short" | "all" | "none";
         };
+        ArtifactBundleAssembleResponse: {
+            detail?: string | null;
+            missingChunks: string[];
+            state: string;
+        };
+        AssembleProjectDebugFilesResponse: {
+            [key: string]: {
+                detail?: string | null;
+                dif?: {
+                    codeId: string | null;
+                    cpuName: string;
+                    data: {
+                        [key: string]: unknown;
+                    };
+                    /** Format: date-time */
+                    dateCreated: string;
+                    debugId: string;
+                    headers: {
+                        [key: string]: string;
+                    };
+                    id: string;
+                    objectName: string;
+                    sha1: string;
+                    size: number;
+                    symbolType: string;
+                    uuid: string;
+                };
+                missingChunks: string[];
+                state: string;
+            };
+        };
         /** @description Response type for the POST endpoint (default kickoff and step paths). */
         AutofixPostResponse: {
             run_id: number;
@@ -4137,7 +4743,7 @@ export type components = {
              *                     - `static`: Threshold based monitor
              *                     - `percent`: Change based monitor
              *                     - `dynamic`: Dynamic monitor
-             *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period at which to compare against in minutes.
+             *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period, in seconds, at which to compare against historical data.
              *                 For example, a value of 3600 compares the metric tracked against data 1 hour ago.
              *                     - `300`: 5 minutes
              *                     - `900`: 15 minutes
@@ -4149,20 +4755,20 @@ export type components = {
              *                 **Threshold**
              *                 ```json
              *                 {
-             *                     "detectionType": "static",
+             *                     "detectionType": "static"
              *                 }
              *                 ```
              *                 **Change**
              *                 ```json
              *                 {
              *                     "detectionType": "percent",
-             *                     "comparisonDelta": 3600,
+             *                     "comparisonDelta": 3600
              *                 }
              *                 ```
              *                 **Dynamic**
              *                 ```json
              *                 {
-             *                     "detectionType": "dynamic",
+             *                     "detectionType": "dynamic"
              *                 }
              *                 ```
              */
@@ -4170,7 +4776,12 @@ export type components = {
                 [key: string]: unknown;
             };
             /**
-             * @description The data sources for the monitor to use based on what you want to measure.
+             * @description The data sources for the metric monitor to use based on what you want to measure.
+             *
+             *                 `timeWindow` is measured in seconds. Cron Monitors use schedules instead of this field.
+             *                 Legacy metric alert rules expressed this value in minutes, so multiply a legacy value
+             *                 by 60 when migrating it to a monitor. For example, a legacy 5-minute window becomes
+             *                 `"timeWindow": 300`.
              *
              *                 **Number of Errors Metric Monitor**
              *                 - `eventTypes`: Any of `error` or `default`.
@@ -4183,9 +4794,9 @@ export type components = {
              *                             "eventTypes": ["default", "error"],
              *                             "query": "is:unresolved",
              *                             "queryType": 0,
-             *                             "timeWindow": 3600,
-             *                         },
-             *                     ],
+             *                             "timeWindow": 3600
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Users Experiencing Errors Metric Monitor**
@@ -4199,9 +4810,9 @@ export type components = {
              *                             "eventTypes": ["default", "error"],
              *                             "query": "is:unresolved",
              *                             "queryType": 0,
-             *                             "timeWindow": 3600,
-             *                         },
-             *                     ],
+             *                             "timeWindow": 3600
+             *                         }
+             *                     ]
              *                 ```
              *
              *
@@ -4212,13 +4823,13 @@ export type components = {
              *                             "aggregate":"count(span.duration)",
              *                             "dataset":"events_analytics_platform",
              *                             "environment":"prod",
-             *                             "eventTypes":["trace_item_span"]
+             *                             "eventTypes":["trace_item_span"],
              *                             "query":"",
              *                             "queryType":1,
              *                             "timeWindow":3600,
-             *                             "extrapolationMode":"unknown",
-             *                         },
-             *                     ],
+             *                             "extrapolationMode":"unknown"
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Duration Metric Monitor**
@@ -4228,13 +4839,13 @@ export type components = {
              *                             "aggregate":"p95(span.duration)",
              *                             "dataset":"events_analytics_platform",
              *                             "environment":"prod",
-             *                             "eventTypes":["trace_item_span"]
+             *                             "eventTypes":["trace_item_span"],
              *                             "query":"",
              *                             "queryType":1,
              *                             "timeWindow":3600,
-             *                             "extrapolationMode":"unknown",
-             *                         },
-             *                     ],
+             *                             "extrapolationMode":"unknown"
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Failure Rate Metric Monitor**
@@ -4244,17 +4855,17 @@ export type components = {
              *                             "aggregate":"failure_rate()",
              *                             "dataset":"events_analytics_platform",
              *                             "environment":"prod",
-             *                             "eventTypes":["trace_item_span"]
+             *                             "eventTypes":["trace_item_span"],
              *                             "query":"",
              *                             "queryType":1,
              *                             "timeWindow":3600,
-             *                             "extrapolationMode":"unknown",
-             *                         },
-             *                     ],
+             *                             "extrapolationMode":"unknown"
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Largest Contentful Paint Metric Monitor**
-             *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+             *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
              *                 - `aggregate`: Valid values are `avg(measurements.lcp)`, `p50(measurements.lcp)`, `p75(measurements.lcp)`, `p95(measurements.lcp)`, `p99(measurements.lcp)`, `p100(measurements.lcp)`, and `percentile(measurements.lcp,x)`, where `x` is your custom percentile.
              *
              *                 ```json
@@ -4263,17 +4874,17 @@ export type components = {
              *                             "aggregate":"p95(measurements.lcp)",
              *                             "dataset":"events_analytics_platform",
              *                             "environment":"prod",
-             *                             "eventTypes":["trace_item_span"]
-             *                             "query":"",
+             *                             "eventTypes":["trace_item_span"],
+             *                             "query":"is_transaction:true",
              *                             "queryType":1,
              *                             "timeWindow":3600,
-             *                             "extrapolationMode":"unknown",
-             *                         },
-             *                     ],
+             *                             "extrapolationMode":"unknown"
+             *                         }
+             *                     ]
              *                 ```
              *
              *                 **Custom Metric Monitor**
-             *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+             *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
              *                 - `aggregate`: Valid values are:
              *                 `avg(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
              *                 `p50(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
@@ -4289,11 +4900,17 @@ export type components = {
              *                 ```json
              *                 [
              *                     {
-             *                         "aggregate": "p75(measurements.ttfb)"
+             *                         "aggregate": "p75(measurements.ttfb)",
              *                         "dataset": "events_analytics_platform",
+             *                         "environment": "prod",
              *                         "queryType": 1,
-             *                     },
-             *                 ],
+             *                         "eventTypes": ["trace_item_span"],
+             *                         "query": "is_transaction:true",
+             *                         "timeWindow": 3600,
+             *                         "extrapolationMode": "unknown"
+             *                     }
+             *                 ]
+             *                 ```
              */
             data_sources?: unknown[];
             /** @description A description of the monitor. Will be used in the resulting issue. */
@@ -4341,6 +4958,65 @@ export type components = {
             name: string;
             slug: string;
             teamRole: string | null;
+        };
+        /**
+         * @description Allows parameters to be defined in snake case, but passed as camel case.
+         *
+         *     Errors are output in camel case.
+         */
+        BranchOverride: {
+            /** @description The repository branch Seer uses for issues whose events have this tag value. */
+            branch_name: string;
+            /** @description Event tag key to match. */
+            tag_name: string;
+            /** @description Event tag value to match. */
+            tag_value: string;
+        };
+        BulkCodeMappingsPartialResponse: {
+            created: number;
+            errors: number;
+            mappings: {
+                detail?: string;
+                sourceRoot: string;
+                stackRoot: string;
+                /** @enum {string} */
+                status: "created" | "updated" | "error";
+            }[];
+            updated: number;
+        };
+        /**
+         * @description Allows parameters to be defined in snake case, but passed as camel case.
+         *
+         *     Errors are output in camel case.
+         */
+        BulkCodeMappingsRequest: {
+            /** @description The repository branch to use; inferred from the integration when omitted. */
+            default_branch?: string;
+            /** @description One or more stack-root and source-root mappings (maximum 300). */
+            mappings: {
+                /** @description The repository path prefix that replaces stackRoot. For example, /app/pkg/file.py with stackRoot=/app/ and sourceRoot=src/ resolves to src/pkg/file.py. */
+                source_root: string;
+                /** @description The path prefix to strip from matching stack frame filenames before adding sourceRoot. */
+                stack_root: string;
+            }[];
+            /** @description The ID or slug of the project to configure. */
+            project: number | string;
+            /** @description Optional repository provider used to disambiguate or find the repository. If no matching Sentry repository exists, the repository is created after the provider confirms it exists. */
+            provider?: string | null;
+            /** @description The repository name as it appears in Sentry. */
+            repository: string;
+        };
+        BulkCodeMappingsResponse: {
+            created: number;
+            errors: number;
+            mappings: {
+                detail?: string;
+                sourceRoot: string;
+                stackRoot: string;
+                /** @enum {string} */
+                status: "created" | "updated" | "error";
+            }[];
+            updated: number;
         };
         BulkEnvironment: {
             /** @description List of environment names to update. Maximum 1000. */
@@ -4391,6 +5067,21 @@ export type components = {
             };
             status: string;
         }[];
+        ChunkUpload: {
+            /** @description The chunks to upload. Name each part after the SHA-1 checksum of its uncompressed content. Repeat the field for each chunk, up to `chunksPerRequest` per request. */
+            file: string[];
+        };
+        ChunkUploadOptionsResponse: {
+            accept: string[];
+            chunkSize: number;
+            chunksPerRequest: number;
+            compression: string[];
+            concurrency: number;
+            hashAlgorithm: string;
+            maxFileSize: number;
+            maxRequestSize: number;
+            url: string;
+        };
         Commit: {
             author_email?: string | null;
             author_name?: string | null;
@@ -4576,7 +5267,7 @@ export type components = {
             checkin_margin?: number | null;
             /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
             failure_issue_threshold?: number | null;
-            /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+            /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
             max_runtime?: number | null;
             /** @description How many successful check-ins in a row before resolving an issue. */
             recovery_threshold?: number | null;
@@ -5201,6 +5892,25 @@ export type components = {
             /** @description The title of the external issue to create. */
             title: string;
         };
+        /**
+         * @description Allows parameters to be defined in snake case, but passed as camel case.
+         *
+         *     Errors are output in camel case.
+         */
+        CreateOrganizationCodeMappingRequest: {
+            /** @description The default branch to use when resolving source files. May be empty for Perforce. */
+            default_branch?: string;
+            /** @description The ID of the installed integration that provides the repository. */
+            integration_id: number;
+            /** @description The ID of the project to associate with the code mapping. */
+            project_id: number;
+            /** @description The ID of a repository belonging to the installed integration. */
+            repository_id: number;
+            /** @description The repository path prefix to substitute for the stack trace prefix. */
+            source_root: string;
+            /** @description The path prefix to replace in stack trace filenames. */
+            stack_root: string;
+        };
         CreateOrganizationReleaseResponse: {
             adoptionStages?: {
                 [key: string]: unknown;
@@ -5365,10 +6075,30 @@ export type components = {
         CustomInboundFilter: {
             /** @description Whether the filter drops matching data. An inactive filter is kept but ignored. */
             active?: boolean;
-            /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
+            /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`gte 2.0` and `lt 4.0`). To broaden matching, widen a condition's values or add separate filters. */
             conditions: {
                 /**
-                 * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                 * @description How the field compares to `value`. `glob` matches the field against each value as a glob pattern. `equals`, `starts_with`, `contains` and `ends_with` match the field against each value case-insensitively, with every character read literally; `does_not_start_with`, `does_not_contain` and `does_not_end_with` match when no value does. `cidr` matches `ip_address` against each value as an address or a CIDR range, and `not_cidr` matches when no value does. `gt`, `gte`, `lt` and `lte` compare one value as a version and only apply to `release`.
+                 *
+                 *     * `glob`
+                 *     * `equals`
+                 *     * `starts_with`
+                 *     * `contains`
+                 *     * `ends_with`
+                 *     * `does_not_start_with`
+                 *     * `does_not_contain`
+                 *     * `does_not_end_with`
+                 *     * `cidr`
+                 *     * `not_cidr`
+                 *     * `gt`
+                 *     * `gte`
+                 *     * `lt`
+                 *     * `lte`
+                 * @enum {string}
+                 */
+                operator?: "glob" | "equals" | "starts_with" | "contains" | "ends_with" | "does_not_start_with" | "does_not_contain" | "does_not_end_with" | "cidr" | "not_cidr" | "gt" | "gte" | "lt" | "lte";
+                /**
+                 * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                  *
                  *     * `error_type`
                  *     * `error_message`
@@ -5376,10 +6106,11 @@ export type components = {
                  *     * `metric_name`
                  *     * `release`
                  *     * `ip_address`
+                 *     * `geo_country_code`
                  * @enum {string}
                  */
-                type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
-                /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
+                type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
+                /** @description The values the field is compared to. The condition matches when any value matches, so multiple values act as OR; a negated operator matches when none does. A version comparison takes one release with a version such as `1.2.0` or `myapp@1.2.0`. A comparison with a package only applies to releases of that package. */
                 value: string[];
             }[];
             /**
@@ -5405,12 +6136,34 @@ export type components = {
             readonly dateUpdated: string;
             /** @description The ID of the filter. */
             readonly id: string;
+            /** @description Set on a filter that holds one of the filter lists of the project settings, to the id its outcomes are reported under. Such a filter keeps its data type and its one condition: only the name, the active flag and the condition values can change, and deleting it empties the list. */
+            readonly legacyFilter: string | null;
             /** @description A human-readable label for the filter. */
             name?: string | null;
         };
         CustomInboundFilterCondition: {
             /**
-             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+             * @description How the field compares to `value`. `glob` matches the field against each value as a glob pattern. `equals`, `starts_with`, `contains` and `ends_with` match the field against each value case-insensitively, with every character read literally; `does_not_start_with`, `does_not_contain` and `does_not_end_with` match when no value does. `cidr` matches `ip_address` against each value as an address or a CIDR range, and `not_cidr` matches when no value does. `gt`, `gte`, `lt` and `lte` compare one value as a version and only apply to `release`.
+             *
+             *     * `glob`
+             *     * `equals`
+             *     * `starts_with`
+             *     * `contains`
+             *     * `ends_with`
+             *     * `does_not_start_with`
+             *     * `does_not_contain`
+             *     * `does_not_end_with`
+             *     * `cidr`
+             *     * `not_cidr`
+             *     * `gt`
+             *     * `gte`
+             *     * `lt`
+             *     * `lte`
+             * @enum {string}
+             */
+            operator?: "glob" | "equals" | "starts_with" | "contains" | "ends_with" | "does_not_start_with" | "does_not_contain" | "does_not_end_with" | "cidr" | "not_cidr" | "gt" | "gte" | "lt" | "lte";
+            /**
+             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
              *
              *     * `error_type`
              *     * `error_message`
@@ -5418,10 +6171,11 @@ export type components = {
              *     * `metric_name`
              *     * `release`
              *     * `ip_address`
+             *     * `geo_country_code`
              * @enum {string}
              */
-            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
-            /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
+            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
+            /** @description The values the field is compared to. The condition matches when any value matches, so multiple values act as OR; a negated operator matches when none does. A version comparison takes one release with a version such as `1.2.0` or `myapp@1.2.0`. A comparison with a package only applies to releases of that package. */
             value: string[];
         };
         /**
@@ -5538,6 +6292,9 @@ export type components = {
                     on_demand_extraction_disabled?: boolean;
                     orderby?: string;
                     selected_aggregate?: number | null;
+                    transformations?: {
+                        [key: string]: string[];
+                    };
                 }[];
                 thresholds?: {
                     [key: string]: unknown;
@@ -5632,6 +6389,9 @@ export type components = {
                 on_demand_extraction_disabled?: boolean;
                 orderby?: string;
                 selected_aggregate?: number | null;
+                transformations?: {
+                    [key: string]: string[];
+                };
             }[];
             thresholds?: {
                 [key: string]: unknown;
@@ -5778,6 +6538,9 @@ export type components = {
                     on_demand_extraction_disabled?: boolean;
                     orderby?: string;
                     selected_aggregate?: number | null;
+                    transformations?: {
+                        [key: string]: string[];
+                    };
                 }[];
                 thresholds?: {
                     [key: string]: unknown;
@@ -5920,6 +6683,9 @@ export type components = {
                     }[];
                     orderby: string;
                     selectedAggregate: number | null;
+                    transformations: {
+                        [key: string]: string[];
+                    };
                     widgetId: string;
                 }[];
                 thresholds: {
@@ -6097,6 +6863,9 @@ export type components = {
                 on_demand_extraction_disabled?: boolean;
                 orderby?: string;
                 selected_aggregate?: number | null;
+                transformations?: {
+                    [key: string]: string[];
+                };
             }[];
             thresholds?: {
                 [key: string]: unknown;
@@ -6146,6 +6915,9 @@ export type components = {
             on_demand_extraction_disabled?: boolean;
             orderby?: string;
             selected_aggregate?: number | null;
+            transformations?: {
+                [key: string]: string[];
+            };
         };
         /**
          * @description Allows parameters to be defined in snake case, but passed as camel case.
@@ -6300,6 +7072,7 @@ export type components = {
                 [key: string]: string | boolean;
             }[] | null;
             enableAutoReleaseCreation: boolean;
+            enableNativeSourceServerMapping: boolean;
             features: string[];
             fingerprintingRules: string;
             /** Format: date-time */
@@ -7062,6 +7835,24 @@ export type components = {
             path_patterns?: string[];
             /** @description Whether the source requires debug checksums. */
             requires_checksum?: boolean;
+        };
+        GetFlagLogResponse: {
+            data: {
+                /** @enum {string} */
+                action: "created" | "deleted" | "updated";
+                /** Format: date-time */
+                createdAt: string;
+                createdBy: string | null;
+                /** @enum {string|null} */
+                createdByType: "email" | "id" | "name" | null;
+                flag: string;
+                id: number;
+                /** @enum {string|null} */
+                provider: "generic" | "flagpole" | "launchdarkly" | "unleash" | "statsig" | null;
+                tags: {
+                    [key: string]: unknown;
+                };
+            };
         };
         GetReplay: {
             data: {
@@ -7881,6 +8672,19 @@ export type components = {
             releaseNotes: string | null;
             state: string;
         };
+        IntegrationChannelsResponse: {
+            results: {
+                display: string;
+                id: string;
+                name: string;
+                type: string;
+            }[];
+            warning?: string;
+        };
+        IntegrationChannelValidationResponse: {
+            detail?: string;
+            valid: boolean;
+        };
         IntegrationIssueConfigResponse: {
             accountType: string | null;
             createIssueConfig?: {
@@ -8267,6 +9071,7 @@ export type components = {
          *     - `ssqp` - Microsoft SSQP
          *     - `unified` - Unified Symbol Server Layout
          *     - `debuginfod` - debuginfod
+         *     - `nxsymstore` - Nintendo NXSymStore
          *
          *     **`casing`** ***(string)*** - The layout of the folder structure. The options are:
          *     - `default` - Default (mixed case)
@@ -8302,9 +9107,10 @@ export type components = {
              *     * `unified`
              *     * `debuginfod`
              *     * `slashsymbols`
+             *     * `nxsymstore`
              * @enum {string}
              */
-            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
         };
         /**
          * @description Allows parameters to be defined in snake case, but passed as camel case.
@@ -8451,6 +9257,24 @@ export type components = {
             size: number;
             type: string;
         }[];
+        ListFlagLogsResponse: {
+            data: {
+                /** @enum {string} */
+                action: "created" | "deleted" | "updated";
+                /** Format: date-time */
+                createdAt: string;
+                createdBy: string | null;
+                /** @enum {string|null} */
+                createdByType: "email" | "id" | "name" | null;
+                flag: string;
+                id: number;
+                /** @enum {string|null} */
+                provider: "generic" | "flagpole" | "launchdarkly" | "unleash" | "statsig" | null;
+                tags: {
+                    [key: string]: unknown;
+                };
+            }[];
+        };
         ListMemberOnTeamResponse: {
             /** Format: date-time */
             dateCreated: string;
@@ -8554,6 +9378,8 @@ export type components = {
                 slug: string;
             }[];
             startTimestamp: number;
+            /** Format: double */
+            timeSpan: number;
             title: string | null;
             toolCalls: number;
             toolErrors: number;
@@ -8612,6 +9438,30 @@ export type components = {
             } | null;
             secret: string | null;
             useCase?: string;
+        }[];
+        ListOrganizationCodeMappingsResponse: {
+            automaticallyGenerated: boolean;
+            defaultBranch: string | null;
+            hasCodeOwner: boolean;
+            id: string;
+            integrationId: string | null;
+            projectId: string;
+            projectSlug: string;
+            provider: {
+                aspects: {
+                    [key: string]: unknown;
+                };
+                canAdd: boolean;
+                canDisable: boolean;
+                features: string[];
+                key: string;
+                name: string;
+                slug: string;
+            } | null;
+            repoId: string;
+            repoName: string;
+            sourceRoot: string;
+            stackRoot: string;
         }[];
         ListOrganizationIntegrationResponse: {
             accountType: string | null;
@@ -9694,6 +10544,11 @@ export type components = {
             sha1: string;
             size: number;
         }[];
+        ListReleaseSetupSteps: {
+            complete: boolean;
+            /** @enum {string} */
+            step: "tag" | "repo" | "commit" | "deploy";
+        }[];
         ListReplayClicks: {
             data: {
                 node_id: number;
@@ -9877,6 +10732,24 @@ export type components = {
             };
             /** @enum {string} */
             attributeType: "string" | "number" | "boolean" | "array";
+            /**
+             * @description Additional, mostly-static metadata about an attribute.
+             *
+             *     When ``expand=context`` is requested, context is attached to every attribute.
+             *     Metadata comes from the sentry conventions, Sentry's own column definitions,
+             *     or user-authored context (gated behind ``data-browsing-attribute-context``),
+             *     in that precedence order. Only the fields available are included, so an
+             *     attribute with no metadata gets an empty context.
+             */
+            context?: {
+                brief?: string;
+                details?: string[];
+                examples?: (string | number | boolean)[];
+                isConvention?: boolean;
+                isCustom?: boolean;
+                isDeprecated?: boolean;
+                replacementAttribute?: string;
+            };
             key: string;
             name: string;
             secondaryAliases?: string[];
@@ -9946,14 +10819,13 @@ export type components = {
                 organizationId?: string;
             } | null;
         }[];
+        MappingItem: {
+            /** @description The repository path prefix that replaces stackRoot. For example, /app/pkg/file.py with stackRoot=/app/ and sourceRoot=src/ resolves to src/pkg/file.py. */
+            source_root: string;
+            /** @description The path prefix to strip from matching stack frame filenames before adding sourceRoot. */
+            stack_root: string;
+        };
         Monitor: {
-            alertRule?: {
-                environment: string;
-                targets: {
-                    targetIdentifier: number;
-                    targetType: string;
-                }[];
-            };
             config: {
                 alert_rule_id: number | null;
                 checkin_margin: number | null;
@@ -10054,31 +10926,7 @@ export type components = {
             slug: string;
             status: string;
         };
-        MonitorAlertRuleTargetValidator: {
-            /** @description ID of target object */
-            target_identifier: number;
-            /** @description One of [Member, Team] */
-            target_type: string;
-        };
-        MonitorAlertRuleValidator: {
-            /** @description Name of the environment */
-            environment?: string | null;
-            /** @description Array of dictionaries with information of the user or team to be notified */
-            targets: {
-                /** @description ID of target object */
-                target_identifier: number;
-                /** @description One of [Member, Team] */
-                target_type: string;
-            }[];
-        };
         MonitorList: {
-            alertRule?: {
-                environment: string;
-                targets: {
-                    targetIdentifier: number;
-                    targetType: string;
-                }[];
-            };
             config: {
                 alert_rule_id: number | null;
                 checkin_margin: number | null;
@@ -10185,25 +11033,13 @@ export type components = {
          *     Errors are output in camel case.
          */
         MonitorValidator: {
-            /** @description Alert rule configuration created alongside the monitor. */
-            alert_rule?: {
-                /** @description Name of the environment */
-                environment?: string | null;
-                /** @description Array of dictionaries with information of the user or team to be notified */
-                targets: {
-                    /** @description ID of target object */
-                    target_identifier: number;
-                    /** @description One of [Member, Team] */
-                    target_type: string;
-                }[];
-            };
             /** @description The configuration for the monitor. */
             config: {
                 /** @description How long (in minutes) after the expected checkin time will we wait until we consider the checkin to have been missed. */
                 checkin_margin?: number | null;
                 /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
                 failure_issue_threshold?: number | null;
-                /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+                /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
                 max_runtime?: number | null;
                 /** @description How many successful check-ins in a row before resolving an issue. */
                 recovery_threshold?: number | null;
@@ -10885,6 +11721,44 @@ export type components = {
             /** @description Type of the trigger that causes the notification. The only supported trigger right now is: `spike-protection`. */
             trigger_type: string;
         };
+        OrganizationCodeMappingResponse: {
+            automaticallyGenerated: boolean;
+            defaultBranch: string | null;
+            hasCodeOwner: boolean;
+            id: string;
+            integrationId: string | null;
+            projectId: string;
+            projectSlug: string;
+            provider: {
+                aspects: {
+                    [key: string]: unknown;
+                };
+                canAdd: boolean;
+                canDisable: boolean;
+                features: string[];
+                key: string;
+                name: string;
+                slug: string;
+            } | null;
+            repoId: string;
+            repoName: string;
+            sourceRoot: string;
+            stackRoot: string;
+        };
+        OrganizationCodeOwnersAssociationsResponse: {
+            [key: string]: {
+                associations: {
+                    [key: string]: string;
+                };
+                errors: {
+                    missing_external_teams: string[];
+                    missing_external_users: string[];
+                    missing_user_emails: string[];
+                    teams_without_access: string[];
+                    users_without_access: string[];
+                };
+            };
+        };
         OrganizationConfigIntegrationsEndpointResponse: {
             providers: {
                 canAdd: boolean;
@@ -11036,6 +11910,50 @@ export type components = {
             id: string;
             name: string;
         }[];
+        OrganizationEventsDroppedResponse: {
+            acceptedEvents: {
+                category: string;
+                /** Format: double */
+                count: number;
+                /** Format: double */
+                end: number;
+                outcome: string;
+                reason: string;
+                /** Format: double */
+                start: number;
+                tags: string[];
+                type: string;
+            }[];
+            droppedEvents: {
+                category: string;
+                /** Format: double */
+                count: number;
+                /** Format: double */
+                end: number;
+                outcome: string;
+                reason: string;
+                /** Format: double */
+                start: number;
+                tags: string[];
+                type: string;
+            }[];
+            meta: {
+                dataset: string;
+                /** Format: double */
+                end: number;
+                /** Format: double */
+                interval: number;
+                /** Format: double */
+                start: number;
+                suppressedDrops: {
+                    category: string;
+                    cause: string;
+                    count: number;
+                    outcome: string;
+                    reason: string;
+                }[];
+            };
+        };
         OrganizationEventsResponseDict: {
             data: {
                 [key: string]: unknown;
@@ -11078,37 +11996,7 @@ export type components = {
         };
         OrganizationEventsTimeseriesResponse: {
             meta?: {
-                acceptedAnnotations?: {
-                    /** Format: double */
-                    byteSize?: number;
-                    category: string;
-                    /** Format: double */
-                    end: number;
-                    /** Format: double */
-                    eventCount: number;
-                    outcome: string;
-                    reason: string;
-                    /** Format: double */
-                    start: number;
-                    /** @enum {string} */
-                    type: "system";
-                }[];
                 dataset: string;
-                droppedAnnotations?: {
-                    /** Format: double */
-                    byteSize?: number;
-                    category: string;
-                    /** Format: double */
-                    end: number;
-                    /** Format: double */
-                    eventCount: number;
-                    outcome: string;
-                    reason: string;
-                    /** Format: double */
-                    start: number;
-                    /** @enum {string} */
-                    type: "system";
-                }[];
                 /** Format: double */
                 end: number;
                 /** @description Ingestion status for the data behind a response. */
@@ -11138,20 +12026,24 @@ export type components = {
                     valueUnit: string | null;
                 };
                 values: {
+                    comparisonFilled?: boolean;
+                    comparisonSmoothed?: boolean;
                     /** Format: double */
-                    comparisonValue?: number;
+                    comparisonValue?: number | null;
                     /** @enum {string|null} */
                     confidence?: "low" | "high" | null;
+                    filled?: boolean;
                     incomplete: boolean;
                     incompleteReason?: string;
                     /** Format: double */
                     sampleCount?: number;
                     /** Format: double */
                     sampleRate?: number | null;
+                    smoothed?: boolean;
                     /** Format: double */
                     timestamp: number;
                     /** Format: double */
-                    value: number;
+                    value: number | null;
                 }[];
                 yAxis: string;
             }[];
@@ -11919,7 +12811,7 @@ export type components = {
             version: string;
         }[];
         OrganizationRelease: {
-            /** @description An optional list of commit data to be associated. */
+            /** @description An optional list of commit data to be associated. Very long lists are truncated to the most recent commits. */
             commits?: {
                 author_email?: string | null;
                 author_name?: string | null;
@@ -11960,6 +12852,24 @@ export type components = {
              */
             url?: string | null;
         };
+        OrganizationRepositorySettingsResponse: {
+            /** Format: date-time */
+            dateCreated: string;
+            externalId?: string | null;
+            externalSlug?: string | null;
+            id: string;
+            integrationId?: string | null;
+            name: string;
+            provider?: {
+                [key: string]: string;
+            };
+            settings?: {
+                codeReviewTriggers: string[];
+                enabledCodeReview: boolean;
+            } | null;
+            status?: string;
+            url?: string | null;
+        }[];
         OrganizationSentryAppDetailsResponse: {
             allowedOrigins: string[];
             author?: string | null;
@@ -12772,6 +13682,8 @@ export type components = {
             }[];
             /** @description Automatically create releases from ingested events. When disabled, releases must be created manually (e.g. via the Sentry CLI). */
             enableAutoReleaseCreation?: boolean;
+            /** @description Apply source server (srcsrv) information from native debug files to symbolicated frames. */
+            enableNativeSourceServerMapping?: boolean;
             /** @description Fingerprinting rules, as a newline-delimited config string, controlling how events are grouped into issues. */
             fingerprintingRules?: string | null;
             /** @description Identifier of the grouping algorithm used to assign events to issues. */
@@ -13392,6 +14304,24 @@ export type components = {
             repositoryId: string;
             source: string;
         }[];
+        ProjectSeerRepositoriesResponse: {
+            branchName: string | null;
+            branchOverrides: {
+                branchName: string;
+                id: string;
+                tagName: string;
+                tagValue: string;
+            }[];
+            externalId: string;
+            id: string;
+            instructions: string | null;
+            integrationId: string | null;
+            name: string;
+            organizationId: string;
+            owner: string;
+            provider: string;
+            repositoryId: string;
+        }[];
         ProjectSizeStatusCheckRulesResponse: {
             enabled: boolean;
             rules: {
@@ -13629,7 +14559,7 @@ export type components = {
             repository: string;
         };
         ReleaseSerializerWithProjects: {
-            /** @description An optional list of commit data to be associated. */
+            /** @description An optional list of commit data to be associated. Very long lists are truncated to the most recent commits. */
             commits?: {
                 author_email?: string | null;
                 author_name?: string | null;
@@ -13657,7 +14587,7 @@ export type components = {
             /** @description The username of the user to set as the release owner. */
             owner?: string;
             /** @description A list of project slugs that are involved in this release. */
-            projects: unknown[];
+            projects: string[];
             /** @description An optional commit reference. This is useful if a tagged version has been provided. */
             ref?: string | null;
             /** @description An optional list of commit references, one per repository, used to associate commits with the release. */
@@ -13726,7 +14656,31 @@ export type components = {
             /** Format: date-time */
             rangeStart: string;
         };
-        /** @description Span page plus conversation-level metadata. */
+        /**
+         * @description Allows parameters to be defined in snake case, but passed as camel case.
+         *
+         *     Errors are output in camel case.
+         */
+        RepositoryProjectPathConfig: {
+            /** @description The default branch to use when resolving source files. May be empty for Perforce. */
+            default_branch?: string;
+            /** @description The ID of the project to associate with the code mapping. */
+            project_id: number;
+            /** @description The ID of a repository belonging to the installed integration. */
+            repository_id: number;
+            /** @description The repository path prefix to substitute for the stack trace prefix. */
+            source_root: string;
+            /** @description The path prefix to replace in stack trace filenames. */
+            stack_root: string;
+        };
+        RepositorySettings: {
+            /** @description List of triggers for code review */
+            codeReviewTriggers?: ("on_new_commit" | "on_ready_for_review")[];
+            /** @description Whether code review is enabled for these repositories */
+            enabledCodeReview?: boolean;
+            /** @description List of repository IDs to update settings for. Maximum 1000 repositories. */
+            repositoryIds: number[];
+        };
         RetrieveOrganizationAIConversationResponse: {
             conversationId: string;
             projects: {
@@ -13738,12 +14692,23 @@ export type components = {
                 [key: string]: unknown;
             }[];
             stats: {
+                /** Format: double */
+                cacheReadCost: number;
+                cacheReadTokens: number;
+                /** Format: double */
+                cacheWriteCost: number;
+                cacheWriteTokens: number;
                 endTimestamp: number;
+                errors: number;
+                errorToolNames: string[];
                 /** Format: double */
                 generationDuration: number;
                 inputTokens: number;
                 llmCalls: number;
                 outputTokens: number;
+                /** Format: double */
+                reasoningCost: number;
+                reasoningTokens: number;
                 startTimestamp: number;
                 toolCalls: number;
                 toolErrors: number;
@@ -13752,7 +14717,11 @@ export type components = {
                 totalCost: number;
                 totalTokens: number;
                 usageByModel: {
+                    /** Format: double */
+                    cacheReadCost: number;
                     cacheReadTokens: number;
+                    /** Format: double */
+                    cacheWriteCost: number;
                     cacheWriteTokens: number;
                     /** Format: double */
                     inputCost: number;
@@ -13762,14 +14731,127 @@ export type components = {
                     /** Format: double */
                     outputCost: number;
                     outputTokens: number;
+                    /** Format: double */
+                    reasoningCost: number;
                     reasoningTokens: number;
                     /** Format: double */
                     totalCost: number;
                     totalTokens: number;
                 }[];
-            };
+            } | null;
             title: string | null;
             webUrl: string;
+        } | {
+            complete: boolean;
+            conversationId: string;
+            projects: {
+                id: number;
+                name: string;
+                slug: string;
+            }[];
+            sourceSpanCount: number;
+            stats: {
+                /** Format: double */
+                cacheReadCost: number;
+                cacheReadTokens: number;
+                /** Format: double */
+                cacheWriteCost: number;
+                cacheWriteTokens: number;
+                endTimestamp: number;
+                errors: number;
+                errorToolNames: string[];
+                /** Format: double */
+                generationDuration: number;
+                inputTokens: number;
+                llmCalls: number;
+                outputTokens: number;
+                /** Format: double */
+                reasoningCost: number;
+                reasoningTokens: number;
+                startTimestamp: number;
+                toolCalls: number;
+                toolErrors: number;
+                toolNames: string[];
+                /** Format: double */
+                totalCost: number;
+                totalTokens: number;
+                usageByModel: {
+                    /** Format: double */
+                    cacheReadCost: number;
+                    cacheReadTokens: number;
+                    /** Format: double */
+                    cacheWriteCost: number;
+                    cacheWriteTokens: number;
+                    /** Format: double */
+                    inputCost: number;
+                    inputTokens: number;
+                    llmCalls: number;
+                    model: string | null;
+                    /** Format: double */
+                    outputCost: number;
+                    outputTokens: number;
+                    /** Format: double */
+                    reasoningCost: number;
+                    reasoningTokens: number;
+                    /** Format: double */
+                    totalCost: number;
+                    totalTokens: number;
+                }[];
+            } | null;
+            title: string | null;
+            transcript: {
+                agentName?: string;
+                content: string;
+                /** Format: double */
+                duration?: number;
+                embeddingHasError?: boolean;
+                embeddingInput?: string;
+                /** Format: double */
+                embeddingTokens?: number;
+                evaluation?: {
+                    [key: string]: unknown;
+                };
+                id: string;
+                memory?: {
+                    [key: string]: unknown;
+                };
+                modelName?: string;
+                nodeId: string;
+                projectId?: string;
+                reasoning?: string;
+                /** @enum {string} */
+                role: "user" | "assistant" | "embedding" | "evaluation" | "memory";
+                /** Format: double */
+                timestamp: number;
+                toolCalls?: {
+                    /** Format: double */
+                    duration?: number;
+                    hasError: boolean;
+                    name: string;
+                    nodeId: string;
+                }[];
+                traceId?: string;
+                userEmail?: string;
+            }[];
+            webUrl: string;
+        };
+        SCIMListResourceTypesResponse: {
+            itemsPerPage: number;
+            Resources: {
+                description: string;
+                endpoint: string;
+                id: string;
+                meta: {
+                    location: string;
+                    resourceType: string;
+                };
+                name: string;
+                schema: string;
+                schemas: string[];
+            }[];
+            schemas: string[];
+            startIndex: number;
+            totalResults: number;
         };
         SCIMListResponseEnvelopeSCIMMemberIndexResponse: {
             itemsPerPage: number;
@@ -13862,6 +14944,67 @@ export type components = {
             /** @description SCIM schema URIs identifying the request format. Must be the PatchOp schema. */
             schemas?: string[];
         };
+        SCIMResourceTypeResponse: {
+            description: string;
+            endpoint: string;
+            id: string;
+            meta: {
+                location: string;
+                resourceType: string;
+            };
+            name: string;
+            schema: string;
+            schemas: string[];
+        };
+        SCIMSchemaResponse: {
+            attributes: {
+                [key: string]: unknown;
+            }[];
+            description: string;
+            id: string;
+            meta: {
+                location: string;
+                resourceType: string;
+            };
+            name: string;
+            schemas: string[];
+        };
+        SCIMServiceProviderConfigResponse: {
+            authenticationSchemes: {
+                description: string;
+                name: string;
+                primary: boolean;
+                specUri: string;
+                type: string;
+            }[];
+            bulk: {
+                maxOperations: number;
+                maxPayloadSize: number;
+                supported: boolean;
+            };
+            changePassword: {
+                supported: boolean;
+            };
+            documentationUri: string;
+            etag: {
+                supported: boolean;
+            };
+            filter: {
+                maxResults: number;
+                supported: boolean;
+            };
+            meta: {
+                location: string;
+                resourceType: string;
+            };
+            patch: {
+                supported: boolean;
+            };
+            schemas: string[];
+            sort: {
+                supported: boolean;
+            };
+        };
         SCIMTeamPatchOperation: {
             op: string;
             path?: string;
@@ -13946,6 +15089,59 @@ export type components = {
         SeerModelsResponse: {
             models: string[];
         };
+        /**
+         * @description Allows parameters to be defined in snake case, but passed as camel case.
+         *
+         *     Errors are output in camel case.
+         */
+        SeerProjectRepoCreate: {
+            /** @description The branch Seer works from in this repository. Leave empty to use the repository's default branch. */
+            branch_name?: string | null;
+            /**
+             * @deprecated
+             * @description Deprecated. Branch overrides selected by matching tags.
+             */
+            branch_overrides?: {
+                /** @description The repository branch Seer uses for issues whose events have this tag value. */
+                branch_name: string;
+                /** @description Event tag key to match. */
+                tag_name: string;
+                /** @description Event tag value to match. */
+                tag_value: string;
+            }[];
+            /** @description Extra context Seer should use when working with this repository. */
+            instructions?: string | null;
+            /** @description The ID of an active, supported repository in the organization. */
+            repository_id: number;
+        };
+        /**
+         * @description Allows parameters to be defined in snake case, but passed as camel case.
+         *
+         *     Errors are output in camel case.
+         */
+        SeerProjectReposBulk: {
+            /** @description Repositories to link and configure for Seer in this project. */
+            repos: {
+                /** @description The branch Seer works from in this repository. Leave empty to use the repository's default branch. */
+                branch_name?: string | null;
+                /**
+                 * @deprecated
+                 * @description Deprecated. Branch overrides selected by matching tags.
+                 */
+                branch_overrides?: {
+                    /** @description The repository branch Seer uses for issues whose events have this tag value. */
+                    branch_name: string;
+                    /** @description Event tag key to match. */
+                    tag_name: string;
+                    /** @description Event tag value to match. */
+                    tag_value: string;
+                }[];
+                /** @description Extra context Seer should use when working with this repository. */
+                instructions?: string | null;
+                /** @description The ID of an active, supported repository in the organization. */
+                repository_id: number;
+            }[];
+        };
         SentryAppComponentsResponse: {
             error: string | {
                 context?: {
@@ -13953,6 +15149,7 @@ export type components = {
                 };
                 detail?: string;
             };
+            installationUuid: string;
             schema: {
                 [key: string]: unknown;
             };
@@ -14641,6 +15838,7 @@ export type components = {
              *     - `ssqp` - Microsoft SSQP
              *     - `unified` - Unified Symbol Server Layout
              *     - `debuginfod` - debuginfod
+             *     - `nxsymstore` - Nintendo NXSymStore
              *
              *     **`casing`** ***(string)*** - The layout of the folder structure. The options are:
              *     - `default` - Default (mixed case)
@@ -14676,9 +15874,10 @@ export type components = {
                  *     * `unified`
                  *     * `debuginfod`
                  *     * `slashsymbols`
+                 *     * `nxsymstore`
                  * @enum {string}
                  */
-                type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
             };
             /** @description The human-readable name of the source. */
             name: string;
@@ -14799,6 +15998,73 @@ export type components = {
             /** @enum {string} */
             sdk_debug_id_support: "not-supported" | "unofficial-sdk" | "needs-upgrade" | "full";
             sdk_version: string | null;
+        };
+        StackPrefixesResponse: {
+            prefixes: {
+                fileCount: number;
+                path: string;
+            }[];
+        };
+        StacktraceLinkResponse: {
+            attemptedUrl?: string | null;
+            config: {
+                automaticallyGenerated: boolean;
+                defaultBranch: string | null;
+                hasCodeOwner: boolean;
+                id: string;
+                integrationId: string | null;
+                projectId: string;
+                projectSlug: string;
+                provider: {
+                    aspects: {
+                        [key: string]: unknown;
+                    };
+                    canAdd: boolean;
+                    canDisable: boolean;
+                    features: string[];
+                    key: string;
+                    name: string;
+                    slug: string;
+                } | null;
+                repoId: string;
+                repoName: string;
+                sourceRoot: string;
+                stackRoot: string;
+            } | null;
+            error: string | null;
+            integrations: {
+                accountType: string | null;
+                domainName: string | null;
+                icon: string | null;
+                id: string;
+                missingFeatures: {
+                    description: string;
+                    key: string;
+                }[] | null;
+                name: string;
+                outOfDate: boolean | null;
+                provider: {
+                    aspects: {
+                        [key: string]: unknown;
+                    };
+                    canAdd: boolean;
+                    canDisable: boolean;
+                    features: string[];
+                    key: string;
+                    name: string;
+                    slug: string;
+                };
+                scopes: string[] | null;
+                status: string;
+            }[];
+            sourcePath?: string | null;
+            sourceUrl: string | null;
+        };
+        StarSegment: {
+            /** @description The ID of the project the service span belongs to. */
+            project_id: number;
+            /** @description The name of the service span to star or unstar. */
+            service_span: string;
         };
         StatusDetailsValidator: {
             /** @description Ignore the issue until it has occurred this many times in `ignoreWindow` minutes. */
@@ -15340,10 +16606,10 @@ export type components = {
              *             - `value`: A positive integer representing the number of users that must be affected before the alert will fire.
              *             - `filters`: A list of additional sub-filters to evaluate before the alert will fire.
              *             - `interval`: The time period in which to evaluate the value. e.g. Number of users affected by an issue is more than `value` in `interval`.
-             *                 - `1min`: 1 minute
-             *                 - `5min`: 5 minutes
-             *                 - `15min`: 15 minutes
-             *                 - `1hr`: 1 hour
+             *                 - `1m`: 1 minute
+             *                 - `5m`: 5 minutes
+             *                 - `15m`: 15 minutes
+             *                 - `1h`: 1 hour
              *                 - `1d`: 1 day
              *                 - `1w`: 1 week
              *                 - `30d`: 30 days
@@ -15362,10 +16628,10 @@ export type components = {
              *             **Number of Events**
              *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
              *             - `interval`: The time period in which to evaluate the value. e.g. Number of events in an issue is more than `value` in `interval`.
-             *                 - `1min`: 1 minute
-             *                 - `5min`: 5 minutes
-             *                 - `15min`: 15 minutes
-             *                 - `1hr`: 1 hour
+             *                 - `1m`: 1 minute
+             *                 - `5m`: 5 minutes
+             *                 - `15m`: 15 minutes
+             *                 - `1h`: 1 hour
              *                 - `1d`: 1 day
              *                 - `1w`: 1 week
              *                 - `30d`: 30 days
@@ -15382,15 +16648,21 @@ export type components = {
              *
              *             **Percent of Events**
              *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
-             *             - `interval`: The time period in which to evaluate the value. e.g. Number of events in an issue is `comparisonInterval` percent higher `value` compared to `interval`.
-             *                 - `1min`: 1 minute
-             *                 - `5min`: 5 minutes
-             *                 - `15min`: 15 minutes
-             *                 - `1hr`: 1 hour
+             *             - `interval`: The time period in which to evaluate the value.
+             *                 - `1m`: 1 minute
+             *                 - `5m`: 5 minutes
+             *                 - `15m`: 15 minutes
+             *                 - `1h`: 1 hour
              *                 - `1d`: 1 day
              *                 - `1w`: 1 week
              *                 - `30d`: 30 days
-             *             - `comparisonInterval`: The time period to compare against. See `interval` for options.
+             *             - `comparisonInterval`: The time period to compare against.
+             *                 - `5m`: 5 minutes
+             *                 - `15m`: 15 minutes
+             *                 - `1h`: 1 hour
+             *                 - `1d`: 1 day
+             *                 - `1w`: 1 week
+             *                 - `30d`: 30 days
              *             ```json
              *                 {
              *                     "type": "event_frequency_percent",
@@ -15407,13 +16679,11 @@ export type components = {
              *             **Percentage of Sessions Affected Count**
              *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
              *             - `interval`: The time period in which to evaluate the value. e.g. Percentage of sessions affected by an issue is more than `value` in `interval`.
-             *                 - `1min`: 1 minute
-             *                 - `5min`: 5 minutes
-             *                 - `15min`: 15 minutes
-             *                 - `1hr`: 1 hour
-             *                 - `1d`: 1 day
-             *                 - `1w`: 1 week
-             *                 - `30d`: 30 days
+             *                 - `1m`: 1 minute
+             *                 - `5m`: 5 minutes
+             *                 - `10m`: 10 minutes
+             *                 - `30m`: 30 minutes
+             *                 - `1h`: 1 hour
              *             ```json
              *                 {
              *                     "type": "percent_sessions_count",
@@ -15427,21 +16697,26 @@ export type components = {
              *
              *             **Percentage of Sessions Affected Percent**
              *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
-             *             - `interval`: The time period in which to evaluate the value. e.g. Percentage of sessions affected by an issue is `comparisonInterval` percent higher `value` compared to `interval`.
-             *                 - `1min`: 1 minute
-             *                 - `5min`: 5 minutes
-             *                 - `15min`: 15 minutes
-             *                 - `1hr`: 1 hour
+             *             - `interval`: The time period in which to evaluate the value.
+             *                 - `1m`: 1 minute
+             *                 - `5m`: 5 minutes
+             *                 - `10m`: 10 minutes
+             *                 - `30m`: 30 minutes
+             *                 - `1h`: 1 hour
+             *             - `comparisonInterval`: The time period to compare against.
+             *                 - `5m`: 5 minutes
+             *                 - `15m`: 15 minutes
+             *                 - `1h`: 1 hour
              *                 - `1d`: 1 day
              *                 - `1w`: 1 week
              *                 - `30d`: 30 days
-             *             - `comparisonInterval`: The time period to compare against. See `interval` for options.
              *             ```json
              *                 {
              *                     "type": "percent_sessions_percent",
              *                     "comparison": {
              *                         "value": 10,
-             *                         "interval": "1h"
+             *                         "interval": "1h",
+             *                         "comparisonInterval": "1w"
              *                     },
              *                     "conditionResult": true
              *                 }
@@ -15460,7 +16735,7 @@ export type components = {
              *                 - `ew`: Ends with
              *                 - `is`: Is set
              *                 - `ns`: Is not set
-             *             - `value`: A string. Not required when match is `is` or `ns`.
+             *             - `value`: A string. Must be omitted when match is `is` or `ns`; required otherwise.
              *
              *             ```json
              *                 {
@@ -15486,7 +16761,7 @@ export type components = {
              *                 - `ew`: Ends with
              *                 - `is`: Is set
              *                 - `ns`: Is not set
-             *             - `value`: A string. Not required when match is `is` or `ns`.
+             *             - `value`: A string. Must be omitted when match is `is` or `ns`; required otherwise.
              *
              *             ```json
              *                 {
@@ -15643,7 +16918,7 @@ export type components = {
              *                     "config":{
              *                         "targetType":"specific",
              *                         "targetIdentifier":"12345",
-             *                         "targetDisplay":"",
+             *                         "targetDisplay":""
              *                         },
              *                     "integrationId":"1234",
              *                     "data":{
@@ -15813,7 +17088,7 @@ export type components = {
              *
              *             ```json
              *                 {
-             *                     "frequency":3600
+             *                     "frequency": 60
              *                 }
              *             ```
              */
@@ -15850,6 +17125,7 @@ export type components = {
             /**
              * @description The conditions on which the alert will trigger. See available options below.
              *             ```json
+             *             {
              *                 "triggers": {
              *                     "organizationId": "1",
              *                     "logicType": "any-short",
@@ -15884,9 +17160,9 @@ export type components = {
              *                             ],
              *                             "conditionResult": true
              *                         }
-             *                     ],
-             *                     "actions": []
+             *                     ]
              *                 }
+             *             }
              *             ```
              */
             triggers?: {
@@ -16682,6 +17958,8 @@ export interface operations {
                             slug: string;
                         }[];
                         startTimestamp: number;
+                        /** Format: double */
+                        timeSpan: number;
                         title: string | null;
                         toolCalls: number;
                         toolErrors: number;
@@ -16763,6 +18041,8 @@ export interface operations {
                  *     For example, `24h`, to mean query data starting from 24 hours ago to now.
                  */
                 statsPeriod?: string;
+                /** @description Defaults to timeline (paginated raw spans). Transcript returns paginated normalized messages; requires feature access. Transcript timestamps and durations are seconds. */
+                view?: "timeline" | "transcript";
             };
             header?: never;
             path: {
@@ -16791,12 +18071,23 @@ export interface operations {
                             [key: string]: unknown;
                         }[];
                         stats: {
+                            /** Format: double */
+                            cacheReadCost: number;
+                            cacheReadTokens: number;
+                            /** Format: double */
+                            cacheWriteCost: number;
+                            cacheWriteTokens: number;
                             endTimestamp: number;
+                            errors: number;
+                            errorToolNames: string[];
                             /** Format: double */
                             generationDuration: number;
                             inputTokens: number;
                             llmCalls: number;
                             outputTokens: number;
+                            /** Format: double */
+                            reasoningCost: number;
+                            reasoningTokens: number;
                             startTimestamp: number;
                             toolCalls: number;
                             toolErrors: number;
@@ -16805,7 +18096,11 @@ export interface operations {
                             totalCost: number;
                             totalTokens: number;
                             usageByModel: {
+                                /** Format: double */
+                                cacheReadCost: number;
                                 cacheReadTokens: number;
+                                /** Format: double */
+                                cacheWriteCost: number;
                                 cacheWriteTokens: number;
                                 /** Format: double */
                                 inputCost: number;
@@ -16815,13 +18110,108 @@ export interface operations {
                                 /** Format: double */
                                 outputCost: number;
                                 outputTokens: number;
+                                /** Format: double */
+                                reasoningCost: number;
                                 reasoningTokens: number;
                                 /** Format: double */
                                 totalCost: number;
                                 totalTokens: number;
                             }[];
-                        };
+                        } | null;
                         title: string | null;
+                        webUrl: string;
+                    } | {
+                        complete: boolean;
+                        conversationId: string;
+                        projects: {
+                            id: number;
+                            name: string;
+                            slug: string;
+                        }[];
+                        sourceSpanCount: number;
+                        stats: {
+                            /** Format: double */
+                            cacheReadCost: number;
+                            cacheReadTokens: number;
+                            /** Format: double */
+                            cacheWriteCost: number;
+                            cacheWriteTokens: number;
+                            endTimestamp: number;
+                            errors: number;
+                            errorToolNames: string[];
+                            /** Format: double */
+                            generationDuration: number;
+                            inputTokens: number;
+                            llmCalls: number;
+                            outputTokens: number;
+                            /** Format: double */
+                            reasoningCost: number;
+                            reasoningTokens: number;
+                            startTimestamp: number;
+                            toolCalls: number;
+                            toolErrors: number;
+                            toolNames: string[];
+                            /** Format: double */
+                            totalCost: number;
+                            totalTokens: number;
+                            usageByModel: {
+                                /** Format: double */
+                                cacheReadCost: number;
+                                cacheReadTokens: number;
+                                /** Format: double */
+                                cacheWriteCost: number;
+                                cacheWriteTokens: number;
+                                /** Format: double */
+                                inputCost: number;
+                                inputTokens: number;
+                                llmCalls: number;
+                                model: string | null;
+                                /** Format: double */
+                                outputCost: number;
+                                outputTokens: number;
+                                /** Format: double */
+                                reasoningCost: number;
+                                reasoningTokens: number;
+                                /** Format: double */
+                                totalCost: number;
+                                totalTokens: number;
+                            }[];
+                        } | null;
+                        title: string | null;
+                        transcript: {
+                            agentName?: string;
+                            content: string;
+                            /** Format: double */
+                            duration?: number;
+                            embeddingHasError?: boolean;
+                            embeddingInput?: string;
+                            /** Format: double */
+                            embeddingTokens?: number;
+                            evaluation?: {
+                                [key: string]: unknown;
+                            };
+                            id: string;
+                            memory?: {
+                                [key: string]: unknown;
+                            };
+                            modelName?: string;
+                            nodeId: string;
+                            projectId?: string;
+                            reasoning?: string;
+                            /** @enum {string} */
+                            role: "user" | "assistant" | "embedding" | "evaluation" | "memory";
+                            /** Format: double */
+                            timestamp: number;
+                            toolCalls?: {
+                                /** Format: double */
+                                duration?: number;
+                                hasError: boolean;
+                                name: string;
+                                nodeId: string;
+                            }[];
+                            traceId?: string;
+                            userEmail?: string;
+                        }[];
                         webUrl: string;
                     };
                 };
@@ -16832,6 +18222,659 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    assembleOrganizationArtifactBundle: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description The SHA-1 checksum of the whole bundle. */
+                    checksum: string;
+                    /** @description The SHA-1 checksums of the bundle's chunks, in order. Upload missing chunks with the chunk upload endpoint. Send an empty list to poll the bundle's state. */
+                    chunks: string[];
+                    /** @description The distribution to associate the bundle with. Requires `version`. */
+                    dist?: string;
+                    /** @description The IDs or slugs of the projects the bundle belongs to. */
+                    projects: string[];
+                    /** @description The release to associate the bundle with. */
+                    version?: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        detail?: string | null;
+                        missingChunks: string[];
+                        state: string;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getOrganizationChunkUploadOptions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        accept: string[];
+                        chunkSize: number;
+                        chunksPerRequest: number;
+                        compression: string[];
+                        concurrency: number;
+                        hashAlgorithm: string;
+                        maxFileSize: number;
+                        maxRequestSize: number;
+                        url: string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    uploadOrganizationChunks: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** @description The chunks to upload. Name each part after the SHA-1 checksum of its uncompressed content. Repeat the field for each chunk, up to `chunksPerRequest` per request. */
+                    file: string[];
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listOrganizationCodeMappings: {
+        parameters: {
+            query?: {
+                /** @description A pointer to the last object fetched and its sort order; used to retrieve the next or previous results. */
+                cursor?: string;
+                /** @description Filter mappings to a specific installed integration. */
+                integrationId?: string;
+                /** @description The maximum number of mappings to return per page. */
+                per_page?: number;
+                /** @description Filter by project ID or slug. Pass `-1` to include all projects the user can access. When omitted, mappings include all projects the user can access. */
+                project?: string[];
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        automaticallyGenerated: boolean;
+                        defaultBranch: string | null;
+                        hasCodeOwner: boolean;
+                        id: string;
+                        integrationId: string | null;
+                        projectId: string;
+                        projectSlug: string;
+                        provider: {
+                            aspects: {
+                                [key: string]: unknown;
+                            };
+                            canAdd: boolean;
+                            canDisable: boolean;
+                            features: string[];
+                            key: string;
+                            name: string;
+                            slug: string;
+                        } | null;
+                        repoId: string;
+                        repoName: string;
+                        sourceRoot: string;
+                        stackRoot: string;
+                    }[];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    createOrganizationCodeMapping: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The default branch to use when resolving source files. May be empty for Perforce. */
+                    default_branch?: string;
+                    /** @description The ID of the installed integration that provides the repository. */
+                    integration_id: number;
+                    /** @description The ID of the project to associate with the code mapping. */
+                    project_id: number;
+                    /** @description The ID of a repository belonging to the installed integration. */
+                    repository_id: number;
+                    /** @description The repository path prefix to substitute for the stack trace prefix. */
+                    source_root: string;
+                    /** @description The path prefix to replace in stack trace filenames. */
+                    stack_root: string;
+                };
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        automaticallyGenerated: boolean;
+                        defaultBranch: string | null;
+                        hasCodeOwner: boolean;
+                        id: string;
+                        integrationId: string | null;
+                        projectId: string;
+                        projectSlug: string;
+                        provider: {
+                            aspects: {
+                                [key: string]: unknown;
+                            };
+                            canAdd: boolean;
+                            canDisable: boolean;
+                            features: string[];
+                            key: string;
+                            name: string;
+                            slug: string;
+                        } | null;
+                        repoId: string;
+                        repoName: string;
+                        sourceRoot: string;
+                        stackRoot: string;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    updateOrganizationCodeMapping: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the code mapping to update. */
+                config_id: number;
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The default branch to use when resolving source files. May be empty for Perforce. */
+                    default_branch?: string;
+                    /** @description The ID of the project to associate with the code mapping. */
+                    project_id: number;
+                    /** @description The ID of a repository belonging to the installed integration. */
+                    repository_id: number;
+                    /** @description The repository path prefix to substitute for the stack trace prefix. */
+                    source_root: string;
+                    /** @description The path prefix to replace in stack trace filenames. */
+                    stack_root: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        automaticallyGenerated: boolean;
+                        defaultBranch: string | null;
+                        hasCodeOwner: boolean;
+                        id: string;
+                        integrationId: string | null;
+                        projectId: string;
+                        projectSlug: string;
+                        provider: {
+                            aspects: {
+                                [key: string]: unknown;
+                            };
+                            canAdd: boolean;
+                            canDisable: boolean;
+                            features: string[];
+                            key: string;
+                            name: string;
+                            slug: string;
+                        } | null;
+                        repoId: string;
+                        repoName: string;
+                        sourceRoot: string;
+                        stackRoot: string;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteOrganizationCodeMapping: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the code mapping to delete. */
+                config_id: number;
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    bulkUpsertOrganizationCodeMappings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The repository branch to use; inferred from the integration when omitted. */
+                    default_branch?: string;
+                    /** @description One or more stack-root and source-root mappings (maximum 300). */
+                    mappings: {
+                        /** @description The repository path prefix that replaces stackRoot. For example, /app/pkg/file.py with stackRoot=/app/ and sourceRoot=src/ resolves to src/pkg/file.py. */
+                        source_root: string;
+                        /** @description The path prefix to strip from matching stack frame filenames before adding sourceRoot. */
+                        stack_root: string;
+                    }[];
+                    /** @description The ID or slug of the project to configure. */
+                    project: number | string;
+                    /** @description Optional repository provider used to disambiguate or find the repository. If no matching Sentry repository exists, the repository is created after the provider confirms it exists. */
+                    provider?: string | null;
+                    /** @description The repository name as it appears in Sentry. */
+                    repository: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        created: number;
+                        errors: number;
+                        mappings: {
+                            detail?: string;
+                            sourceRoot: string;
+                            stackRoot: string;
+                            /** @enum {string} */
+                            status: "created" | "updated" | "error";
+                        }[];
+                        updated: number;
+                    };
+                };
+            };
+            /** @description One or more mappings could not be saved. */
+            207: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        created: number;
+                        errors: number;
+                        mappings: {
+                            detail?: string;
+                            sourceRoot: string;
+                            stackRoot: string;
+                            /** @enum {string} */
+                            status: "created" | "updated" | "error";
+                        }[];
+                        updated: number;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listOrganizationCodeownersAssociations: {
+        parameters: {
+            query?: {
+                /** @description Filter by project ID or slug. Specify multiple values to include multiple projects. Use `-1` to include all accessible projects. */
+                project?: string[];
+                /** @description Filter associations by integration provider. */
+                provider?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: {
+                            associations: {
+                                [key: string]: string;
+                            };
+                            errors: {
+                                missing_external_teams: string[];
+                                missing_external_users: string[];
+                                missing_user_emails: string[];
+                                teams_without_access: string[];
+                                users_without_access: string[];
+                            };
+                        };
+                    };
+                };
             };
             /** @description Unauthorized */
             401: {
@@ -17160,6 +19203,9 @@ export interface operations {
                             on_demand_extraction_disabled?: boolean;
                             orderby?: string;
                             selected_aggregate?: number | null;
+                            transformations?: {
+                                [key: string]: string[];
+                            };
                         }[];
                         thresholds?: {
                             [key: string]: unknown;
@@ -17310,6 +19356,9 @@ export interface operations {
                                 }[];
                                 orderby: string;
                                 selectedAggregate: number | null;
+                                transformations: {
+                                    [key: string]: string[];
+                                };
                                 widgetId: string;
                             }[];
                             thresholds: {
@@ -17497,6 +19546,9 @@ export interface operations {
                                 }[];
                                 orderby: string;
                                 selectedAggregate: number | null;
+                                transformations: {
+                                    [key: string]: string[];
+                                };
                                 widgetId: string;
                             }[];
                             thresholds: {
@@ -17649,6 +19701,9 @@ export interface operations {
                             on_demand_extraction_disabled?: boolean;
                             orderby?: string;
                             selected_aggregate?: number | null;
+                            transformations?: {
+                                [key: string]: string[];
+                            };
                         }[];
                         thresholds?: {
                             [key: string]: unknown;
@@ -17799,6 +19854,9 @@ export interface operations {
                                 }[];
                                 orderby: string;
                                 selectedAggregate: number | null;
+                                transformations: {
+                                    [key: string]: string[];
+                                };
                                 widgetId: string;
                             }[];
                             thresholds: {
@@ -18396,7 +20454,7 @@ export interface operations {
                      *                     - `static`: Threshold based monitor
                      *                     - `percent`: Change based monitor
                      *                     - `dynamic`: Dynamic monitor
-                     *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period at which to compare against in minutes.
+                     *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period, in seconds, at which to compare against historical data.
                      *                 For example, a value of 3600 compares the metric tracked against data 1 hour ago.
                      *                     - `300`: 5 minutes
                      *                     - `900`: 15 minutes
@@ -18408,20 +20466,20 @@ export interface operations {
                      *                 **Threshold**
                      *                 ```json
                      *                 {
-                     *                     "detectionType": "static",
+                     *                     "detectionType": "static"
                      *                 }
                      *                 ```
                      *                 **Change**
                      *                 ```json
                      *                 {
                      *                     "detectionType": "percent",
-                     *                     "comparisonDelta": 3600,
+                     *                     "comparisonDelta": 3600
                      *                 }
                      *                 ```
                      *                 **Dynamic**
                      *                 ```json
                      *                 {
-                     *                     "detectionType": "dynamic",
+                     *                     "detectionType": "dynamic"
                      *                 }
                      *                 ```
                      */
@@ -18429,7 +20487,12 @@ export interface operations {
                         [key: string]: unknown;
                     };
                     /**
-                     * @description The data sources for the monitor to use based on what you want to measure.
+                     * @description The data sources for the metric monitor to use based on what you want to measure.
+                     *
+                     *                 `timeWindow` is measured in seconds. Cron Monitors use schedules instead of this field.
+                     *                 Legacy metric alert rules expressed this value in minutes, so multiply a legacy value
+                     *                 by 60 when migrating it to a monitor. For example, a legacy 5-minute window becomes
+                     *                 `"timeWindow": 300`.
                      *
                      *                 **Number of Errors Metric Monitor**
                      *                 - `eventTypes`: Any of `error` or `default`.
@@ -18442,9 +20505,9 @@ export interface operations {
                      *                             "eventTypes": ["default", "error"],
                      *                             "query": "is:unresolved",
                      *                             "queryType": 0,
-                     *                             "timeWindow": 3600,
-                     *                         },
-                     *                     ],
+                     *                             "timeWindow": 3600
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Users Experiencing Errors Metric Monitor**
@@ -18458,9 +20521,9 @@ export interface operations {
                      *                             "eventTypes": ["default", "error"],
                      *                             "query": "is:unresolved",
                      *                             "queryType": 0,
-                     *                             "timeWindow": 3600,
-                     *                         },
-                     *                     ],
+                     *                             "timeWindow": 3600
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *
@@ -18471,13 +20534,13 @@ export interface operations {
                      *                             "aggregate":"count(span.duration)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Duration Metric Monitor**
@@ -18487,13 +20550,13 @@ export interface operations {
                      *                             "aggregate":"p95(span.duration)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Failure Rate Metric Monitor**
@@ -18503,17 +20566,17 @@ export interface operations {
                      *                             "aggregate":"failure_rate()",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Largest Contentful Paint Metric Monitor**
-                     *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+                     *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
                      *                 - `aggregate`: Valid values are `avg(measurements.lcp)`, `p50(measurements.lcp)`, `p75(measurements.lcp)`, `p95(measurements.lcp)`, `p99(measurements.lcp)`, `p100(measurements.lcp)`, and `percentile(measurements.lcp,x)`, where `x` is your custom percentile.
                      *
                      *                 ```json
@@ -18522,17 +20585,17 @@ export interface operations {
                      *                             "aggregate":"p95(measurements.lcp)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
-                     *                             "query":"",
+                     *                             "eventTypes":["trace_item_span"],
+                     *                             "query":"is_transaction:true",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Custom Metric Monitor**
-                     *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+                     *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
                      *                 - `aggregate`: Valid values are:
                      *                 `avg(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
                      *                 `p50(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
@@ -18548,11 +20611,17 @@ export interface operations {
                      *                 ```json
                      *                 [
                      *                     {
-                     *                         "aggregate": "p75(measurements.ttfb)"
+                     *                         "aggregate": "p75(measurements.ttfb)",
                      *                         "dataset": "events_analytics_platform",
+                     *                         "environment": "prod",
                      *                         "queryType": 1,
-                     *                     },
-                     *                 ],
+                     *                         "eventTypes": ["trace_item_span"],
+                     *                         "query": "is_transaction:true",
+                     *                         "timeWindow": 3600,
+                     *                         "extrapolationMode": "unknown"
+                     *                     }
+                     *                 ]
+                     *                 ```
                      */
                     data_sources?: unknown[];
                     /** @description A description of the monitor. Will be used in the resulting issue. */
@@ -19595,6 +21664,139 @@ export interface operations {
             };
         };
     };
+    listOrganizationEventsDropped: {
+        parameters: {
+            query: {
+                /**
+                 * @description Which dataset to query. The chosen dataset determines which fields are queryable.
+                 *     - `errors` - Error events.
+                 *     - `logs` - Structured log events.
+                 *     - `profile_functions` - Function-level Profiling data.
+                 *     - `spans` - Distributed tracing span events.
+                 *     - `tracemetrics` - Application Metrics.
+                 *     - `uptime_results` - Uptime monitoring check results.
+                 */
+                dataset: "errors" | "logs" | "profile_functions" | "spans" | "tracemetrics" | "uptime_results";
+                /** @description The end of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                end?: string;
+                /** @description The name of environments to filter by. */
+                environment?: string[];
+                /**
+                 * @description The size of the bucket for the timeseries to have, must be a value smaller than the window being
+                 *     queried. If the interval is invalid a default interval will be selected instead
+                 */
+                interval?: number;
+                /**
+                 * @description Narrow the dropped events (only) to a single top-level drop classification (e.g. `rate_limited`, `filtered`).
+                 *
+                 *     * `filtered`
+                 *     * `rate_limited`
+                 *     * `invalid`
+                 *     * `abuse`
+                 *     * `client_discard`
+                 *     * `cardinality_limited`
+                 */
+                outcome?: "filtered" | "rate_limited" | "invalid" | "abuse" | "client_discard" | "cardinality_limited";
+                /**
+                 * @description The IDs or slugs of projects to filter by. Project slugs are unique within each organization. Omit this parameter to include all accessible projects. `-1` is also accepted to include all accessible projects.
+                 *     For example, the following are valid parameters:
+                 *     - `/?project=1234&project=56789`
+                 *     - `/?project=android&project=javascript-react`
+                 *     - `/?project=-1`
+                 */
+                project?: (number | string)[];
+                /** @description Narrow the dropped events to a single reason, the sub-classification within an outcome (e.g. `spike_protection` within `rate_limited`). Should be combined with `outcome`. */
+                reason?: string;
+                /** @description The start of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                start?: string;
+                /**
+                 * @description The period of time for the query, will override the start & end parameters, a number followed by one of:
+                 *     - `d` for days
+                 *     - `h` for hours
+                 *     - `m` for minutes
+                 *     - `s` for seconds
+                 *     - `w` for weeks
+                 *
+                 *     For example, `24h`, to mean query data starting from 24 hours ago to now.
+                 */
+                statsPeriod?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        acceptedEvents: {
+                            category: string;
+                            /** Format: double */
+                            count: number;
+                            /** Format: double */
+                            end: number;
+                            outcome: string;
+                            reason: string;
+                            /** Format: double */
+                            start: number;
+                            tags: string[];
+                            type: string;
+                        }[];
+                        droppedEvents: {
+                            category: string;
+                            /** Format: double */
+                            count: number;
+                            /** Format: double */
+                            end: number;
+                            outcome: string;
+                            reason: string;
+                            /** Format: double */
+                            start: number;
+                            tags: string[];
+                            type: string;
+                        }[];
+                        meta: {
+                            dataset: string;
+                            /** Format: double */
+                            end: number;
+                            /** Format: double */
+                            interval: number;
+                            /** Format: double */
+                            start: number;
+                            suppressedDrops: {
+                                category: string;
+                                cause: string;
+                                count: number;
+                                outcome: string;
+                                reason: string;
+                            }[];
+                        };
+                    };
+                };
+            };
+            /** @description Invalid Query */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     listOrganizationEventsTimeseries: {
         parameters: {
             query: {
@@ -19645,9 +21847,16 @@ export interface operations {
                  */
                 project?: (number | string)[];
                 /**
-                 * @description Filters results by using [query syntax](/product/sentry-basics/search/).
+                 * @description Filters results by using [query syntax](/concepts/search/).
                  *
                  *     Example: `query=(transaction:foo AND release:abc) OR (transaction:[bar,baz] AND release:def)`
+                 *
+                 *     With the `logs` dataset, a string attribute can also be matched against a regular expression written as `key://pattern//`, and excluded with `!key://pattern//`.
+                 *     Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax), match anywhere in the value unless anchored with `^` or `$`, are case sensitive unless they start with `(?i)`, and are limited to 64 characters. A query can contain up to 16 regular expressions.
+                 *     To search for a literal value that starts with `//`, quote it: `key:"//value"`.
+                 *     See [regular expressions](/concepts/search/#regular-expressions-logs-only) for more details.
+                 *
+                 *     Example: `query=message://^Timeout after \d+ms//`
                  */
                 query?: string;
                 /** @description What to order the results of the query by. Must be something in the `field` list, excluding equations. */
@@ -19705,37 +21914,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         meta?: {
-                            acceptedAnnotations?: {
-                                /** Format: double */
-                                byteSize?: number;
-                                category: string;
-                                /** Format: double */
-                                end: number;
-                                /** Format: double */
-                                eventCount: number;
-                                outcome: string;
-                                reason: string;
-                                /** Format: double */
-                                start: number;
-                                /** @enum {string} */
-                                type: "system";
-                            }[];
                             dataset: string;
-                            droppedAnnotations?: {
-                                /** Format: double */
-                                byteSize?: number;
-                                category: string;
-                                /** Format: double */
-                                end: number;
-                                /** Format: double */
-                                eventCount: number;
-                                outcome: string;
-                                reason: string;
-                                /** Format: double */
-                                start: number;
-                                /** @enum {string} */
-                                type: "system";
-                            }[];
                             /** Format: double */
                             end: number;
                             /** @description Ingestion status for the data behind a response. */
@@ -19765,20 +21944,24 @@ export interface operations {
                                 valueUnit: string | null;
                             };
                             values: {
+                                comparisonFilled?: boolean;
+                                comparisonSmoothed?: boolean;
                                 /** Format: double */
-                                comparisonValue?: number;
+                                comparisonValue?: number | null;
                                 /** @enum {string|null} */
                                 confidence?: "low" | "high" | null;
+                                filled?: boolean;
                                 incomplete: boolean;
                                 incompleteReason?: string;
                                 /** Format: double */
                                 sampleCount?: number;
                                 /** Format: double */
                                 sampleRate?: number | null;
+                                smoothed?: boolean;
                                 /** Format: double */
                                 timestamp: number;
                                 /** Format: double */
-                                value: number;
+                                value: number | null;
                             }[];
                             yAxis: string;
                         }[];
@@ -19847,9 +22030,16 @@ export interface operations {
                  */
                 project?: (number | string)[];
                 /**
-                 * @description Filters results by using [query syntax](/product/sentry-basics/search/).
+                 * @description Filters results by using [query syntax](/concepts/search/).
                  *
                  *     Example: `query=(transaction:foo AND release:abc) OR (transaction:[bar,baz] AND release:def)`
+                 *
+                 *     With the `logs` dataset, a string attribute can also be matched against a regular expression written as `key://pattern//`, and excluded with `!key://pattern//`.
+                 *     Patterns use [RE2 syntax](https://github.com/google/re2/wiki/Syntax), match anywhere in the value unless anchored with `^` or `$`, are case sensitive unless they start with `(?i)`, and are limited to 64 characters. A query can contain up to 16 regular expressions.
+                 *     To search for a literal value that starts with `//`, quote it: `key:"//value"`.
+                 *     See [regular expressions](/concepts/search/#regular-expressions-logs-only) for more details.
+                 *
+                 *     Example: `query=message://^Timeout after \d+ms//`
                  */
                 query?: string;
                 /** @description Internal referrer identifier used for query tracing. Most clients can omit this. */
@@ -20140,6 +22330,166 @@ export interface operations {
             };
             /** @description Forbidden */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listOrganizationFlagLogs: {
+        parameters: {
+            query?: {
+                /** @description A pointer to the last object fetched and its sort order; used to retrieve the next or previous results. */
+                cursor?: string;
+                /** @description The end of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                end?: string;
+                /** @description The name of a feature flag to filter by. Repeat the parameter to match multiple flags. */
+                flag?: string[];
+                /** @description Limit the number of rows to return in the result. Default and maximum allowed is 100. */
+                per_page?: number;
+                /** @description The flag provider to filter by. Use `unknown` to match logs without a provider. Repeat the parameter to match multiple providers. */
+                provider?: ("flagpole" | "generic" | "launchdarkly" | "statsig" | "unknown" | "unleash")[];
+                /**
+                 * @description The field to sort results by.
+                 *
+                 *     Available fields are:
+                 *     - `action`
+                 *     - `createdAt`
+                 *     - `createdBy`
+                 *     - `createdByType`
+                 *     - `flag`
+                 *     - `provider`
+                 *
+                 *     Prefix with `-` to sort in descending order.
+                 */
+                sort?: string;
+                /** @description The start of the period of time for the query, expected in ISO-8601 format. For example, `2001-12-14T12:34:56.7890`. */
+                start?: string;
+                /**
+                 * @description The period of time for the query, will override the start & end parameters, a number followed by one of:
+                 *     - `d` for days
+                 *     - `h` for hours
+                 *     - `m` for minutes
+                 *     - `s` for seconds
+                 *     - `w` for weeks
+                 *
+                 *     For example, `24h`, to mean query data starting from 24 hours ago to now.
+                 */
+                statsPeriod?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            /** @enum {string} */
+                            action: "created" | "deleted" | "updated";
+                            /** Format: date-time */
+                            createdAt: string;
+                            createdBy: string | null;
+                            /** @enum {string|null} */
+                            createdByType: "email" | "id" | "name" | null;
+                            flag: string;
+                            id: number;
+                            /** @enum {string|null} */
+                            provider: "generic" | "flagpole" | "launchdarkly" | "unleash" | "statsig" | null;
+                            tags: {
+                                [key: string]: unknown;
+                            };
+                        }[];
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    retrieveOrganizationFlagLog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the flag log entry you'd like to retrieve. */
+                flag_log_id: number;
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: {
+                            /** @enum {string} */
+                            action: "created" | "deleted" | "updated";
+                            /** Format: date-time */
+                            createdAt: string;
+                            createdBy: string | null;
+                            /** @enum {string|null} */
+                            createdByType: "email" | "id" | "name" | null;
+                            flag: string;
+                            id: number;
+                            /** @enum {string|null} */
+                            provider: "generic" | "flagpole" | "launchdarkly" | "unleash" | "statsig" | null;
+                            tags: {
+                                [key: string]: unknown;
+                            };
+                        };
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -20884,6 +23234,109 @@ export interface operations {
         responses: {
             /** @description No Content */
             204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    validateOrganizationIntegrationChannel: {
+        parameters: {
+            query: {
+                channel: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID of the integration installed on the organization. */
+                integration_id: string;
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        detail?: string;
+                        valid: boolean;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listOrganizationIntegrationChannels: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID of the integration installed on the organization. */
+                integration_id: string;
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: {
+                            display: string;
+                            id: string;
+                            name: string;
+                            type: string;
+                        }[];
+                        warning?: string;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -22421,6 +24874,8 @@ export interface operations {
     getOrganizationIssueEvent: {
         parameters: {
             query?: {
+                /** @description Parts of the response to skip computing. Specify `adjacentEvents` to skip looking up the neighboring events in the issue; `nextEventID` and `previousEventID` are then always `null`. Unknown values are ignored. */
+                collapse?: "adjacentEvents"[];
                 /** @description The name of environments to filter by. */
                 environment?: string[];
                 /** @description If set, adds a `formatted` field to the response with the event rendered as the requested format for LLM consumption. */
@@ -24398,13 +26853,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -24543,25 +26991,13 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description Alert rule configuration created alongside the monitor. */
-                    alert_rule?: {
-                        /** @description Name of the environment */
-                        environment?: string | null;
-                        /** @description Array of dictionaries with information of the user or team to be notified */
-                        targets: {
-                            /** @description ID of target object */
-                            target_identifier: number;
-                            /** @description One of [Member, Team] */
-                            target_type: string;
-                        }[];
-                    };
                     /** @description The configuration for the monitor. */
                     config: {
                         /** @description How long (in minutes) after the expected checkin time will we wait until we consider the checkin to have been missed. */
                         checkin_margin?: number | null;
                         /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
                         failure_issue_threshold?: number | null;
-                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
                         max_runtime?: number | null;
                         /** @description How many successful check-ins in a row before resolving an issue. */
                         recovery_threshold?: number | null;
@@ -25209,13 +27645,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -25371,13 +27800,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -25518,25 +27940,13 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description Alert rule configuration created alongside the monitor. */
-                    alert_rule?: {
-                        /** @description Name of the environment */
-                        environment?: string | null;
-                        /** @description Array of dictionaries with information of the user or team to be notified */
-                        targets: {
-                            /** @description ID of target object */
-                            target_identifier: number;
-                            /** @description One of [Member, Team] */
-                            target_type: string;
-                        }[];
-                    };
                     /** @description The configuration for the monitor. */
                     config: {
                         /** @description How long (in minutes) after the expected checkin time will we wait until we consider the checkin to have been missed. */
                         checkin_margin?: number | null;
                         /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
                         failure_issue_threshold?: number | null;
-                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
                         max_runtime?: number | null;
                         /** @description How many successful check-ins in a row before resolving an issue. */
                         recovery_threshold?: number | null;
@@ -26184,13 +28594,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -27983,7 +30386,7 @@ export interface operations {
                      *                     - `static`: Threshold based monitor
                      *                     - `percent`: Change based monitor
                      *                     - `dynamic`: Dynamic monitor
-                     *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period at which to compare against in minutes.
+                     *                 - `comparisonDelta`: If selecting a **change** detection type, the comparison delta is the time period, in seconds, at which to compare against historical data.
                      *                 For example, a value of 3600 compares the metric tracked against data 1 hour ago.
                      *                     - `300`: 5 minutes
                      *                     - `900`: 15 minutes
@@ -27995,20 +30398,20 @@ export interface operations {
                      *                 **Threshold**
                      *                 ```json
                      *                 {
-                     *                     "detectionType": "static",
+                     *                     "detectionType": "static"
                      *                 }
                      *                 ```
                      *                 **Change**
                      *                 ```json
                      *                 {
                      *                     "detectionType": "percent",
-                     *                     "comparisonDelta": 3600,
+                     *                     "comparisonDelta": 3600
                      *                 }
                      *                 ```
                      *                 **Dynamic**
                      *                 ```json
                      *                 {
-                     *                     "detectionType": "dynamic",
+                     *                     "detectionType": "dynamic"
                      *                 }
                      *                 ```
                      */
@@ -28016,7 +30419,12 @@ export interface operations {
                         [key: string]: unknown;
                     };
                     /**
-                     * @description The data sources for the monitor to use based on what you want to measure.
+                     * @description The data sources for the metric monitor to use based on what you want to measure.
+                     *
+                     *                 `timeWindow` is measured in seconds. Cron Monitors use schedules instead of this field.
+                     *                 Legacy metric alert rules expressed this value in minutes, so multiply a legacy value
+                     *                 by 60 when migrating it to a monitor. For example, a legacy 5-minute window becomes
+                     *                 `"timeWindow": 300`.
                      *
                      *                 **Number of Errors Metric Monitor**
                      *                 - `eventTypes`: Any of `error` or `default`.
@@ -28029,9 +30437,9 @@ export interface operations {
                      *                             "eventTypes": ["default", "error"],
                      *                             "query": "is:unresolved",
                      *                             "queryType": 0,
-                     *                             "timeWindow": 3600,
-                     *                         },
-                     *                     ],
+                     *                             "timeWindow": 3600
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Users Experiencing Errors Metric Monitor**
@@ -28045,9 +30453,9 @@ export interface operations {
                      *                             "eventTypes": ["default", "error"],
                      *                             "query": "is:unresolved",
                      *                             "queryType": 0,
-                     *                             "timeWindow": 3600,
-                     *                         },
-                     *                     ],
+                     *                             "timeWindow": 3600
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *
@@ -28058,13 +30466,13 @@ export interface operations {
                      *                             "aggregate":"count(span.duration)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Duration Metric Monitor**
@@ -28074,13 +30482,13 @@ export interface operations {
                      *                             "aggregate":"p95(span.duration)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Failure Rate Metric Monitor**
@@ -28090,17 +30498,17 @@ export interface operations {
                      *                             "aggregate":"failure_rate()",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
+                     *                             "eventTypes":["trace_item_span"],
                      *                             "query":"",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Largest Contentful Paint Metric Monitor**
-                     *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+                     *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
                      *                 - `aggregate`: Valid values are `avg(measurements.lcp)`, `p50(measurements.lcp)`, `p75(measurements.lcp)`, `p95(measurements.lcp)`, `p99(measurements.lcp)`, `p100(measurements.lcp)`, and `percentile(measurements.lcp,x)`, where `x` is your custom percentile.
                      *
                      *                 ```json
@@ -28109,17 +30517,17 @@ export interface operations {
                      *                             "aggregate":"p95(measurements.lcp)",
                      *                             "dataset":"events_analytics_platform",
                      *                             "environment":"prod",
-                     *                             "eventTypes":["trace_item_span"]
-                     *                             "query":"",
+                     *                             "eventTypes":["trace_item_span"],
+                     *                             "query":"is_transaction:true",
                      *                             "queryType":1,
                      *                             "timeWindow":3600,
-                     *                             "extrapolationMode":"unknown",
-                     *                         },
-                     *                     ],
+                     *                             "extrapolationMode":"unknown"
+                     *                         }
+                     *                     ]
                      *                 ```
                      *
                      *                 **Custom Metric Monitor**
-                     *                 - `dataset`: If a custom percentile is used, dataset is `transactions`. Otherwise, dataset is `events_analytics_platform`.
+                     *                 - `dataset`: Use `events_analytics_platform`. To query transaction spans, add `is_transaction:true` to `query`.
                      *                 - `aggregate`: Valid values are:
                      *                 `avg(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
                      *                 `p50(x)`, where `x` is `transaction.duration`, `measurements.cls`, `measurements.fcp`, `measurements.fid`, `measurements.fp`, `measurements.lcp`, `measurements.ttfb`, or `measurements.ttfb.requesttime`.
@@ -28135,11 +30543,17 @@ export interface operations {
                      *                 ```json
                      *                 [
                      *                     {
-                     *                         "aggregate": "p75(measurements.ttfb)"
+                     *                         "aggregate": "p75(measurements.ttfb)",
                      *                         "dataset": "events_analytics_platform",
+                     *                         "environment": "prod",
                      *                         "queryType": 1,
-                     *                     },
-                     *                 ],
+                     *                         "eventTypes": ["trace_item_span"],
+                     *                         "query": "is_transaction:true",
+                     *                         "timeWindow": 3600,
+                     *                         "extrapolationMode": "unknown"
+                     *                     }
+                     *                 ]
+                     *                 ```
                      */
                     data_sources?: unknown[];
                     /** @description A description of the monitor. Will be used in the resulting issue. */
@@ -28567,7 +30981,7 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description An optional list of commit data to be associated. */
+                    /** @description An optional list of commit data to be associated. Very long lists are truncated to the most recent commits. */
                     commits?: {
                         author_email?: string | null;
                         author_name?: string | null;
@@ -28595,7 +31009,7 @@ export interface operations {
                     /** @description The username of the user to set as the release owner. */
                     owner?: string;
                     /** @description A list of project slugs that are involved in this release. */
-                    projects: unknown[];
+                    projects: string[];
                     /** @description An optional commit reference. This is useful if a tagged version has been provided. */
                     ref?: string | null;
                     /** @description An optional list of commit references, one per repository, used to associate commits with the release. */
@@ -29035,7 +31449,7 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** @description An optional list of commit data to be associated. */
+                    /** @description An optional list of commit data to be associated. Very long lists are truncated to the most recent commits. */
                     commits?: {
                         author_email?: string | null;
                         author_name?: string | null;
@@ -30196,7 +32610,7 @@ export interface operations {
                 /** @description The environments to filter by. */
                 environment?: string[];
                 /** @description Specifies a field that should be marshaled in the output. Invalid fields will be rejected. */
-                field?: ("activity" | "browser" | "count_dead_clicks" | "count_errors" | "count_rage_clicks" | "count_segments" | "count_urls" | "device" | "dist" | "duration" | "environment" | "error_ids" | "finished_at" | "id" | "is_archived" | "os" | "platform" | "project_id" | "releases" | "sdk" | "started_at" | "tags" | "trace_ids" | "segment_names" | "urls" | "user" | "clicks" | "info_ids" | "warning_ids" | "count_warnings" | "count_infos" | "has_viewed")[];
+                field?: ("activity" | "browser" | "clicks" | "count_dead_clicks" | "count_errors" | "count_infos" | "count_rage_clicks" | "count_segments" | "count_urls" | "count_warnings" | "device" | "dist" | "duration" | "environment" | "error_ids" | "finished_at" | "has_viewed" | "id" | "is_archived" | "os" | "ota_updates" | "platform" | "project_id" | "releases" | "replay_type" | "sdk" | "segment_names" | "started_at" | "tags" | "trace_ids" | "urls" | "user")[];
                 /** @description The field to sort the output by. */
                 orderBy?: string;
                 /** @description Limit the number of rows to return in the result. */
@@ -30341,7 +32755,7 @@ export interface operations {
                 /** @description The environments to filter by. */
                 environment?: string[];
                 /** @description Specifies a field that should be marshaled in the output. Invalid fields will be rejected. */
-                field?: ("activity" | "browser" | "count_dead_clicks" | "count_errors" | "count_rage_clicks" | "count_segments" | "count_urls" | "device" | "dist" | "duration" | "environment" | "error_ids" | "finished_at" | "id" | "is_archived" | "os" | "platform" | "project_id" | "releases" | "sdk" | "started_at" | "tags" | "trace_ids" | "segment_names" | "urls" | "user" | "clicks" | "info_ids" | "warning_ids" | "count_warnings" | "count_infos" | "has_viewed")[];
+                field?: ("activity" | "browser" | "clicks" | "count_dead_clicks" | "count_errors" | "count_infos" | "count_rage_clicks" | "count_segments" | "count_urls" | "count_warnings" | "device" | "dist" | "duration" | "environment" | "error_ids" | "finished_at" | "has_viewed" | "id" | "is_archived" | "os" | "ota_updates" | "platform" | "project_id" | "releases" | "replay_type" | "sdk" | "segment_names" | "started_at" | "tags" | "trace_ids" | "urls" | "user")[];
                 /** @description The field to sort the output by. */
                 orderBy?: string;
                 /** @description Limit the number of rows to return in the result. */
@@ -30772,6 +33186,84 @@ export interface operations {
             };
         };
     };
+    updateOrganizationRepositorySettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description List of triggers for code review */
+                    codeReviewTriggers?: ("on_new_commit" | "on_ready_for_review")[];
+                    /** @description Whether code review is enabled for these repositories */
+                    enabledCodeReview?: boolean;
+                    /** @description List of repository IDs to update settings for. Maximum 1000 repositories. */
+                    repositoryIds: number[];
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** Format: date-time */
+                        dateCreated: string;
+                        externalId?: string | null;
+                        externalSlug?: string | null;
+                        id: string;
+                        integrationId?: string | null;
+                        name: string;
+                        provider?: {
+                            [key: string]: string;
+                        };
+                        settings?: {
+                            codeReviewTriggers: string[];
+                            enabledCodeReview: boolean;
+                        } | null;
+                        status?: string;
+                        url?: string | null;
+                    }[];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     listOrganizationScimV2Groups: {
         parameters: {
             query?: {
@@ -31094,6 +33586,257 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listOrganizationScimV2ResourceTypes: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        itemsPerPage: number;
+                        Resources: {
+                            description: string;
+                            endpoint: string;
+                            id: string;
+                            meta: {
+                                location: string;
+                                resourceType: string;
+                            };
+                            name: string;
+                            schema: string;
+                            schemas: string[];
+                        }[];
+                        schemas: string[];
+                        startIndex: number;
+                        totalResults: number;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getOrganizationScimV2ResourceType: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The SCIM resource type name: `User` or `Group`. */
+                resource_type_name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        description: string;
+                        endpoint: string;
+                        id: string;
+                        meta: {
+                            location: string;
+                            resourceType: string;
+                        };
+                        name: string;
+                        schema: string;
+                        schemas: string[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getOrganizationScimV2Schema: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The SCIM schema URI, e.g. `urn:ietf:params:scim:schemas:core:2.0:User`. */
+                schema_uri: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        attributes: {
+                            [key: string]: unknown;
+                        }[];
+                        description: string;
+                        id: string;
+                        meta: {
+                            location: string;
+                            resourceType: string;
+                        };
+                        name: string;
+                        schemas: string[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getOrganizationScimV2ServiceProviderConfig: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        authenticationSchemes: {
+                            description: string;
+                            name: string;
+                            primary: boolean;
+                            specUri: string;
+                            type: string;
+                        }[];
+                        bulk: {
+                            maxOperations: number;
+                            maxPayloadSize: number;
+                            supported: boolean;
+                        };
+                        changePassword: {
+                            supported: boolean;
+                        };
+                        documentationUri: string;
+                        etag: {
+                            supported: boolean;
+                        };
+                        filter: {
+                            maxResults: number;
+                            supported: boolean;
+                        };
+                        meta: {
+                            location: string;
+                            resourceType: string;
+                        };
+                        patch: {
+                            supported: boolean;
+                        };
+                        schemas: string[];
+                        sort: {
+                            supported: boolean;
+                        };
+                    };
+                };
             };
             /** @description Unauthorized */
             401: {
@@ -31484,6 +34227,7 @@ export interface operations {
                             };
                             detail?: string;
                         };
+                        installationUuid: string;
                         schema: {
                             [key: string]: unknown;
                         };
@@ -32059,6 +34803,118 @@ export interface operations {
             };
             /** @description Forbidden */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    starOrganizationServiceSpan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description The ID of the project the service span belongs to. */
+                    project_id: number;
+                    /** @description The name of the service span to star or unstar. */
+                    service_span: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    unstarOrganizationServiceSpan: {
+        parameters: {
+            query: {
+                /** @description The ID of the project the service span belongs to. */
+                project_id: number;
+                /** @description The name of the service span to unstar. */
+                service_span: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -32722,6 +35578,12 @@ export interface operations {
                 /** @description The name of environments to filter by. */
                 environment?: string[];
                 /**
+                 * @description **Experimental:** This parameter is under active development and may change.
+                 *
+                 *     Optional fields to expand. Pass `context` to include attribute metadata (brief, examples, deprecation, etc.).
+                 */
+                expand?: "context"[];
+                /**
                  * @deprecated
                  * @description Deprecated alias of `dataset`. Use `dataset` instead.
                  */
@@ -32774,6 +35636,24 @@ export interface operations {
                         };
                         /** @enum {string} */
                         attributeType: "string" | "number" | "boolean" | "array";
+                        /**
+                         * @description Additional, mostly-static metadata about an attribute.
+                         *
+                         *     When ``expand=context`` is requested, context is attached to every attribute.
+                         *     Metadata comes from the sentry conventions, Sentry's own column definitions,
+                         *     or user-authored context (gated behind ``data-browsing-attribute-context``),
+                         *     in that precedence order. Only the fields available are included, so an
+                         *     attribute with no metadata gets an empty context.
+                         */
+                        context?: {
+                            brief?: string;
+                            details?: string[];
+                            examples?: (string | number | boolean)[];
+                            isConvention?: boolean;
+                            isCustom?: boolean;
+                            isDeprecated?: boolean;
+                            replacementAttribute?: string;
+                        };
                         key: string;
                         name: string;
                         secondaryAliases?: string[];
@@ -33888,10 +36768,10 @@ export interface operations {
                      *             - `value`: A positive integer representing the number of users that must be affected before the alert will fire.
                      *             - `filters`: A list of additional sub-filters to evaluate before the alert will fire.
                      *             - `interval`: The time period in which to evaluate the value. e.g. Number of users affected by an issue is more than `value` in `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
                      *                 - `1d`: 1 day
                      *                 - `1w`: 1 week
                      *                 - `30d`: 30 days
@@ -33910,10 +36790,10 @@ export interface operations {
                      *             **Number of Events**
                      *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
                      *             - `interval`: The time period in which to evaluate the value. e.g. Number of events in an issue is more than `value` in `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
                      *                 - `1d`: 1 day
                      *                 - `1w`: 1 week
                      *                 - `30d`: 30 days
@@ -33930,15 +36810,21 @@ export interface operations {
                      *
                      *             **Percent of Events**
                      *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
-                     *             - `interval`: The time period in which to evaluate the value. e.g. Number of events in an issue is `comparisonInterval` percent higher `value` compared to `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
+                     *             - `interval`: The time period in which to evaluate the value.
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
                      *                 - `1d`: 1 day
                      *                 - `1w`: 1 week
                      *                 - `30d`: 30 days
-                     *             - `comparisonInterval`: The time period to compare against. See `interval` for options.
+                     *             - `comparisonInterval`: The time period to compare against.
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
+                     *                 - `1d`: 1 day
+                     *                 - `1w`: 1 week
+                     *                 - `30d`: 30 days
                      *             ```json
                      *                 {
                      *                     "type": "event_frequency_percent",
@@ -33955,13 +36841,11 @@ export interface operations {
                      *             **Percentage of Sessions Affected Count**
                      *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
                      *             - `interval`: The time period in which to evaluate the value. e.g. Percentage of sessions affected by an issue is more than `value` in `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
-                     *                 - `1d`: 1 day
-                     *                 - `1w`: 1 week
-                     *                 - `30d`: 30 days
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `10m`: 10 minutes
+                     *                 - `30m`: 30 minutes
+                     *                 - `1h`: 1 hour
                      *             ```json
                      *                 {
                      *                     "type": "percent_sessions_count",
@@ -33975,21 +36859,26 @@ export interface operations {
                      *
                      *             **Percentage of Sessions Affected Percent**
                      *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
-                     *             - `interval`: The time period in which to evaluate the value. e.g. Percentage of sessions affected by an issue is `comparisonInterval` percent higher `value` compared to `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
+                     *             - `interval`: The time period in which to evaluate the value.
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `10m`: 10 minutes
+                     *                 - `30m`: 30 minutes
+                     *                 - `1h`: 1 hour
+                     *             - `comparisonInterval`: The time period to compare against.
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
                      *                 - `1d`: 1 day
                      *                 - `1w`: 1 week
                      *                 - `30d`: 30 days
-                     *             - `comparisonInterval`: The time period to compare against. See `interval` for options.
                      *             ```json
                      *                 {
                      *                     "type": "percent_sessions_percent",
                      *                     "comparison": {
                      *                         "value": 10,
-                     *                         "interval": "1h"
+                     *                         "interval": "1h",
+                     *                         "comparisonInterval": "1w"
                      *                     },
                      *                     "conditionResult": true
                      *                 }
@@ -34008,7 +36897,7 @@ export interface operations {
                      *                 - `ew`: Ends with
                      *                 - `is`: Is set
                      *                 - `ns`: Is not set
-                     *             - `value`: A string. Not required when match is `is` or `ns`.
+                     *             - `value`: A string. Must be omitted when match is `is` or `ns`; required otherwise.
                      *
                      *             ```json
                      *                 {
@@ -34034,7 +36923,7 @@ export interface operations {
                      *                 - `ew`: Ends with
                      *                 - `is`: Is set
                      *                 - `ns`: Is not set
-                     *             - `value`: A string. Not required when match is `is` or `ns`.
+                     *             - `value`: A string. Must be omitted when match is `is` or `ns`; required otherwise.
                      *
                      *             ```json
                      *                 {
@@ -34191,7 +37080,7 @@ export interface operations {
                      *                     "config":{
                      *                         "targetType":"specific",
                      *                         "targetIdentifier":"12345",
-                     *                         "targetDisplay":"",
+                     *                         "targetDisplay":""
                      *                         },
                      *                     "integrationId":"1234",
                      *                     "data":{
@@ -34361,7 +37250,7 @@ export interface operations {
                      *
                      *             ```json
                      *                 {
-                     *                     "frequency":3600
+                     *                     "frequency": 60
                      *                 }
                      *             ```
                      */
@@ -34398,6 +37287,7 @@ export interface operations {
                     /**
                      * @description The conditions on which the alert will trigger. See available options below.
                      *             ```json
+                     *             {
                      *                 "triggers": {
                      *                     "organizationId": "1",
                      *                     "logicType": "any-short",
@@ -34432,9 +37322,9 @@ export interface operations {
                      *                             ],
                      *                             "conditionResult": true
                      *                         }
-                     *                     ],
-                     *                     "actions": []
+                     *                     ]
                      *                 }
+                     *             }
                      *             ```
                      */
                     triggers?: {
@@ -34894,10 +37784,10 @@ export interface operations {
                      *             - `value`: A positive integer representing the number of users that must be affected before the alert will fire.
                      *             - `filters`: A list of additional sub-filters to evaluate before the alert will fire.
                      *             - `interval`: The time period in which to evaluate the value. e.g. Number of users affected by an issue is more than `value` in `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
                      *                 - `1d`: 1 day
                      *                 - `1w`: 1 week
                      *                 - `30d`: 30 days
@@ -34916,10 +37806,10 @@ export interface operations {
                      *             **Number of Events**
                      *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
                      *             - `interval`: The time period in which to evaluate the value. e.g. Number of events in an issue is more than `value` in `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
                      *                 - `1d`: 1 day
                      *                 - `1w`: 1 week
                      *                 - `30d`: 30 days
@@ -34936,15 +37826,21 @@ export interface operations {
                      *
                      *             **Percent of Events**
                      *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
-                     *             - `interval`: The time period in which to evaluate the value. e.g. Number of events in an issue is `comparisonInterval` percent higher `value` compared to `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
+                     *             - `interval`: The time period in which to evaluate the value.
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
                      *                 - `1d`: 1 day
                      *                 - `1w`: 1 week
                      *                 - `30d`: 30 days
-                     *             - `comparisonInterval`: The time period to compare against. See `interval` for options.
+                     *             - `comparisonInterval`: The time period to compare against.
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
+                     *                 - `1d`: 1 day
+                     *                 - `1w`: 1 week
+                     *                 - `30d`: 30 days
                      *             ```json
                      *                 {
                      *                     "type": "event_frequency_percent",
@@ -34961,13 +37857,11 @@ export interface operations {
                      *             **Percentage of Sessions Affected Count**
                      *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
                      *             - `interval`: The time period in which to evaluate the value. e.g. Percentage of sessions affected by an issue is more than `value` in `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
-                     *                 - `1d`: 1 day
-                     *                 - `1w`: 1 week
-                     *                 - `30d`: 30 days
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `10m`: 10 minutes
+                     *                 - `30m`: 30 minutes
+                     *                 - `1h`: 1 hour
                      *             ```json
                      *                 {
                      *                     "type": "percent_sessions_count",
@@ -34981,21 +37875,26 @@ export interface operations {
                      *
                      *             **Percentage of Sessions Affected Percent**
                      *             - `value`: A positive integer representing the number of events in an issue that must come in before the alert will fire
-                     *             - `interval`: The time period in which to evaluate the value. e.g. Percentage of sessions affected by an issue is `comparisonInterval` percent higher `value` compared to `interval`.
-                     *                 - `1min`: 1 minute
-                     *                 - `5min`: 5 minutes
-                     *                 - `15min`: 15 minutes
-                     *                 - `1hr`: 1 hour
+                     *             - `interval`: The time period in which to evaluate the value.
+                     *                 - `1m`: 1 minute
+                     *                 - `5m`: 5 minutes
+                     *                 - `10m`: 10 minutes
+                     *                 - `30m`: 30 minutes
+                     *                 - `1h`: 1 hour
+                     *             - `comparisonInterval`: The time period to compare against.
+                     *                 - `5m`: 5 minutes
+                     *                 - `15m`: 15 minutes
+                     *                 - `1h`: 1 hour
                      *                 - `1d`: 1 day
                      *                 - `1w`: 1 week
                      *                 - `30d`: 30 days
-                     *             - `comparisonInterval`: The time period to compare against. See `interval` for options.
                      *             ```json
                      *                 {
                      *                     "type": "percent_sessions_percent",
                      *                     "comparison": {
                      *                         "value": 10,
-                     *                         "interval": "1h"
+                     *                         "interval": "1h",
+                     *                         "comparisonInterval": "1w"
                      *                     },
                      *                     "conditionResult": true
                      *                 }
@@ -35014,7 +37913,7 @@ export interface operations {
                      *                 - `ew`: Ends with
                      *                 - `is`: Is set
                      *                 - `ns`: Is not set
-                     *             - `value`: A string. Not required when match is `is` or `ns`.
+                     *             - `value`: A string. Must be omitted when match is `is` or `ns`; required otherwise.
                      *
                      *             ```json
                      *                 {
@@ -35040,7 +37939,7 @@ export interface operations {
                      *                 - `ew`: Ends with
                      *                 - `is`: Is set
                      *                 - `ns`: Is not set
-                     *             - `value`: A string. Not required when match is `is` or `ns`.
+                     *             - `value`: A string. Must be omitted when match is `is` or `ns`; required otherwise.
                      *
                      *             ```json
                      *                 {
@@ -35197,7 +38096,7 @@ export interface operations {
                      *                     "config":{
                      *                         "targetType":"specific",
                      *                         "targetIdentifier":"12345",
-                     *                         "targetDisplay":"",
+                     *                         "targetDisplay":""
                      *                         },
                      *                     "integrationId":"1234",
                      *                     "data":{
@@ -35367,7 +38266,7 @@ export interface operations {
                      *
                      *             ```json
                      *                 {
-                     *                     "frequency":3600
+                     *                     "frequency": 60
                      *                 }
                      *             ```
                      */
@@ -35404,6 +38303,7 @@ export interface operations {
                     /**
                      * @description The conditions on which the alert will trigger. See available options below.
                      *             ```json
+                     *             {
                      *                 "triggers": {
                      *                     "organizationId": "1",
                      *                     "logicType": "any-short",
@@ -35438,9 +38338,9 @@ export interface operations {
                      *                             ],
                      *                             "conditionResult": true
                      *                         }
-                     *                     ],
-                     *                     "actions": []
+                     *                     ]
                      *                 }
+                     *             }
                      *             ```
                      */
                     triggers?: {
@@ -35655,6 +38555,7 @@ export interface operations {
                             [key: string]: string | boolean;
                         }[] | null;
                         enableAutoReleaseCreation: boolean;
+                        enableNativeSourceServerMapping: boolean;
                         features: string[];
                         fingerprintingRules: string;
                         /** Format: date-time */
@@ -35876,6 +38777,8 @@ export interface operations {
                     }[];
                     /** @description Automatically create releases from ingested events. When disabled, releases must be created manually (e.g. via the Sentry CLI). */
                     enableAutoReleaseCreation?: boolean;
+                    /** @description Apply source server (srcsrv) information from native debug files to symbolicated frames. */
+                    enableNativeSourceServerMapping?: boolean;
                     /** @description Fingerprinting rules, as a newline-delimited config string, controlling how events are grouped into issues. */
                     fingerprintingRules?: string | null;
                     /** @description Identifier of the grouping algorithm used to assign events to issues. */
@@ -36025,6 +38928,7 @@ export interface operations {
                             [key: string]: string | boolean;
                         }[] | null;
                         enableAutoReleaseCreation: boolean;
+                        enableNativeSourceServerMapping: boolean;
                         features: string[];
                         fingerprintingRules: string;
                         /** Format: date-time */
@@ -36190,6 +39094,56 @@ export interface operations {
         responses: {
             /** @description No Content */
             204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listStackCodeMappingPrefixes: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The ID or slug of the project the resource belongs to. Project slugs are unique within each organization. */
+                project_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        prefixes: {
+                            fileCount: number;
+                            path: string;
+                        }[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -36730,10 +39684,30 @@ export interface operations {
                     "application/json": {
                         /** @description Whether the filter drops matching data. An inactive filter is kept but ignored. */
                         active?: boolean;
-                        /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
+                        /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`gte 2.0` and `lt 4.0`). To broaden matching, widen a condition's values or add separate filters. */
                         conditions: {
                             /**
-                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                             * @description How the field compares to `value`. `glob` matches the field against each value as a glob pattern. `equals`, `starts_with`, `contains` and `ends_with` match the field against each value case-insensitively, with every character read literally; `does_not_start_with`, `does_not_contain` and `does_not_end_with` match when no value does. `cidr` matches `ip_address` against each value as an address or a CIDR range, and `not_cidr` matches when no value does. `gt`, `gte`, `lt` and `lte` compare one value as a version and only apply to `release`.
+                             *
+                             *     * `glob`
+                             *     * `equals`
+                             *     * `starts_with`
+                             *     * `contains`
+                             *     * `ends_with`
+                             *     * `does_not_start_with`
+                             *     * `does_not_contain`
+                             *     * `does_not_end_with`
+                             *     * `cidr`
+                             *     * `not_cidr`
+                             *     * `gt`
+                             *     * `gte`
+                             *     * `lt`
+                             *     * `lte`
+                             * @enum {string}
+                             */
+                            operator?: "glob" | "equals" | "starts_with" | "contains" | "ends_with" | "does_not_start_with" | "does_not_contain" | "does_not_end_with" | "cidr" | "not_cidr" | "gt" | "gte" | "lt" | "lte";
+                            /**
+                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                              *
                              *     * `error_type`
                              *     * `error_message`
@@ -36741,10 +39715,11 @@ export interface operations {
                              *     * `metric_name`
                              *     * `release`
                              *     * `ip_address`
+                             *     * `geo_country_code`
                              * @enum {string}
                              */
-                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
-                            /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
+                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
+                            /** @description The values the field is compared to. The condition matches when any value matches, so multiple values act as OR; a negated operator matches when none does. A version comparison takes one release with a version such as `1.2.0` or `myapp@1.2.0`. A comparison with a package only applies to releases of that package. */
                             value: string[];
                         }[];
                         /**
@@ -36770,6 +39745,8 @@ export interface operations {
                         readonly dateUpdated: string;
                         /** @description The ID of the filter. */
                         readonly id: string;
+                        /** @description Set on a filter that holds one of the filter lists of the project settings, to the id its outcomes are reported under. Such a filter keeps its data type and its one condition: only the name, the active flag and the condition values can change, and deleting it empties the list. */
+                        readonly legacyFilter: string | null;
                         /** @description A human-readable label for the filter. */
                         name?: string | null;
                     }[];
@@ -36815,10 +39792,30 @@ export interface operations {
                 "application/json": {
                     /** @description Whether the filter drops matching data. An inactive filter is kept but ignored. */
                     active?: boolean;
-                    /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
+                    /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`gte 2.0` and `lt 4.0`). To broaden matching, widen a condition's values or add separate filters. */
                     conditions: {
                         /**
-                         * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                         * @description How the field compares to `value`. `glob` matches the field against each value as a glob pattern. `equals`, `starts_with`, `contains` and `ends_with` match the field against each value case-insensitively, with every character read literally; `does_not_start_with`, `does_not_contain` and `does_not_end_with` match when no value does. `cidr` matches `ip_address` against each value as an address or a CIDR range, and `not_cidr` matches when no value does. `gt`, `gte`, `lt` and `lte` compare one value as a version and only apply to `release`.
+                         *
+                         *     * `glob`
+                         *     * `equals`
+                         *     * `starts_with`
+                         *     * `contains`
+                         *     * `ends_with`
+                         *     * `does_not_start_with`
+                         *     * `does_not_contain`
+                         *     * `does_not_end_with`
+                         *     * `cidr`
+                         *     * `not_cidr`
+                         *     * `gt`
+                         *     * `gte`
+                         *     * `lt`
+                         *     * `lte`
+                         * @enum {string}
+                         */
+                        operator?: "glob" | "equals" | "starts_with" | "contains" | "ends_with" | "does_not_start_with" | "does_not_contain" | "does_not_end_with" | "cidr" | "not_cidr" | "gt" | "gte" | "lt" | "lte";
+                        /**
+                         * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                          *
                          *     * `error_type`
                          *     * `error_message`
@@ -36826,10 +39823,11 @@ export interface operations {
                          *     * `metric_name`
                          *     * `release`
                          *     * `ip_address`
+                         *     * `geo_country_code`
                          * @enum {string}
                          */
-                        type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
-                        /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
+                        type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
+                        /** @description The values the field is compared to. The condition matches when any value matches, so multiple values act as OR; a negated operator matches when none does. A version comparison takes one release with a version such as `1.2.0` or `myapp@1.2.0`. A comparison with a package only applies to releases of that package. */
                         value: string[];
                     }[];
                     /**
@@ -36855,6 +39853,8 @@ export interface operations {
                     readonly dateUpdated: string;
                     /** @description The ID of the filter. */
                     readonly id: string;
+                    /** @description Set on a filter that holds one of the filter lists of the project settings, to the id its outcomes are reported under. Such a filter keeps its data type and its one condition: only the name, the active flag and the condition values can change, and deleting it empties the list. */
+                    readonly legacyFilter: string | null;
                     /** @description A human-readable label for the filter. */
                     name?: string | null;
                 };
@@ -36869,10 +39869,30 @@ export interface operations {
                     "application/json": {
                         /** @description Whether the filter drops matching data. An inactive filter is kept but ignored. */
                         active?: boolean;
-                        /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
+                        /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`gte 2.0` and `lt 4.0`). To broaden matching, widen a condition's values or add separate filters. */
                         conditions: {
                             /**
-                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                             * @description How the field compares to `value`. `glob` matches the field against each value as a glob pattern. `equals`, `starts_with`, `contains` and `ends_with` match the field against each value case-insensitively, with every character read literally; `does_not_start_with`, `does_not_contain` and `does_not_end_with` match when no value does. `cidr` matches `ip_address` against each value as an address or a CIDR range, and `not_cidr` matches when no value does. `gt`, `gte`, `lt` and `lte` compare one value as a version and only apply to `release`.
+                             *
+                             *     * `glob`
+                             *     * `equals`
+                             *     * `starts_with`
+                             *     * `contains`
+                             *     * `ends_with`
+                             *     * `does_not_start_with`
+                             *     * `does_not_contain`
+                             *     * `does_not_end_with`
+                             *     * `cidr`
+                             *     * `not_cidr`
+                             *     * `gt`
+                             *     * `gte`
+                             *     * `lt`
+                             *     * `lte`
+                             * @enum {string}
+                             */
+                            operator?: "glob" | "equals" | "starts_with" | "contains" | "ends_with" | "does_not_start_with" | "does_not_contain" | "does_not_end_with" | "cidr" | "not_cidr" | "gt" | "gte" | "lt" | "lte";
+                            /**
+                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                              *
                              *     * `error_type`
                              *     * `error_message`
@@ -36880,10 +39900,11 @@ export interface operations {
                              *     * `metric_name`
                              *     * `release`
                              *     * `ip_address`
+                             *     * `geo_country_code`
                              * @enum {string}
                              */
-                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
-                            /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
+                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
+                            /** @description The values the field is compared to. The condition matches when any value matches, so multiple values act as OR; a negated operator matches when none does. A version comparison takes one release with a version such as `1.2.0` or `myapp@1.2.0`. A comparison with a package only applies to releases of that package. */
                             value: string[];
                         }[];
                         /**
@@ -36909,6 +39930,8 @@ export interface operations {
                         readonly dateUpdated: string;
                         /** @description The ID of the filter. */
                         readonly id: string;
+                        /** @description Set on a filter that holds one of the filter lists of the project settings, to the id its outcomes are reported under. Such a filter keeps its data type and its one condition: only the name, the active flag and the condition values can change, and deleting it empties the list. */
+                        readonly legacyFilter: string | null;
                         /** @description A human-readable label for the filter. */
                         name?: string | null;
                     };
@@ -36961,10 +39984,30 @@ export interface operations {
                     "application/json": {
                         /** @description Whether the filter drops matching data. An inactive filter is kept but ignored. */
                         active?: boolean;
-                        /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
+                        /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`gte 2.0` and `lt 4.0`). To broaden matching, widen a condition's values or add separate filters. */
                         conditions: {
                             /**
-                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                             * @description How the field compares to `value`. `glob` matches the field against each value as a glob pattern. `equals`, `starts_with`, `contains` and `ends_with` match the field against each value case-insensitively, with every character read literally; `does_not_start_with`, `does_not_contain` and `does_not_end_with` match when no value does. `cidr` matches `ip_address` against each value as an address or a CIDR range, and `not_cidr` matches when no value does. `gt`, `gte`, `lt` and `lte` compare one value as a version and only apply to `release`.
+                             *
+                             *     * `glob`
+                             *     * `equals`
+                             *     * `starts_with`
+                             *     * `contains`
+                             *     * `ends_with`
+                             *     * `does_not_start_with`
+                             *     * `does_not_contain`
+                             *     * `does_not_end_with`
+                             *     * `cidr`
+                             *     * `not_cidr`
+                             *     * `gt`
+                             *     * `gte`
+                             *     * `lt`
+                             *     * `lte`
+                             * @enum {string}
+                             */
+                            operator?: "glob" | "equals" | "starts_with" | "contains" | "ends_with" | "does_not_start_with" | "does_not_contain" | "does_not_end_with" | "cidr" | "not_cidr" | "gt" | "gte" | "lt" | "lte";
+                            /**
+                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                              *
                              *     * `error_type`
                              *     * `error_message`
@@ -36972,10 +40015,11 @@ export interface operations {
                              *     * `metric_name`
                              *     * `release`
                              *     * `ip_address`
+                             *     * `geo_country_code`
                              * @enum {string}
                              */
-                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
-                            /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
+                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
+                            /** @description The values the field is compared to. The condition matches when any value matches, so multiple values act as OR; a negated operator matches when none does. A version comparison takes one release with a version such as `1.2.0` or `myapp@1.2.0`. A comparison with a package only applies to releases of that package. */
                             value: string[];
                         }[];
                         /**
@@ -37001,6 +40045,8 @@ export interface operations {
                         readonly dateUpdated: string;
                         /** @description The ID of the filter. */
                         readonly id: string;
+                        /** @description Set on a filter that holds one of the filter lists of the project settings, to the id its outcomes are reported under. Such a filter keeps its data type and its one condition: only the name, the active flag and the condition values can change, and deleting it empties the list. */
+                        readonly legacyFilter: string | null;
                         /** @description A human-readable label for the filter. */
                         name?: string | null;
                     };
@@ -37048,10 +40094,30 @@ export interface operations {
                 "application/json": {
                     /** @description Whether the filter drops matching data. An inactive filter is kept but ignored. */
                     active?: boolean;
-                    /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
+                    /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`gte 2.0` and `lt 4.0`). To broaden matching, widen a condition's values or add separate filters. */
                     conditions: {
                         /**
-                         * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                         * @description How the field compares to `value`. `glob` matches the field against each value as a glob pattern. `equals`, `starts_with`, `contains` and `ends_with` match the field against each value case-insensitively, with every character read literally; `does_not_start_with`, `does_not_contain` and `does_not_end_with` match when no value does. `cidr` matches `ip_address` against each value as an address or a CIDR range, and `not_cidr` matches when no value does. `gt`, `gte`, `lt` and `lte` compare one value as a version and only apply to `release`.
+                         *
+                         *     * `glob`
+                         *     * `equals`
+                         *     * `starts_with`
+                         *     * `contains`
+                         *     * `ends_with`
+                         *     * `does_not_start_with`
+                         *     * `does_not_contain`
+                         *     * `does_not_end_with`
+                         *     * `cidr`
+                         *     * `not_cidr`
+                         *     * `gt`
+                         *     * `gte`
+                         *     * `lt`
+                         *     * `lte`
+                         * @enum {string}
+                         */
+                        operator?: "glob" | "equals" | "starts_with" | "contains" | "ends_with" | "does_not_start_with" | "does_not_contain" | "does_not_end_with" | "cidr" | "not_cidr" | "gt" | "gte" | "lt" | "lte";
+                        /**
+                         * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                          *
                          *     * `error_type`
                          *     * `error_message`
@@ -37059,10 +40125,11 @@ export interface operations {
                          *     * `metric_name`
                          *     * `release`
                          *     * `ip_address`
+                         *     * `geo_country_code`
                          * @enum {string}
                          */
-                        type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
-                        /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
+                        type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
+                        /** @description The values the field is compared to. The condition matches when any value matches, so multiple values act as OR; a negated operator matches when none does. A version comparison takes one release with a version such as `1.2.0` or `myapp@1.2.0`. A comparison with a package only applies to releases of that package. */
                         value: string[];
                     }[];
                     /**
@@ -37088,6 +40155,8 @@ export interface operations {
                     readonly dateUpdated: string;
                     /** @description The ID of the filter. */
                     readonly id: string;
+                    /** @description Set on a filter that holds one of the filter lists of the project settings, to the id its outcomes are reported under. Such a filter keeps its data type and its one condition: only the name, the active flag and the condition values can change, and deleting it empties the list. */
+                    readonly legacyFilter: string | null;
                     /** @description A human-readable label for the filter. */
                     name?: string | null;
                 };
@@ -37102,10 +40171,30 @@ export interface operations {
                     "application/json": {
                         /** @description Whether the filter drops matching data. An inactive filter is kept but ignored. */
                         active?: boolean;
-                        /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`>2 AND <4`). To broaden matching, widen a condition's values or add separate filters. */
+                        /** @description Conditions are combined with AND: an event must match every condition to be filtered out. There is no OR between conditions, so e.g. two release conditions can express a range (`gte 2.0` and `lt 4.0`). To broaden matching, widen a condition's values or add separate filters. */
                         conditions: {
                             /**
-                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type` and `error_message`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
+                             * @description How the field compares to `value`. `glob` matches the field against each value as a glob pattern. `equals`, `starts_with`, `contains` and `ends_with` match the field against each value case-insensitively, with every character read literally; `does_not_start_with`, `does_not_contain` and `does_not_end_with` match when no value does. `cidr` matches `ip_address` against each value as an address or a CIDR range, and `not_cidr` matches when no value does. `gt`, `gte`, `lt` and `lte` compare one value as a version and only apply to `release`.
+                             *
+                             *     * `glob`
+                             *     * `equals`
+                             *     * `starts_with`
+                             *     * `contains`
+                             *     * `ends_with`
+                             *     * `does_not_start_with`
+                             *     * `does_not_contain`
+                             *     * `does_not_end_with`
+                             *     * `cidr`
+                             *     * `not_cidr`
+                             *     * `gt`
+                             *     * `gte`
+                             *     * `lt`
+                             *     * `lte`
+                             * @enum {string}
+                             */
+                            operator?: "glob" | "equals" | "starts_with" | "contains" | "ends_with" | "does_not_start_with" | "does_not_contain" | "does_not_end_with" | "cidr" | "not_cidr" | "gt" | "gte" | "lt" | "lte";
+                            /**
+                             * @description The field the condition matches against. Every `dataType` accepts `release` and `ip_address`. In addition, `error` accepts `error_type`, `error_message` and `geo_country_code`, `log` accepts `log_message`, and `metric` accepts `metric_name`. `span` and `all` accept no other types.
                              *
                              *     * `error_type`
                              *     * `error_message`
@@ -37113,10 +40202,11 @@ export interface operations {
                              *     * `metric_name`
                              *     * `release`
                              *     * `ip_address`
+                             *     * `geo_country_code`
                              * @enum {string}
                              */
-                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address";
-                            /** @description Glob patterns the field is matched against. The condition matches when any pattern matches, so multiple values act as OR. */
+                            type: "error_type" | "error_message" | "log_message" | "metric_name" | "release" | "ip_address" | "geo_country_code";
+                            /** @description The values the field is compared to. The condition matches when any value matches, so multiple values act as OR; a negated operator matches when none does. A version comparison takes one release with a version such as `1.2.0` or `myapp@1.2.0`. A comparison with a package only applies to releases of that package. */
                             value: string[];
                         }[];
                         /**
@@ -37142,6 +40232,8 @@ export interface operations {
                         readonly dateUpdated: string;
                         /** @description The ID of the filter. */
                         readonly id: string;
+                        /** @description Set on a filter that holds one of the filter lists of the project settings, to the id its outcomes are reported under. Such a filter keeps its data type and its one condition: only the name, the active flag and the condition values can change, and deleting it empties the list. */
+                        readonly legacyFilter: string | null;
                         /** @description A human-readable label for the filter. */
                         name?: string | null;
                     };
@@ -37561,6 +40653,8 @@ export interface operations {
     getProjectEvent: {
         parameters: {
             query?: {
+                /** @description Parts of the response to skip computing. Specify `adjacentEvents` to skip looking up the neighboring events in the issue; `nextEventID` and `previousEventID` are then always `null`. Unknown values are ignored. */
+                collapse?: "adjacentEvents"[];
                 /** @description The name of environments to filter by. */
                 environment?: string[];
             };
@@ -38001,6 +41095,98 @@ export interface operations {
                         sdk_version: string | null;
                     };
                 };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    assembleProjectDebugFiles: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The ID or slug of the project the resource belongs to. Project slugs are unique within each organization. */
+                project_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    [key: string]: {
+                        /** @description The SHA-1 checksums of the file's chunks, in order. Upload missing chunks with the chunk upload endpoint. Send an empty list to poll the file's state. */
+                        chunks: string[];
+                        /** @description The debug ID to store the file under, overriding the one read from the file. */
+                        debug_id?: string;
+                        /** @description The file name. A ProGuard mapping without `debug_id` can carry it in the name, as in `/proguard/mapping-<uuid>.txt`. */
+                        name: string;
+                    } & {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: {
+                            detail?: string | null;
+                            dif?: {
+                                codeId: string | null;
+                                cpuName: string;
+                                data: {
+                                    [key: string]: unknown;
+                                };
+                                /** Format: date-time */
+                                dateCreated: string;
+                                debugId: string;
+                                headers: {
+                                    [key: string]: string;
+                                };
+                                id: string;
+                                objectName: string;
+                                sha1: string;
+                                size: number;
+                                symbolType: string;
+                                uuid: string;
+                            };
+                            missingChunks: string[];
+                            state: string;
+                        };
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Unauthorized */
             401: {
@@ -39508,13 +42694,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -39657,25 +42836,13 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @description Alert rule configuration created alongside the monitor. */
-                    alert_rule?: {
-                        /** @description Name of the environment */
-                        environment?: string | null;
-                        /** @description Array of dictionaries with information of the user or team to be notified */
-                        targets: {
-                            /** @description ID of target object */
-                            target_identifier: number;
-                            /** @description One of [Member, Team] */
-                            target_type: string;
-                        }[];
-                    };
                     /** @description The configuration for the monitor. */
                     config: {
                         /** @description How long (in minutes) after the expected checkin time will we wait until we consider the checkin to have been missed. */
                         checkin_margin?: number | null;
                         /** @description How many consecutive missed or failed check-ins in a row before creating a new issue. */
                         failure_issue_threshold?: number | null;
-                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. */
+                        /** @description How long (in minutes) is the checkin allowed to run for in CheckInStatus.IN_PROGRESS before it is considered failed. Maximum 10080 (7 days). */
                         max_runtime?: number | null;
                         /** @description How many successful check-ins in a row before resolving an issue. */
                         recovery_threshold?: number | null;
@@ -40323,13 +43490,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        alertRule?: {
-                            environment: string;
-                            targets: {
-                                targetIdentifier: number;
-                                targetType: string;
-                            }[];
-                        };
                         config: {
                             alert_rule_id: number | null;
                             checkin_margin: number | null;
@@ -41948,6 +45108,55 @@ export interface operations {
             };
         };
     };
+    getProjectReleaseSetupCompletion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The ID or slug of the project the resource belongs to. Project slugs are unique within each organization. */
+                project_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        complete: boolean;
+                        /** @enum {string} */
+                        step: "tag" | "repo" | "commit" | "deploy";
+                    }[];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     deleteProjectReplay: {
         parameters: {
             query?: never;
@@ -42093,6 +45302,13 @@ export interface operations {
             };
             /** @description Not Found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Too Many Requests */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -42455,6 +45671,363 @@ export interface operations {
             };
         };
     };
+    listProjectSeerRepositories: {
+        parameters: {
+            query?: {
+                /** @description A pointer to the last object fetched and its sort order; used to retrieve the next or previous results. */
+                cursor?: string;
+                /** @description The maximum number of results per page. */
+                per_page?: number;
+                /** @description Filter repositories using Sentry search syntax. `name` supports substring matching and is also the free-text key. `provider` supports `=`, `!=`, `IN`, and `NOT IN` operators, and matches with or without the `integrations:` prefix. */
+                query?: string;
+                /** @description Sort by repository name or provider. Defaults to `name`. */
+                sortBy?: "-name" | "-provider" | "name" | "provider";
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The ID or slug of the project the resource belongs to. Project slugs are unique within each organization. */
+                project_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        branchName: string | null;
+                        branchOverrides: {
+                            branchName: string;
+                            id: string;
+                            tagName: string;
+                            tagValue: string;
+                        }[];
+                        externalId: string;
+                        id: string;
+                        instructions: string | null;
+                        integrationId: string | null;
+                        name: string;
+                        organizationId: string;
+                        owner: string;
+                        provider: string;
+                        repositoryId: string;
+                    }[];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    replaceProjectSeerRepositories: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The ID or slug of the project the resource belongs to. Project slugs are unique within each organization. */
+                project_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Repositories to link and configure for Seer in this project. */
+                    repos: {
+                        /** @description The branch Seer works from in this repository. Leave empty to use the repository's default branch. */
+                        branch_name?: string | null;
+                        /**
+                         * @deprecated
+                         * @description Deprecated. Branch overrides selected by matching tags.
+                         */
+                        branch_overrides?: {
+                            /** @description The repository branch Seer uses for issues whose events have this tag value. */
+                            branch_name: string;
+                            /** @description Event tag key to match. */
+                            tag_name: string;
+                            /** @description Event tag value to match. */
+                            tag_value: string;
+                        }[];
+                        /** @description Extra context Seer should use when working with this repository. */
+                        instructions?: string | null;
+                        /** @description The ID of an active, supported repository in the organization. */
+                        repository_id: number;
+                    }[];
+                };
+            };
+        };
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    addProjectSeerRepositories: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The ID or slug of the project the resource belongs to. Project slugs are unique within each organization. */
+                project_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @description Repositories to link and configure for Seer in this project. */
+                    repos: {
+                        /** @description The branch Seer works from in this repository. Leave empty to use the repository's default branch. */
+                        branch_name?: string | null;
+                        /**
+                         * @deprecated
+                         * @description Deprecated. Branch overrides selected by matching tags.
+                         */
+                        branch_overrides?: {
+                            /** @description The repository branch Seer uses for issues whose events have this tag value. */
+                            branch_name: string;
+                            /** @description Event tag key to match. */
+                            tag_name: string;
+                            /** @description Event tag value to match. */
+                            tag_value: string;
+                        }[];
+                        /** @description Extra context Seer should use when working with this repository. */
+                        instructions?: string | null;
+                        /** @description The ID of an active, supported repository in the organization. */
+                        repository_id: number;
+                    }[];
+                };
+            };
+        };
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getProjectStacktraceLink: {
+        parameters: {
+            query: {
+                /** @description The absolute path of the stack frame, if known. */
+                absPath?: string;
+                /** @description The commit ID associated with the event. */
+                commitId?: string;
+                /** @description The file path from the stack trace frame. */
+                file: string;
+                /** @description The issue ID, if known. */
+                groupId?: string;
+                /** @description The source line number, if known. */
+                lineNo?: string;
+                /** @description The module name, if known. */
+                module?: string;
+                /** @description The package name, if known. */
+                package?: string;
+                /** @description The platform associated with the frame. */
+                platform?: string;
+                /** @description The SDK name associated with the event. */
+                sdkName?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The ID or slug of the organization the resource belongs to. */
+                organization_id_or_slug: string;
+                /** @description The ID or slug of the project the resource belongs to. Project slugs are unique within each organization. */
+                project_id_or_slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        attemptedUrl?: string | null;
+                        config: {
+                            automaticallyGenerated: boolean;
+                            defaultBranch: string | null;
+                            hasCodeOwner: boolean;
+                            id: string;
+                            integrationId: string | null;
+                            projectId: string;
+                            projectSlug: string;
+                            provider: {
+                                aspects: {
+                                    [key: string]: unknown;
+                                };
+                                canAdd: boolean;
+                                canDisable: boolean;
+                                features: string[];
+                                key: string;
+                                name: string;
+                                slug: string;
+                            } | null;
+                            repoId: string;
+                            repoName: string;
+                            sourceRoot: string;
+                            stackRoot: string;
+                        } | null;
+                        error: string | null;
+                        integrations: {
+                            accountType: string | null;
+                            domainName: string | null;
+                            icon: string | null;
+                            id: string;
+                            missingFeatures: {
+                                description: string;
+                                key: string;
+                            }[] | null;
+                            name: string;
+                            outOfDate: boolean | null;
+                            provider: {
+                                aspects: {
+                                    [key: string]: unknown;
+                                };
+                                canAdd: boolean;
+                                canDisable: boolean;
+                                features: string[];
+                                key: string;
+                                name: string;
+                                slug: string;
+                            };
+                            scopes: string[] | null;
+                            status: string;
+                        }[];
+                        sourcePath?: string | null;
+                        sourceUrl: string | null;
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     listProjectStats: {
         parameters: {
             query?: {
@@ -42544,7 +46117,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         password?: {
@@ -42571,7 +46144,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42598,7 +46171,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42629,7 +46202,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42752,6 +46325,7 @@ export interface operations {
                      *     - `ssqp` - Microsoft SSQP
                      *     - `unified` - Unified Symbol Server Layout
                      *     - `debuginfod` - debuginfod
+                     *     - `nxsymstore` - Nintendo NXSymStore
                      *
                      *     **`casing`** ***(string)*** - The layout of the folder structure. The options are:
                      *     - `default` - Default (mixed case)
@@ -42787,9 +46361,10 @@ export interface operations {
                          *     * `unified`
                          *     * `debuginfod`
                          *     * `slashsymbols`
+                         *     * `nxsymstore`
                          * @enum {string}
                          */
-                        type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                        type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                     };
                     /** @description The human-readable name of the source. */
                     name: string;
@@ -42866,7 +46441,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         password?: {
@@ -42893,7 +46468,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42920,7 +46495,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -42951,7 +46526,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -43078,6 +46653,7 @@ export interface operations {
                      *     - `ssqp` - Microsoft SSQP
                      *     - `unified` - Unified Symbol Server Layout
                      *     - `debuginfod` - debuginfod
+                     *     - `nxsymstore` - Nintendo NXSymStore
                      *
                      *     **`casing`** ***(string)*** - The layout of the folder structure. The options are:
                      *     - `default` - Default (mixed case)
@@ -43113,9 +46689,10 @@ export interface operations {
                          *     * `unified`
                          *     * `debuginfod`
                          *     * `slashsymbols`
+                         *     * `nxsymstore`
                          * @enum {string}
                          */
-                        type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                        type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                     };
                     /** @description The human-readable name of the source. */
                     name: string;
@@ -43192,7 +46769,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         password?: {
@@ -43219,7 +46796,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -43246,7 +46823,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
@@ -43277,7 +46854,7 @@ export interface operations {
                             /** @enum {string} */
                             casing?: "lowercase" | "uppercase" | "default";
                             /** @enum {string} */
-                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols";
+                            type: "native" | "symstore" | "symstore_index2" | "ssqp" | "unified" | "debuginfod" | "slashsymbols" | "nxsymstore";
                         };
                         name?: string;
                         platforms?: string[];
